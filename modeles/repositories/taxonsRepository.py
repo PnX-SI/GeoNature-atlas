@@ -2,8 +2,9 @@
 # -*- coding:utf-8 -*-
 
 import sys
-sys.path.insert(0,'/home/synthese/atlas/modeles/entities')
-sys.path.insert(0,'/home/synthese/atlas/config')
+import os
+sys.path.insert(0,'/home/theo/atlas/modeles/entities')
+sys.path.insert(0,'/home/theo/atlas/config')
 from databaseini import *
 from taxrefBibTaxons import *
 from sqlalchemy import distinct, func

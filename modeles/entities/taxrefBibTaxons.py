@@ -5,7 +5,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import sys
-sys.path.insert(0, '/home/synthese/atlas/config')
+import os
+sys.path.insert(0, '/home/theo/atlas/config')
 from databaseini import engine
 
 

@@ -1,13 +1,15 @@
 #! /usr/bin/python
 # -*- coding:utf-8 -*-
-
+import os
 import sys
 from flask import Flask, request, render_template
 from modeles.repositories.taxonsRepository import *
+dirpath = os.path.abspath(os.path.dirname(__file__))
+parentPath = os.path.abspath(os.path.join(dirpath, os.pardir))
+templatePath = parentPath+'/templates'
 
 
-
-app = Flask(__name__)
+app = Flask(__name__, template_folder=templatePath)
 app.debug = True
 
 
