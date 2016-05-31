@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Acceuil</title>
+    </head>
+
+    <body>
+        <h1>{{ mot }}</h1>
+        <h3> Nombre de taxons sur le PNE: {{length}}</h3>
+        <h3> Rechercher une espèce: </h3>
+
+        <input type="text" >
+        <input type="submit">
+        {% for taxon in res %}
+            <li> {{taxon}}</li>
+        {% endfor %}
+
+        <button type="button" class="btn btn-primary">Clik</button>
+
+
+   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    </body>
+</html>
