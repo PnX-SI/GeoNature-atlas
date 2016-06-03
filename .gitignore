@@ -1,3 +1,4 @@
 *.pyc
-config/databaseini.py
+configuration/databaseini.py
 tests/debug.py
+config.py

@@ -2,13 +2,11 @@
 from sqlalchemy import Column, Integer, MetaData, String, Table
 from sqlalchemy.orm import mapper
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+
 import sys
 import os
-sys.path.insert(0, '/home/theo/atlas/config')
-from databaseini import engine
-
+sys.path.insert(0, '/home/theo')
+from atlas.manage import engine
 
 
 Base = declarative_base()
