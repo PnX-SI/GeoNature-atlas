@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <title>Acceuil</title>
+        <link rel="stylesheet" href="{{url_for('static', filename='jquery-ui.css') }}" />
     </head>
 
     <body>
@@ -10,6 +11,14 @@
         {% include 'navbar.html' %}
 
 
+
    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+   <script type=text/javascript src="{{url_for('static', filename='jquery-1.12.4.min.js') }}"></script>
+   <script type=text/javascript src="{{url_for('static', filename='jquery-ui.min.js') }}"></script>
+   <script src="{{url_for('static', filename='main.js') }}"></script>
+
+
+   
     </body>
 </html>

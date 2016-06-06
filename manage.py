@@ -14,5 +14,3 @@ def loadSession():
     return session
 
 
-
-#app = create_app('development')

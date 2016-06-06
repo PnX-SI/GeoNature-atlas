@@ -20,8 +20,14 @@ def rechercheEspece(taxon):
     taxonRecherche = session.query(TaxrefBibtaxons).filter(TaxrefBibtaxons.nom_francais.ilike('%'+taxon)).all()
     return taxonRecherche[0]
 
-def listeTaxonsLatin():
-    taxons = session.query(TaxrefBibtaxons.id_taxon, TaxrefBibtaxons.nom_latin).all()
+#revoie un json de tout les nom latin et de id_taxon
+def listeTaxonsFr():
+    return session.query(TaxrefBibtaxons.nom_francais).all()
+    # jsonTaxon = list()
+    # for t in taxons:
+    #     objTaxon = {'id_taxon': t.id_taxon, 'nom_latin': t.nom_latin}
+    #     jsonTaxon.append(objTaxon)
+    # return jsonTaxon      
 
-    taxonJson = dict()
+
     # for t in taxons:
