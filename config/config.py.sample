@@ -5,15 +5,12 @@ class Config:
     def init_app(app):
         pass
 
-
 class DeveloppementConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = "postgresql://geonatuser:monpassachanger@localhost:5432/geonaturedb"
 
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = "postgresql://geonatuser:monpassachanger@localhost:5432/geonaturedb" 
-
-
 
 config = {
     'development':DeveloppementConfig,
