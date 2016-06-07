@@ -3,3 +3,4 @@ tests/*
 config/settings.ini
 config.py
 logs/*
+static/conf/custom.js

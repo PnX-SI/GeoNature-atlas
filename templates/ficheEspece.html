@@ -2,7 +2,11 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>Espèce</title>
+        <title>{{taxon.nom_francais}}</title>
+
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/leaflet/leaflet.css') }}" />
+        <link rel="stylesheet" href="{{url_for('static', filename='/css/ficheEspece.css') }}" />
+        <script src="{{url_for('static', filename='/lib/leaflet/leaflet.js') }}"></script>
     </head>
 
     <body>
@@ -11,8 +15,16 @@
         <h3> La fiche espece du: {{taxon.nom_francais}}, {{taxon.nom_latin }} </h3>
 
         <p> {{taxon.group1_inpn}} {{taxon.regne}} </p>
+
+        <div id="map"> </div>
+
         
 
    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <script type="text/javascript" src="/atlas/static/conf/custom.js"></script>
+    <script src="{{url_for('static', filename='map.js') }}"></script>
+
+
     </body>
 </html>

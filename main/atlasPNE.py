@@ -29,8 +29,3 @@ def taxonLatin():
     # prem = jsonTaxon[0] # marche avec 0 mais pas avec tout le tableau d'objet
     listeTaxons = taxonsRepository.listeTaxonsFr()
     return jsonify(result=listeTaxons)
-
-
-
-
-
