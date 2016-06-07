@@ -17,12 +17,11 @@ def index():
     listeTaxons = taxonsRepository.listeTaxonsFr()
     return render_template('index.html', listeTaxons=listeTaxons)
 
-@main.route('/espece', methods=['GET', 'POST'])
+@main.route('/espece')
 def ficheEspece():
-    if request.method == 'POST':
-        taxonFormulaire = request.form['taxon']
-        taxon = taxonsRepository.rechercheEspece(taxonFormulaire)
-        return render_template('ficheEspece.html', taxon=taxon)
+    taxonFormulaire = request.args['taxon']
+    taxon = taxonsRepository.rechercheEspece(taxonFormulaire)
+    return render_template('ficheEspece.html', taxon=taxon)
 
 @main.route('/listeTaxons', methods=['GET', 'POST'])
 def taxonLatin():
