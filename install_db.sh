@@ -43,14 +43,17 @@ then
     sudo -n -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog; COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';"
     sudo -n -u postgres -s psql -d $db_name -c "CREATE SERVER geonaturedbserver FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$source_host', dbname '$source_name', port '$source_port');"
     sudo -n -u postgres -s psql -d $db_name -c "ALTER SERVER geonaturedbserver OWNER TO $user_pg;"
-    sudo -n -u postgres -s psql -d $db_name -c "CREATE USER MAPPING FOR $user_pg SERVER geonaturedbserver ;"
+    sudo -n -u postgres -s psql -d $db_name -c "CREATE USER MAPPING FOR $user_pg SERVER geonaturedbserver OPTIONS (user '$user_pg', password '$user_pg_pass') ;"
 
 
     # Mise en place de la structure de la base et des données permettant son fonctionnement avec l'atlas
     echo "Grant..."
-    export PGPASSWORD=$admin_pg_pass;psql -h geonatdbhost -U $admin_pg -d $db_name -f data/grant.sql &> log/install_db.log
+    export PGPASSWORD=$admin_pg_pass;psql -h $db_host -U $admin_pg -d $db_name -f data/grant.sql &> log/install_db.log
     
     echo "Création de la structure de la base..."
-    export PGPASSWORD=$user_pg_pass;psql -h geonatdbhost -U $user_pg -d $db_name -f data/atlas.sql  &>> log/install_db.log
+    export PGPASSWORD=$user_pg_pass;psql -h $db_host -U $user_pg -d $db_name -f data/atlas.sql  &>> log/install_db.log
+    
+    echo "Affectation des droits sur la base source..."
+    export PGPASSWORD=$admin_pg_pass;psql -h $source_host -U $admin_pg -d $source_name -f data/atlas_source.sql  &>> log/install_db.log
 
 fi

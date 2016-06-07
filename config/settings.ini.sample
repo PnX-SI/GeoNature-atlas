@@ -4,7 +4,7 @@
 drop_apps_db=false
 
 #host de la base de données de l'application
-db_host=geonaturedbhost
+db_host=geonatdbhost
 
 #port pour base de données de l'application
 db_port=5432
