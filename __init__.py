@@ -1,10 +1,9 @@
 import os
 import sys
 from flask import Flask, render_template
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 from config import config, database_connection
-from flask.ext.sqlalchemy import SQLAlchemy
 
 
 appDir = os.path.abspath(os.path.dirname(__file__))

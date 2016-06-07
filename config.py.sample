@@ -1,0 +1,23 @@
+class Config:
+    SECRET_KEY = "f(\xdfyx9d#x1n\xc4U=?\xa8}\x96\45u:H"
+    
+    @staticmethod
+    def init_app(app):
+        pass
+
+
+class DeveloppementConfig(Config):
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = "postgresql://geonatuser:monpassachanger@localhost:5432/geonaturedb"
+
+class ProductionConfig(Config):
+    SQLALCHEMY_DATABASE_URI = "postgresql://geonatuser:monpassachanger@localhost:5432/geonaturedb" 
+
+
+
+config = {
+    'development':DeveloppementConfig,
+    'production': ProductionConfig
+    }
+
+database_connection = "postgresql://geonatuser:monpassachanger@localhost:5432/geonaturedb"
