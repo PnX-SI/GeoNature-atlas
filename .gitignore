@@ -1,4 +1,5 @@
 *.pyc
-configuration/databaseini.py
-tests/debug.py
+tests/*
+config/settings.ini
 config.py
+logs/*

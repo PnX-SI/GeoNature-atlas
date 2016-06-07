@@ -1,0 +1,35 @@
+#config PostgreSQL
+
+#effacer la base de donnée existante lors de l'installation
+drop_apps_db=false
+
+#host de la base de données de l'application
+db_host=geonaturedbhost
+
+#port pour base de données de l'application
+db_port=5432
+
+#nom de la base de données de l'application
+db_name=geonatureatlas
+
+#nom de l'utilisateur propriétaire de la base PostgreSQL
+user_pg=geonatatlas
+
+#nom du superutilisateur PostgreSQL
+admin_pg=geonatadmin
+
+#user propriétaire de la base geonaturedb
+user_pg_pass=monpassachanger
+
+#superuser de la base geonaturedb
+admin_pg_pass=monpassachanger
+
+#####SOURCES#####
+#host de la base de données source geonature 
+source_host=localhost
+
+#port pour la base de données source geonature
+source_port=5432
+
+#nom de la base de données source geonature
+source_name=geonaturedb
