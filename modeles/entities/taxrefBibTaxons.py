@@ -1,13 +1,14 @@
-# coding: utf-8
+#! /usr/bin/python
+# -*- coding:utf-8 -*-
+
 from sqlalchemy import Column, Integer, MetaData, String, Table
 from sqlalchemy.orm import mapper
 from sqlalchemy.ext.declarative import declarative_base
-
-import sys
-import os
-sys.path.insert(0, '/home/theo')
 from atlas.manage import engine
+from atlas import baseDir
+import sys
 
+sys.path.insert(0, baseDir)
 
 Base = declarative_base()
 metadata = MetaData()

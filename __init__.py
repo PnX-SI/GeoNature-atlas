@@ -7,8 +7,9 @@ from config import config, database_connection
 from flask.ext.sqlalchemy import SQLAlchemy
 
 
-dirpath = os.path.abspath(os.path.dirname(__file__))
-templatePath = dirpath+'/templates'
+appDir = os.path.abspath(os.path.dirname(__file__))
+baseDir = os.path.abspath(os.path.join(appDir, os.pardir))
+templateDir = appDir+'/templates'
 
 
 bootstrap = Bootstrap()
@@ -16,7 +17,7 @@ db = SQLAlchemy()
 
 #renvoie une instance de app l appli Flask et d'engine: la connection a la base de donnee
 def create_app(config_name):
-    app = Flask(__name__, template_folder=templatePath)
+    app = Flask(__name__, template_folder=templateDir)
 
     from sqlalchemy import create_engine
     engine = create_engine(database_connection, client_encoding='utf8', echo = False)
