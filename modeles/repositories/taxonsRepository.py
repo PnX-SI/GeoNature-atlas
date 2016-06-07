@@ -1,13 +1,15 @@
 #! /usr/bin/python
 # -*- coding:utf-8 -*-
+from atlas import appDir, baseDir, manage
+import sys
+sys.path.insert(0, appDir + '/modeles/entities')
+sys.path.insert(0, baseDir)
 from taxrefBibTaxons import TaxrefBibtaxons
 from sqlalchemy import distinct, func
 from sqlalchemy.orm import sessionmaker
-from atlas import appDir, baseDir, manage
-import sys
 
-sys.path.insert(0, appDir + '/modeles/entities')
-sys.path.insert(0, baseDir)
+
+
 
 session = manage.loadSession()
 
