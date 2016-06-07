@@ -3,13 +3,13 @@
 
 # Définition des chemins racines
 import os
-appDir = os.path.abspath(os.path.dirname(__file__))
-baseDir = os.path.abspath(os.path.join(appDir, os.pardir))
+APP_DIR = os.path.abspath(os.path.dirname(__file__))
+BASE_DIR = os.path.abspath(os.path.join(APP_DIR, os.pardir))
 
 #insertion des chemins racines
 import sys
-sys.path.insert(0, baseDir)
-sys.path.insert(0, appDir)
+sys.path.insert(0, BASE_DIR)
+sys.path.insert(0, APP_DIR)
 
 from werkzeug.debug import DebuggedApplication
 from manage import app as application

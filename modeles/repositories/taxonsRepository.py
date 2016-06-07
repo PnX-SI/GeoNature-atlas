@@ -1,9 +1,9 @@
 #! /usr/bin/python
 # -*- coding:utf-8 -*-
-from atlas import appDir, baseDir, manage
+from atlas import APP_DIR, BASE_DIR, manage
 import sys
-sys.path.insert(0, appDir + '/modeles/entities')
-sys.path.insert(0, baseDir)
+sys.path.insert(0, APP_DIR + '/modeles/entities')
+sys.path.insert(0, BASE_DIR)
 from taxrefBibTaxons import TaxrefBibtaxons
 from sqlalchemy import distinct, func
 from sqlalchemy.orm import sessionmaker
