@@ -14,7 +14,8 @@ import json
 
 @main.route('/' , methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    listeTaxons = taxonsRepository.listeTaxonsFr()
+    return render_template('index.html', listeTaxons=listeTaxons)
 
 @main.route('/espece', methods=['GET', 'POST'])
 def ficheEspece():

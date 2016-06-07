@@ -18,7 +18,9 @@
    <script type=text/javascript src="{{url_for('static', filename='jquery-ui.min.js') }}"></script>
    <script src="{{url_for('static', filename='main.js') }}"></script>
 
+       <script type="text/javascript">
+            autocompleteTaxons({{ listeTaxons|tojson }})
+       </script>
 
-   
     </body>
 </html>
