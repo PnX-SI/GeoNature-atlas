@@ -2,6 +2,8 @@
 CREATE SCHEMA synthese AUTHORIZATION geonatatlas;
 CREATE SCHEMA taxonomie AUTHORIZATION geonatatlas;
 CREATE SCHEMA utilisateurs AUTHORIZATION geonatatlas;
+CREATE SCHEMA meta AUTHORIZATION geonatatlas;
+CREATE SCHEMA layers AUTHORIZATION geonatatlas;
 
 --UTILISATEURS
 CREATE FOREIGN TABLE utilisateurs.bib_organismes
