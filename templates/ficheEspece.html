@@ -10,17 +10,29 @@
     </head>
 
     <body>
-        {% include 'navbar.html' %}
+    {% include 'navbar.html' %}
 
-        <h3> La fiche espece du: {{taxon.nom_francais}}, {{taxon.nom_latin }} </h3>
 
-        <p> {{taxon.group1_inpn}} {{taxon.regne}} </p>
+    <div id ="page" class="container-fluid">
+        <div class='row' id="presentationEspece">
+                <div class="col-sm-2" > 
+                    <img src="{{url_for('static', filename='/images/pne.jpg') }}" style="width:200px;height:200px;">
+                </div>
+                <div class="col-sm-3" > 
+                    <h3> {{taxon.nom_latin}} </h3>
+                    <p> <i> {{taxon.nom_francais}} </i> <br/>
+                    <a href='https://inpn.mnhn.fr/espece/cd_nom/{{taxon.cd_nom}}'>Fiche INPN</a>
+                </div>
+       </div>
+          
+        <div id='mapContainer' class="col-sm-6">
+            <div id="map"> </div>
+        </div>
 
-        <div id="map"> </div>
+    </div>
 
-        
 
-   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    
 
     <script type="text/javascript" src="/atlas/static/conf/custom.js"></script>
     <script src="{{url_for('static', filename='map.js') }}"></script>

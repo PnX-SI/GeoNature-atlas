@@ -1,1 +1,28 @@
-#map{ width: 900px; height: 500px; }
+
+body {
+	background-color: #a0aabf;
+}
+
+#page {
+	background-color: lightgrey;
+}
+
+#presentationEspece{
+	padding: 0px;	
+	margin: 20px;
+
+}
+
+#mapContainer {
+	margin: 35px;
+	padding: 10px;
+	background-color: white;
+}
+
+#map{
+
+ width: 675px; height: 400px; }
+
+#presentationEspece h3 {
+	margin : 0px;
+}
