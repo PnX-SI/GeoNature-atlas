@@ -54,6 +54,7 @@ then
     export PGPASSWORD=$user_pg_pass;psql -h $db_host -U $user_pg -d $db_name -f data/atlas.sql  &>> log/install_db.log
     
     echo "Affectation des droits sur la base source..."
+    sed -i "s/TO geonatatlas;$/TO $user_pg;/" data/atlas_source.sql
     export PGPASSWORD=$admin_pg_pass;psql -h $source_host -U $admin_pg -d $source_name -f data/atlas_source.sql  &>> log/install_db.log
 
 fi
