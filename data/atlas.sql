@@ -383,3 +383,126 @@ CREATE FOREIGN TABLE taxonomie.cor_taxon_liste
   OPTIONS (schema_name 'taxonomie', table_name 'cor_taxon_liste');
 ALTER TABLE taxonomie.cor_taxon_liste OWNER TO geonatatlas;
 GRANT ALL ON TABLE taxonomie.cor_taxon_liste TO geonatatlas;
+
+--LAYERS
+CREATE FOREIGN TABLE layers.l_zonesstatut
+(
+  id_zone integer NOT NULL,
+  id_type integer NOT NULL,
+  id_mnhn character varying(20),
+  nomzone character varying(250),
+  the_geom geometry
+)
+  SERVER geonaturedbserver
+  OPTIONS (schema_name 'layers', table_name 'l_zonesstatut');
+ALTER TABLE layers.l_zonesstatut OWNER TO geonatatlas;
+GRANT ALL ON TABLE layers.l_zonesstatut TO geonatatlas;
+
+CREATE FOREIGN TABLE layers.l_secteurs
+(
+  nom_secteur character varying(50),
+  id_secteur integer NOT NULL,
+  the_geom geometry
+)
+  SERVER geonaturedbserver
+  OPTIONS (schema_name 'layers', table_name 'l_secteurs');
+ALTER TABLE layers.l_secteurs OWNER TO geonatatlas;
+GRANT ALL ON TABLE layers.l_secteurs TO geonatatlas;
+
+CREATE FOREIGN TABLE layers.bib_typeszones
+(
+  id_type integer NOT NULL,
+  typezone character varying(200)
+)
+  SERVER geonaturedbserver
+  OPTIONS (schema_name 'layers', table_name 'bib_typeszones');
+ALTER TABLE layers.bib_typeszones OWNER TO geonatatlas;
+GRANT ALL ON TABLE layers.bib_typeszones TO geonatatlas;
+
+CREATE FOREIGN TABLE layers.l_communes
+(
+  insee character(5) NOT NULL,
+  idbdcarto bigint,
+  commune_maj character varying(50),
+  commune_min character varying(50),
+  inseedep character varying(3),
+  nomdep character varying(30),
+  inseereg character varying(2),
+  nomreg character varying(30),
+  inseearr character varying(1),
+  inseecan character varying(2),
+  statut character varying(20),
+  xcom bigint,
+  ycom bigint,
+  surface bigint,
+  epci character varying(40),
+  coeur_aoa character varying(5),
+  codenum integer,
+  pays character varying(50),
+  id_secteur integer,
+  saisie boolean,
+  organisme boolean,
+  id_secteur_fp integer,
+  the_geom geometry
+)
+  SERVER geonaturedbserver
+  OPTIONS (schema_name 'layers', table_name 'l_communes');
+ALTER TABLE layers.l_communes OWNER TO geonatatlas;
+GRANT ALL ON TABLE layers.l_communes TO geonatatlas;
+
+--META
+CREATE FOREIGN TABLE meta.t_protocoles
+(
+  id_protocole integer NOT NULL,
+  nom_protocole character varying(250),
+  question text,
+  objectifs text,
+  methode text,
+  avancement character varying(50),
+  date_debut date,
+  date_fin date
+)
+  SERVER geonaturedbserver
+  OPTIONS (schema_name 'meta', table_name 't_protocoles');
+ALTER TABLE meta.t_protocoles OWNER TO geonatatlas;
+GRANT ALL ON TABLE meta.t_protocoles TO geonatatlas;
+
+CREATE FOREIGN TABLE meta.t_precisions
+(
+  id_precision integer NOT NULL,
+  nom_precision character varying(50),
+  desc_precision text
+)
+  SERVER geonaturedbserver
+  OPTIONS (schema_name 'meta', table_name 't_precisions');
+ALTER TABLE meta.t_precisions OWNER TO geonatatlas;
+GRANT ALL ON TABLE meta.t_precisions TO geonatatlas;
+
+CREATE FOREIGN TABLE meta.bib_programmes
+(
+  id_programme integer NOT NULL,
+  nom_programme character varying(255),
+  desc_programme text,
+  programme_public boolean,
+  desc_programme_public text,
+  actif boolean
+)
+  SERVER geonaturedbserver
+  OPTIONS (schema_name 'meta', table_name 'bib_programmes');
+ALTER TABLE meta.bib_programmes OWNER TO geonatatlas;
+GRANT ALL ON TABLE meta.bib_programmes TO geonatatlas;
+
+CREATE FOREIGN TABLE meta.bib_lots
+(
+  id_lot integer NOT NULL,
+  nom_lot character varying(255),
+  desc_lot text,
+  menu_cf boolean DEFAULT false,
+  pn boolean DEFAULT true,
+  menu_inv boolean DEFAULT false,
+  id_programme integer NOT NULL
+)
+  SERVER geonaturedbserver
+  OPTIONS (schema_name 'meta', table_name 'bib_lots');
+ALTER TABLE meta.bib_lots OWNER TO geonatatlas;
+GRANT ALL ON TABLE meta.bib_lots TO geonatatlas;

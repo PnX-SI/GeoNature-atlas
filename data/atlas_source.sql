@@ -1,6 +1,8 @@
 GRANT USAGE ON SCHEMA utilisateurs TO geonatatlas;
 GRANT USAGE ON SCHEMA synthese TO geonatatlas;
 GRANT USAGE ON SCHEMA taxonomie TO geonatatlas;
+GRANT USAGE ON SCHEMA meta TO geonatatlas;
+GRANT USAGE ON SCHEMA layers TO geonatatlas;
 
 GRANT SELECT ON TABLE utilisateurs.bib_droits TO geonatatlas;
 GRANT SELECT ON TABLE utilisateurs.bib_unites TO geonatatlas;
@@ -29,3 +31,13 @@ GRANT SELECT ON TABLE taxonomie.cor_taxon_liste TO geonatatlas;
 GRANT SELECT ON TABLE taxonomie.taxref TO geonatatlas;
 GRANT SELECT ON TABLE taxonomie.taxref_protection_articles TO geonatatlas;
 GRANT SELECT ON TABLE taxonomie.taxref_protection_especes TO geonatatlas;
+
+GRANT SELECT ON TABLE meta.bib_lots TO geonatatlas;
+GRANT SELECT ON TABLE meta.bib_programmes TO geonatatlas;
+GRANT SELECT ON TABLE meta.t_precisions TO geonatatlas;
+GRANT SELECT ON TABLE meta.t_protocoles TO geonatatlas;
+
+GRANT SELECT ON TABLE layers.bib_typeszones TO geonatatlas;
+GRANT SELECT ON TABLE layers.l_communes TO geonatatlas;
+GRANT SELECT ON TABLE layers.l_secteurs TO geonatatlas;
+GRANT SELECT ON TABLE layers.l_zonesstatut TO geonatatlas;
