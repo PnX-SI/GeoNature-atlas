@@ -4,6 +4,7 @@ CREATE SCHEMA taxonomie AUTHORIZATION geonatatlas;
 CREATE SCHEMA utilisateurs AUTHORIZATION geonatatlas;
 CREATE SCHEMA meta AUTHORIZATION geonatatlas;
 CREATE SCHEMA layers AUTHORIZATION geonatatlas;
+CREATE SCHEMA atlas AUTHORIZATION geonatatlas;
 
 --UTILISATEURS
 CREATE FOREIGN TABLE utilisateurs.bib_organismes
@@ -512,38 +513,38 @@ GRANT ALL ON TABLE meta.bib_lots TO geonatatlas;
 --VUES MATERIALISEES
 
 --DROP materialized view taxonomie.vm_taxref;
-CREATE materialized view taxonomie.vm_taxref AS
+CREATE materialized view atlas.vm_taxref AS
 SELECT * FROM taxonomie.taxref;
-create unique index on taxonomie.vm_taxref (cd_nom);
-create index on taxonomie.vm_taxref (cd_ref);
-create index on taxonomie.vm_taxref (lb_nom);
-create index on taxonomie.vm_taxref (nom_complet);
-create index on taxonomie.vm_taxref (nom_valide);
+create unique index on atlas.vm_taxref (cd_nom);
+create index on atlas.vm_taxref (cd_ref);
+create index on atlas.vm_taxref (lb_nom);
+create index on atlas.vm_taxref (nom_complet);
+create index on atlas.vm_taxref (nom_valide);
 
---DROP materialized view synthese.vm_syntheseff; 
-CREATE materialized view synthese.vm_syntheseff AS
+--DROP materialized view atlas.vm_syntheseff; 
+CREATE materialized view atlas.vm_syntheseff AS
 SELECT s.*, tx.cd_ref FROM synthese.syntheseff s
 LEFT JOIN taxonomie.taxref tx ON tx.cd_nom = s.cd_nom;
-create unique index on synthese.vm_syntheseff (id_synthese);
-create index on synthese.vm_syntheseff (id_organisme);
-create index on synthese.vm_syntheseff (cd_nom);
-create index on synthese.vm_syntheseff (insee);
-create index on synthese.vm_syntheseff (altitude_retenue);
-CREATE INDEX index_gist_synthese_the_geom_point ON synthese.vm_syntheseff USING gist (the_geom_point);
+create unique index on atlas.vm_syntheseff (id_synthese);
+create index on atlas.vm_syntheseff (id_organisme);
+create index on atlas.vm_syntheseff (cd_nom);
+create index on atlas.vm_syntheseff (insee);
+create index on atlas.vm_syntheseff (altitude_retenue);
+CREATE INDEX index_gist_synthese_the_geom_point ON atlas.vm_syntheseff USING gist (the_geom_point);
 
---DROP MATERIALIZED VIEW taxonomie.vm_taxons_synthese;
-CREATE materialized view taxonomie.vm_taxons_synthese AS
+--DROP MATERIALIZED VIEW atlas.vm_taxons_synthese;
+CREATE materialized view atlas.vm_taxons_synthese AS
 SELECT t.id_taxon,t.filtre1 AS saisie, t.filtre2 AS patrimonial, t.filtre3 AS protection_stricte, tx.*, h.nom_habitat, r.nom_rang, st.nom_statut
 FROM taxonomie.bib_taxons t
-JOIN taxonomie.vm_taxref tx ON tx.cd_nom = t.cd_nom
+JOIN atlas.vm_taxref tx ON tx.cd_nom = t.cd_nom
 LEFT JOIN taxonomie.bib_taxref_habitats h ON h.id_habitat = tx.id_habitat
 LEFT JOIN taxonomie.bib_taxref_rangs r  ON r.id_rang = tx.id_rang
 LEFT JOIN taxonomie.bib_taxref_statuts st ON st.id_statut = tx.id_statut
-WHERE t.cd_nom IN (SELECT DISTINCT cd_nom FROM synthese.syntheseff WHERE supprime = FALSE);
-create unique index on taxonomie.vm_taxons_synthese (id_taxon);
-create index on taxonomie.vm_taxons_synthese (cd_nom);
-create index on taxonomie.vm_taxons_synthese (cd_ref);
+WHERE t.cd_nom IN (SELECT DISTINCT cd_nom FROM atlas.vm_syntheseff WHERE supprime = FALSE);
+create unique index on atlas.vm_taxons_synthese (id_taxon);
+create index on atlas.vm_taxons_synthese (cd_nom);
+create index on atlas.vm_taxons_synthese (cd_ref);
 
---refresh materialized view CONCURRENTLY synthese.vm_syntheseff;--92399ms avec les index
---refresh materialized view CONCURRENTLY taxonomie.vm_taxref; --8158ms avec les index
---refresh materialized view CONCURRENTLY taxonomie.vm_taxons_synthese;--6800ms  avec les index
+--refresh materialized view CONCURRENTLY atlas.vm_syntheseff;--92399ms avec les index
+--refresh materialized view CONCURRENTLY atlas.vm_taxref; --8158ms avec les index
+--refresh materialized view CONCURRENTLY atlas.vm_taxons_synthese;--6800ms  avec les index

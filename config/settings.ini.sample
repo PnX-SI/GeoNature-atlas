@@ -26,10 +26,16 @@ admin_pg_pass=monpassachanger
 
 #####SOURCES#####
 #host de la base de données source geonature 
-source_host=localhost
+db_source_host=localhost
 
 #port pour la base de données source geonature
-source_port=5432
+db_source_port=5432
 
 #nom de la base de données source geonature
-source_name=geonaturedb
+db_source_name=geonaturedb
+
+#nom du user admin sur la base de données source
+admin_source_user=geonatadmin
+
+#pass du user admin sur la base de données source
+admin_source_pass=monpassachanger
