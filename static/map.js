@@ -3,7 +3,10 @@ var osmTile = L.tileLayer(osmUrl, {attribution: osmAttribution}),
 	ignTile = L.tileLayer(ignUrl, {attribution: ignAttribution});
 
 //initilisation de la carte
+	L.CRS.EPSG3857;	
+
   var map = L.map('map',{
+  	crs: L.CRS.EPSG3857,
   	center: latLong,
   	zoom: setZoom,
   	layers: [osmTile, ignTile]

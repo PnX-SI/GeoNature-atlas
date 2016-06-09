@@ -18,6 +18,7 @@ db = SQLAlchemy()
 #renvoie une instance de app l appli Flask et d'engine: la connection a la base de donnee
 def create_app(config_name):
     app = Flask(__name__, template_folder=TEMPLATE_DIR)
+    app.debug = True
 
     from sqlalchemy import create_engine
     engine = create_engine(database_connection, client_encoding='utf8', echo = False)

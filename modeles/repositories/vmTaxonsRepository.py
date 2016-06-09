@@ -13,12 +13,12 @@ from sqlalchemy.orm import sessionmaker
 
 session = manage.loadSession()
 
-#recherche par espece, renvoie un tableau contenant les caracteristiques de l'espece
+#recherche par espece, renvoie un tableau contenant un element: un dict contenant tous les attributs de la table
 def rechercheEspece(taxon):
     taxon = str(taxon)
     taxonRecherche = session.query(VmTaxons).filter(VmTaxons.lb_nom.ilike('%'+taxon)).all()
-    return taxonRecherche
+    return taxonRecherche[0]
 
-#revoie la liste de tous les noms francais
+#revoie un tableau de x dict comportant seulemen le nom latin
 def listeTaxonsFr():
     return session.query(VmTaxons.lb_nom).all()

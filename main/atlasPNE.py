@@ -20,16 +20,13 @@ def index():
 
 @main.route('/espece', methods=['GET', 'POST'])
 def ficheEspece():
+    listeTaxons = vmTaxonsRepository.listeTaxonsFr()
     taxonFormulaire = request.args['taxon']
     taxon = vmTaxonsRepository.rechercheEspece(taxonFormulaire)
     # obs = syntheseRepository.observations(taxonFormulaire)
-    return render_template('ficheEspece.html', taxon=taxon)
+    return render_template('ficheEspece.html', taxon=taxon, listeTaxons=listeTaxons)
 
 
-@main.route('/test')
-def test():
-    unTest=5
-    return render_template('ficheEspece.html', unTest=unTest)
 
 # @main.route('/listeTaxons', methods=['GET', 'POST'])
 # def taxonLatin():
