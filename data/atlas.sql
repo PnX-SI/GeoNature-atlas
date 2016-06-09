@@ -522,9 +522,36 @@ create index on atlas.vm_taxref (nom_complet);
 create index on atlas.vm_taxref (nom_valide);
 
 --DROP materialized view atlas.vm_observations; 
-CREATE materialized view atlas.vm_observations AS
-SELECT s.*, tx.cd_ref FROM synthese.syntheseff s
-LEFT JOIN taxonomie.taxref tx ON tx.cd_nom = s.cd_nom;
+CREATE MATERIALIZED VIEW atlas.vm_observations AS 
+    SELECT s.id_synthese,
+        s.id_source,
+        s.id_fiche_source,
+        s.code_fiche_source,
+        s.id_organisme,
+        s.id_protocole,
+        s.id_precision,
+        s.cd_nom,
+        s.insee,
+        s.dateobs,
+        s.observateurs,
+        s.determinateur,
+        s.altitude_retenue,
+        s.remarques,
+        s.date_insert,
+        s.date_update,
+        s.derniere_action,
+        s.supprime,
+        s.the_geom_point,
+        s.id_lot,
+        s.id_critere_synthese,
+        s.effectif_total,
+        tx.cd_ref,
+        st_asgeojson(s.the_geom_point) as geojson_point
+    FROM synthese.syntheseff s
+    LEFT JOIN taxonomie.taxref tx ON tx.cd_nom = s.cd_nom;
+
+ALTER TABLE atlas.vm_observations
+  OWNER TO geonatatlas;
 create unique index on atlas.vm_observations (id_synthese);
 create index on atlas.vm_observations (id_organisme);
 create index on atlas.vm_observations (cd_nom);
