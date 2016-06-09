@@ -1,6 +1,6 @@
 *.pyc
 tests/*
 config/settings.ini
-config.py
+config/config.py
 log/*
 static/conf/custom.js
