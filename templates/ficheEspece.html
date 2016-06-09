@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>{{taxon.nom_francais}}</title>
+        <title><!-- {{taxon.lb_nom}} --></title>
 
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/leaflet/leaflet.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='/css/ficheEspece.css') }}" />
@@ -19,9 +19,9 @@
                     <img src="{{url_for('static', filename='/images/pne.jpg') }}" style="width:200px;height:200px;">
                 </div>
                 <div class="col-sm-3" > 
-                    <h3> {{taxon.nom_latin}} </h3>
-                    <p> <i> {{taxon.nom_francais}} </i> <br/>
-                    <a href='https://inpn.mnhn.fr/espece/cd_nom/{{taxon.cd_nom}}'>Fiche INPN</a>
+<!--                     <h3> {{taxon.lb_nom}} </h3>
+                    <p> <i> {{taxon.lb_nom}} </i> <br/>
+                    <a href='https://inpn.mnhn.fr/espece/cd_nom/{{taxon.cd_nom}}'>Fiche INPN</a> -->
                 </div>
        </div>
           
@@ -36,6 +36,11 @@
 
     <script type="text/javascript" src="/atlas/static/conf/custom.js"></script>
     <script src="{{url_for('static', filename='map.js') }}"></script>
+<!--  Lancement des fonction JS necessitant la syntaxe Jinja-->
+
+    <script type="text/javascript">
+/*        afficherObs({{obs|tojson}});
+*/    </script>
 
 
     </body>
