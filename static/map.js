@@ -20,12 +20,12 @@ var baseMap = {
 
 L.control.layers(baseMap).addTo(map);
 
-var gejson = {"type":"Point","coordinates":[6.083333, 44.566667]};
+var gejson = {"type":"Point","coordinates":[700543.748457624,5599618.49852064]};
 L.geoJson(gejson).addTo(map);
 
 
-/*function afficherObs(geoJsonObs){
+function displayObs(geoJsonObs){
 	L.geoJson(geoJsonObs).addTo(map);
 	console.log('trace');
 
-}*/
+}

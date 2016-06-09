@@ -5,7 +5,7 @@ import sys
 from flask import Flask, request, render_template, jsonify
 from werkzeug.wrappers import Response
 # from modeles.repositories.taxonsRepository import *
-from modeles.repositories import vmTaxonsRepository
+from modeles.repositories import vmTaxonsRepository, vmObservationsRepository
 # from modeles.repositories import syntheseRepository
 from . import main
 import json
@@ -23,8 +23,10 @@ def ficheEspece():
     listeTaxons = vmTaxonsRepository.listeTaxonsFr()
     taxonFormulaire = request.args['taxon']
     taxon = vmTaxonsRepository.rechercheEspece(taxonFormulaire)
-    # obs = syntheseRepository.observations(taxonFormulaire)
-    return render_template('ficheEspece.html', taxon=taxon, listeTaxons=listeTaxons)
+    
+    cd_ref = vmTaxonsRepository.getTaxref(taxonFormulaire)
+    observations = vmObservationsRepository.searchObservation(cd_ref)
+    return render_template('ficheEspece.html', taxon=taxon, listeTaxons=listeTaxons, observations=observations, cd_ref=cd_ref)
 
 
 

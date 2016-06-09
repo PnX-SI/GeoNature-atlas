@@ -540,7 +540,6 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
         s.date_insert,
         s.date_update,
         s.derniere_action,
-        s.supprime,
         s.the_geom_point,
         s.id_lot,
         s.id_critere_synthese,
@@ -548,7 +547,8 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
         tx.cd_ref,
         st_asgeojson(s.the_geom_point) as geojson_point
     FROM synthese.syntheseff s
-    LEFT JOIN taxonomie.taxref tx ON tx.cd_nom = s.cd_nom;
+    LEFT JOIN taxonomie.taxref tx ON tx.cd_nom = s.cd_nom
+    WHERE s.supprime = FALSE;
 
 ALTER TABLE atlas.vm_observations
   OWNER TO geonatatlas;
@@ -567,7 +567,7 @@ JOIN atlas.vm_taxref tx ON tx.cd_nom = t.cd_nom
 LEFT JOIN taxonomie.bib_taxref_habitats h ON h.id_habitat = tx.id_habitat
 LEFT JOIN taxonomie.bib_taxref_rangs r  ON r.id_rang = tx.id_rang
 LEFT JOIN taxonomie.bib_taxref_statuts st ON st.id_statut = tx.id_statut
-WHERE t.cd_nom IN (SELECT DISTINCT cd_nom FROM atlas.vm_observations WHERE supprime = FALSE);
+WHERE t.cd_nom IN (SELECT DISTINCT cd_nom FROM atlas.vm_observations);
 create unique index on atlas.vm_taxons (id_taxon);
 create index on atlas.vm_taxons (cd_nom);
 create index on atlas.vm_taxons (cd_ref);

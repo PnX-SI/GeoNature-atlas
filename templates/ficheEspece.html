@@ -46,7 +46,9 @@
 <!--  Lancement des fonction JS necessitant la syntaxe Jinja-->
     <script type="text/javascript">
             autocompleteTaxons({{ listeTaxons|tojson }})
-            console.log({{listeTaxons|tojson}})
+            console.log({{observations[0]|tojson}})
+            displayObs({{observations|tojson}})
+            
     </script>
 
 

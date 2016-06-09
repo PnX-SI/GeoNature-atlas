@@ -22,3 +22,9 @@ def rechercheEspece(taxon):
 #revoie un tableau de x dict comportant seulemen le nom latin
 def listeTaxonsFr():
     return session.query(VmTaxons.lb_nom).all()
+
+
+#retourne le taxref à partir du nomLatin
+def getTaxref(nomLatin):
+    request = session.query(VmTaxons.cd_ref).filter(VmTaxons.lb_nom.ilike('%'+nomLatin)).all()
+    return request[0].cd_ref
