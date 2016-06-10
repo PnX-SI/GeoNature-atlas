@@ -67,9 +67,33 @@ new L.Marker([latlng.lat, latlng.lng], {bounceOnAdd: true}).addTo(map);
 */
  
 
+
 function displayObs(geoJsonObs){
 
-	L.geoJson(geoJsonObs).addTo(map);
-	console.log('trace');
-
+	L.geoJson(geoJsonObs, {
+            onEachFeature : function(feature, layer){
+            	popupOptions = {maxWidth: 200};
+            	layer.bindPopup("<b>Altitude: </b>"+ feature.properties.altitude+
+            		"</br><b>Observateurs: </b>"+ feature.properties.observateurs+
+            		"</br><b>Effectif: </b>"+ feature.properties.effectif_total
+            	,popupOptions);
+            }
+    	}).addTo(map);
 }
+
+/*L.geoJson(response, {
+            style: function (feature) {
+                return {
+                    stroke: false,
+                    fillColor: 'FFFFFF',
+                    fillOpacity: 0
+                };
+            },
+            onEachFeature: function (feature, layer) {
+                popupOptions = {maxWidth: 200};
+                layer.bindPopup("<b>Site name:</b> " + feature.properties.sitename +
+                    "<br><b>Dog Exercise: </b>" + feature.properties.dog_exercise +
+                    "<br><br>Please ensure that tidy up after your dog. Dogs must be kept under effective control at all times."
+                    ,popupOptions);
+            }
+        }).addTo(map);*/

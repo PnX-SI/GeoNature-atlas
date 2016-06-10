@@ -34,7 +34,6 @@ class VmObservations(Base):
     Column('date_insert', DateTime),
     Column('date_update', DateTime),
     Column('derniere_action', String(1)),
-    Column('supprime', Boolean),
     Column('the_geom_point', Geometry, index=True),
     Column('id_lot', Integer),
     Column('id_critere_synthese', Integer),
