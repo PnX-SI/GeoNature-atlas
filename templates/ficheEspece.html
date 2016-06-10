@@ -24,10 +24,12 @@
                 <div class="col-sm-3" > 
                     <h3> {{taxon.lb_nom}} </h3>
                     <p> <i> {{taxon.lb_nom}} </i> <br/>
+                    Nombre d'observation sur le parc: <i> {{observations.features|length}} </i> </br>
+
                     <a href='https://inpn.mnhn.fr/espece/cd_nom/{{taxon.cd_nom}}' target="_blank">Fiche INPN</a>
                 </div>
        </div>
-          
+
         <div id='mapContainer' class="col-sm-6">
             <div id="map"> </div>
         </div>

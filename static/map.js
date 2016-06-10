@@ -22,16 +22,21 @@ L.control.layers(baseMap).addTo(map);
 
 // add all observations markers whith popup
 
+function onEachFeature(feature, layer){
+		popupContent = "<b>Date: </b>"+ feature.properties.dateobs+"</br><b>Altitude: </b>"+ feature.properties.altitude+
+            		"</br><b>Observateurs: </b>"+ feature.properties.observateurs
+        if(feature.properties.effectif_total){
+        	layer.bindPopup(popupContent+"</br><b>Effectif: </b>"+ feature.properties.effectif_total);
+        }else{
+        	layer.bindPopup(popupContent)
+        }
+
+}
+
 
 function displayObs(geoJsonObs){
 
 	L.geoJson(geoJsonObs, {
-            onEachFeature : function(feature, layer){
-            	popupOptions = {maxWidth: 200};
-            	layer.bindPopup("<b>Date: </b>"+ feature.properties.dateobs+"</br><b>Altitude: </b>"+ feature.properties.altitude+
-            		"</br><b>Observateurs: </b>"+ feature.properties.observateurs+
-            		"</br><b>Effectif: </b>"+ feature.properties.effectif_total
-            	,popupOptions);
-            }
+            onEachFeature : onEachFeature
     	}).addTo(map);
 }
