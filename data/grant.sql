@@ -22,4 +22,6 @@ GRANT ALL ON TABLE geography_columns TO geonatuser;
 
 REVOKE ALL ON TABLE spatial_ref_sys FROM PUBLIC;
 REVOKE ALL ON TABLE spatial_ref_sys FROM geonatuser;
-GRANT ALL ON TABLE spatial_ref_sys TO geonatuser;
+#modif Théo
+#GRANT ALL ON TABLE spatial_ref_sys TO geonatuser;
+GRANT ALL ON TABLE spatial_ref_sys TO geonatatlas;

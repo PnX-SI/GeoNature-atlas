@@ -41,3 +41,4 @@ GRANT SELECT ON TABLE layers.bib_typeszones TO geonatatlas;
 GRANT SELECT ON TABLE layers.l_communes TO geonatatlas;
 GRANT SELECT ON TABLE layers.l_secteurs TO geonatatlas;
 GRANT SELECT ON TABLE layers.l_zonesstatut TO geonatatlas;
+

@@ -545,7 +545,7 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
         s.id_critere_synthese,
         s.effectif_total,
         tx.cd_ref,
-        st_asgeojson(s.the_geom_point) as geojson_point
+        st_asgeojson(ST_Transform(ST_SetSrid(s.the_geom_point, 3857), 4326)) as geojson_point
     FROM synthese.syntheseff s
     LEFT JOIN taxonomie.taxref tx ON tx.cd_nom = s.cd_nom
     WHERE s.supprime = FALSE;
