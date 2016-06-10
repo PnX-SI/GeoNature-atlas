@@ -21,6 +21,7 @@ def searchObservation(cd_ref):
         geometry = ast.literal_eval(r.geojson_point)
         properties = {'id_synthese' : r.id_synthese,
         			  'cd_ref': r.cd_ref,
+        			  'dateobs': str(r.dateobs),
         			  'observateurs' : r.observateurs,
         			  'altitude_retenue' : r.altitude_retenue,
         			  'effectif_total' : r.effectif_total
