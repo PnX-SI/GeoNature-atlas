@@ -15,24 +15,13 @@ import json
 
 @main.route('/' , methods=['GET', 'POST'])
 def index():
-    listeTaxons = vmTaxonsRepository.listeTaxonsFr()
+    listeTaxons = vmTaxonsRepository.listeTaxons()
     return render_template('index.html', listeTaxons=listeTaxons)
 
 @main.route('/espece', methods=['GET', 'POST'])
 def ficheEspece():
-    listeTaxons = vmTaxonsRepository.listeTaxonsFr()
-    taxonFormulaire = request.args['taxon']
-    taxon = vmTaxonsRepository.rechercheEspece(taxonFormulaire)
-    
-    cd_ref = vmTaxonsRepository.getTaxref(taxonFormulaire)
+    listeTaxons = vmTaxonsRepository.listeTaxons()
+    cd_ref = request.args['cd_ref']
+    taxon = vmTaxonsRepository.rechercheEspece(cd_ref)
     observations = vmObservationsRepository.searchObservation(cd_ref)
     return render_template('ficheEspece.html', taxon=taxon, listeTaxons=listeTaxons, observations=observations, cd_ref=cd_ref)
-
-
-
-# @main.route('/listeTaxons', methods=['GET', 'POST'])
-# def taxonLatin():
-
-#     # prem = jsonTaxon[0] # marche avec 0 mais pas avec tout le tableau d'objet
-#     listeTaxons = vmTaxonsRepository.listeTaxonsFr()
-#     return jsonify(result=listeTaxons)

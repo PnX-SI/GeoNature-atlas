@@ -14,17 +14,11 @@ from sqlalchemy.orm import sessionmaker
 session = manage.loadSession()
 
 #recherche par espece, renvoie un tableau contenant un element: un dict contenant tous les attributs de la table
-def rechercheEspece(taxon):
-    taxon = str(taxon)
-    taxonRecherche = session.query(VmTaxons).filter(VmTaxons.lb_nom.ilike('%'+taxon)).all()
+def rechercheEspece(cd_ref):
+    taxonRecherche = session.query(VmTaxons).filter(VmTaxons.cd_ref == cd_ref).all()
     return taxonRecherche[0]
 
-#revoie un tableau de x dict comportant seulemen le nom latin
-def listeTaxonsFr():
-    return session.query(VmTaxons.lb_nom).all()
+#revoie un objet de x tableaux associatifs: 0=nom_latin, 1= cd_ref
+def listeTaxons():
+    return session.query(VmTaxons.lb_nom, VmTaxons.cd_ref, VmTaxons.nom_vern).all()
 
-
-#retourne le taxref à partir du nomLatin
-def getTaxref(nomLatin):
-    request = session.query(VmTaxons.cd_ref).filter(VmTaxons.lb_nom.ilike('%'+nomLatin)).all()
-    return request[0].cd_ref
