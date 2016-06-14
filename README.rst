@@ -1,8 +1,13 @@
-# GeoNature-atlas
+GeoNature-atlas
+===============
+
+.. image :: docs/images/GeoNature-logo-v0.png
 
 Atlas WEB dynamique Faune-Flore basé sur les données présentes dans la synthèse de GeoNature.
 
 Il permet de générer dynamiquement des fiches espèces avec des données calculées automatiquement (cartes de répartition, répartition altitudinale et phénologique, communes, secteurs, observateurs...) ainsi que des données saisies pour chaque espèce (photos, description...). 
+
+.. image :: docs/images/geonature-atlas-devpreview.jpg
 
 Technologies
 ------------
