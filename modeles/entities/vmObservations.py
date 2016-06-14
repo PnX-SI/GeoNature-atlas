@@ -21,7 +21,6 @@ class VmObservations(Base):
     Column('id_source', Integer),
     Column('id_fiche_source', String(50)),
     Column('code_fiche_source', String(50)),
-    Column('id_organisme', Integer, index=True),
     Column('id_protocole', Integer),
     Column('id_precision', Integer),
     Column('cd_nom', Integer, index=True),
