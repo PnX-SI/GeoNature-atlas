@@ -527,7 +527,6 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
         s.id_source,
         s.id_fiche_source,
         s.code_fiche_source,
-        s.id_organisme,
         s.id_protocole,
         s.id_precision,
         s.cd_nom,
@@ -548,12 +547,12 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
         st_asgeojson(ST_Transform(ST_SetSrid(s.the_geom_point, 3857), 4326)) as geojson_point
     FROM synthese.syntheseff s
     LEFT JOIN taxonomie.taxref tx ON tx.cd_nom = s.cd_nom
-    WHERE s.supprime = FALSE;
+    WHERE s.supprime = FALSE
+    AND s.id_organisme = 2;
 
 ALTER TABLE atlas.vm_observations
   OWNER TO geonatatlas;
 create unique index on atlas.vm_observations (id_synthese);
-create index on atlas.vm_observations (id_organisme);
 create index on atlas.vm_observations (cd_ref);
 create index on atlas.vm_observations (insee);
 create index on atlas.vm_observations (altitude_retenue);
@@ -574,15 +573,15 @@ create index on atlas.vm_taxons (cd_ref);
 
 CREATE materialized view atlas.vm_altitudes AS
 WITH 
-altinf500 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue <500 AND id_organisme = 2 GROUP BY cd_ref),
-alt500_1000 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue BETWEEN 500 AND 999 AND id_organisme = 2 GROUP BY cd_ref),
-alt1000_1500 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue BETWEEN 1000 AND 1499 AND id_organisme = 2 GROUP BY cd_ref),
-alt1500_2000 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue BETWEEN 1500 AND 1999 AND id_organisme = 2 GROUP BY cd_ref),
-alt2000_2500 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue BETWEEN 2000 AND 2499 AND id_organisme = 2 GROUP BY cd_ref),
-alt2500_3000 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue BETWEEN 2500 AND 2999 AND id_organisme = 2 GROUP BY cd_ref),
-alt3000_3500 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue BETWEEN 3000 AND 3499 AND id_organisme = 2 GROUP BY cd_ref),
-alt3500_4000 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue BETWEEN 3500 AND 3999 AND id_organisme = 2 GROUP BY cd_ref),
-alt_sup4000 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue > 4000 AND id_organisme = 2 GROUP BY cd_ref)
+altinf500 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue <500 GROUP BY cd_ref),
+alt500_1000 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue BETWEEN 500 AND 999 GROUP BY cd_ref),
+alt1000_1500 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue BETWEEN 1000 AND 1499 GROUP BY cd_ref),
+alt1500_2000 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue BETWEEN 1500 AND 1999 GROUP BY cd_ref),
+alt2000_2500 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue BETWEEN 2000 AND 2499 GROUP BY cd_ref),
+alt2500_3000 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue BETWEEN 2500 AND 2999 GROUP BY cd_ref),
+alt3000_3500 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue BETWEEN 3000 AND 3499 GROUP BY cd_ref),
+alt3500_4000 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue BETWEEN 3500 AND 3999 GROUP BY cd_ref),
+alt_sup4000 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue > 4000 GROUP BY cd_ref)
 SELECT DISTINCT o.cd_ref
 	,COALESCE(a.nb, 0) as altinf500
 	,COALESCE(b.nb, 0) as alt500_1000
