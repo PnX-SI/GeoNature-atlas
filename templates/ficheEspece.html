@@ -3,10 +3,22 @@
     <head>
         <meta charset="utf-8" />
         <title>{{taxon.lb_nom}}</title>
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+        <!-- Bootrap -->
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap/css/bootstrap.min.css') }}"></link>
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap-switch/css/bootstrap-switch.min.css') }}"></link>
+
+
+        <!-- Jquery -->
         <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
+        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
+        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
 
 
+        <script src="{{url_for('static', filename='/lib/bootstrap-switch/js/bootstrap-switch.min.js') }}"></script>
+
+
+        <!-- Leaflet -->
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/leaflet/leaflet.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='/css/ficheEspece.css') }}" />
         <script src="{{url_for('static', filename='/lib/leaflet/leaflet.js') }}"></script>
@@ -34,8 +46,16 @@
                 </div>
        </div>
 
-        <div id='mapContainer' class="col-sm-6">
-            <div id="map"> </div>
+        <div class="row" id="mapOptions">
+            
+            <input type="checkbox" name="my-checkbox" id="checkbox" checked  data-on-text="Cluster"data-off-text="Point" data-size="mini">
+            
+        </div>
+
+        <div id="mapRow" class="row">
+            <div id='mapContainer' class="row col-sm-6">
+                <div id="map"> </div>
+            </div>
         </div>
 
     </div>
@@ -44,8 +64,7 @@
     
 
     <script type="text/javascript" src="/atlas/static/conf/custom.js"></script>
-    <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
-    <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+
     <script src="{{url_for('static', filename='map.js') }}"></script>
     <script src="{{url_for('static', filename='main.js') }}"></script>
 
