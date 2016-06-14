@@ -48,6 +48,7 @@ then
 
     # Mise en place de la structure de la base et des données permettant son fonctionnement avec l'atlas
     echo "Grant..."
+    sed -i "s/TO geonatatlas;$/TO $user_pg;/" data/grant.sql
     export PGPASSWORD=$admin_pg_pass;psql -h $db_host -U $admin_pg -d $db_name -f data/grant.sql &> log/install_db.log
     
     echo "Création de la structure de la base..."
