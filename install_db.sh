@@ -43,7 +43,7 @@ then
     sudo -n -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog; COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';"
     sudo -n -u postgres -s psql -d $db_name -c "CREATE SERVER geonaturedbserver FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$db_source_host', dbname '$db_source_name', port '$db_source_port');"
     sudo -n -u postgres -s psql -d $db_name -c "ALTER SERVER geonaturedbserver OWNER TO $user_pg;"
-    sudo -n -u postgres -s psql -d $db_name -c "CREATE USER MAPPING FOR $user_pg SERVER geonaturedbserver OPTIONS (user '$user_pg', password '$user_pg_pass') ;"
+    sudo -n -u postgres -s psql -d $db_name -c "CREATE USER MAPPING FOR $atlas_source_user SERVER geonaturedbserver OPTIONS (user '$atlas_source_user', password '$atlas_source_pass') ;"
 
 
     # Mise en place de la structure de la base et des données permettant son fonctionnement avec l'atlas

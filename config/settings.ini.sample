@@ -39,3 +39,9 @@ admin_source_user=geonatadmin
 
 #pass du user admin sur la base de données source
 admin_source_pass=monpassachanger
+
+#nom du user atlas sur la base de données source  (lecture seule)
+atlas_source_user=geonatatlas
+
+#pass du user atals sur la base de données source (lecture seule)
+atlas_source_pass=monpassachanger
