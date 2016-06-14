@@ -554,7 +554,7 @@ ALTER TABLE atlas.vm_observations
   OWNER TO geonatatlas;
 create unique index on atlas.vm_observations (id_synthese);
 create index on atlas.vm_observations (id_organisme);
-create index on atlas.vm_observations (cd_nom);
+create index on atlas.vm_observations (cd_ref);
 create index on atlas.vm_observations (insee);
 create index on atlas.vm_observations (altitude_retenue);
 CREATE INDEX index_gist_synthese_the_geom_point ON atlas.vm_observations USING gist (the_geom_point);
@@ -572,6 +572,39 @@ create unique index on atlas.vm_taxons (id_taxon);
 create index on atlas.vm_taxons (cd_nom);
 create index on atlas.vm_taxons (cd_ref);
 
+CREATE materialized view atlas.vm_altitudes AS
+WITH 
+altinf500 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue <500 AND id_organisme = 2 GROUP BY cd_ref),
+alt500_1000 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue BETWEEN 500 AND 999 AND id_organisme = 2 GROUP BY cd_ref),
+alt1000_1500 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue BETWEEN 1000 AND 1499 AND id_organisme = 2 GROUP BY cd_ref),
+alt1500_2000 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue BETWEEN 1500 AND 1999 AND id_organisme = 2 GROUP BY cd_ref),
+alt2000_2500 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue BETWEEN 2000 AND 2499 AND id_organisme = 2 GROUP BY cd_ref),
+alt2500_3000 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue BETWEEN 2500 AND 2999 AND id_organisme = 2 GROUP BY cd_ref),
+alt3000_3500 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue BETWEEN 3000 AND 3499 AND id_organisme = 2 GROUP BY cd_ref),
+alt3500_4000 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue BETWEEN 3500 AND 3999 AND id_organisme = 2 GROUP BY cd_ref),
+alt_sup4000 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue > 4000 AND id_organisme = 2 GROUP BY cd_ref)
+SELECT DISTINCT o.cd_ref
+	,COALESCE(a.nb, 0) as altinf500
+	,COALESCE(b.nb, 0) as alt500_1000
+	,COALESCE(c.nb, 0) as alt1000_1500
+	,COALESCE(d.nb, 0) as alt1500_2000
+	,COALESCE(e.nb, 0) as alt2000_2500
+	,COALESCE(f.nb, 0) as alt2500_3000
+	,COALESCE(g.nb, 0) as alt3000_3500
+	,COALESCE(h.nb, 0) as alt3500_4000
+	,COALESCE(i.nb, 0) as alt_sup4000
+FROM atlas.vm_observations o
+LEFT JOIN altinf500 a ON a.cd_ref =  o.cd_ref
+LEFT JOIN alt500_1000 b ON b.cd_ref =  o.cd_ref
+LEFT JOIN alt1000_1500 c ON c.cd_ref =  o.cd_ref
+LEFT JOIN alt1500_2000 d ON d.cd_ref =  o.cd_ref
+LEFT JOIN alt2000_2500 e ON e.cd_ref =  o.cd_ref
+LEFT JOIN alt2500_3000 f ON f.cd_ref =  o.cd_ref
+LEFT JOIN alt3000_3500 g ON g.cd_ref =  o.cd_ref
+LEFT JOIN alt3500_4000 h ON h.cd_ref =  o.cd_ref
+LEFT JOIN alt_sup4000 i ON i.cd_ref =  o.cd_ref;
+create unique index on atlas.vm_altitudes (cd_ref);
 --refresh materialized view CONCURRENTLY atlas.vm_observations;--92399ms avec les index
 --refresh materialized view CONCURRENTLY atlas.vm_taxref; --8158ms avec les index
 --refresh materialized view CONCURRENTLY atlas.vm_taxons;--6800ms  avec les index
+--refresh materialized view CONCURRENTLY atlas.vm_altitudes;--6800ms  avec les index
