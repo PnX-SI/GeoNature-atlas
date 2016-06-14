@@ -1,4 +1,5 @@
-# GeoNature-atlas
+GeoNature-atlas
+===============
 
 .. image :: docs/images/GeoNature-logo-v0.png
 
