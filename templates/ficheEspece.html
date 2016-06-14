@@ -10,6 +10,10 @@
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/leaflet/leaflet.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='/css/ficheEspece.css') }}" />
         <script src="{{url_for('static', filename='/lib/leaflet/leaflet.js') }}"></script>
+        <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js"></script>
+        <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
+        <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
+
     </head>
 
     <body>
@@ -23,7 +27,7 @@
                 </div>
                 <div class="col-sm-3" > 
                     <h3> {{taxon.lb_nom}} </h3>
-                    <p> <i> {{taxon.lb_nom}} </i> <br/>
+                    <p> <i> {{taxon.nom_vern}} </i> <br/>
                     Nombre d'observation sur le parc: <i> {{observations.features|length}} </i> </br>
 
                     <a href='https://inpn.mnhn.fr/espece/cd_nom/{{taxon.cd_nom}}' target="_blank">Fiche INPN</a>
@@ -49,7 +53,6 @@
     <script type="text/javascript">
     autocompleteTaxons({{ listeTaxons|tojson }})
 
-    console.log({{observations|tojson}})
     displayObs({{observations|tojson}});
 
     </script>
