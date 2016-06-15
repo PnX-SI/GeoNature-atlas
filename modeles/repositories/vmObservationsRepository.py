@@ -16,7 +16,7 @@ currentYear = datetime.now().year
 
 def toGeoJson(queryResult, nbYear):
     geojson = {'type': 'FeatureCollection',
-           'features' : list(),
+           'features' : list()
           }
     for r in queryResult:
         ageobs =  0 if (r.dateobs.year < currentYear-nbYear) else 1;
@@ -27,7 +27,8 @@ def toGeoJson(queryResult, nbYear):
                       'observateurs' : r.observateurs,
                       'altitude_retenue' : r.altitude_retenue,
                       'effectif_total' : r.effectif_total,
-                      'ageobs': ageobs
+                      'ageobs': ageobs, # 0: old data, 1: recent data
+                      'year': r.dateobs.year
                       }
         feature = {
             'type' : 'Feature',
