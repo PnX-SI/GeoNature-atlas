@@ -81,7 +81,7 @@
     displayFilterMarkers({{observations|tojson}})
 
     var compteur = 0;
-
+/*
       slider.on("slide", function(event, ui){
         year = ui.value;
         if(compteur == 0){
@@ -93,6 +93,15 @@
         }
         compteur++;
       })
+
+*/
+
+
+      slider.on("slide", function(event, ui){
+        year = ui.value;
+        (newClusterMarker == undefined) ? map.removeLayer(clusterMarkers):map.removeLayer(newClusterMarker);
+        loadfilterLayer({{observations|tojson}}, year);
+        });
 
 
     </script>

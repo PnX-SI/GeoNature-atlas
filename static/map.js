@@ -77,7 +77,6 @@ function loadfilterLayer(geoJsonObs, year){
     filterGeoJson.features = geoJsonObs.features.filter(function(marker){
       return marker.properties.year > year
     })
-    console.log(filterGeoJson);
     //generate the new cluster marker and add it to the map
     newClusterMarker= generateClusterFromGeoJson(filterGeoJson)
     map.addLayer(newClusterMarker);
