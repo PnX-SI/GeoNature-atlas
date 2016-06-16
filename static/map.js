@@ -39,20 +39,7 @@ function onEachFeature(feature, layer){
 // ******** Marker and map options *************
 
 
-// slider
-
-console.log($STRINGLEGEND);
-
-
-var mySlider = new Slider('#slider', {
-  value: [$YEARMIN, $YEARMAX],
-  min : $YEARMIN,
-  max : $YEARMAX,
-  step: $STEP,
-  ticks: $LEGEND,
-  ticks_labels: $STRINGLEGEND,
-});
-
+// Markers
 
 
 function generateClusterFromGeoJson (geoJsonObs){
@@ -74,6 +61,7 @@ var clusterMarkers ;
 function displayMarkers(geoJsonObs){
   clusterMarkers = generateClusterFromGeoJson(geoJsonObs);
   map.addLayer(clusterMarkers);
+  console.log(geoJsonObs);
 }
 
 
@@ -86,9 +74,26 @@ function displayFilterMarkers(geoJsonObs, yearMin, yearMax){
     
     // create a the new filter geoJson filtering the year
     filterGeoJson.features = geoJsonObs.features.filter(function(marker){
-      return (marker.properties.year > yearMin && marker.properties.year < yearMax)
+      return (marker.properties.year >= yearMin && marker.properties.year <= yearMax)
     })
+    console.log(filterGeoJson)
     //generate the new cluster marker and add it to the map
     newClusterMarker= generateClusterFromGeoJson(filterGeoJson)
     map.addLayer(newClusterMarker);
 }
+
+
+// Slider
+
+// slider
+
+
+var mySlider = new Slider('#slider', {
+  value: [$YEARMIN, $YEARMAX],
+  min : $YEARMIN,
+  max : $YEARMAX,
+  step: $STEP,
+  ticks: $LEGEND,
+  ticks_labels: $STRINGLEGEND,
+});
+
