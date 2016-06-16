@@ -4,18 +4,25 @@
         <meta charset="utf-8" />
         <title>{{taxon.lb_nom}}</title>
 
+        <!-- Jquery -->
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/jquery-ui.css') }}" />
+        <script type=text/javascript src="{{url_for('static', filename='/lib/jquery-1.12.4.min.js') }}"></script>
+        // <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+
         <!-- Bootrap -->
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap/css/bootstrap.min.css') }}"></link>
-<!--         <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap-switch/css/bootstrap-switch.min.css') }}"></link>
- -->
-        <script src="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap-switch/css/bootstrap-switch.min.css') }}"></link>
+
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css') }}" />
+        <script src="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
 
 
-        <!-- Jquery -->
-        <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
-        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
-        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+        <script type=text/javascript src="{{url_for('static', filename='/lib/bootstrap-switch/js/bootstrap-switch.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap-switch/css/bootstrap-switch.min.css') }}" />
+
+
+
+
 
 
 
@@ -57,7 +64,11 @@
         </div>
 
         <div id="mapOptions" class="row">
-        <input id="slider" type="text" class="span2" size= "10"/>
+
+            <div class="col-sm-3" ><input id="slider" type="text" class="span2" size= "10"/> </div>
+            <div class="col-sm-2" > <input type="checkbox" name="my-checkbox" id="checkbox" checked  data-on-text="Cluster"data-off-text="Point" data-size="mini"> </div>
+
+
         </div>
 
     </div>
@@ -71,6 +82,8 @@
     <script src="{{url_for('static', filename='map.js') }}"></script>
     <script src="{{url_for('static', filename='main.js') }}"></script>
 
+
+
 <!--  Lancement des fonction JS necessitant la syntaxe Jinja-->
     <script type="text/javascript">
     autocompleteTaxons({{ listeTaxons|tojson }})
@@ -78,13 +91,40 @@
     displayMarkers({{observations|tojson}})
 
 
+
+mySwitcher = $("[name='my-checkbox']").bootstrapSwitch();
+
+
+var yearMin = $YEARMIN;
+var yearMax = $YEARMAX;
+
+
 mySlider.on("slide",function(){
     years = mySlider.getValue();
     yearMin = years[0];
     yearMax = years[1];
-     (newClusterMarker == undefined) ? map.removeLayer(clusterMarkers):map.removeLayer(newClusterMarker);
-        displayFilterMarkers({{observations|tojson}}, yearMin, yearMax);
+    console.log(newMarkers);
+    (newMarkers == undefined) ? map.removeLayer(clusterMarkers):map.removeLayer(newMarkers);
+
+    if ( $("#checkbox").is(":checked")){
+    displayFilterMarkers({{observations|tojson}}, yearMin, yearMax, true);
+    } else {
+    displayFilterMarkers({{observations|tojson}}, yearMin, yearMax, false);
+    }
+   });
+
+mySwitcher.on('switchChange.bootstrapSwitch', function(state) {
+  
+currentMarker = (newMarkers == undefined) ? clusterMarkers:newMarkers;
+map.removeLayer(currentMarker);
+
+
+displayFilterMarkers({{observations|tojson}}, yearMin, yearMax, this.checked)
+
 });
+
+
+
 
 
     </script>

@@ -42,6 +42,7 @@ function onEachFeature(feature, layer){
 // Markers
 
 
+
 function generateClusterFromGeoJson (geoJsonObs){
        var singleMarkers = L.geoJson(geoJsonObs, {
                          onEachFeature : onEachFeature,
@@ -49,44 +50,48 @@ function generateClusterFromGeoJson (geoJsonObs){
                            return L.circleMarker(latlng);
                            }
                        });
-  var clusterMarkers = L.markerClusterGroup({disableClusteringAtZoom: 11});
+  var clusterMarkers = L.markerClusterGroup();
   clusterMarkers.addLayer(singleMarkers);
   
   return clusterMarkers;
 }
 
+function generateSingleMarkerFromGeoJson(geoJsonObs){
+  var singleMarkers = L.geoJson(geoJsonObs, {
+                         onEachFeature : onEachFeature,
+                         pointToLayer: function (feature, latlng) {
+                           return L.circleMarker(latlng);
+                           }
+                       });
+  return singleMarkers;
+}
 
 
 var clusterMarkers ;
 function displayMarkers(geoJsonObs){
   clusterMarkers = generateClusterFromGeoJson(geoJsonObs);
   map.addLayer(clusterMarkers);
-  console.log(geoJsonObs);
 }
 
 
-var newClusterMarker;
-function displayFilterMarkers(geoJsonObs, yearMin, yearMax){
+var newMarkers;
+function displayFilterMarkers(geoJsonObs, yearMin, yearMax, cluster){
     // create an empty geoJson
     filterGeoJson = {'type': 'FeatureCollection',
                     'features' : []
                   }
     
-    // create a the new filter geoJson filtering the year
+    // create a the new filter geoJson with min and max years 
     filterGeoJson.features = geoJsonObs.features.filter(function(marker){
       return (marker.properties.year >= yearMin && marker.properties.year <= yearMax)
     })
-    console.log(filterGeoJson)
-    //generate the new cluster marker and add it to the map
-    newClusterMarker= generateClusterFromGeoJson(filterGeoJson)
-    map.addLayer(newClusterMarker);
+    //generate single or cluster markers from GeoJson
+    newMarkers = (cluster==true)?generateClusterFromGeoJson(filterGeoJson):generateSingleMarkerFromGeoJson(filterGeoJson);
+    map.addLayer(newMarkers);
 }
 
 
 // Slider
-
-// slider
-
 
 var mySlider = new Slider('#slider', {
   value: [$YEARMIN, $YEARMAX],
@@ -96,4 +101,6 @@ var mySlider = new Slider('#slider', {
   ticks: $LEGEND,
   ticks_labels: $STRINGLEGEND,
 });
+
+// switcher
 
