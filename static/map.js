@@ -36,20 +36,22 @@ function onEachFeature(feature, layer){
 
 
 
-// Map and markers options
-
-checkboxCluster = $("[name='my-checkbox']").bootstrapSwitch();
-
+// ******** Marker and map options *************
 
 
 // slider
 
-var slider =   $( "#slider" ).slider({
-      value: 2000,
-       min: 1973,
-       max: 2016,
-       step: 1
-     });
+console.log($STRINGLEGEND);
+
+
+var mySlider = new Slider('#slider', {
+  value: [$YEARMIN, $YEARMAX],
+  min : $YEARMIN,
+  max : $YEARMAX,
+  step: $STEP,
+  ticks: $LEGEND,
+  ticks_labels: $STRINGLEGEND,
+});
 
 
 
@@ -66,8 +68,17 @@ function generateClusterFromGeoJson (geoJsonObs){
   return clusterMarkers;
 }
 
+
+
+var clusterMarkers ;
+function displayMarkers(geoJsonObs){
+  clusterMarkers = generateClusterFromGeoJson(geoJsonObs);
+  map.addLayer(clusterMarkers);
+}
+
+
 var newClusterMarker;
-function loadfilterLayer(geoJsonObs, year){
+function displayFilterMarkers(geoJsonObs, yearMin, yearMax){
     // create an empty geoJson
     filterGeoJson = {'type': 'FeatureCollection',
                     'features' : []
@@ -75,56 +86,9 @@ function loadfilterLayer(geoJsonObs, year){
     
     // create a the new filter geoJson filtering the year
     filterGeoJson.features = geoJsonObs.features.filter(function(marker){
-      return marker.properties.year > year
+      return (marker.properties.year > yearMin && marker.properties.year < yearMax)
     })
     //generate the new cluster marker and add it to the map
     newClusterMarker= generateClusterFromGeoJson(filterGeoJson)
     map.addLayer(newClusterMarker);
 }
-
-
-var clusterMarkers ;
-function displayFilterMarkers(geoJsonObs){
-  clusterMarkers = generateClusterFromGeoJson(geoJsonObs);
-  map.addLayer(clusterMarkers);
-}
-
-
-
-
-
-
- 
-
-// display markers with or without clusters
-/*function displayObs(geoJsonObs){
-
-
-   var singleMarkers = L.geoJson(geoJsonObs, {
-                       onEachFeature : onEachFeature,
-                       pointToLayer: function (feature, latlng) {
-                          return L.circleMarker(latlng);
-                          },
-                       style: function(feature){
-                          switch (feature.properties.ageobs){
-                            case 0 : return {color: "#ff0000"};
-                            case 1 : return {color: "#0000ff"};
-                        }
-                       }
-                       });
-
-  var clusterMarkers = L.markerClusterGroup({disableClusteringAtZoom: 11});
-  clusterMarkers.addLayer(singleMarkers);
-  map.addLayer(clusterMarkers);
-
-  $('#checkbox').on('switchChange.bootstrapSwitch', function(state) {
-    if (!this.checked){
-        map.removeLayer(clusterMarkers);
-        singleMarkers.addTo(map);
-    }else{
-        map.removeLayer(singleMarkers);
-        map.addLayer(clusterMarkers);
-    }
-  });
-}
-*/

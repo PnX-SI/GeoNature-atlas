@@ -16,16 +16,13 @@ body {
 #mapRow{
 	margin: 35px;
 	margin-top: 5px;
+	margin-bottom: 5px;
 }
 #mapContainer {
 	padding: 10px;
 	background-color: white;
 }
 
-#mapOptions {
-	margin: 20px;
-	margin-bottom: 0px;
-}
 
 #map{
 
@@ -33,4 +30,8 @@ body {
 
 #presentationEspece h3 {
 	margin : 0px;
+}
+
+#mapOptions {
+	margin-left: 25px;
 }

@@ -19,7 +19,6 @@ def toGeoJson(queryResult, nbYear):
            'features' : list()
           }
     for r in queryResult:
-        ageobs =  0 if (r.dateobs.year < currentYear-nbYear) else 1;
         geometry = ast.literal_eval(r.geojson_point)
         properties = {'id_synthese' : r.id_synthese,
                       'cd_ref': r.cd_ref,
@@ -27,7 +26,6 @@ def toGeoJson(queryResult, nbYear):
                       'observateurs' : r.observateurs,
                       'altitude_retenue' : r.altitude_retenue,
                       'effectif_total' : r.effectif_total,
-                      'ageobs': ageobs, # 0: old data, 1: recent data
                       'year': r.dateobs.year
                       }
         feature = {

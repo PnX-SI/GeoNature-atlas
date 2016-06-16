@@ -6,7 +6,10 @@
 
         <!-- Bootrap -->
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap/css/bootstrap.min.css') }}"></link>
-        <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap-switch/css/bootstrap-switch.min.css') }}"></link>
+<!--         <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap-switch/css/bootstrap-switch.min.css') }}"></link>
+ -->
+        <script src="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css') }}" />
 
 
         <!-- Jquery -->
@@ -15,7 +18,7 @@
         <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
 
 
-        <script src="{{url_for('static', filename='/lib/bootstrap-switch/js/bootstrap-switch.min.js') }}"></script>
+
 
 
         <!-- Leaflet -->
@@ -46,15 +49,6 @@
                 </div>
        </div>
 
-        <div class="row" id="mapOptions">
-
-            
-            <input type="checkbox" name="my-checkbox" id="checkbox" checked  data-on-text="Cluster"data-off-text="Point" data-size="mini">
-            <div id="slider"></div>
-            <p id="nbObs"> </p>
-
-            
-        </div>
 
         <div id="mapRow" class="row">
             <div id='mapContainer' class="row col-sm-12">
@@ -62,10 +56,15 @@
             </div>
         </div>
 
+        <div id="mapOptions" class="row">
+        <input id="slider" type="text" class="span2" size= "10"/>
+        </div>
+
     </div>
 
 
     
+    <script type="text/javascript" src="/atlas/static/conf/calculCustom.js"></script>
 
     <script type="text/javascript" src="/atlas/static/conf/custom.js"></script>
 
@@ -76,32 +75,16 @@
     <script type="text/javascript">
     autocompleteTaxons({{ listeTaxons|tojson }})
 
+    displayMarkers({{observations|tojson}})
 
 
-    displayFilterMarkers({{observations|tojson}})
-
-    var compteur = 0;
-/*
-      slider.on("slide", function(event, ui){
-        year = ui.value;
-        if(compteur == 0){
-        map.removeLayer(clusterMarkers);
-        loadfilterLayer({{observations|tojson}}, year)
-        }else{
-            map.removeLayer(newClusterMarker)
-            loadfilterLayer({{observations|tojson}}, year)
-        }
-        compteur++;
-      })
-
-*/
-
-
-      slider.on("slide", function(event, ui){
-        year = ui.value;
-        (newClusterMarker == undefined) ? map.removeLayer(clusterMarkers):map.removeLayer(newClusterMarker);
-        loadfilterLayer({{observations|tojson}}, year);
-        });
+mySlider.on("slide",function(){
+    years = mySlider.getValue();
+    yearMin = years[0];
+    yearMax = years[1];
+     (newClusterMarker == undefined) ? map.removeLayer(clusterMarkers):map.removeLayer(newClusterMarker);
+        displayFilterMarkers({{observations|tojson}}, yearMin, yearMax);
+});
 
 
     </script>
