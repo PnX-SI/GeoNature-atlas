@@ -11,10 +11,11 @@ Prérequis
 
 Application développée et installée sur un serveur contenant :
 
-- Ubuntu 14.04
-- PostgreSQL 9.1
-- PostGIS 1.5
+- Debian 7 ou 8
+- PostgreSQL 9.3 mini
+- PostGIS 2.x
 - Apache
+- Python 2.7
 
 Installation de PostgreSQL
 ==============================
@@ -28,7 +29,7 @@ Installation de l'application
  
   ::  
   
-        cd /home/synthese
+        cd /home/monuser
         wget https://github.com/PnEcrins/GeoNature-atlas/archive/vX.Y.Z.zip
         unzip vX.Y.Z.zip
         mv GeoNature-X.Y.Z/ geonatureatlas/
@@ -68,27 +69,27 @@ Création de la base de données
 
 Par défaut, la BDD a été conçue pour s'appuyer sur les données présentes dans GeoNature (https://github.com/PnEcrins/GeoNature). 
 
-Pour cela une BDD fille de GeoNature est créée dans GeoNature-atlas avec les schémas utiles à l'atlas (``synthese``, ``taxonomie``, ``layers``, ``utilisateurs``), alimentée grace à un Foreign Data Wrapper (http://docs.postgresqlfr.org/9.2/sql-createforeigndatawrapper.html).
+Pour cela une BDD fille de GeoNature est créée avec les schémas utiles à l'atlas (``synthese``, ``taxonomie``, ``layers``, ``utilisateurs``), alimentée grace à un Foreign Data Wrapper (http://docs.postgresqlfr.org/9.2/sql-createforeigndatawrapper.html).
 
 Cela permet de créer un lien dynamique entre les 2 bases de données. A chaque fois qu'une requête est éxecutée dans une table de l'atlas (BDD fille), le FWD permet d'interroger directement dans le BDD mère (celle de GeoNature) et ainsi d'avoir les données à jour en temps réel. 
 
-Néanmoins pour plus de généricité et permettre à une structure d'utiliser GeoNature-atls sans disposer de GeoNature, l'application ne requête jamais directement dans ces schémas liés à GeoNature. 
+Néanmoins pour plus de généricité et permettre à une structure d'utiliser GeoNature-atlas sans disposer de GeoNature, l'application ne requête jamais directement dans ces schémas liés à GeoNature. 
 
 En effet elle requête uniquement sur des vues créées dans le schéma spécifique ``atlas``.
 
 Ainsi ces vues peuvent être adaptées à volonté pour interroger d'autre sources de données que GeoNature, à partir du moment où elles retournent les mêmes champs. 
 
-Dans un soucis de performance et pour ne pas requêter en permanence sur le base mère GeoNature, nous avons mis en place des vues matérialisées (http://docs.postgresqlfr.org/9.3/rules-materializedviews.html) pour que les données soient précalculées, indéxées et présentes directement dans le schéma ``atlas``. 
+Dans un soucis de performance et pour ne pas requêter en permanence sur la base mère GeoNature, nous avons mis en place des vues matérialisées (http://docs.postgresqlfr.org/9.3/rules-materializedviews.html) pour que les données soient précalculées, indéxées et présentes directement dans le schéma ``atlas``. 
 
 **Liste des vues** :
 
-- atlas.vm_taxref qui renvoie toutes les données de taxonomie.vm_taxref.
-    Champs à préciser pour ceux qui n'ont pas taxonomie.vm_taxref
+- atlas.vm_taxref qui renvoie toutes les données de taxonomie.taxref.
+    Champs à préciser pour ceux qui n'ont pas taxonomie.taxref
 
 - atlas.vm_observations qui renvoie la liste de toutes les observations.
     Champs à renommer et supprimer dans la vue par défaut. 
     
-- atlas.vm_taxons qui renvoie la liste des taxons observés au moins une fois sur le territoire.
+- atlas.vm_taxons qui renvoie la liste des taxons observés au moins une fois sur le territoire (présents dans vm_observations).
 
 - atlas.vm_altitudes qui renvoie le nombre d'observations pour chaque classe d'altitude et chaque taxon.
 
@@ -102,7 +103,7 @@ Insérer un schema des BDD.
   
         sudo ./install_db.sh
         
-* Vous pouvez consulter le log de cette installation de la base dans ``log/install_db.log`` et vérifier qu'aucune erreur n'est intervenue. **Attention, ce fichier sera supprimé** lors de l'exécution de ``install_app.sh``
+* Vous pouvez consulter le log de cette installation de la base dans ``log/install_db.log`` et vérifier qu'aucune erreur n'est intervenue. **Attention, ce fichier sera supprimé** lors de l'exécution de ``install_app.sh`` (TODO)
 
 #################################
         
@@ -153,19 +154,19 @@ Personnalisation de l'application
         
 * Modifier éventuellement les vues dans le schéma ``atlas``
 
-Vous pouvez alimenter l'atlas avec une autre source de données que GeoNature à condition de respecter le nom des champs retournés par la vue.
+Vous pouvez alimenter l'atlas avec une autre source de données que GeoNature à condition de respecter le nom et le typage des champs retournés par la vue.
 
-Ou vous simplement décider de l'adapter à votre GeoNature par exemple en changeant l'``id_organisme`` dont vous souhaitez afficher les données dans la condition WHERE de ``atlas.vm_observations``.
+Ou vous pouvez simplement décider de l'adapter à votre GeoNature par exemple en changeant l'``id_organisme`` dont vous souhaitez afficher les données dans la condition WHERE de la vue ``atlas.vm_observations``.
 
 Modifiez les images dans le répertoire ``/static/images/``.
 
-!!!! Dissocier les images de l'atlas (pictos, boutons...), les images liées à la custo (à mettre dans un dossier à part comme /medias/, voir Geotrek et les images liées au contenu)
+TODO !!!! Dissocier les images de l'atlas (pictos, boutons...), les images liées à la custo (à mettre dans un dossier à part comme /medias/, voir Geotrek et les images liées au contenu)
 
 Vous pouvez modifier les pages d'information en éditant les fichiers HTML dans le répertoire ``/templates/`` et notamment, adaptez le contenu des fichiers :
 
 !!!!! Modifier le texte de présentation générale, quelques labels dans une surcouche ???
 
-!!!!! Pensez à la procédure de mise à jour de l'appli et regrouper le plus possibl les fichiers de customisation et de surcouche pour les rapatrier facilement au moment d'une mise à jour. 
+!!!!! Pensez à la procédure de mise à jour de l'appli et regrouper le plus possible les fichiers de customisation et de surcouche pour les rapatrier facilement au moment d'une mise à jour. 
     
 
 Développement
