@@ -1,11 +1,15 @@
 
 body {
-	background-color: #a0aabf;
+	background-color: white;
+}
+
+.navbar{
+	margin-bottom: 0px;
 }
 
 #page {
 	background-color: lightgrey;
-}
+}	
 
 #presentationEspece{
 	padding: 0px;	
@@ -34,4 +38,16 @@ body {
 
 #mapOptions {
 	margin-left: 25px;
+}
+
+#slider .slider-track-high, #slider12c .slider-track-high {
+	background: green;
+}
+
+#slider12b .slider-track-low, #slider12c .slider-track-low {
+	background: red;
+}
+
+.slider-selection {
+	background: #909596;
 }

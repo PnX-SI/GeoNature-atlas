@@ -75,6 +75,7 @@ function displayMarkers(geoJsonObs){
 
 
 var newMarkers;
+var filterGeoJson;
 function displayFilterMarkers(geoJsonObs, yearMin, yearMax, cluster){
     // create an empty geoJson
     filterGeoJson = {'type': 'FeatureCollection',
@@ -85,22 +86,14 @@ function displayFilterMarkers(geoJsonObs, yearMin, yearMax, cluster){
     filterGeoJson.features = geoJsonObs.features.filter(function(marker){
       return (marker.properties.year >= yearMin && marker.properties.year <= yearMax)
     })
+   
     //generate single or cluster markers from GeoJson
     newMarkers = (cluster==true)?generateClusterFromGeoJson(filterGeoJson):generateSingleMarkerFromGeoJson(filterGeoJson);
     map.addLayer(newMarkers);
 }
 
 
-// Slider
-
-var mySlider = new Slider('#slider', {
-  value: [$YEARMIN, $YEARMAX],
-  min : $YEARMIN,
-  max : $YEARMAX,
-  step: $STEP,
-  ticks: $LEGEND,
-  ticks_labels: $STRINGLEGEND,
-});
-
 // switcher
+
+mySwitcher = $("[name='my-checkbox']").bootstrapSwitch();
 

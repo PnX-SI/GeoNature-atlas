@@ -13,7 +13,8 @@ legend = [yearMin];
 
 var i = firstDec
 while (i<lastDec){
-	i+= 10;
+/*	step = ((yearMax-yearMin) > 50 ) ? 20:10
+*/	i+= 10;
 	legend.push(i)
 }
 legend.push(yearMax);
@@ -24,6 +25,6 @@ return legend
 function getStringLegend (legend){
 	legend.forEach(function(x){
 		x = x.toString();
-	})
+	});
 	return legend;
 }
