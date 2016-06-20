@@ -23,11 +23,25 @@
 
         <!-- Leaflet -->
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/leaflet/leaflet.css') }}" />
-        <link rel="stylesheet" href="{{url_for('static', filename='/css/ficheEspece.css') }}" />
         <script src="{{url_for('static', filename='/lib/leaflet/leaflet.js') }}"></script>
-        <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js"></script>
-        <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
-        <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
+        <script src="{{url_for('static', filename='/lib/leaflet/leafletMarkerCluster.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/leaflet/leafletMarkerCluster.css') }}" />
+        <script src="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.css') }}" />
+
+
+
+
+        <!-- D3 -->
+        <script src="{{url_for('static', filename='/lib/d3/d3.min.js') }}"></script>
+
+        <!-- MorrisJs -->
+        <script src="{{url_for('static', filename='lib/morrisJs/morris.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/morrisJs/morris.css') }}" />
+        <!-- RaphaelJs -->
+        <script src="{{url_for('static', filename='lib/raphaelJs/raphael.min.js') }}"></script>
+
+        <link rel="stylesheet" href="{{url_for('static', filename='/css/ficheEspece.css') }}" />
 
     </head>
 
@@ -43,7 +57,7 @@
                 <div class="col-sm-3" > 
                     <h3> {{taxon.lb_nom}} </h3>
                     <p> <i> {{taxon.nom_vern}} </i> <br/>
-                    Nombre d'observation sur le parc: <i> {{observations.features|length}} </i> </br>
+                    Nombre d'observation(s) sur le parc: <i> {{observations.features|length}} </i> </br>
 
                     <a href='https://inpn.mnhn.fr/espece/cd_nom/{{taxon.cd_nom}}' target="_blank">Fiche INPN</a>
                 </div>
@@ -51,9 +65,14 @@
 
 
         <div id="mapRow" class="row">
-            <div id='mapContainer' class="row col-sm-12">
+            <div id='mapContainer' class="row col-sm-7">
                 <div id="map"> </div>
             </div>
+            <div id="graphContainer" class="row col-sm-4">
+                <h3 class="text-primary text-center"> Observations par classes d'altitudes </h3>
+                <div id="altiChart" style="height: 200px;"></div>
+          </div>
+
         </div>
 
         <div id="mapOptions" class="row">
@@ -66,6 +85,9 @@
 
         </div>
 
+
+
+       
     </div>
 
 
@@ -73,6 +95,10 @@
     <script type="text/javascript" src="/atlas/static/conf/calculCustom.js"></script>
 
     <script type="text/javascript" src="/atlas/static/conf/custom.js"></script>
+
+    <script> var dataset = {{altitudes|tojson}}; </script>  
+    <script type="text/javascript" src="/atlas/static/chart.js"></script>
+
 
     <script src="{{url_for('static', filename='map.js') }}"></script>
     <script src="{{url_for('static', filename='main.js') }}"></script>
@@ -94,7 +120,7 @@ autocompleteTaxons({{listeTaxons|tojson }})
     };
 
 
-       var  test = {{observations.features|tojson}}
+    var  test = {{observations.features|tojson}}
    tabYear = [] ;
    test.forEach(function(x){
     tabYear.push(x.properties.year);
@@ -154,7 +180,6 @@ mySwitcher.on('switchChange.bootstrapSwitch', function(state) {
     displayFilterMarkers({{observations|tojson}}, yearMin, yearMax, this.checked)
 
 });
-
 
 
 

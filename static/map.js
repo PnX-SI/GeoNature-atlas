@@ -8,7 +8,9 @@ var osmTile = L.tileLayer(osmUrl, {attribution: osmAttribution}),
     crs: L.CRS.EPSG3857,
     center: latLong,
     zoom: setZoom,
-    layers: [osmTile, ignTile]
+    layers: [osmTile, ignTile],
+    fullscreenControl: true,
+
     });
 
 // add a tile selector
