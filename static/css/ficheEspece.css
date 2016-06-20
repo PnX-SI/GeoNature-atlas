@@ -51,3 +51,29 @@ body {
 .slider-selection {
 	background: #909596;
 }
+
+/* graphiques */
+
+#graphContainer {
+	margin-left: 30px;
+	padding: 10px;
+	background-color: white;
+}
+
+#graphContainer h3 {
+	margin-top: 0px;
+}
+#altiChart {
+	background-color: white;
+}
+/*svg {
+	background-color: white;
+}*/
+
+rect{
+	fill: #8B9294;
+}
+
+rect.highlight {
+    fill: purple;
+}
