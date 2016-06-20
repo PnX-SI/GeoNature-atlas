@@ -26,6 +26,11 @@
         <script src="{{url_for('static', filename='/lib/leaflet/leaflet.js') }}"></script>
         <script src="{{url_for('static', filename='/lib/leaflet/leafletMarkerCluster.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/leaflet/leafletMarkerCluster.css') }}" />
+        <script src="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.css') }}" />
+
+
+
 
         <!-- D3 -->
         <script src="{{url_for('static', filename='/lib/d3/d3.min.js') }}"></script>
@@ -37,13 +42,6 @@
         <script src="{{url_for('static', filename='lib/raphaelJs/raphael.min.js') }}"></script>
 
         <link rel="stylesheet" href="{{url_for('static', filename='/css/ficheEspece.css') }}" />
-
-
-
-
-
-
-
 
     </head>
 
@@ -59,7 +57,7 @@
                 <div class="col-sm-3" > 
                     <h3> {{taxon.lb_nom}} </h3>
                     <p> <i> {{taxon.nom_vern}} </i> <br/>
-                    Nombre d'observation sur le parc: <i> {{observations.features|length}} </i> </br>
+                    Nombre d'observation(s) sur le parc: <i> {{observations.features|length}} </i> </br>
 
                     <a href='https://inpn.mnhn.fr/espece/cd_nom/{{taxon.cd_nom}}' target="_blank">Fiche INPN</a>
                 </div>
