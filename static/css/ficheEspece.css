@@ -57,6 +57,7 @@ body {
 #graphContainer {
 	margin-left: 30px;
 	padding: 10px;
+	padding-bottom: 15px;
 	background-color: white;
 }
 
@@ -66,14 +67,18 @@ body {
 #altiChart {
 	background-color: white;
 }
-/*svg {
-	background-color: white;
-}*/
+svg {
+	margin-bottom: 10px;
+}
 
 rect{
-	fill: #8B9294;
+	fill: #2466D1;
 }
 
 rect.highlight {
     fill: purple;
+}
+
+text {
+	color: blue;
 }

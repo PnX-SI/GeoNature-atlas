@@ -14,7 +14,7 @@ def getAltitudes(cd_ref):
     request = session.query(VmAltitudes).filter(VmAltitudes.cd_ref == cd_ref).all()
     inter = request[0]
     return [
-    {'altitude': '-500' , 'value' : inter.altinf500},
+    {'altitude': '0 - 500' , 'value' : inter.altinf500},
     {'altitude': '500-1000','value': inter.alt500_1000},
     {'altitude': '1000-1500', 'value': inter.alt1000_1500},
     {'altitude': '1500-2000', 'value': inter.alt1500_2000},

@@ -1,22 +1,16 @@
+console.log(dataset);
 
-var test = [];
-dataset.forEach(function(x){
-    test.push({altitude: x.altitude, value: x.value})
-});
-console.log(test);
 
 Morris.Bar({
     element:"altiChart",
-/*    barSizeRatio:0.2,
-    barGap:0,*/
-    data : test,
+    data : dataset,
     xkey: "altitude",
     ykeys : ["value"],
     labels: ['Effectif'],
     xLabelAngle: 45,
     hideHover: 'auto',
-    resize: true,
-    axes: true,
+/*    resize: true,
+*/    axes: true,
 
 });
 
@@ -35,3 +29,26 @@ rect = d3.selectAll("rect");
     d3.select(this).classed("highlight", false);
 
 });
+
+
+svgContainer = d3.selectAll("svg");
+    svgContainer.append("g")
+        .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0)
+            .attr('x', -100)
+            .attr("dy", ".71em")
+            .attr("fill", "#888888")
+            .attr("font-size", "10px")
+            .style("text-anchor", "end")
+            .text("Observations");
+
+        svgContainer.append("g")
+        .append("text")
+            .attr("y", 185)
+            .attr("x", 390)
+            .attr("dy", ".71em")
+            .attr("fill", "#888888")
+            .attr("font-size", "10px")
+            .style("text-anchor", "end")
+            .text("Altitude (m)");
