@@ -9,12 +9,12 @@ Morris.Bar({
     labels: ['Effectif'],
     xLabelAngle: 45,
     hideHover: 'auto',
-/*    resize: true,
-*/    axes: true,
+    resize: true,
+    axes: true,
 
 });
 
-
+    
 rect = d3.selectAll("rect");
 
             rect.on("mouseover", function(d) {
@@ -35,8 +35,8 @@ svgContainer = d3.selectAll("svg");
     svgContainer.append("g")
         .append("text")
             .attr("transform", "rotate(-90)")
-            .attr("y", 0)
-            .attr('x', -100)
+            .attr("y", '0%')
+            .attr('x', '-15%')
             .attr("dy", ".71em")
             .attr("fill", "#888888")
             .attr("font-size", "10px")
@@ -45,8 +45,8 @@ svgContainer = d3.selectAll("svg");
 
         svgContainer.append("g")
         .append("text")
-            .attr("y", 185)
-            .attr("x", 390)
+            .attr("y", "90%")
+            .attr("x", "100%")
             .attr("dy", ".71em")
             .attr("fill", "#888888")
             .attr("font-size", "10px")

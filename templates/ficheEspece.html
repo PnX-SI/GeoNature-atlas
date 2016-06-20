@@ -24,9 +24,8 @@
         <!-- Leaflet -->
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/leaflet/leaflet.css') }}" />
         <script src="{{url_for('static', filename='/lib/leaflet/leaflet.js') }}"></script>
-        <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js"></script>
-        <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
-        <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
+        <script src="{{url_for('static', filename='/lib/leaflet/leafletMarkerCluster.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/leaflet/leafletMarkerCluster.css') }}" />
 
         <!-- D3 -->
         <script src="{{url_for('static', filename='/lib/d3/d3.min.js') }}"></script>
@@ -73,7 +72,7 @@
             </div>
             <div id="graphContainer" class="row col-sm-4">
                 <h3 class="text-primary text-center"> Observations par classes d'altitudes </h3>
-                <div id="altiChart" style="height: 270px;"></div>
+                <div id="altiChart" style="height: 200px;"></div>
           </div>
 
         </div>
