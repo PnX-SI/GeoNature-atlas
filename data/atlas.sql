@@ -510,6 +510,18 @@ CREATE FOREIGN TABLE meta.bib_lots
 ALTER TABLE meta.bib_lots OWNER TO geonatatlas;
 GRANT ALL ON TABLE meta.bib_lots TO geonatatlas;
 
+CREATE OR REPLACE FUNCTION taxonomie.find_cdref(id integer)
+  RETURNS integer AS
+$BODY$
+  DECLARE ref integer;
+  BEGIN
+	SELECT INTO ref cd_ref FROM taxonomie.taxref WHERE cd_nom = id;
+	return ref;
+  END;
+$BODY$
+  LANGUAGE plpgsql IMMUTABLE
+  COST 100;
+
 --VUES MATERIALISEES
 
 --DROP materialized view taxonomie.vm_taxref;
@@ -529,7 +541,6 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
         s.code_fiche_source,
         s.id_protocole,
         s.id_precision,
-        s.cd_nom,
         s.insee,
         s.dateobs,
         s.observateurs,
@@ -556,20 +567,46 @@ create unique index on atlas.vm_observations (id_synthese);
 create index on atlas.vm_observations (cd_ref);
 create index on atlas.vm_observations (insee);
 create index on atlas.vm_observations (altitude_retenue);
+create index on atlas.vm_observations (dateobs);
 CREATE INDEX index_gist_synthese_the_geom_point ON atlas.vm_observations USING gist (the_geom_point);
 
 --DROP MATERIALIZED VIEW atlas.vm_taxons;
 CREATE materialized view atlas.vm_taxons AS
-SELECT t.id_taxon,t.filtre1 AS saisie, t.filtre2 AS patrimonial, t.filtre3 AS protection_stricte, tx.*, h.nom_habitat, r.nom_rang, st.nom_statut
-FROM taxonomie.bib_taxons t
-JOIN atlas.vm_taxref tx ON tx.cd_nom = t.cd_nom
-LEFT JOIN taxonomie.bib_taxref_habitats h ON h.id_habitat = tx.id_habitat
-LEFT JOIN taxonomie.bib_taxref_rangs r  ON r.id_rang = tx.id_rang
-LEFT JOIN taxonomie.bib_taxref_statuts st ON st.id_statut = tx.id_statut
-WHERE t.cd_nom IN (SELECT DISTINCT cd_nom FROM atlas.vm_observations);
-create unique index on atlas.vm_taxons (id_taxon);
-create index on atlas.vm_taxons (cd_nom);
-create index on atlas.vm_taxons (cd_ref);
+WITH obs_min_taxons AS (SELECT cd_ref, min(date_part('year'::text, dateobs)) AS yearmin FROM atlas.vm_observations GROUP BY cd_ref),
+tx_ref AS (
+  SELECT
+    tx.cd_ref,
+    tx.regne,
+    tx.phylum,
+    tx.classe,
+    tx.ordre,
+    tx.famille,
+    tx.cd_taxsup,
+    tx.lb_nom,
+    tx.lb_auteur,
+    tx.nom_complet,
+    tx.nom_valide,
+    tx.nom_vern,
+    tx.nom_vern_eng,
+    tx.group1_inpn,
+    tx.group2_inpn,
+    tx.nom_complet_html,
+    h.nom_habitat,
+    r.nom_rang,
+    st.nom_statut
+  FROM atlas.vm_taxref tx
+     LEFT JOIN taxonomie.bib_taxref_habitats h ON h.id_habitat = tx.id_habitat
+     LEFT JOIN taxonomie.bib_taxref_rangs r ON r.id_rang = tx.id_rang
+     LEFT JOIN taxonomie.bib_taxref_statuts st ON st.id_statut = tx.id_statut
+  WHERE tx.cd_ref IN (SELECT cd_ref FROM obs_min_taxons)
+  AND tx.cd_nom = tx.cd_ref
+),
+my_taxons AS (SELECT DISTINCT taxonomie.find_cdref(cd_nom) AS cd_ref, filtre2 AS patrimonial, filtre3 AS protection_stricte FROM taxonomie.bib_taxons WHERE taxonomie.find_cdref(cd_nom) IN(SELECT cd_ref FROM obs_min_taxons))
+SELECT tx.*, t.patrimonial, t.protection_stricte, omt.yearmin
+FROM tx_ref tx
+LEFT JOIN obs_min_taxons omt ON omt.cd_ref = tx.cd_ref
+LEFT JOIN my_taxons t ON t.cd_ref = tx.cd_ref;
+create unique index on atlas.vm_taxons (cd_ref);
 
 CREATE materialized view atlas.vm_altitudes AS
 WITH 
