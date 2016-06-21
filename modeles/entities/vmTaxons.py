@@ -2,7 +2,7 @@
 #! /usr/bin/python
 # -*- coding:utf-8 -*-
 
-from sqlalchemy import Column, Integer, MetaData, String, Table
+from sqlalchemy import Column, Integer, MetaData, String, Table, Float
 from sqlalchemy.orm import mapper
 from sqlalchemy.ext.declarative import declarative_base
 from atlas.manage import engine
@@ -17,21 +17,13 @@ metadata = MetaData()
 class VmTaxons(Base):
     __table__ = Table(
     'vm_taxons', metadata,
-    Column('id_taxon', Integer, primary_key=True, unique=True),
-    Column('saisie', String(255)),
-    Column('patrimonial', String(255)),
-    Column('protection_stricte', String(255)),
-    Column('cd_nom', Integer, index=True),
-    Column('id_statut', String(1)),
-    Column('id_habitat', Integer),
-    Column('id_rang', String(4)),
+    Column('cd_ref', Integer, primary_key=True, unique=True),
     Column('regne', String(20)),
     Column('phylum', String(50)),
     Column('classe', String(50)),
     Column('ordre', String(50)),
     Column('famille', String(50)),
     Column('cd_taxsup', Integer),
-    Column('cd_ref', Integer, index=True),
     Column('lb_nom', String(100)),
     Column('lb_auteur', String(250)),
     Column('nom_complet', String(255)),
@@ -44,5 +36,8 @@ class VmTaxons(Base):
     Column('nom_habitat', String(50)),
     Column('nom_rang', String(20)),
     Column('nom_statut', String(50)),
+    Column('patrimonial', String(255)),
+    Column('protection_stricte', String(255)),
+    Column('yearmin', Float(53)),
     schema='atlas', autoload=True, autoload_with=engine
 )

@@ -1,6 +1,8 @@
 // load tiles
 var osmTile = L.tileLayer(osmUrl, {attribution: osmAttribution}),
-  ignTile = L.tileLayer(ignUrl, {attribution: ignAttribution});
+  ignTile = L.tileLayer(ignUrl, {attribution: ignAttribution}),
+  orthoTile = L.tileLayer(orthoIGN, {attribution: ignAttribution});
+
 
 //map initialization
 
@@ -15,8 +17,9 @@ var osmTile = L.tileLayer(osmUrl, {attribution: osmAttribution}),
 
 // add a tile selector
 var baseMap = {
-  "OSM": osmTile,
-  "IGN": ignTile
+"OSM": osmTile,
+"IGN": ignTile,
+"Satellite": orthoTile
 }
 
 L.control.layers(baseMap).addTo(map);
@@ -95,7 +98,64 @@ function displayFilterMarkers(geoJsonObs, yearMin, yearMax, cluster){
 }
 
 
+// Markers display on window ready
+
+$(function(){
+  displayMarkers(observations);
+})
+
+
+
+
+//slider 
+
+$("#yearMax").html("&nbsp;&nbsp;"+ $YEARMAX);
+$("#yearMin").html(taxonYearMin + "&nbsp;&nbsp;");
+
+
+
+var mySlider = new Slider('#slider', {
+  value: [taxonYearMin, $YEARMAX],
+  min : taxonYearMin,
+  max : $YEARMAX,
+  step: $STEP,
+/*  ticks: getLegend(taxonYearMin, $YEARMAX),
+  ticks_labels: getStringLegend(getLegend(taxonYearMin, $YEARMAX)),*/
+});
+
+
+
+// slider event: display filter observations
+
+var yearMin = taxonYearMin;
+var yearMax = $YEARMAX;
+
+
+ // Slider event
+mySlider.on("change",function(){
+    years = mySlider.getValue();
+    yearMin = years[0];
+    yearMax = years[1];
+
+    var currentMarker = (newMarkers == undefined) ? clusterMarkers: newMarkers;
+    map.removeLayer(currentMarker);
+    displayFilterMarkers(observations, yearMin, yearMax, $("#checkbox").is(":checked"));
+
+
+    $("#nbObs").html("Nombre d'observation(s): "+ filterGeoJson.features.length);
+
+   });
+
+
 // switcher
 
 mySwitcher = $("[name='my-checkbox']").bootstrapSwitch();
 
+mySwitcher.on('switchChange.bootstrapSwitch', function(state) {
+  
+    currentMarker = (newMarkers == undefined) ? clusterMarkers:newMarkers;
+    map.removeLayer(currentMarker);
+
+    displayFilterMarkers(observations, yearMin, yearMax, this.checked)
+
+});

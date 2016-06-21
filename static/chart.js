@@ -1,19 +1,25 @@
-console.log(dataset);
 
 
-Morris.Bar({
-    element:"altiChart",
-    data : dataset,
-    xkey: "altitude",
-    ykeys : ["value"],
-    labels: ['Effectif'],
-    xLabelAngle: 45,
-    hideHover: 'auto',
-    resize: true,
-    axes: true,
+window.m = Morris.Bar({
+                element:"altiChart",
+                data : dataset,
+                xkey: "altitude",
+                ykeys : ["value"],
+                labels: ['Effectif'],
+                xLabelAngle: 45,
+                hideHover: 'auto',
+                resize: true,
+                axes: true,
 
-});
+            });
 
+    $(window).on('resize', function() {
+       if (!window.recentResize) {
+          window.m.redraw();
+          window.recentResize = true;
+          setTimeout(function(){ window.recentResize = false; }, 200);
+       }
+    });
     
 rect = d3.selectAll("rect");
 

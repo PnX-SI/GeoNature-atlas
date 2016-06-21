@@ -34,3 +34,7 @@ $("#search").autocomplete({
 });
 
 }
+
+$(function(){
+	autocompleteTaxons(listeTaxons);
+})

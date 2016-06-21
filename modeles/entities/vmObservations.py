@@ -23,9 +23,8 @@ class VmObservations(Base):
     Column('code_fiche_source', String(50)),
     Column('id_protocole', Integer),
     Column('id_precision', Integer),
-    Column('cd_nom', Integer, index=True),
     Column('insee', String(5), index=True),
-    Column('dateobs', Date),
+    Column('dateobs', Date, index=True),
     Column('observateurs', String(255)),
     Column('determinateur', String(255)),
     Column('altitude_retenue', Integer, index=True),
@@ -37,7 +36,7 @@ class VmObservations(Base):
     Column('id_lot', Integer),
     Column('id_critere_synthese', Integer),
     Column('effectif_total', Integer),
-    Column('cd_ref', Integer),
+    Column('cd_ref', Integer, index=True),
     Column('geojson_point', Text),
     schema='atlas', autoload=True, autoload_with=engine
 )
