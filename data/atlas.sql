@@ -510,6 +510,29 @@ CREATE FOREIGN TABLE meta.bib_lots
 ALTER TABLE meta.bib_lots OWNER TO geonatatlas;
 GRANT ALL ON TABLE meta.bib_lots TO geonatatlas;
 
+--DROP TABLE atlas.bib_altitudes;
+CREATE TABLE atlas.bib_altitudes
+(
+  id_altitude integer NOT NULL,
+  altitude_min integer NOT NULL,
+  altitude_max integer NOT NULL,
+  label_altitude character varying(255),
+  CONSTRAINT bib_altitudes_pk PRIMARY KEY (id_altitude)
+);
+ALTER TABLE atlas.bib_altitudes OWNER TO geonatatlas;
+GRANT ALL ON TABLE atlas.bib_altitudes TO geonatatlas;
+
+INSERT INTO atlas.bib_altitudes VALUES(1,0,499);
+INSERT INTO atlas.bib_altitudes VALUES(2,500,999);
+INSERT INTO atlas.bib_altitudes VALUES(3,1000,1499);
+INSERT INTO atlas.bib_altitudes VALUES(4,1500,1999);
+INSERT INTO atlas.bib_altitudes VALUES(5,2000,2499);
+INSERT INTO atlas.bib_altitudes VALUES(6,2500,2999);
+INSERT INTO atlas.bib_altitudes VALUES(7,3000,3499);
+INSERT INTO atlas.bib_altitudes VALUES(8,3500,3999);
+INSERT INTO atlas.bib_altitudes VALUES(9,4000,4102);
+UPDATE atlas.bib_altitudes set label_altitude = 'alti_' || altitude_min || '_' || altitude_max;
+
 CREATE OR REPLACE FUNCTION taxonomie.find_cdref(id integer)
   RETURNS integer AS
 $BODY$
@@ -638,9 +661,105 @@ LEFT JOIN alt2000_2500 e ON e.cd_ref =  o.cd_ref
 LEFT JOIN alt2500_3000 f ON f.cd_ref =  o.cd_ref
 LEFT JOIN alt3000_3500 g ON g.cd_ref =  o.cd_ref
 LEFT JOIN alt3500_4000 h ON h.cd_ref =  o.cd_ref
-LEFT JOIN alt_sup4000 i ON i.cd_ref =  o.cd_ref;
+LEFT JOIN alt_sup4000 i ON i.cd_ref =  o.cd_ref
+WHERE o.cd_ref is not null
+ORDER BY o.cd_ref;
 create unique index on atlas.vm_altitudes (cd_ref);
+
+CREATE materialized view atlas.vm_mois AS
+WITH 
+_01 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE date_part('month'::text, dateobs) = '01' GROUP BY cd_ref),
+_02 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE date_part('month'::text, dateobs) = '02' GROUP BY cd_ref),
+_03 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE date_part('month'::text, dateobs) = '03' GROUP BY cd_ref),
+_04 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE date_part('month'::text, dateobs) = '04' GROUP BY cd_ref),
+_05 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE date_part('month'::text, dateobs) = '05' GROUP BY cd_ref),
+_06 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE date_part('month'::text, dateobs) = '06' GROUP BY cd_ref),
+_07 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE date_part('month'::text, dateobs) = '07' GROUP BY cd_ref),
+_08 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE date_part('month'::text, dateobs) = '08' GROUP BY cd_ref),
+_09 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE date_part('month'::text, dateobs) = '09' GROUP BY cd_ref),
+_10 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE date_part('month'::text, dateobs) = '10' GROUP BY cd_ref),
+_11 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE date_part('month'::text, dateobs) = '11' GROUP BY cd_ref),
+_12 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE date_part('month'::text, dateobs) = '12' GROUP BY cd_ref)
+
+SELECT DISTINCT o.cd_ref
+	,COALESCE(a.nb, 0) as _01::integer
+	,COALESCE(b.nb, 0) as _02::integer
+	,COALESCE(c.nb, 0) as _03::integer
+	,COALESCE(d.nb, 0) as _04::integer
+	,COALESCE(e.nb, 0) as _05::integer
+	,COALESCE(f.nb, 0) as _06::integer
+	,COALESCE(g.nb, 0) as _07::integer
+	,COALESCE(h.nb, 0) as _08::integer
+	,COALESCE(i.nb, 0) as _09::integer
+	,COALESCE(j.nb, 0) as _10::integer
+	,COALESCE(k.nb, 0) as _11::integer
+	,COALESCE(l.nb, 0) as _12::integer
+FROM atlas.vm_observations o
+LEFT JOIN _01 a ON a.cd_ref =  o.cd_ref
+LEFT JOIN _02 b ON b.cd_ref =  o.cd_ref
+LEFT JOIN _03 c ON c.cd_ref =  o.cd_ref
+LEFT JOIN _04 d ON d.cd_ref =  o.cd_ref
+LEFT JOIN _05 e ON e.cd_ref =  o.cd_ref
+LEFT JOIN _06 f ON f.cd_ref =  o.cd_ref
+LEFT JOIN _07 g ON g.cd_ref =  o.cd_ref
+LEFT JOIN _08 h ON h.cd_ref =  o.cd_ref
+LEFT JOIN _09 i ON i.cd_ref =  o.cd_ref
+LEFT JOIN _10 j ON j.cd_ref =  o.cd_ref
+LEFT JOIN _11 k ON k.cd_ref =  o.cd_ref
+LEFT JOIN _12 l ON l.cd_ref =  o.cd_ref
+WHERE o.cd_ref is not null
+ORDER BY o.cd_ref;
+create unique index on atlas.vm_mois (cd_ref);
 --refresh materialized view CONCURRENTLY atlas.vm_observations;--92399ms avec les index
 --refresh materialized view CONCURRENTLY atlas.vm_taxref; --8158ms avec les index
 --refresh materialized view CONCURRENTLY atlas.vm_taxons;--6800ms  avec les index
---refresh materialized view CONCURRENTLY atlas.vm_altitudes;--6800ms  avec les index
+--refresh materialized view CONCURRENTLY atlas.vm_altitudes;--3600ms  avec les index
+--refresh materialized view CONCURRENTLY atlas.vm_mois;--6800ms  avec les index
+
+--temp
+CREATE OR REPLACE FUNCTION atlas.create_vm_altitudes()
+RETURNS text AS
+$BODY$
+  DECLARE
+
+    monsql text;
+    mesaltitudes RECORD;
+    altitudemin integer;
+    altitudemax integer;
+    labelatitude text;
+    
+  BEGIN
+	monsql = 'WITH ';
+    FOR mesaltitudes IN SELECT * FROM atlas.bib_altitudes LOOP
+      IF mesaltitudes.id_altitude = 1 THEN
+        monsql = monsql || 'alt' || mesaltitudes.id_altitude ||' AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue <' || mesaltitudes.altitude_max || ' GROUP BY cd_ref) ';
+      ELSE
+        monsql = monsql || ',alt' || mesaltitudes.id_altitude ||' AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue BETWEEN ' || mesaltitudes.altitude_min || ' AND ' || mesaltitudes.altitude_max || ' GROUP BY cd_ref)';
+      END IF;
+    END LOOP;
+    
+    monsql = monsql || ' SELECT DISTINCT o.cd_ref';
+	
+    FOR mesaltitudes IN SELECT * FROM atlas.bib_altitudes LOOP
+      monsql = monsql || ',COALESCE(' ||mesaltitudes.alias_altitude || '.nb, 0) as '|| mesaltitudes.label_altitude ||'altinf500';
+    END LOOP;
+
+    monsql = monsql || ' FROM atlas.vm_observations o';
+	
+    FOR mesaltitudes IN SELECT * FROM atlas.bib_altitudes LOOP
+      monsql = monsql || ' LEFT JOIN alt' || mesaltitudes.id_altitude ||' ' || mesaltitudes.alias_altitude || ' ON ' || mesaltitudes.alias_altitude || '.cd_ref = o.cd_ref';
+    END LOOP;
+    
+    monsql = monsql || ' WHERE o.cd_ref is not null ORDER BY o.cd_ref;';
+
+    RETURN monsql;
+    
+  END;
+  
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION atlas.create_vm_altitudes()
+  OWNER TO geonatatlas;
+
+  SELECT atlas.create_vm_altitudes();
