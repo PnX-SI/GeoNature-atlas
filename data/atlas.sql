@@ -531,7 +531,7 @@ INSERT INTO atlas.bib_altitudes VALUES(6,2500,2999);
 INSERT INTO atlas.bib_altitudes VALUES(7,3000,3499);
 INSERT INTO atlas.bib_altitudes VALUES(8,3500,3999);
 INSERT INTO atlas.bib_altitudes VALUES(9,4000,4102);
-UPDATE atlas.bib_altitudes set label_altitude = 'alti_' || altitude_min || '_' || altitude_max;
+UPDATE atlas.bib_altitudes set label_altitude = '_' || altitude_min || '_' || altitude_max+1;
 
 CREATE OR REPLACE FUNCTION taxonomie.find_cdref(id integer)
   RETURNS integer AS
