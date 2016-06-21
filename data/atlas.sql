@@ -701,18 +701,18 @@ _11 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE date_part
 _12 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE date_part('month'::text, dateobs) = '12' GROUP BY cd_ref)
 
 SELECT DISTINCT o.cd_ref
-	,COALESCE(a.nb, 0) as _01::integer
-	,COALESCE(b.nb, 0) as _02::integer
-	,COALESCE(c.nb, 0) as _03::integer
-	,COALESCE(d.nb, 0) as _04::integer
-	,COALESCE(e.nb, 0) as _05::integer
-	,COALESCE(f.nb, 0) as _06::integer
-	,COALESCE(g.nb, 0) as _07::integer
-	,COALESCE(h.nb, 0) as _08::integer
-	,COALESCE(i.nb, 0) as _09::integer
-	,COALESCE(j.nb, 0) as _10::integer
-	,COALESCE(k.nb, 0) as _11::integer
-	,COALESCE(l.nb, 0) as _12::integer
+	,COALESCE(a.nb::integer, 0) as _01
+	,COALESCE(b.nb::integer, 0) as _02
+	,COALESCE(c.nb::integer, 0) as _03
+	,COALESCE(d.nb::integer, 0) as _04
+	,COALESCE(e.nb::integer, 0) as _05
+	,COALESCE(f.nb::integer, 0) as _06
+	,COALESCE(g.nb::integer, 0) as _07
+	,COALESCE(h.nb::integer, 0) as _08
+	,COALESCE(i.nb::integer, 0) as _09
+	,COALESCE(j.nb::integer, 0) as _10
+	,COALESCE(k.nb::integer, 0) as _11
+	,COALESCE(l.nb::integer, 0) as _12
 FROM atlas.vm_observations o
 LEFT JOIN _01 a ON a.cd_ref =  o.cd_ref
 LEFT JOIN _02 b ON b.cd_ref =  o.cd_ref
