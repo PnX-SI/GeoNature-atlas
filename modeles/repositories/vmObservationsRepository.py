@@ -5,7 +5,7 @@ import sys
 sys.path.insert(0, APP_DIR + '/modeles/entities')
 sys.path.insert(0, BASE_DIR)
 from vmObservations import VmObservations
-from sqlalchemy import distinct, func, extract
+from sqlalchemy import distinct, func, extract, desc
 from sqlalchemy.orm import sessionmaker
 import ast
 from datetime import datetime
@@ -41,6 +41,10 @@ def toGeoJson(queryResult, nbYear):
 
 def searchObservation(cd_ref):
     observations = session.query(VmObservations).filter(VmObservations.cd_ref == cd_ref).all()
+    return  toGeoJson(observations, 15)
+    
+def lastObservations(mylimit):
+    observations = session.query(VmObservations).order_by(desc(VmObservations.dateobs)).limit(mylimit).all()
     return  toGeoJson(observations, 15)
     
    
