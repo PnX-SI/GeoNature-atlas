@@ -10,7 +10,7 @@ sys.path.insert(0, BASE_DIR)
 
 
 metadata = MetaData()
-
+Base = declarative_base()
 
 class vmTaxref(Base):
     __table__ = Table(
