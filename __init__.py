@@ -11,7 +11,7 @@ CONFIG_DIR = APP_DIR+'/config'
 
 sys.path.insert(0, CONFIG_DIR)
 from config import config, database_connection
-
+from sqlalchemy import create_engine, MetaData, Table
 
 bootstrap = Bootstrap()
 db = SQLAlchemy()
@@ -27,6 +27,5 @@ def create_app(config_name):
     
     from main import main as main_blueprint
     app.register_blueprint(main_blueprint)
-
 
     return dict(app=app, engine=engine)

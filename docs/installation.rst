@@ -87,11 +87,14 @@ Dans un soucis de performance et pour ne pas requêter en permanence sur la base
     Champs à préciser pour ceux qui n'ont pas taxonomie.taxref
 
 - atlas.vm_observations qui renvoie la liste de toutes les observations.
-    Champs à renommer et supprimer dans la vue par défaut. 
-    
+    Champs à renommer et supprimer dans la vue par défaut.
+
 - atlas.vm_taxons qui renvoie la liste des taxons observés au moins une fois sur le territoire (présents dans vm_observations).
 
 - atlas.vm_altitudes qui renvoie le nombre d'observations pour chaque classe d'altitude et chaque taxon.
+    Cette vue peut être personnalisée (Voir ci-dessous : "Personnalisation de l'application").
+    
+- atlas.vm_mois qui renvoie le nombre d'observations pour chaque mois et chaque taxon.
 
 - atlas.vm_phenologies qui renvoie le nombre d'observations pour chaque mois et chaque taxon.
 
@@ -153,6 +156,23 @@ Personnalisation de l'application
 * Adapter le contenu du fichier ``static/conf/custom.js``
         
 * Modifier éventuellement les vues dans le schéma ``atlas``
+    Pour modifier la vue ``vm_altitudes`` et l'adapter aux altitudes de votre territoire, vous devez modifier le contenu de la table ``atlas.bib_altitudes``.
+    
+    Le champ ``id_altitude`` ne doit pas comporter de doublons et l'altitude la plus basse doit avoir l'``id_altitude`` = 1.
+    
+    L'amplitude des tranches altitudinales peut être personnalisée, ainsi que le nombre de tranches.
+    
+    Le champ ``label_altitude`` ne doit pas commencer par un chiffre. La méthode la plus générique consiste à générer le contenu de ce champ grace à la commande SQL suivante :
+ 
+  ::  
+  
+        UPDATE atlas.bib_altitudes set label_altitude = '_' || altitude_min || '_' || altitude_max+1;
+        
+Dès que votre table ``atlas.bib_altitudes`` est complétée, vous pouvez mettre à jour la vue ``atlas.vm_altitudes`` grace à la commande SQL suivante :
+ 
+  ::  
+  
+        select atlas.create_vm_altitudes();
 
 Vous pouvez alimenter l'atlas avec une autre source de données que GeoNature à condition de respecter le nom et le typage des champs retournés par la vue.
 

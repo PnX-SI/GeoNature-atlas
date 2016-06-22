@@ -1,21 +1,15 @@
 #! /usr/bin/python
 # -*- coding:utf-8 -*-
-from atlas import APP_DIR, BASE_DIR, manage
-import sys
-sys.path.insert(0, APP_DIR + '/modeles/entities')
-sys.path.insert(0, BASE_DIR)
-from vmAltitudes import VmAltitudes
-from sqlalchemy import distinct, func, extract
-from sqlalchemy.orm import sessionmaker
-import json
-from flask import jsonify
+from atlas import manage 
+from modeles import utils
 
 session = manage.loadSession()
 
+tableAltitudes = utils.GenericTable('atlas.vm_altitudes', 'atlas')
+dfCdRef = tableAltitudes.tableDef.columns['cd_ref']
 def getAltitudes(cd_ref):
-    keyList = VmAltitudes.__table__.columns.keys()
-
-    mesAltitudes = session.query(VmAltitudes).filter(VmAltitudes.cd_ref==cd_ref).all()
+    keyList = tableAltitudes.tableDef.columns.keys()
+    mesAltitudes = session.query(tableAltitudes.tableDef).filter(dfCdRef==cd_ref).all()
     mesAltitudes = mesAltitudes[0]
     altiList = list()
     for i in range(len(keyList)):

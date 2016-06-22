@@ -56,6 +56,7 @@
                     <p> <i> {{taxon.nom_vern}} </i> <br/>
                     Nombre d'observation(s) sur le parc: <i> {{observations.features|length}} </i> </br>
 
+
                     <a href='https://inpn.mnhn.fr/espece/cd_nom/{{taxon.cd_ref}}' target="_blank">Fiche INPN</a>
                 </div>
        </div>
@@ -84,7 +85,26 @@
 
         </div>
 
-       
+        <div class="row"> 
+            <div class="col-sm-12">
+                        <p> <b> Synonyme(s): </b>
+                        {% if nbSynonyme == 0 %}
+                        Aucun synonyme
+                        {% endif %}
+                        {%for syn in synonyme %}
+                        <span> 
+                            {% if not syn.lb_nom == taxon.lb_nom %}
+                            {{syn.lb_nom}}
+                            {% endif %}
+                            {% if not loop.last %}
+                            ,
+                            {% endif %}
+                         </span>
+                    {% endfor %}
+                     </p>
+            </div>
+        </div>
+
     </div>
 
 
