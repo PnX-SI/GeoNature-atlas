@@ -13,17 +13,16 @@ from flask import jsonify
 session = manage.loadSession()
 
 def getAltitudes(cd_ref):
-    listAlti = list()
-    interAlti = dict()
-    for r in session.query(VmAltitudes).filter(VmAltitudes.cd_ref==cd_ref).all():
-        interAlti = r.__dict__.copy()
-        del interAlti['_sa_instance_state']
-        del interAlti['cd_ref']
-    
-    for key, value in interAlti.items():
-        key=str(key)
+    keyList = VmAltitudes.__table__.columns.keys()
+
+    mesAltitudes = session.query(VmAltitudes).filter(VmAltitudes.cd_ref==cd_ref).all()
+    mesAltitudes = mesAltitudes[0]
+    altiList = list()
+    for i in range(len(keyList)):
+        key = str(keyList[i])
         key= key[1:]
         key = key.replace('_', '-')
-        temp = {"altitude": key, "value": value}
-        listAlti.append(temp)
-    return listAlti
+        if keyList[i] != 'cd_ref':
+            temp = {"altitude": key, "value":getattr(mesAltitudes, keyList[i]) } 
+            altiList.insert(i, temp)
+    return altiList
