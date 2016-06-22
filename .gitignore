@@ -4,3 +4,4 @@ config/settings.ini
 config/config.py
 log/*
 static/conf/custom.js
+debug.py

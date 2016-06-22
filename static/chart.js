@@ -27,8 +27,6 @@ rect = d3.selectAll("rect");
              d3.select(this).classed("highlight", true);
              d3.select(this).select("text").style("visibility", "visible");
 
-
-
 });
 
             rect.on("mouseout", function() {

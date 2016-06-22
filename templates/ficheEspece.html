@@ -83,7 +83,7 @@
         </div>
 
 
-
+        <button id="test"> test</button>
        
     </div>
 
@@ -93,31 +93,18 @@
 
     <script type="text/javascript" src="/atlas/static/conf/custom.js"></script>
 
-    <script> var dataset = {{altitudes|tojson}},
+    <script> 
+             var dataset = {{altitudes|tojson}},
                  observations = {{observations|tojson}},
                  listeTaxons = {{listeTaxons|tojson}};
     </script>  
 
     <script type="text/javascript" src="/atlas/static/chart.js"></script>
 
-   <script > taxonYearMin = {{taxon.yearmin}};</script> 
+   <script > var taxonYearMin = {{taxon.yearmin}};</script> 
 
     <script src="{{url_for('static', filename='map.js') }}"></script>
     <script src="{{url_for('static', filename='main.js') }}"></script>
-
-
-
-<!--  Lancement des fonction JS necessitant la syntaxe Jinja-->
-    <script type="text/javascript">
-
-// Set autocompletion
-/*
-autocompleteTaxons({{listeTaxons|tojson }})
-
-*/
-
-    </script>
-
 
     </body>
 </html>

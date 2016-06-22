@@ -17,16 +17,20 @@ class VmAltitudes(Base):
     __table__ = Table(
     'vm_altitudes', metadata,
     Column('cd_ref', Integer, primary_key=True, unique=True),
-    Column('altinf500', BigInteger),
-    Column('alt500_1000', BigInteger),
-    Column('alt1000_1500', BigInteger),
-    Column('alt1500_2000', BigInteger),
-    Column('alt2000_2500', BigInteger),
-    Column('alt2500_3000', BigInteger),
-    Column('alt3000_3500', BigInteger),
-    Column('alt3500_4000', BigInteger),
-    Column('alt_sup4000', BigInteger),
+    Column('_0_500', Integer),
+    Column('_500_1000', Integer),
+    Column('_1000_1500', Integer),
+    Column('_1500_2000', Integer),
+    Column('_2000_2500', Integer),
+    Column('_2500_3000', Integer),
+    Column('_3000_3500', Integer),
+    Column('_3500_4000', Integer),
+    Column('_4000_4103', Integer),
     schema='atlas', autoload=True, autoload_with=engine
 )
+    
+    def getAtttributes
+    for c in VmAltitudes.__table__.columns:
+        print c
 
 

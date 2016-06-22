@@ -13,11 +13,22 @@ sys.path.insert(0, BASE_DIR)
 metadata = MetaData()
 Base = declarative_base()
 
-class VmSearchTaxon(Base):
+class VmAltitudes(Base):
     __table__ = Table(
-    'vm_search_taxon', metadata,
+    'vm_mois', metadata,
     Column('cd_ref', Integer, primary_key=True, unique=True),
-    Column('nom_search', String),
+    Column('_01', Integer),
+    Column('_02', Integer),
+    Column('_03', Integer),
+    Column('_04', Integer),
+    Column('_05', Integer),
+    Column('_06', Integer),
+    Column('_07', Integer),
+    Column('_08', Integer),
+    Column('_09', Integer),
+    Column('_10', Integer),
+    Column('_11', Integer),
+    Column('_12', Integer),
     schema='atlas', autoload=True, autoload_with=engine
 )
 

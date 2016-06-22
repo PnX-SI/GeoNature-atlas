@@ -4,16 +4,15 @@ autocompleteTaxons = function(listeTaxons){
 	var tabTaxons = [];
 
 	for(i=0; i<listeTaxons.length; i++){
-		var taxonObject = {}
+		/*var taxonObject = {};
 		if(listeTaxons[i][2] == null){
 			taxonName = listeTaxons[i][0]
 		}else{
 			taxonName = listeTaxons[i][0] +' - '+ listeTaxons[i][2]
-		}
+		}*/
 
-		taxonObject = {label : taxonName, // label = latin name + vern name
-					   value : listeTaxons[i][1],
-					   nom_vern : listeTaxons[i][2] // value = cd_ref
+		taxonObject = {label : listeTaxons[i][0], // label = latin name + vern name
+					   value : listeTaxons[i][1] // value = cd_ref
 	};
 		tabTaxons.push(taxonObject);
 	}

@@ -4,7 +4,7 @@ import os
 import sys
 from flask import Flask, request, render_template, jsonify
 from werkzeug.wrappers import Response
-from modeles.repositories import vmTaxonsRepository, vmObservationsRepository, vmAltitudesRepository
+from modeles.repositories import vmTaxonsRepository, vmObservationsRepository, vmAltitudesRepository, vmSearchTaxonRepository
 from . import main
 import json
 
@@ -13,12 +13,12 @@ import json
 
 @main.route('/' , methods=['GET', 'POST'])
 def index():
-    listeTaxons = vmTaxonsRepository.listeTaxons()
+    listeTaxons = vmSearchTaxonRepository.listeTaxons()
     return render_template('index.html', listeTaxons=listeTaxons)
 
 @main.route('/espece', methods=['GET', 'POST'])
 def ficheEspece():
-    listeTaxons = vmTaxonsRepository.listeTaxons()
+    listeTaxons = vmSearchTaxonRepository.listeTaxons()
     cd_ref = request.args['cd_ref']
     taxon = vmTaxonsRepository.rechercheEspece(cd_ref)
     observations = vmObservationsRepository.searchObservation(cd_ref)

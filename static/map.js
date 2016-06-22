@@ -37,8 +37,39 @@ function onEachFeature(feature, layer){
       }else{
         layer.bindPopup(popupContent)
       }
+    console.log(feature.properties.dateobs.year);
 }
 
+
+
+
+function style(feature){
+  if (feature.properties.dateobs.year > 2000) {
+    return {color: "#A3C990",
+            filColor : "#A3C990",
+            opacity : 0.4,
+            fillOpacity: 0.5
+          };
+  }else {
+        return {color: "#FFFFFF",
+            filColor : "#FFFFFF",
+            opacity : 0,
+            fillOpacity: 0};
+    }
+
+  }
+
+  var invisibleStyle = {
+            color: "#FFFFFF",
+            filColor : "#FFFFFF",
+            opacity : 0,
+            fillOpacity: 0
+
+  }
+
+  var normalStyle = {
+
+  }
 
 
 // ******** Marker and map options *************
@@ -159,3 +190,10 @@ mySwitcher.on('switchChange.bootstrapSwitch', function(state) {
     displayFilterMarkers(observations, yearMin, yearMax, this.checked)
 
 });
+
+
+currentMarker = (newMarkers == undefined) ? clusterMarkers:newMarkers;
+
+$('#test').click(function(){
+  console.log("test");
+})
