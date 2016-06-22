@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>Accueil</title>
+        <title>Atlas faune et flore</title>
 
         <!-- Bootrap -->
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap/css/bootstrap.min.css') }}"></link>
@@ -10,6 +10,14 @@
         <!-- Jquery -->
         <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
 		
+		<!-- Leaflet -->
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/leaflet/leaflet.css') }}" />
+        <script src="{{url_for('static', filename='/lib/leaflet/leaflet.js') }}"></script>
+        <script src="{{url_for('static', filename='/lib/leaflet/leafletMarkerCluster.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/leaflet/leafletMarkerCluster.css') }}" />
+        <script src="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.css') }}" />
+
         <link rel="stylesheet" href="{{url_for('static', filename='/css/ficheEspece.css') }}" />
 				
     </head>
@@ -19,6 +27,7 @@
         {% include 'navbar.html' %}
 
 		<div class="container-fluid">
+			
 			<!-- Introduction -->
 			<div class="col-sm-5"> 
 				<h1>
@@ -41,7 +50,8 @@
 					A terme cette page d'accueil proposera un tableau de bord des données présentes dans l'atlas, des statistiques ainsi que des informations dynamiques sur les dernières observations, les espèces les plus observées dans la période en cours, les espèces observées autour de moi. A suivre...
 				</div>
 			</div>
-			<!-- Photo (aléatoire ?) -->
+			
+			<!-- PHOTO (aléatoire ?) -->
 			<div class="col-sm-7"> 
 				<a href="espece?cd_ref=247044">
 					<img src="/atlas/static/images/247044-home.jpg" width="100%">
@@ -53,7 +63,7 @@
 			<!-- Dernières espèces observées -->
 			<div class="col-sm-9"> 
 				<div class="panel panel-default">
-					<div class="panel-heading">Dernières espèces observées</div>
+					<div class="panel-heading"><strong>Dernières espèces observées</strong></div>
 					<div class="row" style="padding: 10px;">
 					  <div class="col-xs-6 col-md-3">
 						<div class="thumbnail">
@@ -90,7 +100,7 @@
 						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/13010/021658recadre.jpg" alt="...">
 						  <div class="caption">
 							<h4>Hermine</h3>
-							<p>Observé le 19 juin dans la commune XXX</p>
+							<p>Observé le 19 juin 2016 dans la commune XXX</p>
 							<p><a href="espece?cd_ref=60686" class="btn btn-primary" role="button">Fiche détail</a></p>
 						  </div>
 						</div>
@@ -99,10 +109,12 @@
 					</div>
 				</div>
 			</div>
+			
+			<!-- STATISTIQUES -->
 			<div class="col-sm-3"> 
 				<div class="panel panel-default">
 				  <!-- Default panel contents -->
-				  <div class="panel-heading">571278 observations</div>
+				  <div class="panel-heading"><strong>571278 observations</strong></div>
 				  <div class="panel-body">
 					<p>Les observations sont mises à jour en temps réel à chaque fois qu'un agent saisi une nouvelle donnée dans les <a href="https://github.com/PnEcrins/GeoNature" target="_blank">bases de données scientifiques du Parc national des Ecrins</a>.</p>
 				  </div>
@@ -127,22 +139,136 @@
 				  </table>
 				</div>
 			</div>
+			
+			<!-- ACTUS -->
 			<div class="col-sm-3"> 
 				<div class="panel panel-default">
 				  <!-- Default panel contents -->
-				  <div class="panel-heading">Une petite actu ou un graphe</div>
+				  <div class="panel-heading"><strong>Une petite actu ou un graphique</strong></div>
 				  <div class="panel-body">
 					<img width="100%" src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/pleine_page/public/article/12956/body/15-06-cpt-chamois2-photo-ma.jpg">
 				  </div>
 				</div>
 			</div>
+			<div class="col-sm-3"> 
+				<div class="panel panel-default">
+				  <!-- Default panel contents -->
+				  <div class="panel-heading"><strong>Une petite actu ou un graphique</strong></div>
+				  <div class="panel-body">
+					<img width="100%" src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/pleine_page/public/article/12956/body/15-06-cpt-chamois2-photo-ma.jpg">
+				  </div>
+				</div>
+			</div>
+			
+			<!-- TEST CARTO -->
+			<div id="mapContainer" class="row col-sm-9">
+                <div id="map" class="leaflet-container leaflet-fade-anim" tabindex="0" style="position: relative;"> <div class="leaflet-map-pane" style="transform: translate3d(-5px, 0px, 0px);"><div class="leaflet-tile-pane"><div class="leaflet-layer" style="z-index: 1;"><div class="leaflet-tile-container"></div><div class="leaflet-tile-container leaflet-zoom-animated"><img class="leaflet-tile leaflet-tile-loaded" src="http://b.tile.openstreetmap.org/9/264/184.png" style="height: 256px; width: 256px; left: 301px; top: 149px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://c.tile.openstreetmap.org/9/264/185.png" style="height: 256px; width: 256px; left: 301px; top: 405px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://a.tile.openstreetmap.org/9/263/184.png" style="height: 256px; width: 256px; left: 45px; top: 149px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://a.tile.openstreetmap.org/9/264/183.png" style="height: 256px; width: 256px; left: 301px; top: -107px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://c.tile.openstreetmap.org/9/265/184.png" style="height: 256px; width: 256px; left: 557px; top: 149px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://a.tile.openstreetmap.org/9/265/185.png" style="height: 256px; width: 256px; left: 557px; top: 405px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://b.tile.openstreetmap.org/9/265/183.png" style="height: 256px; width: 256px; left: 557px; top: -107px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://b.tile.openstreetmap.org/9/263/185.png" style="height: 256px; width: 256px; left: 45px; top: 405px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://c.tile.openstreetmap.org/9/263/183.png" style="height: 256px; width: 256px; left: 45px; top: -107px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://a.tile.openstreetmap.org/9/266/184.png" style="height: 256px; width: 256px; left: 813px; top: 149px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://c.tile.openstreetmap.org/9/262/184.png" style="height: 256px; width: 256px; left: -211px; top: 149px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://c.tile.openstreetmap.org/9/266/183.png" style="height: 256px; width: 256px; left: 813px; top: -107px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://b.tile.openstreetmap.org/9/262/183.png" style="height: 256px; width: 256px; left: -211px; top: -107px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://a.tile.openstreetmap.org/9/262/185.png" style="height: 256px; width: 256px; left: -211px; top: 405px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://b.tile.openstreetmap.org/9/266/185.png" style="height: 256px; width: 256px; left: 813px; top: 405px;"></div></div><div class="leaflet-layer" style="z-index: 2;"><div class="leaflet-tile-container"></div><div class="leaflet-tile-container leaflet-zoom-animated"><img class="leaflet-tile leaflet-tile-loaded" src="http://gpp3-wxs.ign.fr/9lecnwu27bjiw08s384hvzhi/wmts?LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD&amp;EXCEPTIONS=text/xml&amp;FORMAT=image/jpeg&amp;SERVICE=WMTS&amp;VERSION=1.0.0&amp;REQUEST=GetTile&amp;STYLE=normal&amp;TILEMATRIXSET=PM&amp;&amp;TILEMATRIX=9&amp;TILECOL=264&amp;TILEROW=184" style="height: 256px; width: 256px; left: 301px; top: 149px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://gpp3-wxs.ign.fr/9lecnwu27bjiw08s384hvzhi/wmts?LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD&amp;EXCEPTIONS=text/xml&amp;FORMAT=image/jpeg&amp;SERVICE=WMTS&amp;VERSION=1.0.0&amp;REQUEST=GetTile&amp;STYLE=normal&amp;TILEMATRIXSET=PM&amp;&amp;TILEMATRIX=9&amp;TILECOL=264&amp;TILEROW=185" style="height: 256px; width: 256px; left: 301px; top: 405px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://gpp3-wxs.ign.fr/9lecnwu27bjiw08s384hvzhi/wmts?LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD&amp;EXCEPTIONS=text/xml&amp;FORMAT=image/jpeg&amp;SERVICE=WMTS&amp;VERSION=1.0.0&amp;REQUEST=GetTile&amp;STYLE=normal&amp;TILEMATRIXSET=PM&amp;&amp;TILEMATRIX=9&amp;TILECOL=263&amp;TILEROW=184" style="height: 256px; width: 256px; left: 45px; top: 149px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://gpp3-wxs.ign.fr/9lecnwu27bjiw08s384hvzhi/wmts?LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD&amp;EXCEPTIONS=text/xml&amp;FORMAT=image/jpeg&amp;SERVICE=WMTS&amp;VERSION=1.0.0&amp;REQUEST=GetTile&amp;STYLE=normal&amp;TILEMATRIXSET=PM&amp;&amp;TILEMATRIX=9&amp;TILECOL=264&amp;TILEROW=183" style="height: 256px; width: 256px; left: 301px; top: -107px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://gpp3-wxs.ign.fr/9lecnwu27bjiw08s384hvzhi/wmts?LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD&amp;EXCEPTIONS=text/xml&amp;FORMAT=image/jpeg&amp;SERVICE=WMTS&amp;VERSION=1.0.0&amp;REQUEST=GetTile&amp;STYLE=normal&amp;TILEMATRIXSET=PM&amp;&amp;TILEMATRIX=9&amp;TILECOL=265&amp;TILEROW=184" style="height: 256px; width: 256px; left: 557px; top: 149px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://gpp3-wxs.ign.fr/9lecnwu27bjiw08s384hvzhi/wmts?LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD&amp;EXCEPTIONS=text/xml&amp;FORMAT=image/jpeg&amp;SERVICE=WMTS&amp;VERSION=1.0.0&amp;REQUEST=GetTile&amp;STYLE=normal&amp;TILEMATRIXSET=PM&amp;&amp;TILEMATRIX=9&amp;TILECOL=265&amp;TILEROW=185" style="height: 256px; width: 256px; left: 557px; top: 405px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://gpp3-wxs.ign.fr/9lecnwu27bjiw08s384hvzhi/wmts?LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD&amp;EXCEPTIONS=text/xml&amp;FORMAT=image/jpeg&amp;SERVICE=WMTS&amp;VERSION=1.0.0&amp;REQUEST=GetTile&amp;STYLE=normal&amp;TILEMATRIXSET=PM&amp;&amp;TILEMATRIX=9&amp;TILECOL=265&amp;TILEROW=183" style="height: 256px; width: 256px; left: 557px; top: -107px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://gpp3-wxs.ign.fr/9lecnwu27bjiw08s384hvzhi/wmts?LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD&amp;EXCEPTIONS=text/xml&amp;FORMAT=image/jpeg&amp;SERVICE=WMTS&amp;VERSION=1.0.0&amp;REQUEST=GetTile&amp;STYLE=normal&amp;TILEMATRIXSET=PM&amp;&amp;TILEMATRIX=9&amp;TILECOL=263&amp;TILEROW=185" style="height: 256px; width: 256px; left: 45px; top: 405px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://gpp3-wxs.ign.fr/9lecnwu27bjiw08s384hvzhi/wmts?LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD&amp;EXCEPTIONS=text/xml&amp;FORMAT=image/jpeg&amp;SERVICE=WMTS&amp;VERSION=1.0.0&amp;REQUEST=GetTile&amp;STYLE=normal&amp;TILEMATRIXSET=PM&amp;&amp;TILEMATRIX=9&amp;TILECOL=263&amp;TILEROW=183" style="height: 256px; width: 256px; left: 45px; top: -107px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://gpp3-wxs.ign.fr/9lecnwu27bjiw08s384hvzhi/wmts?LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD&amp;EXCEPTIONS=text/xml&amp;FORMAT=image/jpeg&amp;SERVICE=WMTS&amp;VERSION=1.0.0&amp;REQUEST=GetTile&amp;STYLE=normal&amp;TILEMATRIXSET=PM&amp;&amp;TILEMATRIX=9&amp;TILECOL=266&amp;TILEROW=184" style="height: 256px; width: 256px; left: 813px; top: 149px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://gpp3-wxs.ign.fr/9lecnwu27bjiw08s384hvzhi/wmts?LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD&amp;EXCEPTIONS=text/xml&amp;FORMAT=image/jpeg&amp;SERVICE=WMTS&amp;VERSION=1.0.0&amp;REQUEST=GetTile&amp;STYLE=normal&amp;TILEMATRIXSET=PM&amp;&amp;TILEMATRIX=9&amp;TILECOL=262&amp;TILEROW=184" style="height: 256px; width: 256px; left: -211px; top: 149px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://gpp3-wxs.ign.fr/9lecnwu27bjiw08s384hvzhi/wmts?LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD&amp;EXCEPTIONS=text/xml&amp;FORMAT=image/jpeg&amp;SERVICE=WMTS&amp;VERSION=1.0.0&amp;REQUEST=GetTile&amp;STYLE=normal&amp;TILEMATRIXSET=PM&amp;&amp;TILEMATRIX=9&amp;TILECOL=266&amp;TILEROW=183" style="height: 256px; width: 256px; left: 813px; top: -107px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://gpp3-wxs.ign.fr/9lecnwu27bjiw08s384hvzhi/wmts?LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD&amp;EXCEPTIONS=text/xml&amp;FORMAT=image/jpeg&amp;SERVICE=WMTS&amp;VERSION=1.0.0&amp;REQUEST=GetTile&amp;STYLE=normal&amp;TILEMATRIXSET=PM&amp;&amp;TILEMATRIX=9&amp;TILECOL=262&amp;TILEROW=183" style="height: 256px; width: 256px; left: -211px; top: -107px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://gpp3-wxs.ign.fr/9lecnwu27bjiw08s384hvzhi/wmts?LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD&amp;EXCEPTIONS=text/xml&amp;FORMAT=image/jpeg&amp;SERVICE=WMTS&amp;VERSION=1.0.0&amp;REQUEST=GetTile&amp;STYLE=normal&amp;TILEMATRIXSET=PM&amp;&amp;TILEMATRIX=9&amp;TILECOL=262&amp;TILEROW=185" style="height: 256px; width: 256px; left: -211px; top: 405px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://gpp3-wxs.ign.fr/9lecnwu27bjiw08s384hvzhi/wmts?LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD&amp;EXCEPTIONS=text/xml&amp;FORMAT=image/jpeg&amp;SERVICE=WMTS&amp;VERSION=1.0.0&amp;REQUEST=GetTile&amp;STYLE=normal&amp;TILEMATRIXSET=PM&amp;&amp;TILEMATRIX=9&amp;TILECOL=266&amp;TILEROW=185" style="height: 256px; width: 256px; left: 813px; top: 405px;"></div></div></div><div class="leaflet-objects-pane"><div class="leaflet-shadow-pane"></div><div class="leaflet-overlay-pane"><svg class="leaflet-zoom-animated" width="1075" height="625" viewBox="-17 -13 1075 625" style="transform: translate3d(-17px, -13px, 0px);"></svg></div><div class="leaflet-marker-pane"><div class="leaflet-marker-icon marker-cluster marker-cluster-small leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -20px; margin-top: -20px; width: 40px; height: 40px; transform: translate3d(589px, 449px, 0px); z-index: 449;"><div><span>6</span></div></div><div class="leaflet-marker-icon marker-cluster marker-cluster-medium leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -20px; margin-top: -20px; width: 40px; height: 40px; transform: translate3d(623px, 330px, 0px); z-index: 330;"><div><span>11</span></div></div><div class="leaflet-marker-icon marker-cluster marker-cluster-medium leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -20px; margin-top: -20px; width: 40px; height: 40px; transform: translate3d(503px, 357px, 0px); z-index: 357;"><div><span>21</span></div></div><div class="leaflet-marker-icon marker-cluster marker-cluster-large leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -20px; margin-top: -20px; width: 40px; height: 40px; transform: translate3d(456px, 226px, 0px); z-index: 226;"><div><span>108</span></div></div></div><div class="leaflet-popup-pane"></div></div></div><div class="leaflet-control-container"><div class="leaflet-top leaflet-left"><div class="leaflet-control-zoom leaflet-bar leaflet-control"><a class="leaflet-control-zoom-in" href="#" title="Zoom in">+</a><a class="leaflet-control-zoom-out" href="#" title="Zoom out">-</a></div><div class="leaflet-control-fullscreen leaflet-bar leaflet-control"><a class="leaflet-control-fullscreen-button leaflet-bar-part" href="#" title="View Fullscreen"></a></div></div><div class="leaflet-top leaflet-right"><div class="leaflet-control-layers leaflet-control" aria-haspopup="true"><a class="leaflet-control-layers-toggle" href="#" title="Layers"></a><form class="leaflet-control-layers-list"><div class="leaflet-control-layers-base"><label><input type="radio" class="leaflet-control-layers-selector" name="leaflet-base-layers" checked="checked"><span> OSM</span></label><label><input type="radio" class="leaflet-control-layers-selector" name="leaflet-base-layers" checked="checked"><span> IGN</span></label><label><input type="radio" class="leaflet-control-layers-selector" name="leaflet-base-layers"><span> Satellite</span></label></div><div class="leaflet-control-layers-separator" style="display: none;"></div><div class="leaflet-control-layers-overlays"></div></form></div></div><div class="leaflet-bottom leaflet-left"></div><div class="leaflet-bottom leaflet-right"><div class="leaflet-control-attribution leaflet-control"><a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> | © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, © <a href="http://www.ign.fr/">IGN</a></div></div></div></div>
+            </div>
+			
+
+			<!-- SAUT DE LIGNE -->
+			<div class="col-sm-12" style="height:20px"></div>
+			
+			<!-- ESPECES PERIODE -->
+			<div class="col-sm-12"> 
+				<div class="panel panel-default">
+					<div class="panel-heading"><strong>Espèces les plus observées à cette période</strong></div>
+					<div class="row" style="padding: 5px;">
+					  <div class="col-xs-3 col-md-2">
+						<a href="#" class="thumbnail">
+						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9837/015472.jpg" alt="...">
+						</a>
+					  </div>
+					  <div class="col-xs-3 col-md-2">
+						<a href="#" class="thumbnail">
+						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9590/056467_0.jpg" alt="...">
+						</a>
+					  </div>
+					  <div class="col-xs-3 col-md-2">
+						<a href="#" class="thumbnail">
+						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9700/023256.jpg" alt="...">
+						</a>
+					  </div>
+					  <div class="col-xs-3 col-md-2">
+						<a href="#" class="thumbnail">
+						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9703/023292.jpg" alt="...">
+						</a>
+					  </div>
+					  <div class="col-xs-3 col-md-2">
+						<a href="#" class="thumbnail">
+						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9588/059261.jpg" alt="...">
+						</a>
+					  </div>
+					  <div class="col-xs-3 col-md-2">
+						<a href="#" class="thumbnail">
+						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9587/026683.jpg" alt="...">
+						</a>
+					  </div>
+					  
+					  <div class="col-xs-3 col-md-2">
+						<a href="#" class="thumbnail">
+						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9702/026551.jpg" alt="...">
+						</a>
+					  </div>
+					  <div class="col-xs-3 col-md-2">
+						<a href="#" class="thumbnail">
+						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9695/035039.jpg" alt="...">
+						</a>
+					  </div>
+					  <div class="col-xs-3 col-md-2">
+						<a href="#" class="thumbnail">
+						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9832/025930.jpg" alt="...">
+						</a>
+					  </div>
+					  <div class="col-xs-3 col-md-2">
+						<a href="#" class="thumbnail">
+						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9597/028888.jpg" alt="...">
+						</a>
+					  </div>
+					  <div class="col-xs-3 col-md-2">
+						<a href="espece?cd_ref=212" class="thumbnail">
+						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9658/021190.jpg" alt="...">
+						</a>
+					  </div>
+					  <div class="col-xs-3 col-md-2">
+						<a href="#" class="thumbnail">
+						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9839/014306.jpg" alt="...">
+						</a>
+					  </div>
+					</div>
+				</div>
+			</div>
+			
 		</div>
+	
+	<!-- AJOUT CAMILLE -->	
+	<script type="text/javascript" src="/atlas/static/conf/calculCustom.js"></script>
+
+    <script type="text/javascript" src="/atlas/static/conf/custom.js"></script>
+
+    <script> 
+             var dataset = {{altitudes|tojson}},
+                 months = {{months|tojson}}
+                 observations = {{observations|tojson}},
+                 listeTaxons = {{listeTaxons|tojson}};
+    </script>  
+	
+    <script type="text/javascript" src="/atlas/static/chart.js"></script>
+
+   <script > var taxonYearMin = {{taxon.yearmin}};</script> 
+
+    <script src="{{url_for('static', filename='map.js') }}"></script>
+    <script src="{{url_for('static', filename='main.js') }}"></script>
+
+	<!-- FIN AJOUT CAMILLE -->		
 		
 	
 	   <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
 	   <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+	   <!--
 	   <script type="text/javascript">
 			  var listeTaxons = {{listeTaxons|tojson }} </script>
+			  -->	
 	   <script src="{{url_for('static', filename='main.js') }}"></script>
 
     </body>
