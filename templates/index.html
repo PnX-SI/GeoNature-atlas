@@ -11,15 +11,16 @@
         <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
 		
         <link rel="stylesheet" href="{{url_for('static', filename='/css/ficheEspece.css') }}" />
-
+				
     </head>
 
     <body>
 
         {% include 'navbar.html' %}
 
-		<div id ="page" class="container-fluid">
-			<div class="col-sm-6"> 
+		<div class="container-fluid">
+			<!-- Introduction -->
+			<div class="col-sm-5"> 
 				<h1>
 					Bienvenue sur l'atlas de la faune et de la flore du Parc national des Ecrins
 				</h1>
@@ -30,23 +31,114 @@
 					Celles-ci se basent sur les observations réalisées en temps réel par les agents et présente une vue d'ensemble des espèces observées mais en aucun cas un inventaire exhaustif des espèces du territoire.
 				</p>
 				<div class="alert alert-danger" role="alert">
-				  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-				  EN COURS DE DEVELOPPEMENT ! Actuellement, vous pouvez rechercher une espèce pour afficher sa fiche détail (encore incomplète). 
-				  <br/>
-				  Suivez les développements sur <a href="https://github.com/PnEcrins/GeoNature-atlas" target="_blank">Github</a>.
+					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+					EN COURS DE DEVELOPPEMENT ! Actuellement, vous pouvez rechercher une espèce pour afficher sa fiche détail (encore incomplète). 
+					<br/>
+					Suivez les développements sur <a href="https://github.com/PnEcrins/GeoNature-atlas" target="_blank">Github</a>.
 				</div>
 				<div class="alert alert-info" role="alert">
-				  A terme cette page d'accueil proposera un tableau de bord des données présentes dans l'atlas, des statistiques ainsi que des informations dynamiques sur les dernières observations, les espèces les plus observées dans la période en cours, les espèces observées autour de moi. A suivre...
+					<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+					A terme cette page d'accueil proposera un tableau de bord des données présentes dans l'atlas, des statistiques ainsi que des informations dynamiques sur les dernières observations, les espèces les plus observées dans la période en cours, les espèces observées autour de moi. A suivre...
 				</div>
 			</div>
-			<div class="col-sm-6"> 
+			<!-- Photo (aléatoire ?) -->
+			<div class="col-sm-7"> 
 				<a href="espece?cd_ref=247044">
 					<img src="/atlas/static/images/247044-home.jpg" width="100%">
 				</a>
 			</div>
+			
+			<div class="col-sm-12" style="height:20px"></div>
+			
+			<!-- Dernières espèces observées -->
+			<div class="col-sm-9"> 
+				<div class="panel panel-default">
+					<div class="panel-heading">Dernières espèces observées</div>
+					<div class="row" style="padding: 10px;">
+					  <div class="col-xs-6 col-md-3">
+						<div class="thumbnail">
+						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9698/037466.jpg" alt="...">
+						  <div class="caption">
+							<h4>Saxifrage à feuilles opposées</h3>
+							<p>Observé le 22 juin 2016 dans la commune XXX</p>
+							<p><a href="espece?cd_ref=121132" class="btn btn-primary" role="button">Fiche détail</a></p>
+						  </div>
+						</div>
+					  </div>
+					  <div class="col-xs-6 col-md-3">
+						<div class="thumbnail">
+						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9593/000024.jpg" alt="...">
+						  <div class="caption">
+							<h4>Lièvre variable</h3>
+							<p>Observé le 22 juin 2016 dans la commune XXX</p>
+							<p><a href="espece?cd_ref=61699" class="btn btn-primary" role="button">Fiche détail</a></p>
+						  </div>
+						</div>
+					  </div>
+					  <div class="col-xs-6 col-md-3">
+						<div class="thumbnail">
+						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9699/027530.jpg" alt="...">
+						  <div class="caption">
+							<h4>Buxbaumie verte</h3>
+							<p>Observé le 21 juin 2016 dans la commune XXX</p>
+							<p><a href="espece?cd_ref=247044" class="btn btn-primary" role="button">Fiche détail</a></p>
+						  </div>
+						</div>
+					  </div>
+					  <div class="col-xs-6 col-md-3">
+						<div class="thumbnail">
+						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/13010/021658recadre.jpg" alt="...">
+						  <div class="caption">
+							<h4>Hermine</h3>
+							<p>Observé le 19 juin dans la commune XXX</p>
+							<p><a href="espece?cd_ref=60686" class="btn btn-primary" role="button">Fiche détail</a></p>
+						  </div>
+						</div>
+					  </div>
+					
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-3"> 
+				<div class="panel panel-default">
+				  <!-- Default panel contents -->
+				  <div class="panel-heading">571278 observations</div>
+				  <div class="panel-body">
+					<p>Les observations sont mises à jour en temps réel à chaque fois qu'un agent saisi une nouvelle donnée dans les <a href="https://github.com/PnEcrins/GeoNature" target="_blank">bases de données scientifiques du Parc national des Ecrins</a>.</p>
+				  </div>
+				  
+
+				  <!-- Table -->
+				  <table class="table">
+					<tbody> 
+						<tr> 
+							<th scope="row">Faune</th> 
+							<td>369440 observations</td> 
+						</tr> 
+						<tr> 
+							<th scope="row">Flore</th> 
+							<td>201724 observations</td> 
+						</tr>
+						<tr> 
+							<th scope="row">Fonge</th> 
+							<td>106 observations</td> 
+						</tr>
+					</tbody>
+				  </table>
+				</div>
+			</div>
+			<div class="col-sm-3"> 
+				<div class="panel panel-default">
+				  <!-- Default panel contents -->
+				  <div class="panel-heading">Une petite actu ou un graphe</div>
+				  <div class="panel-body">
+					<img width="100%" src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/pleine_page/public/article/12956/body/15-06-cpt-chamois2-photo-ma.jpg">
+				  </div>
+				</div>
+			</div>
 		</div>
 		
-		
+	
 	   <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
 	   <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
 	   <script type="text/javascript">
