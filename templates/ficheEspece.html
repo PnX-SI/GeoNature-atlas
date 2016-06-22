@@ -65,9 +65,11 @@
             <div id='mapContainer' class="row col-sm-7">
                 <div id="map"> </div>
             </div>
-            <div id="graphContainer" class="row col-sm-4">
+            <div id="graphContainer" class="row col-sm-5">
                 <h3 class="text-primary text-center"> Observations par classes d'altitudes </h3>
                 <div id="altiChart" style="height: 200px;"></div>
+                <h3 class="text-primary text-center"> Observations mensuelles </h3>
+                <div id="phenologyChart" style="height: 200px;"> </div>
           </div>
 
         </div>
@@ -82,8 +84,6 @@
 
         </div>
 
-
-        <button id="test"> test</button>
        
     </div>
 
@@ -95,6 +95,7 @@
 
     <script> 
              var dataset = {{altitudes|tojson}},
+                 months = {{months|tojson}}
                  observations = {{observations|tojson}},
                  listeTaxons = {{listeTaxons|tojson}};
     </script>  

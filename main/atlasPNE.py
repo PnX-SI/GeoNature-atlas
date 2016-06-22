@@ -4,7 +4,7 @@ import os
 import sys
 from flask import Flask, request, render_template, jsonify
 from werkzeug.wrappers import Response
-from modeles.repositories import vmTaxonsRepository, vmObservationsRepository, vmAltitudesRepository, vmSearchTaxonRepository
+from modeles.repositories import vmTaxonsRepository, vmObservationsRepository, vmAltitudesRepository, vmSearchTaxonRepository, vmMoisRepository
 from . import main
 import json
 
@@ -23,4 +23,5 @@ def ficheEspece():
     taxon = vmTaxonsRepository.rechercheEspece(cd_ref)
     observations = vmObservationsRepository.searchObservation(cd_ref)
     altitudes = vmAltitudesRepository.getAltitudes(cd_ref)
-    return render_template('ficheEspece.html', taxon=taxon, listeTaxons=listeTaxons, observations=observations, cd_ref=cd_ref, altitudes=altitudes)
+    months = vmMoisRepository.getMonthlyObservations(cd_ref)
+    return render_template('ficheEspece.html', taxon=taxon, listeTaxons=listeTaxons, observations=observations, cd_ref=cd_ref, altitudes=altitudes, months= months)

@@ -1,5 +1,5 @@
 
-
+// alti graph
 window.m = Morris.Bar({
                 element:"altiChart",
                 data : dataset,
@@ -10,7 +10,6 @@ window.m = Morris.Bar({
                 hideHover: 'auto',
                 resize: true,
                 axes: true,
-
             });
 
     $(window).on('resize', function() {
@@ -21,6 +20,33 @@ window.m = Morris.Bar({
        }
     });
     
+
+svgbis=d3.selectAll("svg");
+
+        svgbis.append("g")
+        .append("text")
+            .attr("y", "90%")
+            .attr("x", "100%")
+            .attr("dy", ".71em")
+            .attr("fill", "#888888")
+            .attr("font-size", "10px")
+            .style("text-anchor", "end")
+            .text("Altitude (m)");
+
+
+var phenologyChart =  Morris.Bar({
+                        element:"phenologyChart",
+                        data : months,
+                        xkey: "mois",
+                        ykeys : ["value"],
+                        labels: ['Effectif'],
+                        xLabelAngle: 60,
+                        hideHover: 'auto',
+                        resize: true,
+                        axes: true,
+                    });
+
+
 rect = d3.selectAll("rect");
 
             rect.on("mouseover", function(d) {
@@ -34,7 +60,6 @@ rect = d3.selectAll("rect");
 
 });
 
-
 svgContainer = d3.selectAll("svg");
     svgContainer.append("g")
         .append("text")
@@ -46,13 +71,3 @@ svgContainer = d3.selectAll("svg");
             .attr("font-size", "10px")
             .style("text-anchor", "end")
             .text("Observations");
-
-        svgContainer.append("g")
-        .append("text")
-            .attr("y", "90%")
-            .attr("x", "100%")
-            .attr("dy", ".71em")
-            .attr("fill", "#888888")
-            .attr("font-size", "10px")
-            .style("text-anchor", "end")
-            .text("Altitude (m)");
