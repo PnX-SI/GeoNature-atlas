@@ -685,7 +685,7 @@ ALTER FUNCTION atlas.create_vm_altitudes()
 select atlas.create_vm_altitudes();
 
 CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS 
-SELECT tx.cd_ref, COALESCE(tx.nom_vern || '-' || tx.lb_nom, tx.lb_nom) AS nom_search FROM atlas.vm_taxref tx JOIN atlas.vm_taxons t ON t.cd_ref = tx.cd_ref;
+SELECT tx.cd_ref, COALESCE(tx.lb_nom || '-' || tx.nom_vern, tx.lb_nom) AS nom_search FROM atlas.vm_taxref tx JOIN atlas.vm_taxons t ON t.cd_ref = tx.cd_ref;
 create index  on  atlas.vm_search_taxon(cd_ref);
 create index  on  atlas.vm_search_taxon(nom_search);
 
@@ -734,11 +734,11 @@ LEFT JOIN _12 l ON l.cd_ref =  o.cd_ref
 WHERE o.cd_ref is not null
 ORDER BY o.cd_ref;
 create unique index on atlas.vm_mois (cd_ref);
---refresh materialized view CONCURRENTLY atlas.vm_observations;--92399ms avec les index
---refresh materialized view CONCURRENTLY atlas.vm_taxref; --8158ms avec les index
---refresh materialized view CONCURRENTLY atlas.vm_taxons;--6800ms  avec les index
---refresh materialized view CONCURRENTLY atlas.vm_search_taxon;--500ms  avec les index
---refresh materialized view CONCURRENTLY atlas.vm_altitudes;--3600ms  avec les index
---refresh materialized view CONCURRENTLY atlas.vm_mois;--6800ms  avec les index
+--refresh materialized view CONCURRENTLY atlas.vm_observations;
+--refresh materialized view CONCURRENTLY atlas.vm_taxref;
+--refresh materialized view CONCURRENTLY atlas.vm_taxons;
+--refresh materialized view CONCURRENTLY atlas.vm_search_taxon;
+--refresh materialized view CONCURRENTLY atlas.vm_altitudes;
+--refresh materialized view CONCURRENTLY atlas.vm_mois;
 
 --temp
