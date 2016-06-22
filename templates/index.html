@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8" />
@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap/css/bootstrap.min.css') }}"></link>
 
         <!-- Jquery -->
+        <script type=text/javascript src="{{url_for('static', filename='/lib/jquery-1.12.4.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
 		
 		<!-- Leaflet -->
@@ -245,19 +246,19 @@
 	
 	<!-- AJOUT CAMILLE -->	
     <script type="text/javascript" src="/atlas/static/conf/custom.js"></script>
-
-    <script src="{{url_for('static', filename='map.js') }}"></script>
-
+    <script src="{{url_for('static', filename='homeMap.js') }}"></script>
 	<!-- FIN AJOUT CAMILLE -->		
 		
 	
-	   <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
-	   <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+	    <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
+	    <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
 
-	   <script type="text/javascript">
-			  var listeTaxons = {{listeTaxons|tojson }} </script>
+	    <script type="text/javascript">
+			  var listeTaxons = {{listeTaxons|tojson }} 
+			  ,observations = {{observations|tojson}}
+        </script>
 	
-	   <script src="{{url_for('static', filename='main.js') }}"></script>
+	    <script src="{{url_for('static', filename='main.js') }}"></script>
 
     </body>
 </html>
