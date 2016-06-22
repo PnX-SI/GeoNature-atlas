@@ -12,7 +12,7 @@ sys.path.insert(0, BASE_DIR)
 metadata = MetaData()
 Base = declarative_base()
 
-class vmTaxref(Base):
+class VmTaxref(Base):
     __table__ = Table(
     'vm_taxref', metadata,
     Column('cd_nom', Integer, unique=True, primary_key=True),
