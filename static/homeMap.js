@@ -28,7 +28,8 @@ L.control.layers(baseMap).addTo(map);
 // add all observations markers whith popup
 
 function onEachFeature(feature, layer){
-    popupContent = "<b>Date: </b>"+ feature.properties.dateobs+"</br><b>Altitude: </b>"+ feature.properties.altitude_retenue+
+    popupContent = "<b>Espèce: </b>"+ feature.properties.taxon+
+                "</br><b>Date: </b>"+ feature.properties.dateobs+"</br><b>Altitude: </b>"+ feature.properties.altitude_retenue+
                 "</br><b>Observateurs: </b>"+ feature.properties.observateurs;
 
      // verifie si le champs effectif est rempli
