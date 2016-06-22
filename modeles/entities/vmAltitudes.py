@@ -28,9 +28,4 @@ class VmAltitudes(Base):
     Column('_4000_4103', Integer),
     schema='atlas', autoload=True, autoload_with=engine
 )
-    
-    def getAtttributes
-    for c in VmAltitudes.__table__.columns:
-        print c
-
 
