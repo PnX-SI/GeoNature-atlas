@@ -1,47 +1,51 @@
-#config PostgreSQL
+#
+#  GeoNature-atlas
+#  Configuration PostgreSQL
+#..........................
 
-#effacer la base de donnée existante lors de l'installation
+# Effacer la base de donnée existante lors de l'installation
 drop_apps_db=false
 
-#host de la base de données de l'application
+# Host de la base de données de l'application
 db_host=geonatdbhost
 
-#port pour base de données de l'application
+# Port pour base de données de l'application
 db_port=5432
 
-#nom de la base de données de l'application
+# Nom de la base de données de l'application
 db_name=geonatureatlas
 
-#nom de l'utilisateur propriétaire de la base PostgreSQL
+# Nom de l'utilisateur propriétaire de la base PostgreSQL
 user_pg=geonatatlas
 
-#nom du superutilisateur PostgreSQL
+# Nom du superutilisateur PostgreSQL
 admin_pg=geonatadmin
 
-#user propriétaire de la base geonaturedb
+# Password du propriétaire de la base geonaturedb
 user_pg_pass=monpassachanger
 
-#superuser de la base geonaturedb
+# Password du superuser de la base geonaturedb
 admin_pg_pass=monpassachanger
 
 #####SOURCES#####
-#host de la base de données source geonature 
+
+# Host de la base de données source Geonature 
 db_source_host=localhost
 
-#port pour la base de données source geonature
+# Port pour la base de données source Geonature
 db_source_port=5432
 
-#nom de la base de données source geonature
+# Nom de la base de données source Geonature
 db_source_name=geonaturedb
 
-#nom du user admin sur la base de données source
+# Nom du user admin sur la base de données source
 admin_source_user=geonatadmin
 
-#pass du user admin sur la base de données source
+# Pass du user admin sur la base de données source
 admin_source_pass=monpassachanger
 
-#nom du user atlas sur la base de données source  (lecture seule)
+# Nom du user atlas sur la base de données source (lecture seule)
 atlas_source_user=geonatatlas
 
-#pass du user atals sur la base de données source (lecture seule)
+# Pass du user atlas sur la base de données source (lecture seule)
 atlas_source_pass=monpassachanger

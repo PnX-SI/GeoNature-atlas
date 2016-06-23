@@ -1,3 +1,11 @@
+$(document).ready(function() {
+  $(window).keydown(function(event){
+    if(event.keyCode == 13) {
+      event.preventDefault();
+      return false;
+    }
+  });
+});
 
 autocompleteTaxons = function(listeTaxons){
 
@@ -28,12 +36,19 @@ $("#search").autocomplete({
         },
        select : function (event, ui){
         	$('#hidden-input').val(ui.item.value);
+        	console.log("selection");
+        	$('#searchButton').removeAttr("disabled");
+        	$('#searchForm').submit();
+
         	return false;
         }
 });
 
 }
 
+
 $(function(){
 	autocompleteTaxons(listeTaxons);
 })
+
+

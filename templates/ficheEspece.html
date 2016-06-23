@@ -54,7 +54,9 @@
                 <div class="col-sm-3" > 
                     <h3> {{taxon.lb_nom}} </h3>
                     <p> <i> {{taxon.nom_vern}} </i> <br/>
+                     Ordre: <i>{{taxonomy.ordre}} </i> <span class="glyphicon glyphicon-chevron-right"></span> Famille:  <i>{{taxonomy.famille}}</i> </br>
                     Nombre d'observation(s) sur le parc: <i> {{observations.features|length}} </i> </br>
+
 
 
                     <a href='https://inpn.mnhn.fr/espece/cd_nom/{{taxon.cd_ref}}' target="_blank">Fiche INPN</a>
@@ -105,8 +107,8 @@
             </div>
         </div>
 
-    </div>
 
+    </div>
 
     
     <script type="text/javascript" src="/atlas/static/conf/calculCustom.js"></script>
