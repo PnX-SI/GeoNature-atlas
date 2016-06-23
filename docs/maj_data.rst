@@ -7,24 +7,27 @@ MISE A JOUR DU CONTENU
 -----
 
 
-Les données contenues dans les vues matérialisées n'intègrent pas en temps réel les mises à jours faites dans GeoNature; Pour cela ces vues doivent être actualisées grace à une commande ``refresh``.
-Une fonction, générée lors de la création de la base de l'atlas permet de mettre à jour toutes les vues matérialisées du schéma atlas.
+Les donnÃ©es contenues dans les vues matÃ©rialisÃ©es n'intÃ¨grent pas en temps rÃ©el les mises Ã  jours faites dans GeoNature; Pour cela ces vues doivent Ãªtre actualisÃ©es grace Ã  une commande ``refresh``.
+Une fonction, gÃ©nÃ©rÃ©e lors de la crÃ©ation de la base de l'atlas permet de mettre Ã  jour toutes les vues matÃ©rialisÃ©es du schÃ©ma atlas.
 
-* Pour lancer manuellement cette fonction, ouvrez une console SQL et exécuté la commande suivante :
-
+* Pour lancer manuellement cette fonction, ouvrez une console SQL et exÃ©cutÃ© la commande suivante :
+    
     ::
         
         SELECT RefreshAllMaterializedViews('atlas');
 
-* Pour automatiser la commande, ajouter la dans le crontab de l'utilisateur root : 
-
+* Pour automatiser la commande, ajouter la dans le crontab de l'utilisateur root :
+    
     ::
+        
         sudo crontab -e
 
-    ajouter la ligne suivante en prenant soin de mettre à jour les paramètres de connexion à la base de l'atlas :
+
+ajouter la ligne suivante en prenant soin de mettre Ã  jour les paramÃ¨tres de connexion Ã  la base de l'atlas :
 
     ::
         
         0 4 * * * export PGPASSWORD='monpassachanger';psql -h localhost -U geonatatlas -d geonatureatlas -c "SELECT RefreshAllMateriali$
 
-    Pour enregistrer et sortir : ``ctrl + o`` puis ``ctrl + x``
+
+Pour enregistrer et sortir : ``ctrl + o`` puis ``ctrl + x``
