@@ -92,7 +92,7 @@
 						  <div class="caption">
 							<h4>Buxbaumie verte</h3>
 							<p>Observé le 21 juin 2016 dans la commune XXX</p>
-							<p><a href="espece?cd_ref=247044" class="btn btn-primary" role="button">Fiche détail</a></p>
+							<p><a href="espece?cd_ref=3885" class="btn btn-primary" role="button">Fiche détail</a></p>
 						  </div>
 						</div>
 					  </div>
@@ -110,8 +110,9 @@
 					  <!-- SAUT DE LIGNE -->
 					  <div class="col-sm-12" style="height:20px"></div>
 					  
-					  <!-- TEST CARTO VIDE (à alimenter avec 100 dernières observations -->
-					  <div id='mapContainer' class="row col-sm-12">
+					  <!-- CARTO des 100 dernières observations -->
+					  <div id='mapContainer' class="col-sm-12">
+						<p>100 dernières observations</p>
 						<div id="map"> </div>
 					  </div>
 					
@@ -130,6 +131,9 @@
 				  
 
 				  <!-- Table -->
+				  <!-- SELECT regne, count (*) FROM atlas.vm_observations o
+					JOIN atlas.vm_taxons t ON o.cd_ref = t.cd_ref
+					GROUP BY t.regne -->
 				  <table class="table">
 					<tbody> 
 						<tr> 
@@ -155,7 +159,7 @@
 				  <!-- Default panel contents -->
 				  <div class="panel-heading"><strong>Une petite actu ou un graphique</strong></div>
 				  <div class="panel-body">
-					<img width="100%" src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/pleine_page/public/article/12956/body/15-06-cpt-chamois2-photo-ma.jpg">
+					<img width="100%" src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/article/images_content/stories/dossiers/2013-04-diffusion_donnees/2013-04-donnees-test-smart.jpg">
 				  </div>
 				</div>
 			</div>
@@ -164,7 +168,7 @@
 				  <!-- Default panel contents -->
 				  <div class="panel-heading"><strong>Une petite actu ou un graphique</strong></div>
 				  <div class="panel-body">
-					<img width="100%" src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/pleine_page/public/article/12956/body/15-06-cpt-chamois2-photo-ma.jpg">
+					<img width="100%" src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/article/images_content/stories/dossiers/2010-06-suivi-flore/2010-06-prospection-pda.jpg">
 				  </div>
 				</div>
 			</div>
@@ -178,13 +182,15 @@
 					<div class="panel-heading"><strong>Espèces les plus observées à cette période</strong></div>
 					<div class="row" style="padding: 5px;">
 					  <div class="col-xs-3 col-md-2">
-						<a href="#" class="thumbnail">
-						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9837/015472.jpg" alt="...">
+						<a href="espece?cd_ref=716523" class="thumbnail">
+						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9837/015472.jpg" 
+						  alt="Petit apollon" title="Petit apollon">
 						</a>
 					  </div>
 					  <div class="col-xs-3 col-md-2">
-						<a href="#" class="thumbnail">
-						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9590/056467_0.jpg" alt="...">
+						<a href="espece?cd_ref=3780" class="thumbnail">
+						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9590/056467_0.jpg" 
+						  alt="Tichodrome échelette" title="Tichodrome échelette">
 						</a>
 					  </div>
 					  <div class="col-xs-3 col-md-2">
@@ -198,8 +204,9 @@
 						</a>
 					  </div>
 					  <div class="col-xs-3 col-md-2">
-						<a href="#" class="thumbnail">
-						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9588/059261.jpg" alt="...">
+						<a href="espece?cd_ref=3507" class="thumbnail">
+						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9588/059261.jpg" 
+						  alt="Chevêchette d'Europe" title="Chevêchette d'Europe">
 						</a>
 					  </div>
 					  <div class="col-xs-3 col-md-2">
@@ -219,8 +226,8 @@
 						</a>
 					  </div>
 					  <div class="col-xs-3 col-md-2">
-						<a href="#" class="thumbnail">
-						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9832/025930.jpg" alt="...">
+						<a href="espece?cd_ref=12348" class="thumbnail">
+						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9832/025930.jpg" alt="Rosalie des Alpes" title="Rosalie des Alpes">
 						</a>
 					  </div>
 					  <div class="col-xs-3 col-md-2">
@@ -234,8 +241,8 @@
 						</a>
 					  </div>
 					  <div class="col-xs-3 col-md-2">
-						<a href="#" class="thumbnail">
-						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9839/014306.jpg" alt="...">
+						<a href="espece?cd_ref=159446" class="thumbnail">
+						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9839/014306.jpg" alt="Isabelle" title="Isabelle">
 						</a>
 					  </div>
 					</div>
@@ -249,6 +256,7 @@
     <script src="{{url_for('static', filename='homeMap.js') }}"></script>
 	<!-- FIN AJOUT CAMILLE -->		
 		
+	<!-- JQUERY APPELE 2 FOIS ? -->	
 	
 	    <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
 	    <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
