@@ -21,7 +21,7 @@ $("#search").autocomplete({
 
 		source: function (request, response) {
 		var results = $.ui.autocomplete.filter(tabTaxons, request.term);
-		response(results.slice(0, 10))},
+		response(results.slice(0, 20))},
          focus: function(event, ui) {
          	$('#search').val(ui.item.label)
             return false;

@@ -14,7 +14,8 @@ import json
 @main.route('/' , methods=['GET', 'POST'])
 def index():
     listeTaxons = vmSearchTaxonRepository.listeTaxons()
-    return render_template('index.html', listeTaxons=listeTaxons)
+    observations = vmObservationsRepository.lastObservations(100)
+    return render_template('index.html', listeTaxons=listeTaxons, observations=observations)
 
 @main.route('/espece', methods=['GET', 'POST'])
 def ficheEspece():
