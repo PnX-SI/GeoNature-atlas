@@ -685,7 +685,8 @@ ALTER FUNCTION atlas.create_vm_altitudes()
 select atlas.create_vm_altitudes();
 
 CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS 
-SELECT tx.cd_ref, COALESCE(tx.lb_nom || ' | ' || tx.nom_vern, tx.lb_nom) AS nom_search FROM atlas.vm_taxref tx JOIN atlas.vm_taxons t ON t.cd_ref = tx.cd_ref;
+SELECT tx.cd_nom, tx.cd_ref, COALESCE(tx.lb_nom || ' | ' || tx.nom_vern, tx.lb_nom) AS nom_search FROM atlas.vm_taxref tx JOIN atlas.vm_taxons t ON t.cd_ref = tx.cd_ref;
+create UNIQUE index on atlas.vm_search_taxon(cd_nom);
 create index on atlas.vm_search_taxon(cd_ref);
 create index on atlas.vm_search_taxon(nom_search); 
 
@@ -734,11 +735,22 @@ LEFT JOIN _12 l ON l.cd_ref =  o.cd_ref
 WHERE o.cd_ref is not null
 ORDER BY o.cd_ref;
 create unique index on atlas.vm_mois (cd_ref);
---refresh materialized view CONCURRENTLY atlas.vm_observations;
---refresh materialized view CONCURRENTLY atlas.vm_taxref;
---refresh materialized view CONCURRENTLY atlas.vm_taxons;
---refresh materialized view CONCURRENTLY atlas.vm_search_taxon;
---refresh materialized view CONCURRENTLY atlas.vm_altitudes;
---refresh materialized view CONCURRENTLY atlas.vm_mois;
 
---temp
+--Fonction pour rafraichir toutes les vues matérialisées d'un schéma
+--USAGE : SELECT RefreshAllMaterializedViews('atlas');
+CREATE OR REPLACE FUNCTION RefreshAllMaterializedViews(schema_arg TEXT DEFAULT 'public')
+RETURNS INT AS $$
+DECLARE
+    r RECORD;
+BEGIN
+    RAISE NOTICE 'Refreshing materialized view in schema %', schema_arg;
+    FOR r IN SELECT matviewname FROM pg_matviews WHERE schemaname = schema_arg 
+    LOOP
+        RAISE NOTICE 'Refreshing %.%', schema_arg, r.matviewname;
+        EXECUTE 'REFRESH MATERIALIZED VIEW ' || schema_arg || '.' || r.matviewname; 
+        --EXECUTE 'REFRESH MATERIALIZED VIEW CONCURRENTLY ' || schema_arg || '.' || r.matviewname; 
+    END LOOP;
+
+    RETURN 1;
+END 
+$$ LANGUAGE plpgsql;
