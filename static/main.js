@@ -28,6 +28,10 @@ $("#search").autocomplete({
         },
        select : function (event, ui){
         	$('#hidden-input').val(ui.item.value);
+        	console.log("selection");
+        	$('#searchButton').removeAttr("disabled");
+        	$('#searchForm').submit();
+
         	return false;
         }
 });
@@ -37,3 +41,5 @@ $("#search").autocomplete({
 $(function(){
 	autocompleteTaxons(listeTaxons);
 })
+
+
