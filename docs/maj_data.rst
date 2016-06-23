@@ -6,17 +6,16 @@ MISE A JOUR DU CONTENU
 
 -----
 
+Dans un soucis de performance, les données contenues dans les vues matérialisées n'intègrent pas en temps réel les mises à jour faites dans GeoNature. Pour cela ces vues doivent être actualisées grace à la fonction ``REFRESH MATERIALIZED VIEW`` de PostgreSQL.
+Une fonction, générée lors de la création de la BDD de GeoNature-atlas permet de mettre à jour toutes les vues matérialisées du schéma ``atlas``.
 
-Dans un soucis de performance, les données contenues dans les vues matérialisées n'intègrent pas en temps réel les mises à jour faites dans GeoNature; Pour cela ces vues doivent être actualisées grace à une commande ``refresh``.
-Une fonction, générée lors de la création de la base de GeoNature-atlas permet de mettre à jour toutes les vues matérialisées du schéma atlas.
-
-* Pour lancer manuellement cette fonction, ouvrez une console SQL et exécutez la commande suivante :
+* Pour lancer manuellement cette fonction, ouvrez une console SQL et exécutez la requête suivante :
     
   ::  
   
         SELECT RefreshAllMaterializedViews('atlas');
 
-* Pour automatiser la commande, ajoutez la dans le crontab de l'utilisateur root :
+* Pour automatiser l'éxecution de cette fonction (chaque nuit à 4 heures dans cet exemple), ajoutez la dans le crontab de l'utilisateur ``root`` :
     
   ::  
   
