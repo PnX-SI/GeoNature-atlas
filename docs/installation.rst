@@ -1,7 +1,7 @@
 ============
 INSTALLATION
 ============
-.. image:: http://geotrek.fr/images/logo-pne.png
+.. image:: http://pnecrins.github.io/GeoNature/img/logo-pne.jpg
     :target: http://www.ecrins-parcnational.fr
 
 -----
@@ -62,7 +62,7 @@ Renseigner le nom de la base de données, les utilisateurs PostgreSQL et les mot
 
 ???? Paramétrer si on veut créer la BDD fille basée sur GeoNature ou si on veut juste le schéma atlas dont on adaptera les vues à son contexte.
 
-???? Je capte pas bien le fichier settings.ini. Et si une structure n'utilise par GeoNature que faire des hosts de la BDD mère ???
+???? Je capte pas bien le fichier ``settings.ini``. Et si une structure n'utilise par GeoNature que faire des hosts de la BDD mère ???
 
 Création de la base de données
 ==============================
@@ -92,7 +92,7 @@ Dans un soucis de performance et pour ne pas requêter en permanence sur la base
 - atlas.vm_taxons qui renvoie la liste des taxons observés au moins une fois sur le territoire (présents dans vm_observations).
 
 - atlas.vm_altitudes qui renvoie le nombre d'observations pour chaque classe d'altitude et chaque taxon.
-    Cette vue peut être personnalisée (Voir ci-dessous : "Personnalisation de l'application").
+    Cette vue peut être personnalisée pour adapter les classes d'altitude (Voir ci-dessous : "Personnalisation de l'application").
     
 - atlas.vm_mois qui renvoie le nombre d'observations pour chaque mois et chaque taxon.
 
@@ -156,13 +156,18 @@ Personnalisation de l'application
 * Adapter le contenu du fichier ``static/conf/custom.js``
         
 * Modifier éventuellement les vues dans le schéma ``atlas``
-    Pour modifier la vue ``vm_altitudes`` et l'adapter aux altitudes de votre territoire, vous devez modifier le contenu de la table ``atlas.bib_altitudes``.
+
+#################################
+ 
+**Personnaliser les classes d'altitude**
+
+* Pour modifier la vue ``vm_altitudes`` et l'adapter aux altitudes de votre territoire, vous devez modifier le contenu de la table ``atlas.bib_altitudes``.
     
-    Le champ ``id_altitude`` ne doit pas comporter de doublons et l'altitude la plus basse doit avoir l'``id_altitude`` = 1.
+* Le champ ``id_altitude`` ne doit pas comporter de doublons et l'altitude la plus basse doit avoir l'``id_altitude`` = 1.
     
-    L'amplitude des tranches altitudinales peut être personnalisée, ainsi que le nombre de tranches.
+* L'amplitude des tranches altitudinales peut être personnalisée, ainsi que le nombre de tranches.
     
-    Le champ ``label_altitude`` ne doit pas commencer par un chiffre. La méthode la plus générique consiste à générer le contenu de ce champ grace à la commande SQL suivante :
+* Le champ ``label_altitude`` ne doit pas commencer par un chiffre. La méthode la plus générique consiste à générer automatiquement le contenu de ce champ grace à la commande SQL suivante :
  
   ::  
   
@@ -170,21 +175,23 @@ Personnalisation de l'application
         
 Dès que votre table ``atlas.bib_altitudes`` est complétée, vous pouvez mettre à jour la vue ``atlas.vm_altitudes`` grace à la commande SQL suivante :
  
-  ::  
-  
-        select atlas.create_vm_altitudes();
+::
+
+    select atlas.create_vm_altitudes();
+
+#################################
 
 Vous pouvez alimenter l'atlas avec une autre source de données que GeoNature à condition de respecter le nom et le typage des champs retournés par la vue.
 
 Ou vous pouvez simplement décider de l'adapter à votre GeoNature par exemple en changeant l'``id_organisme`` dont vous souhaitez afficher les données dans la condition WHERE de la vue ``atlas.vm_observations``.
 
-Modifiez les images dans le répertoire ``/static/images/``.
+Modifiez les images dans le répertoire ``/custom/images/``.
 
 TODO !!!! Dissocier les images de l'atlas (pictos, boutons...), les images liées à la custo (à mettre dans un dossier à part comme /medias/, voir Geotrek et les images liées au contenu)
 
 Vous pouvez modifier les pages d'information en éditant les fichiers HTML dans le répertoire ``/templates/`` et notamment, adaptez le contenu des fichiers :
 
-!!!!! Modifier le texte de présentation générale, quelques labels dans une surcouche ???
+!!!!! Modifier le texte de présentation générale, quelques labels dans une surcouche ??? Fichier de langue ???
 
 !!!!! Pensez à la procédure de mise à jour de l'appli et regrouper le plus possible les fichiers de customisation et de surcouche pour les rapatrier facilement au moment d'une mise à jour. 
     
