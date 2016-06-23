@@ -8,6 +8,7 @@ app = globalApp['app']
 engine = globalApp['engine']
 
 
+
 def loadSession():
     from sqlalchemy.orm import sessionmaker
     Session = sessionmaker(bind=engine)
