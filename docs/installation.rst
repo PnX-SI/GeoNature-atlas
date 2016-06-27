@@ -35,22 +35,24 @@ Installation de l'application
         mv GeoNature-X.Y.Z/ geonatureatlas/
         
 
-**Installation de Flask et des modules python necessaires:**
-  * Instalation de Flask et de pip:
+Installation de Flask et des modules python necessaires
+=======================================================
+
+* Installation de Flask et de pip :
 
   ::  
   
-	sudo apt-get install python python-pip
+        sudo apt-get install python python-pip
         sudo pip install flask
 
-Si des problèmes de dépendances surviennent tapez les lignes de commandes suivantes:
+Si des problèmes de dépendances surviennent, tapez les lignes de commandes suivantes :
 
-  ::  
-  
-	apt-get install aptitude
-        aptitude install pyhton-pip
+::
+
+    apt-get install aptitude
+    aptitude install pyhton-pip
         
-* Instalation des modules suivants:
+* Installation des modules suivants :
  
 Psycopg2 – a Python adapter for Postgres
 
@@ -58,32 +60,31 @@ Flask-SQLAlchemy – Flask extension that provides SQLAlchemy support
 
 Geoalchemy2 - SQLAlchmy extension for geometry
 
+::
+
+    sudo apt-get install libpq-dev python-dev
+    sudo pip install psycopg2
+    sudo pip install Flask-SQLAlchemy
+    sudo pip install Geoalchemy2
+	
+Dans ``/usr/local/lib/python2.7/dist-packages/sqlacodegen`` : 
+
+- Dans le fichier ``codegen.py``, ajouter
+
   ::  
   
-	sudo apt-get install libpq-dev python-dev
-        sudo pip install psycopg2
-        sudo pip install Flask-SQLAlchemy
-	sudo pip install Geoalchemy2
-	
-Dans /usr/local/lib/python2.7/dist-packages/sqlacodegen: 
+        from sqlacodegen.contrib import * 
 
-- Dans le fichier "codegen.py" ajouter
+- Créer un fichier nommé ``contrib.py`` et y ajouter : 
 
- ::  
+  ::  
   
-	from sqlacodegen.contrib import * 
-
-- créer un fichier nommé contrib.py et y ajouter: 
- ::  
-  
-	try:
+        try:
             from geoalchemy2 import Geometry
         except ImportError:
             pass
 
 
-
-        
 Configuration de la base de données PostgreSQL
 ==============================================
 
@@ -174,35 +175,34 @@ Installation et configuration du serveur Apache
 
 ???? Partir de doc GeoSites ou doc GeoNature pour Apache ???
 
-Instalation d'Apache
+Installation d'Apache
+
 ::
 
-    
     sudo apt-get install apache2 libapache2-mod-wsgi 
 
-Activer le mode WSGI et redemarer le serveur:
+Activer le mode WSGI et redémarrer le serveur:
+
 ::
 
-    
     sudo a2enmod rewrite
     sudo apache2ctl restart
 
+Créer un alias dans le fichier de configuration d'Apache : ``/etc/apache2/sites-available/000-default.conf`` en remplaçant les chemins selon votre installation :
 
-Créer un alias dans le fichier de conf Apache : ``/etc/apache2/sites-available/000-default.conf`` en remplaçant les bons paramètres dans les chemins 
 ::
 
+    WSGIScriptAlias /atlas /home/MyUserName/atlas/atlas.wsgi
     
-        WSGIScriptAlias /atlas /home/MyUserName/atlas/atlas.wsgi
-    
-        <Directory "/home/MyUserName/atlas">
-           WSGIApplicationGroup %{GLOBAL}
-           WSGIScriptReloading On
-           Order deny,allow
-           Allow from all
-        </Directory>
+    <Directory "/home/MyUserName/atlas">
+       WSGIApplicationGroup %{GLOBAL}
+       WSGIScriptReloading On
+       Order deny,allow
+       Allow from all
+    </Directory>
 
-
-
+???? Créer un autre alias et l'activer plutôt que modifier celui par défaut ????
+???? Partie ci-dessous à virer ?????
 
 Créez un fichier de configuration apache ``.htaccess`` à partir du fichier d'exemple :
 
