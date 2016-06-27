@@ -18,3 +18,8 @@ config = {
     }
 
 database_connection = "postgresql://geonatatlas:monpassachanger@localhost:5432/geonaturedb"
+
+
+# Customisation application
+
+LIMIT_OBSERVATION = 100

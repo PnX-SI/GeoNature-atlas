@@ -53,7 +53,6 @@ def toGeoJsonHome(queryResult):
         properties = {'id_synthese' : r.VmObservations.id_synthese,
                       'cd_ref': r.VmObservations.cd_ref,
                       'dateobs': str(r.VmObservations.dateobs),
-                      'observateurs' : r.VmObservations.observateurs,
                       'altitude_retenue' : r.VmObservations.altitude_retenue,
                       'effectif_total' : r.VmObservations.effectif_total,
                       'year': r.VmObservations.dateobs.year,
@@ -75,5 +74,5 @@ def searchObservation(cd_ref):
     return  toGeoJsonTaxon(observations, 15)
     
 def lastObservations(mylimit):
-    observations = session.query(VmObservations,VmTaxref).join(VmTaxref, VmObservations.cd_ref==VmTaxref.cd_nom).order_by(desc(VmObservations.dateobs)).limit(100).all()
+    observations = session.query(VmObservations,VmTaxref).join(VmTaxref, VmObservations.cd_ref==VmTaxref.cd_nom).order_by(desc(VmObservations.dateobs)).limit(mylimit).all()
     return  toGeoJsonHome(observations)

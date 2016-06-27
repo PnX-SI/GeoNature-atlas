@@ -4,6 +4,7 @@ import os
 import sys
 from flask import Flask, request, render_template, jsonify
 from werkzeug.wrappers import Response
+import config
 from modeles.repositories import vmTaxonsRepository, vmObservationsRepository, vmAltitudesRepository, vmSearchTaxonRepository, vmMoisRepository, vmTaxrefRepository
 from . import main
 import json
@@ -14,7 +15,7 @@ import json
 @main.route('/' , methods=['GET', 'POST'])
 def index():
     listeTaxons = vmSearchTaxonRepository.listeTaxons()
-    observations = vmObservationsRepository.lastObservations(100)
+    observations = vmObservationsRepository.lastObservations(config.LIMIT_OBSERVATION)
     return render_template('index.html', listeTaxons=listeTaxons, observations=observations)
 
 @main.route('/espece', methods=['GET', 'POST'])
