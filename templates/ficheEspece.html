@@ -47,31 +47,32 @@
 
 
     <div id ="page" class="container-fluid">
-        <div class='row' id="presentationEspece">
-                <div class="col-sm-2" > 
-                    <img src="{{url_for('static', filename='/images/pne.jpg') }}" style="width:200px;height:200px;">
-                </div>
-                <div class="col-sm-5" > 
-                    <h3> {{taxon.lb_nom}} </h3>
-                    {% if not taxon.nom_vern == None %}
-                    <p> <i> {{taxon.nom_vern}} </i> <br/>
-                    {% endif %}
+        <div class='row boxShadow' id="presentationEspece">
+            
+                    <div class="col-sm-2" > 
+                        <img src="{{url_for('static', filename='/images/pne.jpg') }}" style="width:200px;height:200px;">
+                    </div>
+                    <div class="col-sm-5" > 
+                        <h3> {{taxon.lb_nom}} </h3>
+                        {% if not taxon.nom_vern == None %}
+                        <p> <i> {{taxon.nom_vern}} </i> <br/>
+                        {% endif %}
 
-                    Classe: <i> {{taxon.classe}} <span class="glyphicon glyphicon-chevron-right"></span>  Ordre: <i>{{taxon.ordre}} </i> <span class="glyphicon glyphicon-chevron-right"></span> Famille:  <i>{{taxon.famille}}</i> </br>
-                    Nombre d'observation(s) sur le parc: <i> {{observations.features|length}} </i> </br>
+                        Classe: <i> {{taxon.classe}} <span class="glyphicon glyphicon-chevron-right"></span>  Ordre: <i>{{taxon.ordre}} </i> <span class="glyphicon glyphicon-chevron-right"></span> Famille:  <i>{{taxon.famille}}</i> </br>
+                        Nombre d'observation(s) sur le parc: <i> {{observations.features|length}} </i> </br>
 
 
 
-                    <a href='https://inpn.mnhn.fr/espece/cd_nom/{{taxon.cd_ref}}' target="_blank">Fiche INPN</a>
-                </div>
+                        <a href='https://inpn.mnhn.fr/espece/cd_nom/{{taxon.cd_ref}}' target="_blank">Fiche INPN</a>
+                    </div>   
        </div>
 
 
         <div id="mapRow" class="row">
-            <div id='mapContainer' class="row col-sm-7">
+            <div id='mapContainer' class="row col-sm-7 boxShadow">
                 <div id="map"> </div>
             </div>
-            <div id="graphContainer" class="row col-sm-5">
+            <div id="graphContainer" class="row col-sm-5 boxShadow">
                 <h3 class="text-primary text-center"> Observations par classes d'altitudes </h3>
                 <div id="altiChart" style="height: 200px;"></div>
                 <h3 class="text-primary text-center"> Observations mensuelles </h3>
