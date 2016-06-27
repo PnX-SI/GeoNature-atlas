@@ -5,6 +5,7 @@ import sys
 sys.path.insert(0, APP_DIR + '/modeles/entities')
 sys.path.insert(0, BASE_DIR)
 from vmObservations import VmObservations
+from tCommunes import LCommune
 from vmTaxref import VmTaxref
 from sqlalchemy import distinct, func, extract, desc
 from sqlalchemy.orm import sessionmaker
@@ -76,3 +77,7 @@ def searchObservation(cd_ref):
 def lastObservations(mylimit):
     observations = session.query(VmObservations,VmTaxref).join(VmTaxref, VmObservations.cd_ref==VmTaxref.cd_nom).order_by(desc(VmObservations.dateobs)).limit(mylimit).all()
     return  toGeoJsonHome(observations)
+
+
+def getCommunes(cd_ref):
+    return session.query(distinct(VmObservations.insee), VmObservations.insee, LCommune.commune_min).join(LCommune, VmObservations.insee == LCommune.insee).filter(VmObservations.cd_ref==61678).all()
