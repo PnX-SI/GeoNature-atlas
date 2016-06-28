@@ -93,52 +93,6 @@
 
         </div>
 
-<!--  -->
-<!-- 
-    <div class="row container">
-        <div class="panel-group col-sm-4" id="accordion">
-         <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                 <a data-toggle="collapse" data-parent="#accordion" href="#synonymes">Synonymes</a>
-                </h4>
-            </div>
-            <div id="synonymes" class="panel-collapse collapse in">
-                            <div class="panel-body">
-                                  {%for syn in synonyme %}
-                                    <span> 
-                                        {% if not syn.lb_nom == taxon.lb_nom %}
-                                        {{syn.lb_nom}}
-                                        {% endif %}
-                                        {% if ( (not loop.last) and (not syn.lb_nom == taxon.lb_nom) ) %}
-                                        ,
-                                        {% endif %}
-                                     </span>
-                                {% endfor %}
-                            </div>
-                </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                 <a data-toggle="collapse" data-parent="#accordion" href="#communes">Communes</a>
-                </h4>
-            </div>
-                <div id="communes" class="panel-collapse collapse in">
-                    <div class="panel-body">
-                        <p>
-                        {% for com in communes %}
-                        <a href ="#"> {{com.commune_maj}} </a>
-                        {% if not loop.last %}
-                        ,
-                        {% endif %}
-                        {% endfor %}
-                        </p>
-                    </div>
-                </div>
-        </div>
-    </div>
-</div> -->
 
 <div class="container">
   <h4>Autres informations</h4>
@@ -150,9 +104,10 @@
 
   <div class="tab-content">
     <div id="communes" class="tab-pane fade in active">
+        <script type="text/javascript">console.log(communes.insee)</script>
                  <p>
                         {% for com in communes %}
-                        <a href ="#"> {{com.commune_maj}} </a>
+                        <a href = "{{url_for('main.ficheCommune', insee = com.insee) }}"> {{com.commune_maj}} {{com.insee}} </a>
                         {% if not loop.last %}
                         ,
                         {% endif %}

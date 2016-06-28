@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+   <head>
+        <meta charset="utf-8" />
+        <title></title>
+
+        <!-- Jquery -->
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/jquery-ui.css') }}" />
+        <script type=text/javascript src="{{url_for('static', filename='/lib/jquery-1.12.4.min.js') }}"></script>
+        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+
+        <!-- Bootrap -->
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap/css/bootstrap.min.css') }}"></link>
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap-switch/css/bootstrap-switch.min.css') }}"></link>
+        <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
+
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css') }}" />
+        <script src="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
+
+   </head>
+
+
+   <body>
+        {% include 'navbar.html' %}
+        <table class="table table-striped">
+        <thead>
+            <tr>
+                <th> Nom Scientifique </th>
+                <th> Nom Vernaculaire </th>
+            <tr>
+        </thead>
+        <tbody>
+            
+                {% for taxon in listeTaxons %}
+                <tr>
+                    <td>{{taxon[0]}} </td>
+                    <td> {{taxon[1]}} </td>
+                </tr>
+                {% endfor %}
+        </tbody>
+        </table>
+        <script type="text/javascript"> console.log({{listeTaxons|tojson}})</script>
+
+  </body>
+
+
+</html>

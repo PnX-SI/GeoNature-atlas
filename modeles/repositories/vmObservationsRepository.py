@@ -7,6 +7,7 @@ sys.path.insert(0, BASE_DIR)
 from vmObservations import VmObservations
 from tCommunes import LCommune
 from vmTaxref import VmTaxref
+from vmTaxons import VmTaxons
 from sqlalchemy import distinct, func, extract, desc
 from sqlalchemy.orm import sessionmaker
 import ast
@@ -80,4 +81,8 @@ def lastObservations(mylimit):
 
 
 def getCommunes(cd_ref):
-    return session.query(distinct(VmObservations.insee),LCommune.commune_min, LCommune.commune_maj).join(LCommune, VmObservations.insee == LCommune.insee).group_by(VmObservations.insee, LCommune.commune_min, LCommune.commune_maj).filter(VmObservations.cd_ref==cd_ref).all()
+    return session.query(distinct(VmObservations.insee), VmObservations.insee,LCommune.commune_min, LCommune.commune_maj).join(LCommune, VmObservations.insee == LCommune.insee).group_by(VmObservations.insee, LCommune.commune_min, LCommune.commune_maj).filter(VmObservations.cd_ref==cd_ref).all()
+
+#with distinct the result in a array not an object, 0: lb_nom, 1: nom_vern
+def getTaxonsCommunes(insee):
+    return session.query(distinct(VmTaxons.lb_nom), VmTaxons.nom_vern).join(VmObservations, VmTaxons.cd_ref==VmObservations.cd_ref).group_by(VmTaxons.lb_nom, VmTaxons.nom_vern).filter(VmObservations.insee== str(insee)).all()

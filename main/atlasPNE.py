@@ -29,3 +29,9 @@ def ficheEspece():
     synonyme = vmTaxrefRepository.getSynonymy(cd_ref)
     communes = vmObservationsRepository.getCommunes(cd_ref)
     return render_template('ficheEspece.html', taxon=taxon, listeTaxons=listeTaxons, observations=observations, cd_ref=cd_ref, altitudes=altitudes, months= months, synonyme=synonyme, communes=communes)
+
+
+@main.route('/commune/<insee>')
+def ficheCommune(insee):
+    listeTaxons = vmObservationsRepository.getTaxonsCommunes(str(insee))
+    return render_template('ficheCommune.html', listeTaxons = listeTaxons)
