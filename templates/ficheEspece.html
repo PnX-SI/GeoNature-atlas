@@ -12,6 +12,7 @@
         <!-- Bootrap -->
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap/css/bootstrap.min.css') }}"></link>
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap-switch/css/bootstrap-switch.min.css') }}"></link>
+        <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
 
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css') }}" />
         <script src="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
@@ -92,36 +93,92 @@
 
         </div>
 
-        <div class="row"> 
-            <div class="col-sm-12">
-                        <p> <b> Synonyme(s): </b>
-
-                        {%for syn in synonyme %}
-                        <span> 
-                            {% if not syn.lb_nom == taxon.lb_nom %}
-                            {{syn.lb_nom}}
-                            {% endif %}
-                            {% if not loop.last %}
-                            ,
-                            {% endif %}
-                         </span>
-                    {% endfor %}
-                     </p>
+<!--  -->
+<!-- 
+    <div class="row container">
+        <div class="panel-group col-sm-4" id="accordion">
+         <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                 <a data-toggle="collapse" data-parent="#accordion" href="#synonymes">Synonymes</a>
+                </h4>
             </div>
+            <div id="synonymes" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                  {%for syn in synonyme %}
+                                    <span> 
+                                        {% if not syn.lb_nom == taxon.lb_nom %}
+                                        {{syn.lb_nom}}
+                                        {% endif %}
+                                        {% if ( (not loop.last) and (not syn.lb_nom == taxon.lb_nom) ) %}
+                                        ,
+                                        {% endif %}
+                                     </span>
+                                {% endfor %}
+                            </div>
+                </div>
         </div>
-
-        <div class="row">
-            <p> <b>Communes </b>
-            {% for com in communes %}
-            <a href ="#"> {{com.commune_min|capitalize}} </a>
-            {% if not loop.last %}
-            ,
-            {% endif %}
-            {% endfor %}
-        </p>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                 <a data-toggle="collapse" data-parent="#accordion" href="#communes">Communes</a>
+                </h4>
+            </div>
+                <div id="communes" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <p>
+                        {% for com in communes %}
+                        <a href ="#"> {{com.commune_maj}} </a>
+                        {% if not loop.last %}
+                        ,
+                        {% endif %}
+                        {% endfor %}
+                        </p>
+                    </div>
+                </div>
         </div>
-
     </div>
+</div> -->
+
+<div class="container">
+  <h4>Autres informations</h4>
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#communes">Communes</a></li>
+    <li><a data-toggle="tab" href="#synonymes">Synonymes</a></li>
+    <li><a data-toggle="tab" href="#menu3">Observateurs</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="communes" class="tab-pane fade in active">
+                 <p>
+                        {% for com in communes %}
+                        <a href ="#"> {{com.commune_maj}} </a>
+                        {% if not loop.last %}
+                        ,
+                        {% endif %}
+                        {% endfor %}
+                        </p>    </div>
+    <div id="synonymes" class="tab-pane fade">
+      {%for syn in synonyme %}
+            <span> 
+                {% if not syn.lb_nom == taxon.lb_nom %}
+                {{syn.lb_nom}}
+                {% endif %}
+                {% if ( (not loop.last) and (not syn.lb_nom == taxon.lb_nom) ) %}
+                ,
+                {% endif %}
+             </span>
+        {% endfor %}
+    </div>
+    <div id="menu3" class="tab-pane fade">
+      <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+    </div>
+  </div>
+</div>
+
+
+
+      
 
     
     <script type="text/javascript" src="/atlas/static/conf/calculCustom.js"></script>

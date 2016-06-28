@@ -80,4 +80,4 @@ def lastObservations(mylimit):
 
 
 def getCommunes(cd_ref):
-    return session.query(distinct(VmObservations.insee), VmObservations.insee, LCommune.commune_min).join(LCommune, VmObservations.insee == LCommune.insee).filter(VmObservations.cd_ref==61678).all()
+    return session.query(distinct(VmObservations.insee),LCommune.commune_min, LCommune.commune_maj).join(LCommune, VmObservations.insee == LCommune.insee).group_by(VmObservations.insee, LCommune.commune_min, LCommune.commune_maj).filter(VmObservations.cd_ref==cd_ref).all()
