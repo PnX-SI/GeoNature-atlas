@@ -12,12 +12,6 @@ autocompleteTaxons = function(listeTaxons){
 	var tabTaxons = [];
 
 	for(i=0; i<listeTaxons.length; i++){
-		/*var taxonObject = {};
-		if(listeTaxons[i][2] == null){
-			taxonName = listeTaxons[i][0]
-		}else{
-			taxonName = listeTaxons[i][0] +' - '+ listeTaxons[i][2]
-		}*/
 
 		taxonObject = {label : listeTaxons[i][0], // label = latin name + vern name
 					   value : listeTaxons[i][1] // value = cd_ref
@@ -36,19 +30,21 @@ $("#search").autocomplete({
         },
        select : function (event, ui){
         	$('#hidden-input').val(ui.item.value);
-        	console.log("selection");
-        	$('#searchButton').removeAttr("disabled");
         	$('#searchForm').submit();
-
-        	return false;
+      return false;
         }
 });
 
 }
 
+function completeAction(){
+  var cd_ref = $('#hidden-input').val()
+  var path = "/atlas/espece/"+parseInt(cd_ref);
+  $("form").attr("action", path)
+        }
+
 
 $(function(){
 	autocompleteTaxons(listeTaxons);
 })
-
 

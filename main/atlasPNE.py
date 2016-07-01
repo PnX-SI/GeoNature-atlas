@@ -10,18 +10,15 @@ from . import main
 import json
 
 
-
-
 @main.route('/' , methods=['GET', 'POST'])
 def index():
     listeTaxons = vmSearchTaxonRepository.listeTaxons()
     observations = vmObservationsRepository.lastObservations(config.LIMIT_OBSERVATION)
     return render_template('index.html', listeTaxons=listeTaxons, observations=observations)
 
-@main.route('/espece', methods=['GET', 'POST'])
-def ficheEspece():
+@main.route('/espece/<int:cd_ref>', methods=['GET', 'POST'])
+def ficheEspece(cd_ref):
     listeTaxons = vmSearchTaxonRepository.listeTaxons()
-    cd_ref = request.args['cd_ref']
     taxon = vmTaxonsRepository.rechercheEspece(cd_ref)
     observations = vmObservationsRepository.searchObservation(cd_ref)
     altitudes = vmAltitudesRepository.getAltitudes(cd_ref)
