@@ -5,7 +5,7 @@ import sys
 from flask import Flask, request, render_template, jsonify
 from werkzeug.wrappers import Response
 import config
-from modeles.repositories import vmTaxonsRepository, vmObservationsRepository, vmAltitudesRepository, vmSearchTaxonRepository, vmMoisRepository, vmTaxrefRepository
+from modeles.repositories import vmTaxonsRepository, vmObservationsRepository, vmAltitudesRepository, vmSearchTaxonRepository, vmMoisRepository, vmTaxrefRepository, tCommunesRepository
 from . import main
 import json
 
@@ -18,6 +18,7 @@ def index():
 
 @main.route('/espece/<int:cd_ref>', methods=['GET', 'POST'])
 def ficheEspece(cd_ref):
+    cd_ref = int(cd_ref)
     listeTaxons = vmSearchTaxonRepository.listeTaxons()
     taxon = vmTaxonsRepository.rechercheEspece(cd_ref)
     observations = vmObservationsRepository.searchObservation(cd_ref)
@@ -31,4 +32,5 @@ def ficheEspece(cd_ref):
 @main.route('/commune/<insee>')
 def ficheCommune(insee):
     listeTaxons = vmObservationsRepository.getTaxonsCommunes(str(insee))
-    return render_template('ficheCommune.html', listeTaxons = listeTaxons)
+    commune = tCommunesRepository.getCommuneFromInsee(insee)
+    return render_template('ficheCommune.html', listeTaxons = listeTaxons, commune = commune)

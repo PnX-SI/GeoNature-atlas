@@ -22,6 +22,8 @@
 
    <body>
         {% include 'navbar.html' %}
+
+        <h3> Liste des espèce(s) pour la commune de: {{commune[0]}} </h3>
         <table class="table table-striped">
         <thead>
             <tr>
@@ -34,7 +36,7 @@
             
                 {% for taxon in listeTaxons %}
                 <tr>
-                    <td> <a href= "espece?cd_ref=3507"> {{taxon[0]}} </a> </td>
+                    <td> <a href = "{{url_for('main.ficheEspece', cd_ref=taxon[3] )}}"> {{taxon[0]}} </a> </td>
                     <td> {{taxon[2]}} </td>
                     <td> {{taxon[1]}} </td>
                 </tr>
