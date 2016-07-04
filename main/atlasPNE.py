@@ -26,6 +26,4 @@ def ficheEspece():
     altitudes = vmAltitudesRepository.getAltitudes(cd_ref)
     months = vmMoisRepository.getMonthlyObservations(cd_ref)
     synonyme = vmTaxrefRepository.getSynonymy(cd_ref)
-    taxonomy = vmTaxrefRepository.getTaxonomy(cd_ref)
-
-    return render_template('ficheEspece.html', taxon=taxon, listeTaxons=listeTaxons, observations=observations, cd_ref=cd_ref, altitudes=altitudes, months= months, synonyme=synonyme, taxonomy=taxonomy)
+    return render_template('ficheEspece.html', taxon=taxon, listeTaxons=listeTaxons, observations=observations, cd_ref=cd_ref, altitudes=altitudes, months= months, synonyme=synonyme)

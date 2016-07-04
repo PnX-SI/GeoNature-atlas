@@ -51,10 +51,13 @@
                 <div class="col-sm-2" > 
                     <img src="{{url_for('static', filename='/images/pne.jpg') }}" style="width:200px;height:200px;">
                 </div>
-                <div class="col-sm-3" > 
+                <div class="col-sm-5" > 
                     <h3> {{taxon.lb_nom}} </h3>
+                    {% if not taxon.nom_vern == None %}
                     <p> <i> {{taxon.nom_vern}} </i> <br/>
-                     Ordre: <i>{{taxonomy.ordre}} </i> <span class="glyphicon glyphicon-chevron-right"></span> Famille:  <i>{{taxonomy.famille}}</i> </br>
+                    {% endif %}
+
+                    Classe: <i> {{taxon.classe}} <span class="glyphicon glyphicon-chevron-right"></span>  Ordre: <i>{{taxon.ordre}} </i> <span class="glyphicon glyphicon-chevron-right"></span> Famille:  <i>{{taxon.famille}}</i> </br>
                     Nombre d'observation(s) sur le parc: <i> {{observations.features|length}} </i> </br>
 
 
@@ -90,9 +93,7 @@
         <div class="row"> 
             <div class="col-sm-12">
                         <p> <b> Synonyme(s): </b>
-                        {% if nbSynonyme == 0 %}
-                        Aucun synonyme
-                        {% endif %}
+
                         {%for syn in synonyme %}
                         <span> 
                             {% if not syn.lb_nom == taxon.lb_nom %}
