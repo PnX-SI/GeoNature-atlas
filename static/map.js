@@ -6,6 +6,7 @@ var osmTile = L.tileLayer(osmUrl, {attribution: osmAttribution}),
 
 //map initialization
 
+
   var map = L.map('map',{
     crs: L.CRS.EPSG3857,
     center: latLong,

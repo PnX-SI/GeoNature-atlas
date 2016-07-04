@@ -14,11 +14,12 @@
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap-switch/css/bootstrap-switch.min.css') }}"></link>
         <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
 
+        <link rel="stylesheet" href="{{url_for('static', filename='/css/ficheEspece.css') }}" />
+
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css') }}" />
         <script src="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
 
    </head>
-
 
    <body>
         {% include 'navbar.html' %}
@@ -35,15 +36,19 @@
         <tbody>
             
                 {% for taxon in listeTaxons %}
-                <tr>
-                    <td> <a href = "{{url_for('main.ficheEspece', cd_ref=taxon[3] )}}"> {{taxon[0]}} </a> </td>
+                <tr class='clickable'  onclick="document.location = '{{url_for('main.ficheEspece',cd_ref=taxon[3] )}}'" </tr>
+                    <td> {{taxon[0]}} </td>
                     <td> {{taxon[2]}} </td>
                     <td> {{taxon[1]}} </td>
                 </tr>
                 {% endfor %}
         </tbody>
         </table>
-        <script type="text/javascript"> console.log({{listeTaxons|tojson}})</script>
+
+
+
+
+
 
   </body>
 
