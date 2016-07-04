@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+   <head>
+        <meta charset="utf-8" />
+        <title></title>
+
+        <!-- Jquery -->
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/jquery-ui.css') }}" />
+        <script type=text/javascript src="{{url_for('static', filename='/lib/jquery-1.12.4.min.js') }}"></script>
+        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+
+        <!-- Bootrap -->
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap/css/bootstrap.min.css') }}"></link>
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap-switch/css/bootstrap-switch.min.css') }}"></link>
+        <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
+
+        <link rel="stylesheet" href="{{url_for('static', filename='/css/ficheEspece.css') }}" />
+
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css') }}" />
+        <script src="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
+
+   </head>
+
+   <body>
+        {% include 'navbar.html' %}
+
+        <h3> Liste des espèce(s) pour la commune de: {{commune[0]}} </h3>
+        <table class="table table-striped">
+        <thead>
+            <tr>
+                <th> Nom Scientifique </th>
+                <th> Nom Vernaculaire </th>
+                <th> Nombre d'observations </th>
+            <tr>
+        </thead>
+        <tbody>
+            
+                {% for taxon in listeTaxons %}
+                <tr class='clickable'  onclick="document.location = '{{url_for('main.ficheEspece',cd_ref=taxon[3] )}}'" </tr>
+                    <td> {{taxon[0]}} </td>
+                    <td> {{taxon[2]}} </td>
+                    <td> {{taxon[1]}} </td>
+                </tr>
+                {% endfor %}
+        </tbody>
+        </table>
+
+
+
+
+
+
+  </body>
+
+
+</html>

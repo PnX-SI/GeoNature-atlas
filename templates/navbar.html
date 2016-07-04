@@ -1,12 +1,16 @@
+
 <nav class="navbar navbar-default" role="navigation">
   <div class="navbar-header">
     <a class="navbar-brand" href="/atlas">Atlas du PNE</a>
   </div>
 
   <!-- Collect the nav links, forms, and other content for toggling -->
-  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+  <div class="collapse navbar-collapse boxShadow" id="bs-example-navbar-collapse-1">
     <div class="col-sm-3 col-md-3">
-        <form id="searchForm" action="{{url_for('main.ficheEspece')}}" class="navbar-form" role="search">
+
+        <form method="POST" onsubmit="completeAction()"  action=""  id='searchForm' action=""  class="navbar-form" role="search">
+      
+               
         
            <div class="form-group has-feedback">
              <input id="search" type="text" class="form-control"  placeholder="Rechercher une espèce" name="taxon" >
