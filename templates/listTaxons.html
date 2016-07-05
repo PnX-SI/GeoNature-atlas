@@ -34,7 +34,7 @@
         {% include 'navbar.html' %}
 
 
-        <h3> Liste des {{listeTaxons|length}} espèce(s) de la commune de: {{commune.commune_maj}} </h3>
+        <h3> Liste des {{listTaxons|length}} espèce(s) de la commune de: {{referenciel}} </h3>
         <table id ="myTable">
         <thead>
             <tr>
@@ -45,7 +45,7 @@
         </thead>
         <tbody>
             
-                {% for taxon in listeTaxons %}
+                {% for taxon in listTaxons %}
                 <tr class='clickable'  onclick="document.location = '{{url_for('main.ficheEspece',cd_ref=taxon[3] )}}'" </tr>
                     <td> {{taxon[0]|safe}} </td>
                     <td> {{taxon[2]}} </td>
@@ -59,8 +59,14 @@
 
 
 
+        <script type="text/javascript">
+        var communesSearch = {{communesSearch|tojson}},
+            listeTaxonsSearch = {{listeTaxonsSearch|tojson}};
 
+        </script>
         <script src="{{url_for('static', filename='listeEspeces.js') }}"></script>
+        <script src="{{url_for('static', filename='main.js') }}"></script>
+
 
   </body>
 

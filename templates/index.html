@@ -259,7 +259,7 @@
 			</div>
 			
 		</div>
-	
+
 	<!-- AJOUT CAMILLE -->	
     <script type="text/javascript" src="/atlas/static/conf/custom.js"></script>
     <script src="{{url_for('static', filename='homeMap.js') }}"></script>
@@ -271,11 +271,20 @@
 	    <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
 
 	    <script type="text/javascript">
-			  var listeTaxons = {{listeTaxons|tojson }} 
+			  var listeTaxonsSearch = {{listeTaxonsSearch|tojson}} 
 			  ,observations = {{observations|tojson}}
+			  ,communesSearch = {{communesSearch|tojson}};
+
+
         </script>
 	
+		
 	    <script src="{{url_for('static', filename='main.js') }}"></script>
+
+<script> 
+ autocompleteCommunes(communesSearch);
+
+		</script>
 
     </body>
 </html>

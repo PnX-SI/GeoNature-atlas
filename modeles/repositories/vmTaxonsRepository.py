@@ -17,3 +17,6 @@ session = manage.loadSession()
 def rechercheEspece(cd_ref):
     taxonRecherche = session.query(VmTaxons).filter(VmTaxons.cd_ref == cd_ref).all()
     return taxonRecherche[0]
+
+# def listTaxonsInfra(cd_ref):
+#     
