@@ -1,6 +1,6 @@
 
 body {
-	background-color: white;
+	background-color: #E3E7E8;
 }
 
 .navbar{
@@ -34,9 +34,7 @@ body {
 
  width: 100%; height: 600px; }
 
-#presentationEspece h3 {
-	margin : 10px;
-}
+
 
 #mapOptions {
 	margin-left: 25px;
@@ -90,3 +88,46 @@ text {
 	    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
 }
+
+
+/* Taxons tables */
+
+.clickable {
+	cursor:pointer;
+}
+
+.clickable:hover {
+	background-color: #81197f;
+  	color: white;
+}
+/*.table-striped>tbody>tr:hover {
+	  background-color: #81197f;
+  	color: white;
+}
+*/
+table.dataTable thead .sorting, 
+table.dataTable thead .sorting_asc, 
+table.dataTable thead .sorting_desc {
+    background : none;
+}
+
+
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+	padding: 0px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+	padding: 0px;
+	border: none;
+}
+
+#myTable_wrapper {
+	margin: 10px
+}
+
+.pagination>.disabled>a, .pagination>.disabled>a:focus, .pagination>.disabled>a:hover, .pagination>.disabled>span, .pagination>.disabled>span:focus, .pagination>.disabled>span:hover {
+cursor: default;
+
+}
+

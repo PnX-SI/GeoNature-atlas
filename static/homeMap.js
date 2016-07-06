@@ -35,7 +35,7 @@ function onEachFeature(feature, layer){
       if(feature.properties.effectif_total){
         layer.bindPopup(popupContent+"</br><b>Effectif: </b>"+ feature.properties.effectif_total);
       }
-      layer.bindPopup(popupContent + "</br> <a href=espece?cd_ref="+feature.properties.cd_ref+"> Fiche espèce </a>")
+      layer.bindPopup(popupContent + "</br> <a href=espece/"+feature.properties.cd_ref+"> Fiche espèce </a>")
       
 }
 
