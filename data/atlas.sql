@@ -562,7 +562,7 @@ CREATE OR REPLACE FUNCTION atlas.find_atlas_taxons_childs(id integer)
   RETURNS SETOF integer AS
 $BODY$
  --Param : cd_nom ou cd_ref d'un taxon quelque soit son rang
- --Retourne le cd_nom de tous les taxons enfants sous forme d'un jeu de données utilisable comme une table
+ --Retourne le cd_nom de tous les taxons enfants sous forme d'un jeu de donnÃ©es utilisable comme une table
  --Usage SELECT atlas.find_atlas_taxons_childs(197047); 
  --ou SELECT * FROM atlas.vm_taxons WHERE cd_ref IN(SELECT * FROM atlas.find_atlas_taxons_childs(197047))
   DECLARE 
@@ -598,7 +598,7 @@ CREATE OR REPLACE FUNCTION atlas.find_all_taxons_childs(id integer)
   RETURNS SETOF integer AS
 $BODY$
  --Param : cd_nom ou cd_ref d'un taxon quelque soit son rang
- --Retourne le cd_nom de tous les taxons enfants sous forme d'un jeu de données utilisable comme une table
+ --Retourne le cd_nom de tous les taxons enfants sous forme d'un jeu de donnÃ©es utilisable comme une table
  --Usage SELECT atlas.find_all_taxons_childs(197047); 
  --ou SELECT * FROM atlas.vm_taxons WHERE cd_ref IN(SELECT * FROM atlas.find_all_taxons_childs(197047))
   DECLARE 
@@ -808,7 +808,7 @@ WHERE o.cd_ref is not null
 ORDER BY o.cd_ref;
 create unique index on atlas.vm_mois (cd_ref);
 
---Fonction pour rafraichir toutes les vues matérialisées d'un schéma
+--Fonction pour rafraichir toutes les vues matÃ©rialisÃ©es d'un schÃ©ma
 --USAGE : SELECT RefreshAllMaterializedViews('atlas');
 CREATE OR REPLACE FUNCTION RefreshAllMaterializedViews(schema_arg TEXT DEFAULT 'public')
 RETURNS INT AS $$
