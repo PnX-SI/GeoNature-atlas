@@ -13,15 +13,12 @@ $(document).ready(function() {
 // generate the autocompletion with the list of item, the input id and the form id
 autocompleteSearch = function(list, inputID, formID){
 
-  console.log(formID);
     // get the id of the hidden input
   temp = $(formID).find("input[type='hidden']").attr('id')
   hiddenID ='#'+temp
-  console.log(hiddenID);
   // get the id of the text input
   temp = $(formID).find("input[type='text']").attr('id')
   textID = '#'+temp
-  console.log(textID);
 
 
 $(inputID).autocomplete({
