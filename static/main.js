@@ -8,45 +8,52 @@ $(document).ready(function() {
 });
 
 
-autocompleteTaxons = function(listeTaxonsSearch){
 
-	var tabTaxons = [];
 
-	for(i=0; i<listeTaxonsSearch.length; i++){
+// generate the autocompletion with the list of item, the input id and the form id
+autocompleteSearch = function(list, inputID, formID){
 
-		taxonObject = {label : listeTaxonsSearch[i][0], // label = latin name + vern name
-					   value : listeTaxonsSearch[i][1] // value = cd_ref
-	};
-		tabTaxons.push(taxonObject);
-	}
+  console.log(formID);
+    // get the id of the hidden input
+  temp = $(formID).find("input[type='hidden']").attr('id')
+  hiddenID ='#'+temp
+  console.log(hiddenID);
+  // get the id of the text input
+  temp = $(formID).find("input[type='text']").attr('id')
+  textID = '#'+temp
+  console.log(textID);
 
-$("#searchFormTaxon").autocomplete({
 
-		source: function (request, response) {
-		var results = $.ui.autocomplete.filter(tabTaxons, request.term);
-		response(results.slice(0, 20))},
+$(inputID).autocomplete({
+
+
+    source: function (request, response) {
+    var results = $.ui.autocomplete.filter(list, request.term);
+    response(results.slice(0, 20))},
          focus: function(event, ui) {
-         	$('#search').val(ui.item.label)
+          $(textID).val(ui.item.label)
             return false;
         },
        select : function (event, ui){
-        	$('#hidden-input').val(ui.item.value);
-        	$('#searchFormTaxon').submit();
+          $(hiddenID).val(ui.item.value);
+          $(formID).submit();
       return false;
         }
 });
 
 }
 
-
-// complete dynamically the form action on search submit
+// complete dynamically the form action on search submit with the hidden value
 function completeAction(id){
+
   var inputInter = $(id).find('input');
   hiddenInput = inputInter[1];
   value = hiddenInput.value;
+    console.log(value);
+
   var path;
 
-  if (id == "#searchFormTaxon"){
+  if (id == "#searchFormTaxons"){
     path = "/atlas/espece/"+parseInt(value);
   }
   if (id == "#searchFormCommunes"){
@@ -58,30 +65,12 @@ function completeAction(id){
 }
 
 
-autocompleteCommunes = function(communesSearch){
 
-$("#searchCommunes").autocomplete({
-
-    source: function (request, response) {
-    var results = $.ui.autocomplete.filter(communesSearch, request.term);
-    response(results.slice(0, 20))},
-         focus: function(event, ui) {
-          $('#searchCommunes').val(ui.item.label)
-            return false;
-        },
-       select : function (event, ui){
-          $('#hiddenInputCommunes').val(ui.item.value);
-          $('#searchFormCommunes').submit();
-      return false;
-        }
+$( "#searchCommunes" ).focus(function() {
+  autocompleteSearch(communesSearch, "#searchCommunes", "#searchFormCommunes")
 });
 
-}
-
-
-
-$(function(){
-  autocompleteTaxons(listeTaxonsSearch);
-  autocompleteCommunes(communesSearch);
+$( "#searchTaxons" ).focus(function() {
+   autocompleteSearch(listeTaxonsSearch, "#searchTaxons", "#searchFormTaxons");
 });
 

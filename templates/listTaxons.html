@@ -7,10 +7,9 @@
         <!-- Jquery -->
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/jquery-ui.css') }}" />
         <script type=text/javascript src="{{url_for('static', filename='/lib/jquery-1.12.4.min.js') }}"></script>
-        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
 
 
-
+        <!-- DataTable-->
         <script type=text/javascript src="{{url_for('static', filename='lib/dataTable/datatables.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/dataTable/jquery.dataTables.min.css') }}" />
 
@@ -34,8 +33,8 @@
         {% include 'navbar.html' %}
 
 
-        <h3> Liste des {{listTaxons|length}} espèce(s) de la commune de: {{referenciel}} </h3>
-        <table id ="myTable">
+    <h3> Liste des {{listTaxons|length}} espèces observées sur la commune de {{referenciel}} </h3>
+    <table id ="myTable">
         <thead>
             <tr>
                 <th> Nom Scientifique <span class="glyphicon glyphicon-menu-down" </span></th>
@@ -44,19 +43,19 @@
             </tr>
         </thead>
         <tbody>
-            
                 {% for taxon in listTaxons %}
-                <tr class='clickable'  onclick="document.location = '{{url_for('main.ficheEspece',cd_ref=taxon[3] )}}'" </tr>
-                    <td> {{taxon[0]|safe}} </td>
-                    <td> {{taxon[2]}} </td>
-                    <td> {{taxon[1]}} </td>
-                </tr>
+            <tr class='clickable'  onclick="document.location = '{{url_for('main.ficheEspece',cd_ref=taxon[3] )}}'" </tr>
+                <td> {{taxon[0]|safe}} </td>
+                <td> {{taxon[2]}} </td>
+                <td> {{taxon[1]}} </td>
+            </tr>
                 {% endfor %}
         </tbody>
-        </table>
+    </table>
 
 
 
+        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
 
 
         <script type="text/javascript">

@@ -38,7 +38,6 @@ function onEachFeature(feature, layer){
       }else{
         layer.bindPopup(popupContent)
       }
-    console.log(feature.properties.dateobs.year);
 }
 
 
