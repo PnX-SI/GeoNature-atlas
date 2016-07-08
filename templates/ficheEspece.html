@@ -64,13 +64,13 @@
                         Nombre d'observation(s) sur le parc: {{observations.features|length}}</br> -->
 
                         {% for taxon in taxonomyHierarchy %}
-                        {{taxon.rang}} : <a href = '#' >{{taxon.lb_nom}} </a>
+                        {{taxon.rang}} : <a href = "{{url_for('main.ficheRangTaxonomie', cd_ref = taxon.cd_ref) }}">{{taxon.lb_nom}} </a>
 
                         {% endfor %}
 
 
 
-                        <a href='https://inpn.mnhn.fr/espece/cd_nom/{{taxon.cd_ref}}' target="_blank">Fiche INPN</a>
+                        </br> <a href='https://inpn.mnhn.fr/espece/cd_nom/{{taxon.cd_ref}}' target="_blank">Fiche INPN</a>
                     </div>   
        </div>
 

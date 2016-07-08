@@ -28,7 +28,9 @@ def ficheEspece(cd_ref):
     synonyme = vmTaxrefRepository.getSynonymy(cd_ref)
     communes = vmObservationsRepository.getCommunes(cd_ref)
     communesSearch = tCommunesRepository.getAllCommune()
-    return render_template('ficheEspece.html', taxon=taxon, listeTaxonsSearch=listeTaxonsSearch, observations=observations, cd_ref=cd_ref, altitudes=altitudes, months= months, synonyme=synonyme, communes=communes, communesSearch=communesSearch)
+    taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(cd_ref)
+    return render_template('ficheEspece.html', taxon=taxon, listeTaxonsSearch=listeTaxonsSearch, observations=observations,\
+     cd_ref=cd_ref, altitudes=altitudes, months= months, synonyme=synonyme, communes=communes, communesSearch=communesSearch, taxonomyHierarchy = taxonomyHierarchy)
 
 
 @main.route('/commune/<insee>', methods=['GET', 'POST'])
@@ -40,6 +42,12 @@ def ficheCommune(insee):
     return render_template('listTaxons.html', listTaxons = listTaxons, referenciel = commune, communesSearch = communesSearch, listeTaxonsSearch = listeTaxonsSearch)
 
 
-# @main.route('/liste/<cd_ref')
-# def listTaxonomy(cd_ref):  
-#     
+@main.route('/liste/<cd_ref>', methods=['GET', 'POST'])
+def ficheRangTaxonomie(cd_ref):
+    listTaxons = vmTaxonsRepository.getTaxonChilds(cd_ref)
+    referenciel = vmTaxonsRepository.getNameFromCd_ref(cd_ref)
+    communesSearch = tCommunesRepository.getAllCommune()
+    listeTaxonsSearch = listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons()
+    return render_template('listTaxons.html', listTaxons = listTaxons, referenciel = referenciel, communesSearch = communesSearch, listeTaxonsSearch = listeTaxonsSearch)
+
+

@@ -44,10 +44,10 @@
         </thead>
         <tbody>
                 {% for taxon in listTaxons %}
-            <tr class='clickable'  onclick="document.location = '{{url_for('main.ficheEspece',cd_ref=taxon[3] )}}'" </tr>
-                <td> {{taxon[0]|safe}} </td>
-                <td> {{taxon[2]}} </td>
-                <td> {{taxon[1]}} </td>
+            <tr class='clickable'  onclick="document.location = '{{url_for('main.ficheEspece',cd_ref=taxon.cd_ref)}}'" </tr>
+                <td> {{taxon.nom_complet_html|safe}} </td>
+                <td> {{taxon.nom_vern}} </td>
+                <td> {{taxon.nb_obs}} </td>
             </tr>
                 {% endfor %}
         </tbody>
