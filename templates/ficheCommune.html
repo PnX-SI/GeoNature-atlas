@@ -9,6 +9,11 @@
         <script type=text/javascript src="{{url_for('static', filename='/lib/jquery-1.12.4.min.js') }}"></script>
         <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
 
+
+
+        <script type=text/javascript src="{{url_for('static', filename='lib/dataTable/datatables.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/dataTable/jquery.dataTables.min.css') }}" />
+
         <!-- Bootrap -->
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap/css/bootstrap.min.css') }}"></link>
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap-switch/css/bootstrap-switch.min.css') }}"></link>
@@ -18,26 +23,31 @@
 
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css') }}" />
         <script src="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
+       
+
+
+
 
    </head>
 
    <body>
         {% include 'navbar.html' %}
 
-        <h3> Liste des espèce(s) pour la commune de: {{commune[0]}} </h3>
-        <table class="table table-striped">
+
+        <h3> Liste des {{listeTaxons|length}} espèce(s) de la commune de: {{commune.commune_maj}} </h3>
+        <table id ="myTable">
         <thead>
             <tr>
-                <th> Nom Scientifique </th>
-                <th> Nom Vernaculaire </th>
-                <th> Nombre d'observations </th>
-            <tr>
+                <th> Nom Scientifique <span class="glyphicon glyphicon-menu-down" </span></th>
+                <th> Nom Vernaculaire <span class="glyphicon glyphicon-menu-down" </span></th>
+                <th id="sorted"> Nombre d'observation(s) <span class="glyphicon glyphicon-menu-down" </span> </th>
+            </tr>
         </thead>
         <tbody>
             
                 {% for taxon in listeTaxons %}
                 <tr class='clickable'  onclick="document.location = '{{url_for('main.ficheEspece',cd_ref=taxon[3] )}}'" </tr>
-                    <td> {{taxon[0]}} </td>
+                    <td> {{taxon[0]|safe}} </td>
                     <td> {{taxon[2]}} </td>
                     <td> {{taxon[1]}} </td>
                 </tr>
@@ -49,6 +59,8 @@
 
 
 
+
+        <script src="{{url_for('static', filename='listeEspeces.js') }}"></script>
 
   </body>
 
