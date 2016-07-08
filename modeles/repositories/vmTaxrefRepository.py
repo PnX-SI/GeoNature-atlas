@@ -21,23 +21,24 @@ def getCd_ref(cd_nom):
     return req[0].cd_ref
 
 def getTaxon(cd_nom):
-    req = session.query(VmTaxref.lb_nom, VmTaxref.id_rang, VmTaxref.cd_ref, VmTaxref.cd_taxsup).filter(VmTaxref.cd_nom == cd_nom)
+    req = session.query(VmTaxref.lb_nom, VmTaxref.id_rang, VmTaxref.cd_ref, VmTaxref.cd_taxsup, VmTaxref.id_rang).filter(VmTaxref.cd_nom == cd_nom)
     return req[0]
 
 def getCd_sup(cd_ref):
     req = session.query(VmTaxref.cd_taxsup).filter(VmTaxref.cd_ref == cd_ref)
     return req[0].cd_taxsup
 
+def getNameFromCd_ref(cd_ref):
+    req = session.query(VmTaxref.lb_nom).filter(VmTaxref.cd_ref == cd_ref)
+    return req [0].lb_nom
+
 
 def getAllTaxonomy(cd_ref):
-    # taxon = getTaxon(cd_ref)
     taxonSup = getCd_sup(cd_ref)
     taxon = getTaxon(taxonSup)
     tabTaxon = list()
     while 'CL' not in taxon.id_rang.encode('UTF-8'): 
-        temp = {'rang' : taxon.id_rang, 'lb_nom' : taxon.lb_nom, 'cd_ref': taxon.cd_ref}
+        temp = {'rang' : taxon.id_rang, 'lb_nom' : taxon.lb_nom, 'cd_ref': taxon.cd_ref, 'id_rang' : taxon.id_rang }
         tabTaxon.insert(0, temp)
-        # cd_ref_sup = getCd_ref(taxon.cd_taxsup)
-        cd_sup = taxon.cd_taxsup # recupere le cd_sup
-        taxon = getTaxon(cd_sup) #on avance
+        taxon = getTaxon(taxon.cd_taxsup) #on avance
     return tabTaxon

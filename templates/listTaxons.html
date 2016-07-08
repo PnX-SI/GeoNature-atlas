@@ -31,10 +31,13 @@
 
    <body>
         {% include 'navbar.html' %}
-
-
+    {% if myType == 1  %}
     <h3> Liste des {{listTaxons|length}} espèces observées sur la commune de {{referenciel}} </h3>
-    <table id ="myTable">
+   
+    {% else %}
+    <h3> Liste des taxons de {{referenciel}} </h3>
+    {% endif %}
+     <table id ="myTable">
         <thead>
             <tr>
                 <th> Nom Scientifique <span class="glyphicon glyphicon-menu-down" </span></th>

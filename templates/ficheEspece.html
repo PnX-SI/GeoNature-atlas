@@ -60,12 +60,20 @@
                         <p>  {{taxon.nom_vern}}  <br/>
                         {% endif %}
 
+
 <!--                         Classe: <i> {{taxon.classe}} </i> <span class="glyphicon glyphicon-chevron-right"></span>  Ordre: <i>{{taxon.ordre}} </i> <span class="glyphicon glyphicon-chevron-right"></span> Famille:  <i>{{taxon.famille}}</i> </br>
                         Nombre d'observation(s) sur le parc: {{observations.features|length}}</br> -->
 
                         {% for taxon in taxonomyHierarchy %}
-                        {{taxon.rang}} : <a href = "{{url_for('main.ficheRangTaxonomie', cd_ref = taxon.cd_ref) }}">{{taxon.lb_nom}} </a>
 
+                            {{taxon.rang}} :
+                            {% if ( 'ES' in taxon.rang or 'SSES' in taxon.rang) %}
+                            <a href = "{{url_for('main.ficheEspece', cd_ref = taxon.cd_ref) }}"> {{taxon.lb_nom}}</a>
+                            {% else %}
+                             <a href = "{{url_for('main.ficheRangTaxonomie', cd_ref = taxon.cd_ref) }}">{{taxon.lb_nom}} </a>
+
+                            {% endif %}
+                        
                         {% endfor %}
 
 

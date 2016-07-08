@@ -21,8 +21,7 @@ def rechercheEspece(cd_ref):
     taxonRecherche = session.query(VmTaxons).filter(VmTaxons.cd_ref == cd_ref).all()
     return taxonRecherche[0]
 
-def getNameFromCd_ref(cd_ref):
-    session.query(VmTaxons.lb_nom).filter(VmTaxons.cd_ref == cd_ref)
+
 
 def getTaxonChilds(cd_ref):
     filter1 = u"Espèce".encode('UTF-8')

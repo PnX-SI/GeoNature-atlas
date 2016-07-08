@@ -39,15 +39,17 @@ def ficheCommune(insee):
     commune = tCommunesRepository.getCommuneFromInsee(insee)
     communesSearch = tCommunesRepository.getAllCommune()
     listeTaxonsSearch = listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons()
-    return render_template('listTaxons.html', listTaxons = listTaxons, referenciel = commune, communesSearch = communesSearch, listeTaxonsSearch = listeTaxonsSearch)
+    myType = 1
+    return render_template('listTaxons.html', myType=myType, listTaxons = listTaxons, referenciel = commune, communesSearch = communesSearch, listeTaxonsSearch = listeTaxonsSearch)
 
 
 @main.route('/liste/<cd_ref>', methods=['GET', 'POST'])
 def ficheRangTaxonomie(cd_ref):
     listTaxons = vmTaxonsRepository.getTaxonChilds(cd_ref)
-    referenciel = vmTaxonsRepository.getNameFromCd_ref(cd_ref)
+    referenciel = vmTaxrefRepository.getNameFromCd_ref(cd_ref)
     communesSearch = tCommunesRepository.getAllCommune()
     listeTaxonsSearch = listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons()
-    return render_template('listTaxons.html', listTaxons = listTaxons, referenciel = referenciel, communesSearch = communesSearch, listeTaxonsSearch = listeTaxonsSearch)
+    myType = 2
+    return render_template('listTaxons.html',  myType=myType ,listTaxons = listTaxons, referenciel = referenciel, communesSearch = communesSearch, listeTaxonsSearch = listeTaxonsSearch)
 
 
