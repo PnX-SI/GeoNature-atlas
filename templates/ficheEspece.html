@@ -60,8 +60,13 @@
                         <p>  {{taxon.nom_vern}}  <br/>
                         {% endif %}
 
-                        Classe: <i> {{taxon.classe}} </i> <span class="glyphicon glyphicon-chevron-right"></span>  Ordre: <i>{{taxon.ordre}} </i> <span class="glyphicon glyphicon-chevron-right"></span> Famille:  <i>{{taxon.famille}}</i> </br>
-                        Nombre d'observation(s) sur le parc: {{observations.features|length}}</br>
+<!--                         Classe: <i> {{taxon.classe}} </i> <span class="glyphicon glyphicon-chevron-right"></span>  Ordre: <i>{{taxon.ordre}} </i> <span class="glyphicon glyphicon-chevron-right"></span> Famille:  <i>{{taxon.famille}}</i> </br>
+                        Nombre d'observation(s) sur le parc: {{observations.features|length}}</br> -->
+
+                        {% for taxon in taxonomyHierarchy %}
+                        {{taxon.rang}} : <a href = '#' >{{taxon.lb_nom}} </a>
+
+                        {% endfor %}
 
 
 
