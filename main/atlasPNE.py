@@ -29,8 +29,10 @@ def ficheEspece(cd_ref):
     communes = vmObservationsRepository.getCommunes(cd_ref)
     communesSearch = tCommunesRepository.getAllCommune()
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(cd_ref)
+    limit_fiche_espece = config.LIMIT_FICHE_LISTE_HIERARCHY
     return render_template('ficheEspece.html', taxon=taxon, listeTaxonsSearch=listeTaxonsSearch, observations=observations,\
-     cd_ref=cd_ref, altitudes=altitudes, months= months, synonyme=synonyme, communes=communes, communesSearch=communesSearch, taxonomyHierarchy = taxonomyHierarchy)
+     cd_ref=cd_ref, altitudes=altitudes, months= months, synonyme=synonyme, communes=communes, communesSearch=communesSearch, taxonomyHierarchy = taxonomyHierarchy,\
+     limit_fiche_espece = limit_fiche_espece)
 
 
 @main.route('/commune/<insee>', methods=['GET', 'POST'])

@@ -5,6 +5,7 @@ import sys
 sys.path.insert(0, APP_DIR + '/modeles/entities')
 sys.path.insert(0, BASE_DIR)
 from vmTaxref import VmTaxref
+from tBibTaxrefRang import TBibTaxrefRang
 from sqlalchemy import distinct, func
 from sqlalchemy.orm import sessionmaker
 
@@ -21,7 +22,8 @@ def getCd_ref(cd_nom):
     return req[0].cd_ref
 
 def getTaxon(cd_nom):
-    req = session.query(VmTaxref.lb_nom, VmTaxref.id_rang, VmTaxref.cd_ref, VmTaxref.cd_taxsup, VmTaxref.id_rang).filter(VmTaxref.cd_nom == cd_nom)
+    req = session.query(VmTaxref.lb_nom, VmTaxref.id_rang, VmTaxref.cd_ref, VmTaxref.cd_taxsup, TBibTaxrefRang.nom_rang, TBibTaxrefRang.tri_rang)\
+    .join(TBibTaxrefRang, TBibTaxrefRang.id_rang == VmTaxref.id_rang).filter(VmTaxref.cd_nom == cd_nom)
     return req[0]
 
 def getCd_sup(cd_ref):
@@ -37,8 +39,8 @@ def getAllTaxonomy(cd_ref):
     taxonSup = getCd_sup(cd_ref) #cd_taxsup
     taxon = getTaxon(taxonSup)
     tabTaxon = list()
-    while 'CL' not in taxon.id_rang.encode('UTF-8'): 
-        temp = {'rang' : taxon.id_rang, 'lb_nom' : taxon.lb_nom, 'cd_ref': taxon.cd_ref, 'id_rang' : taxon.id_rang }
+    while taxon.tri_rang >= 13 : 
+        temp = {'rang' : taxon.id_rang, 'lb_nom' : taxon.lb_nom, 'cd_ref': taxon.cd_ref, 'id_rang' : taxon.id_rang, 'tri_rang': taxon.tri_rang }
         tabTaxon.insert(0, temp)
         taxon = getTaxon(taxon.cd_taxsup) #on avance
     return tabTaxon

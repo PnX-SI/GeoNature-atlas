@@ -38,9 +38,7 @@ def getTaxonsCommunes(insee):
 
 
 def getTaxonChilds(cd_ref):
-    filter1 = u"Espèce".encode('UTF-8')
-    filter2 = u"Sous-espèce".encode('UTF-8')
-    filter3 = u"Variété".encode('UTF-8')
+    rank = 35
     sql = "select tax.nom_complet_html, \
     count(obs.id_synthese) as nb_obs, \
     tax.nom_vern, \
@@ -48,11 +46,12 @@ def getTaxonChilds(cd_ref):
     tax.cd_ref \
     from atlas.vm_taxons tax \
     JOIN atlas.vm_observations obs on obs.cd_ref = tax.cd_ref \
+    JOIN atlas.temp_bib_taxref_rangs bib_rang on tax.nom_rang = bib_rang.nom_rang \
     where tax.cd_ref in ( \
     select * from atlas.find_all_taxons_childs(:thiscdref) \
-    ) AND (tax.nom_rang = :filter1 OR tax.nom_rang = :filter2 OR tax.nom_rang = :filter3) \
+    ) AND (bib_rang.tri_rang <= :thisRank) \
     Group by tax.nom_complet_html, tax.nom_vern, tax.cd_ref".encode('UTF-8')
-    req = connection.execute(text(sql), thiscdref = cd_ref, filter1= filter1, filter2 = filter2, filter3=filter3)
+    req = connection.execute(text(sql), thiscdref = cd_ref, thisRank = rank)
     taxonRankList = list()
     for r in req:
         temp = {'nom_complet_html': r.nom_complet_html, 'nb_obs' : r.nb_obs, 'nom_vern': r.nom_vern, 'cd_ref': r.cd_ref, 'last_obs' : r.last_obs.strftime("%d/%m/%Y")}
