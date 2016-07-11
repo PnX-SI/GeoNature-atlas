@@ -48,7 +48,7 @@ def ficheCommune(insee):
 @main.route('/liste/<cd_ref>', methods=['GET', 'POST'])
 def ficheRangTaxonomie(cd_ref):
     listTaxons = vmTaxonsRepository.getTaxonChilds(cd_ref)
-    referenciel = vmTaxrefRepository.getNameFromCd_ref(cd_ref)
+    referenciel = vmTaxrefRepository.getInfoFromCd_ref(cd_ref)
     communesSearch = tCommunesRepository.getAllCommune()
     listeTaxonsSearch = listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons()
     myType = 2

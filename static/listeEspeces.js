@@ -27,12 +27,12 @@ $(document).ready(function(){
            "sNext" : "Suivant"
          }
       },
-        "aoColumnDefs" : [
+/*        "aoColumnDefs" : [
            {
              'bSortable' : false,
              'aTargets' : [3]
            }]
-
+*/
 
     });
     $('.dataTables_filter input').attr("placeholder", "Rechercher dans la liste ").attr("class", "form-control").css("font-weight", "normal");

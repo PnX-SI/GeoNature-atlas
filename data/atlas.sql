@@ -538,8 +538,8 @@ CREATE OR REPLACE FUNCTION taxonomie.find_cdref(id integer)
 $BODY$
   DECLARE ref integer;
   BEGIN
-	SELECT INTO ref cd_ref FROM taxonomie.taxref WHERE cd_nom = id;
-	return ref;
+  SELECT INTO ref cd_ref FROM taxonomie.taxref WHERE cd_nom = id;
+  return ref;
   END;
 $BODY$
   LANGUAGE plpgsql IMMUTABLE
@@ -572,20 +572,20 @@ $BODY$
     SELECT INTO c count(*) FROM atlas.vm_taxref WHERE cd_taxsup = id;
     IF c > 0 THEN
         FOR inf IN 
-	    WITH RECURSIVE descendants AS (
-	      SELECT DISTINCT cd_nom FROM atlas.vm_taxref tx
-	      JOIN atlas.vm_observations o ON o.cd_ref = tx.cd_nom 
-	      WHERE cd_taxsup = id
-	      UNION ALL
-	      SELECT DISTINCT e.cd_nom
-	      FROM descendants d
-	      JOIN atlas.vm_taxref e ON e.cd_taxsup = d.cd_nom
-	      JOIN atlas.vm_observations ob ON ob.cd_ref = e.cd_nom
-	    ) 
-	    SELECT cd_nom FROM descendants 
-	LOOP
-	    RETURN NEXT inf.cd_nom;
-	END LOOP;
+      WITH RECURSIVE descendants AS (
+        SELECT DISTINCT cd_nom FROM atlas.vm_taxref tx
+        JOIN atlas.vm_observations o ON o.cd_ref = tx.cd_nom 
+        WHERE cd_taxsup = id
+        UNION ALL
+        SELECT DISTINCT e.cd_nom
+        FROM descendants d
+        JOIN atlas.vm_taxref e ON e.cd_taxsup = d.cd_nom
+        JOIN atlas.vm_observations ob ON ob.cd_ref = e.cd_nom
+      ) 
+      SELECT cd_nom FROM descendants 
+  LOOP
+      RETURN NEXT inf.cd_nom;
+  END LOOP;
     END IF;
   END;
 $BODY$
@@ -608,17 +608,17 @@ $BODY$
     SELECT INTO c count(*) FROM atlas.vm_taxref WHERE cd_taxsup = id;
     IF c > 0 THEN
         FOR inf IN 
-	    WITH RECURSIVE descendants AS (
-	      SELECT cd_nom FROM atlas.vm_taxref WHERE cd_taxsup = id
-	      UNION ALL
-	      SELECT e.cd_nom
-	      FROM descendants d
-	      JOIN atlas.vm_taxref e ON e.cd_taxsup = d.cd_nom
-	    ) 
-	    SELECT cd_nom FROM descendants 
-	LOOP
-	    RETURN NEXT inf.cd_nom;
-	END LOOP;
+      WITH RECURSIVE descendants AS (
+        SELECT cd_nom FROM atlas.vm_taxref WHERE cd_taxsup = id
+        UNION ALL
+        SELECT e.cd_nom
+        FROM descendants d
+        JOIN atlas.vm_taxref e ON e.cd_taxsup = d.cd_nom
+      ) 
+      SELECT cd_nom FROM descendants 
+  LOOP
+      RETURN NEXT inf.cd_nom;
+  END LOOP;
     END IF;
   END;
 $BODY$
@@ -728,13 +728,13 @@ $BODY$
     END LOOP;
     
     monsql = monsql || ' SELECT DISTINCT o.cd_ref';
-	
+  
     FOR mesaltitudes IN SELECT * FROM atlas.bib_altitudes LOOP
       monsql = monsql || ',COALESCE(a' ||mesaltitudes.id_altitude || '.nb::integer, 0) as '|| mesaltitudes.label_altitude;
     END LOOP;
 
     monsql = monsql || ' FROM atlas.vm_observations o';
-	
+  
     FOR mesaltitudes IN SELECT * FROM atlas.bib_altitudes LOOP
       monsql = monsql || ' LEFT JOIN alt' || mesaltitudes.id_altitude ||' a' || mesaltitudes.id_altitude || ' ON a' || mesaltitudes.id_altitude || '.cd_ref = o.cd_ref';
     END LOOP;
@@ -779,18 +779,18 @@ _11 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE date_part
 _12 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE date_part('month'::text, dateobs) = '12' GROUP BY cd_ref)
 
 SELECT DISTINCT o.cd_ref
-	,COALESCE(a.nb::integer, 0) as _01
-	,COALESCE(b.nb::integer, 0) as _02
-	,COALESCE(c.nb::integer, 0) as _03
-	,COALESCE(d.nb::integer, 0) as _04
-	,COALESCE(e.nb::integer, 0) as _05
-	,COALESCE(f.nb::integer, 0) as _06
-	,COALESCE(g.nb::integer, 0) as _07
-	,COALESCE(h.nb::integer, 0) as _08
-	,COALESCE(i.nb::integer, 0) as _09
-	,COALESCE(j.nb::integer, 0) as _10
-	,COALESCE(k.nb::integer, 0) as _11
-	,COALESCE(l.nb::integer, 0) as _12
+  ,COALESCE(a.nb::integer, 0) as _01
+  ,COALESCE(b.nb::integer, 0) as _02
+  ,COALESCE(c.nb::integer, 0) as _03
+  ,COALESCE(d.nb::integer, 0) as _04
+  ,COALESCE(e.nb::integer, 0) as _05
+  ,COALESCE(f.nb::integer, 0) as _06
+  ,COALESCE(g.nb::integer, 0) as _07
+  ,COALESCE(h.nb::integer, 0) as _08
+  ,COALESCE(i.nb::integer, 0) as _09
+  ,COALESCE(j.nb::integer, 0) as _10
+  ,COALESCE(k.nb::integer, 0) as _11
+  ,COALESCE(l.nb::integer, 0) as _12
 FROM atlas.vm_observations o
 LEFT JOIN _01 a ON a.cd_ref =  o.cd_ref
 LEFT JOIN _02 b ON b.cd_ref =  o.cd_ref

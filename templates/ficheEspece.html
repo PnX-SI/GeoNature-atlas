@@ -53,30 +53,28 @@
                     <div class="col-sm-2" > 
                         <img src="{{url_for('static', filename='/images/pne.jpg') }}" style="width:200px;height:200px;">
                     </div>
-                    <div class="col-sm-5">
+                    <div class="col-sm-6">
                     
                         <h3> {{taxon.nom_complet_html|safe}} </h3>
                         {% if not taxon.nom_vern == None %}
                         <p>  {{taxon.nom_vern}}  <br/>
                         {% endif %}
 
-
-<!--                         Classe: <i> {{taxon.classe}} </i> <span class="glyphicon glyphicon-chevron-right"></span>  Ordre: <i>{{taxon.ordre}} </i> <span class="glyphicon glyphicon-chevron-right"></span> Famille:  <i>{{taxon.famille}}</i> </br>
-                        Nombre d'observation(s) sur le parc: {{observations.features|length}}</br> -->
-
                         {% for taxon in taxonomyHierarchy %}
 
-                            {{taxon.rang}} :
+                            {{taxon.nom_rang}} :
+                            <i>
                             {% if ( taxon.tri_rang >= limit_fiche_espece) %}
-                            <a href = "{{url_for('main.ficheEspece', cd_ref = taxon.cd_ref) }}"> {{taxon.lb_nom}}</a>
+                                 <a href = "{{url_for('main.ficheEspece', cd_ref = taxon.cd_ref) }}"> {{taxon.lb_nom}}</a> 
                             {% else %}
-                             <a href = "{{url_for('main.ficheRangTaxonomie', cd_ref = taxon.cd_ref) }}">{{taxon.lb_nom}} </a>
-
+                                 <a href = "{{url_for('main.ficheRangTaxonomie', cd_ref = taxon.cd_ref) }}">{{taxon.lb_nom}} </a> 
+                             </i>   
+                            {% endif %}
+                            {% if not loop.last %}
+                                 <span class="glyphicon glyphicon-chevron-right"> </span>
                             {% endif %}
                         
                         {% endfor %}
-
-
 
                         </br> <a href='https://inpn.mnhn.fr/espece/cd_nom/{{taxon.cd_ref}}' target="_blank">Fiche INPN</a>
                     </div>   

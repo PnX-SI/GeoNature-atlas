@@ -30,9 +30,9 @@ def getCd_sup(cd_ref):
     req = session.query(VmTaxref.cd_taxsup).filter(VmTaxref.cd_nom == cd_ref).first()
     return req.cd_taxsup
 
-def getNameFromCd_ref(cd_ref):
-    req = session.query(VmTaxref.lb_nom).filter(VmTaxref.cd_ref == cd_ref)
-    return req [0].lb_nom
+def getInfoFromCd_ref(cd_ref):
+    req = session.query(VmTaxref.lb_nom, TBibTaxrefRang.nom_rang).join(TBibTaxrefRang, TBibTaxrefRang.id_rang == VmTaxref.id_rang).filter(VmTaxref.cd_ref == cd_ref)
+    return {'lb_nom': req[0].lb_nom, 'nom_rang' : req[0].nom_rang }
 
 
 def getAllTaxonomy(cd_ref):
@@ -40,7 +40,7 @@ def getAllTaxonomy(cd_ref):
     taxon = getTaxon(taxonSup)
     tabTaxon = list()
     while taxon.tri_rang >= 13 : 
-        temp = {'rang' : taxon.id_rang, 'lb_nom' : taxon.lb_nom, 'cd_ref': taxon.cd_ref, 'id_rang' : taxon.id_rang, 'tri_rang': taxon.tri_rang }
+        temp = {'rang' : taxon.id_rang, 'lb_nom' : taxon.lb_nom, 'cd_ref': taxon.cd_ref, 'nom_rang' : taxon.nom_rang, 'tri_rang': taxon.tri_rang }
         tabTaxon.insert(0, temp)
         taxon = getTaxon(taxon.cd_taxsup) #on avance
     return tabTaxon

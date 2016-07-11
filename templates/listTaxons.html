@@ -30,12 +30,13 @@
    </head>
 
    <body>
-        {% include 'navbar.html' %}
+    {% include 'navbar.html' %}
+
     {% if myType == 1  %}
     <h3> Liste des {{listTaxons|length}} espèces observées sur la commune de {{referenciel}} </h3>
    
     {% else %}
-    <h3> Liste des taxons de {{referenciel}} </h3>
+    <h3> Liste des {{listTaxons|length}} espèces observées pour le taxon <i>{{referenciel.lb_nom}}</i> ({{referenciel.nom_rang}}) </h3>
     {% endif %}
      <table id ="myTable">
         <thead>
@@ -43,7 +44,7 @@
                 <th> Nom Scientifique <span class="glyphicon glyphicon-menu-down" </span></th>
                 <th> Nom Vernaculaire <span class="glyphicon glyphicon-menu-down" </span></th>
                 <th id="sorted"> Nombre d'observation(s) <span class="glyphicon glyphicon-menu-down" </span> </th>
-                <th> Dernière observation  </th>
+                <th> Dernière observation <span class="glyphicon glyphicon-menu-down" </th>
 
             </tr>
         </thead>
