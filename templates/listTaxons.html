@@ -33,11 +33,13 @@
     {% include 'navbar.html' %}
 
     {% if myType == 1  %}
-    <h3> Liste des {{listTaxons|length}} espèces observées sur la commune de {{referenciel}} </h3>
+    <h3> Liste des {{listTaxons.taxons|length}} espèces observées sur la commune de {{referenciel}} </h3>
    
     {% else %}
-    <h3> Liste des {{listTaxons|length}} espèces observées pour le taxon <i>{{referenciel.lb_nom}}</i> ({{referenciel.nom_rang}}) </h3>
+    <h3> Liste des {{listTaxons.taxons|length}} espèces observées pour le taxon <i>{{referenciel.lb_nom}}</i> ({{referenciel.nom_rang}}) </h3>
     {% endif %}
+
+    <h4> Nombre total d'observations: {{listTaxons.nbObsTotal}} </h4>
      <table id ="myTable">
         <thead>
             <tr>
@@ -50,11 +52,11 @@
             </tr>
         </thead>
         <tbody>
-                {% for taxon in listTaxons %}
+                {% for taxon in listTaxons.taxons %}
             <tr class='clickable'  onclick="document.location = '{{url_for('main.ficheEspece',cd_ref=taxon.cd_ref)}}'" </tr>
                 <td> <img src= "/atlas/static/images/picto_{{taxon.group2_inpn|urlencode}}.png"> </td>
                 <td> {{taxon.nom_complet_html|safe}} </td>
-                <td> {{taxon.nom_vern}} </td>
+                <td> {% if taxon.nom_vern == None %} - {% else %} {{taxon.nom_vern}} {% endif %}</td>
                 <td> {{taxon.nb_obs}} </td>
                 <td> {{taxon.last_obs}} </td>
              </tr>

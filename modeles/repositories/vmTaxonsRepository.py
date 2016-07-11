@@ -35,10 +35,12 @@ def getTaxonsCommunes(insee):
     .join(VmObservations, VmTaxons.cd_ref==VmObservations.cd_ref).group_by(VmTaxons.nom_complet_html, VmTaxons.nom_vern, VmObservations.cd_ref, VmTaxons.group2_inpn)\
     .order_by('count DESC').filter(VmObservations.insee== str(insee)).all()
     taxonCommunesList = list()
+    nbObsTotal = 0
     for r in req:
         temp = {'nom_complet_html': r[0], 'nb_obs' : r[1], 'nom_vern': r[2], 'cd_ref': r[3], 'last_obs' : r[4], 'group2_inpn': deleteAccent(r[5]) }
         taxonCommunesList.append(temp)
-    return taxonCommunesList
+        nbObsTotal = nbObsTotal+ r[1]
+    return {'taxons': taxonCommunesList, 'nbObsTotal' : nbObsTotal}
 
 
 def getTaxonChilds(cd_ref):
@@ -58,7 +60,9 @@ def getTaxonChilds(cd_ref):
     Group by tax.nom_complet_html, tax.nom_vern, tax.cd_ref, tax.group2_inpn".encode('UTF-8')
     req = connection.execute(text(sql), thiscdref = cd_ref, thisRank = rank)
     taxonRankList = list()
+    nbObsTotal = 0
     for r in req:
         temp = {'nom_complet_html': r.nom_complet_html, 'nb_obs' : r.nb_obs, 'nom_vern': r.nom_vern, 'cd_ref': r.cd_ref, 'last_obs' : r.last_obs, 'group2_inpn': deleteAccent(r.group2_inpn)}
         taxonRankList.append(temp)
-    return taxonRankList
+        nbObsTotal = nbObsTotal+ r.nb_obs
+    return {'taxons': taxonRankList, 'nbObsTotal' : nbObsTotal}

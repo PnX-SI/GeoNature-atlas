@@ -100,11 +100,9 @@ text {
 	background-color: #81197f;
   	color: white;
 }
-/*.table-striped>tbody>tr:hover {
-	  background-color: #81197f;
-  	color: white;
-}
-*/
+
+
+
 table.dataTable thead .sorting, 
 table.dataTable thead .sorting_asc, 
 table.dataTable thead .sorting_desc {
