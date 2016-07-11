@@ -35,10 +35,10 @@ def ficheEspece(cd_ref):
 
 @main.route('/commune/<insee>', methods=['GET', 'POST'])
 def ficheCommune(insee):
-    listTaxons = vmObservationsRepository.getTaxonsCommunes(str(insee))
+    listTaxons = vmTaxonsRepository.getTaxonsCommunes(str(insee))
     commune = tCommunesRepository.getCommuneFromInsee(insee)
     communesSearch = tCommunesRepository.getAllCommune()
-    listeTaxonsSearch = listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons()
+    listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons()
     myType = 1
     return render_template('listTaxons.html', myType=myType, listTaxons = listTaxons, referenciel = commune, communesSearch = communesSearch, listeTaxonsSearch = listeTaxonsSearch)
 

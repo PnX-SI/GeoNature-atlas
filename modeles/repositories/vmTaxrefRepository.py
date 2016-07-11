@@ -25,8 +25,8 @@ def getTaxon(cd_nom):
     return req[0]
 
 def getCd_sup(cd_ref):
-    req = session.query(VmTaxref.cd_taxsup).filter(VmTaxref.cd_ref == cd_ref)
-    return req[0].cd_taxsup
+    req = session.query(VmTaxref.cd_taxsup).filter(VmTaxref.cd_nom == cd_ref).first()
+    return req.cd_taxsup
 
 def getNameFromCd_ref(cd_ref):
     req = session.query(VmTaxref.lb_nom).filter(VmTaxref.cd_ref == cd_ref)
@@ -34,7 +34,7 @@ def getNameFromCd_ref(cd_ref):
 
 
 def getAllTaxonomy(cd_ref):
-    taxonSup = getCd_sup(cd_ref)
+    taxonSup = getCd_sup(cd_ref) #cd_taxsup
     taxon = getTaxon(taxonSup)
     tabTaxon = list()
     while 'CL' not in taxon.id_rang.encode('UTF-8'): 
