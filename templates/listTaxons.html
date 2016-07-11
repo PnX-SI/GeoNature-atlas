@@ -41,6 +41,7 @@
      <table id ="myTable">
         <thead>
             <tr>
+                <th> </th>
                 <th> Nom Scientifique <span class="glyphicon glyphicon-menu-down" </span></th>
                 <th> Nom Vernaculaire <span class="glyphicon glyphicon-menu-down" </span></th>
                 <th id="sorted"> Nombre d'observation(s) <span class="glyphicon glyphicon-menu-down" </span> </th>
@@ -51,11 +52,12 @@
         <tbody>
                 {% for taxon in listTaxons %}
             <tr class='clickable'  onclick="document.location = '{{url_for('main.ficheEspece',cd_ref=taxon.cd_ref)}}'" </tr>
+                <td> <img src= "/atlas/static/images/picto_{{taxon.group2_inpn|urlencode}}.png"> </td>
                 <td> {{taxon.nom_complet_html|safe}} </td>
                 <td> {{taxon.nom_vern}} </td>
                 <td> {{taxon.nb_obs}} </td>
                 <td> {{taxon.last_obs}} </td>
-            </tr>
+             </tr>
                 {% endfor %}
         </tbody>
     </table>
