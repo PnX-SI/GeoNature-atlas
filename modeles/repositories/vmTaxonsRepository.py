@@ -5,6 +5,7 @@ import sys
 import unicodedata
 sys.path.insert(0, APP_DIR + '/modeles/entities')
 sys.path.insert(0, BASE_DIR)
+import config
 from vmTaxons import VmTaxons
 from vmObservations import VmObservations
 from sqlalchemy import distinct, func
@@ -44,7 +45,7 @@ def getTaxonsCommunes(insee):
 
 
 def getTaxonChilds(cd_ref):
-    rank = 35
+    rank = config.LIMIT_FICHE_LISTE_HIERARCHY
     sql = "select tax.nom_complet_html, \
     count(obs.id_synthese) as nb_obs, \
     tax.nom_vern, \

@@ -4,6 +4,7 @@ from atlas import APP_DIR, BASE_DIR, manage
 import sys
 sys.path.insert(0, APP_DIR + '/modeles/entities')
 sys.path.insert(0, BASE_DIR)
+import config
 from vmTaxref import VmTaxref
 from tBibTaxrefRang import TBibTaxrefRang
 from sqlalchemy import distinct, func
@@ -39,7 +40,7 @@ def getAllTaxonomy(cd_ref):
     taxonSup = getCd_sup(cd_ref) #cd_taxsup
     taxon = getTaxon(taxonSup)
     tabTaxon = list()
-    while taxon.tri_rang >= 13 : 
+    while taxon.tri_rang >= config.LIMIT_RANG_TAXONOMIQUE_HIERARCHIE : 
         temp = {'rang' : taxon.id_rang, 'lb_nom' : taxon.lb_nom, 'cd_ref': taxon.cd_ref, 'nom_rang' : taxon.nom_rang, 'tri_rang': taxon.tri_rang }
         tabTaxon.insert(0, temp)
         taxon = getTaxon(taxon.cd_taxsup) #on avance

@@ -69,8 +69,9 @@
                                  <a href = "{{url_for('main.ficheEspece', cd_ref = taxon.cd_ref) }}"> {{taxon.lb_nom}}</a> 
                             {% else %}
                                  <a href = "{{url_for('main.ficheRangTaxonomie', cd_ref = taxon.cd_ref) }}">{{taxon.lb_nom}} </a> 
-                             </i>   
+                                
                             {% endif %}
+                            </i>
                             {% if not loop.last %}
                                  <span class="glyphicon glyphicon-chevron-right"> </span>
                             {% endif %}

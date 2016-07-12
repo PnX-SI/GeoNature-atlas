@@ -22,4 +22,16 @@ database_connection = "postgresql://geonatatlas:monpassachanger@localhost:5432/g
 
 # Customisation application
 
+
+
+# Customisation application
+
+
+# Nombre de 'x' dernieres observations de la carte sur la page d'acceuil
 LIMIT_OBSERVATION = 100
+
+# rang taxonomique qui fixe jusque quel taxon remonte la filiation taxonomique (hierachie dans la fiche d'identite)
+LIMIT_RANG_TAXONOMIQUE_HIERARCHIE = 13
+
+# rang taxonomique qui fixe la limite de l'affichage de la fiche espece ou de la liste  ** 35 = ESPECE **  on prend tout ce qui est inferieur ou egal a l'espece pour faire des fiches et ce qui est superieur pour les listes
+LIMIT_FICHE_LISTE_HIERARCHY = 35
