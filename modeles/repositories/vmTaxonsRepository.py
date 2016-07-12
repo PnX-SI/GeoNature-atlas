@@ -21,10 +21,6 @@ session = manage.loadSession()
 
 connection = manage.engine.connect()
 
-#recherche par espece, renvoie un tableau contenant un element: un dict contenant tous les attributs de la table
-def rechercheEspece(cd_ref):
-    taxonRecherche = session.query(VmTaxons).filter(VmTaxons.cd_ref == cd_ref).all()
-    return taxonRecherche[0]
 
 def deleteAccent(string): 
     return unicodedata.normalize('NFD', string).encode('ascii', 'ignore')  
@@ -44,7 +40,7 @@ def getTaxonsCommunes(insee):
     return {'taxons': taxonCommunesList, 'nbObsTotal' : nbObsTotal}
 
 
-def getTaxonChilds(cd_ref):
+def getTaxonsChildsList(cd_ref):
     rank = config.LIMIT_FICHE_LISTE_HIERARCHY
     sql = "select tax.nom_complet_html, \
     count(obs.id_synthese) as nb_obs, \

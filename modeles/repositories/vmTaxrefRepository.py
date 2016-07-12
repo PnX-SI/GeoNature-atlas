@@ -6,12 +6,19 @@ sys.path.insert(0, APP_DIR + '/modeles/entities')
 sys.path.insert(0, BASE_DIR)
 import config
 from vmTaxref import VmTaxref
+from vmTaxons import VmTaxons
 from tBibTaxrefRang import TBibTaxrefRang
 from sqlalchemy import distinct, func
 from sqlalchemy.orm import sessionmaker
 
 
 session = manage.loadSession()
+
+
+#recherche par espece, renvoie un tableau contenant un element: un dict contenant tous les attributs de la table
+def rechercheEspece(cd_ref):
+    taxonRecherche = session.query(VmTaxref).filter(VmTaxref.cd_ref == cd_ref).all()
+    return taxonRecherche[0]
 
 
 def getSynonymy(cd_ref):

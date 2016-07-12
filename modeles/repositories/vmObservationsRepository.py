@@ -9,11 +9,13 @@ from tCommunes import LCommune
 from vmTaxref import VmTaxref
 from vmTaxons import VmTaxons
 from sqlalchemy import distinct, func, extract, desc
+from sqlalchemy.sql import text
 from sqlalchemy.orm import sessionmaker
 import ast
 from datetime import datetime
 
 session = manage.loadSession()
+connection = manage.engine.connect()
 
 currentYear = datetime.now().year
 
@@ -74,12 +76,31 @@ def toGeoJsonHome(queryResult):
 def searchObservation(cd_ref):
     observations = session.query(VmObservations).filter(VmObservations.cd_ref == cd_ref).all()
     return  toGeoJsonTaxon(observations, 15)
+
+
+def searchObservationsChilds(cd_ref):
+    sql = "select * \
+    from atlas.vm_observations obs \
+    where obs.cd_ref in ( \
+    select * from atlas.find_all_taxons_childs(:thiscdref) \
+    )OR obs.cd_ref = :thiscdref".encode('UTF-8')
+    observations = connection.execute(text(sql), thiscdref = cd_ref)
+    return toGeoJsonTaxon(observations, 15)
+
+def firstObservationChild(cd_ref):
+    sql = "select min(taxons.yearmin) as yearmin \
+    from atlas.vm_taxons taxons \
+    join atlas.vm_taxref taxref ON taxref.cd_ref=taxons.cd_ref \
+    where taxons.cd_ref in ( \
+    select * from atlas.find_all_taxons_childs(:thiscdref) \
+    )OR taxons.cd_ref = :thiscdref".encode('UTF-8')
+    req = connection.execute(text(sql), thiscdref = cd_ref)
+    for r in req:
+      return r.yearmin
+
     
 def lastObservations(mylimit):
     observations = session.query(VmObservations,VmTaxref).join(VmTaxref, VmObservations.cd_ref==VmTaxref.cd_nom).order_by(desc(VmObservations.dateobs)).limit(mylimit).all()
     return  toGeoJsonHome(observations)
 
-
-def getCommunes(cd_ref):
-    return session.query(distinct(VmObservations.insee), VmObservations.insee,LCommune.commune_min, LCommune.commune_maj).join(LCommune, VmObservations.insee == LCommune.insee).group_by(VmObservations.insee, LCommune.commune_min, LCommune.commune_maj).filter(VmObservations.cd_ref==cd_ref).all()
 
