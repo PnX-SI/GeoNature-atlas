@@ -609,11 +609,9 @@ $BODY$
     IF c > 0 THEN
         FOR inf IN 
       WITH RECURSIVE descendants AS (
-        SELECT cd_nom FROM atlas.vm_taxref WHERE cd_taxsup = id
-        UNION ALL
-        SELECT e.cd_nom
-        FROM descendants d
-        JOIN atlas.vm_taxref e ON e.cd_taxsup = d.cd_nom
+        SELECT tx1.cd_nom FROM atlas.vm_taxref tx1 WHERE tx1.cd_taxsup = id
+	    UNION ALL
+	    SELECT tx2.cd_nom FROM descendants d JOIN atlas.vm_taxref tx2 ON tx2.cd_taxsup = d.cd_nom
       ) 
       SELECT cd_nom FROM descendants 
   LOOP
