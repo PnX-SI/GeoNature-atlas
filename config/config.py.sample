@@ -26,6 +26,9 @@ database_connection = "postgresql://geonatatlas:monpassachanger@localhost:5432/g
 
 # Customisation application
 
+# nom de la structure
+STRUCTURE = "Parc national des Écrins"
+STRUCTURE = unicode(STRUCTURE, 'utf-8')
 
 # Nombre de 'x' dernieres observations de la carte sur la page d'acceuil
 LIMIT_OBSERVATION = 100

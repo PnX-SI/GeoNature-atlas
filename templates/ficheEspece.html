@@ -65,7 +65,7 @@
 
                             {{taxon.nom_rang}} :
                             <i>
-                            {% if ( taxon.tri_rang >= limit_fiche_espece) %}
+                            {% if ( taxon.tri_rang >= configuration.LIMIT_FICHE_LISTE_HIERARCHY) %}
                                  <a href = "{{url_for('main.ficheEspece', cd_ref = taxon.cd_ref) }}"> {{taxon.lb_nom}}</a> 
                             {% else %}
                                  <a href = "{{url_for('main.ficheRangTaxonomie', cd_ref = taxon.cd_ref) }}">{{taxon.lb_nom}} </a> 
