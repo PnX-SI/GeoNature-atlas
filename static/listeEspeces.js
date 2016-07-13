@@ -11,6 +11,7 @@ $(document).ready(function()
 
 
 $(document).ready(function(){
+  $('#myTable').show();
     $('#myTable').DataTable({
     	"order":[5, 'desc'],
     	"lengthChange": false,

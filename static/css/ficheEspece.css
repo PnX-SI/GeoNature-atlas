@@ -92,14 +92,6 @@ text {
 
 /* Taxons tables */
 
-.clickable {
-	cursor:pointer;
-}
-
-.clickable:hover {
-	background-color: #81197f;
-  	color: white;
-}
 
 
 
