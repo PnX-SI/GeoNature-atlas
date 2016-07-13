@@ -19,7 +19,7 @@ connection = manage.engine.connect()
 
 currentYear = datetime.now().year
 
-def toGeoJsonTaxon(queryResult, nbYear):
+def toGeoJsonTaxon(queryResult):
     geojson = {'type': 'FeatureCollection',
            'features' : list()
           }
@@ -75,7 +75,7 @@ def toGeoJsonHome(queryResult):
 
 def searchObservation(cd_ref):
     observations = session.query(VmObservations).filter(VmObservations.cd_ref == cd_ref).all()
-    return  toGeoJsonTaxon(observations, 15)
+    return  toGeoJsonTaxon(observations)
 
 
 def searchObservationsChilds(cd_ref):
@@ -85,7 +85,7 @@ def searchObservationsChilds(cd_ref):
     select * from atlas.find_all_taxons_childs(:thiscdref) \
     )OR obs.cd_ref = :thiscdref".encode('UTF-8')
     observations = connection.execute(text(sql), thiscdref = cd_ref)
-    return toGeoJsonTaxon(observations, 15)
+    return toGeoJsonTaxon(observations)
 
 def firstObservationChild(cd_ref):
     sql = "select min(taxons.yearmin) as yearmin \

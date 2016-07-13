@@ -12,7 +12,7 @@ $(document).ready(function()
 
 $(document).ready(function(){
     $('#myTable').DataTable({
-    	"order":[3, 'desc'],
+    	"order":[5, 'desc'],
     	"lengthChange": false,
     	"pageLength": 50,
         "oLanguage": {
@@ -27,6 +27,11 @@ $(document).ready(function(){
            "sNext" : "Suivant"
          }
       },
+      "aoColumnDefs" : [
+      {
+       'bSortable' : false,
+       'aTargets' : [7]
+     }]
     });
     $('.dataTables_filter input').attr("placeholder", "Rechercher dans la liste ").attr("class", "form-control").css("font-weight", "normal");
     $('.dataTables_empty').text("rien")
