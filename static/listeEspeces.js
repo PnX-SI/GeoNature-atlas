@@ -35,7 +35,7 @@ $(document).ready(function(){
      }]
     });
     $('.dataTables_filter input').attr("placeholder", "Rechercher dans la liste ").attr("class", "form-control").css("font-weight", "normal");
-    $('.dataTables_empty').text("rien")
+    $('.dataTables_empty').text("Aucune espèce trouvée")
 
 });
 

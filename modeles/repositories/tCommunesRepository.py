@@ -1,5 +1,6 @@
 from atlas import APP_DIR, BASE_DIR, manage
 import sys
+import ast
 sys.path.insert(0, APP_DIR + '/modeles/entities')
 sys.path.insert(0, BASE_DIR)
 from tCommunes import LCommune
@@ -14,9 +15,22 @@ connection = manage.engine.connect()
 
 
 
-def getCommuneFromInsee(insee):
-    req =  session.query(LCommune.commune_maj).filter(LCommune.insee==insee).all()
-    return req[0].commune_maj
+def toGeoJson(queryResult):
+    geojson = {'type': 'FeatureCollection',
+           'features' : list()
+          }
+    for r in queryResult:
+        geometry = r.the_geom
+        properties = {'insee': r.insee,
+                      'commune_maj' : r.commune_maj
+                      }
+        feature = {
+            'type' : 'Feature',
+            'properties' : properties,
+            'geometry' : geometry
+        }
+        geojson['features'].append(feature)
+    return geojson
 
 
 def getAllCommune():
@@ -26,6 +40,15 @@ def getAllCommune():
         temp = { 'label' : r[0], 'value' : r[1]}
         communeList.append(temp)
     return communeList
+
+def getGeometryCommune():
+    queryResult = session.query(LCommune).all()
+    return toGeoJson(queryResult)
+
+
+def getCommuneFromInsee(insee):
+    req =  session.query(LCommune.commune_maj).filter(LCommune.insee==insee).all()
+    return req[0].commune_maj
 
 def getCommunesObservations(cd_ref):
     return session.query(distinct(VmObservations.insee), VmObservations.insee, LCommune.commune_maj)\

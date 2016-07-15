@@ -104,3 +104,6 @@ def lastObservations(mylimit):
     return  toGeoJsonHome(observations)
 
 
+def loadMailles():
+    sql = "select geom, code5km from layers.maille"
+    return connection.execute(text(sql))

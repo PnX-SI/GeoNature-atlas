@@ -15,8 +15,6 @@ from datetime import date
 
 
 
-
-
 session = manage.loadSession()
 
 connection = manage.engine.connect()
@@ -56,7 +54,7 @@ def getTaxonsChildsList(cd_ref):
     JOIN atlas.vm_observations obs on obs.cd_ref = tax.cd_ref \
     JOIN atlas.temp_bib_taxref_rangs bib_rang on tax.nom_rang = bib_rang.nom_rang \
     where tax.cd_ref in ( select * from atlas.find_all_taxons_childs(:thiscdref) \
-    ) AND (bib_rang.tri_rang <= :thisRank) \
+    ) AND (bib_rang.tri_rang >= :thisRank) \
     Group by tax.nom_complet_html, tax.nom_vern, tax.cd_ref, tax.group2_inpn, tax.patrimonial, tax.protection_stricte".encode('UTF-8')
     req = connection.execute(text(sql), thiscdref = cd_ref, thisRank = rank)
     taxonRankList = list()

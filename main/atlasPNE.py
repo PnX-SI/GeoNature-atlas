@@ -31,10 +31,11 @@ def ficheEspece(cd_ref):
     communes = tCommunesRepository.getCommunesObservationsChilds(cd_ref)
     communesSearch = tCommunesRepository.getAllCommune()
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(cd_ref)
+    mailles = vmObservationsRepository.loadMailles()
     configuration = {'STRUCTURE' : config.STRUCTURE, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY}
     return render_template('ficheEspece.html', taxon=taxon, listeTaxonsSearch=listeTaxonsSearch, observations=observations , firstObservation = firstObservation ,\
-     cd_ref=cd_ref, altitudes=altitudes, months= months, synonyme=synonyme, communes=communes, communesSearch=communesSearch, taxonomyHierarchy = taxonomyHierarchy,\
-     configuration = configuration)
+     cd_ref=cd_ref, altitudes=altitudes, months=months, synonyme=synonyme, communes=communes, communesSearch=communesSearch, taxonomyHierarchy = taxonomyHierarchy,\
+     maille = maille, configuration=configuration)
 
 
 @main.route('/commune/<insee>', methods=['GET', 'POST'])
