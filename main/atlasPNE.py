@@ -31,11 +31,10 @@ def ficheEspece(cd_ref):
     communes = tCommunesRepository.getCommunesObservationsChilds(cd_ref)
     communesSearch = tCommunesRepository.getAllCommune()
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(cd_ref)
-    mailles = vmObservationsRepository.loadMailles()
     configuration = {'STRUCTURE' : config.STRUCTURE, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY}
     return render_template('ficheEspece.html', taxon=taxon, listeTaxonsSearch=listeTaxonsSearch, observations=observations , firstObservation = firstObservation ,\
      cd_ref=cd_ref, altitudes=altitudes, months=months, synonyme=synonyme, communes=communes, communesSearch=communesSearch, taxonomyHierarchy = taxonomyHierarchy,\
-     maille = maille, configuration=configuration)
+      configuration=configuration)
 
 
 @main.route('/commune/<insee>', methods=['GET', 'POST'])
@@ -55,9 +54,10 @@ def ficheRangTaxonomie(cd_ref):
     referenciel = vmTaxrefRepository.getInfoFromCd_ref(cd_ref)
     communesSearch = tCommunesRepository.getAllCommune()
     listeTaxonsSearch = listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons()
+    taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(cd_ref)
     myType = 2
-    configuration = {'STRUCTURE' : config.STRUCTURE}
+    configuration = {'STRUCTURE' : config.STRUCTURE, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY}
     return render_template('listTaxons.html',  myType=myType ,listTaxons = listTaxons, referenciel = referenciel, communesSearch = communesSearch, listeTaxonsSearch = listeTaxonsSearch, \
-        configuration = configuration)
+        taxonomyHierarchy=taxonomyHierarchy, configuration=configuration)
 
 
