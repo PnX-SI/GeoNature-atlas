@@ -24,5 +24,37 @@ function style(feature) {
 }
 
 
+function onEachFeature(feature, layer){
+    popupContent = "<b>Nombre d'observation(s): </b>"+ feature.properties.nb_observations+"</br>";
+    layer.bindPopup(popupContent)
+      }
 
-L.geoJson(observations, {style: style}).addTo(map);
+
+
+L.geoJson(observations, {
+	onEachFeature : onEachFeature,
+	style: style,
+	}).addTo(map);
+
+
+var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+        grades = [0, 1, 2, 5, 10, 20, 50, 100],
+        labels = [];
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+    }
+
+    return div;
+};
+
+
+
+legend.addTo(map);
