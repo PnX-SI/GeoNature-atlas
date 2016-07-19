@@ -838,7 +838,6 @@ ALTER TABLE atlas.bib_taxref_rangs
 
 
 
-
 --Fonction pour rafraichir toutes les vues matérialisées d'un schéma
 --USAGE : SELECT RefreshAllMaterializedViews('atlas');
 CREATE OR REPLACE FUNCTION RefreshAllMaterializedViews(schema_arg TEXT DEFAULT 'public')
