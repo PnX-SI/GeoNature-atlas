@@ -10,7 +10,7 @@ SELECT obs.cd_ref,
 count(obs.id_synthese) as nb_observations,
 m.id_maille,
 obs.the_geom_point,
-st_asgeojson(ST_Transform(ST_SetSrid(obs.the_geom_point, 3857), 4326)) as geojson_maille
+st_asgeojson(st_transform(m.geom,4326)) AS geojson_maille
 FROM atlas.vm_observations obs
 JOIN atlas.t_mailles m ON ST_Intersects(obs.the_geom_point, st_transform(m.geom,3857))
 group by obs.cd_ref, m.id_maille, geojson_maille, obs.the_geom_point ;
