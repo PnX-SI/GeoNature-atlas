@@ -49,3 +49,9 @@ atlas_source_user=geonatatlas
 
 # Pass du user atlas sur la base de données source (lecture seule)
 atlas_source_pass=monpassachanger
+
+#taille de maille: valeurs possibles 1, 5 ou 10
+taillemaille=5
+
+# chemin vers le shp de l'emprise du territoire 
+limit_shp="mon/chemin/vers/la/couche/.shp"

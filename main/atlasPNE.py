@@ -5,7 +5,8 @@ import sys
 from flask import Flask, request, render_template, jsonify
 from werkzeug.wrappers import Response
 import config
-from modeles.repositories import vmTaxonsRepository, vmObservationsRepository, vmAltitudesRepository, vmSearchTaxonRepository, vmMoisRepository, vmTaxrefRepository, tCommunesRepository
+from modeles.repositories import vmTaxonsRepository, vmObservationsRepository, vmAltitudesRepository, \
+ vmSearchTaxonRepository, vmMoisRepository, vmTaxrefRepository, tCommunesRepository, vmObservationsMaillesRepository
 from . import main
 import json
 
@@ -18,12 +19,17 @@ def index():
     configuration = {'STRUCTURE' : config.STRUCTURE}
     return render_template('index.html', listeTaxonsSearch=listeTaxonsSearch, observations=observations, communesSearch=communesSearch, configuration = configuration)
 
+
+
 @main.route('/espece/<int:cd_ref>', methods=['GET', 'POST'])
 def ficheEspece(cd_ref):
     cd_ref = int(cd_ref)
     listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons()
-    taxon = vmTaxrefRepository.rechercheEspece(cd_ref)
-    observations = vmObservationsRepository.searchObservationsChilds(cd_ref)
+    taxon = vmTaxrefRepository.searchEspece(cd_ref)
+    if config.AFFICHAGE_MAILLE:
+        observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(cd_ref)
+    else:
+        vmObservationsRepository.searchObservationsChilds(cd_ref)
     firstObservation = vmObservationsRepository.firstObservationChild(cd_ref)
     altitudes = vmAltitudesRepository.getAltitudesChilds(cd_ref)
     months = vmMoisRepository.getMonthlyObservationsChilds(cd_ref)
@@ -31,10 +37,13 @@ def ficheEspece(cd_ref):
     communes = tCommunesRepository.getCommunesObservationsChilds(cd_ref)
     communesSearch = tCommunesRepository.getAllCommune()
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(cd_ref)
-    configuration = {'STRUCTURE' : config.STRUCTURE, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY}
+    configuration = {'STRUCTURE' : config.STRUCTURE, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY,\
+    'AFFICHAGE_MAILLE' : config.AFFICHAGE_MAILLE}
     return render_template('ficheEspece.html', taxon=taxon, listeTaxonsSearch=listeTaxonsSearch, observations=observations , firstObservation = firstObservation ,\
      cd_ref=cd_ref, altitudes=altitudes, months=months, synonyme=synonyme, communes=communes, communesSearch=communesSearch, taxonomyHierarchy = taxonomyHierarchy,\
       configuration=configuration)
+
+
 
 
 @main.route('/commune/<insee>', methods=['GET', 'POST'])

@@ -56,9 +56,9 @@
                     </div>
                     <div class="col-sm-6">
                     
-                        <h3> {{taxon.nom_complet_html|safe}} </h3>
+                        <h3> {{taxon.taxonSearch.nom_complet_html|safe}} </h3>
                         {% if not taxon.nom_vern == None %}
-                        <p>  {{taxon.nom_vern}}  <br/>
+                        <p>  {{taxon.taxonSearch.nom_vern}}  <br/>
                         {% endif %}
 
                         {% for taxon in taxonomyHierarchy %}
@@ -163,8 +163,12 @@
     <script type="text/javascript" src="/atlas/static/chart.js"></script>
 
    <script > var taxonYearMin = {{firstObservation}};</script> 
-
+   <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
+   {% if configuration.AFFICHAGE_MAILLE %}
+    <script src="{{url_for('static', filename='mapMailles.js') }}"></script>
+    {% else %}
     <script src="{{url_for('static', filename='map.js') }}"></script>
+    {% endif %}
     <script src="{{url_for('static', filename='main.js') }}"></script>
 
     </body>

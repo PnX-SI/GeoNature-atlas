@@ -9,17 +9,28 @@ from vmTaxref import VmTaxref
 from vmTaxons import VmTaxons
 from tBibTaxrefRang import TBibTaxrefRang
 from sqlalchemy import distinct, func
+from sqlalchemy.sql import text
 from sqlalchemy.orm import sessionmaker
 
 
 session = manage.loadSession()
+connection = manage.engine.connect()
 
 
-#recherche par espece, renvoie un tableau contenant un element: un dict contenant tous les attributs de la table
-def rechercheEspece(cd_ref):
-    taxonRecherche = session.query(VmTaxref).filter(VmTaxref.cd_ref == cd_ref).all()
-    return taxonRecherche[0]
-
+#recherche l espece corespondant au cd_nom et tout ces fils
+def searchEspece(cd_ref):
+    taxonSearch = session.query(VmTaxref).filter(VmTaxref.cd_ref == cd_ref).all()
+    sql="select tax.lb_nom, \
+    tax.nom_vern, \
+    tax.cd_ref \
+    from atlas.vm_taxons tax \
+    where tax.cd_ref in ( select * from atlas.find_all_taxons_childs(:thiscdref))".encode('UTF-8')
+    req = connection.execute(text(sql), thiscdref = cd_ref)
+    listTaxonsChild = list()
+    for r in req:
+        temp = {'lb_nom': r.lb_nom, 'nom_vern':r.nom_vern, 'cd_ref':r.cd_ref}
+        listTaxonsChild.append(temp)
+    return {'taxonSearch':taxonSearch[0], 'listTaxonsChild': listTaxonsChild }
 
 def getSynonymy(cd_ref):
     return session.query(VmTaxref.lb_nom).filter(VmTaxref.cd_ref==cd_ref).all()

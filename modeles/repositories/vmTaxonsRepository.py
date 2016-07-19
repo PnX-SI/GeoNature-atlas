@@ -20,6 +20,7 @@ session = manage.loadSession()
 connection = manage.engine.connect()
 
 
+
 def deleteAccent(string): 
     return unicodedata.normalize('NFD', string).encode('ascii', 'ignore')  
 
