@@ -148,6 +148,11 @@ Dans un soucis de performance et pour ne pas requêter en permanence sur la base
 
 - atlas.vm_phenologies qui renvoie le nombre d'observations pour chaque mois et chaque taxon.
 
+
+- atlas.vm_observations_mailles qui renvoie la liste de toute les observation aggrégées par maille
+    Pour créer la table vm_observations_mailles, remplacer le fichier ``data/ref/emprise_territoire.sample.shp`` par le fichier SHP de l'emprise de votre territore
+    Il est possible de choisir la table des mailles (1, 5 ou 10 km) en modifiant la variable ``taillemaille`` du fichier ``config/settings.ini``
+
 Insérer un schema des BDD.
 
 * Lancer le script automatique de création de la BDD
