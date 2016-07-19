@@ -57,34 +57,31 @@ then
     echo "Création de la structure de la base..."
     export PGPASSWORD=$user_pg_pass;psql -h $db_host -U $user_pg -d $db_name -f data/atlas.sql  &>> log/install_db.log
 
-
-    
     echo "Affectation des droits sur la base source..."
     sed -i "s/TO geonatatlas;$/TO $user_pg;/" data/atlas_source.sql
     export PGPASSWORD=$admin_source_pass;psql -h $db_source_host -U $admin_source_user -d $db_source_name -f data/atlas_source.sql  &>> log/install_db.log
    
-       echo "Création des mailles"
-    # Decoupage des mailles et creation de la table des mailles
+    echo "Découpage des mailles et creation de la table des mailles"
     cd data/ref
-
-    rm -f L*.shp L*.dbf L*.prj L*.sbn L*.sbx L*.shx output_clip.*
 
     file="L93_"$taillemaille"K.zip"
     echo $file
 
     unzip $file
 
-
     shpToClip="L93_"$taillemaille"K.shp"
 
-    echo Découpage des mailles ...
+    echo "Découpage des mailles ..."
     ogr2ogr -clipsrc $limit_shp output_clip.shp $shpToClip
 
     export PGPASSWORD=$user_pg_pass;shp2pgsql -W "cp850" -s 2154 -D -I output_clip atlas.t_mailles | psql -h $db_host -U $user_pg $db_name
     cd ../../
 
-    echo Creation de la table des mailles...
+    echo "Creation de la table des mailles..."
     #ajout de la tabme vm_mailles_observations
     export PGPASSWORD=$user_pg_pass;psql -h $db_host -U $user_pg -d $db_name -f data/mailles.sql  &> log/install_mailles.log
-
+    
+    cd data/ref
+    rm -f L*.shp L*.dbf L*.prj L*.sbn L*.sbx L*.shx output_clip.*
+    cd ../..
 fi

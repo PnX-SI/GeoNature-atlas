@@ -207,7 +207,7 @@ CREATE FOREIGN TABLE synthese.syntheseff
   date_update timestamp without time zone,
   derniere_action character(1),
   supprime boolean,
-  the_geom_point geometry,
+  the_geom_point geometry('POINT',3857),
   id_lot integer,
   id_critere_synthese integer,
   the_geom_3857 geometry,
@@ -394,7 +394,7 @@ CREATE FOREIGN TABLE layers.l_zonesstatut
   id_type integer NOT NULL,
   id_mnhn character varying(20),
   nomzone character varying(250),
-  the_geom geometry
+  the_geom geometry('MULTIPOLYGON', 2154 )
 )
   SERVER geonaturedbserver
   OPTIONS (schema_name 'layers', table_name 'l_zonesstatut');
@@ -405,7 +405,7 @@ CREATE FOREIGN TABLE layers.l_secteurs
 (
   nom_secteur character varying(50),
   id_secteur integer NOT NULL,
-  the_geom geometry
+  the_geom geometry('MULTIPOLYGON', 2154 )
 )
   SERVER geonaturedbserver
   OPTIONS (schema_name 'layers', table_name 'l_secteurs');
@@ -446,7 +446,7 @@ CREATE FOREIGN TABLE layers.l_communes
   saisie boolean,
   organisme boolean,
   id_secteur_fp integer,
-  the_geom geometry
+  the_geom geometry('MULTIPOLYGON', 2154 )
 )
   SERVER geonaturedbserver
   OPTIONS (schema_name 'layers', table_name 'l_communes');
@@ -606,7 +606,7 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
         s.date_insert,
         s.date_update,
         s.derniere_action,
-        ST_SetSrid(s.the_geom_point, 3857) as the_geom_point,
+        s.the_geom_point::geometry('POINT',3857),
         s.id_lot,
         s.id_critere_synthese,
         s.effectif_total,
