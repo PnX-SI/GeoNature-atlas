@@ -52,6 +52,12 @@ body {
 	background: #909596;
 }
 
+
+h5#buttonChild:hover {
+	cursor: pointer
+}
+
+
 /* graphiques */
 
 #graphContainer {

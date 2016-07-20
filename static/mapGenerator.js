@@ -25,7 +25,21 @@ var baseMap = {
 "Satellite": orthoTile
 }
 
+myStyle = {
+	fill: false
+}
+
 L.control.layers(baseMap).addTo(map);
+
+ $(document).ready(function()
+      {
+          $.getJSON('../static/territoire.json', function(json) {
+              console.log(json);
+              L.geoJson(json, {
+              	style: myStyle
+              }).addTo(map);
+          });
+      });
 
 return map
 

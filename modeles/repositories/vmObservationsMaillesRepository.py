@@ -37,8 +37,8 @@ def getObservationsMaillesChilds(cd_ref):
     sum(obs.nb_observations) as nb_observations \
     from atlas.vm_observations_mailles obs \
     where obs.cd_ref in ( \
-    select * from atlas.find_all_taxons_childs(192137)) \
-    OR obs.cd_ref = 192137 \
+    select * from atlas.find_all_taxons_childs(:thiscdref)) \
+    OR obs.cd_ref = :thiscdref \
     GROUP BY obs.geojson_maille, obs.nb_observations, obs.id_maille"
     observations = connection.execute(text(sql), thiscdref = cd_ref)
     return toGeoJson(observations)

@@ -21,3 +21,8 @@ ALTER TABLE atlas.vm_observations_mailles
 create index on atlas.vm_observations_mailles (nb_observations);
 create index on atlas.vm_observations_mailles (cd_ref);
 CREATE INDEX index_gist_vm_observations_mailles ON atlas.vm_observations_mailles USING gist (the_geom_point);
+
+
+CREATE INDEX index_gist_t_layer_territoire
+  ON atlas.t_layer_territoire
+  USING gist (geom);

@@ -6,6 +6,21 @@ CREATE SCHEMA meta AUTHORIZATION geonatatlas;
 CREATE SCHEMA layers AUTHORIZATION geonatatlas;
 CREATE SCHEMA atlas AUTHORIZATION geonatatlas;
 
+--PUBLIC
+
+CREATE FOREIGN TABLE public.cor_boolean
+(
+  expression character varying(25) NOT NULL,
+  bool boolean NOT NULL
+)
+  SERVER geonaturedbserver
+  OPTIONS (schema_name 'public', table_name 'cor_boolean');
+ALTER TABLE public.cor_boolean OWNER TO geonatatlas;
+GRANT ALL ON TABLE public.cor_boolean TO geonatatlas;
+
+INSERT INTO public.cor_boolean VALUES('oui',true);
+INSERT INTO public.cor_boolean VALUES('non',false);
+
 --UTILISATEURS
 CREATE FOREIGN TABLE utilisateurs.bib_organismes
 (
@@ -228,7 +243,12 @@ CREATE FOREIGN TABLE taxonomie.bib_attributs
   liste_valeur_attribut text NOT NULL,
   obligatoire boolean NOT NULL,
   desc_attribut text,
-  type_attribut character varying(50)
+  type_attribut character varying(50),
+  type_widget character varying(50),
+  regne character varying(20),
+  group2_inpn character varying(255),
+  id_theme integer,
+  ordre integer
 )
   SERVER geonaturedbserver
   OPTIONS (schema_name 'taxonomie', table_name 'bib_attributs');
@@ -240,35 +260,38 @@ CREATE FOREIGN TABLE taxonomie.bib_listes
   id_liste integer NOT NULL,
   nom_liste character varying(255) NOT NULL,
   desc_liste text,
-  picto character varying(50)
+  picto character varying(50),
+  regne character varying(20),
+  group2_inpn character varying(255)
 )
   SERVER geonaturedbserver
   OPTIONS (schema_name 'taxonomie', table_name 'bib_listes');
 ALTER TABLE taxonomie.bib_listes OWNER TO geonatatlas;
 GRANT ALL ON TABLE taxonomie.bib_listes TO geonatatlas;
 
-CREATE FOREIGN TABLE taxonomie.bib_taxons
+CREATE FOREIGN TABLE taxonomie.bib_noms
 (
-  id_taxon integer NOT NULL,
+  id_nom serial NOT NULL,
   cd_nom integer,
-  nom_latin character varying(100),
-  nom_francais character varying(255),
-  auteur character varying(200),
-  filtre1 character varying(255),
-  filtre2 character varying(255),
-  filtre3 character varying(255),
-  filtre4 character varying(255),
-  filtre5 character varying(255),
-  filtre6 character varying(255),
-  filtre7 character varying(255),
-  filtre8 character varying(255),
-  filtre9 character varying(255),
-  filtre10 character varying(255)
+  cd_ref integer,
+  nom_francais character varying(255)
 )
   SERVER geonaturedbserver
-  OPTIONS (schema_name 'taxonomie', table_name 'bib_taxons');
-ALTER TABLE taxonomie.bib_taxons OWNER TO geonatatlas;
-GRANT ALL ON TABLE taxonomie.bib_taxons TO geonatatlas;
+  OPTIONS (schema_name 'taxonomie', table_name 'bib_noms');
+ALTER TABLE taxonomie.bib_noms OWNER TO geonatatlas;
+GRANT ALL ON TABLE taxonomie.bib_noms TO geonatatlas;
+
+CREATE FOREIGN TABLE taxonomie.bib_taxref_categories_lr
+(
+  id_categorie_france character(2) NOT NULL,
+  categorie_lr character varying(50) NOT NULL,
+  nom_categorie_lr character varying(255) NOT NULL,
+  desc_categorie_lr character varying(255)
+)
+  SERVER geonaturedbserver
+  OPTIONS (schema_name 'taxonomie', table_name 'bib_taxref_categories_lr');
+ALTER TABLE taxonomie.bib_taxref_categories_lr OWNER TO geonatatlas;
+GRANT ALL ON TABLE taxonomie.bib_taxref_categories_lr TO geonatatlas;
 
 CREATE FOREIGN TABLE taxonomie.bib_taxref_habitats
 (
@@ -300,6 +323,50 @@ CREATE FOREIGN TABLE taxonomie.bib_taxref_statuts
 ALTER TABLE taxonomie.bib_taxref_statuts OWNER TO geonatatlas;
 GRANT ALL ON TABLE taxonomie.bib_taxref_statuts TO geonatatlas;
 
+CREATE FOREIGN TABLE taxonomie.bib_themes
+(
+  id_theme integer NOT NULL,
+  nom_theme character varying(20),
+  desc_theme character varying(255),
+  ordre integer
+)
+  SERVER geonaturedbserver
+  OPTIONS (schema_name 'taxonomie', table_name 'bib_themes');
+ALTER TABLE taxonomie.bib_themes OWNER TO geonatatlas;
+GRANT ALL ON TABLE taxonomie.bib_themes TO geonatatlas;
+
+CREATE FOREIGN TABLE taxonomie.taxref_liste_rouge_fr
+(
+  id_lr serial NOT NULL,
+  ordre_statut integer,
+  vide character varying(255),
+  cd_nom integer,
+  cd_ref integer,
+  nomcite character varying(255),
+  nom_scientifique character varying(255),
+  auteur character varying(255),
+  nom_vernaculaire character varying(255),
+  nom_commun character varying(255),
+  rang character(4),
+  famille character varying(50),
+  endemisme character varying(255),
+  population character varying(255),
+  commentaire text,
+  id_categorie_france character(2) NOT NULL,
+  criteres_france character varying(255),
+  liste_rouge character varying(255),
+  fiche_espece character varying(255),
+  tendance character varying(255),
+  liste_rouge_source character varying(255),
+  annee_publication integer,
+  categorie_lr_europe character varying(2),
+  categorie_lr_mondiale character varying(5)
+)
+  SERVER geonaturedbserver
+  OPTIONS (schema_name 'taxonomie', table_name 'taxref_liste_rouge_fr');
+ALTER TABLE taxonomie.taxref_liste_rouge_fr OWNER TO geonatatlas;
+GRANT ALL ON TABLE taxonomie.taxref_liste_rouge_fr TO geonatatlas;
+
 CREATE FOREIGN TABLE taxonomie.taxref
 (
   cd_nom integer NOT NULL,
@@ -321,7 +388,8 @@ CREATE FOREIGN TABLE taxonomie.taxref
   nom_vern_eng character varying(500),
   group1_inpn character varying(50),
   group2_inpn character varying(50),
-  nom_complet_html character varying(500)
+  nom_complet_html character varying(500),
+  cd_sup integer
 )
   SERVER geonaturedbserver
   OPTIONS (schema_name 'taxonomie', table_name 'taxref');
@@ -333,18 +401,15 @@ CREATE FOREIGN TABLE taxonomie.taxref_protection_articles
   cd_protection character varying(20) NOT NULL,
   article character varying(100),
   intitule text,
-  protection text,
   arrete text,
-  fichier text,
-  fg_afprot integer,
-  niveau character varying(250),
-  cd_arrete integer,
   url character varying(250),
   date_arrete integer,
   rang_niveau integer,
   lb_article text,
   type_protection character varying(250),
-  concerne_mon_territoire boolean
+  concerne_mon_territoire boolean,
+  url_inpn character varying(250),
+  cd_doc integer
 )
   SERVER geonaturedbserver
   OPTIONS (schema_name 'taxonomie', table_name 'taxref_protection_articles');
@@ -368,24 +433,24 @@ GRANT ALL ON TABLE taxonomie.taxref_protection_especes TO geonatatlas;
 
 CREATE FOREIGN TABLE taxonomie.cor_taxon_attribut
 (
-  id_taxon integer NOT NULL,
   id_attribut integer NOT NULL,
-  valeur_attribut character varying(50) NOT NULL
+  valeur_attribut character varying(50) NOT NULL,
+  cd_ref integer NOT NULL
 )
   SERVER geonaturedbserver
   OPTIONS (schema_name 'taxonomie', table_name 'cor_taxon_attribut');
 ALTER TABLE taxonomie.cor_taxon_attribut OWNER TO geonatatlas;
 GRANT ALL ON TABLE taxonomie.cor_taxon_attribut TO geonatatlas;
 
-CREATE FOREIGN TABLE taxonomie.cor_taxon_liste
+CREATE FOREIGN TABLE taxonomie.cor_nom_liste
 (
   id_liste integer NOT NULL,
-  id_taxon integer NOT NULL
+  id_nom integer NOT NULL
 )
   SERVER geonaturedbserver
-  OPTIONS (schema_name 'taxonomie', table_name 'cor_taxon_liste');
-ALTER TABLE taxonomie.cor_taxon_liste OWNER TO geonatatlas;
-GRANT ALL ON TABLE taxonomie.cor_taxon_liste TO geonatatlas;
+  OPTIONS (schema_name 'taxonomie', table_name 'cor_nom_liste');
+ALTER TABLE taxonomie.cor_nom_liste OWNER TO geonatatlas;
+GRANT ALL ON TABLE taxonomie.cor_nom_liste TO geonatatlas;
 
 --LAYERS
 CREATE FOREIGN TABLE layers.l_zonesstatut
@@ -657,7 +722,14 @@ tx_ref AS (
   WHERE tx.cd_ref IN (SELECT cd_ref FROM obs_min_taxons)
   AND tx.cd_nom = tx.cd_ref
 ),
-my_taxons AS (SELECT DISTINCT taxonomie.find_cdref(cd_nom) AS cd_ref, filtre2 AS patrimonial, filtre3 AS protection_stricte FROM taxonomie.bib_taxons WHERE taxonomie.find_cdref(cd_nom) IN(SELECT cd_ref FROM obs_min_taxons))
+my_taxons AS (
+SELECT DISTINCT taxonomie.find_cdref(cd_nom) AS cd_ref, f2.bool AS patrimonial, f3.bool AS protection_stricte 
+FROM taxonomie.bib_noms n
+LEFT JOIN taxonomie.cor_taxon_attribut cta ON cta.cd_ref = n.cd_ref
+JOIN cor_boolean f2 ON f2.expression::text = cta.valeur_attribut::text AND cta.id_attribut = 1
+JOIN cor_boolean f3 ON f2.expression::text = cta.valeur_attribut::text AND cta.id_attribut = 2
+WHERE taxonomie.find_cdref(cd_nom) IN(SELECT cd_ref FROM obs_min_taxons)
+)
 SELECT tx.*, t.patrimonial, t.protection_stricte, omt.yearmin
 FROM tx_ref tx
 LEFT JOIN obs_min_taxons omt ON omt.cd_ref = tx.cd_ref

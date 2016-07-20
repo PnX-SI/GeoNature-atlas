@@ -74,8 +74,16 @@ then
     echo "Découpage des mailles ..."
     ogr2ogr -clipsrc $limit_shp output_clip.shp $shpToClip
 
+    #ajout des mailles
     export PGPASSWORD=$user_pg_pass;shp2pgsql -W "cp850" -s 2154 -D -I output_clip atlas.t_mailles | psql -h $db_host -U $user_pg $db_name
+    #ajout du shape des limite du territoire
+    export PGPASSWORD=$user_pg_pass;shp2pgsql -W "cp850" -s 2154 -D -I $limit_shp atlas.t_layer_territoire | psql -h $db_host -U $user_pg $db_name
+    #conversion en json
+    rm  -f ../../static/territoire.json
+    ogr2ogr -f "GeoJSON" -t_srs "EPSG:4326" ../../static/territoire.json PNE_aoa.shp
     cd ../../
+
+
 
     echo "Creation de la table des mailles..."
     #ajout de la tabme vm_mailles_observations
