@@ -22,13 +22,15 @@ def searchEspece(cd_ref):
     taxonSearch = session.query(VmTaxref).filter(VmTaxref.cd_ref == cd_ref).all()
     sql="select tax.lb_nom, \
     tax.nom_vern, \
-    tax.cd_ref \
-    from atlas.vm_taxons tax \
-    where tax.cd_ref in ( select * from atlas.find_all_taxons_childs(:thiscdref))".encode('UTF-8')
+    tax.cd_ref, \
+    br.tri_rang \
+    from atlas.vm_taxref tax \
+    JOIN atlas.bib_taxref_rangs br on br.id_rang = tax.id_rang \
+    where tax.cd_ref in ( select * from atlas.find_all_taxons_childs(:thiscdref))".encode('utf-8')
     req = connection.execute(text(sql), thiscdref = cd_ref)
     listTaxonsChild = list()
     for r in req:
-        temp = {'lb_nom': r.lb_nom, 'nom_vern':r.nom_vern, 'cd_ref':r.cd_ref}
+        temp = {'lb_nom': r.lb_nom, 'nom_vern':r.nom_vern, 'cd_ref':r.cd_ref, 'tri_rang' : r.tri_rang}
         listTaxonsChild.append(temp)
     return {'taxonSearch':taxonSearch[0], 'listTaxonsChild': listTaxonsChild }
 

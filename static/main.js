@@ -71,3 +71,20 @@ $( "#searchTaxons" ).focus(function() {
    autocompleteSearch(listeTaxonsSearch, "#searchTaxons", "#searchFormTaxons");
 });
 
+
+// child list display
+
+var childList = $('#childList');
+console.log(childList);
+
+$('#buttonChild').click(function(){
+  $('#buttonChild').find('span').toggleClass("glyphicon glyphicon-chevron-right").toggleClass('glyphicon glyphicon-chevron-down');
+ var childList = $('#childList');
+    if (childList.attr("hidden") === "hidden"){
+      childList.removeAttr( "hidden" )
+    }
+    else {
+      childList.attr("hidden", "hidden")
+    }
+
+})
