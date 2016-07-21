@@ -1,52 +1,44 @@
 var map = generateMap()
 
 
+
+
+
 function generateGeojson(observations, yearMin, yearMax) {
 
   var i=0;
-  geoJson = {'type': 'FeatureCollection',
+  myGeoJson = {'type': 'FeatureCollection',
              'features' : []
           }
   tabProperties =[]
   while (i<observations.length){
-    geometry = observations[i].geojson_maille;
-    idMaille = observations[i].id_maille;
-    properties = {id_maille : idMaille, nb_observations : observations[i].nb_observations};
-    var j = i+1;
-    while (j<observations.length && observations[j].id_maille <= idMaille){
-      properties.nb_observations +=  observations[j].nb_observations
-      j = j+1
+    if(observations[i].annee >= yearMin && observations[i].annee <= yearMax ) {
+      geometry = observations[i].geojson_maille;
+      idMaille = observations[i].id_maille;
+      properties = {id_maille : idMaille, nb_observations : observations[i].nb_observations};
+      var j = i+1;
+
+      while (j<observations.length && observations[j].id_maille <= idMaille){
+        if(observations[j].annee >= yearMin && observations[j].annee <= yearMax ){
+          properties.nb_observations +=  observations[j].nb_observations
+        }
+        j = j+1
+      }
+      myGeoJson.features.push({
+          'type' : 'Feature',
+          'properties' : properties,
+          'geometry' : geometry   
+      })
+      // on avance jusqu' à j 
+      i = j  ;
     }
-    geoJson.features.push({
-        'type' : 'Feature',
-        'properties' : properties,
-        'geometry' : geometry   
-    })
-    // on avance jusqu' à j 
-    i = j  ;
+    else {
+      i = i+1;
+    }
   }
-  return geoJson
+  return myGeoJson
+
 }
-
-
-
-/*var i=0;
-tabProperties =[]
-while (i<observations.length){
-  if(observations[i].annee > 1981 && observations[i].annee < 1984 ) {
-    idMaille = observations[i].id_maille;
-    properties = {id_maille : idMaille, nb_observations : observations[i].nb_observations};
-    var j = i+1;
-    while (j<observations.length && observations[j].id_maille <= idMaille){
-      properties.nb_observations +=  observations[j].nb_observations
-      j = j+1
-    }
-    tabProperties.push(properties)
-    // on avance jusqu' à j 
-    i = j  ;
-  }
-}*/
-
 
 function getColor(d) {
     return d > 100 ? '#800026' :
@@ -77,32 +69,28 @@ function onEachFeature(feature, layer){
       }
 
 
-mygeoJson = generateGeojson(observations, 2016, 2016)
-L.geoJson(mygeoJson, {
-	onEachFeature : onEachFeature,
-	style: style,
-	}).addTo(map);
+
+var currentLayer = L.geoJson(generateGeojson(observations, taxonYearMin, $YEARMAX), {
+  onEachFeature : onEachFeature,
+  style: style,
+  })
+currentLayer.addTo(map);
 
 
-var legend = L.control({position: 'bottomright'});
+ // Slider event
+mySlider.on("change",function(){
+    years = mySlider.getValue();
+    yearMin = years[0];
+    yearMax = years[1];
+map.removeLayer(currentLayer);
 
-legend.onAdd = function (map) {
-
-    var div = L.DomUtil.create('div', 'info legend'),
-        grades = [0, 1, 2, 5, 10, 20, 50, 100],
-        labels = [];
-
-    // loop through our density intervals and generate a label with a colored square for each interval
-    for (var i = 0; i < grades.length; i++) {
-        div.innerHTML +=
-            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
-    }
-
-    return div;
-};
+  currentLayer =  L.geoJson(generateGeojson(observations, yearMin, yearMax) , {
+    onEachFeature : onEachFeature,
+    style: style,
+    })
+    currentLayer.addTo(map);
 
 
+    //$("#nbObs").html("Nombre d'observation(s): "+ filterGeoJson.features.length);
 
-legend.addTo(map);
-
+   });

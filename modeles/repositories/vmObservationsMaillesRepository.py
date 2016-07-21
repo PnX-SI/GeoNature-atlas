@@ -10,6 +10,24 @@ connection = manage.engine.connect()
 
 
 
+def toGeoJson(queryResult):
+    geojson = {'type': 'FeatureCollection',
+           'features' : list()
+          }
+    for r in queryResult:
+        geometry = ast.literal_eval(r.geojson_maille)
+        properties = {'nb_observations': int(r.nb_observations)}
+        feature = {
+            'type' : 'Feature',
+            'properties' : properties,
+            'geometry' : geometry
+        }
+
+        geojson['features'].append(feature)
+
+    return geojson
+
+
 def getObservationsMaillesChilds(cd_ref):
     sql = "select \
     obs.id_maille, \

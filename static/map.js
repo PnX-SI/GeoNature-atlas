@@ -42,9 +42,6 @@ function style(feature){
 
   }
 
-  var normalStyle = {
-
-  }
 
 
 // ******** Marker and map options *************
