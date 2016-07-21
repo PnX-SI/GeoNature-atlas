@@ -34,7 +34,6 @@ L.control.layers(baseMap).addTo(map);
  $(document).ready(function()
       {
           $.getJSON('../static/territoire.json', function(json) {
-              console.log(json);
               L.geoJson(json, {
               	style: myStyle
               }).addTo(map);
@@ -44,3 +43,12 @@ L.control.layers(baseMap).addTo(map);
 return map
 
 }
+
+var mySlider = new Slider('#slider', {
+  value: [taxonYearMin, $YEARMAX],
+  min : taxonYearMin,
+  max : $YEARMAX,
+  step: $STEP,
+/*  ticks: getLegend(taxonYearMin, $YEARMAX),
+  ticks_labels: getStringLegend(getLegend(taxonYearMin, $YEARMAX)),*/
+});

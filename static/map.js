@@ -120,15 +120,6 @@ $("#yearMin").html(taxonYearMin + "&nbsp;&nbsp;");
 
 
 
-var mySlider = new Slider('#slider', {
-  value: [taxonYearMin, $YEARMAX],
-  min : taxonYearMin,
-  max : $YEARMAX,
-  step: $STEP,
-/*  ticks: getLegend(taxonYearMin, $YEARMAX),
-  ticks_labels: getStringLegend(getLegend(taxonYearMin, $YEARMAX)),*/
-});
-
 
 
 // slider event: display filter observations
