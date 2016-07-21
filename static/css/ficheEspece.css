@@ -58,6 +58,20 @@ h5#buttonChild:hover {
 }
 
 
+.legend {
+    line-height: 20px;
+    color: #555;
+     background-color: white;
+    opacity: 0.7;
+}
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+
+}
+
 /* graphiques */
 
 #graphContainer {

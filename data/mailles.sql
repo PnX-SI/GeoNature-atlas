@@ -7,18 +7,18 @@ CREATE materialized view atlas.vm_observations_mailles AS
 
 
 SELECT obs.cd_ref,
-count(obs.id_synthese) as nb_observations,
+obs.id_synthese,
 m.id_maille,
 obs.the_geom_point,
 st_asgeojson(st_transform(m.geom,4326)) AS geojson_maille
 FROM atlas.vm_observations obs
 JOIN atlas.t_mailles m ON ST_Intersects(obs.the_geom_point, st_transform(m.geom,3857))
-group by obs.cd_ref, m.id_maille, geojson_maille, obs.the_geom_point ;
+group by obs.cd_ref, m.id_maille, geojson_maille, obs.the_geom_point, obs.id_synthese ;
 
 
 ALTER TABLE atlas.vm_observations_mailles
   OWNER TO geonatatlas;
-create index on atlas.vm_observations_mailles (nb_observations);
+create index on atlas.vm_observations_mailles (id_synthese);
 create index on atlas.vm_observations_mailles (cd_ref);
 CREATE INDEX index_gist_vm_observations_mailles ON atlas.vm_observations_mailles USING gist (the_geom_point);
 

@@ -110,19 +110,13 @@ $(function(){
 
 
 
-//slider 
-
-$("#yearMax").html("&nbsp;&nbsp;"+ $YEARMAX);
-$("#yearMin").html(taxonYearMin + "&nbsp;&nbsp;");
-
-
-
 
 
 // slider event: display filter observations
 
 var yearMin = taxonYearMin;
 var yearMax = $YEARMAX;
+$("#nbObs").html("Nombre d'observation(s): "+ filterGeoJson.features.length);
 
 
  // Slider event

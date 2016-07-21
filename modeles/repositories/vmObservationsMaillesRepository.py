@@ -32,13 +32,13 @@ def getObservationsMaillesChilds(cd_ref):
     sql = "select \
     obs.id_maille, \
     obs.geojson_maille, \
-    sum(obs.nb_observations) as nb_observations, \
+    count(obs.id_synthese) as nb_observations, \
     extract(YEAR FROM o.dateobs) as annee \
     FROM atlas.vm_observations_mailles obs \
     JOIN atlas.vm_observations o ON o.id_synthese = obs.id_synthese \
-    WHERE obs.cd_ref in (SELECT * FROM atlas.find_all_taxons_childs(61714)) \
-    OR obs.cd_ref = 61714 \
-    GROUP BY o.dateobs, obs.nb_observations, obs.id_maille, obs.geojson_maille \
+    WHERE obs.cd_ref in (SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)) \
+    OR obs.cd_ref = :thiscdref \
+    GROUP BY o.dateobs, obs.id_maille, obs.geojson_maille \
     ORDER BY id_maille"
     observations = connection.execute(text(sql), thiscdref = cd_ref)
     tabObs = list()

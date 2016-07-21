@@ -103,7 +103,3 @@ def lastObservations(mylimit):
     observations = session.query(VmObservations,VmTaxref).join(VmTaxref, VmObservations.cd_ref==VmTaxref.cd_nom).order_by(desc(VmObservations.dateobs)).limit(mylimit).all()
     return  toGeoJsonHome(observations)
 
-
-def loadMailles():
-    sql = "select geom, code5km from layers.maille"
-    return connection.execute(text(sql))

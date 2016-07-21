@@ -44,6 +44,8 @@ return map
 
 }
 
+
+// slider
 var mySlider = new Slider('#slider', {
   value: [taxonYearMin, $YEARMAX],
   min : taxonYearMin,
@@ -52,3 +54,6 @@ var mySlider = new Slider('#slider', {
 /*  ticks: getLegend(taxonYearMin, $YEARMAX),
   ticks_labels: getStringLegend(getLegend(taxonYearMin, $YEARMAX)),*/
 });
+
+$("#yearMax").html("&nbsp;&nbsp;"+ $YEARMAX);
+$("#yearMin").html(taxonYearMin + "&nbsp;&nbsp;");
