@@ -3,6 +3,7 @@ GRANT USAGE ON SCHEMA synthese TO geonatatlas;
 GRANT USAGE ON SCHEMA taxonomie TO geonatatlas;
 GRANT USAGE ON SCHEMA meta TO geonatatlas;
 GRANT USAGE ON SCHEMA layers TO geonatatlas;
+GRANT USAGE ON SCHEMA public TO geonatatlas;
 
 GRANT SELECT ON TABLE utilisateurs.bib_droits TO geonatatlas;
 GRANT SELECT ON TABLE utilisateurs.bib_unites TO geonatatlas;
@@ -41,4 +42,7 @@ GRANT SELECT ON TABLE layers.bib_typeszones TO geonatatlas;
 GRANT SELECT ON TABLE layers.l_communes TO geonatatlas;
 GRANT SELECT ON TABLE layers.l_secteurs TO geonatatlas;
 GRANT SELECT ON TABLE layers.l_zonesstatut TO geonatatlas;
+
+GRANT SELECT ON TABLE public.cor_boolean TO geonatatlas;
+
 

@@ -29,7 +29,7 @@ def ficheEspece(cd_ref):
     if config.AFFICHAGE_MAILLE:
         observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(cd_ref)
     else:
-        observations = vmObservationsRepository.searchObservationsChilds(cd_ref)
+        observations = {'point': vmObservationsRepository.searchObservationsChilds(cd_ref), 'maille' : vmObservationsMaillesRepository.getObservationsMaillesChilds(cd_ref)}
     firstObservation = vmObservationsRepository.firstObservationChild(cd_ref)
     altitudes = vmAltitudesRepository.getAltitudesChilds(cd_ref)
     months = vmMoisRepository.getMonthlyObservationsChilds(cd_ref)

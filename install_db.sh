@@ -50,8 +50,6 @@ then
     # Mise en place de la structure de la base et des données permettant son fonctionnement avec l'atlas
     echo "Grant..."
     sed -i "s/TO geonatatlas;$/TO $user_pg;/" data/grant.sql
-
-
     export PGPASSWORD=$admin_pg_pass;psql -h $db_host -U $admin_pg -d $db_name -f data/grant.sql &> log/install_db.log
     
     echo "Création de la structure de la base..."
@@ -61,12 +59,15 @@ then
     sed -i "s/TO geonatatlas;$/TO $user_pg;/" data/atlas_source.sql
     export PGPASSWORD=$admin_source_pass;psql -h $db_source_host -U $admin_source_user -d $db_source_name -f data/atlas_source.sql  &>> log/install_db.log
    
+
+    # Mise en place des mailles et d la table de l'emprise du territoire
     echo "Découpage des mailles et creation de la table des mailles"
     cd data/ref
+    rm -f output_clip.dbf output_clip.prj output_clip.shp output_clip.shx
 
     file="L93_"$taillemaille"K.zip"
-    echo $file
-
+    
+    rm -f L93*.dbf L93*.prj L93*.sbn L93*.sbx L93*.shp L93*.shx
     unzip $file
 
     shpToClip="L93_"$taillemaille"K.shp"

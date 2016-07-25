@@ -18,8 +18,6 @@ CREATE FOREIGN TABLE public.cor_boolean
 ALTER TABLE public.cor_boolean OWNER TO geonatatlas;
 GRANT ALL ON TABLE public.cor_boolean TO geonatatlas;
 
-INSERT INTO public.cor_boolean VALUES('oui',true);
-INSERT INTO public.cor_boolean VALUES('non',false);
 
 --UTILISATEURS
 CREATE FOREIGN TABLE utilisateurs.bib_organismes
@@ -434,7 +432,7 @@ GRANT ALL ON TABLE taxonomie.taxref_protection_especes TO geonatatlas;
 CREATE FOREIGN TABLE taxonomie.cor_taxon_attribut
 (
   id_attribut integer NOT NULL,
-  valeur_attribut character varying(50) NOT NULL,
+  valeur_attribut character text NOT NULL,
   cd_ref integer NOT NULL
 )
   SERVER geonaturedbserver

@@ -79,13 +79,25 @@ def searchObservation(cd_ref):
 
 
 def searchObservationsChilds(cd_ref):
-    sql = "select * \
+    sql = "select obs.id_synthese, \
+    obs.geojson_point, \
+    obs.cd_ref, \
+    obs.dateobs, \
+    obs.observateurs, \
+    obs.altitude_retenue, \
+    obs.effectif_total \
     from atlas.vm_observations obs \
     where obs.cd_ref in ( \
     select * from atlas.find_all_taxons_childs(:thiscdref) \
     )OR obs.cd_ref = :thiscdref".encode('UTF-8')
     observations = connection.execute(text(sql), thiscdref = cd_ref)
-    return toGeoJsonTaxon(observations)
+    obsList = list()
+    for o in observations:
+        temp = {'id_synthese': o.id_synthese, 'geojson_point':ast.literal_eval(o.geojson_point), 'cd_ref': o.cd_ref, 'dateobs': str(o.dateobs), 'observateurs':o.observateurs, 'altitude_retenue': o.altitude_retenue,
+               'effectif_total': o.effectif_total, 'year': o.dateobs.year}
+        obsList.append(temp)
+    return obsList
+
 
 def firstObservationChild(cd_ref):
     sql = "select min(taxons.yearmin) as yearmin \
