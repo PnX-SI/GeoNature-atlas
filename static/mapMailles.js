@@ -3,7 +3,6 @@ var map = generateMap()
 
 
 
-
 function generateGeojson(observations, yearMin, yearMax) {
 
   var i=0;
@@ -15,12 +14,16 @@ function generateGeojson(observations, yearMin, yearMax) {
     if(observations[i].annee >= yearMin && observations[i].annee <= yearMax ) {
       geometry = observations[i].geojson_maille;
       idMaille = observations[i].id_maille;
-      properties = {id_maille : idMaille, nb_observations : observations[i].nb_observations};
+      properties = {id_maille : idMaille, nb_observations : observations[i].nb_observations, last_observation: observations[i].annee};
       var j = i+1;
-
       while (j<observations.length && observations[j].id_maille <= idMaille){
         if(observations[j].annee >= yearMin && observations[j].annee <= yearMax ){
-          properties.nb_observations +=  observations[j].nb_observations
+          properties.nb_observations +=  observations[j].nb_observations;
+        }
+        if (observations[j].annee >=  observations[j-1].annee){
+          properties.last_observation = observations[j].annee
+
+          console.log("deuxieme boucle: " + observations[j].annee)
         }
         j = j+1
       }
@@ -64,7 +67,7 @@ function style(feature) {
 
 
 function onEachFeature(feature, layer){
-    popupContent = "<b>Nombre d'observation(s): </b>"+ feature.properties.nb_observations+"</br>";
+    popupContent = "<b>Nombre d'observation(s): </b>"+ feature.properties.nb_observations+"</br> <b> Dernière observation: </b>"+ feature.properties.last_observation+ " " ;
     layer.bindPopup(popupContent)
       }
 
@@ -76,15 +79,6 @@ var currentLayer = L.geoJson(myGeoJson, {
   style: style,
   })
 currentLayer.addTo(map);
-
-// affichage du nombre d'observations: 
-
-    nbObs=0;
-    myGeoJson.features.forEach(function(l){
-      nbObs += l.properties.nb_observations
-    })
-    console.log(nbObs)
-$("#nbObs").html("Nombre d'observation(s): "+ nbObs);
 
 
 

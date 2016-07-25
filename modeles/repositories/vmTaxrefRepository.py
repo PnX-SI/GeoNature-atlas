@@ -24,8 +24,8 @@ def searchEspece(cd_ref):
     tax.nom_vern, \
     tax.cd_ref, \
     br.tri_rang \
-    from atlas.vm_taxref tax \
-    JOIN atlas.bib_taxref_rangs br on br.id_rang = tax.id_rang \
+    from atlas.vm_taxons tax \
+    JOIN atlas.bib_taxref_rangs br on br.nom_rang = tax.nom_rang \
     where tax.cd_ref in ( select * from atlas.find_all_taxons_childs(:thiscdref))".encode('utf-8')
     req = connection.execute(text(sql), thiscdref = cd_ref)
     listTaxonsChild = list()
