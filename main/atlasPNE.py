@@ -27,7 +27,7 @@ def ficheEspece(cd_ref):
     listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons()
     taxon = vmTaxrefRepository.searchEspece(cd_ref)
     if config.AFFICHAGE_MAILLE:
-        observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(cd_ref)
+        observations = {'maille' : vmObservationsMaillesRepository.getObservationsMaillesChilds(cd_ref) }
     else:
         observations = {'point': vmObservationsRepository.searchObservationsChilds(cd_ref), 'maille' : vmObservationsMaillesRepository.getObservationsMaillesChilds(cd_ref)}
     firstObservation = vmObservationsRepository.firstObservationChild(cd_ref)
@@ -38,7 +38,7 @@ def ficheEspece(cd_ref):
     communesSearch = tCommunesRepository.getAllCommune()
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(cd_ref)
     configuration = {'STRUCTURE' : config.STRUCTURE, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY,\
-    'AFFICHAGE_MAILLE' : config.AFFICHAGE_MAILLE}
+    'AFFICHAGE_MAILLE' : config.AFFICHAGE_MAILLE, 'ZOOM_LEVEL_POINT': config.ZOOM_LEVEL_POINT}
     return render_template('ficheEspece.html', taxon=taxon, listeTaxonsSearch=listeTaxonsSearch, observations=observations , firstObservation = firstObservation ,\
      cd_ref=cd_ref, altitudes=altitudes, months=months, synonyme=synonyme, communes=communes, communesSearch=communesSearch, taxonomyHierarchy = taxonomyHierarchy,\
       configuration=configuration)

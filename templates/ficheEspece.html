@@ -176,10 +176,13 @@
     <script> 
              var dataset = {{altitudes|tojson}},
                  months = {{months|tojson}}
+                 {% if not configuration.AFFICHAGE_MAILLE %}
                  observationsPoint = {{observations.point|tojson}},
+                 {% endif %}
                  observationsMaille = {{observations.maille|tojson}}
                  listeTaxonsSearch = {{listeTaxonsSearch|tojson}},
-                 communesSearch = {{communesSearch|tojson}};
+                 communesSearch = {{communesSearch|tojson}},
+                 ZOOM_LEVEL_POINT = {{configuration.ZOOM_LEVEL_POINT}};
     </script>  
 
     <script type="text/javascript" src="/atlas/static/chart.js"></script>

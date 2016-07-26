@@ -71,7 +71,7 @@ var legendblock = $("div.info");
 map.on("zoomend", function(){
 zoomLev = map.getZoom();
 
-if (zoomLev == 11){
+if (zoomLev == ZOOM_LEVEL_POINT){
   map.removeLayer(currentLayer);
   legendblock.attr("hidden", "true");
   console.log(legendblock);
@@ -81,7 +81,7 @@ if (zoomLev == 11){
     yearMax = years[1];
   displayMarkerLayer(observationsPoint, yearMin, yearMax)
 }
-if (zoomLev <= 10){
+if (zoomLev <= ZOOM_LEVEL_POINT -1 ){
   // display legend
   map.removeLayer(currentLayer);
   legendblock.removeAttr( "hidden" );

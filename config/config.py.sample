@@ -33,6 +33,9 @@ STRUCTURE = unicode(STRUCTURE, 'utf-8')
 # affiche par maille / True = maille False = point
 AFFICHAGE_MAILLE = True
 
+# Niveau de zoom à partir duquel on passe à l'affiche en point (si AFFICHAGE_MAILLE = False)
+ZOOM_LEVEL_POINT = 11
+
 # Nombre de 'x' dernieres observations de la carte sur la page d'acceuil
 LIMIT_OBSERVATION = 100
 
