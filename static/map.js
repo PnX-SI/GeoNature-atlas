@@ -2,38 +2,6 @@
 var map = generateMap();
 
 
-
-var currentLayer;
-var myGeojson;
-function displayMailleLayer(observationsMaille, yearMin, yearMax){
-  myGeojson = generateGeojsonMaille(observationsMaille, yearMin, yearMax)
-  currentLayer = L.geoJson(myGeojson, {
-      onEachFeature : onEachFeatureMaille,
-      style: styleMaille,
-  });
-currentLayer.addTo(map);
-}
-
-var clusterLayer;
-function displayMarkerLayer(observationsPoint, yearMin, yearMax){
-  myGeojson = generateGeojsonPoint(observationsPoint, yearMin, yearMax)
-  currentLayer = L.geoJson(myGeojson, {
-          onEachFeature : onEachFeaturePoint,
-          pointToLayer: function (feature, latlng) {
-                           return L.circleMarker(latlng);
-                           }
-  });
-  if (myGeojson.features.length > 1000) {
-      newLayer = currentLayer;
-      currentLayer = L.markerClusterGroup();
-      currentLayer.addLayer(newLayer);
-      map.addLayer(currentLayer)
-  } else {
-    currentLayer.addTo(map);
-  }
-}
-
-
 // Layer display on window ready
 
 $(function(){
@@ -41,7 +9,6 @@ $(function(){
   $("#nbObs").html("Nombre d'observation(s): "+ myGeojson.features.length);
 
 })
-
 
 
 

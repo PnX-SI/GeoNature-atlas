@@ -20,7 +20,6 @@ def index():
     return render_template('index.html', listeTaxonsSearch=listeTaxonsSearch, observations=observations, communesSearch=communesSearch, configuration = configuration)
 
 
-
 @main.route('/espece/<int:cd_ref>', methods=['GET', 'POST'])
 def ficheEspece(cd_ref):
     cd_ref = int(cd_ref)
