@@ -3,9 +3,6 @@ var map = generateMap()
 
 
 
-
-
-
 // affichage des mailles
 myGeoJson = generateGeojsonMaille(observations, taxonYearMin, $YEARMAX);
 var currentLayer = L.geoJson(myGeoJson, {

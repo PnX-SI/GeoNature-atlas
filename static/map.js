@@ -1,5 +1,5 @@
 
-var map = generateMap()
+var map = generateMap();
 
 
 
@@ -33,15 +33,15 @@ function displayMarkerLayer(observationsPoint, yearMin, yearMax){
 }
 
 
-
 // Layer display on window ready
 
 $(function(){
-  displayMailleLayer(observationsMaille, taxonYearMin, $YEARMAX); 
-  
-/* displayMarkerLayer(observationsPoint, taxonYearMin, $YEARMAX); 
-*/
+  displayMailleLayer(observationsMaille, taxonYearMin, $YEARMAX);  
 })
+
+
+var legend = L.control({position: 'bottomright'});
+
 
 
 
@@ -65,22 +65,28 @@ mySlider.on("change",function(){
 
 
 
-
 // ZoomEvent
+var legendblock = $("div.info");
 
 map.on("zoomend", function(){
 zoomLev = map.getZoom();
 
 if (zoomLev == 11){
   map.removeLayer(currentLayer);
-      years = mySlider.getValue();
+  legendblock.attr("hidden", "true");
+  console.log(legendblock);
+
+    years = mySlider.getValue();
     yearMin = years[0];
     yearMax = years[1];
   displayMarkerLayer(observationsPoint, yearMin, yearMax)
 }
 if (zoomLev <= 10){
+  // display legend
   map.removeLayer(currentLayer);
-      years = mySlider.getValue();
+  legendblock.removeAttr( "hidden" );
+
+    years = mySlider.getValue();
     yearMin = years[0];
     yearMax = years[1];
   displayMailleLayer(observationsMaille, yearMin, yearMax)
