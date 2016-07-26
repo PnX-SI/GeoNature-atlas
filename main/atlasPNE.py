@@ -20,7 +20,6 @@ def index():
     return render_template('index.html', listeTaxonsSearch=listeTaxonsSearch, observations=observations, communesSearch=communesSearch, configuration = configuration)
 
 
-
 @main.route('/espece/<int:cd_ref>', methods=['GET', 'POST'])
 def ficheEspece(cd_ref):
     cd_ref = int(cd_ref)
@@ -42,8 +41,6 @@ def ficheEspece(cd_ref):
     return render_template('ficheEspece.html', taxon=taxon, listeTaxonsSearch=listeTaxonsSearch, observations=observations , firstObservation = firstObservation ,\
      cd_ref=cd_ref, altitudes=altitudes, months=months, synonyme=synonyme, communes=communes, communesSearch=communesSearch, taxonomyHierarchy = taxonomyHierarchy,\
       configuration=configuration)
-
-
 
 
 @main.route('/commune/<insee>', methods=['GET', 'POST'])
