@@ -44,8 +44,6 @@ def ficheEspece(cd_ref):
       configuration=configuration)
 
 
-
-
 @main.route('/commune/<insee>', methods=['GET', 'POST'])
 def ficheCommune(insee):
     listTaxons = vmTaxonsRepository.getTaxonsCommunes(str(insee))

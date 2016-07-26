@@ -66,25 +66,44 @@ then
     rm -f output_clip.dbf output_clip.prj output_clip.shp output_clip.shx
 
     file="L93_"$taillemaille"K.zip"
-    
+
     rm -f L93*.dbf L93*.prj L93*.sbn L93*.sbx L93*.shp L93*.shx
-    unzip $file
 
-    shpToClip="L93_"$taillemaille"K.shp"
+    unzip L93_1K.zip 
+    unzip L93_5K.zip 
+    unzip L93_10K.zip
 
-    echo "Découpage des mailles ..."
-    ogr2ogr -clipsrc $limit_shp output_clip.shp $shpToClip
 
-    #ajout des mailles
-    export PGPASSWORD=$user_pg_pass;shp2pgsql -W "cp850" -s 2154 -D -I output_clip atlas.t_mailles | psql -h $db_host -U $user_pg $db_name
+    #ajout des mailles non decoupees
+    export PGPASSWORD=$user_pg_pass;shp2pgsql -W "cp850" -s 2154 -D -I L93_1x1.shp atlas.t_mailles_1 | psql -h $db_host -U $user_pg $db_name
+    export PGPASSWORD=$user_pg_pass;shp2pgsql -W "cp850" -s 2154 -D -I L93_5K.shp atlas.t_mailles_5 | psql -h $db_host -U $user_pg $db_name
+    export PGPASSWORD=$user_pg_pass;shp2pgsql -W "cp850" -s 2154 -D -I L93_10K.shp atlas.t_mailles_10 | psql -h $db_host -U $user_pg $db_name
     #ajout du shape des limite du territoire
     export PGPASSWORD=$user_pg_pass;shp2pgsql -W "cp850" -s 2154 -D -I $limit_shp atlas.t_layer_territoire | psql -h $db_host -U $user_pg $db_name
+    #Creation de l'index GIST sur la layer territoire
+    sudo -n -u postgres -s psql -d $db_name -c "CREATE INDEX index_gist_t_layer_territoire
+                                                ON atlas.t_layer_territoire
+                                                USING gist(geom);"
+
     #conversion en json
     rm  -f ../../static/territoire.json
     ogr2ogr -f "GeoJSON" -t_srs "EPSG:4326" ../../static/territoire.json PNE_aoa.shp
+
     cd ../../
-
-
+   
+    sudo -n -u postgres -s psql -d $db_name -c "CREATE TABLE atlas.t_mailles_territoire as
+                                                SELECT m.geom
+                                                FROM atlas.t_mailles_"$taillemaille" m, atlas.t_layer_territoire t
+                                                WHERE ST_Intersects(m.geom, t.geom);
+                                                CREATE INDEX index_gist_t_mailles_territoire
+                                                ON atlas.t_mailles_territoire
+                                                USING gist (geom); 
+                                                ALTER TABLE atlas.t_mailles_territoire
+                                                ADD COLUMN id_maille serial;
+                                                ALTER TABLE atlas.t_mailles_territoire
+                                                OWNER TO geonatatlas;
+                                                ALTER TABLE atlas.t_mailles_territoire
+                                                ADD PRIMARY KEY (id_maille);"
 
     echo "Creation de la table des mailles..."
     #ajout de la tabme vm_mailles_observations
