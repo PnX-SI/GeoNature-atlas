@@ -432,7 +432,7 @@ GRANT ALL ON TABLE taxonomie.taxref_protection_especes TO geonatatlas;
 CREATE FOREIGN TABLE taxonomie.cor_taxon_attribut
 (
   id_attribut integer NOT NULL,
-  valeur_attribut character text NOT NULL,
+  valeur_attribut text NOT NULL,
   cd_ref integer NOT NULL
 )
   SERVER geonaturedbserver

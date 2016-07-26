@@ -13,7 +13,7 @@ function displayMailleLayer(observationsMaille, yearMin, yearMax){
 currentLayer.addTo(map);
 }
 
-
+var clusterLayer;
 function displayMarkerLayer(observationsPoint, yearMin, yearMax){
   geoJsonPoint = generateGeojsonPoint(observationsPoint, yearMin, yearMax)
   currentLayer = L.geoJson(geoJsonPoint, {
@@ -22,7 +22,14 @@ function displayMarkerLayer(observationsPoint, yearMin, yearMax){
                            return L.circleMarker(latlng);
                            }
   });
+  if (geoJsonPoint.features.length > 1000) {
+      newLayer = currentLayer;
+      currentLayer = L.markerClusterGroup();
+      currentLayer.addLayer(newLayer);
+      map.addLayer(currentLayer)
+  } else {
     currentLayer.addTo(map);
+  }
 }
 
 
@@ -31,7 +38,9 @@ function displayMarkerLayer(observationsPoint, yearMin, yearMax){
 
 $(function(){
   displayMailleLayer(observationsMaille, taxonYearMin, $YEARMAX); 
- 
+  
+/* displayMarkerLayer(observationsPoint, taxonYearMin, $YEARMAX); 
+*/
 })
 
 
@@ -69,7 +78,7 @@ if (zoomLev == 11){
     yearMax = years[1];
   displayMarkerLayer(observationsPoint, yearMin, yearMax)
 }
-if (zoomLev == 10){
+if (zoomLev <= 10){
   map.removeLayer(currentLayer);
       years = mySlider.getValue();
     yearMin = years[0];

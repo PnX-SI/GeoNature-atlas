@@ -135,11 +135,10 @@ function generateGeojsonPoint(observationsPoint, yearMin, yearMax){
 
       observationsPoint.forEach(function(obs){
           if(obs.year >= yearMin && obs.year <= yearMax ) {
-            
               geometry = obs.geojson_point;
               properties = {'id_synthese' : obs.id_synthese,
                             'cd_ref': obs.cd_ref,
-                            'dateobs': toString(obs.dateobs),
+                            'dateobs': obs.dateobs,
                             'observateurs' : obs.observateurs,
                             'altitude_retenue' : obs.altitude_retenue,
                             'effectif_total' : obs.effectif_total,
