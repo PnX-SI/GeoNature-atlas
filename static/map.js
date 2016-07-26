@@ -3,10 +3,11 @@ var map = generateMap();
 
 
 
-var currentLayer ;
+var currentLayer;
+var myGeojson;
 function displayMailleLayer(observationsMaille, yearMin, yearMax){
-  mailleGeoJson = generateGeojsonMaille(observationsMaille, yearMin, yearMax)
-  currentLayer = L.geoJson(mailleGeoJson, {
+  myGeojson = generateGeojsonMaille(observationsMaille, yearMin, yearMax)
+  currentLayer = L.geoJson(myGeojson, {
       onEachFeature : onEachFeatureMaille,
       style: styleMaille,
   });
@@ -15,14 +16,14 @@ currentLayer.addTo(map);
 
 var clusterLayer;
 function displayMarkerLayer(observationsPoint, yearMin, yearMax){
-  geoJsonPoint = generateGeojsonPoint(observationsPoint, yearMin, yearMax)
-  currentLayer = L.geoJson(geoJsonPoint, {
+  myGeojson = generateGeojsonPoint(observationsPoint, yearMin, yearMax)
+  currentLayer = L.geoJson(myGeojson, {
           onEachFeature : onEachFeaturePoint,
           pointToLayer: function (feature, latlng) {
                            return L.circleMarker(latlng);
                            }
   });
-  if (geoJsonPoint.features.length > 1000) {
+  if (myGeojson.features.length > 1000) {
       newLayer = currentLayer;
       currentLayer = L.markerClusterGroup();
       currentLayer.addLayer(newLayer);
@@ -37,10 +38,9 @@ function displayMarkerLayer(observationsPoint, yearMin, yearMax){
 
 $(function(){
   displayMailleLayer(observationsMaille, taxonYearMin, $YEARMAX);  
+  $("#nbObs").html("Nombre d'observation(s): "+ myGeojson.features.length);
+
 })
-
-
-var legend = L.control({position: 'bottomright'});
 
 
 
@@ -59,8 +59,8 @@ mySlider.on("change",function(){
     }
 
 
-/*    $("#nbObs").html("Nombre d'observation(s): "+ filterGeoJson.features.length);
-*/
+  $("#nbObs").html("Nombre d'observation(s): "+ myGeojson.features.length);
+
    });
 
 
