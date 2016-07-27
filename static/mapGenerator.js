@@ -206,7 +206,7 @@ function displayMarkerLayer(observationsPoint, yearMin, yearMax){
                            return L.circleMarker(latlng);
                            }
   });
-  if (myGeojson.features.length > 1000) {
+  if (myGeojson.features.length > configuration.LIMIT_CLUSTER_POINT) {
       newLayer = currentLayer;
       currentLayer = L.markerClusterGroup();
       currentLayer.addLayer(newLayer);
