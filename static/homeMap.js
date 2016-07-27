@@ -16,8 +16,9 @@ function onEachFeatureHome(feature, layer){
       
 }
 
+var myGeoJson;
 function generateGeojsonPoint(observationsPoint){
-   var myGeoJson = {'type': 'FeatureCollection','features' : []}
+    myGeoJson = {'type': 'FeatureCollection','features' : []}
 
       observationsPoint.forEach(function(obs){
               geometry = obs.geojson_point;
@@ -37,8 +38,9 @@ function generateGeojsonPoint(observationsPoint){
   return myGeoJson
 }
 
-function displayMarkerLayer(observationsPoint, yearMin, yearMax){
-  myGeojson = generateGeojsonPoint(observationsPoint, yearMin, yearMax)
+var currentLayer;
+function displayMarkerLayer(observationsPoint){
+  myGeojson = generateGeojsonPoint(observationsPoint)
   currentLayer = L.geoJson(myGeojson, {
           onEachFeature : onEachFeatureHome,
           pointToLayer: function (feature, latlng) {
@@ -48,10 +50,51 @@ function displayMarkerLayer(observationsPoint, yearMin, yearMax){
     currentLayer.addTo(map);
   }
 
+/*function styleFocus(feature){
+  if (feature.properties.cd_ref == 61098 ){
+    return {
+        color: '#F50000'
+    }
+  }
+}
+*/
+function focusMarkerLayer(cd_ref){
+  map.removeLayer(currentLayer);
+  currentLayer = L.geoJson(myGeojson, {
+          onEachFeature : onEachFeatureHome,
+          style : function(feature){
+             if (feature.properties.cd_ref == cd_ref ){
+                  return {
+                    color: '#F50000'
+                }
+             }
+          },
+          pointToLayer: function (feature, latlng) {
+                           return L.circleMarker(latlng);
+                           }
+  });
+    currentLayer.addTo(map);
+
+}
+
+
+
+
 
 
 // Markers display on window ready
 
 $(function(){
-  displayMarkerLayer(observationsPoint);
+  displayMarkerLayer(observations);
+  var p = (currentLayer._layers);
+  var selectLayer;
+  for (var key in p) {
+    if (p[key].feature.properties.cd_ref == 2954){
+      selectLayer = p[key];
+    }
+}
+/*console.log(selectLayer._latlng);
+  currentLayer.on('click', function(e){
+    map.setView(e.latlng, 13);
+});*/
 });

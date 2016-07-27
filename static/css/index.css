@@ -1,0 +1,30 @@
+
+body {
+	background-color: #E3E7E8;
+}
+
+.navbar{
+	margin-bottom: 0px;
+}
+
+#page {
+	background-color: #E3E7E8;
+}	
+
+#mapRow{
+	margin: 35px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+#mapContainer {
+	padding: 10px;
+	background-color: white;
+}
+
+#map{
+
+ width: 100%; height: 600px; }
+
+ .tabEspece{
+ 	cursor: pointer
+ }

@@ -19,7 +19,7 @@
         <script src="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.css') }}" />
 
-        <link rel="stylesheet" href="{{url_for('static', filename='/css/ficheEspece.css') }}" />
+        <link rel="stylesheet" href="{{url_for('static', filename='css/index.css') }}" />
 				
     </head>
 
@@ -111,10 +111,29 @@
 					  <div class="col-sm-12" style="height:20px"></div>
 					  
 					  <!-- CARTO des 100 dernières observations -->
-					  <div class="col-sm-12">
-						<p>100 dernières observations</p>
+					  <div class="col-sm-9">
 						<div id="map"> </div>
 					  </div>
+					   <div id="listMap" class = "col-sm-3"> 
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th> Liste des 100 dernières observations </th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for obs in observations %}
+									<tr class='tabEspece'>
+										<td > {{obs.taxon}} </td>
+										<td class="hiddenTd" hidden ="true"> {{obs.cd_ref}} </td>
+									</tr>
+									{% endfor %}
+
+								</tbody>
+							</table>	
+
+					    </div>
+					
 					
 					</div>
 				</div>
@@ -260,17 +279,19 @@
 			
 		</div>
 
+
 	<!-- AJOUT CAMILLE -->	
 	<script type="text/javascript" src="/atlas/static/conf/calculCustom.js"></script>
     <script type="text/javascript" src="/atlas/static/conf/custom.js"></script>
     	    <script type="text/javascript">
 			  var listeTaxonsSearch = {{listeTaxonsSearch|tojson}} 
-			  ,observationsPoint = {{observations.point|tojson}}
+			  ,observations = {{observations|tojson}}
 			  ,communesSearch = {{communesSearch|tojson}}
 			  , configuration = {{configuration|tojson}};
         </script>
     <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
     <script src="{{url_for('static', filename='homeMap.js') }}"></script>
+    <script src="{{url_for('static', filename='HomeMain.js') }}"></script>
 	<!-- FIN AJOUT CAMILLE -->		
 		
 	<!-- JQUERY APPELE 2 FOIS ? -->	

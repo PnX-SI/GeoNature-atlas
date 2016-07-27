@@ -14,7 +14,7 @@ import json
 @main.route('/' , methods=['GET', 'POST'])
 def index():
     listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons()
-    observations = {'point': vmObservationsRepository.lastObservations(config.LIMIT_OBSERVATION)}
+    observations = vmObservationsRepository.lastObservations(config.LIMIT_OBSERVATION)
     communesSearch = tCommunesRepository.getAllCommune()
     configuration = {'STRUCTURE' : config.STRUCTURE, 'HOMEMAP': True}
     return render_template('index.html', listeTaxonsSearch=listeTaxonsSearch, observations=observations, communesSearch=communesSearch, configuration = configuration)
