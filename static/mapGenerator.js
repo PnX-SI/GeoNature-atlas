@@ -43,24 +43,28 @@ function generateMap() {
 
     var legend = L.control({position: 'bottomright'});
 
-    legend.onAdd = function (map) {
 
-        var div = L.DomUtil.create('div', 'info legend'),
-            grades = [0, 1, 2, 5, 10, 20, 50, 100],
-            labels = ["<strong> Nombre <br> d'observations </strong> <br>"];
+    if (configuration.HOMEMAP == null) {
+      legend.onAdd = function (map) {
 
-        // loop through our density intervals and generate a label with a colored square for each interval
-        for (var i = 0; i < grades.length; i++) {
-            labels.push(
-                '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+'));
-        }
-        div.innerHTML = labels.join('<br>');
+          var div = L.DomUtil.create('div', 'info legend'),
+              grades = [0, 1, 2, 5, 10, 20, 50, 100],
+              labels = ["<strong> Nombre <br> d'observations </strong> <br>"];
 
-        return div;
-    };
+          // loop through our density intervals and generate a label with a colored square for each interval
+          for (var i = 0; i < grades.length; i++) {
+              labels.push(
+                  '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+                  grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+'));
+          }
+          div.innerHTML = labels.join('<br>');
 
-    legend.addTo(map);
+          return div;
+      };
+
+      legend.addTo(map);
+
+    }
 
 
     return map
@@ -214,15 +218,18 @@ function displayMarkerLayer(observationsPoint, yearMin, yearMax){
 
 
 // slider
-var mySlider = new Slider('#slider', {
-  value: [taxonYearMin, $YEARMAX],
-  min : taxonYearMin,
-  max : $YEARMAX,
-  step: $STEP,
-/*  ticks: getLegend(taxonYearMin, $YEARMAX),
-  ticks_labels: getStringLegend(getLegend(taxonYearMin, $YEARMAX)),*/
-});
 
-$("#yearMax").html("&nbsp;&nbsp;"+ $YEARMAX);
-$("#yearMin").html(taxonYearMin + "&nbsp;&nbsp;");
+if (configuration.HOMEMAP != true){
+  var mySlider = new Slider('#slider', {
+    value: [taxonYearMin, $YEARMAX],
+    min : taxonYearMin,
+    max : $YEARMAX,
+    step: $STEP,
+  /*  ticks: getLegend(taxonYearMin, $YEARMAX),
+    ticks_labels: getStringLegend(getLegend(taxonYearMin, $YEARMAX)),*/
+  });
+
+  $("#yearMax").html("&nbsp;&nbsp;"+ $YEARMAX);
+  $("#yearMin").html(taxonYearMin + "&nbsp;&nbsp;");
+}
 

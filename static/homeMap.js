@@ -1,34 +1,11 @@
-// load tiles
-var osmTile = L.tileLayer(osmUrl, {attribution: osmAttribution}),
-  ignTile = L.tileLayer(ignUrl, {attribution: ignAttribution}),
-  orthoTile = L.tileLayer(orthoIGN, {attribution: ignAttribution});
+var map = generateMap();
 
-
-//map initialization
-
-  var map = L.map('map',{
-    crs: L.CRS.EPSG3857,
-    center: latLong,
-    zoom: setZoom,
-    layers: [osmTile, ignTile],
-    fullscreenControl: true,
-
-    });
-
-// add a tile selector
-var baseMap = {
-"OSM": osmTile,
-"IGN": ignTile,
-"Satellite": orthoTile
-}
-
-L.control.layers(baseMap).addTo(map);
 
 
 // add all observations markers whith popup
 
-function onEachFeature(feature, layer){
-    popupContent = "<b>Espèce: </b>"+ feature.properties.taxon+
+function onEachFeatureHome(feature, layer){
+    popupContent = "<b>Espèce: </b>"+ feature.properties.taxon_name+
                 "</br><b>Date: </b>"+ feature.properties.dateobs+"</br><b>Altitude: </b>"+ feature.properties.altitude_retenue;
 
      // verifie si le champs effectif est rempli
@@ -39,38 +16,42 @@ function onEachFeature(feature, layer){
       
 }
 
+function generateGeojsonPoint(observationsPoint){
+   var myGeoJson = {'type': 'FeatureCollection','features' : []}
 
-
-
-function style(feature){
-    return {
-        color: "#A3C990",
-        filColor : "#A3C990",
-        opacity : 0.4,
-        fillOpacity: 0.5
-    };
+      observationsPoint.forEach(function(obs){
+              geometry = obs.geojson_point;
+              properties = {'id_synthese' : obs.id_synthese,
+                             'taxon_name' : obs.taxon,
+                            'cd_ref': obs.cd_ref,
+                            'dateobs': obs.dateobs,
+                            'altitude_retenue' : obs.altitude_retenue,
+                            'effectif_total' : obs.effectif_total,
+                            }
+              myGeoJson.features.push({
+                'type' : 'Feature',
+                'properties' : properties,
+                'geometry' : geometry   
+              })
+      });
+  return myGeoJson
 }
 
-// ******** Marker and map options *************
-// Markers
-function generateSingleMarkerFromGeoJson(geoJsonObs){
-    var singleMarkers = L.geoJson(geoJsonObs, {
-        onEachFeature : onEachFeature,
-        pointToLayer: function (feature, latlng) {
-            return L.circleMarker(latlng);
-        }
-    });
-    return singleMarkers;
-}
+function displayMarkerLayer(observationsPoint, yearMin, yearMax){
+  myGeojson = generateGeojsonPoint(observationsPoint, yearMin, yearMax)
+  currentLayer = L.geoJson(myGeojson, {
+          onEachFeature : onEachFeatureHome,
+          pointToLayer: function (feature, latlng) {
+                           return L.circleMarker(latlng);
+                           }
+  });
+    currentLayer.addTo(map);
+  }
 
-function displayMarkers(geoJsonObs){
-  var markers = generateSingleMarkerFromGeoJson(geoJsonObs);
-  map.addLayer(markers);
-}
 
 
 // Markers display on window ready
 
 $(function(){
-  displayMarkers(observations);
+  displayMarkerLayer(observationsPoint);
 });

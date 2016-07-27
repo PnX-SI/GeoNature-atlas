@@ -112,6 +112,24 @@ def firstObservationChild(cd_ref):
 
     
 def lastObservations(mylimit):
-    observations = session.query(VmObservations,VmTaxref).join(VmTaxref, VmObservations.cd_ref==VmTaxref.cd_nom).order_by(desc(VmObservations.dateobs)).limit(mylimit).all()
-    return  toGeoJsonHome(observations)
+    observations = session.query(VmObservations, VmObservations.geojson_point, VmTaxref).join(VmTaxref, VmObservations.cd_ref==VmTaxref.cd_nom).order_by(desc(VmObservations.dateobs)).limit(mylimit).all()
+    obsList=list()
+    for o in observations:
+        if o.VmTaxref.nom_vern:
+            taxon = o.VmTaxref.nom_vern + ' | ' + o.VmTaxref.lb_nom
+        else:
+            taxon = o.VmTaxref.lb_nom
+        temp = {'id_synthese' : o.VmObservations.id_synthese,
+                'cd_ref': o.VmObservations.cd_ref,
+                'dateobs': str(o.VmObservations.dateobs),
+                'altitude_retenue' : o.VmObservations.altitude_retenue,
+                'effectif_total' : o.VmObservations.effectif_total,
+                'taxon': taxon,
+                'geojson_point':ast.literal_eval(o.geojson_point)
+                }
+        obsList.append(temp)
+    return obsList
 
+      
+
+                    

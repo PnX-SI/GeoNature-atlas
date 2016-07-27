@@ -263,6 +263,13 @@
 	<!-- AJOUT CAMILLE -->	
 	<script type="text/javascript" src="/atlas/static/conf/calculCustom.js"></script>
     <script type="text/javascript" src="/atlas/static/conf/custom.js"></script>
+    	    <script type="text/javascript">
+			  var listeTaxonsSearch = {{listeTaxonsSearch|tojson}} 
+			  ,observationsPoint = {{observations.point|tojson}}
+			  ,communesSearch = {{communesSearch|tojson}}
+			  , configuration = {{configuration|tojson}};
+        </script>
+    <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
     <script src="{{url_for('static', filename='homeMap.js') }}"></script>
 	<!-- FIN AJOUT CAMILLE -->		
 		
@@ -271,11 +278,7 @@
 	    <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
 	    <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
 
-	    <script type="text/javascript">
-			  var listeTaxonsSearch = {{listeTaxonsSearch|tojson}} 
-			  ,observations = {{observations|tojson}}
-			  ,communesSearch = {{communesSearch|tojson}};
-        </script>
+
 	
 		
 	    <script src="{{url_for('static', filename='main.js') }}"></script>
