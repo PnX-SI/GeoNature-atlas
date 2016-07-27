@@ -31,7 +31,7 @@ def getMonthlyObservations(cd_ref):
     {'mois': "Decembre", 'value': inter._12}
     ]
 
-def getMonthlyObservationsChilds(cd_ref):
+def getMonthlyObservationsChilds(connection, cd_ref):
     sql = "select SUM(_01) as _01, SUM(_02) as _02, SUM(_03) as _03, SUM(_04) as _04, SUM(_05) as _05, SUM(_06) as _06, SUM(_07) as _07, SUM(_08) as _08, SUM(_09) as _09, SUM(_10) as _10, SUM(_11) as _11, SUM (_12) as _12 \
     from atlas.vm_mois mois \
     where mois.cd_ref in ( \

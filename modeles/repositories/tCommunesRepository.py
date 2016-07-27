@@ -10,30 +10,8 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import text
 
 
-session = manage.loadSession()
-connection = manage.engine.connect()
 
-
-
-def toGeoJson(queryResult):
-    geojson = {'type': 'FeatureCollection',
-           'features' : list()
-          }
-    for r in queryResult:
-        geometry = r.the_geom
-        properties = {'insee': r.insee,
-                      'commune_maj' : r.commune_maj
-                      }
-        feature = {
-            'type' : 'Feature',
-            'properties' : properties,
-            'geometry' : geometry
-        }
-        geojson['features'].append(feature)
-    return geojson
-
-
-def getAllCommune():
+def getAllCommune(session):
     req = session.query(distinct(LCommune.commune_maj), LCommune.insee).join(VmObservations, VmObservations.insee==LCommune.insee).all()
     communeList = list()
     for r in req:
@@ -41,12 +19,9 @@ def getAllCommune():
         communeList.append(temp)
     return communeList
 
-def getGeometryCommune():
-    queryResult = session.query(LCommune).all()
-    return toGeoJson(queryResult)
 
 
-def getCommuneFromInsee(insee):
+def getCommuneFromInsee(session, insee):
     req =  session.query(LCommune.commune_maj).filter(LCommune.insee==insee).all()
     return req[0].commune_maj
 
@@ -56,7 +31,7 @@ def getCommunesObservations(cd_ref):
     .filter(VmObservations.cd_ref==cd_ref).all()
 
 
-def getCommunesObservationsChilds(cd_ref):
+def getCommunesObservationsChilds(connection, cd_ref):
     sql = "select distinct(com.insee) as insee \
     , com.commune_maj \
     FROM layers.l_communes com \

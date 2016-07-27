@@ -5,8 +5,6 @@ from modeles import utils
 from sqlalchemy.sql import text
 
 
-session = manage.loadSession()
-connection = manage.engine.connect()
 
 tableAltitudes = utils.GenericTable('atlas.vm_altitudes', 'atlas')
 dfCdRef = tableAltitudes.tableDef.columns['cd_ref']
@@ -29,7 +27,7 @@ def getAltitudes(cd_ref):
 
 
 
-def getAltitudesChilds(cd_ref):
+def getAltitudesChilds(connection, cd_ref):
     #construction du select  de la requete a partir des cles de la table
     sumSelect = str()
     for i in range(len(keyList)):

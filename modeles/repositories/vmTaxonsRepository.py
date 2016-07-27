@@ -15,18 +15,12 @@ from datetime import date
 
 
 
-session = manage.loadSession()
-
-connection = manage.engine.connect()
-
-
-
 def deleteAccent(string): 
     return unicodedata.normalize('NFD', string).encode('ascii', 'ignore')  
 
 
 #with distinct the result in a array not an object, 0: lb_nom, 1: nom_vern
-def getTaxonsCommunes(insee):
+def getTaxonsCommunes(session, insee):
     req =  session.query(distinct(VmTaxons.nom_complet_html), func.count(VmObservations.id_synthese).label('count'),VmTaxons.nom_vern,\
      VmObservations.cd_ref, func.max(VmObservations.dateobs), VmTaxons.group2_inpn, VmTaxons.patrimonial, VmTaxons.protection_stricte)\
     .join(VmObservations, VmTaxons.cd_ref==VmObservations.cd_ref).group_by(VmTaxons.nom_complet_html, VmTaxons.nom_vern, VmObservations.cd_ref, VmTaxons.group2_inpn, VmTaxons.patrimonial, VmTaxons.protection_stricte)\
@@ -41,7 +35,7 @@ def getTaxonsCommunes(insee):
     return {'taxons': taxonCommunesList, 'nbObsTotal' : nbObsTotal}
 
 
-def getTaxonsChildsList(cd_ref):
+def getTaxonsChildsList(connection, cd_ref):
     rank = config.LIMIT_FICHE_LISTE_HIERARCHY
     sql = "select tax.nom_complet_html, \
     count(obs.id_synthese) as nb_obs, \

@@ -13,12 +13,9 @@ from sqlalchemy.sql import text
 from sqlalchemy.orm import sessionmaker
 
 
-session = manage.loadSession()
-connection = manage.engine.connect()
-
 
 #recherche l espece corespondant au cd_nom et tout ces fils
-def searchEspece(cd_ref):
+def searchEspece(connection, session, cd_ref):
     taxonSearch = session.query(VmTaxref).filter(VmTaxref.cd_ref == cd_ref).all()
     sql="select tax.lb_nom, \
     tax.nom_vern, \
@@ -34,7 +31,7 @@ def searchEspece(cd_ref):
         listTaxonsChild.append(temp)
     return {'taxonSearch':taxonSearch[0], 'listTaxonsChild': listTaxonsChild }
 
-def getSynonymy(cd_ref):
+def getSynonymy(session, cd_ref):
     return session.query(VmTaxref.lb_nom).filter(VmTaxref.cd_ref==cd_ref).all()
 
 
@@ -42,26 +39,26 @@ def getCd_ref(cd_nom):
     req = session.query(VmTaxref.cd_ref).filter(VmTaxref.cd_nom == cd_nom).all()
     return req[0].cd_ref
 
-def getTaxon(cd_nom):
+def getTaxon(session, cd_nom):
     req = session.query(VmTaxref.lb_nom, VmTaxref.id_rang, VmTaxref.cd_ref, VmTaxref.cd_taxsup, TBibTaxrefRang.nom_rang, TBibTaxrefRang.tri_rang)\
     .join(TBibTaxrefRang, TBibTaxrefRang.id_rang == VmTaxref.id_rang).filter(VmTaxref.cd_nom == cd_nom)
     return req[0]
 
-def getCd_sup(cd_ref):
+def getCd_sup(session, cd_ref):
     req = session.query(VmTaxref.cd_taxsup).filter(VmTaxref.cd_nom == cd_ref).first()
     return req.cd_taxsup
 
-def getInfoFromCd_ref(cd_ref):
+def getInfoFromCd_ref(session, cd_ref):
     req = session.query(VmTaxref.lb_nom, TBibTaxrefRang.nom_rang).join(TBibTaxrefRang, TBibTaxrefRang.id_rang == VmTaxref.id_rang).filter(VmTaxref.cd_ref == cd_ref)
     return {'lb_nom': req[0].lb_nom, 'nom_rang' : req[0].nom_rang }
 
 
-def getAllTaxonomy(cd_ref):
-    taxonSup = getCd_sup(cd_ref) #cd_taxsup
-    taxon = getTaxon(taxonSup)
+def getAllTaxonomy(session, cd_ref):
+    taxonSup = getCd_sup(session, cd_ref) #cd_taxsup
+    taxon = getTaxon(session, taxonSup)
     tabTaxon = list()
     while taxon.tri_rang >= config.LIMIT_RANG_TAXONOMIQUE_HIERARCHIE : 
         temp = {'rang' : taxon.id_rang, 'lb_nom' : taxon.lb_nom, 'cd_ref': taxon.cd_ref, 'nom_rang' : taxon.nom_rang, 'tri_rang': taxon.tri_rang }
         tabTaxon.insert(0, temp)
-        taxon = getTaxon(taxon.cd_taxsup) #on avance
+        taxon = getTaxon(session, taxon.cd_taxsup) #on avance
     return tabTaxon
