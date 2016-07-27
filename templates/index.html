@@ -115,7 +115,7 @@
 						<div id="map"> </div>
 					  </div>
 					   <div id="listMap" class = "col-sm-3"> 
-							<table class="table table-striped">
+							<table id='tableEspece' class="table table-striped">
 								<thead>
 									<tr>
 										<th> Liste des 100 dernières observations </th>
@@ -124,7 +124,8 @@
 								<tbody>
 									{% for obs in observations %}
 									<tr class='tabEspece'>
-										<td > {{obs.taxon}} </td>
+										<td class="singleTaxon" cdref="{{obs.cd_ref}}" > {{obs.taxon}} </td>
+										<td> <a href = "{{url_for('main.ficheEspece',cd_ref=obs.cd_ref)}}"> <img height="20" width="20" src ="{{url_for('static', filename='images/logo_files.png') }}" alt="Lien vers la fiche espèce" title="Lien vers la fiche espèce"> </a> </td> 
 										<td class="hiddenTd" hidden ="true"> {{obs.cd_ref}} </td>
 									</tr>
 									{% endfor %}
@@ -291,7 +292,6 @@
         </script>
     <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
     <script src="{{url_for('static', filename='homeMap.js') }}"></script>
-    <script src="{{url_for('static', filename='HomeMain.js') }}"></script>
 	<!-- FIN AJOUT CAMILLE -->		
 		
 	<!-- JQUERY APPELE 2 FOIS ? -->	

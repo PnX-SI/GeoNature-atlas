@@ -111,7 +111,7 @@ function styleMaille(feature) {
         weight: 2,
         opacity: 0,
        // dashArray: '3',
-        fillOpacity: 0.7
+        fillOpacity: 0.8
     };
 }
 

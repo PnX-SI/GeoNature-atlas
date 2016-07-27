@@ -25,6 +25,12 @@ body {
 
  width: 100%; height: 600px; }
 
- .tabEspece{
+ .singleTaxon{
  	cursor: pointer
  }
+
+table#tableEspece {
+  display: block;
+  height: 600px;
+  overflow-y: scroll;
+}
