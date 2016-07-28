@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+   <head>
+        <meta charset="utf-8" />
+        <title></title>
+
+        <!-- Jquery -->
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/jquery-ui.css') }}" />
+        <script type=text/javascript src="{{url_for('static', filename='/lib/jquery-1.12.4.min.js') }}"></script>
+
+
+        		<!-- Leaflet -->
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/leaflet/leaflet.css') }}" />
+        <script src="{{url_for('static', filename='/lib/leaflet/leaflet.js') }}"></script>
+        <script src="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.css') }}" />
+
+        <!-- DataTable-->
+        <script type=text/javascript src="{{url_for('static', filename='lib/dataTable/datatables.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/dataTable/jquery.dataTables.min.css') }}" />
+
+
+        <!-- Bootrap -->
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap/css/bootstrap.min.css') }}"></link>
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap-switch/css/bootstrap-switch.min.css') }}"></link>
+        <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
+
+        <link rel="stylesheet" href="{{url_for('static', filename='/css/ficheEspece.css') }}" />
+        <link rel="stylesheet" href="{{url_for('static', filename='/css/icones.css') }}" />
+
+
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css') }}" />
+        <script src="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
+       
+   </head>
+   <body>
+   	{% include 'navbar.html' %}
+   		<div class="col-sm-6">
+   			{% include 'listTaxonsTest.html' %}
+   		</div>
+   		<div class="col-sm-6">
+   			<div id="stat">
+	   			<li> <span data-icon="&#xe037;" style="font-size: 40px;"></span> </br> <b> {{listTaxons.nbObsTotal}} <b> </br> observations  </li>
+	   			<li> <span data-icon="&#xe03b;"  style="font-size: 40px;"></span> </br> <b> {{listTaxons.taxons|length}} <b> </br> Espèces  </li>
+	   			<li> <span data-icon="&#xe040;"  style="font-size: 40px;"></span> </br> <b> X  <b> </br> Observateurs  </li>
+	   		</div>
+		   	
+	   		<div id="map"> </div>
+	   	</div>
+
+
+        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+
+        <script type="text/javascript" src="/atlas/static/conf/custom.js"></script>
+        <script type="text/javascript">
+        var communesSearch = {{communesSearch|tojson}},
+            listeTaxonsSearch = {{listeTaxonsSearch|tojson}},
+            configuration = {{configuration|tojson}}
+        </script>
+        <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
+        <script src="{{url_for('static', filename='mapCommune.js') }}"></script>
+
+        <script src="{{url_for('static', filename='listeEspeces.js') }}"></script>
+        <script src="{{url_for('static', filename='main.js') }}"></script>
+
+   </body> 
+</html>
+

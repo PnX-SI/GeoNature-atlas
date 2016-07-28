@@ -21,4 +21,3 @@ class LCommune(Base):
     commune_maj = Column(String(50))
     commune_min = Column(String(50))
     the_geom = Column(Geometry)
-

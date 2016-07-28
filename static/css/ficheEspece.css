@@ -141,3 +141,13 @@ cursor: default;
 
 }
 
+
+
+#stat li {
+	float: left;
+    width: 20%;
+    text-align: center;
+    padding: 15px 0;
+    border-right: 1px solid #e8e8e8;
+    list-style-type: none; 
+}

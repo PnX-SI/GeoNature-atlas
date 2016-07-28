@@ -8,5 +8,7 @@ fi
 
 . config/settings.ini
 
+cd ../
+
 echo "refresh database content..."
 export PGPASSWORD=$user_pg_pass;psql -h $db_host -U $user_pg -d $db_name -f data/refresh.sql &> log/refresh_db.log

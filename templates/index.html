@@ -14,8 +14,6 @@
 		<!-- Leaflet -->
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/leaflet/leaflet.css') }}" />
         <script src="{{url_for('static', filename='/lib/leaflet/leaflet.js') }}"></script>
-        <script src="{{url_for('static', filename='/lib/leaflet/leafletMarkerCluster.js') }}"></script>
-        <link rel="stylesheet" href="{{url_for('static', filename='/lib/leaflet/leafletMarkerCluster.css') }}" />
         <script src="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.css') }}" />
 
@@ -66,7 +64,28 @@
 				<div class="panel panel-default">
 					<div class="panel-heading"><strong>Dernières espèces observées</strong></div>
 					<div class="row" style="padding: 10px;">
-					  <div class="col-xs-6 col-md-3">
+					  
+
+
+					  	{% for i in range(4) %}
+					  	<div class="col-xs-6 col-md-3">
+					  		<div class="thumbnail">
+								<div class="hovereffect">
+								  <img class="img-responsive" src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9698/037466.jpg" alt="...">
+								  <div class="overlay">
+          							 <a class="info" href="{{url_for('main.ficheEspece',cd_ref=observations[i].cd_ref)}}"><img src="{{url_for('static', filename='images/eye.png') }}"></a>
+       							  </div>
+								</div>
+								<div class="caption">
+									<h4> {{ observations[i].taxon }} </h4>
+									<p>Observé le{{observations[i].dateobs}} dans la commune de {{observations[i].commune}}</p>
+									<p><a href="{{url_for('main.ficheEspece',cd_ref=observations[i].cd_ref)}}" class="btn btn-primary" role="button">Fiche détail</a></p>
+							  	</div>
+							</div>
+						</div>
+						{% endfor %}
+
+					  <!-- 	
 						<div class="thumbnail">
 								<div class="hovereffect">
 								  <img class="img-responsive" src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9698/037466.jpg" alt="...">
@@ -110,7 +129,7 @@
 							<p><a href="espece/60686" class="btn btn-primary" role="button">Fiche détail</a></p>
 						  </div>
 						</div>
-					  </div>
+					  </div> -->
 					  
 					  <!-- SAUT DE LIGNE -->
 					  <div class="col-sm-12" style="height:20px"></div>

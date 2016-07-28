@@ -49,7 +49,7 @@ def ficheEspece(cd_ref):
     communesSearch = tCommunesRepository.getAllCommune(session)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
     configuration = {'STRUCTURE' : config.STRUCTURE, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY,\
-    'AFFICHAGE_MAILLE' : config.AFFICHAGE_MAILLE, 'ZOOM_LEVEL_POINT': config.ZOOM_LEVEL_POINT, 'LIMIT_CLUSTER_POINT': config.LIMIT_CLUSTER_POINT}
+    'AFFICHAGE_MAILLE' : config.AFFICHAGE_MAILLE, 'ZOOM_LEVEL_POINT': config.ZOOM_LEVEL_POINT, 'LIMIT_CLUSTER_POINT': config.LIMIT_CLUSTER_POINT, 'MAP_ESPECE': True}
     
     connection.close()
     session.close()
@@ -69,10 +69,11 @@ def ficheCommune(insee):
     listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons(session)
     myType = 1
     configuration = {'STRUCTURE' : config.STRUCTURE}
-    
+
     session.close()
 
-    return render_template('listTaxons.html', myType=myType, listTaxons = listTaxons, referenciel = commune, communesSearch = communesSearch, listeTaxonsSearch = listeTaxonsSearch, configuration = configuration)
+    return render_template('commune.html', myType=myType, listTaxons = listTaxons, referenciel = commune, communesSearch = communesSearch,\
+     listeTaxonsSearch = listeTaxonsSearch, configuration = configuration)
 
 
 @main.route('/liste/<cd_ref>', methods=['GET', 'POST'])

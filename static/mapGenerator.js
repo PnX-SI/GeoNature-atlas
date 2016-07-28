@@ -218,7 +218,7 @@ function displayMarkerLayer(observationsPoint, yearMin, yearMax){
 
 // slider
 
-if (configuration.HOMEMAP != true){
+if (configuration.MAP_ESPECE == true){
   var mySlider = new Slider('#slider', {
     value: [taxonYearMin, $YEARMAX],
     min : taxonYearMin,

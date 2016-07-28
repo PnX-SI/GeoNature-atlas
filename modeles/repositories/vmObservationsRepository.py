@@ -8,6 +8,7 @@ from vmObservations import VmObservations
 from tCommunes import LCommune
 from vmTaxref import VmTaxref
 from vmTaxons import VmTaxons
+import tCommunesRepository
 from sqlalchemy import distinct, func, extract, desc
 from sqlalchemy.sql import text
 from sqlalchemy.orm import sessionmaker
@@ -58,7 +59,10 @@ def firstObservationChild(connection, cd_ref):
 
     
 def lastObservations(session, mylimit):
-    observations = session.query(VmObservations, VmObservations.geojson_point, VmTaxref).join(VmTaxref, VmObservations.cd_ref==VmTaxref.cd_nom).order_by(desc(VmObservations.dateobs)).limit(mylimit).all()
+    observations = session.query(VmObservations, VmObservations.geojson_point, VmTaxref, LCommune.commune_maj)\
+    .join(VmTaxref, VmObservations.cd_ref==VmTaxref.cd_nom)\
+    .join(LCommune, VmObservations.insee == LCommune.insee) \
+    .order_by(desc(VmObservations.dateobs)).limit(mylimit).all()
     obsList=list()
     for o in observations:
         if o.VmTaxref.nom_vern:
@@ -71,11 +75,11 @@ def lastObservations(session, mylimit):
                 'altitude_retenue' : o.VmObservations.altitude_retenue,
                 'effectif_total' : o.VmObservations.effectif_total,
                 'taxon': taxon,
-                'geojson_point':ast.literal_eval(o.geojson_point)
+                'geojson_point':ast.literal_eval(o.geojson_point),
+                'commune': o.commune_maj
                 }
         obsList.append(temp)
     return obsList
-
       
 
                     
