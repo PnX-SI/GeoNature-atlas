@@ -12,6 +12,7 @@ CONFIG_DIR = APP_DIR+'/config'
 sys.path.insert(0, CONFIG_DIR)
 from config import config, database_connection
 from sqlalchemy import create_engine, MetaData, Table
+from sqlalchemy.pool import QueuePool
 
 bootstrap = Bootstrap()
 db = SQLAlchemy()
@@ -22,7 +23,7 @@ def create_app(config_name):
     app.debug = True
 
     from sqlalchemy import create_engine
-    engine = create_engine(database_connection, client_encoding='utf8', echo = False)
+    engine = create_engine(database_connection, client_encoding='utf8', echo = False, poolclass=QueuePool)
     bootstrap.init_app(app)
     
     from main import main as main_blueprint
