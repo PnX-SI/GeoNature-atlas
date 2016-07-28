@@ -9,9 +9,6 @@ from sqlalchemy.orm import sessionmaker
 import ast
 from datetime import datetime
 
-session = manage.loadSession()
-connection = manage.engine.connect()
-
 
 def getMonthlyObservations(cd_ref):
     request = session.query(VmMois).filter(VmMois.cd_ref==cd_ref).all()
