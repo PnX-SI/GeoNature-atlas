@@ -1,6 +1,6 @@
 
     {% if myType == 1  %}
-    <h3> Liste des {{listTaxons.taxons|length}} espèces observées sur la commune de {{referenciel}} </h3>
+    <h3> Commune de {{referenciel}} </h3>
    
     {% else %}
     <h3> Liste des {{listTaxons.taxons|length}} espèces observées pour le taxon <i>{{referenciel.lb_nom}}</i> ({{referenciel.nom_rang}}) </h3>
@@ -27,7 +27,6 @@
     {% endif %}
 
 
-    <h4> Nombre total d'observations: {{listTaxons.nbObsTotal}} </h4>
      <table id ="myTable" style="display: none">
         <thead>
             <tr>
