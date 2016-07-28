@@ -13,7 +13,7 @@ function generateMap() {
         crs: L.CRS.EPSG3857,
         center: latLong,
         zoom: setZoom,
-        layers: [osmTile, ignTile],
+        layers: [ignTile],
         fullscreenControl: true,
 
         });
