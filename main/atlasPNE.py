@@ -62,17 +62,20 @@ def ficheEspece(cd_ref):
 @main.route('/commune/<insee>', methods=['GET', 'POST'])
 def ficheCommune(insee):
     session = manage.loadSession()
+    connection = manage.engine.connect()
 
     listTaxons = vmTaxonsRepository.getTaxonsCommunes(session, str(insee))
     commune = tCommunesRepository.getCommuneFromInsee(session, insee)
     communesSearch = tCommunesRepository.getAllCommune(session)
     listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons(session)
+    observations = vmObservationsRepository.lastObservationsCommune(connection, config.LIMIT_OBSERVATION, insee)
     myType = 1
     configuration = {'STRUCTURE' : config.STRUCTURE}
 
     session.close()
+    connection.close()
 
-    return render_template('commune.html', myType=myType, listTaxons = listTaxons, referenciel = commune, communesSearch = communesSearch,\
+    return render_template('commune.html', myType=myType, listTaxons = listTaxons, referenciel = commune, communesSearch = communesSearch, observations = observations, \
      listeTaxonsSearch = listeTaxonsSearch, configuration = configuration)
 
 
