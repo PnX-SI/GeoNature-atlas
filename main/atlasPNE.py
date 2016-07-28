@@ -69,6 +69,7 @@ def ficheCommune(insee):
     listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons(session)
     myType = 1
     configuration = {'STRUCTURE' : config.STRUCTURE}
+    
     session.close()
 
     return render_template('listTaxons.html', myType=myType, listTaxons = listTaxons, referenciel = commune, communesSearch = communesSearch, listeTaxonsSearch = listeTaxonsSearch, configuration = configuration)

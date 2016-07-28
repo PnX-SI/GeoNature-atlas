@@ -1,29 +1,28 @@
 function generateMap() {
 
-    // load tiles
-    var osmTile = L.tileLayer(osmUrl, {attribution: osmAttribution}),
-      ignTile = L.tileLayer(ignUrl, {attribution: ignAttribution}),
-      orthoTile = L.tileLayer(orthoIGN, {attribution: ignAttribution});
-
 
     //map initialization
+firstMapTile = L.tileLayer(FIRST_MAP.url, {attribution : FIRST_MAP.attribution} );
+
+baseMap = {};
+baseMap[FIRST_MAP.tileName]=firstMapTile;
+
+  ADDITIONAL_MAP.forEach(function(map){
+     tempName = map.tileName;
+    baseMap[tempName]  = L.tileLayer(map.url, {attribution: map.attribution})
+  });
+
 
 
       var map = L.map('map',{
         crs: L.CRS.EPSG3857,
-        center: latLong,
+        center: latLong, 
+        geosearch: true,
         zoom: setZoom,
-        layers: [ignTile],
+        layers : [firstMapTile],
         fullscreenControl: true,
-
         });
 
-    // add a tile selector
-    var baseMap = {
-    "OSM": osmTile,
-    "IGN": ignTile,
-    "Satellite": orthoTile
-    }
 
     myStyle = {
     	fill: false
