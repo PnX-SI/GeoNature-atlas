@@ -78,7 +78,7 @@
 								</div>
 								<div class="caption">
 									<h4> {{ observations[i].taxon }} </h4>
-									<p>Observé le{{observations[i].dateobs}} dans la commune de {{observations[i].commune}}</p>
+									<p>Observé le {{observations[i].dateobs}} dans la commune de {{observations[i].commune}}</p>
 									<p><a href="{{url_for('main.ficheEspece',cd_ref=observations[i].cd_ref)}}" class="btn btn-primary" role="button">Fiche détail</a></p>
 							  	</div>
 							</div>
@@ -315,7 +315,7 @@
 			  , configuration = {{configuration|tojson}};
         </script>
     <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
-    <script src="{{url_for('static', filename='homeMap.js') }}"></script>
+    <script src="{{url_for('static', filename='mapHome.js') }}"></script>
 	<!-- FIN AJOUT CAMILLE -->		
 		
 	<!-- JQUERY APPELE 2 FOIS ? -->	

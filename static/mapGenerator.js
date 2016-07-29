@@ -13,7 +13,6 @@ baseMap[FIRST_MAP.tileName]=firstMapTile;
   });
 
 
-
       var map = L.map('map',{
         crs: L.CRS.EPSG3857,
         center: latLong, 
@@ -22,7 +21,6 @@ baseMap[FIRST_MAP.tileName]=firstMapTile;
         layers : [firstMapTile],
         fullscreenControl: true,
         });
-
 
     myStyle = {
     	fill: false
@@ -38,33 +36,6 @@ baseMap[FIRST_MAP.tileName]=firstMapTile;
                   }).addTo(map);
               });
           });
-
-
-    var legend = L.control({position: 'bottomright'});
-
-
-    if (configuration.HOMEMAP == null) {
-      legend.onAdd = function (map) {
-
-          var div = L.DomUtil.create('div', 'info legend'),
-              grades = [0, 1, 2, 5, 10, 20, 50, 100],
-              labels = ["<strong> Nombre <br> d'observations </strong> <br>"];
-
-          // loop through our density intervals and generate a label with a colored square for each interval
-          for (var i = 0; i < grades.length; i++) {
-              labels.push(
-                  '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-                  grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+'));
-          }
-          div.innerHTML = labels.join('<br>');
-
-          return div;
-      };
-
-      legend.addTo(map);
-
-    }
-
 
     return map
 }
@@ -166,7 +137,31 @@ function displayMailleLayer(observationsMaille, yearMin, yearMax){
       onEachFeature : onEachFeatureMaille,
       style: styleMaille,
   });
-currentLayer.addTo(map);
+  currentLayer.addTo(map);
+
+    var legend = L.control({position: 'bottomright'});
+    legend.onAdd = function (map) {
+
+        var div = L.DomUtil.create('div', 'info legend'),
+            grades = [0, 1, 2, 5, 10, 20, 50, 100],
+            labels = ["<strong> Nombre <br> d'observations </strong> <br>"];
+
+        // loop through our density intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+            labels.push(
+                '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+'));
+        }
+        div.innerHTML = labels.join('<br>');
+
+        return div;
+    };
+
+    legend.addTo(map);
+
+
+
+
 }
 
 

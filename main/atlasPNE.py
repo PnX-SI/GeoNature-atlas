@@ -65,7 +65,7 @@ def ficheCommune(insee):
     connection = manage.engine.connect()
 
     listTaxons = vmTaxonsRepository.getTaxonsCommunes(session, str(insee))
-    commune = tCommunesRepository.getCommuneFromInsee(session, insee)
+    commune = tCommunesRepository.getCommuneFromInsee(connection, insee)
     communesSearch = tCommunesRepository.getAllCommune(session)
     listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons(session)
     observations = vmObservationsRepository.lastObservationsCommune(connection, config.LIMIT_OBSERVATION, insee)

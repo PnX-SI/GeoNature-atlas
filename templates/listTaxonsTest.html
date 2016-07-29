@@ -1,6 +1,6 @@
 
     {% if myType == 1  %}
-    <h3> Commune de {{referenciel}} </h3>
+    <h3> Commune de {{referenciel.communeName}} </h3>
    
     {% else %}
     <h3> Liste des {{listTaxons.taxons|length}} espèces observées pour le taxon <i>{{referenciel.lb_nom}}</i> ({{referenciel.nom_rang}}) </h3>

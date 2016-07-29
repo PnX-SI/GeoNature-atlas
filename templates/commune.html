@@ -56,7 +56,8 @@
         var communesSearch = {{communesSearch|tojson}},
             listeTaxonsSearch = {{listeTaxonsSearch|tojson}},
             configuration = {{configuration|tojson}},
-            observations = {{observations|tojson}};
+            observations = {{observations|tojson}},
+            communeGeoJson = {{referenciel.communeGeoJson|tojson}}
         </script>
         <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
         <script src="{{url_for('static', filename='mapCommune.js') }}"></script>

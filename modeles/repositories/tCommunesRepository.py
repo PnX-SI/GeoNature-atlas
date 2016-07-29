@@ -8,6 +8,7 @@ from sqlalchemy import distinct
 from vmObservations import VmObservations
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import text
+import ast
 
 
 
@@ -21,8 +22,18 @@ def getAllCommune(session):
 
 
 
-def getCommuneFromInsee(session, insee):
-    req =  session.query(LCommune.commune_maj).filter(LCommune.insee==insee).all()
+def getCommuneFromInsee(connection, insee):
+    sql = "SELECT l.commune_maj, \
+           st_asgeojson(st_transform(l.the_geom, 4326)) as commune_geojson \
+           FROM layers.l_communes l \
+           WHERE l.insee = :thisInsee"
+    req = connection.execute(text(sql), thisInsee = insee)
+    communeObj = dict()
+    for r in req:
+        communeObj = {'communeName': r.commune_maj, 'communeGeoJson' : ast.literal_eval(r.commune_geojson)}
+    return communeObj
+
+
     return req[0].commune_maj
 
 def getCommunesObservations(cd_ref):
