@@ -19,8 +19,7 @@ function printEspece(tabEspece){
 }
 
 function onEachFeature(feature, layer){
-    popupContent = "<b>Espèces observées dans la maille: </b> <ul> "+printEspece(feature.properties.list_taxon) + "</ul>" + "</br> id: " +feature.properties.list_id_synthese
-    + "idmaille: "+ feature.properties.id_maille + "nb id_synthese: " +feature.properties.list_id_synthese.length;
+    popupContent = "<b>Espèces observées dans la maille: </b> <ul> "+printEspece(feature.properties.list_taxon) + "</ul>";
 
         layer.bindPopup(popupContent)
       }
@@ -129,11 +128,18 @@ var geojsonMaille = generateGeoJsonMailleLastObs(observations);
 
   selectLayer.openPopup();
       // map.setView(selectLayer._latlng, 13); fonctionne pas avec des polygone: faire un feetbounds pour zoomer dessus
-  })
+        var bounds = L.latLngBounds([]);
+       var layerBounds = selectLayer.getBounds();
+      bounds.extend(layerBounds);
+      map.fitBounds(bounds, {
+        maxZoom : 12
+        });
+
+});
 
    // zoom on the popup on observation click
     currentLayer.on('click', function(e){
-      map.setView(e.latlng, 13);
+      map.setView(e.latlng, 12);
   });
 
 });

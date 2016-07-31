@@ -23,10 +23,10 @@ def index():
 
     listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons(session)
     
-    observations = vmObservationsMaillesRepository.lastObservationsMailles(connection, config.LIMIT_OBSERVATION)
+    observations = vmObservationsMaillesRepository.lastObservationsMailles(connection, config.NB_LAST_OBS)
 
     communesSearch = tCommunesRepository.getAllCommune(session)
-    configuration = {'STRUCTURE' : config.STRUCTURE, 'HOMEMAP': True}
+    configuration = {'STRUCTURE' : config.STRUCTURE, 'HOMEMAP': True, 'NB_LAST_OBS': config.NB_LAST_OBS}
     session.close()
 
     return render_template('index.html', listeTaxonsSearch=listeTaxonsSearch, observations=observations, communesSearch=communesSearch, configuration = configuration)

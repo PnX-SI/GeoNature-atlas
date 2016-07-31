@@ -22,8 +22,8 @@ $(function(){
 
 	var bounds = L.latLngBounds([]);
 	var layerBounds = communeLayer.getBounds();
-	bounds.extend(layerBounds)
+	bounds.extend(layerBounds);
 	map.fitBounds(bounds);
 
-	displayMarkerLayer(observations)
+	displayMarkerLayer(observations);
 })

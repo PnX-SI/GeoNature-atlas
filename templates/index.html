@@ -142,13 +142,13 @@
 							<table id='tableEspece' class="table table-striped">
 								<thead>
 									<tr>
-										<th> Liste des 100 dernières observations </th>
+										<th> Liste des {{configuration.NB_LAST_OBS}} dernières observations </th>
 									</tr>
 								</thead>
 								<tbody>
 									{% for obs in observations %}
 									<tr class='tabEspece'>
-										<td class="singleTaxon" idSynthese = "{{obs.id_synthese}}" cdref="{{obs.cd_ref}}" > {{obs.taxon}} {{obs.id_synthese}}</td>
+										<td class="singleTaxon" idSynthese = "{{obs.id_synthese}}" cdref="{{obs.cd_ref}}" > {{obs.taxon}}</td>
 										<td> <a href = "{{url_for('main.ficheEspece',cd_ref=obs.cd_ref)}}"> <img height="20" width="20" src ="{{url_for('static', filename='images/logo_files.png') }}" alt="Lien vers la fiche espèce" title="Lien vers la fiche espèce"> </a> </td> 
 										<td class="hiddenTd" hidden ="true"> {{obs.cd_ref}} </td>
 									</tr>
