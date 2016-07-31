@@ -148,7 +148,7 @@
 								<tbody>
 									{% for obs in observations %}
 									<tr class='tabEspece'>
-										<td class="singleTaxon" cdref="{{obs.cd_ref}}" > {{obs.taxon}} </td>
+										<td class="singleTaxon" idSynthese = "{{obs.id_synthese}}" cdref="{{obs.cd_ref}}" > {{obs.taxon}} {{obs.id_synthese}}</td>
 										<td> <a href = "{{url_for('main.ficheEspece',cd_ref=obs.cd_ref)}}"> <img height="20" width="20" src ="{{url_for('static', filename='images/logo_files.png') }}" alt="Lien vers la fiche espèce" title="Lien vers la fiche espèce"> </a> </td> 
 										<td class="hiddenTd" hidden ="true"> {{obs.cd_ref}} </td>
 									</tr>

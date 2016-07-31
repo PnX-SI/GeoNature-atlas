@@ -1,6 +1,10 @@
 var map = generateMap();
 
 
+function displayMailleLayer(observations){
+	
+}
+
 
 $(function(){
 	var communeLayer = L.geoJson(communeGeoJson, {

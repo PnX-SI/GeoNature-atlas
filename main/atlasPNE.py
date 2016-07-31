@@ -19,9 +19,12 @@ from atlas import manage
 @main.route('/' , methods=['GET', 'POST'])
 def index():
     session = manage.loadSession()
+    connection = manage.engine.connect()
 
     listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons(session)
-    observations = vmObservationsRepository.lastObservations(session, config.LIMIT_OBSERVATION)
+    
+    observations = vmObservationsMaillesRepository.lastObservationsMailles(connection, config.LIMIT_OBSERVATION)
+
     communesSearch = tCommunesRepository.getAllCommune(session)
     configuration = {'STRUCTURE' : config.STRUCTURE, 'HOMEMAP': True}
     session.close()
@@ -49,7 +52,7 @@ def ficheEspece(cd_ref):
     communesSearch = tCommunesRepository.getAllCommune(session)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
     configuration = {'STRUCTURE' : config.STRUCTURE, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY,\
-    'AFFICHAGE_MAILLE' : config.AFFICHAGE_MAILLE, 'ZOOM_LEVEL_POINT': config.ZOOM_LEVEL_POINT, 'LIMIT_CLUSTER_POINT': config.LIMIT_CLUSTER_POINT, 'MAP_ESPECE': True}
+    'AFFICHAGE_MAILLE' : config.AFFICHAGE_MAILLE, 'ZOOM_LEVEL_POINT': config.ZOOM_LEVEL_POINT, 'LIMIT_CLUSTER_POINT': config.LIMIT_CLUSTER_POINT, 'FICHE_ESPECE': True}
     
     connection.close()
     session.close()
