@@ -34,19 +34,31 @@
        
    </head>
    <body>
-   	{% include 'navbar.html' %}
-   		<div class="col-sm-6">
-   			{% include 'listTaxonsTest.html' %}
-   		</div>
-   		<div class="col-sm-6">
-   			<div id="stat">
-	   			<li> <span data-icon="&#xe037;" style="font-size: 40px;"></span> </br> <b> {{listTaxons.nbObsTotal}} <b> </br> Observations  </li>
-	   			<li> <span data-icon="&#xe03b;"  style="font-size: 40px;"></span> </br> <b> {{listTaxons.taxons|length}} <b> </br> Espèces  </li>
-	   			<li> <span data-icon="&#xe040;"  style="font-size: 40px;"></span> </br> <b> X  <b> </br> Observateurs  </li>
-	   		</div>
-		   	
-	   		<div id="map"> </div>
-	   	</div>
+    {% include 'navbar.html' %}
+
+    <div class="row" id="presentation">
+      <div class="col-sm-12">
+        <h4> <b>  Commune de {{referenciel.communeName}} </b> </h4>
+      </div>
+          <ul id="stat">
+              <li> <span data-icon="&#xe037;" style="font-size: 30px;"></span> </br> <b> {{listTaxons.nbObsTotal}} </b> </br> Observations  </li>
+              <li> <span data-icon="&#xe03b;"  style="font-size: 30px;"></span> </br> <b> {{listTaxons.taxons|length}} </b> </br> Espèces  </li>
+              <li> <span data-icon="&#xe040;"  style="font-size: 30px;"></span> </br> <b> X  </b> </br> Observateurs  </li>
+          </ul>
+    </div>
+      
+
+    <div class="row" id="corps">
+       		<div class="col-sm-7">
+       			{% include 'listTaxonsTest.html' %}
+       		</div>
+       		<div class="col-sm-5">
+
+            <h4> Carte des 100 dernières observations de la commune de <i>{{referenciel.communeName}}</i></h4>
+    	   		<div id="map"> </div>
+    	   	</div>
+    </div>
+      
 
 
         <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>

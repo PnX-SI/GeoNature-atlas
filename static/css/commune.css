@@ -1,7 +1,17 @@
 
 body {
+
 	background-color: #E3E7E8;
 }
+
+#presentation{
+	height: 20%;
+}
+
+#corps{
+	height: 80%;
+}
+
 
 .navbar{
 	margin-bottom: 0px;
@@ -69,13 +79,27 @@ cursor: default;
 
 }
 
+.boxShadow {
 
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
 
 #stat li {
-	float: left;
-    width: 20%;
+
+	/*float: left;*/
+	display: inline-block; 
+    width: 100px;
     text-align: center;
-    padding: 15px 0;
     border-right: 1px solid #e8e8e8;
     list-style-type: none; 
 }
+
+ul#stat {
+	padding: 5px;
+	margin-bottom: -65px;
+	margin-left: 15%;
+
+}
+
+

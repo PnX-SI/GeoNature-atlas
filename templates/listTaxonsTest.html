@@ -1,33 +1,5 @@
 
-    {% if myType == 1  %}
-    <h3> Commune de {{referenciel.communeName}} </h3>
-   
-    {% else %}
-    <h3> Liste des {{listTaxons.taxons|length}} espèces observées pour le taxon <i>{{referenciel.lb_nom}}</i> ({{referenciel.nom_rang}}) </h3>
-    {% endif %}
-
-    
-    {% if myType == 2  %}
-        {% for taxon in taxonomyHierarchy %}
-
-            {{taxon.nom_rang}} :
-            <i>
-            {% if ( taxon.tri_rang >= configuration.LIMIT_FICHE_LISTE_HIERARCHY) %}
-                 <a href = "{{url_for('main.ficheEspece', cd_ref = taxon.cd_ref) }}"> {{taxon.lb_nom}}</a> 
-            {% else %}
-                 <a href = "{{url_for('main.ficheRangTaxonomie', cd_ref = taxon.cd_ref) }}">{{taxon.lb_nom}} </a> 
-                
-            {% endif %}
-            </i>
-            {% if not loop.last %}
-                 <span class="glyphicon glyphicon-chevron-right"> </span>
-            {% endif %}
-                            
-        {% endfor %}
-    {% endif %}
-
-
-     <table id ="myTable" style="display: none">
+      <table id ="myTable" style="display: none">
         <thead>
             <tr>
                 <th> </th>
