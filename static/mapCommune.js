@@ -1,12 +1,9 @@
 var map = generateMap();
 
 
-function displayMailleLayer(observations){
-	
-}
-
-
 $(function(){
+
+	// Diplay limit of the territory
 	var communeLayer = L.geoJson(communeGeoJson, {
 		style : function(){
 			return {
@@ -25,5 +22,6 @@ $(function(){
 	bounds.extend(layerBounds);
 	map.fitBounds(bounds);
 
+	// Display the 'x' last observations
 	displayMarkerLayer(observations);
 })

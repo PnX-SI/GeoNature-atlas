@@ -20,13 +20,14 @@ from atlas import manage
 def index():
     session = manage.loadSession()
     connection = manage.engine.connect()
-
-    listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons(session)
     
-    observations = vmObservationsMaillesRepository.lastObservationsMailles(connection, config.NB_LAST_OBS)
-
+    listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons(session)
+    if config.AFFICHAGE_MAILLE:
+        observations = vmObservationsMaillesRepository.lastObservationsMailles(connection, config.NB_LAST_OBS)
+    else:
+        observations = vmObservationsRepository.lastObservations(session, config.NB_LAST_OBS)
     communesSearch = tCommunesRepository.getAllCommune(session)
-    configuration = {'STRUCTURE' : config.STRUCTURE, 'HOMEMAP': True, 'NB_LAST_OBS': config.NB_LAST_OBS}
+    configuration = {'STRUCTURE' : config.STRUCTURE, 'HOMEMAP': True, 'NB_LAST_OBS': config.NB_LAST_OBS, 'AFFICHAGE_MAILLE': config.AFFICHAGE_MAILLE}
     session.close()
 
     return render_template('index.html', listeTaxonsSearch=listeTaxonsSearch, observations=observations, communesSearch=communesSearch, configuration = configuration)

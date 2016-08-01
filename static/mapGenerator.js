@@ -70,6 +70,8 @@ baseMap[FIRST_MAP.tileName]=firstMapTile;
 
 
 
+//****** Fonction fiche espècce ***********
+
 
 // Popup Point
 function onEachFeaturePoint(feature, layer){
@@ -217,15 +219,29 @@ function displayMarkerLayerFicheEspece(observationsPoint, yearMin, yearMax){
 }
 
 
+// Display slider
+
+if (configuration.FICHE_ESPECE == true){
+  var mySlider = new Slider('#slider', {
+    value: [taxonYearMin, $YEARMAX],
+    min : taxonYearMin,
+    max : $YEARMAX,
+    step: $STEP,
+  });
+
+  $("#yearMax").html("&nbsp;&nbsp;"+ $YEARMAX);
+  $("#yearMin").html(taxonYearMin + "&nbsp;&nbsp;");
+}
 
 
 
-// Geojson last observations: 
+
+// ***************Fonction lastObservations: mapHome et mapCommune*****************
 
 
-// add all observations markers whith popup
+  /* *** Point ****/
 
-function onEachFeatureHome(feature, layer){
+function onEachFeaturePointLastObs(feature, layer){
     popupContent = "<b>Espèce: </b>"+ feature.properties.taxon_name+
                 "</br><b>Date: </b>"+ feature.properties.dateobs+"</br><b>Altitude: </b>"+ feature.properties.altitude_retenue;
 
@@ -238,7 +254,7 @@ function onEachFeatureHome(feature, layer){
 }
 
 var myGeoJson;
-function generateGeojsonPoint(observationsPoint){
+function generateGeojsonPointLastObs(observationsPoint){
     myGeoJson = {'type': 'FeatureCollection','features' : []}
 
       observationsPoint.forEach(function(obs){
@@ -260,10 +276,10 @@ function generateGeojsonPoint(observationsPoint){
 }
 
 var currentLayer;
-function displayMarkerLayer(observationsPoint){
-  myGeojson = generateGeojsonPoint(observationsPoint)
+function displayMarkerLayerPointLastObs(observationsPoint){
+  myGeojson = generateGeojsonPointLastObs(observationsPoint)
   currentLayer = L.geoJson(myGeojson, {
-          onEachFeature : onEachFeatureHome,
+          onEachFeature : onEachFeaturePointLastObs,
           pointToLayer: function (feature, latlng) {
                            return L.circleMarker(latlng);
                            }
@@ -271,20 +287,68 @@ function displayMarkerLayer(observationsPoint){
     currentLayer.addTo(map);
   }
 
+//  ** MAILLE ***
 
-
-
-// Display slider
-
-if (configuration.FICHE_ESPECE == true){
-  var mySlider = new Slider('#slider', {
-    value: [taxonYearMin, $YEARMAX],
-    min : taxonYearMin,
-    max : $YEARMAX,
-    step: $STEP,
-  });
-
-  $("#yearMax").html("&nbsp;&nbsp;"+ $YEARMAX);
-  $("#yearMin").html(taxonYearMin + "&nbsp;&nbsp;");
+function compare(a,b) {
+  if (a.id_maille < b.id_maille)
+    return -1;
+  if (a.id_maille > b.id_maille)
+    return 1;
+  return 0;
 }
+
+function printEspece(tabEspece){
+  stringEspece = "";
+  tabEspece.forEach(function(espece){
+      stringEspece += "<li> "+espece+"</li>"
+  })
+  return stringEspece;
+}
+
+function onEachFeatureMailleLastObs(feature, layer){
+    popupContent = "<b>Espèces observées dans la maille: </b> <ul> "+printEspece(feature.properties.list_taxon) + "</ul>";
+
+        layer.bindPopup(popupContent)
+      }
+
+
+function generateGeoJsonMailleLastObs(observations) {
+
+  var i=0;
+  var myGeoJson = {'type': 'FeatureCollection',
+             'features' : []
+          }
+  while (i<observations.length){
+      geometry = observations[i].geojson_maille;
+      idMaille = observations[i].id_maille;
+      properties = {id_maille : idMaille, list_taxon : [observations[i].taxon], list_cdref:[observations[i].cd_ref], list_id_synthese: [observations[i].id_synthese] };
+      var j = i+1;
+      while (j<observations.length && observations[j].id_maille == idMaille){
+           properties.list_taxon.push(observations[j].taxon);
+           properties.list_cdref.push(observations[j].cd_ref);
+           properties.list_id_synthese.push(observations[j].id_synthese);
+        j = j+1
+      }
+      myGeoJson.features.push({
+          'type' : 'Feature',
+          'properties' : properties,
+          'geometry' : geometry
+      })
+      // on avance jusqu' à j 
+      i = j ;
+  }
+
+  return myGeoJson
+}
+
+
+function find_id_synthese_in_array(tab_id, id_synthese){
+  i = 0 ;
+  while (i < tab_id.length && tab_id[i] != id_synthese){
+    i = i+1
+  }
+  return i != tab_id.length
+}
+
+
 
