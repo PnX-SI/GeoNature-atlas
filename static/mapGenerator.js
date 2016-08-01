@@ -40,7 +40,7 @@ baseMap[FIRST_MAP.tileName]=firstMapTile;
               });
           });
 
-     if (configuration.AFFICHAGE_MAILLE == true || configuration.FICHE_ESPECE == true){
+     if (configuration.FICHE_ESPECE == true ){
 
         var legend = L.control({position: 'bottomright'});
 

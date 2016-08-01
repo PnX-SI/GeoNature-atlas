@@ -23,5 +23,18 @@ $(function(){
 	map.fitBounds(bounds);
 
 	// Display the 'x' last observations
-	displayMarkerLayer(observations);
+		// MAILLE
+		console.log(observations);
+	if (configuration.AFFICHAGE_MAILLE){
+		observations.sort(compare);
+		console.log(observations);
+		var geojsonMaille = generateGeoJsonMailleLastObs(observations);
+      	currentLayer = L.geoJson(geojsonMaille,{onEachFeature: onEachFeatureMailleLastObs});
+      	currentLayer.addTo(map);
+	  }
+		// POINT
+	else{
+	displayMarkerLayerPointLastObs(observations);
+
+	}
 })

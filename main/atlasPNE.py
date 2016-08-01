@@ -20,7 +20,7 @@ from atlas import manage
 def index():
     session = manage.loadSession()
     connection = manage.engine.connect()
-    
+
     listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons(session)
     if config.AFFICHAGE_MAILLE:
         observations = vmObservationsMaillesRepository.lastObservationsMailles(connection, config.NB_LAST_OBS)
@@ -72,9 +72,12 @@ def ficheCommune(insee):
     commune = tCommunesRepository.getCommuneFromInsee(connection, insee)
     communesSearch = tCommunesRepository.getAllCommune(session)
     listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons(session)
-    observations = vmObservationsRepository.lastObservationsCommune(connection, config.NB_LAST_OBS, insee)
+    if config.AFFICHAGE_MAILLE:
+        observations = vmObservationsMaillesRepository.lastObservationsCommuneMaille(connection, config.NB_LAST_OBS, insee)
+    else:
+        observations = vmObservationsRepository.lastObservationsCommune(connection, config.NB_LAST_OBS, insee)
     myType = 1
-    configuration = {'STRUCTURE' : config.STRUCTURE, 'NB_LAST_OBS' : config.NB_LAST_OBS}
+    configuration = {'STRUCTURE' : config.STRUCTURE, 'NB_LAST_OBS' : config.NB_LAST_OBS, 'AFFICHAGE_MAILLE': config.AFFICHAGE_MAILLE}
 
     session.close()
     connection.close()
