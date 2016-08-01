@@ -24,17 +24,33 @@ $(function(){
 
 	// Display the 'x' last observations
 		// MAILLE
-		console.log(observations);
 	if (configuration.AFFICHAGE_MAILLE){
-		observations.sort(compare);
-		console.log(observations);
-		var geojsonMaille = generateGeoJsonMailleLastObs(observations);
-      	currentLayer = L.geoJson(geojsonMaille,{onEachFeature: onEachFeatureMailleLastObs});
-      	currentLayer.addTo(map);
+		displayMailleLayerLastObs(observations)
 	  }
 		// POINT
 	else{
 	displayMarkerLayerPointLastObs(observations);
 
 	}
+
+
+    var legend = L.control({position: 'bottomleft'});
+
+        legend.onAdd = function (map) {
+
+            var div = L.DomUtil.create('div', 'info legend'),
+                  labels = "<i style='border: solid 1px red;'></i> Maille comportant au moin une observation &nbsp;&nbsp;&nbsp " 
+
+    
+            div.innerHTML = labels;
+
+            return div;
+        };
+
+     $('.legend').css({"line-height": "16px", "opacity": 1});
+    legend.addTo(map);
+
+
+
 })
+

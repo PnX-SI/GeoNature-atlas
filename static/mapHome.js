@@ -8,10 +8,7 @@ $(function(){
 
   if (configuration.AFFICHAGE_MAILLE){
     // display maille layer
-      observations.sort(compare);
-      var geojsonMaille = generateGeoJsonMailleLastObs(observations);
-      currentLayer = L.geoJson(geojsonMaille,{onEachFeature: onEachFeatureMailleLastObs});
-      currentLayer.addTo(map);
+    displayMailleLayerLastObs(observations)
 
     // interaction list - map 
       $('.singleTaxon').click(function(){
@@ -61,6 +58,21 @@ $(function(){
   currentLayer.on('click', function(e){
       map.setView(e.latlng, 12);
   });
+
+
+    var legend = L.control({position: 'bottomleft'});
+
+        legend.onAdd = function (map) {
+
+            var div = L.DomUtil.create('div', 'info legend'),
+                  labels = "<i style='border: solid 1px red;'> &nbsp; &nbsp; &nbsp;</i> Maille comportant au moin une observation &nbsp;&nbsp;&nbsp " 
+
+            div.innerHTML = labels;
+
+            return div;
+        };
+    legend.addTo(map);
+
 
 });
 

@@ -72,6 +72,10 @@ h5#buttonChild:hover {
 
 }
 
+.legend:hover{
+	opacity: 1;
+}
+
 /* graphiques */
 
 #graphContainer {
@@ -114,40 +118,3 @@ text {
 
 
 
-
-table.dataTable thead .sorting, 
-table.dataTable thead .sorting_asc, 
-table.dataTable thead .sorting_desc {
-    background : none;
-}
-
-
-
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-	padding: 0px;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-	padding: 0px;
-	border: none;
-}
-
-#myTable_wrapper {
-	margin: 10px
-}
-
-.pagination>.disabled>a, .pagination>.disabled>a:focus, .pagination>.disabled>a:hover, .pagination>.disabled>span, .pagination>.disabled>span:focus, .pagination>.disabled>span:hover {
-cursor: default;
-
-}
-
-
-
-#stat li {
-	float: left;
-    width: 20%;
-    text-align: center;
-    padding: 15px 0;
-    border-right: 1px solid #e8e8e8;
-    list-style-type: none; 
-}

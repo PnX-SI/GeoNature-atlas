@@ -40,7 +40,7 @@ baseMap[FIRST_MAP.tileName]=firstMapTile;
               });
           });
 
-     if (configuration.FICHE_ESPECE == true ){
+     if (configuration.FICHE_ESPECE == true  && configuration.AFFICHAGE_MAILLE ){
 
         var legend = L.control({position: 'bottomright'});
 
@@ -253,6 +253,8 @@ function onEachFeaturePointLastObs(feature, layer){
       
 }
 
+
+
 var myGeoJson;
 function generateGeojsonPointLastObs(observationsPoint){
     myGeoJson = {'type': 'FeatureCollection','features' : []}
@@ -311,6 +313,15 @@ function onEachFeatureMailleLastObs(feature, layer){
         layer.bindPopup(popupContent)
       }
 
+function styleMailleLastObs(){
+    return {
+        opacity: 1,
+        weight: 2,
+        color: 'red',
+        fillOpacity: 0
+    }
+}
+
 
 function generateGeoJsonMailleLastObs(observations) {
 
@@ -349,6 +360,15 @@ function find_id_synthese_in_array(tab_id, id_synthese){
   }
   return i != tab_id.length
 }
+
+function displayMailleLayerLastObs(observations){
+
+      observations.sort(compare);
+      var geojsonMaille = generateGeoJsonMailleLastObs(observations);
+      currentLayer = L.geoJson(geojsonMaille,{onEachFeature: onEachFeatureMailleLastObs, style:styleMailleLastObs });
+      currentLayer.addTo(map);
+
+    }
 
 
 

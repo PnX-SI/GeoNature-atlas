@@ -23,7 +23,22 @@ body {
 
 #map{
 
- width: 100%; height: 600px; }
+ width: 100%; height: 600px;
+  }
+
+ .legend {
+    line-height: 16px;
+    color: #555;
+     background-color: white;
+    opacity: 1;
+}
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+
+}
 
  .singleTaxon{
  	cursor: pointer
