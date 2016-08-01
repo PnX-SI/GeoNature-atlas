@@ -77,7 +77,7 @@ function onEachFeaturePoint(feature, layer){
                 "</br><b>Observateurs: </b>"+ feature.properties.observateurs;
 
      // verifie si le champs effectif est rempli
-      if(feature.properties.effectif_total){
+      if(feature.properties.effectif_total != undefined){
         layer.bindPopup(popupContent+"</br><b>Effectif: </b>"+ feature.properties.effectif_total);
       }else{
         layer.bindPopup(popupContent)
@@ -159,7 +159,7 @@ function generateGeojsonMaille(observations, yearMin, yearMax) {
 // Display Maille layer
 var currentLayer;
 var myGeojson;
-function displayMailleLayer(observationsMaille, yearMin, yearMax){
+function displayMailleLayerFicheEspece(observationsMaille, yearMin, yearMax){
   myGeojson = generateGeojsonMaille(observationsMaille, yearMin, yearMax)
   currentLayer = L.geoJson(myGeojson, {
       onEachFeature : onEachFeatureMaille,
@@ -171,7 +171,7 @@ function displayMailleLayer(observationsMaille, yearMin, yearMax){
 
 
 // GeoJson Point
-function generateGeojsonPoint(observationsPoint, yearMin, yearMax){
+function generateGeojsonPointFicheEspece(observationsPoint, yearMin, yearMax){
    var myGeoJson = {'type': 'FeatureCollection','features' : []}
 
       observationsPoint.forEach(function(obs){
@@ -197,8 +197,9 @@ function generateGeojsonPoint(observationsPoint, yearMin, yearMax){
 
 // Display marker Layer (cluster or not)
 var clusterLayer;
-function displayMarkerLayer(observationsPoint, yearMin, yearMax){
-  myGeojson = generateGeojsonPoint(observationsPoint, yearMin, yearMax)
+function displayMarkerLayerFicheEspece(observationsPoint, yearMin, yearMax){
+
+  myGeojson = generateGeojsonPointFicheEspece(observationsPoint, yearMin, yearMax)
   currentLayer = L.geoJson(myGeojson, {
           onEachFeature : onEachFeaturePoint,
           pointToLayer: function (feature, latlng) {
@@ -273,9 +274,7 @@ function displayMarkerLayer(observationsPoint){
 
 
 
-
-
-// slider
+// Display slider
 
 if (configuration.FICHE_ESPECE == true){
   var mySlider = new Slider('#slider', {
@@ -283,8 +282,6 @@ if (configuration.FICHE_ESPECE == true){
     min : taxonYearMin,
     max : $YEARMAX,
     step: $STEP,
-  /*  ticks: getLegend(taxonYearMin, $YEARMAX),
-    ticks_labels: getStringLegend(getLegend(taxonYearMin, $YEARMAX)),*/
   });
 
   $("#yearMax").html("&nbsp;&nbsp;"+ $YEARMAX);

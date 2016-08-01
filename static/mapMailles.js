@@ -3,7 +3,7 @@ var map = generateMap()
 
 // affichage des mailles
 $(function(){
-displayMailleLayer(observationsMaille, taxonYearMin, $YEARMAX);  
+displayMailleLayerFicheEspece(observationsMaille, taxonYearMin, $YEARMAX);  
 });
 
 
@@ -13,7 +13,7 @@ mySlider.on("change",function(){
       yearMin = years[0];
       yearMax = years[1];
       map.removeLayer(currentLayer);
-      displayMailleLayer(observationsMaille, yearMin, yearMax)
+      displayMailleLayerFicheEspece(observationsMaille, yearMin, yearMax)
 
 
     nbObs=0;
