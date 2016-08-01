@@ -71,9 +71,9 @@ def ficheCommune(insee):
     commune = tCommunesRepository.getCommuneFromInsee(connection, insee)
     communesSearch = tCommunesRepository.getAllCommune(session)
     listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons(session)
-    observations = vmObservationsRepository.lastObservationsCommune(connection, config.LIMIT_OBSERVATION, insee)
+    observations = vmObservationsRepository.lastObservationsCommune(connection, config.NB_LAST_OBS, insee)
     myType = 1
-    configuration = {'STRUCTURE' : config.STRUCTURE}
+    configuration = {'STRUCTURE' : config.STRUCTURE, 'NB_LAST_OBS' : config.NB_LAST_OBS}
 
     session.close()
     connection.close()

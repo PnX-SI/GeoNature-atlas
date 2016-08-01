@@ -312,7 +312,8 @@
 			  var listeTaxonsSearch = {{listeTaxonsSearch|tojson}} 
 			  ,observations = {{observations|tojson}}
 			  ,communesSearch = {{communesSearch|tojson}}
-			  , configuration = {{configuration|tojson}};
+			  , configuration = {{configuration|tojson}},
+			  url_limit_territory = "{{url_for('static', filename='territoire.json') }}";
         </script>
     <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
     <script src="{{url_for('static', filename='mapHome.js') }}"></script>

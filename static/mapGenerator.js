@@ -30,9 +30,10 @@ baseMap[FIRST_MAP.tileName]=firstMapTile;
 
     L.control.layers(baseMap).addTo(map);
 
+     // add the limit of the territory
      $(document).ready(function()
           {
-              $.getJSON('../static/territoire.json', function(json) {
+              $.getJSON(url_limit_territory, function(json) {
                   L.geoJson(json, {
                   	style: myStyle
                   }).addTo(map);
