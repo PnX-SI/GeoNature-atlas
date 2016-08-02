@@ -573,6 +573,38 @@ CREATE FOREIGN TABLE meta.bib_lots
 ALTER TABLE meta.bib_lots OWNER TO geonatatlas;
 GRANT ALL ON TABLE meta.bib_lots TO geonatatlas;
 
+
+
+CREATE FOREIGN TABLE taxonomie.t_medias
+(
+  id_media serial NOT NULL,
+  cd_ref integer,
+  titre character(255) NOT NULL,
+  url character(255),
+  chemin character(255),
+  auteur character(100),
+  desc_media text,
+  date_media date,
+  id_type integer NOT NULL
+)
+ SERVER geonaturedbserver
+  OPTIONS (schema_name 'taxonomie', table_name 't_medias');
+ALTER TABLE taxonomie.t_medias OWNER TO geonatatlas;
+GRANT ALL ON TABLE taxonomie.t_medias TO geonatatlas;
+
+CREATE FOREIGN TABLE taxonomie.bib_types_media
+(
+ id_type integer NOT NULL,
+    type_media character(100) NOT NULL,
+    desc_type_media text
+)
+ SERVER geonaturedbserver
+  OPTIONS (schema_name 'taxonomie', table_name 'bib_types_media');
+ALTER TABLE taxonomie.bib_types_media OWNER TO geonatatlas;
+GRANT ALL ON TABLE taxonomie.bib_types_media TO geonatatlas;
+
+
+
 --DROP TABLE atlas.bib_altitudes;
 CREATE TABLE atlas.bib_altitudes
 (
@@ -838,6 +870,19 @@ LEFT JOIN _12 l ON l.cd_ref =  o.cd_ref
 WHERE o.cd_ref is not null
 ORDER BY o.cd_ref;
 create unique index on atlas.vm_mois (cd_ref);
+
+
+CREATE MATERIALIZED VIEW atlas.vm_communes AS
+SELECT c.insee,
+c.commune_maj,
+c.commune_min,
+c.the_geom::geometry('MULTIPOLYGON',2154)
+FROM layers.l_communes c
+WHERE c.organisme is not null;
+
+CREATE UNIQUE INDEX on atlas.vm_communes (insee);
+CREATE INDEX index_gist_vm_communes_the_geom ON atlas.vm_communes USING gist (the_geom); 
+
 
 
 CREATE TABLE atlas.bib_taxref_rangs (

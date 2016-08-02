@@ -13,4 +13,4 @@ create unique index on atlas.vm_observations_mailles (id_synthese);
 create index on atlas.vm_observations_mailles (id_maille);
 create index on atlas.vm_observations_mailles (cd_ref);
 create index on atlas.vm_observations_mailles (geojson_maille);
-create index on atlas.vm_observations_mailles (geom);
+CREATE INDEX index_gist_atlas_vm_observations_mailles_geom ON atlas.vm_observations_mailles USING gist (geom);
