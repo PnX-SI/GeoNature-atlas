@@ -36,22 +36,27 @@ $(function(){
 	if(configuration.AFFICHAGE_MAILLE){ 
 	    var legend = L.control({position: 'bottomleft'});
 
-	        legend.onAdd = function (map) {
+	var styleLegend = ['border: solid 1px red' , 'border-style: dotted ' , 'border: solid 1px blue;']
 
-	            var div = L.DomUtil.create('div', 'info legend'),
-	                  labels = "<i style='border: solid 1px red;'></i> Maille comportant au moin une observation &nbsp;&nbsp;&nbsp " 
+	       legend.onAdd = function (map) {
 
-	    
-	            div.innerHTML = labels;
+        var div = L.DomUtil.create('div', 'info legend'),
+            grades = ["Maille comportant au moin  \ une observation &nbsp;&nbsp;&nbsp", "Limite de la commune", "Limite du "+ configuration.STRUCTURE],
+            labels = [""];
 
-	            return div;
-	        };
+        for (var i = 0; i < 3; i++) {
+            labels.push(
+                "<i style='"+ styleLegend[i]+"'></i> "
+                 + grades[i] + "<br>" );
+        }
+        div.innerHTML = labels.join('<br>');
 
-	     $('.legend').css({"line-height": "16px", "opacity": 1});
+        return div;
+    };
+
 	    legend.addTo(map);
 	}
+});
 
 
-
-})
 

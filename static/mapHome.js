@@ -65,7 +65,7 @@ $(function(){
         legend.onAdd = function (map) {
 
             var div = L.DomUtil.create('div', 'info legend'),
-                  labels = "<i style='border: solid 1px red;'> &nbsp; &nbsp; &nbsp;</i> Maille comportant au moin une observation &nbsp;&nbsp;&nbsp " 
+                labels = "<i style='border: solid 1px red;'> &nbsp; &nbsp; &nbsp;</i> Maille comportant au moin une observation &nbsp;&nbsp;&nbsp " ;
 
             div.innerHTML = labels;
 
