@@ -59,7 +59,7 @@ $(function(){
       map.setView(e.latlng, 12);
   });
 
-
+    if(configuration.AFFICHAGE_MAILLE){ 
     var legend = L.control({position: 'bottomleft'});
 
         legend.onAdd = function (map) {
@@ -73,7 +73,7 @@ $(function(){
         };
     legend.addTo(map);
 
-
+  }
 });
 
 
