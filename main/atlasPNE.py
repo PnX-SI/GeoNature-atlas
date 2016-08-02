@@ -6,7 +6,7 @@ from flask import Flask, request, render_template, jsonify
 from werkzeug.wrappers import Response
 import config
 from modeles.repositories import vmTaxonsRepository, vmObservationsRepository, vmAltitudesRepository, \
- vmSearchTaxonRepository, vmMoisRepository, vmTaxrefRepository, tCommunesRepository, vmObservationsMaillesRepository
+ vmSearchTaxonRepository, vmMoisRepository, vmTaxrefRepository, vmCommunesRepository, vmObservationsMaillesRepository
 from . import main
 import json
 APP_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -26,7 +26,7 @@ def index():
         observations = vmObservationsMaillesRepository.lastObservationsMailles(connection, config.NB_LAST_OBS)
     else:
         observations = vmObservationsRepository.lastObservations(session, config.NB_LAST_OBS)
-    communesSearch = tCommunesRepository.getAllCommune(session)
+    communesSearch = vmCommunesRepository.getAllCommunes(session)
     configuration = {'STRUCTURE' : config.STRUCTURE, 'HOMEMAP': True, 'NB_LAST_OBS': config.NB_LAST_OBS, 'AFFICHAGE_MAILLE': config.AFFICHAGE_MAILLE}
     session.close()
 
@@ -49,8 +49,8 @@ def ficheEspece(cd_ref):
     altitudes = vmAltitudesRepository.getAltitudesChilds(connection, cd_ref)
     months = vmMoisRepository.getMonthlyObservationsChilds(connection, cd_ref)
     synonyme = vmTaxrefRepository.getSynonymy(session, cd_ref)
-    communes = tCommunesRepository.getCommunesObservationsChilds(connection, cd_ref)
-    communesSearch = tCommunesRepository.getAllCommune(session)
+    communes = vmCommunesRepository.getCommunesObservationsChilds(connection, cd_ref)
+    communesSearch = vmCommunesRepository.getAllCommunes(session)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
     configuration = {'STRUCTURE' : config.STRUCTURE, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY,\
     'AFFICHAGE_MAILLE' : config.AFFICHAGE_MAILLE, 'ZOOM_LEVEL_POINT': config.ZOOM_LEVEL_POINT, 'LIMIT_CLUSTER_POINT': config.LIMIT_CLUSTER_POINT, 'FICHE_ESPECE': True}
@@ -69,8 +69,8 @@ def ficheCommune(insee):
     connection = manage.engine.connect()
 
     listTaxons = vmTaxonsRepository.getTaxonsCommunes(session, str(insee))
-    commune = tCommunesRepository.getCommuneFromInsee(connection, insee)
-    communesSearch = tCommunesRepository.getAllCommune(session)
+    commune = vmCommunesRepository.getCommuneFromInsee(connection, insee)
+    communesSearch = vmCommunesRepository.getAllCommunes(session)
     listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons(session)
     if config.AFFICHAGE_MAILLE:
         observations = vmObservationsMaillesRepository.lastObservationsCommuneMaille(connection, config.NB_LAST_OBS, insee)
@@ -93,7 +93,7 @@ def ficheRangTaxonomie(cd_ref):
 
     listTaxons = vmTaxonsRepository.getTaxonsChildsList(connection, cd_ref)
     referenciel = vmTaxrefRepository.getInfoFromCd_ref(session, cd_ref)
-    communesSearch = tCommunesRepository.getAllCommune(session)
+    communesSearch = vmCommunesRepository.getAllCommunes(session)
     listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons(session)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
     myType = 2
