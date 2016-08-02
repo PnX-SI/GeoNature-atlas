@@ -40,31 +40,6 @@ baseMap[FIRST_MAP.tileName]=firstMapTile;
               });
           });
 
-     if (configuration.FICHE_ESPECE == true  && configuration.AFFICHAGE_MAILLE ){
-
-        var legend = L.control({position: 'bottomright'});
-
-        legend.onAdd = function (map) {
-
-            var div = L.DomUtil.create('div', 'info legend'),
-                grades = [0, 1, 2, 5, 10, 20, 50, 100],
-                labels = ["<strong> Nombre <br> d'observations </strong> <br>"];
-
-            // loop through our density intervals and generate a label with a colored square for each interval
-            for (var i = 0; i < grades.length; i++) {
-                labels.push(
-                    '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-                    grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+'));
-            }
-            div.innerHTML = labels.join('<br>');
-
-            return div;
-        };
-
-    legend.addTo(map);
-   }
-
-
     return map
 }
 
@@ -169,6 +144,28 @@ function displayMailleLayerFicheEspece(observationsMaille, yearMin, yearMax){
   });
   currentLayer.addTo(map);
 
+// ajout de la légende
+    var legend = L.control({position: 'bottomright'});
+
+    legend.onAdd = function (map) {
+
+        var div = L.DomUtil.create('div', 'info legend'),
+            grades = [0, 1, 2, 5, 10, 20, 50, 100],
+            labels = ["<strong> Nombre <br> d'observations </strong> <br>"];
+
+        // loop through our density intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+            labels.push(
+                '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+'));
+        }
+        div.innerHTML = labels.join('<br>');
+
+        return div;
+    };
+
+legend.addTo(map);
+
 }
 
 
@@ -246,11 +243,12 @@ function onEachFeaturePointLastObs(feature, layer){
                 "</br><b>Date: </b>"+ feature.properties.dateobs+"</br><b>Altitude: </b>"+ feature.properties.altitude_retenue;
 
      // verifie si le champs effectif est rempli
-      if(feature.properties.effectif_total){
-        layer.bindPopup(popupContent+"</br><b>Effectif: </b>"+ feature.properties.effectif_total);
+      if(configuration.HOMEMAP){
+                layer.bindPopup(popupContent + "</br> <a href='./espece/"+feature.properties.cd_ref+"'> Fiche espèce </a>")
       }
-      layer.bindPopup(popupContent + "</br> <a href=../espece/"+feature.properties.cd_ref+"> Fiche espèce </a>")
-      
+      else {
+          layer.bindPopup(popupContent + "</br> <a href='../espece/"+feature.properties.cd_ref+"'> Fiche espèce </a>")
+      }
 }
 
 
@@ -299,16 +297,24 @@ function compare(a,b) {
   return 0;
 }
 
-function printEspece(tabEspece){
+function printEspece(tabEspece, tabCdRef){
   stringEspece = "";
-  tabEspece.forEach(function(espece){
+  i = 0;
+  while(i<tabEspece.length){
+    stringEspece += "<li> <a href='./espece/"+tabCdRef[i]+"'>"+tabEspece[i]+"</li>";
+    i=i+1;
+  }
+  return stringEspece
+}
+
+/*  tabEspece.forEach(function(espece){
       stringEspece += "<li> "+espece+"</li>"
   })
   return stringEspece;
-}
+}*/
 
 function onEachFeatureMailleLastObs(feature, layer){
-    popupContent = "<b>Espèces observées dans la maille: </b> <ul> "+printEspece(feature.properties.list_taxon) + "</ul>";
+    popupContent = "<b>Espèces observées dans la maille: </b> <ul> "+printEspece(feature.properties.list_taxon, feature.properties.list_cdref) + "</ul>";
 
         layer.bindPopup(popupContent)
       }
