@@ -1,3 +1,47 @@
+﻿-- object: taxonomie.t_medias | type: TABLE
+CREATE TABLE IF NOT EXISTS taxonomie.t_medias(
+    id_media serial NOT NULL,
+    cd_ref integer,
+    titre character(255) NOT NULL,
+    url character(255),
+    chemin character(255),
+    auteur character(100),
+    desc_media text,
+    date_media date,
+    id_type integer NOT NULL,
+    CONSTRAINT id_media PRIMARY KEY (id_media),
+    CONSTRAINT check_cd_ref_is_ref CHECK(cd_ref = taxonomie.find_cdref(cd_ref)),
+    CONSTRAINT is_unique_titre UNIQUE (titre)
+);
+ALTER TABLE taxonomie.t_medias OWNER TO geonatuser;
+
+-- object: taxonomie.bib_types_media | type: TABLE
+CREATE TABLE IF NOT EXISTS taxonomie.bib_types_media(
+    id_type integer NOT NULL,
+    type_media character(100) NOT NULL,
+    desc_type_media text,
+    CONSTRAINT id PRIMARY KEY (id_type)
+);
+ALTER TABLE taxonomie.bib_types_media OWNER TO geonatuser;
+
+-- object: fk_t_media_bib_noms | type: CONSTRAINT
+ALTER TABLE taxonomie.t_medias DROP CONSTRAINT IF EXISTS fk_t_media_bib_noms CASCADE;
+ALTER TABLE taxonomie.t_medias ADD CONSTRAINT fk_t_media_bib_noms FOREIGN KEY (cd_ref)
+REFERENCES taxonomie.bib_noms (cd_nom) MATCH FULL
+ON DELETE NO ACTION ON UPDATE CASCADE ;
+
+-- object: fk_t_media_bib_types_media | type: CONSTRAINT
+ALTER TABLE taxonomie.t_medias DROP CONSTRAINT IF EXISTS fk_t_media_bib_types_media CASCADE;
+ALTER TABLE taxonomie.t_medias ADD CONSTRAINT fk_t_media_bib_types_media FOREIGN KEY (id_type)
+REFERENCES taxonomie.bib_types_media (id_type) MATCH FULL
+ON DELETE NO ACTION ON UPDATE CASCADE;
+
+INSERT INTO taxonomie.bib_attributs (id_attribut, nom_attribut, label_attribut, liste_valeur_attribut, obligatoire, desc_attribut, type_attribut, type_widget, regne, group2_inpn, id_theme, ordre) VALUES (100, 'atlas_description', 'Description', '{}', false, 'Donne une description du taxon pour l''atlas', 'text', 'textarea', NULL, NULL, 2, 100);
+INSERT INTO taxonomie.bib_attributs (id_attribut, nom_attribut, label_attribut, liste_valeur_attribut, obligatoire, desc_attribut, type_attribut, type_widget, regne, group2_inpn, id_theme, ordre) VALUES (101, 'atlas_commentaire', 'Commentaire', '{}', false, 'Commentaire contextualisé sur le taxon pour GeoNature-atlas', 'text', 'textarea', NULL, NULL, 2, 101);
+INSERT INTO taxonomie.bib_attributs (id_attribut, nom_attribut, label_attribut, liste_valeur_attribut, obligatoire, desc_attribut, type_attribut, type_widget, regne, group2_inpn, id_theme, ordre) VALUES (102, 'atlas_milieu', 'Milieu', '{"values":["Landes","Milieux humides","Alpages"]}', false, 'Habitat, milieu principal du taxon', 'text', 'select', NULL, NULL, 2, 102);
+INSERT INTO taxonomie.bib_attributs (id_attribut, nom_attribut, label_attribut, liste_valeur_attribut, obligatoire, desc_attribut, type_attribut, type_widget, regne, group2_inpn, id_theme, ordre) VALUES (103, 'atlas_corologie', 'Corologie', '["Méditéranéenne","Alpine","Océanique"]', false, 'Distribution, répartition, région à grande échelle du taxon', 'text', 'select', NULL, NULL, 2, 103);
+
+
 GRANT USAGE ON SCHEMA utilisateurs TO geonatatlas;
 GRANT USAGE ON SCHEMA synthese TO geonatatlas;
 GRANT USAGE ON SCHEMA taxonomie TO geonatatlas;
@@ -21,17 +65,18 @@ GRANT SELECT ON TABLE synthese.cor_zonesstatut_synthese TO geonatatlas;
 GRANT SELECT ON TABLE synthese.syntheseff TO geonatatlas;
 
 GRANT SELECT ON TABLE taxonomie.bib_attributs TO geonatatlas;
-GRANT SELECT ON TABLE taxonomie.bib_filtres TO geonatatlas;
 GRANT SELECT ON TABLE taxonomie.bib_listes TO geonatatlas;
 GRANT SELECT ON TABLE taxonomie.bib_noms TO geonatatlas;
 GRANT SELECT ON TABLE taxonomie.bib_taxref_habitats TO geonatatlas;
 GRANT SELECT ON TABLE taxonomie.bib_taxref_rangs TO geonatatlas;
 GRANT SELECT ON TABLE taxonomie.bib_taxref_statuts TO geonatatlas;
 GRANT SELECT ON TABLE taxonomie.cor_taxon_attribut TO geonatatlas;
-GRANT SELECT ON TABLE taxonomie.cor_taxon_liste TO geonatatlas;
+GRANT SELECT ON TABLE taxonomie.cor_nom_liste TO geonatatlas;
 GRANT SELECT ON TABLE taxonomie.taxref TO geonatatlas;
 GRANT SELECT ON TABLE taxonomie.taxref_protection_articles TO geonatatlas;
 GRANT SELECT ON TABLE taxonomie.taxref_protection_especes TO geonatatlas;
+GRANT SELECT ON TABLE taxonomie.t_medias TO geonatatlas;
+GRANT SELECT ON TABLE taxonomie.bib_types_media TO geonatatlas;
 
 GRANT SELECT ON TABLE meta.bib_lots TO geonatatlas;
 GRANT SELECT ON TABLE meta.bib_programmes TO geonatatlas;

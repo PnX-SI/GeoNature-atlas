@@ -299,10 +299,20 @@ function compare(a,b) {
 
 function printEspece(tabEspece, tabCdRef){
   stringEspece = "";
+  if (configuration.HOMEMAP){
   i = 0;
   while(i<tabEspece.length){
+    
     stringEspece += "<li> <a href='./espece/"+tabCdRef[i]+"'>"+tabEspece[i]+"</li>";
     i=i+1;
+    }
+  }
+    else{
+      i = 0;
+      while(i<tabEspece.length){
+      stringEspece += "<li> <a href='../espece/"+tabCdRef[i]+"'>"+tabEspece[i]+"</li>";
+      i=i+1;
+    }  
   }
   return stringEspece
 }
