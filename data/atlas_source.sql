@@ -23,7 +23,7 @@ GRANT SELECT ON TABLE synthese.syntheseff TO geonatatlas;
 GRANT SELECT ON TABLE taxonomie.bib_attributs TO geonatatlas;
 GRANT SELECT ON TABLE taxonomie.bib_filtres TO geonatatlas;
 GRANT SELECT ON TABLE taxonomie.bib_listes TO geonatatlas;
-GRANT SELECT ON TABLE taxonomie.bib_taxons TO geonatatlas;
+GRANT SELECT ON TABLE taxonomie.bib_noms TO geonatatlas;
 GRANT SELECT ON TABLE taxonomie.bib_taxref_habitats TO geonatatlas;
 GRANT SELECT ON TABLE taxonomie.bib_taxref_rangs TO geonatatlas;
 GRANT SELECT ON TABLE taxonomie.bib_taxref_statuts TO geonatatlas;
