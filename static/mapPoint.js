@@ -6,11 +6,16 @@ var map = generateMap();
 
 $(function(){
   displayMailleLayerFicheEspece(observationsMaille, taxonYearMin, $YEARMAX);
- 
+
   $("#nbObs").html("Nombre d'observation(s): "+ myGeojson.features.length);
 
 })
 
+
+// Legende
+
+htmlLegend = "<i style='border: solid 1px blue;'> &nbsp; &nbsp; &nbsp;</i> Limite du "+ configuration.STRUCTURE+ " &nbsp; &nbsp; &nbsp;";
+generateLegende(htmlLegend);
 
 
  // Slider event

@@ -28,8 +28,8 @@ baseMap[FIRST_MAP.tileName]=firstMapTile;
     	fill: false
     }
 
-    L.control.layers(baseMap).addTo(map);
-
+/*    L.control.layers(baseMap).addTo(map);
+*/
      // add the limit of the territory
      $(document).ready(function()
           {
@@ -43,7 +43,7 @@ baseMap[FIRST_MAP.tileName]=firstMapTile;
 
      // custom baseLayer controler
 
-    var ourCustomControl = L.Control.extend({
+    var LayerControl = L.Control.extend({
 
       options: {
         position: 'bottomleft' 
@@ -56,11 +56,11 @@ baseMap[FIRST_MAP.tileName]=firstMapTile;
      
         container.style.backgroundColor = 'white';
         container.style.backgroundImage = "url(http://188.165.118.87/atlas/static/images/logo_earth_map.PNG)";
-        container.style.width = '32px';
-        container.style.height = '32px';
+        container.style.width = '50px';
+        container.style.height = '50px';
         container.style.border = 'solid white 1px';
         container.style.cursor = 'pointer';
-     
+
         container.onclick = function(){
           if(currentTileMap == "topo"){
           container.style.backgroundImage = "url(http://188.165.118.87/atlas/static/images/logo_topo_map.PNG)";
@@ -81,7 +81,7 @@ baseMap[FIRST_MAP.tileName]=firstMapTile;
 
     });
 
-    map.addControl(new ourCustomControl());
+    map.addControl(new LayerControl());
 
 
 
@@ -439,3 +439,66 @@ function displayMailleLayerLastObs(observations){
 
 
 
+// Legend 
+
+  var legend;
+  var legendActiv = false;
+  var div;
+
+function generateLegende(htmlLegend){
+
+    // Legende
+
+    var legendControl = L.Control.extend({
+
+      options: {
+        position: 'topleft' 
+        //control position - allowed: 'topleft', 'topright', 'bottomleft', 'bottomright'
+      },
+
+    onAdd: function (map) {
+        var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+     
+        container.style.backgroundColor = 'white';
+        container.style.width = '25px';
+        container.style.height = '25px';
+        container.style.border = 'solid white 1px';
+        container.style.cursor = 'pointer';
+        /*container.style.backgroundImage = "url(http://188.165.118.87/atlas/static/images/bars.png)";*/
+        $(container).html("<img src='http://188.165.118.87/atlas/static/images/info.png' alt='Légende'>")
+        
+        
+        container.onclick = function(){
+          if (legendActiv == false){
+
+            if(configuration.AFFICHAGE_MAILLE){ 
+             legend = L.control({position: 'topleft'});
+
+              legend.onAdd = function (map) {
+                  div = L.DomUtil.create('div', 'info legend'),
+                  $(div).addClass("generalLegend")   
+
+                  div.innerHTML = htmlLegend;
+
+                  return div;
+              };
+          legend.addTo(map);
+          legendActiv = true;
+        } 
+
+      }else {
+          legend.removeFrom(map)
+          legendActiv = false;
+        }
+
+         
+        }
+        return container;
+      }
+    
+
+    });
+
+    map.addControl(new legendControl());
+
+  }

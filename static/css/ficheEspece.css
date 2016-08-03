@@ -117,7 +117,16 @@ text {
 }
 
 
-/* Taxons tables */
+.leaflet-bar.leaflet-control.leaflet-control-custom img {
 
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 3px;
 
+}
 
+.generalLegend{
+	line-height: 18px;
+	opacity: 1;
+}

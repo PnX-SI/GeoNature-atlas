@@ -33,30 +33,23 @@ $(function(){
 
 	}
 
-	if(configuration.AFFICHAGE_MAILLE){ 
-	    var legend = L.control({position: 'bottomleft'});
+	// Diplay legend
 
-	var styleLegend = ['border: solid 1px red' , 'border-style: dotted ' , 'border: solid 1px blue;']
+	htmlLegendMaille = "<i style='border: solid 1px red;'> &nbsp; &nbsp; &nbsp;</i> Maille comportant au moin une observation <br> <br>" +
+						"<i style='border-style: dotted;'> &nbsp; &nbsp; &nbsp;</i> Limite de la commune <br> <br>"+
+						"<i style='border: solid 1px blue;'> &nbsp; &nbsp; &nbsp;</i> Limite du "+configuration.STRUCTURE;
 
-	       legend.onAdd = function (map) {
+	htmlLegendPoint = "<i style='border-style: dotted;'> &nbsp; &nbsp; &nbsp;</i> Limite de la commune <br> <br>"+
+						"<i style='border: solid 1px blue;'> &nbsp; &nbsp; &nbsp;</i> Limite du "+configuration.STRUCTURE
 
-        var div = L.DomUtil.create('div', 'info legend'),
-            grades = ["Maille comportant au moin  \ une observation &nbsp;&nbsp;&nbsp", "Limite de la commune", "Limite du "+ configuration.STRUCTURE],
-            labels = [""];
+	htmlLegend = configuration.AFFICHAGE_MAILLE ? htmlLegendMaille : htmlLegendPoint;
 
-        for (var i = 0; i < 3; i++) {
-            labels.push(
-                "<i style='"+ styleLegend[i]+"'></i> "
-                 + grades[i] + "<br>" );
-        }
-        div.innerHTML = labels.join('<br>');
+	generateLegende(htmlLegend);
 
-        return div;
-    };
-
-	    legend.addTo(map);
-	}
 });
+
+
+// General Legend
 
 
 

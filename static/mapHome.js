@@ -59,23 +59,15 @@ $(function(){
       map.setView(e.latlng, 12);
   });
 
-    if(configuration.AFFICHAGE_MAILLE){ 
-    var legend = L.control({position: 'bottomleft'});
 
-        legend.onAdd = function (map) {
-
-            var div = L.DomUtil.create('div', 'info legend'),
-                labels = "<i style='border: solid 1px red;'> &nbsp; &nbsp; &nbsp;</i> Maille comportant au moin une observation &nbsp;&nbsp;&nbsp " ;
-
-            div.innerHTML = labels;
-
-            return div;
-        };
-    legend.addTo(map);
-
-  }
 });
 
 
 
 
+htmlLegend = "<i style='border: solid 1px red;'> &nbsp; &nbsp; &nbsp;</i> Maille comportant au moin une observation &nbsp;&nbsp;&nbsp "
+              + "<br> <br> <i style='border: solid 1px blue;'> &nbsp; &nbsp; &nbsp;</i> Limite du "+ configuration.STRUCTURE;
+
+
+
+generateLegende(htmlLegend);

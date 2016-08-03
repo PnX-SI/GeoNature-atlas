@@ -6,6 +6,11 @@ $(function(){
 displayMailleLayerFicheEspece(observationsMaille, taxonYearMin, $YEARMAX);  
 });
 
+// Legende
+
+htmlLegend = "<i style='border: solid 1px blue;'> &nbsp; &nbsp; &nbsp;</i> Limite du "+ configuration.STRUCTURE+ " &nbsp; &nbsp; &nbsp;";
+generateLegende(htmlLegend);
+
 
  // Slider event
 mySlider.on("change",function(){
