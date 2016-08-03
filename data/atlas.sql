@@ -876,7 +876,8 @@ CREATE MATERIALIZED VIEW atlas.vm_communes AS
 SELECT c.insee,
 c.commune_maj,
 c.commune_min,
-c.the_geom::geometry('MULTIPOLYGON',2154)
+c.the_geom::geometry('MULTIPOLYGON',2154),
+st_asgeojson(st_transform(c.the_geom, 4326)) as commune_geojson
 FROM layers.l_communes c
 WHERE c.organisme is not null;
 

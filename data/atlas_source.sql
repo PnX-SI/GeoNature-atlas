@@ -2,12 +2,14 @@
 CREATE TABLE IF NOT EXISTS taxonomie.t_medias(
     id_media serial NOT NULL,
     cd_ref integer,
-    titre character(255) NOT NULL,
-    url character(255),
-    chemin character(255),
-    auteur character(100),
+    titre character varying(255) NOT NULL,
+    url character varying(255),
+    chemin character varying(255),
+    auteur character varying(100),
     desc_media text,
     date_media date,
+    is_public boolean NOT NULL DEFAULT true,
+    supprime boolean NOT NULL DEFAULT false,
     id_type integer NOT NULL,
     CONSTRAINT id_media PRIMARY KEY (id_media),
     CONSTRAINT check_cd_ref_is_ref CHECK(cd_ref = taxonomie.find_cdref(cd_ref)),
@@ -18,7 +20,7 @@ ALTER TABLE taxonomie.t_medias OWNER TO geonatuser;
 -- object: taxonomie.bib_types_media | type: TABLE
 CREATE TABLE IF NOT EXISTS taxonomie.bib_types_media(
     id_type integer NOT NULL,
-    type_media character(100) NOT NULL,
+    nom_type_media character varying(100) NOT NULL,
     desc_type_media text,
     CONSTRAINT id PRIMARY KEY (id_type)
 );
