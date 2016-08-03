@@ -40,6 +40,51 @@ baseMap[FIRST_MAP.tileName]=firstMapTile;
               });
           });
 
+
+     // custom baseLayer controler
+
+    var ourCustomControl = L.Control.extend({
+
+      options: {
+        position: 'bottomleft' 
+        //control position - allowed: 'topleft', 'topright', 'bottomleft', 'bottomright'
+      },
+
+    onAdd: function (map) {
+        currentTileMap = "topo";
+        var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+     
+        container.style.backgroundColor = 'white';
+        container.style.backgroundImage = "url(http://188.165.118.87/atlas/static/images/logo_earth_map.PNG)";
+        container.style.width = '32px';
+        container.style.height = '32px';
+        container.style.border = 'solid white 1px';
+        container.style.cursor = 'pointer';
+     
+        container.onclick = function(){
+          if(currentTileMap == "topo"){
+          container.style.backgroundImage = "url(http://188.165.118.87/atlas/static/images/logo_topo_map.PNG)";
+          map.removeLayer(firstMapTile);
+          orthoMap.addTo(map);
+          currentTileMap = "earth";
+          }
+          else{
+          container.style.backgroundImage = "url(http://188.165.118.87/atlas/static/images/logo_earth_map.PNG)";
+          map.removeLayer(orthoMap);
+          firstMapTile.addTo(map);
+          currentTileMap = "topo";
+          }
+        }
+        return container;
+      }
+    
+
+    });
+
+    map.addControl(new ourCustomControl());
+
+
+
     return map
 }
 
