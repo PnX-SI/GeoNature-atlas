@@ -4,6 +4,9 @@ var map = generateMap()
 // affichage des mailles
 $(function(){
 displayMailleLayerFicheEspece(observationsMaille, taxonYearMin, $YEARMAX);  
+  console.log(taxonYearMin);
+  console.log($YEARMAX); 
+  console.log(observationsMaille.length);
 });
 
 

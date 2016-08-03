@@ -5,7 +5,8 @@ var map = generateMap();
 // Layer display on window ready
 
 $(function(){
-  displayMailleLayerFicheEspece(observationsMaille, taxonYearMin, $YEARMAX);  
+  displayMailleLayerFicheEspece(observationsMaille, taxonYearMin, $YEARMAX);
+ 
   $("#nbObs").html("Nombre d'observation(s): "+ myGeojson.features.length);
 
 })

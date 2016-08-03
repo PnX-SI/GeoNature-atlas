@@ -120,7 +120,7 @@
         <div id="mapOptions" class="row">
 
             <div class="col-sm-5" > <p> <span id="yearMin"> </span> <input id="slider" type="text" class="span2"/> <span id="yearMax">  </span>  </p>
-                <p id="nbObs"> </p>
+                <p id="nbObs"> Nombre d'observation(s): {{observations.maille|length}} </p>
              </div>
             <div class="col-sm-2" > <input type="checkbox" name="my-checkbox" id="checkbox" checked  data-on-text="Cluster"data-off-text="Point" data-size="mini" size="35"> </div>
 
@@ -140,10 +140,10 @@
     <div id="communes" class="tab-pane fade in active">
                  <p>
                         {% for com in communes %}
-                        <a href = "{{url_for('main.ficheCommune', insee = com.insee) }}"> {{com.commune_maj}} {{com.insee}} </a>
-                        {% if not loop.last %}
-                        ,
-                        {% endif %}
+                            <a href = "{{url_for('main.ficheCommune', insee = com.insee) }}"> {{com.commune_maj}} {{com.insee}} </a>
+                            {% if not loop.last %}
+                            ,
+                            {% endif %}
                         {% endfor %}
                         </p>    </div>
     <div id="synonymes" class="tab-pane fade">

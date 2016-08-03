@@ -7,11 +7,11 @@ firstMapTile = L.tileLayer(FIRST_MAP.url, {attribution : FIRST_MAP.attribution} 
 baseMap = {};
 baseMap[FIRST_MAP.tileName]=firstMapTile;
 
+  // loop over additional maps
   ADDITIONAL_MAP.forEach(function(map){
      tempName = map.tileName;
     baseMap[tempName]  = L.tileLayer(map.url, {attribution: map.attribution})
   });
-
 
 
       var map = L.map('map',{
@@ -105,7 +105,7 @@ function generateGeojsonMaille(observations, yearMin, yearMax) {
     if(observations[i].annee >= yearMin && observations[i].annee <= yearMax ) {
       geometry = observations[i].geojson_maille;
       idMaille = observations[i].id_maille;
-      properties = {id_maille : idMaille, nb_observations : observations[i].nb_observations, last_observation: observations[i].annee};
+      properties = {id_maille : idMaille, nb_observations : 1, last_observation: observations[i].annee};
       var j = i+1;
       while (j<observations.length && observations[j].id_maille <= idMaille){
         if(observations[j].annee >= yearMin && observations[j].annee <= yearMax ){
@@ -136,6 +136,7 @@ function generateGeojsonMaille(observations, yearMin, yearMax) {
 // Display Maille layer
 var currentLayer;
 var myGeojson;
+var i = 0; // compteur pour ne pas rajouter la légende à chaque fois
 function displayMailleLayerFicheEspece(observationsMaille, yearMin, yearMax){
   myGeojson = generateGeojsonMaille(observationsMaille, yearMin, yearMax)
   currentLayer = L.geoJson(myGeojson, {
@@ -145,6 +146,8 @@ function displayMailleLayerFicheEspece(observationsMaille, yearMin, yearMax){
   currentLayer.addTo(map);
 
 // ajout de la légende
+
+    if(i == 0){
     var legend = L.control({position: 'bottomright'});
 
     legend.onAdd = function (map) {
@@ -164,14 +167,16 @@ function displayMailleLayerFicheEspece(observationsMaille, yearMin, yearMax){
         return div;
     };
 
-legend.addTo(map);
+    legend.addTo(map);
+    i=i+1;
+  }
 
 }
 
 
 // GeoJson Point
 function generateGeojsonPointFicheEspece(observationsPoint, yearMin, yearMax){
-   var myGeoJson = {'type': 'FeatureCollection','features' : []}
+   myGeoJson = {'type': 'FeatureCollection','features' : []}
 
       observationsPoint.forEach(function(obs){
           if(obs.year >= yearMin && obs.year <= yearMax ) {
@@ -228,6 +233,7 @@ if (configuration.FICHE_ESPECE == true){
 
   $("#yearMax").html("&nbsp;&nbsp;"+ $YEARMAX);
   $("#yearMin").html(taxonYearMin + "&nbsp;&nbsp;");
+
 }
 
 
