@@ -8,7 +8,7 @@ displayMailleLayerFicheEspece(observationsMaille, taxonYearMin, $YEARMAX);
 
 // Legende
 
-htmlLegend = "<i style='border: solid 1px blue;'> &nbsp; &nbsp; &nbsp;</i> Limite du "+ configuration.STRUCTURE+ " &nbsp; &nbsp; &nbsp;";
+htmlLegend = "<i style='border: solid 2px blue;'> &nbsp; &nbsp; &nbsp;</i> Limite du "+ configuration.STRUCTURE;
 generateLegende(htmlLegend);
 
 

@@ -5,6 +5,7 @@ import sys
 sys.path.insert(0, APP_DIR + '/modeles/entities')
 sys.path.insert(0, BASE_DIR)
 import config
+import unicodedata
 from vmTaxref import VmTaxref
 from vmTaxons import VmTaxons
 from tBibTaxrefRang import TBibTaxrefRang
@@ -14,22 +15,35 @@ from sqlalchemy.orm import sessionmaker
 
 
 
+def deleteAccent(string): 
+    return unicodedata.normalize('NFD', string).encode('ascii', 'ignore')  
+
 #recherche l espece corespondant au cd_nom et tout ces fils
-def searchEspece(connection, session, cd_ref):
-    taxonSearch = session.query(VmTaxref).filter(VmTaxref.cd_ref == cd_ref).all()
+def searchEspece(connection, cd_ref):
+    sql ="SELECT * \
+    FROM atlas.vm_taxref tax \
+    WHERE tax.cd_ref = :thiscdref AND tax.cd_ref = tax.cd_nom \
+    LIMIT 1"
+    req = connection.execute(text(sql), thiscdref = cd_ref)
+    taxonSearch = dict()
+    for r in req:
+        taxonSearch = {'cd_ref': r.cd_ref, 'lb_nom': r.lb_nom, 'nom_vern': r.nom_vern, 'nom_complet_html': r.nom_complet_html, 'group2_inpn': deleteAccent(r.group2_inpn) }
+
     sql="select tax.lb_nom, \
     tax.nom_vern, \
     tax.cd_ref, \
-    br.tri_rang \
+    br.tri_rang, \
+    tax.group2_inpn \
     from atlas.vm_taxons tax \
     JOIN atlas.bib_taxref_rangs br on br.nom_rang = tax.nom_rang \
     where tax.cd_ref in ( select * from atlas.find_all_taxons_childs(:thiscdref))".encode('utf-8')
     req = connection.execute(text(sql), thiscdref = cd_ref)
     listTaxonsChild = list()
     for r in req:
-        temp = {'lb_nom': r.lb_nom, 'nom_vern':r.nom_vern, 'cd_ref':r.cd_ref, 'tri_rang' : r.tri_rang}
+        temp = {'lb_nom': r.lb_nom, 'nom_vern':r.nom_vern, 'cd_ref':r.cd_ref, 'tri_rang' : r.tri_rang, 'group2_inpn': deleteAccent(r.group2_inpn)}
         listTaxonsChild.append(temp)
-    return {'taxonSearch':taxonSearch[0], 'listTaxonsChild': listTaxonsChild }
+
+    return {'taxonSearch':taxonSearch, 'listTaxonsChild': listTaxonsChild }
 
 def getSynonymy(session, cd_ref):
     return session.query(VmTaxref.lb_nom).filter(VmTaxref.cd_ref==cd_ref).all()

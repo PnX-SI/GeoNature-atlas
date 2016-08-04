@@ -149,3 +149,16 @@ transition-delay:.2s;
     margin-top: 3px;
 
 }
+
+
+.generalLegend{
+  opacity: 1;
+  line-height: 20px;
+  
+}
+
+.generalLegend i {
+
+  margin: 5px;
+
+}

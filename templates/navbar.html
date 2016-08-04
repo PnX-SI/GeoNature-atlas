@@ -5,7 +5,7 @@
   </div>
 
   <!-- Collect the nav links, forms, and other content for toggling -->
-  <div class="collapse navbar-collapse boxShadow" id="bs-example-navbar-collapse-1">
+  <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
     <div class="raw-fluid"> 
 
         <div class="col-sm-2 col-md-2">
@@ -13,8 +13,8 @@
             <form method="POST" onsubmit="completeAction('#searchFormTaxons')"  action=""  id='searchFormTaxons' action=""  class="navbar-form" role="search">
 
                <div class="form-group has-feedback">
-                 <input id="searchTaxons" type="text" class="form-control"  placeholder="Rechercher une espèce">
-                 <i class="glyphicon glyphicon-search form-control-feedback"></i>
+                 <input id="searchTaxons" type="text" class="form-control"  placeholder="Rechercher une espèce &nbsp; &nbsp; &nbsp;">
+                 <span class="glyphicon glyphicon-search form-control-feedback"></span>
                </div>
                  <input id = "hidden-input"  type="hidden" name="cd_ref">
             
@@ -26,7 +26,7 @@
             <form method="POST" onsubmit="completeAction('#searchFormCommunes')" id='searchFormCommunes' action=""  class="navbar-form" role="search">
 
                <div class="form-group has-feedback">
-                 <input id="searchCommunes" type="text" class="form-control"  placeholder="Rechercher une commune" >
+                 <input id="searchCommunes" type="text" class="form-control"  placeholder="Rechercher une commune;" >
                  <i class="glyphicon glyphicon-search form-control-feedback"></i>
                </div>
                  <input id="hiddenInputCommunes"  type="hidden" name="insee">

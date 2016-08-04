@@ -111,3 +111,15 @@ ul#stat {
 }
 
 
+.generalLegend{
+	opacity: 1;
+	line-height: 20px;
+	
+}
+
+.generalLegend i {
+
+	margin: 5px;
+
+}
+

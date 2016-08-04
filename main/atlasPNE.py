@@ -40,7 +40,7 @@ def ficheEspece(cd_ref):
 
     cd_ref = int(cd_ref)
     listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons(session)
-    taxon = vmTaxrefRepository.searchEspece(connection, session, cd_ref)
+    taxon = vmTaxrefRepository.searchEspece(connection, cd_ref)
     if config.AFFICHAGE_MAILLE:
         observations = {'maille' : vmObservationsMaillesRepository.getObservationsMaillesChilds(connection, cd_ref) }
     else:

@@ -60,3 +60,5 @@ def getTaxonsChildsList(connection, cd_ref):
         taxonRankList.append(temp)
         nbObsTotal = nbObsTotal+ r.nb_obs
     return {'taxons': taxonRankList, 'nbObsTotal' : nbObsTotal}
+
+

@@ -65,8 +65,8 @@ $(function(){
 
 
 
-htmlLegend = "<i style='border: solid 1px red;'> &nbsp; &nbsp; &nbsp;</i> Maille comportant au moin une observation &nbsp;&nbsp;&nbsp "
-              + "<br> <br> <i style='border: solid 1px blue;'> &nbsp; &nbsp; &nbsp;</i> Limite du "+ configuration.STRUCTURE;
+htmlLegend = "<i style='border: solid 1px red;'> &nbsp; &nbsp; &nbsp;</i> <span> Maille comportant au moin une observation </span> "
+              + "<br> <br> <i style='border: solid 2px blue;'> &nbsp; &nbsp; &nbsp;</i> Limite du "+ configuration.STRUCTURE;
 
 
 

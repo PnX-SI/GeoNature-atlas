@@ -42,21 +42,24 @@
         <script src="{{url_for('static', filename='lib/raphaelJs/raphael.min.js') }}"></script>
 
         <link rel="stylesheet" href="{{url_for('static', filename='/css/ficheEspece.css') }}" />
+        <link rel="stylesheet" href="{{url_for('static', filename='/css/icones.css') }}" />
+
 
     </head>
 
     <body>
     {% include 'navbar.html' %}
-
-
-    <div id ="page" class="container-fluid">
-        <div class='row boxShadow' id="presentationEspece">
-            
-                    <div class="col-sm-2" > 
-                        <img src="{{url_for('static', filename='images/pne.jpg') }}" style="width:200px;height:200px;">
-                        
+    <!-- SAUT DE LIGNE -->
+    <div class="col-sm-12" style="height:20px"></div>
+    <div class="container-fluid">
+        <div class='col-sm-8'>
+            <div class="panel panel-default">
+                <div class= "row">
+                    <div class="col-sm-4" > 
+                            <img src="{{url_for('static', filename='images/pne.jpg') }}" style="width:100%;height: 100%;">
+                            
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-8">
                     
                         <h3> {{taxon.taxonSearch.nom_complet_html|safe}} </h3>
                         {% if taxon.taxonSearch.nom_vern != None %}
@@ -85,89 +88,117 @@
                         {% if taxon.listTaxonsChild|length > 0 %}
                             <h5 id="buttonChild"> Noms des taxons agregés sur cette fiche:  <span class="glyphicon glyphicon-chevron-right"> </span> </h5> 
                                 <div hidden="hidden" id="childList">
-                                {% for child in taxon.listTaxonsChild %}
-                                    <i>
-                                    {% if ( child.tri_rang >= configuration.LIMIT_FICHE_LISTE_HIERARCHY) %}
-                                        <a href = "{{url_for('main.ficheEspece', cd_ref = child.cd_ref) }}"> {{child.lb_nom}}</a> 
-                                    {% else %}
-                                        <a href = "{{url_for('main.ficheRangTaxonomie', cd_ref = child.cd_ref) }}">{{child.lb_nom}} </a> 
+                                    {% for child in taxon.listTaxonsChild %}
+                                     <i>
+                                        {% if ( child.tri_rang >= configuration.LIMIT_FICHE_LISTE_HIERARCHY) %}
+                                            <a href = "{{url_for('main.ficheEspece', cd_ref = child.cd_ref) }}"> {{child.lb_nom}}</a> 
+                                        {% else %}
+                                            <a href = "{{url_for('main.ficheRangTaxonomie', cd_ref = child.cd_ref) }}">{{child.lb_nom}} </a> 
+                                        {% endif %}
+                                        </i>
+                                        {% if not loop.last %}
+                                          ,
                                     {% endif %}
-                                    </i>
-                                    {% if not loop.last %}
-                                      ,
-                                {% endif %}
                                 {% endfor %}
                                 </div>
                         {% endif %}
-                        </div>  
-                   
+                    </div>  
+                  
+                </div>  
             </div>
+            <div class="panel panel-default" id="mapPanel">
+                <div class ="row">
+                    <div class="col-sm-10" id="mapContainer">
+                        <div id="map"> </div>
+                    </div>
+                    <div class="col-sm-2" id="mapStat">
+                        <h5> {{taxon.taxonSearch.lb_nom}} </h5>
+                            <li> <img src= "/atlas/static/images/picto_{{taxon.taxonSearch.group2_inpn|urlencode}}.png" alt ="{{taxon.taxonSearch.group2_inpn}}" title = "{{taxon.group2_inpn}}"> <br> </li>
+                        <ul>
+                            <li> <span data-icon="&#xe037;" style="font-size: 30px;"></span> </br> <b> {{observations.maille|length}} </b> </br> Observations  </li>
+                            <li> <img id="picto" src="{{url_for('static', filename='images/church.png') }}" style="width"> <br> <b> {{communes|length}}</b> </br>Communes </li>
+                            <li> <span data-icon="&#xe040;"  style="font-size: 30px;"> </span> </br> <b> X </b> </br> Observateurs </li>
+                            <li> <span data-icon="&#xe037;" style="font-size: 25px; color: brown"></span> </br> <b> 1ère observations </b> </br>  {{firstObservation|int}} </li>
+                            <li> <span data-icon="&#xe037;" style="font-size: 25px; color: blue"></span> </br> <b> Dernière observation </b> </br> ?  </li>
 
-
-        <div id="mapRow" class="row">
-            <div id='mapContainer' class="row col-sm-7 boxShadow">
-                <div id="map"> </div>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div id="graphContainer" class="row col-sm-5 boxShadow">
-                <h3 class="text-primary text-center"> Observations par classes d'altitudes </h3>
-                <div id="altiChart" style="height: 200px;"></div>
-                <h3 class="text-primary text-center"> Observations mensuelles </h3>
-                <div id="phenologyChart" style="height: 200px;"> </div>
-          </div>
+            <div class="panel panel-default" id="mapOptionPanel">
+                <div id="mapOptions" class="row">
+                    <div class="col-sm-5" > <p> <span id="yearMin"> </span> <input id="slider" type="text" class="span2"/> <span id="yearMax">  </span>  </p>
+                        <p id="nbObs"> Nombre d'observation(s): {{observations.maille|length}} </p>
+                    </div>
+                    <div class="col-sm-2" > 
+                        <input type="checkbox" name="my-checkbox" id="checkbox" checked  data-on-text="Cluster"data-off-text="Point" data-size="mini" size="35"> 
+                    </div>
+                </div>
+            </div>
 
         </div>
 
-        <div id="mapOptions" class="row">
+        
 
-            <div class="col-sm-5" > <p> <span id="yearMin"> </span> <input id="slider" type="text" class="span2"/> <span id="yearMax">  </span>  </p>
-                <p id="nbObs"> Nombre d'observation(s): {{observations.maille|length}} </p>
-             </div>
-            <div class="col-sm-2" > <input type="checkbox" name="my-checkbox" id="checkbox" checked  data-on-text="Cluster"data-off-text="Point" data-size="mini" size="35"> </div>
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                
+                    <h3> Test Description </h3>
+                
+            </div>
+            <div class="panel panel-default">
+                
+                    <h3 class="text-primary text-center"> Observations par classes d'altitudes </h3>
+                    <div id="altiChart" style="height: 200px;"></div>
+                    <h3 class="text-primary text-center"> Observations mensuelles </h3>
+                    <div id="phenologyChart" style="height: 200px;"> </div>
+                
+            </div>
+            <div class="panel panel-default">
+                <div class="row" id="otherInformations">
+                    
+                          <h4>Autres informations</h4>
+                          <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#communes">Communes</a></li>
+                            <li><a data-toggle="tab" href="#synonymes">Synonymes</a></li>
+                            <li><a data-toggle="tab" href="#menu3">Observateurs</a></li>
+                          </ul>
 
+                          <div class="tab-content" style="width:100%;">
+                            <div id="communes" class="tab-pane fade in active">
+                                         <p>
+                                                {% for com in communes %}
+                                                    <a href = "{{url_for('main.ficheCommune', insee = com.insee) }}"> {{com.commune_maj}} {{com.insee}} </a>
+                                                    {% if not loop.last %}
+                                                    ,
+                                                    {% endif %}
+                                                {% endfor %}
+                                                </p>    
+                            </div>
+                            <div id="synonymes" class="tab-pane fade">
+                              {%for syn in synonyme %}
+                                    <span> 
+                                        {% if not syn.lb_nom == taxon.lb_nom %}
+                                        {{syn.lb_nom}}
+                                        {% endif %}
+                                        {% if ( (not loop.last) and (not syn.lb_nom == taxon.lb_nom) ) %}
+                                        ,
+                                        {% endif %}
+                                     </span>
+                                {% endfor %}
+                            </div>
+                            <div id="menu3" class="tab-pane fade">
+                              <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+                            </div>
+                          </div>
+                </div>
+            </div>
 
         </div>
-
-
-<div class="container">
-  <h4>Autres informations</h4>
-  <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#communes">Communes</a></li>
-    <li><a data-toggle="tab" href="#synonymes">Synonymes</a></li>
-    <li><a data-toggle="tab" href="#menu3">Observateurs</a></li>
-  </ul>
-
-  <div class="tab-content">
-    <div id="communes" class="tab-pane fade in active">
-                 <p>
-                        {% for com in communes %}
-                            <a href = "{{url_for('main.ficheCommune', insee = com.insee) }}"> {{com.commune_maj}} {{com.insee}} </a>
-                            {% if not loop.last %}
-                            ,
-                            {% endif %}
-                        {% endfor %}
-                        </p>    </div>
-    <div id="synonymes" class="tab-pane fade">
-      {%for syn in synonyme %}
-            <span> 
-                {% if not syn.lb_nom == taxon.lb_nom %}
-                {{syn.lb_nom}}
-                {% endif %}
-                {% if ( (not loop.last) and (not syn.lb_nom == taxon.lb_nom) ) %}
-                ,
-                {% endif %}
-             </span>
-        {% endfor %}
-    </div>
-    <div id="menu3" class="tab-pane fade">
-      <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-    </div>
-  </div>
-</div>
-
-
+     
 
       
-
+    </div>
     
     <script type="text/javascript" src="/atlas/static/conf/calculCustom.js"></script>
 
@@ -191,9 +222,9 @@
    <script > var taxonYearMin = {{firstObservation}};</script> 
    <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
    {% if configuration.AFFICHAGE_MAILLE %}
-    <script src="{{url_for('static', filename='mapMailles.js') }}"></script>
+        <script src="{{url_for('static', filename='mapMailles.js') }}"></script>
     {% else %}
-    <script src="{{url_for('static', filename='mapPoint.js') }}"></script>
+        <script src="{{url_for('static', filename='mapPoint.js') }}"></script>
     {% endif %}
     <script src="{{url_for('static', filename='main.js') }}"></script>
 

@@ -52,5 +52,9 @@ def getCommunesObservationsChilds(connection, cd_ref):
     SELECT * from atlas.find_all_taxons_childs(:thiscdref) \
     )OR obs.cd_ref = :thiscdref \
     GROUP BY com.commune_maj, com.insee".encode('UTF-8')
-
-    return connection.execute(text(sql), thiscdref = cd_ref)
+    req = connection.execute(text(sql), thiscdref = cd_ref)
+    listCommunes = list()
+    for r in req:
+        temp = {'insee': r.insee, 'commune_maj': r.commune_maj}
+        listCommunes.append(temp)
+    return listCommunes
