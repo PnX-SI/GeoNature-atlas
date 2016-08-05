@@ -222,7 +222,6 @@ function displayMailleLayerFicheEspece(observationsMaille, yearMin, yearMax){
 // GeoJson Point
 function generateGeojsonPointFicheEspece(observationsPoint, yearMin, yearMax){
    myGeoJson = {'type': 'FeatureCollection','features' : []}
-
       observationsPoint.forEach(function(obs){
           if(obs.year >= yearMin && obs.year <= yearMax ) {
               geometry = obs.geojson_point;
@@ -232,7 +231,8 @@ function generateGeojsonPointFicheEspece(observationsPoint, yearMin, yearMax){
                             'observateurs' : obs.observateurs,
                             'altitude_retenue' : obs.altitude_retenue,
                             'effectif_total' : obs.effectif_total,
-                            'year': obs.dateobs.year
+                            'year': obs.dateobs.year,
+                            'nb_observations': 1
                             }
               myGeoJson.features.push({
                 'type' : 'Feature',

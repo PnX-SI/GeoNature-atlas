@@ -7,8 +7,6 @@ var map = generateMap();
 $(function(){
   displayMailleLayerFicheEspece(observationsMaille, taxonYearMin, $YEARMAX);
 
-  $("#nbObs").html("Nombre d'observation(s): "+ myGeojson.features.length);
-
 })
 
 
@@ -23,10 +21,7 @@ mySlider.on("change",function(){
     years = mySlider.getValue();
     yearMin = years[0];
     yearMax = years[1];
-    console.log(currentLayer);
 
-    console.log(yearMin);
-    console.log(yearMax);
 
     map.removeLayer(currentLayer);
     if(map.getZoom() >= 11){
@@ -35,8 +30,13 @@ mySlider.on("change",function(){
       displayMailleLayerFicheEspece(observationsMaille, yearMin, yearMax)
     }
 
+    console.log(myGeojson);
+    nbObs=0;
+    myGeojson.features.forEach(function(l){
+      nbObs += l.properties.nb_observations
+    })
 
-  $("#nbObs").html("Nombre d'observation(s): "+ myGeojson.features.length);
+    $("#nbObs").html("Nombre d'observation(s): "+ nbObs);
 
    });
 
@@ -48,7 +48,7 @@ var legendblock = $("div.info");
 map.on("zoomend", function(){
 zoomLev = map.getZoom();
 
-if (zoomLev == configuration.ZOOM_LEVEL_POINT){
+if (zoomLev >= configuration.ZOOM_LEVEL_POINT){
   map.removeLayer(currentLayer);
   legendblock.attr("hidden", "true");
 
