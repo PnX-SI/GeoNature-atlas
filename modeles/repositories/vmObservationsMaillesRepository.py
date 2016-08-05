@@ -32,10 +32,12 @@ def lastObservationsMailles(connection, mylimit):
     o.dateobs , \
     o.cd_ref, \
     t.lb_nom, \
-    t.nom_vern \
+    t.nom_vern, \
+    c.commune_maj \
     FROM atlas.vm_observations_mailles obs \
     JOIN atlas.vm_observations o ON o.id_synthese = obs.id_synthese \
     JOIN atlas.vm_taxons t ON o.cd_ref = t.cd_ref \
+    JOIN atlas.vm_communes c ON o.insee = c.insee \
     ORDER BY o.dateobs DESC \
     LIMIT :thisLimit"
     observations = connection.execute(text(sql), thisLimit = mylimit)
@@ -45,7 +47,8 @@ def lastObservationsMailles(connection, mylimit):
             taxon = o.nom_vern + ' | ' + o.lb_nom
         else:
             taxon = o.lb_nom
-        temp = {'id_maille': o.id_maille, 'cd_ref': o.cd_ref, 'taxon': taxon, 'geojson_maille': ast.literal_eval(o.geojson_maille), 'id_synthese': o.id_synthese}
+        temp = {'id_maille': o.id_maille, 'cd_ref': o.cd_ref, 'taxon': taxon, 'geojson_maille': ast.literal_eval(o.geojson_maille), 'id_synthese': o.id_synthese, \
+        'dateobs': str(o.dateobs), 'commune': o.commune_maj}
         tabObs.append(temp)
     return tabObs
 

@@ -24,8 +24,6 @@ body {
 }
 
 
-
-
 #mapStat li {
 	margin-top: 10px;
 	display: inline-block; 
@@ -60,7 +58,14 @@ body {
 }
 
 
+.CarouselImg img {
+  width: auto;
+  height: 225px;
+  max-height: 225px;
+  margin: 0 auto;
+}
 
+ 
 
 
 
@@ -139,7 +144,7 @@ text {
 
 .boxShadow {
 
-	    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
 }
 
