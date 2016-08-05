@@ -51,6 +51,20 @@ then
     echo "Grant..."
     sed -i "s/TO geonatatlas;$/TO $user_pg;/" data/grant.sql
     export PGPASSWORD=$admin_pg_pass;psql -h $db_host -U $admin_pg -d $db_name -f data/grant.sql &> log/install_db.log
+
+    sudo -n -u postgres -s psql -d $db_name -c "CREATE SCHEMA synthese AUTHORIZATION geonatatlas;
+                                                CREATE SCHEMA taxonomie AUTHORIZATION geonatatlas;
+                                                CREATE SCHEMA utilisateurs AUTHORIZATION geonatatlas;
+                                                CREATE SCHEMA meta AUTHORIZATION geonatatlas;
+                                                CREATE SCHEMA layers AUTHORIZATION geonatatlas;
+                                                CREATE SCHEMA atlas AUTHORIZATION geonatatlas;"
+    
+    #ajout du shape des limite du territoire
+    export PGPASSWORD=$user_pg_pass;shp2pgsql -W "cp850" -s 2154 -D -I $limit_shp atlas.t_layer_territoire | psql -h $db_host -U $user_pg $db_name
+    #Creation de l'index GIST sur la layer territoire
+    sudo -n -u postgres -s psql -d $db_name -c "CREATE INDEX index_gist_t_layer_territoire
+                                                ON atlas.t_layer_territoire
+                                                USING gist(geom);"
     
     echo "Création de la structure de la base..."
     export PGPASSWORD=$user_pg_pass;psql -h $db_host -U $user_pg -d $db_name -f data/atlas.sql  &>> log/install_db.log
@@ -65,7 +79,6 @@ then
     cd data/ref
     rm -f output_clip.dbf output_clip.prj output_clip.shp output_clip.shx
 
-    file="L93_"$taillemaille"K.zip"
 
     rm -f L93*.dbf L93*.prj L93*.sbn L93*.sbx L93*.shp L93*.shx
 
@@ -78,12 +91,7 @@ then
     export PGPASSWORD=$user_pg_pass;shp2pgsql -W "cp850" -s 2154 -D -I L93_1x1.shp atlas.t_mailles_1 | psql -h $db_host -U $user_pg $db_name
     export PGPASSWORD=$user_pg_pass;shp2pgsql -W "cp850" -s 2154 -D -I L93_5K.shp atlas.t_mailles_5 | psql -h $db_host -U $user_pg $db_name
     export PGPASSWORD=$user_pg_pass;shp2pgsql -W "cp850" -s 2154 -D -I L93_10K.shp atlas.t_mailles_10 | psql -h $db_host -U $user_pg $db_name
-    #ajout du shape des limite du territoire
-    export PGPASSWORD=$user_pg_pass;shp2pgsql -W "cp850" -s 2154 -D -I $limit_shp atlas.t_layer_territoire | psql -h $db_host -U $user_pg $db_name
-    #Creation de l'index GIST sur la layer territoire
-    sudo -n -u postgres -s psql -d $db_name -c "CREATE INDEX index_gist_t_layer_territoire
-                                                ON atlas.t_layer_territoire
-                                                USING gist(geom);"
+
 
     #conversion en json
     rm  -f ../../static/territoire.json
@@ -91,6 +99,7 @@ then
 
     cd ../../
    
+    # Creation de la table t_maille_territoire avec la taille de maille passée en parametre
     sudo -n -u postgres -s psql -d $db_name -c "CREATE TABLE atlas.t_mailles_territoire as
                                                 SELECT m.geom
                                                 FROM atlas.t_mailles_"$taillemaille" m, atlas.t_layer_territoire t

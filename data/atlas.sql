@@ -1,11 +1,4 @@
 
-CREATE SCHEMA synthese AUTHORIZATION geonatatlas;
-CREATE SCHEMA taxonomie AUTHORIZATION geonatatlas;
-CREATE SCHEMA utilisateurs AUTHORIZATION geonatatlas;
-CREATE SCHEMA meta AUTHORIZATION geonatatlas;
-CREATE SCHEMA layers AUTHORIZATION geonatatlas;
-CREATE SCHEMA atlas AUTHORIZATION geonatatlas;
-
 --PUBLIC
 
 CREATE FOREIGN TABLE public.cor_boolean
@@ -709,6 +702,7 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
         st_asgeojson(ST_Transform(ST_SetSrid(s.the_geom_point, 3857), 4326)) as geojson_point
     FROM synthese.syntheseff s
     LEFT JOIN taxonomie.taxref tx ON tx.cd_nom = s.cd_nom
+    JOIN atlas.t_layer_territoire m ON ST_Intersects(m.geom, ST_Transform(s.the_geom_point, 2154))
     WHERE s.supprime = FALSE
     AND s.id_organisme = 2;
 
