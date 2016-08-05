@@ -36,27 +36,40 @@
    <body>
     {% include 'navbar.html' %}
 
-    <div class="row" id="presentation">
-      <div class="col-sm-12">
-        <h4> <b>  Commune de {{referenciel.communeName}} </b> </h4>
-      </div>
-          <ul id="stat">
-              <li> <span data-icon="&#xe037;" style="font-size: 30px;"></span> </br> <b> {{listTaxons.nbObsTotal}} </b> </br> Observations  </li>
-              <li> <span data-icon="&#xe03b;"  style="font-size: 30px;"></span> </br> <b> {{listTaxons.taxons|length}} </b> </br> Espèces  </li>
-              <li> <span data-icon="&#xe040;"  style="font-size: 30px;"></span> </br> <b> X  </b> </br> Observateurs  </li>
-          </ul>
-    </div>
-      
+    <div class="container-fluid">
+            <div class="row " >
+                <div class="col-sm-7">
+                    <div class="panel panel-default" id="parent">
+                        <h4> <b>  Commune de {{referenciel.communeName}} </b> </h4>
+                
+                        <ul id="stat">
+                            <li> <span data-icon="&#xe037;" style="font-size: 30px;"></span> </br> <b> {{listTaxons.nbObsTotal}} </b> </br> Observations  </li>
+                            <li> <span data-icon="&#xe03b;"  style="font-size: 30px;"></span> </br> <b> {{listTaxons.taxons|length}} </b> </br> Espèces  </li>
+                            <li> <span data-icon="&#xe040;"  style="font-size: 30px;"></span> </br> <b> X  </b> </br> Observateurs  </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
-    <div class="row" id="corps">
-       		<div class="col-sm-7">
-       			{% include 'listTaxonsTest.html' %}
-       		</div>
-       		<div class="col-sm-5">
-
-            <h4> Carte des {{configuration.NB_LAST_OBS}} dernières observations de la commune de <i>{{referenciel.communeName}}</i></h4>
-    	   		<div id="map"> </div>
-    	   	</div>
+            
+            <div class="row" id="clear">
+                 <div class="col-sm-7">
+                    <div class="panel panel-default">
+                 		{% include 'listTaxonsTest.html' %}
+                 	</div>
+                 </div>
+            
+                <div class="col-sm-5">
+                    <div  class="panel panel-default">
+                        <div class="panel-heading"><strong>
+                             <h4> Carte des {{configuration.NB_LAST_OBS}} dernières observations de la commune de <i>{{referenciel.communeName}}</i></h4> </strong>
+                        </div>
+                        <div class="panel-body">
+                  	   	     <div id="map"> </div>
+                        </div>
+                  	</div>
+                </div> 
+            </div>
     </div>
       
 

@@ -50,8 +50,12 @@ table#tableEspece {
   overflow-y: scroll;
 }
 
+.caption h4 {
+  float: left;
+}
 
 
+/* Effect on hover*/
 
 .hovereffect {
 width:100%;

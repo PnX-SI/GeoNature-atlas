@@ -50,6 +50,15 @@ body {
 
 }
 
+#clear {
+	clear:both;
+}
+
+#parent{
+	text-align: center;
+	margin-top: 10px;
+	height: 140px;
+}
 
 
 table.dataTable thead .sorting, 
@@ -86,8 +95,8 @@ cursor: default;
 
 #stat li {
 
-	/*float: left;*/
-	display: inline-block; 
+	float: left;
+/*	display: inline-block; */
     width: 100px;
     text-align: center;
     border-right: 1px solid #e8e8e8;
@@ -95,9 +104,10 @@ cursor: default;
 }
 
 ul#stat {
+	float: left;
 	padding: 5px;
 	margin-bottom: -65px;
-	margin-left: 15%;
+	margin-left: 32%;
 
 }
 
