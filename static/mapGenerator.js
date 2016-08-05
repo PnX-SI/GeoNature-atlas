@@ -93,9 +93,11 @@ baseMap[FIRST_MAP.tileName]=firstMapTile;
 //****** Fonction fiche espècce ***********
 
 
+
+
 // Popup Point
 function onEachFeaturePoint(feature, layer){
-    popupContent = "<b>Date: </b>"+ feature.properties.dateobs+"</br><b>Altitude: </b>"+ feature.properties.altitude_retenue+
+    popupContent = "<b>Date: </b>"+ feature.properties.dateobsPopup+"</br><b>Altitude: </b>"+ feature.properties.altitude_retenue+
                 "</br><b>Observateurs: </b>"+ feature.properties.observateurs;
 
      // verifie si le champs effectif est rempli
@@ -137,12 +139,21 @@ function styleMaille(feature) {
 
 
 
+// **** Lexique ****
+// GLOBAL VARIABLE: its can be use EVERYWHERE
+
+// Current observation Layer: leaflet layer type
+var currentLayer; 
+
+// Current observation geoJson:  type object
+var myGeoJson;
+
 
 // Geojson Maille
 function generateGeojsonMaille(observations, yearMin, yearMax) {
 
   var i=0;
-  var myGeoJson = {'type': 'FeatureCollection',
+  myGeoJson = {'type': 'FeatureCollection',
              'features' : []
           }
   tabProperties =[]
@@ -150,11 +161,12 @@ function generateGeojsonMaille(observations, yearMin, yearMax) {
     if(observations[i].annee >= yearMin && observations[i].annee <= yearMax ) {
       geometry = observations[i].geojson_maille;
       idMaille = observations[i].id_maille;
-      properties = {id_maille : idMaille, nb_observations : 1, last_observation: observations[i].annee};
+      properties = {id_maille : idMaille, nb_observations : 1, last_observation: observations[i].annee, tabDateobs: [new Date(observations[i].dateobs)]};
       var j = i+1;
       while (j<observations.length && observations[j].id_maille <= idMaille){
         if(observations[j].annee >= yearMin && observations[j].annee <= yearMax ){
           properties.nb_observations +=  observations[j].nb_observations;
+          properties.tabDateobs.push(new Date(observations[i].dateobs));
         }
         if (observations[j].annee >=  observations[j-1].annee){
           properties.last_observation = observations[j].annee
@@ -179,12 +191,11 @@ function generateGeojsonMaille(observations, yearMin, yearMax) {
 
 
 // Display Maille layer
-var currentLayer;
-var myGeojson;
+
 var i = 0; // compteur pour ne pas rajouter la légende à chaque fois
 function displayMailleLayerFicheEspece(observationsMaille, yearMin, yearMax){
-  myGeojson = generateGeojsonMaille(observationsMaille, yearMin, yearMax)
-  currentLayer = L.geoJson(myGeojson, {
+  myGeoJson = generateGeojsonMaille(observationsMaille, yearMin, yearMax);
+  currentLayer = L.geoJson(myGeoJson, {
       onEachFeature : onEachFeatureMaille,
       style: styleMaille,
   });
@@ -227,7 +238,8 @@ function generateGeojsonPointFicheEspece(observationsPoint, yearMin, yearMax){
               geometry = obs.geojson_point;
               properties = {'id_synthese' : obs.id_synthese,
                             'cd_ref': obs.cd_ref,
-                            'dateobs': obs.dateobs,
+                            'dateobsCompare': new Date(obs.dateobs),
+                            'dateobsPopup': obs.dateobs,
                             'observateurs' : obs.observateurs,
                             'altitude_retenue' : obs.altitude_retenue,
                             'effectif_total' : obs.effectif_total,
@@ -245,7 +257,6 @@ function generateGeojsonPointFicheEspece(observationsPoint, yearMin, yearMax){
 }
 
 // Display marker Layer (cluster or not)
-var clusterLayer;
 function displayMarkerLayerFicheEspece(observationsPoint, yearMin, yearMax){
 
   myGeojson = generateGeojsonPointFicheEspece(observationsPoint, yearMin, yearMax)
@@ -304,7 +315,7 @@ function onEachFeaturePointLastObs(feature, layer){
 
 
 
-var myGeoJson;
+
 function generateGeojsonPointLastObs(observationsPoint){
     myGeoJson = {'type': 'FeatureCollection','features' : []}
 
@@ -326,7 +337,7 @@ function generateGeojsonPointLastObs(observationsPoint){
   return myGeoJson
 }
 
-var currentLayer;
+
 function displayMarkerLayerPointLastObs(observationsPoint){
   myGeojson = generateGeojsonPointLastObs(observationsPoint)
   currentLayer = L.geoJson(myGeojson, {
@@ -393,7 +404,7 @@ function styleMailleLastObs(){
 function generateGeoJsonMailleLastObs(observations) {
 
   var i=0;
-  var myGeoJson = {'type': 'FeatureCollection',
+   myGeoJson = {'type': 'FeatureCollection',
              'features' : []
           }
   while (i<observations.length){

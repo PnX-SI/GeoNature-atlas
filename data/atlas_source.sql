@@ -26,6 +26,30 @@ CREATE TABLE IF NOT EXISTS taxonomie.bib_types_media(
 );
 ALTER TABLE taxonomie.bib_types_media OWNER TO geonatuser;
 
+CREATE OR REPLACE FUNCTION taxonomie.insert_t_medias()
+  RETURNS trigger AS
+$BODY$
+DECLARE
+	trimtitre text;
+BEGIN
+	new.date_media = now();
+	trimtitre = replace(new.titre, ' ', '');
+	new.url = new.chemin || new.cd_ref || '_' || trimtitre || '.jpg';
+	RETURN NEW; 			
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION taxonomie.insert_t_medias() OWNER TO cartopne;
+GRANT EXECUTE ON FUNCTION taxonomie.insert_t_medias() TO public;
+
+--DROP TRIGGER tri_insert_t_medias ON taxonomie.t_medias;
+CREATE TRIGGER tri_insert_t_medias
+  BEFORE INSERT
+  ON taxonomie.t_medias
+  FOR EACH ROW
+  EXECUTE PROCEDURE taxonomie.insert_t_medias();
+
 -- object: fk_t_media_bib_noms | type: CONSTRAINT
 ALTER TABLE taxonomie.t_medias DROP CONSTRAINT IF EXISTS fk_t_media_bib_noms CASCADE;
 ALTER TABLE taxonomie.t_medias ADD CONSTRAINT fk_t_media_bib_noms FOREIGN KEY (cd_ref)

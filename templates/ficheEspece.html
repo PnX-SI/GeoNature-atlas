@@ -118,8 +118,8 @@
                             <li> <span data-icon="&#xe037;" style="font-size: 30px;"></span> </br> <b> {{observations.maille|length}} </b> </br> Observations  </li>
                             <li> <img id="picto" src="{{url_for('static', filename='images/church.png') }}" style="width"> <br> <b> {{communes|length}}</b> </br>Communes </li>
                             <li> <span data-icon="&#xe040;"  style="font-size: 30px;"> </span> </br> <b> X </b> </br> Observateurs </li>
-                            <li> <span data-icon="&#xe037;" style="font-size: 25px; color: brown"></span> </br> <b> 1ère observations </b> </br>  {{firstObservation|int}} </li>
-                            <li> <span data-icon="&#xe037;" style="font-size: 25px; color: blue"></span> </br> <b> Dernière observation </b> </br> ?  </li>
+                            <li id="firstObs" class="pointer"> <span data-icon="&#xe037;" style="font-size: 25px; color: brown"></span> </br> <b> 1ère observations </b> </br>  {{firstObservation|int}} </li>
+                            <li id="lastObs" class="pointer"> <span data-icon="&#xe037;" style="font-size: 25px; color: blue"></span> </br> <b> Dernière observation </b> </br> ?  </li>
 
                         </ul>
                     </div>
@@ -168,7 +168,7 @@
                             <div id="communes" class="tab-pane fade in active">
                                          <p>
                                                 {% for com in communes %}
-                                                    <a href = "{{url_for('main.ficheCommune', insee = com.insee) }}"> {{com.commune_maj}} {{com.insee}} </a>
+                                                    <a href = "{{url_for('main.ficheCommune', insee = com.insee) }}"> {{com.commune_maj}} </a>
                                                     {% if not loop.last %}
                                                     ,
                                                     {% endif %}

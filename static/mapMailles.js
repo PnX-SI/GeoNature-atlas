@@ -3,7 +3,9 @@ var map = generateMap()
 
 // affichage des mailles
 $(function(){
-displayMailleLayerFicheEspece(observationsMaille, taxonYearMin, $YEARMAX);  
+displayMailleLayerFicheEspece(observationsMaille, taxonYearMin, $YEARMAX);
+$('.pointer').css('cursor', 'pointer');
+
 });
 
 // Legende
@@ -22,7 +24,7 @@ mySlider.on("change",function(){
 
 
     nbObs=0;
-    myGeojson.features.forEach(function(l){
+    myGeoJson.features.forEach(function(l){
       nbObs += l.properties.nb_observations
     })
 
@@ -30,4 +32,56 @@ mySlider.on("change",function(){
 
    });
 
+
+$('#firstObs').click(function(){
+  var firstObsLayer;
+  var year = new Date('2400-01-01');
+
+
+      var layer = (currentLayer._layers);
+      for (var key in layer) {
+        layer[key].feature.properties.tabDateobs.forEach(function(thisYear){
+          if (thisYear <= year){
+            year = thisYear;
+            firstObsLayer = layer[key];
+          }
+        });
+      }
+
+      
+      var bounds = L.latLngBounds([]);
+      var layerBounds = firstObsLayer.getBounds();
+      bounds.extend(layerBounds);
+      map.fitBounds(bounds, {
+        maxZoom : 12
+      });
+
+      firstObsLayer.openPopup();
+})
+
+$('#lastObs').click(function(){
+  var firstObsLayer;
+  var year = new Date('1800-01-01');
+
+
+      var layer = (currentLayer._layers);
+      for (var key in layer) {
+        layer[key].feature.properties.tabDateobs.forEach(function(thisYear){
+          if (thisYear >= year){
+            year = thisYear;
+            firstObsLayer = layer[key];
+          }
+        });
+      }
+
+      
+      var bounds = L.latLngBounds([]);
+      var layerBounds = firstObsLayer.getBounds();
+      bounds.extend(layerBounds);
+      map.fitBounds(bounds, {
+        maxZoom : 12
+      });
+
+      firstObsLayer.openPopup();
+})
 

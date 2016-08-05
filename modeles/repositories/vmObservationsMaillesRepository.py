@@ -10,6 +10,7 @@ def getObservationsMaillesChilds(connection, cd_ref):
     sql = "SELECT \
     obs.id_maille, \
     obs.geojson_maille, \
+    o.dateobs, \
     extract(YEAR FROM o.dateobs) as annee \
     FROM atlas.vm_observations_mailles obs \
     JOIN atlas.vm_observations o ON o.id_synthese = obs.id_synthese \
@@ -19,7 +20,7 @@ def getObservationsMaillesChilds(connection, cd_ref):
     observations = connection.execute(text(sql), thiscdref = cd_ref)
     tabObs = list()
     for o in observations:
-        temp = {'id_maille': o.id_maille, 'nb_observations': 1, 'annee': o.annee, 'geojson_maille':  ast.literal_eval(o.geojson_maille)}
+        temp = {'id_maille': o.id_maille, 'nb_observations': 1, 'annee': o.annee, 'dateobs': str(o.dateobs), 'geojson_maille':ast.literal_eval(o.geojson_maille)}
         tabObs.append(temp)
     return tabObs
 

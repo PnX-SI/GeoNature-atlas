@@ -32,7 +32,7 @@ mySlider.on("change",function(){
 
     console.log(myGeojson);
     nbObs=0;
-    myGeojson.features.forEach(function(l){
+    myGeoJson.features.forEach(function(l){
       nbObs += l.properties.nb_observations
     })
 
@@ -61,6 +61,7 @@ if (zoomLev >= configuration.ZOOM_LEVEL_POINT){
 if (zoomLev <= configuration.ZOOM_LEVEL_POINT -1 ){
   // display legend
   map.removeLayer(currentLayer);
+
   legendblock.removeAttr( "hidden" );
 
     years = mySlider.getValue();
@@ -70,3 +71,59 @@ if (zoomLev <= configuration.ZOOM_LEVEL_POINT -1 ){
 }
 
 });
+
+
+
+
+// Event on click on firstObs and lastObs
+
+/*$('#firstObs').click(function(){
+  var firstObsLayer;
+  var year = new Date('2400-01-01');
+  console.log(currentLayer);
+
+  zoomLev = map.getZoom();
+  // if layer are points
+    if(map.getZoom() >= configuration.ZOOM_LEVEL_POINT) { 
+
+      // check if layer is single point or cluster 
+    var layer = (myGeoJson.features.length > configuration.LIMIT_CLUSTER_POINT) ? currentLayer._featureGroup._layers : currentLayer._layers;
+
+      for (key in layer){
+          if(layer[key].feature != undefined){ 
+            if (layer[key].feature.properties.dateobsCompare < year){
+              firstObsLayer = layer[key]
+              year = layer[key].feature.properties.dateobsCompare;
+            }
+         }
+      }
+        map.setView(firstObsLayer._latlng, 13); 
+          firstObsLayer.openPopup();
+    }
+
+    // if layers are 'maille'
+    else{
+
+        var layer = (currentLayer._layers);
+        for (var key in layer) {
+          layer[key].feature.properties.tabDateobs.forEach(function(thisYear){
+            if (thisYear <= year){
+              year = thisYear;
+              firstObsLayer = layer[key];
+            }
+          });
+        }
+
+        
+        var bounds = L.latLngBounds([]);
+        var layerBounds = firstObsLayer.getBounds();
+        bounds.extend(layerBounds);
+        map.fitBounds(bounds, {
+          maxZoom : 12
+        });
+
+        firstObsLayer.openPopup();
+
+    }
+ 
+})*/
