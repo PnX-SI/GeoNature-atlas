@@ -99,8 +99,6 @@ baseMap[FIRST_MAP.tileName]=firstMapTile;
 
     
 
-
-
     return map
 }
 
@@ -295,7 +293,7 @@ function displayMarkerLayerFicheEspece(observationsPoint, yearMin, yearMax){
 
 // Display slider
 
-if (configuration.FICHE_ESPECE == true){
+/*if (configuration.FICHE_ESPECE == true){
   var mySlider = new Slider('#slider', {
     value: [taxonYearMin, $YEARMAX],
     min : taxonYearMin,
@@ -306,7 +304,7 @@ if (configuration.FICHE_ESPECE == true){
   $("#yearMax").html("&nbsp;&nbsp;"+ $YEARMAX);
   $("#yearMin").html(taxonYearMin + "&nbsp;&nbsp;");
 
-}
+}*/
 
 
 
@@ -530,3 +528,54 @@ function generateLegende(htmlLegend){
     map.addControl(new legendControl());
 
   }
+
+var mySlider;
+function generateSliderOnMap(){
+        var SliderControl = L.Control.extend({
+
+      options: {
+        position: 'bottomleft' 
+        //control position - allowed: 'topleft', 'topright', 'bottomleft', 'bottomright'
+      },
+
+    onAdd: function (map) {
+        var sliderContainer = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-slider-control');
+     
+        sliderContainer.style.backgroundColor = 'white';
+        sliderContainer.style.width = '300px';
+        sliderContainer.style.height = '50px';
+        sliderContainer.style.border = 'solid white 1px';
+        sliderContainer.style.cursor = 'pointer';
+        $(sliderContainer).css("margin-bottom", "-300px");
+        $(sliderContainer).css("margin-left", "200px");
+        $(sliderContainer).css("text-align", "center");
+        $(sliderContainer).append("<p> <span id='yearMin'> </span> <input id='sliderControl' type='text'/> <span id='yearMax'>  </span>  </p>"
+                            +"<p id='nbObs'> Nombre d'observation(s): </p>");
+
+
+
+
+
+        return sliderContainer;
+      }
+
+
+    });
+
+    map.addControl(new SliderControl());
+
+        mySlider = new Slider('#sliderControl', {
+        value: [taxonYearMin, $YEARMAX],
+        min : taxonYearMin,
+        max : $YEARMAX,
+        step: $STEP,
+      });
+
+    $("#yearMax").html("&nbsp;&nbsp;&nbsp;&nbsp;"+ $YEARMAX);
+    $("#yearMin").html(taxonYearMin + "&nbsp;&nbsp;&nbsp;&nbsp");
+
+
+
+}
+
+

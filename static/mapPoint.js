@@ -1,11 +1,15 @@
 
 var map = generateMap();
-
+generateSliderOnMap();
 
 // Layer display on window ready
 
 $(function(){
   displayMailleLayerFicheEspece(observationsMaille, taxonYearMin, $YEARMAX);
+  //display nb observations
+  $("#nbObs").html("Nombre d'observation(s): "+ observationsPoint.length);
+
+
 
 })
 
@@ -17,7 +21,7 @@ htmlLegend = "<i style='border: solid 1px blue;'> &nbsp; &nbsp; &nbsp;</i> Limit
 generateLegende(htmlLegend);
 
 
- // Slider event
+   // Slider event
 mySlider.on("change",function(){
     years = mySlider.getValue();
     yearMin = years[0];
@@ -31,7 +35,6 @@ mySlider.on("change",function(){
       displayMailleLayerFicheEspece(observationsMaille, yearMin, yearMax)
     }
 
-    console.log(myGeojson);
     nbObs=0;
     myGeoJson.features.forEach(function(l){
       nbObs += l.properties.nb_observations
@@ -42,8 +45,7 @@ mySlider.on("change",function(){
    });
 
 
-
-// ZoomEvent
+// ZoomEvent: change maille to point
 var legendblock = $("div.info");
 
 map.on("zoomend", function(){

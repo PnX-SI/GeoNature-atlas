@@ -4,7 +4,11 @@ var map = generateMap()
 // affichage des mailles
 $(function(){
 displayMailleLayerFicheEspece(observationsMaille, taxonYearMin, $YEARMAX);
+// pointer on first and last obs
 $('.pointer').css('cursor', 'pointer');
+//display nb observations
+$("#nbObs").html("Nombre d'observation(s): "+ observationsPoint.length);
+);
 
 });
 
@@ -33,6 +37,7 @@ mySlider.on("change",function(){
    });
 
 
+// Stat - map interaction
 $('#firstObs').click(function(){
   var firstObsLayer;
   var year = new Date('2400-01-01');
