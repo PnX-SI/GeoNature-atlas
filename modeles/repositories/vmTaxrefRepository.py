@@ -80,3 +80,13 @@ def getAllTaxonomy(session, cd_ref):
         tabTaxon.insert(0, temp)
         taxon = getTaxon(session, taxon.cd_taxsup) #on avance
     return tabTaxon
+
+
+def getFirstPhoto(connection, cd_ref):
+    sql= "SELECT url \
+    FROM taxonomie.t_medias \
+    WHERE cd_ref = :thiscdref AND id_type=1"
+    req = connection.execute(text(sql), thiscdref = cd_ref)
+    for r in req:
+        return r.url
+    

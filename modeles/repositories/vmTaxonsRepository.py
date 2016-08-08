@@ -28,7 +28,7 @@ def getTaxonsCommunes(session, insee):
     taxonCommunesList = list()
     nbObsTotal = 0
     for r in req:
-        temp = {'nom_complet_html': r[0], 'nb_obs' : r[1], 'nom_vern': r[2], 'cd_ref': r[3], 'last_obs' : r[4], 'group2_inpn': deleteAccent(r[5]), \
+        temp = {'nom_complet_html': r[0], 'nb_obs' : r[1], 'nom_vern': r[2], 'cd_ref': r[3], 'last_obs' : str(r[4]), 'group2_inpn': deleteAccent(r[5]), \
         'patrimonial' : r[6], 'protection_stricte' : r[7] }
         taxonCommunesList.append(temp)
         nbObsTotal = nbObsTotal+ r[1]

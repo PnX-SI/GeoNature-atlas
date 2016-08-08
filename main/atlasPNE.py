@@ -51,6 +51,7 @@ def ficheEspece(cd_ref):
     communes = vmCommunesRepository.getCommunesObservationsChilds(connection, cd_ref)
     communesSearch = vmCommunesRepository.getAllCommunes(session)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
+    firstPhotoURL = vmTaxrefRepository.getFirstPhoto(connection, cd_ref)
     configuration = {'STRUCTURE' : config.STRUCTURE, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY,\
     'AFFICHAGE_MAILLE' : config.AFFICHAGE_MAILLE, 'ZOOM_LEVEL_POINT': config.ZOOM_LEVEL_POINT, 'LIMIT_CLUSTER_POINT': config.LIMIT_CLUSTER_POINT, 'FICHE_ESPECE': True, \
     'URL_PHOTO': config.URL_PHOTO}
@@ -60,7 +61,7 @@ def ficheEspece(cd_ref):
 
     return render_template('ficheEspece.html', taxon=taxon, listeTaxonsSearch=listeTaxonsSearch, observations=observations,\
      cd_ref=cd_ref, altitudes=altitudes, months=months, synonyme=synonyme, communes=communes, communesSearch=communesSearch, taxonomyHierarchy = taxonomyHierarchy,\
-      configuration=configuration)
+      firstPhotoURL= firstPhotoURL, configuration=configuration)
 
 
 @main.route('/commune/<insee>', methods=['GET', 'POST'])
@@ -76,14 +77,14 @@ def ficheCommune(insee):
         observations = vmObservationsMaillesRepository.lastObservationsCommuneMaille(connection, config.NB_LAST_OBS, insee)
     else:
         observations = vmObservationsRepository.lastObservationsCommune(connection, config.NB_LAST_OBS, insee)
-    myType = 1
+
     configuration = {'STRUCTURE' : config.STRUCTURE, 'NB_LAST_OBS' : config.NB_LAST_OBS, 'AFFICHAGE_MAILLE': config.AFFICHAGE_MAILLE}
 
     session.close()
     connection.close()
 
-    return render_template('commune.html', myType=myType, listTaxons = listTaxons, referenciel = commune, communesSearch = communesSearch, observations = observations, \
-     listeTaxonsSearch = listeTaxonsSearch, configuration = configuration)
+    return render_template('commune.html', listTaxons = listTaxons, referenciel = commune, communesSearch = communesSearch, observations = observations, \
+    listeTaxonsSearch = listeTaxonsSearch,  configuration = configuration)
 
 
 @main.route('/liste/<cd_ref>', methods=['GET', 'POST'])
