@@ -41,7 +41,7 @@ baseMap[FIRST_MAP.tileName]=firstMapTile;
           });
 
 
-     // custom baseLayer controler
+     // 'Google-like' baseLayer controler
 
     var LayerControl = L.Control.extend({
 
@@ -60,16 +60,22 @@ baseMap[FIRST_MAP.tileName]=firstMapTile;
         container.style.height = '50px';
         container.style.border = 'solid white 1px';
         container.style.cursor = 'pointer';
+        $(container).attr("data-placement", "right");
+        $(container).attr("data-toggle", "tooltip");
+        $(container).attr("data-original-title", "Photos aérienne");
+
 
         container.onclick = function(){
           if(currentTileMap == "topo"){
           container.style.backgroundImage = "url(http://188.165.118.87/atlas/static/images/logo_topo_map.PNG)";
+          $(container).attr("data-original-title", "Plan");
           map.removeLayer(firstMapTile);
           orthoMap.addTo(map);
           currentTileMap = "earth";
           }
           else{
           container.style.backgroundImage = "url(http://188.165.118.87/atlas/static/images/logo_earth_map.PNG)";
+          $(container).attr("data-original-title", "Photos aérienne");
           map.removeLayer(orthoMap);
           firstMapTile.addTo(map);
           currentTileMap = "topo";
@@ -82,6 +88,16 @@ baseMap[FIRST_MAP.tileName]=firstMapTile;
     });
 
     map.addControl(new LayerControl());
+
+    // add tooltip on fullScreen button
+
+    fullScreenButton = $(".leaflet-control-fullscreen");
+    fullScreenButton.attr("data-placement", "right");
+    fullScreenButton.attr("data-toggle", "tooltip");
+    fullScreenButton.attr("data-original-title", "Plein écran");
+    $('.leaflet-control-fullscreen-button').removeAttr('title');
+
+    
 
 
 
@@ -475,19 +491,21 @@ function generateLegende(htmlLegend){
         container.style.height = '25px';
         container.style.border = 'solid white 1px';
         container.style.cursor = 'pointer';
-        /*container.style.backgroundImage = "url(http://188.165.118.87/atlas/static/images/bars.png)";*/
         $(container).html("<img src='http://188.165.118.87/atlas/static/images/info.png' alt='Légende'>")
+        $(container).attr("data-placement", "right");
+        $(container).attr("data-toggle", "tooltip");
+        $(container).attr("data-original-title", "Légende");
         
         
         container.onclick = function(){
           if (legendActiv == false){
 
-            if(configuration.AFFICHAGE_MAILLE){ 
              legend = L.control({position: 'topleft'});
 
               legend.onAdd = function (map) {
                   div = L.DomUtil.create('div', 'info legend'),
-                  $(div).addClass("generalLegend")   
+                  $(div).addClass("generalLegend");
+
 
                   div.innerHTML = htmlLegend;
 
@@ -495,15 +513,14 @@ function generateLegende(htmlLegend){
               };
           legend.addTo(map);
           legendActiv = true;
-        } 
+        
 
-      }else {
-          legend.removeFrom(map)
-          legendActiv = false;
+        }else {
+            legend.removeFrom(map)
+            legendActiv = false;
         }
 
-         
-        }
+      }
         return container;
       }
     

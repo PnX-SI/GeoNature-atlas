@@ -8,8 +8,6 @@ $(document).ready(function() {
 });
 
 
-
-
 // generate the autocompletion with the list of item, the input id and the form id
 autocompleteSearch = function(list, inputID, formID){
 
@@ -87,4 +85,11 @@ $('#buttonChild').click(function(){
       childList.attr("hidden", "hidden")
     }
 
+})
+
+
+// tootip
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
 })
