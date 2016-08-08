@@ -44,3 +44,7 @@ LIMIT_RANG_TAXONOMIQUE_HIERARCHIE = 13
 
 # rang taxonomique qui fixe la limite de l'affichage de la fiche espece ou de la liste  ** 35 = ESPECE **  on prend tout ce qui est inferieur ou egal a l'espece pour faire des fiches et ce qui est superieur pour les listes
 LIMIT_FICHE_LISTE_HIERARCHY = 35
+
+#URL du stockage des photo
+URL_PHOTO = "chemin_vers_le_dossier_de_stockage"
+

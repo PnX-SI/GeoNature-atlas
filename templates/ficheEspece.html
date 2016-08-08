@@ -63,12 +63,17 @@
             <div class="panel panel-default">
                 <div class= "row">
                     <div class="col-sm-6" > 
-                            <img src="{{configuration.URL_PHOTO}}static/medias/12633_Bromiusobscurus01.jpg" style="width:100%;height: 100%;">
+                        {% if firstPhotoURL == None %}
+                            <img src="{{url_for('static', filename='images/Photo_non_disponible.png') }}" style="width:100%;height: 100%; border-right: solid 1px;" ;
+">
+                        {% else %}
+                            <img src="{{configuration.URL_PHOTO}}{{firstPhotoURL}}" style="width:100%;height: 100%;">
+                        {% endif %}
 
                     </div>
                     <div class="col-sm-6">
 
-                        <h3> {{taxon.taxonSearch.nom_complet_html|safe}} </h3>
+                        <h3> {{taxon.taxonSearch.nom_complet_html|safe}}</h3>
                         {% if taxon.taxonSearch.nom_vern != None %}
                             <p>  {{taxon.taxonSearch.nom_vern}}  <br/>
                         {% endif %}
@@ -259,9 +264,10 @@
 
     </script>  
 
+
     <script type="text/javascript" src="/atlas/static/chart.js"></script>
 
-   <script > var ;</script> 
+   
    <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
    {% if configuration.AFFICHAGE_MAILLE %}
         <script src="{{url_for('static', filename='mapMailles.js') }}"></script>
