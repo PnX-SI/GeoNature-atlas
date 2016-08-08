@@ -1,17 +1,3 @@
-
---PUBLIC
-
-CREATE FOREIGN TABLE public.cor_boolean
-(
-  expression character varying(25) NOT NULL,
-  bool boolean NOT NULL
-)
-  SERVER geonaturedbserver
-  OPTIONS (schema_name 'public', table_name 'cor_boolean');
-ALTER TABLE public.cor_boolean OWNER TO geonatatlas;
-GRANT ALL ON TABLE public.cor_boolean TO geonatatlas;
-
-
 --UTILISATEURS
 CREATE FOREIGN TABLE utilisateurs.bib_organismes
 (
@@ -716,11 +702,50 @@ create index on atlas.vm_observations (dateobs);
 CREATE INDEX index_gist_synthese_the_geom_point ON atlas.vm_observations USING gist (the_geom_point);
 
 --DROP MATERIALIZED VIEW atlas.vm_taxons;
-CREATE materialized view atlas.vm_taxons AS
-WITH obs_min_taxons AS ( SELECT cd_ref, min(date_part('year'::text, dateobs)) AS yearmin, max(date_part('year'::text, dateobs)) AS yearmax FROM atlas.vm_observations GROUP BY cd_ref),
-tx_ref AS (
-  SELECT
-    tx.cd_ref,
+CREATE MATERIALIZED VIEW atlas.vm_taxons AS 
+ WITH obs_min_taxons AS (
+         SELECT vm_observations.cd_ref,
+            min(date_part('year'::text, vm_observations.dateobs)) AS yearmin,
+            max(date_part('year'::text, vm_observations.dateobs)) AS yearmax
+           FROM atlas.vm_observations
+          GROUP BY vm_observations.cd_ref
+        ), tx_ref AS (
+         SELECT tx_1.cd_ref,
+            tx_1.regne,
+            tx_1.phylum,
+            tx_1.classe,
+            tx_1.ordre,
+            tx_1.famille,
+            tx_1.cd_taxsup,
+            tx_1.lb_nom,
+            tx_1.lb_auteur,
+            tx_1.nom_complet,
+            tx_1.nom_valide,
+            tx_1.nom_vern,
+            tx_1.nom_vern_eng,
+            tx_1.group1_inpn,
+            tx_1.group2_inpn,
+            tx_1.nom_complet_html,
+            h.nom_habitat,
+            r.nom_rang,
+            st.nom_statut
+           FROM atlas.vm_taxref tx_1
+             LEFT JOIN taxonomie.bib_taxref_habitats h ON h.id_habitat = tx_1.id_habitat
+             LEFT JOIN taxonomie.bib_taxref_rangs r ON r.id_rang = tx_1.id_rang
+             LEFT JOIN taxonomie.bib_taxref_statuts st ON st.id_statut = tx_1.id_statut
+          WHERE (tx_1.cd_ref IN ( SELECT obs_min_taxons.cd_ref
+                   FROM obs_min_taxons)) AND tx_1.cd_nom = tx_1.cd_ref
+        ), my_taxons AS (
+         SELECT DISTINCT n.cd_ref,
+            pat.valeur_attribut AS patrimonial,
+            pr.valeur_attribut  AS protection_stricte
+           FROM taxonomie.bib_noms n
+             LEFT JOIN taxonomie.cor_taxon_attribut pat ON pat.cd_ref = n.cd_ref AND pat.id_attribut = 1
+             LEFT JOIN taxonomie.cor_taxon_attribut pr ON pr.cd_ref = n.cd_ref AND pr.id_attribut = 2
+          WHERE n.cd_ref IN ( SELECT obs_min_taxons.cd_ref
+                   FROM obs_min_taxons)
+        )
+ SELECT tx.cd_ref,
     tx.regne,
     tx.phylum,
     tx.classe,
@@ -736,29 +761,20 @@ tx_ref AS (
     tx.group1_inpn,
     tx.group2_inpn,
     tx.nom_complet_html,
-    h.nom_habitat,
-    r.nom_rang,
-    st.nom_statut
-  FROM atlas.vm_taxref tx
-     LEFT JOIN taxonomie.bib_taxref_habitats h ON h.id_habitat = tx.id_habitat
-     LEFT JOIN taxonomie.bib_taxref_rangs r ON r.id_rang = tx.id_rang
-     LEFT JOIN taxonomie.bib_taxref_statuts st ON st.id_statut = tx.id_statut
-  WHERE tx.cd_ref IN (SELECT cd_ref FROM obs_min_taxons)
-  AND tx.cd_nom = tx.cd_ref
-),
-my_taxons AS (
-SELECT DISTINCT taxonomie.find_cdref(cd_nom) AS cd_ref, f2.bool AS patrimonial, f3.bool AS protection_stricte 
-FROM taxonomie.bib_noms n
-LEFT JOIN taxonomie.cor_taxon_attribut cta ON cta.cd_ref = n.cd_ref
-JOIN cor_boolean f2 ON f2.expression::text = cta.valeur_attribut::text AND cta.id_attribut = 1
-JOIN cor_boolean f3 ON f2.expression::text = cta.valeur_attribut::text AND cta.id_attribut = 2
-WHERE taxonomie.find_cdref(cd_nom) IN(SELECT cd_ref FROM obs_min_taxons)
-)
-SELECT tx.*, t.patrimonial, t.protection_stricte, omt.yearmin, omt.yearmax
-FROM tx_ref tx
-LEFT JOIN obs_min_taxons omt ON omt.cd_ref = tx.cd_ref
-LEFT JOIN my_taxons t ON t.cd_ref = tx.cd_ref;
-create unique index on atlas.vm_taxons (cd_ref);
+    tx.nom_habitat,
+    tx.nom_rang,
+    tx.nom_statut,
+    t.patrimonial,
+    t.protection_stricte,
+    omt.yearmin,
+    omt.yearmax
+   FROM tx_ref tx
+     LEFT JOIN obs_min_taxons omt ON omt.cd_ref = tx.cd_ref
+     LEFT JOIN my_taxons t ON t.cd_ref = tx.cd_ref
+WITH DATA;
+
+ALTER TABLE atlas.vm_taxons
+  OWNER TO geonatatlas;
 
 -- Function: atlas.create_vm_altitudes()
 
