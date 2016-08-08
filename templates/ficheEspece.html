@@ -49,18 +49,25 @@
 
     <body>
     {% include 'navbar.html' %}
+
     <!-- SAUT DE LIGNE -->
+
     <div class="col-sm-12" style="height:20px"></div>
+
     <div class="container-fluid">
-        <div class='col-sm-8'>
+        <div id="sideBar"class="col-sm-1">
+        {% include 'sideBar.html' %}
+        </div>
+
+        <div class='col-sm-7'>
             <div class="panel panel-default">
                 <div class= "row">
                     <div class="col-sm-6" > 
                             <img src="{{configuration.URL_PHOTO}}static/medias/12633_Bromiusobscurus01.jpg" style="width:100%;height: 100%;">
-                            
+
                     </div>
                     <div class="col-sm-6">
-                    
+
                         <h3> {{taxon.taxonSearch.nom_complet_html|safe}} </h3>
                         {% if taxon.taxonSearch.nom_vern != None %}
                             <p>  {{taxon.taxonSearch.nom_vern}}  <br/>
@@ -73,7 +80,7 @@
                                  <a href = "{{url_for('main.ficheEspece', cd_ref = taxon.cd_ref) }}"> {{taxon.lb_nom}}</a> 
                             {% else %}
                                  <a href = "{{url_for('main.ficheRangTaxonomie', cd_ref = taxon.cd_ref) }}">{{taxon.lb_nom}} </a> 
-                                
+
                             {% endif %}
                             </i>
                             {% if not loop.last %}

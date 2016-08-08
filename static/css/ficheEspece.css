@@ -5,6 +5,36 @@ body {
 
 .navbar{
 	margin-bottom: 0px;
+	border-radius: 0px;
+	border-bottom-color: #148A1F;
+}
+
+.container-fluid{
+	padding-left: 0px;
+}
+
+#sideBar{
+	width: 40px;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin-right: 0px;
+	margin-top: -20px;
+	padding-top: 15px;
+	background-color: #148A1F;
+	height: 1000px;
+	text-align: center;
+}
+#sidebar_menu {
+	list-style: none;
+	padding-left: 0px;
+}
+
+#sidebar_menu li{
+	margin-bottom: 20px;
+}
+
+#sidebar_menu a {
+	color: white;
 }
 
 
@@ -65,7 +95,8 @@ body {
   margin: 0 auto;
 }
 
- 
+
+
 
 
 
