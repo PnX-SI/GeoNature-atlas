@@ -64,8 +64,7 @@
                 <div class= "row">
                     <div class="col-sm-6" > 
                         {% if firstPhotoURL == None %}
-                            <img src="{{url_for('static', filename='images/Photo_non_disponible.png') }}" style="width:100%;height: 100%; border-right: solid 1px;" ;
-">
+                            <img src="{{url_for('static', filename='images/Photo_non_disponible.png') }}" style="width:100%;height: 100%; border-right: solid 1px;">
                         {% else %}
                             <img src="{{configuration.URL_PHOTO}}{{firstPhotoURL}}" style="width:100%;height: 100%;">
                         {% endif %}
@@ -144,6 +143,7 @@
         
 
         <div class="col-sm-4">
+            {% if photoCarousel | length >= 1 %}
             <div class="panel panel-default">
                 <div id="myCarousel" class="carousel slide" data-ride="carousel">
                       <!-- Indicators -->
@@ -182,6 +182,7 @@
                 
                 </div>
             </div>
+            {% endif %}
 
             <div class="panel panel-default">
                 <div class="panel-heading"><strong> Test Description </strong></div>

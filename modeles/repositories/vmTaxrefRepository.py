@@ -89,4 +89,14 @@ def getFirstPhoto(connection, cd_ref):
     req = connection.execute(text(sql), thiscdref = cd_ref)
     for r in req:
         return r.url
+
+def getPhotoCarousel(connection, cd_ref):
+    sql= "SELECT url \
+    FROM taxonomie.t_medias \
+    WHERE cd_ref = :thiscdref AND id_type=2"
+    req = connection.execute(text(sql), thiscdref = cd_ref)
+    tabURL = list()
+    for r in req:
+         tabURL.append(r.url)
+    return tabURL
     

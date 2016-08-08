@@ -52,6 +52,7 @@ def ficheEspece(cd_ref):
     communesSearch = vmCommunesRepository.getAllCommunes(session)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
     firstPhotoURL = vmTaxrefRepository.getFirstPhoto(connection, cd_ref)
+    photoCarousel = vmTaxrefRepository.getPhotoCarousel(connection, cd_ref)
     configuration = {'STRUCTURE' : config.STRUCTURE, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY,\
     'AFFICHAGE_MAILLE' : config.AFFICHAGE_MAILLE, 'ZOOM_LEVEL_POINT': config.ZOOM_LEVEL_POINT, 'LIMIT_CLUSTER_POINT': config.LIMIT_CLUSTER_POINT, 'FICHE_ESPECE': True, \
     'URL_PHOTO': config.URL_PHOTO}
@@ -61,7 +62,7 @@ def ficheEspece(cd_ref):
 
     return render_template('ficheEspece.html', taxon=taxon, listeTaxonsSearch=listeTaxonsSearch, observations=observations,\
      cd_ref=cd_ref, altitudes=altitudes, months=months, synonyme=synonyme, communes=communes, communesSearch=communesSearch, taxonomyHierarchy = taxonomyHierarchy,\
-      firstPhotoURL= firstPhotoURL, configuration=configuration)
+      firstPhotoURL= firstPhotoURL, photoCarousel=photoCarousel, configuration=configuration)
 
 
 @main.route('/commune/<insee>', methods=['GET', 'POST'])
