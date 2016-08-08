@@ -37,39 +37,41 @@
     {% include 'navbar.html' %}
 
     <div class="container-fluid">
-            <div class="row " >
-                <div class="col-sm-7">
-                    <div class="panel panel-default" id="parent">
-                        <h4> <b>  Commune de {{referenciel.communeName}} </b> </h4>
-                
-                        <ul id="stat">
-                            <li> <span data-icon="&#xe037;" style="font-size: 30px;"></span> </br> <b> {{listTaxons.nbObsTotal}} </b> </br> Observations  </li>
-                            <li> <span data-icon="&#xe03b;"  style="font-size: 30px;"></span> </br> <b> {{listTaxons.taxons|length}} </b> </br> Espèces  </li>
-                            <li> <span data-icon="&#xe040;"  style="font-size: 30px;"></span> </br> <b> X  </b> </br> Observateurs  </li>
-                        </ul>
-                    </div>
+            
+        <div class="col-sm-7">
+            <div class="row ">
+                <div class="panel panel-default" id="parent">
+                    <h4> <b>  Commune de {{referenciel.communeName}} </b> </h4>
+    
+                    <ul id="stat">
+                        <li> <span data-icon="&#xe037;" style="font-size: 30px;"></span> </br> <b> {{listTaxons.nbObsTotal}} </b> </br> Observations  </li>
+                        <li> <span data-icon="&#xe03b;"  style="font-size: 30px;"></span> </br> <b> {{listTaxons.taxons|length}} </b> </br> Espèces  </li>
+                        <li> <span data-icon="&#xe040;"  style="font-size: 30px;"></span> </br> <b> X  </b> </br> Observateurs  </li>
+                    </ul>
                 </div>
             </div>
+    
 
-            
+    
             <div class="row" id="clear">
-                 <div class="col-sm-7">
                     <div class="panel panel-default">
                  		{% include 'listTaxonsTest.html' %}
                  	</div>
-                 </div>
-            
-                <div class="col-sm-5">
-                    <div  class="panel panel-default">
-                        <div class="panel-heading"><strong>
-                             <h4> Carte des {{configuration.NB_LAST_OBS}} dernières observations de la commune de <i>{{referenciel.communeName}}</i></h4> </strong>
-                        </div>
-                        <div class="panel-body">
-                  	   	     <div id="map"> </div>
-                        </div>
-                  	</div>
-                </div> 
             </div>
+        </div>
+                
+    
+        <div class="col-sm-5">
+            <div  class="panel panel-default" id="mapContainer">
+                <div class="panel-heading"><strong>
+                     <h4> Carte des {{configuration.NB_LAST_OBS}} dernières observations de la commune de <i>{{referenciel.communeName}}</i></h4> </strong>
+                </div>
+                <div class="panel-body">
+          	   	     <div id="map"> </div>
+                </div>
+          	</div>
+        </div> 
+        
     </div>
       
 
@@ -84,6 +86,7 @@
             observations = {{observations|tojson}},
             communeGeoJson = {{referenciel.communeGeoJson|tojson}},
             url_limit_territory = "{{url_for('static', filename='territoire.json') }}";
+            console.log({{listTaxons|tojson}});
         </script>
         <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
         <script src="{{url_for('static', filename='mapCommune.js') }}"></script>
