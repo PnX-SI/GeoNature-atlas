@@ -125,23 +125,14 @@
                             <li> <span data-icon="&#xe037;" style="font-size: 30px;"></span> </br> <b> {{observations.maille|length}} </b> </br> Observations  </li>
                             <li> <img id="picto" src="{{url_for('static', filename='images/church.png') }}" style="width"> <br> <b> {{communes|length}}</b> </br>Communes </li>
                             <li> <span data-icon="&#xe040;"  style="font-size: 30px;"> </span> </br> <b> X </b> </br> Observateurs </li>
-                            <li id="firstObs" class="pointer"> <span data-icon="&#xe037;" style="font-size: 25px; color: brown"></span> </br> <b> 1ère observations </b> </br>  {{firstObservation|int}} </li>
-                            <li id="lastObs" class="pointer"> <span data-icon="&#xe037;" style="font-size: 25px; color: blue"></span> </br> <b> Dernière observation </b> </br> ?  </li>
+                            <li id="firstObs" class="pointer"> <span data-icon="&#xe037;" style="font-size: 25px; color: brown"></span> </br> <b> 1ère observations </b> </br>  {{taxon.taxonSearch.yearmin|int|int}} </li>
+                            <li id="lastObs" class="pointer"> <span data-icon="&#xe037;" style="font-size: 25px; color: blue"></span> </br> <b> Dernière observation </b> </br> {{taxon.taxonSearch.yearmax|int}}  </li>
 
                         </ul>
                     </div>
                 </div>
             </div>
-            <div class="panel panel-default" id="mapOptionPanel">
-                <div id="mapOptions" class="row">
-                    <div class="col-sm-5" > <p> <span id="yearMin"> </span> <input id="slider" type="text" class="span2"/> <span id="yearMax">  </span>  </p>
-                        <p id="nbObs"> Nombre d'observation(s): {{observations.maille|length}} </p>
-                    </div>
-                    <div class="col-sm-2" > 
-                        <input type="checkbox" name="my-checkbox" id="checkbox" checked  data-on-text="Cluster"data-off-text="Point" data-size="mini" size="35"> 
-                    </div>
-                </div>
-            </div>
+
 
         </div>
 
@@ -263,12 +254,14 @@
                  listeTaxonsSearch = {{listeTaxonsSearch|tojson}},
                  communesSearch = {{communesSearch|tojson}},
                  configuration = {{configuration|tojson}},
-                 url_limit_territory = "{{url_for('static', filename='territoire.json') }}";
+                 url_limit_territory = "{{url_for('static', filename='territoire.json') }}",
+                 taxonYearMin = {{taxon.taxonSearch.yearmin}};
+
     </script>  
 
     <script type="text/javascript" src="/atlas/static/chart.js"></script>
 
-   <script > var taxonYearMin = {{firstObservation}};</script> 
+   <script > var ;</script> 
    <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
    {% if configuration.AFFICHAGE_MAILLE %}
         <script src="{{url_for('static', filename='mapMailles.js') }}"></script>

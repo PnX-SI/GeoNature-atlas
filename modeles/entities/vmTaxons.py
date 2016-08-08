@@ -39,5 +39,6 @@ class VmTaxons(Base):
     Column('patrimonial', String(255)),
     Column('protection_stricte', String(255)),
     Column('yearmin', Float(53)),
+    Column('yearmax', Float(53)),
     schema='atlas', autoload=True, autoload_with=engine
 )

@@ -22,21 +22,23 @@ def deleteAccent(string):
 def searchEspece(connection, cd_ref):
     sql ="SELECT * \
     FROM atlas.vm_taxref tax \
-    WHERE tax.cd_ref = :thiscdref AND tax.cd_ref = tax.cd_nom \
+    JOIN atlas.vm_taxons taxons ON taxons.cd_ref=tax.cd_ref \
+    WHERE tax.cd_nom = :thiscdref \
     LIMIT 1"
     req = connection.execute(text(sql), thiscdref = cd_ref)
     taxonSearch = dict()
     for r in req:
-        taxonSearch = {'cd_ref': r.cd_ref, 'lb_nom': r.lb_nom, 'nom_vern': r.nom_vern, 'nom_complet_html': r.nom_complet_html, 'group2_inpn': deleteAccent(r.group2_inpn) }
+        taxonSearch = {'cd_ref': r.cd_ref, 'lb_nom': r.lb_nom, 'nom_vern': r.nom_vern, 'nom_complet_html': r.nom_complet_html, 'group2_inpn': deleteAccent(r.group2_inpn),\
+        'yearmin': r.yearmin, 'yearmax':r.yearmax }
 
-    sql="select tax.lb_nom, \
+    sql="SELECT tax.lb_nom, \
     tax.nom_vern, \
     tax.cd_ref, \
     br.tri_rang, \
     tax.group2_inpn \
-    from atlas.vm_taxons tax \
-    JOIN atlas.bib_taxref_rangs br on br.nom_rang = tax.nom_rang \
-    where tax.cd_ref in ( select * from atlas.find_all_taxons_childs(:thiscdref))".encode('utf-8')
+    FROM atlas.vm_taxons tax \
+    JOIN atlas.bib_taxref_rangs br ON br.nom_rang = tax.nom_rang \
+    where tax.cd_ref IN ( SELECT * FROM atlas.find_all_taxons_childs(:thiscdref))".encode('utf-8')
     req = connection.execute(text(sql), thiscdref = cd_ref)
     listTaxonsChild = list()
     for r in req:
@@ -44,6 +46,8 @@ def searchEspece(connection, cd_ref):
         listTaxonsChild.append(temp)
 
     return {'taxonSearch':taxonSearch, 'listTaxonsChild': listTaxonsChild }
+
+
 
 def getSynonymy(session, cd_ref):
     return session.query(VmTaxref.lb_nom).filter(VmTaxref.cd_ref==cd_ref).all()
