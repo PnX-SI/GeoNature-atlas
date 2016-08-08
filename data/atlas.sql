@@ -717,7 +717,7 @@ CREATE INDEX index_gist_synthese_the_geom_point ON atlas.vm_observations USING g
 
 --DROP MATERIALIZED VIEW atlas.vm_taxons;
 CREATE materialized view atlas.vm_taxons AS
-WITH obs_min_taxons AS (SELECT cd_ref, min(date_part('year'::text, dateobs)) AS yearmin FROM atlas.vm_observations GROUP BY cd_ref),
+WITH obs_min_taxons AS ( SELECT cd_ref, min(date_part('year'::text, dateobs)) AS yearmin, max(date_part('year'::text, dateobs)) AS yearmax FROM atlas.vm_observations GROUP BY cd_ref),
 tx_ref AS (
   SELECT
     tx.cd_ref,
@@ -754,7 +754,7 @@ JOIN cor_boolean f2 ON f2.expression::text = cta.valeur_attribut::text AND cta.i
 JOIN cor_boolean f3 ON f2.expression::text = cta.valeur_attribut::text AND cta.id_attribut = 2
 WHERE taxonomie.find_cdref(cd_nom) IN(SELECT cd_ref FROM obs_min_taxons)
 )
-SELECT tx.*, t.patrimonial, t.protection_stricte, omt.yearmin
+SELECT tx.*, t.patrimonial, t.protection_stricte, omt.yearmin, omt.yearmax
 FROM tx_ref tx
 LEFT JOIN obs_min_taxons omt ON omt.cd_ref = tx.cd_ref
 LEFT JOIN my_taxons t ON t.cd_ref = tx.cd_ref;
