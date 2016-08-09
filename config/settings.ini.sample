@@ -50,6 +50,14 @@ atlas_source_user=geonatatlas
 # Pass du user atlas sur la base de données source (lecture seule)
 atlas_source_pass=monpassachanger
 
+#### ID DES ATTRIBUTS DESCRIPTIF DES TAXONS DE LA vm_cor_taxon_attribut --  !! si changement: modifier également le config.py
+attr_desc=100
+attr_commentaire=101
+attr_milieu=102
+attr_corrologie=103
+
+#####MAILLES#####
+
 #taille de maille: valeurs possibles 1, 5 ou 10
 taillemaille=5
 

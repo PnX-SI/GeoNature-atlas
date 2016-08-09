@@ -963,6 +963,29 @@ ALTER TABLE atlas.bib_taxref_rangs
     OWNER TO geonatatlas;
 
 
+CREATE MATERIALIZED VIEW atlas.vm_medias AS
+    SELECT id_media,
+           cd_ref,
+           titre,
+           url,
+           chemin,
+           auteur,
+           desc_media,
+           date_media,
+           id_type 
+   FROM taxonomie.t_medias;
+
+
+CREATE MATERIALIZED VIEW atlas.vm_cor_taxon_attribut AS
+    SELECT id_attribut,
+           valeur_attribut,
+           cd_ref
+    FROM taxonomie.cor_taxon_attribut
+    WHERE id_attribut  IN (100, 101, 102, 103)
+    
+
+
+
 
 --Fonction pour rafraichir toutes les vues matérialisées d'un schéma
 --USAGE : SELECT RefreshAllMaterializedViews('atlas');

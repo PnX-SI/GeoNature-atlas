@@ -48,3 +48,9 @@ LIMIT_FICHE_LISTE_HIERARCHY = 35
 #URL du stockage des photo
 URL_PHOTO = "chemin_vers_le_dossier_de_stockage"
 
+####ID DES ATTRIBUTS DESCRIPTIF DES TAXONS DE LA TABLE vm_cor_taxon_attribut
+ATTR_DESC = 100
+ATTR_COMMENTAIRE = 101
+ATTR_MILIEU = 102
+ATTR_CORROLOGIE = 103
+

@@ -67,6 +67,7 @@ then
                                                 USING gist(geom);"
     
     echo "Création de la structure de la base..."
+    sed -i "s/WHERE id_attribut  IN (100, 101, 102, 103);$/WHERE id_attribut  IN ($attr_desc, $attr_commentaire, $attr_milieu, $attr_corrologie)/" data/atlas.sql
     export PGPASSWORD=$user_pg_pass;psql -h $db_host -U $user_pg -d $db_name -f data/atlas.sql  &>> log/install_db.log
 
     echo "Affectation des droits sur la base source..."
