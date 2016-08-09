@@ -20,11 +20,11 @@ def deleteAccent(string):
 
 #recherche l espece corespondant au cd_nom et tout ces fils
 def searchEspece(connection, cd_ref):
-    sql ="SELECT * \
-    FROM atlas.vm_taxref tax \
-    JOIN atlas.vm_taxons taxons ON taxons.cd_ref=tax.cd_ref \
-    WHERE tax.cd_nom = :thiscdref \
-    LIMIT 1"
+    sql= "WITH limit_obs AS (select min(yearmin) AS yearmin, max(yearmax) AS yearmax FROM atlas.vm_taxons WHERE cd_ref in (SELECT * FROM atlas.find_all_taxons_childs(:thiscdref))\
+         OR cd_ref = :thiscdref)\
+    SELECT * \
+    FROM atlas.vm_taxref taxref, limit_obs \
+    WHERE taxref.cd_nom = :thiscdref"
     req = connection.execute(text(sql), thiscdref = cd_ref)
     taxonSearch = dict()
     for r in req:
