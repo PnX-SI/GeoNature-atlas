@@ -981,7 +981,7 @@ CREATE MATERIALIZED VIEW atlas.vm_cor_taxon_attribut AS
            valeur_attribut,
            cd_ref
     FROM taxonomie.cor_taxon_attribut
-    WHERE id_attribut  IN (100, 101, 102, 103)
+    WHERE id_attribut  IN (100, 101, 102, 103);
     
 
 
