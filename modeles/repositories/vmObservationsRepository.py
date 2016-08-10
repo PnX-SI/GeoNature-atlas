@@ -113,9 +113,16 @@ def lastObservationsCommune(connection, mylimit, insee):
 def getObservers(session, cd_ref):
     req= session.query(distinct(VmObservations.observateurs),VmObservations.observateurs).filter(VmObservations.cd_ref==cd_ref).all()
     setObs = set()
-    setObsCool = set()
     for r in req:
         tabObs = r[1].split(', ')
         for o in tabObs:
+            o = o.lower()
             setObs.add(o)
-    return setObs
+    finalList = list()
+    for s in setObs:
+        tabInter= s.split(' ')
+        fullName= str()
+        for t in tabInter:
+            fullName += t.capitalize() + " "
+        finalList.append(fullName)
+    return finalList
