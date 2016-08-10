@@ -54,6 +54,7 @@ def ficheEspece(cd_ref):
     firstPhotoURL = vmMedias.getFirstPhoto(connection, cd_ref)
     photoCarousel = vmMedias.getPhotoCarousel(connection, cd_ref)
     taxonDescritpion = vmCorTaxonAttribut.getAttributesTaxon(connection, cd_ref, config.ATTR_DESC, config.ATTR_COMMENTAIRE, config.ATTR_MILIEU, config.ATTR_CORROLOGIE)
+    observers = vmObservationsRepository.getObservers(session, cd_ref)
     configuration = {'STRUCTURE' : config.STRUCTURE, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY,\
     'AFFICHAGE_MAILLE' : config.AFFICHAGE_MAILLE, 'ZOOM_LEVEL_POINT': config.ZOOM_LEVEL_POINT, 'LIMIT_CLUSTER_POINT': config.LIMIT_CLUSTER_POINT, 'FICHE_ESPECE': True, \
     'URL_PHOTO': config.URL_PHOTO}
@@ -63,7 +64,7 @@ def ficheEspece(cd_ref):
 
     return render_template('ficheEspece.html', taxon=taxon, listeTaxonsSearch=listeTaxonsSearch, observations=observations,\
      cd_ref=cd_ref, altitudes=altitudes, months=months, synonyme=synonyme, communes=communes, communesSearch=communesSearch, taxonomyHierarchy = taxonomyHierarchy,\
-      firstPhotoURL= firstPhotoURL, photoCarousel=photoCarousel, taxonDescritpion=taxonDescritpion, configuration=configuration)
+      firstPhotoURL= firstPhotoURL, photoCarousel=photoCarousel, taxonDescritpion=taxonDescritpion, observers=observers, configuration=configuration)
 
 
 @main.route('/commune/<insee>', methods=['GET', 'POST'])

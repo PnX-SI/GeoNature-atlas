@@ -198,7 +198,7 @@
                         <div class="tab-content" style="width:100%;">
                             <div id="description" class="tab-pane fade in active">
                                {% if taxonDescritpion.description == None %}
-                                Non renseigné pour le moment
+                                Non renseignée pour le moment
                                 {% else %}
                                 {{taxonDescritpion.description}}
                                 {% endif %}
@@ -219,7 +219,7 @@
                             </div>  
                             <div id="corrologie" class="tab-pane fade">                                
                                 {% if taxonDescritpion.corrologie == None %}
-                                    Non renseigné pour le moment
+                                    Non renseignée pour le moment
                                 {% else %}
                                     {{taxonDescritpion.corrologie}}
                                 {% endif %}
@@ -244,7 +244,7 @@
                           <ul class="nav nav-tabs">
                             <li class="active"><a data-toggle="tab" href="#communes">Communes</a></li>
                             <li><a data-toggle="tab" href="#synonymes">Synonymes</a></li>
-                            <li><a data-toggle="tab" href="#menu3">Observateurs</a></li>
+                            <li><a data-toggle="tab" href="#observateurs">Observateurs</a></li>
                           </ul>
 
                         <div class="tab-content" style="width:100%;">
@@ -270,8 +270,13 @@
                                      </span>
                                 {% endfor %}
                             </div>
-                            <div id="menu3" class="tab-pane fade">
-                              <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+                            <div id="observateurs" class="tab-pane fade">
+                                {% for o in observers %}
+                                    {{o}}
+                                    {% if  not loop.last %}
+                                    ,
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         </div>
                 </div>
