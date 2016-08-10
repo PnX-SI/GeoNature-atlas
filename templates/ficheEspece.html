@@ -129,7 +129,7 @@
                             <li> <span data-icon="&#xe037;" style="font-size: 30px;"></span> </br> <b> {{observations.maille|length}} </b> </br> Observations  </li>
                             <li> <img id="picto" src="{{url_for('static', filename='images/church.png') }}" style="width"> <br> <b> {{communes|length}}</b> </br>Communes </li>
                             <li> <span data-icon="&#xe040;"  style="font-size: 30px;"> </span> </br> <b> X </b> </br> Observateurs </li>
-                            <li id="firstObs" class="pointer"> <span data-icon="&#xe037;" style="font-size: 25px; color: brown"></span> </br> <b> 1ère observations </b> </br>  {{taxon.taxonSearch.yearmin|int|int}} </li>
+                            <li id="firstObs" class="pointer"> <span data-icon="&#xe037;" style="font-size: 25px; color: brown"></span> </br> <b> 1ère observations </b> </br>  {{taxon.taxonSearch.yearmin|int}} </li>
                             <li id="lastObs" class="pointer"> <span data-icon="&#xe037;" style="font-size: 25px; color: blue"></span> </br> <b> Dernière observation </b> </br> {{taxon.taxonSearch.yearmax|int}}  </li>
 
                         </ul>
@@ -184,14 +184,51 @@
             </div>
             {% endif %}
 
-            <div class="panel panel-default">
-                <div class="panel-heading"><strong> Test Description </strong></div>
-                    <div class="panel-body">
-
-                    </div>
-                    
+            
+            <div class="panel panel-default" style="padding: 10px;">
                 
+                          <ul class="nav nav-tabs" style="margin-botton:10px;">
+                            <li class="active"><a data-toggle="tab" href="#description">Description de l'espèce</a></li>
+                            <li><a data-toggle="tab" href="#commentaire">Commentaire</a></li>
+                            <li><a data-toggle="tab" href="#milieu">Milieu</a></li>
+                            <li><a data-toggle="tab" href="#corrologie">Corrologie</a></li>
+                          </ul>
+
+                    
+                        <div class="tab-content" style="width:100%;">
+                            <div id="description" class="tab-pane fade in active">
+                               {% if taxonDescritpion.description == None %}
+                                Non renseigné pour le moment
+                                {% else %}
+                                {{taxonDescritpion.description}}
+                                {% endif %}
+                            </div>
+                            <div id="commentaire" class="tab-pane fade">
+                                {% if taxonDescritpion.commentaire == None %}
+                                    Non renseigné pour le moment
+                                {% else %}
+                                    {{taxonDescritpion.description}}
+                                {% endif %}
+                            </div>
+                            <div id="milieu" class="tab-pane fade">
+                                {% if taxonDescritpion.milieu == None %}
+                                    Non renseigné pour le moment
+                                {% else %}
+                                {{taxonDescritpion.milieu}}
+                                {% endif %}
+                            </div>  
+                            <div id="corrologie" class="tab-pane fade">                                
+                                {% if taxonDescritpion.corrologie == None %}
+                                    Non renseigné pour le moment
+                                {% else %}
+                                    {{taxonDescritpion.corrologie}}
+                                {% endif %}
+                            </div>
+                        
+                        </div>
+                    
             </div>
+        
             <div class="panel panel-default">
                 
                     <h3 class="text-primary text-center"> Observations par classes d'altitudes </h3>
@@ -210,7 +247,7 @@
                             <li><a data-toggle="tab" href="#menu3">Observateurs</a></li>
                           </ul>
 
-                          <div class="tab-content" style="width:100%;">
+                        <div class="tab-content" style="width:100%;">
                             <div id="communes" class="tab-pane fade in active">
                                          <p>
                                                 {% for com in communes %}
@@ -236,7 +273,7 @@
                             <div id="menu3" class="tab-pane fade">
                               <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
                             </div>
-                          </div>
+                        </div>
                 </div>
             </div>
 

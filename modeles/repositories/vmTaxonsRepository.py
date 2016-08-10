@@ -62,3 +62,4 @@ def getTaxonsChildsList(connection, cd_ref):
     return {'taxons': taxonRankList, 'nbObsTotal' : nbObsTotal}
 
 
+

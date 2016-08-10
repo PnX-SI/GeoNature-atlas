@@ -46,6 +46,10 @@ ul#stat {
 }
 
 
+.float  {
+  float:left;
+}
+
 
  .legend {
     line-height: 16px;
