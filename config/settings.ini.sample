@@ -56,6 +56,9 @@ attr_commentaire=101
 attr_milieu=102
 attr_corrologie=103
 
+# Paramètre pour la vue vm_most_view_taxon_periode : Espece les plus observées sur la periode 'moin X jour, plus X jours' - Par défault 15 jours 
+time=15
+
 #####MAILLES#####
 
 #taille de maille: valeurs possibles 1, 5 ou 10
