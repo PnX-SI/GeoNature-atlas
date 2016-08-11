@@ -67,7 +67,7 @@
 										{% for obs in observations %}
 										<tr class='tabEspece'>
 											{% if obs.urlImage == None %}
-											<td class="singleTaxon img"> <img width="80%" src= "/atlas/static/images/picto_{{obs.group2_inpn|urlencode}}.png"> </td>
+											<td class="singleTaxon img"> <img class="singleTaxon" width="80%" src= "/atlas/static/images/picto_{{obs.group2_inpn|urlencode}}.png"> </td>
 											{% else %}
 											<td class="singleTaxon img"> <img width="15px" height="15px" src="{{configuration.URL_PHOTO}}{{obs.url}}"> </td>
 											{% endif %}
@@ -95,84 +95,18 @@
 				<div class="panel panel-default">
 					<div class="panel-heading"><strong>Espèces les plus observées à cette période</strong></div>
 					<div class="row" style="padding: 5px;">
-					  <div class="col-xs-3 col-md-2">
-						
-						  	<div class="hovereffect">
-							  	<img class="img-responsive" src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9837/015472.jpg" 
-							  	alt="Petit apollon" title="Petit apollon">
-							  	<div class="overlay">
-							  		<a href="espece/716523" class="thumbnail"></a>
-							  		<h2> Petit apollon </h2>
-							  	</div>
-					  		</div>
-					  <div class="col-xs-3 col-md-2">
-						<a href="espece/3780" class="thumbnail">
-						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9590/056467_0.jpg" 
-						  alt="Tichodrome échelette" title="Tichodrome échelette">
-						</a>
-					  </div>
-					  <div class="col-xs-3 col-md-2">
-						<a href="espece/124405" class="thumbnail">
-						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9700/023256.jpg" 
-						  alt="Rubanier à feuilles étroites" title="Rubanier à feuilles étroites">
-						</a>
-					  </div>
-					  <div class="col-xs-3 col-md-2">
-						<a href="espece/82542" class="thumbnail">
-						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9703/023292.jpg" 
-						  alt="Androsace de Vandelli" title ="Androsace de Vandelli">
-						</a>
-					  </div>
-					  <div class="col-xs-3 col-md-2">
-						<a href="espece/3507" class="thumbnail">
-						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9588/059261.jpg" 
-						  alt="Chevêchette d'Europe" title="Chevêchette d'Europe">
-						</a>
-					  </div>
-					  <div class="col-xs-3 col-md-2">
-						<a href="espece/4537" class="thumbnail">
-						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9587/026683.jpg" 
-						  alt="Niverolle alpine" title="Niverolle alpine">
-						</a>
-					  </div>
-					  
-					  <div class="col-xs-3 col-md-2">
-						<a href="espece/96499" class="thumbnail">
-						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9702/026551.jpg" 
-						  alt="Epipogon sans feuilles" title="Epipogon sans feuilles">
-						</a>
-					  </div>
-					  <div class="col-xs-3 col-md-2">
-						<a href="espece/128084" class="thumbnail">
-						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9695/035039.jpg" 
-						  alt="Petite massette" title="Petite massette">
-						</a>
-					  </div>
-					  <div class="col-xs-3 col-md-2">
-						<a href="espece/12348" class="thumbnail">
-						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9832/025930.jpg" 
-						  alt="Rosalie des Alpes" title="Rosalie des Alpes">
-						</a>
-					  </div>
-					  <div class="col-xs-3 col-md-2">
-						<a href="espece/212" class="thumbnail">
-						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9597/028888.jpg" 
-						  alt="Sonneur à ventre jaune" title="Sonneur à ventre jaune">
-						</a>
-					  </div>
-					  <div class="col-xs-3 col-md-2">
-						<a href="espece/105042" class="thumbnail">
-						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9658/021190.jpg" 
-						  alt="Mélèze d'Europe" title="Mélèze d'Europe">
-						</a>
-					  </div>
-					  <div class="col-xs-3 col-md-2">
-						<a href="espece/159446" class="thumbnail">
-						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9839/014306.jpg" 
-						  alt="Isabelle" title="Isabelle">
-						</a>
-					  </div>
-					</div>
+					{% for tax in mostViewTaxon %}
+						<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+						    <div class="hovereffect">
+						        <img class="img-responsive-logo" src="{{url_for('static', filename='images/picto_' + tax.group2_inpn +'.png') }}" alt="">
+						        <div class="overlay">
+						           <h2>{{tax.taxonName}}</h2>
+						           <a class="info" href="{{url_for('main.ficheEspece',cd_ref=tax.cd_ref)}}">Fiche espèce</a>
+						        </div>
+						    </div>
+						</div>
+					  {% endfor %}
+					
 				</div>
 			</div>
 			
@@ -189,6 +123,7 @@
 			  , configuration = {{configuration|tojson}},
 			  url_limit_territory = "{{url_for('static', filename='territoire.json') }}";
         </script>
+    
     <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
     <script src="{{url_for('static', filename='mapHome.js') }}"></script>
 	<!-- FIN AJOUT CAMILLE -->		

@@ -647,8 +647,8 @@ $BODY$
         FOR inf IN 
       WITH RECURSIVE descendants AS (
         SELECT tx1.cd_nom FROM atlas.vm_taxref tx1 WHERE tx1.cd_taxsup = id
-	    UNION ALL
-	    SELECT tx2.cd_nom FROM descendants d JOIN atlas.vm_taxref tx2 ON tx2.cd_taxsup = d.cd_nom
+      UNION ALL
+      SELECT tx2.cd_nom FROM descendants d JOIN atlas.vm_taxref tx2 ON tx2.cd_taxsup = d.cd_nom
       ) 
       SELECT cd_nom FROM descendants 
   LOOP
@@ -982,6 +982,18 @@ CREATE MATERIALIZED VIEW atlas.vm_cor_taxon_attribut AS
            cd_ref
     FROM taxonomie.cor_taxon_attribut
     WHERE id_attribut  IN (100, 101, 102, 103);
+
+CREATE MATERIALIZED VIEW atlas.vm_taxon_most_view_periode AS
+    SELECT count(*) as nb_obs, obs.cd_ref, tax.lb_nom, tax.nom_vern, m.url, m.chemin
+    FROM atlas.vm_observations obs
+    JOIN atlas.vm_taxons tax ON tax.cd_ref=obs.cd_ref
+    LEFT JOIN atlas.vm_medias m ON m.cd_ref = obs.cd_ref 
+    WHERE (date_part('day', obs.dateobs) >= date_part('day',current_date -15) AND date_part('month', obs.dateobs)= date_part('month',current_date -15)) 
+    OR (date_part('day', obs.dateobs) <= date_part('day',current_date +15) AND date_part('month', obs.dateobs) = date_part('day',current_date +15))
+    GROUP BY obs.cd_ref, tax.lb_nom, tax.nom_vern, m.url, m.chemin
+    ORDER BY nb_obs DESC
+    LIMIT 12
+
     
 
 
@@ -1005,7 +1017,6 @@ BEGIN
     RETURN 1;
 END 
 $$ LANGUAGE plpgsql;
-
 
 
 

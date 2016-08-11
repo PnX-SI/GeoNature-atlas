@@ -27,12 +27,15 @@ def index():
     else:
         observations = vmObservationsRepository.lastObservations(connection, config.NB_LAST_OBS, config.ATTR_MAIN_PHOTO)
     communesSearch = vmCommunesRepository.getAllCommunes(session)
-    configuration = {'STRUCTURE' : config.STRUCTURE, 'HOMEMAP': True, 'NB_LAST_OBS': config.NB_LAST_OBS, 'AFFICHAGE_MAILLE': config.AFFICHAGE_MAILLE}
+    mostViewTaxon = vmObservationsRepository.mostViewTaxon(connection)
+    configuration = {'STRUCTURE' : config.STRUCTURE, 'HOMEMAP': True, 'NB_LAST_OBS': config.NB_LAST_OBS, 'AFFICHAGE_MAILLE': config.AFFICHAGE_MAILLE, \
+    'URL_PHOTO': config.URL_PHOTO}
     
     connection.close()
     session.close()
 
-    return render_template('index.html', listeTaxonsSearch=listeTaxonsSearch, observations=observations, communesSearch=communesSearch, configuration = configuration)
+    return render_template('index.html', listeTaxonsSearch=listeTaxonsSearch, observations=observations, communesSearch=communesSearch, \
+     mostViewTaxon=mostViewTaxon, configuration = configuration)
 
 
 @main.route('/espece/<int:cd_ref>', methods=['GET', 'POST'])

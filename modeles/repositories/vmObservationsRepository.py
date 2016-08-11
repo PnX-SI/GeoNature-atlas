@@ -142,3 +142,19 @@ def getObservers(session, cd_ref):
             i=i+1              
         finalList.append(fullName)
     return finalList
+
+
+
+def mostViewTaxon(connection):
+    sql = "SELECT * FROM atlas.vm_taxon_most_view_periode"
+    req = connection.execute(text(sql))
+    tabTax = list()
+    for r in req:
+        if r.nom_vern != None:
+            nom_verna = r.nom_vern.split(',')
+            taxonName = nom_verna[0]+' | ' + r.lb_nom
+        else:
+            taxonName = r.lb_nom
+        temp ={'cd_ref': r.cd_ref, 'taxonName':taxonName, 'url': r.url, 'chemin': r.chemin, 'group2_inpn': utils.deleteAccent(r.group2_inpn)}
+        tabTax.append(temp)
+    return tabTax
