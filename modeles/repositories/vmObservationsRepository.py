@@ -4,6 +4,7 @@ from atlas import APP_DIR, BASE_DIR, manage
 import sys
 sys.path.insert(0, APP_DIR + '/modeles/entities')
 sys.path.insert(0, BASE_DIR)
+from modeles import utils
 from vmObservations import VmObservations
 from tCommunes import LCommune
 from vmTaxref import VmTaxref
@@ -59,28 +60,38 @@ def firstObservationChild(connection, cd_ref):
       return r.yearmin
 
     
-def lastObservations(session, mylimit):
-    observations = session.query(VmObservations, VmObservations.geojson_point, VmTaxref, LCommune.commune_maj)\
-    .join(VmTaxref, VmObservations.cd_ref==VmTaxref.cd_nom)\
-    .join(LCommune, VmObservations.insee == LCommune.insee) \
-    .order_by(desc(VmObservations.dateobs)).limit(mylimit).all()
+def lastObservations(connection, mylimit, idPhoto):
+    sql = "SELECT obs.*, \
+    tax.lb_nom, tax.nom_vern, tax.group2_inpn, \
+    medias.url \
+    FROM atlas.vm_observations obs \
+    JOIN atlas.vm_taxons tax ON tax.cd_ref = obs.cd_ref \
+    LEFT JOIN atlas.vm_medias medias ON medias.cd_ref = obs.cd_ref AND medias.id_media = :thisidphoto\
+    ORDER BY obs.dateobs DESC \
+    LIMIT :thislimit "
+
+    observations = connection.execute(text(sql), thislimit = mylimit, thisidphoto=idPhoto)
     obsList=list()
     for o in observations:
-        if o.VmTaxref.nom_vern:
-            taxon = o.VmTaxref.nom_vern + ' | ' + o.VmTaxref.lb_nom
+        print o.cd_ref
+        if o.nom_vern:
+            inter = o.nom_vern.split(',')
+            taxon = inter[0] +' | '+ o.lb_nom
         else:
-            taxon = o.VmTaxref.lb_nom
-        temp = {'id_synthese' : o.VmObservations.id_synthese,
-                'cd_ref': o.VmObservations.cd_ref,
-                'dateobs': str(o.VmObservations.dateobs),
-                'altitude_retenue' : o.VmObservations.altitude_retenue,
-                'effectif_total' : o.VmObservations.effectif_total,
+            taxon = o.lb_nom
+        temp = {'id_synthese' : o.id_synthese,
+                'cd_ref': o.cd_ref,
+                'dateobs': str(o.dateobs),
+                'altitude_retenue' : o.altitude_retenue,
+                'effectif_total' : o.effectif_total,
                 'taxon': taxon,
                 'geojson_point':ast.literal_eval(o.geojson_point),
-                'commune': o.commune_maj
+                'group2_inpn': utils.deleteAccent(o.group2_inpn),
+                'urlImage' : o.url
                 }
         obsList.append(temp)
     return obsList
+
 
 def lastObservationsCommune(connection, mylimit, insee):
     sql = "SELECT o.id_synthese, o.cd_ref, o.dateobs, o.altitude_retenue,o.geojson_point, o.effectif_total, t.lb_nom, t.nom_vern, o.geojson_point \
@@ -122,7 +133,13 @@ def getObservers(session, cd_ref):
     for s in setObs:
         tabInter= s.split(' ')
         fullName= str()
-        for t in tabInter:
-            fullName += t.capitalize() + " "
+        i=0
+        print len(tabInter)
+        while i<len(tabInter):
+            if i == len(tabInter)-1:
+                fullName += tabInter[i].capitalize()
+            else:
+                fullName += tabInter[i].capitalize() + " "
+            i=i+1              
         finalList.append(fullName)
     return finalList

@@ -25,9 +25,11 @@ def index():
     if config.AFFICHAGE_MAILLE:
         observations = vmObservationsMaillesRepository.lastObservationsMailles(connection, config.NB_LAST_OBS)
     else:
-        observations = vmObservationsRepository.lastObservations(session, config.NB_LAST_OBS)
+        observations = vmObservationsRepository.lastObservations(connection, config.NB_LAST_OBS, config.ATTR_MAIN_PHOTO)
     communesSearch = vmCommunesRepository.getAllCommunes(session)
     configuration = {'STRUCTURE' : config.STRUCTURE, 'HOMEMAP': True, 'NB_LAST_OBS': config.NB_LAST_OBS, 'AFFICHAGE_MAILLE': config.AFFICHAGE_MAILLE}
+    
+    connection.close()
     session.close()
 
     return render_template('index.html', listeTaxonsSearch=listeTaxonsSearch, observations=observations, communesSearch=communesSearch, configuration = configuration)

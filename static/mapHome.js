@@ -1,4 +1,5 @@
 var map = generateMap();
+map.scrollWheelZoom.disable();
 
 
 
@@ -47,7 +48,7 @@ $(function(){
           }
       }
       selectLayer.openPopup();
-          map.setView(selectLayer._latlng, 12);
+          map.setView(selectLayer._latlng, 14);
       })
   }
 

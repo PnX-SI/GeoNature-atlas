@@ -2,6 +2,8 @@
 # -*- coding:utf-8 -*-
 from atlas.manage import engine
 from sqlalchemy import MetaData, Table
+import unicodedata
+
 
 class GenericTable:
     def __init__(self, tableName, schemaName):
@@ -19,3 +21,7 @@ def serializeQuery( data, columnDef):
         {c['name'] : getattr(row, c['name']) for c in columnDef if getattr(row, c['name']) != None } for row in data
     ]
     return rows
+
+
+def deleteAccent(string): 
+    return unicodedata.normalize('NFD', string).encode('ascii', 'ignore')  

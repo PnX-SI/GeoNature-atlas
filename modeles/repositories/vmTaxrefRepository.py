@@ -4,8 +4,8 @@ from atlas import APP_DIR, BASE_DIR, manage
 import sys
 sys.path.insert(0, APP_DIR + '/modeles/entities')
 sys.path.insert(0, BASE_DIR)
+from modeles import utils
 import config
-import unicodedata
 from vmTaxref import VmTaxref
 from vmTaxons import VmTaxons
 from tBibTaxrefRang import TBibTaxrefRang
@@ -15,8 +15,7 @@ from sqlalchemy.orm import sessionmaker
 
 
 
-def deleteAccent(string): 
-    return unicodedata.normalize('NFD', string).encode('ascii', 'ignore')  
+
 
 #recherche l espece corespondant au cd_nom et tout ces fils
 def searchEspece(connection, cd_ref):
@@ -28,7 +27,7 @@ def searchEspece(connection, cd_ref):
     req = connection.execute(text(sql), thiscdref = cd_ref)
     taxonSearch = dict()
     for r in req:
-        taxonSearch = {'cd_ref': r.cd_ref, 'lb_nom': r.lb_nom, 'nom_vern': r.nom_vern, 'nom_complet_html': r.nom_complet_html, 'group2_inpn': deleteAccent(r.group2_inpn),\
+        taxonSearch = {'cd_ref': r.cd_ref, 'lb_nom': r.lb_nom, 'nom_vern': r.nom_vern, 'nom_complet_html': r.nom_complet_html, 'group2_inpn': utils.deleteAccent(r.group2_inpn),\
         'yearmin': r.yearmin, 'yearmax':r.yearmax }
 
     sql="SELECT tax.lb_nom, \

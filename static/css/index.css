@@ -12,22 +12,31 @@ body {
 }
 
 #mapRow{
-	margin: 35px;
-	margin-top: 5px;
-	margin-bottom: 5px;
+
+  max-height: 600px;
 }
-#mapContainer {
-	padding: 10px;
-	background-color: white;
-}
+
 
 #map{
   width: 100%; height: 600px;
   }
 
 #listMap{
-  max-height: 6f00px;
+  padding-left: 0px;
 }
+
+#tableEspece{
+  max-height: 550px;
+}
+
+td.singleTaxon.name {
+  width: 50%;
+}
+
+td.singleTaxon.img {
+  width: 15%;
+}
+
 
 #statContainer{
   float: left;

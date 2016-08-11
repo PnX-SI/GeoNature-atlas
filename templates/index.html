@@ -39,16 +39,7 @@
 				<p>
 					Celles-ci se basent sur les observations réalisées en temps réel par les agents et présente une vue d'ensemble des espèces observées mais en aucun cas un inventaire exhaustif des espèces du territoire.
 				</p>
-				<div class="alert alert-danger" role="alert">
-					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-					EN COURS DE DEVELOPPEMENT ! Actuellement, vous pouvez rechercher une espèce pour afficher sa fiche détail (encore incomplète). 
-					<br/>
-					Suivez les développements sur <a href="https://github.com/PnEcrins/GeoNature-atlas" target="_blank">Github</a>.
-				</div>
-				<div class="alert alert-info" role="alert">
-					<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-					A terme cette page d'accueil proposera un tableau de bord des données présentes dans l'atlas, des statistiques ainsi que des informations dynamiques sur les dernières observations, les espèces les plus observées dans la période en cours, les espèces observées autour de moi. A suivre...
-				</div>
+				
 			</div>
 			
 			<!-- PHOTO (aléatoire ?) -->
@@ -61,166 +52,40 @@
 			<div class="col-sm-12" style="height:20px"></div>
 			
 			<!-- Dernières espèces observées -->
-			<div class="col-sm-9"> 
-				<div class="panel panel-default">
-					<div class="panel-heading"><strong>Dernières espèces observées</strong></div>
-						<div class="row" style="padding: 10px;">
-						  	{% for i in range(4) %}
-						  	<div class="col-xs-6 col-md-3">
-						  		<div class="thumbnail">
-									<div class="hovereffect">
-									  <img class="img-responsive" src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9698/037466.jpg" alt="...">
-									  <div class="overlay">
-	          							 <a class="info" href="{{url_for('main.ficheEspece',cd_ref=observations[i].cd_ref)}}"><img src="{{url_for('static', filename='images/eye.png') }}"></a>
-	       							  </div>
-									</div>
-									<div class="caption">
-										<h4> {{ observations[i].taxon }} </h4>
-										<p class="float">Observé le {{observations[i].dateobs}} dans la commune de {{observations[i].commune}}</p>
-										<p><a href="{{url_for('main.ficheEspece',cd_ref=observations[i].cd_ref)}}" class="btn btn-primary" role="button">Fiche détail</a></p>
-								  	</div>
-								</div>
-							</div>
-							{% endfor %}
+			<div class="col-sm-12"> 
+					  <!-- CARTO des 100 dernières observations -->
+					  <div class="panel panel-default">
+					  	<div class="row" id="mapRow">
+							 <div class="col-sm-8">
+								<div id="map"> </div>
+							 </div>
+							 <div id="listMap" class = "col-sm-4"> 
+							 	<h5> <b> Les {{configuration.NB_LAST_OBS}} dernières observations </b> </h5>
+								<table id='tableEspece' class="table table-striped">
+									
+									<tbody>
+										{% for obs in observations %}
+										<tr class='tabEspece'>
+											{% if obs.urlImage == None %}
+											<td class="singleTaxon img"> <img width="80%" src= "/atlas/static/images/picto_{{obs.group2_inpn|urlencode}}.png"> </td>
+											{% else %}
+											<td class="singleTaxon img"> <img width="15px" height="15px" src="{{configuration.URL_PHOTO}}{{obs.url}}"> </td>
+											{% endif %}
+											<td class="singleTaxon name" idSynthese = "{{obs.id_synthese}}" cdref="{{obs.cd_ref}}" > {{obs.taxon}}</td>
+											<td class="singleTaxon" idSynthese = "{{obs.id_synthese}}"> {{obs.dateobs}} </td>
+											<td> <a href = "{{url_for('main.ficheEspece',cd_ref=obs.cd_ref)}}"> <img height="20" width="20" src ="{{url_for('static', filename='images/logo_files.png') }}" alt="Lien vers la fiche espèce" title="Lien vers la fiche espèce"> </a> </td> 
+											<td class="hiddenTd" hidden ="true"> {{obs.cd_ref}} </td>
+										</tr>
+										{% endfor %}
+									</tbody>
+								</table>	
+							 </div>
 						</div>
+
 					</div>
-
-
-					  <!-- 	
-						<div class="thumbnail">
-								<div class="hovereffect">
-								  <img class="img-responsive" src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9698/037466.jpg" alt="...">
-								  <div class="overlay">
-          							 <a class="info" href="#"><img src= "{{url_for('static', filename='images/eye.png') }}"}></a>
-       							  </div>
-								</div>
-								<div class="caption">
-									<h4>Saxifrage à feuilles opposées</h4>
-									<p>Observé le 22 juin 2016 dans la commune XXX</p>
-									<p><a href="espece/121132" class="btn btn-primary" role="button">Fiche détail</a></p>
-							  	</div>
-						</div>
-					  </div>
-					  <div class="col-xs-6 col-md-3">
-						<div class="thumbnail">
-						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9593/000024.jpg" alt="...">
-						  <div class="caption">
-							<h4>Lièvre variable</h4>
-							<p>Observé le 22 juin 2016 dans la commune XXX</p>
-							<p><a href="espece/61699" class="btn btn-primary" role="button">Fiche détail</a></p>
-						  </div>
-						</div>
-					  </div>
-					  <div class="col-xs-6 col-md-3">
-						<div class="thumbnail">
-						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9699/027530.jpg" alt="...">
-						  <div class="caption">
-							<h4>Buxbaumie verte</h4>
-							<p>Observé le 21 juin 2016 dans la commune XXX</p>
-							<p><a href="espece/3885" class="btn btn-primary" role="button">Fiche détail</a></p>
-						  </div>
-						</div>
-					  </div>
-					  <div class="col-xs-6 col-md-3">
-						<div class="thumbnail">
-						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/13010/021658recadre.jpg" alt="...">
-						  <div class="caption">
-							<h4>Hermine</h4>
-							<p>Observé le 19 juin 2016 dans la commune XXX</p>
-							<p><a href="espece/60686" class="btn btn-primary" role="button">Fiche détail</a></p>
-						  </div>
-						</div>
-					  </div> -->
-					  
-						  <!-- CARTO des 100 dernières observations -->
-						  <div class="panel panel-default">
-						  	<div class="row">
-								 <div class="col-sm-9">
-									<div id="map"> </div>
-								 </div>
-								 <div id="listMap" class = "col-sm-3"> 
-									<table id='tableEspece' class="table table-striped">
-										<thead>
-											<tr>
-												<th> Liste des {{configuration.NB_LAST_OBS}} dernières observations </th>
-											</tr>
-										</thead>
-										<tbody>
-											{% for obs in observations %}
-											<tr class='tabEspece'>
-												<td class="singleTaxon" idSynthese = "{{obs.id_synthese}}" cdref="{{obs.cd_ref}}" > {{obs.taxon}}</td>
-												<td> <a href = "{{url_for('main.ficheEspece',cd_ref=obs.cd_ref)}}"> <img height="20" width="20" src ="{{url_for('static', filename='images/logo_files.png') }}" alt="Lien vers la fiche espèce" title="Lien vers la fiche espèce"> </a> </td> 
-												<td class="hiddenTd" hidden ="true"> {{obs.cd_ref}} </td>
-											</tr>
-											{% endfor %}
-										</tbody>
-									</table>	
-								 </div>
-							</div>
-
-						</div>
 			</div>
 
-			<!-- STATISTIQUES -->
-			<div class="col-sm-3"> 
-				<div class="panel panel-default" id="statContainer">
-				  <!-- Default panel contents -->
-				  <div class="panel-heading"><strong>571278 observations</strong></div>
-				  <div class="panel-body">
-					<p>Les observations sont mises à jour en temps réel à chaque fois qu'un agent saisi une nouvelle donnée dans les <a href="https://github.com/PnEcrins/GeoNature" target="_blank">bases de données scientifiques du Parc national des Ecrins</a>.</p>
-				  </div>
-
-<!-- 			<ul id="stat">
-                    <li> <img src="{{url_for('static', filename='images/bear.png') }}">  </br> <b> Faune </b> </br> 369440 observations  </li>
-                    <li> <img src="{{url_for('static', filename='images/pear.png') }}"> <br> <b> Flore </b> </br> 201724 observations </li>
-                    <li> <img src="{{url_for('static', filename='images/mushroom.png') }}">  </br> <b>  Fonge </b> </br> 106 observations </li>
-
-            	</ul> -->			  
-
-				  <!-- Table -->
-				  <!-- SELECT regne, count (*) FROM atlas.vm_observations o
-					JOIN atlas.vm_taxons t ON o.cd_ref = t.cd_ref
-					GROUP BY t.regne -->
-
-
-				  <table class="table">
-					<tbody> 
-						<tr> 
-							<th scope="row">Faune</th> 
-							<td>369440 observations</td> 
-						</tr> 
-						<tr> 
-							<th scope="row">Flore</th> 
-							<td>201724 observations</td> 
-						</tr>
-						<tr> 
-							<th scope="row">Fonge</th> 
-							<td>106 observations</td> 
-						</tr>
-					</tbody>
-				  </table>
-				</div>
-			</div>
 			
-			<!-- ACTUS -->
-			<div class="col-sm-3"> 
-				<div class="panel panel-default">
-				  <!-- Default panel contents -->
-				  <div class="panel-heading"><strong>Une petite actu ou un graphique</strong></div>
-				  <div class="panel-body">
-					<img width="100%" src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/article/images_content/stories/dossiers/2013-04-diffusion_donnees/2013-04-donnees-test-smart.jpg">
-				  </div>
-				</div>
-			</div>
-			<div class="col-sm-3"> 
-				<div class="panel panel-default">
-				  <!-- Default panel contents -->
-				  <div class="panel-heading"><strong>Une petite actu ou un graphique</strong></div>
-				  <div class="panel-body">
-					<img width="100%" src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/article/images_content/stories/dossiers/2010-06-suivi-flore/2010-06-prospection-pda.jpg">
-				  </div>
-				</div>
-			</div>
 						
 			<!-- SAUT DE LIGNE -->
 			<div class="col-sm-12" style="height:20px"></div>
@@ -231,11 +96,15 @@
 					<div class="panel-heading"><strong>Espèces les plus observées à cette période</strong></div>
 					<div class="row" style="padding: 5px;">
 					  <div class="col-xs-3 col-md-2">
-						<a href="espece/716523" class="thumbnail">
-						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9837/015472.jpg" 
-						  alt="Petit apollon" title="Petit apollon">
-						</a>
-					  </div>
+						
+						  	<div class="hovereffect">
+							  	<img class="img-responsive" src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9837/015472.jpg" 
+							  	alt="Petit apollon" title="Petit apollon">
+							  	<div class="overlay">
+							  		<a href="espece/716523" class="thumbnail"></a>
+							  		<h2> Petit apollon </h2>
+							  	</div>
+					  		</div>
 					  <div class="col-xs-3 col-md-2">
 						<a href="espece/3780" class="thumbnail">
 						  <img src="http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/squared/public/patrimoine/9590/056467_0.jpg" 
