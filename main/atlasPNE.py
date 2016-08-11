@@ -23,7 +23,7 @@ def index():
 
     listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons(session)
     if config.AFFICHAGE_MAILLE:
-        observations = vmObservationsMaillesRepository.lastObservationsMailles(connection, config.NB_LAST_OBS)
+        observations = vmObservationsMaillesRepository.lastObservationsMailles(connection, config.NB_LAST_OBS, config.ATTR_MAIN_PHOTO)
     else:
         observations = vmObservationsRepository.lastObservations(connection, config.NB_LAST_OBS, config.ATTR_MAIN_PHOTO)
     communesSearch = vmCommunesRepository.getAllCommunes(session)

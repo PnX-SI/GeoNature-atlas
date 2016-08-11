@@ -73,7 +73,6 @@ def lastObservations(connection, mylimit, idPhoto):
     observations = connection.execute(text(sql), thislimit = mylimit, thisidphoto=idPhoto)
     obsList=list()
     for o in observations:
-        print o.cd_ref
         if o.nom_vern:
             inter = o.nom_vern.split(',')
             taxon = inter[0] +' | '+ o.lb_nom
