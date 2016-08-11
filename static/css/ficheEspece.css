@@ -37,6 +37,27 @@ body {
 	color: white;
 }
 
+#identityPanel{
+	padding-right: 5px;
+}
+
+#taxonIdentity{
+	padding-left: 0px;
+}
+
+
+#logoCol{
+	padding-left: 0px;
+}
+
+#logoImg{
+	padding-top: 5px;
+} 
+
+.nav>li>a {
+	padding: 10px 7px;
+}
+
 
 #mapContainer {
 	padding-right: 0px;
@@ -55,7 +76,8 @@ body {
 
 
 #mapStat li {
-	margin-top: 10px;
+	margin-top: 15px;
+	margin-bottom: 20px;
 	display: inline-block; 
     width: 100px;
     text-align: center;

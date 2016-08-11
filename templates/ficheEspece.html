@@ -60,7 +60,7 @@
         </div>
 
         <div class='col-sm-7'>
-            <div class="panel panel-default">
+            <div class="panel panel-default" id="identityPanel">
                 <div class= "row">
                     <div class="col-sm-6" > 
                         {% if firstPhotoURL == None %}
@@ -70,29 +70,37 @@
                         {% endif %}
 
                     </div>
-                    <div class="col-sm-6">
-
-                        <h3> {{taxon.taxonSearch.nom_complet_html|safe}}</h3>
+                    <div class="col-sm-5" id="taxonIdentity">
                         {% if taxon.taxonSearch.nom_vern != None %}
-                            <p>  {{taxon.taxonSearch.nom_vern}}  <br/>
+                            <h3>  {{taxon.taxonSearch.nom_vern}} 
+                        
                         {% endif %}
+                            <h3> {{taxon.taxonSearch.nom_complet_html|safe}} </h3>
+                        
 
-                        {% for taxon in taxonomyHierarchy %}
-                            {{taxon.nom_rang}} :
-                            <i>
-                            {% if ( taxon.tri_rang >= configuration.LIMIT_FICHE_LISTE_HIERARCHY) %}
-                                 <a href = "{{url_for('main.ficheEspece', cd_ref = taxon.cd_ref) }}"> {{taxon.lb_nom}}</a> 
-                            {% else %}
-                                 <a href = "{{url_for('main.ficheRangTaxonomie', cd_ref = taxon.cd_ref) }}">{{taxon.lb_nom}} </a> 
+                        <div style="margin-top:30px">
+                            {% for taxon in taxonomyHierarchy %}
+                                {{taxon.nom_rang}} :
+                                <i>
+                                {% if ( taxon.tri_rang >= configuration.LIMIT_FICHE_LISTE_HIERARCHY) %}
+                                     <a href = "{{url_for('main.ficheEspece', cd_ref = taxon.cd_ref) }}"> {{taxon.lb_nom}}</a> 
+                                {% else %}
+                                     <a href = "{{url_for('main.ficheRangTaxonomie', cd_ref = taxon.cd_ref) }}">{{taxon.lb_nom}} </a> 
 
-                            {% endif %}
-                            </i>
-                            {% if not loop.last %}
-                                 <span class="glyphicon glyphicon-chevron-right"> </span>
-                            {% endif %}
-                        {% endfor %}
+                                {% endif %}
+                                </i>
+                                {% if not loop.last %}
+                                     <span class="glyphicon glyphicon-chevron-right"> </span>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
 
-                        </br> <a href='https://inpn.mnhn.fr/espece/cd_nom/{{taxon.taxonSearch.cd_ref}}' target="_blank">Fiche INPN</a>
+                        <div id="inpnLink">
+                            <br> <br>
+                            <a href='https://inpn.mnhn.fr/espece/cd_nom/{{taxon.taxonSearch.cd_ref}}' target="_blank"> 
+                                <img width="30%" src="{{url_for('static', filename='images/logo_inpn.png') }}">
+                             </a>
+                        </div>
 
                     
                     
@@ -114,7 +122,9 @@
                                 </div>
                         {% endif %}
                     </div>  
-                  
+                    <div class="col-xs-1" id="logoCol">
+                        <img id="logoImg"src= "/atlas/static/images/picto_{{taxon.taxonSearch.group2_inpn|urlencode}}.png" alt ="{{taxon.taxonSearch.group2_inpn}}" title = "{{taxon.group2_inpn}}">
+                    </div>
                 </div>  
             </div>
             <div class="panel panel-default" id="mapPanel">
@@ -123,12 +133,10 @@
                         <div id="map"> </div>
                     </div>
                     <div class="col-sm-2" id="mapStat">
-                        <h5> {{taxon.taxonSearch.lb_nom}} </h5>
-                            <li> <img src= "/atlas/static/images/picto_{{taxon.taxonSearch.group2_inpn|urlencode}}.png" alt ="{{taxon.taxonSearch.group2_inpn}}" title = "{{taxon.group2_inpn}}"> <br> </li>
                         <ul>
                             <li> <span data-icon="&#xe037;" style="font-size: 30px;"></span> </br> <b> {{observations.maille|length}} </b> </br> Observations  </li>
                             <li> <img id="picto" src="{{url_for('static', filename='images/church.png') }}" style="width"> <br> <b> {{communes|length}}</b> </br>Communes </li>
-                            <li> <span data-icon="&#xe040;"  style="font-size: 30px;"> </span> </br> <b> X </b> </br> Observateurs </li>
+                            <li> <span data-icon="&#xe040;"  style="font-size: 30px;"> </span> </br> <b> {{observers|length}} </b> </br> Observateurs </li>
                             <li id="firstObs" class="pointer"> <span data-icon="&#xe037;" style="font-size: 25px; color: brown"></span> </br> <b> 1ère observations </b> </br>  {{taxon.taxonSearch.yearmin|int}} </li>
                             <li id="lastObs" class="pointer"> <span data-icon="&#xe037;" style="font-size: 25px; color: blue"></span> </br> <b> Dernière observation </b> </br> {{taxon.taxonSearch.yearmax|int}}  </li>
 
@@ -186,12 +194,14 @@
 
             
             <div class="panel panel-default" style="padding: 10px;">
-                
+
+                        <h4>Information sur l'espèce</h4>
                           <ul class="nav nav-tabs" style="margin-botton:10px;">
-                            <li class="active"><a data-toggle="tab" href="#description">Description de l'espèce</a></li>
+                            <li class="active"><a data-toggle="tab" href="#description">Description</a></li>
                             <li><a data-toggle="tab" href="#commentaire">Commentaire</a></li>
                             <li><a data-toggle="tab" href="#milieu">Milieu</a></li>
-                            <li><a data-toggle="tab" href="#corrologie">Corrologie</a></li>
+                            <li><a data-toggle="tab" href="#chorrologie">Chorrologie</a></li>
+                            <li><a data-toggle="tab" href="#synonymes">Synonymes</a></li>
                           </ul>
 
                     
@@ -207,7 +217,7 @@
                                 {% if taxonDescritpion.commentaire == None %}
                                     Non renseigné pour le moment
                                 {% else %}
-                                    {{taxonDescritpion.description}}
+                                    {{taxonDescritpion.commentaire}}
                                 {% endif %}
                             </div>
                             <div id="milieu" class="tab-pane fade">
@@ -217,12 +227,22 @@
                                 {{taxonDescritpion.milieu}}
                                 {% endif %}
                             </div>  
-                            <div id="corrologie" class="tab-pane fade">                                
+                            <div id="chorrologie" class="tab-pane fade">                                
                                 {% if taxonDescritpion.corrologie == None %}
                                     Non renseignée pour le moment
                                 {% else %}
                                     {{taxonDescritpion.corrologie}}
                                 {% endif %}
+                            </div>
+                            <div id="synonymes" class="tab-pane fade">
+                                {%for syn in synonyme %} 
+                                    {% if not syn.lb_nom == taxon.lb_nom %}
+                                    {{syn.lb_nom}}
+                                    {% endif %}
+                                    {% if ( (not loop.last) and (not syn.lb_nom == taxon.lb_nom) ) %}
+                                    -
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         
                         </div>
@@ -242,9 +262,8 @@
                     
                           <h4>Autres informations</h4>
                           <ul class="nav nav-tabs">
-                            <li class="active"><a data-toggle="tab" href="#communes">Communes</a></li>
-                            <li><a data-toggle="tab" href="#synonymes">Synonymes</a></li>
-                            <li><a data-toggle="tab" href="#observateurs">Observateurs</a></li>
+                            <li class="active"><a data-toggle="tab" href="#communes"> <b>{{communes|length}}</b> Communes</a></li>
+                            <li><a data-toggle="tab" href="#observateurs"> <b>{{observers|length}} </b> Observateurs</a></li>
                           </ul>
 
                         <div class="tab-content" style="width:100%;">
@@ -258,23 +277,12 @@
                                                 {% endfor %}
                                                 </p>    
                             </div>
-                            <div id="synonymes" class="tab-pane fade">
-                              {%for syn in synonyme %}
-                                    <span> 
-                                        {% if not syn.lb_nom == taxon.lb_nom %}
-                                        {{syn.lb_nom}}
-                                        {% endif %}
-                                        {% if ( (not loop.last) and (not syn.lb_nom == taxon.lb_nom) ) %}
-                                        ,
-                                        {% endif %}
-                                     </span>
-                                {% endfor %}
-                            </div>
+                           
                             <div id="observateurs" class="tab-pane fade">
                                 {% for o in observers %}
                                     {{o }}
                                     {% if  not loop.last %}
-                                    ,
+                                    -
                                     {% endif %}
                                 {% endfor %}
                             </div>
