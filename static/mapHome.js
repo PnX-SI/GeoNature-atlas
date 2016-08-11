@@ -1,5 +1,9 @@
 var map = generateMap();
+
 map.scrollWheelZoom.disable();
+$('#map').click(function(){
+  map.scrollWheelZoom.enable();
+})
 
 
 
