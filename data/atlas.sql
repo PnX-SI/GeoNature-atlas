@@ -983,16 +983,16 @@ CREATE MATERIALIZED VIEW atlas.vm_cor_taxon_attribut AS
     FROM taxonomie.cor_taxon_attribut
     WHERE id_attribut  IN (100, 101, 102, 103);
 
-CREATE MATERIALIZED VIEW atlas.vm_taxon_most_view_periode AS
-    SELECT count(*) as nb_obs, obs.cd_ref, tax.lb_nom, tax.nom_vern, m.url, m.chemin
+CREATE MATERIALIZED VIEW atlas.vm_taxons_most_view AS
+    SELECT count(*) as nb_obs, obs.cd_ref, tax.lb_nom, tax.group2_inpn, tax.nom_vern, m.url, m.chemin
     FROM atlas.vm_observations obs
     JOIN atlas.vm_taxons tax ON tax.cd_ref=obs.cd_ref
     LEFT JOIN atlas.vm_medias m ON m.cd_ref = obs.cd_ref 
     WHERE (date_part('day', obs.dateobs) >= date_part('day',current_date -15) AND date_part('month', obs.dateobs)= date_part('month',current_date -15)) 
     OR (date_part('day', obs.dateobs) <= date_part('day',current_date +15) AND date_part('month', obs.dateobs) = date_part('day',current_date +15))
-    GROUP BY obs.cd_ref, tax.lb_nom, tax.nom_vern, m.url, m.chemin
+    GROUP BY obs.cd_ref, tax.lb_nom, tax.nom_vern, m.url, m.chemin, tax.group2_inpn
     ORDER BY nb_obs DESC
-    LIMIT 12
+    LIMIT 12;
 
     
 
