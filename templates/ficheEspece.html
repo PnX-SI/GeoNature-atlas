@@ -63,10 +63,13 @@
             <div class="panel panel-default" id="identityPanel">
                 <div class= "row">
                     <div class="col-sm-6" > 
-                        {% if firstPhotoURL == None %}
+                        {% if ( (firstPhoto.url  == None) and
+                                 (firstPhoto.path == None) ) or (firstPhoto == None)  %}
                             <img src="{{url_for('static', filename='images/Photo_non_disponible.png') }}" style="width:100%;height: 100%; border-right: solid 1px;">
+                        {% elif firstPhoto.path != None %}
+                            <img src="{{configuration.URL_PHOTO}}{{firstPhoto.path}}" style="width:100%;height: 100%;">
                         {% else %}
-                            <img src="{{configuration.URL_PHOTO}}{{firstPhotoURL}}" style="width:100%;height: 100%;">
+                            <img src="{{firstPhoto.url}}" style="width:100%;height: 100%;">
                         {% endif %}
 
                     </div>
@@ -156,36 +159,41 @@
                 <div id="myCarousel" class="carousel slide" data-ride="carousel">
                       <!-- Indicators -->
                       <ol class="carousel-indicators">
-                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                        <li data-target="#myCarousel" data-slide-to="1"></li>
-                        <li data-target="#myCarousel" data-slide-to="2"></li>
-                        <li data-target="#myCarousel" data-slide-to="3"></li>
+                        {% for i in range (photoCarousel|length) %}
+                            {% if loop.first %}
+                            <li data-target="#myCarousel" data-slide-to="{{i}}" class="active"></li>
+                            {% else %}
+                            <li data-target="#myCarousel" data-slide-to="{{i}}"></li>
+                            {% endif %}
+                        {% endfor %}
                       </ol>
+                        
 
                       <!-- Wrapper for slides -->
-                      <div class="carousel-inner" role="listbox">
-                        <div class="item active CarouselImg">
-                          <img src="{{configuration.URL_PHOTO}}static/medias/12633_Bromiusobscurus02.jpg" alt="Chania">
-                        </div>
-
-                        <div class="item CarouselImg ">
-                          <img src="{{configuration.URL_PHOTO}}static/medias/12633_Bromiusobscurus03.jpg" alt="Chania">
-                        </div>
-
-                        <div class="item CarouselImg ">
-                          <img src="{{configuration.URL_PHOTO}}static/medias/12633_Bromiusobscurus04.jpg" alt="Flower">
-                        </div>
-
-
-                      <!-- Left and right controls -->
-                      <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                      </a>
-                      <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                      </a>
+                    <div class="carousel-inner" role="listbox">
+                        {% for photo in photoCarousel %}
+                            {% if loop.first %}
+                            <div class="item active CarouselImg">
+                            {% else %}
+                            <div class="item CarouselImg">
+                            {% endif %}
+                            {% if photo.path != None %}
+                                <img src="{{configuration.URL_PHOTO}}{{photo.path}}" alt="{{photo.title}}">
+                            {% else %}
+                                <img src="{{photo.url}}" alt="{{photo.title}}"> 
+                            {% endif %}
+                            </div>
+                        {% endfor %}
+                                                      <!-- Left and right controls -->
+                          <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                          </a>
+                          <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                          </a>
+                        
                     </div>
                 
                 </div>

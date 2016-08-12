@@ -6,7 +6,8 @@ from flask import Flask, request, render_template, jsonify
 from werkzeug.wrappers import Response
 import config
 from modeles.repositories import vmTaxonsRepository, vmObservationsRepository, vmAltitudesRepository, \
- vmSearchTaxonRepository, vmMoisRepository, vmTaxrefRepository, vmCommunesRepository, vmObservationsMaillesRepository, vmMedias, vmCorTaxonAttribut
+ vmSearchTaxonRepository, vmMoisRepository, vmTaxrefRepository, vmCommunesRepository, vmObservationsMaillesRepository, vmMedias, vmCorTaxonAttribut, \
+ vmTaxonsMostView
 from . import main
 import json
 APP_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -27,7 +28,7 @@ def index():
     else:
         observations = vmObservationsRepository.lastObservations(connection, config.NB_LAST_OBS, config.ATTR_MAIN_PHOTO)
     communesSearch = vmCommunesRepository.getAllCommunes(session)
-    mostViewTaxon = vmObservationsRepository.mostViewTaxon(connection)
+    mostViewTaxon = vmTaxonsMostView.mostViewTaxon(connection)
     configuration = {'STRUCTURE' : config.STRUCTURE, 'HOMEMAP': True, 'NB_LAST_OBS': config.NB_LAST_OBS, 'AFFICHAGE_MAILLE': config.AFFICHAGE_MAILLE, \
     'URL_PHOTO': config.URL_PHOTO}
     
@@ -56,7 +57,7 @@ def ficheEspece(cd_ref):
     communes = vmCommunesRepository.getCommunesObservationsChilds(connection, cd_ref)
     communesSearch = vmCommunesRepository.getAllCommunes(session)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
-    firstPhotoURL = vmMedias.getFirstPhoto(connection, cd_ref)
+    firstPhoto = vmMedias.getFirstPhoto(connection, cd_ref)
     photoCarousel = vmMedias.getPhotoCarousel(connection, cd_ref)
     taxonDescritpion = vmCorTaxonAttribut.getAttributesTaxon(connection, cd_ref, config.ATTR_DESC, config.ATTR_COMMENTAIRE, config.ATTR_MILIEU, config.ATTR_CORROLOGIE)
     observers = vmObservationsRepository.getObservers(session, cd_ref)
@@ -69,7 +70,7 @@ def ficheEspece(cd_ref):
 
     return render_template('ficheEspece.html', taxon=taxon, listeTaxonsSearch=listeTaxonsSearch, observations=observations,\
      cd_ref=cd_ref, altitudes=altitudes, months=months, synonyme=synonyme, communes=communes, communesSearch=communesSearch, taxonomyHierarchy = taxonomyHierarchy,\
-      firstPhotoURL= firstPhotoURL, photoCarousel=photoCarousel, taxonDescritpion=taxonDescritpion, observers=observers, configuration=configuration)
+      firstPhoto= firstPhoto, photoCarousel=photoCarousel, taxonDescritpion=taxonDescritpion, observers=observers, configuration=configuration)
 
 
 @main.route('/commune/<insee>', methods=['GET', 'POST'])
