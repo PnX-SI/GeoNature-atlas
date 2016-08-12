@@ -42,8 +42,59 @@ body {
 }
 
 #taxonIdentity{
-	padding-left: 0px;
+	padding-left: 15px;
 }
+
+#rowImg{
+	margin-left: 0px;
+}
+
+#imgCol{
+	padding-right: 0px;
+	padding-left: 0px;
+/}
+
+/*Display legend on images */
+
+p.imgDescription {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  background: black;
+  color: #fff;
+  visibility: hidden;
+  opacity: 0.5;
+  margin-bottom: 0px;
+  padding: 5px;
+}
+
+p.imgDescription.main {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  background: black;
+  color: #fff;
+  visibility: hidden;
+  opacity: 0.5;
+  margin-bottom: 0px;
+  padding: 5px;
+}
+
+
+.imgWrapper:hover p.imgDescription {
+  visibility: visible;
+
+}
+
+.CarouselImg:hover p.imgDescription{
+	visibility: visible;
+
+}
+
+
+
+
+
 
 
 #logoCol{

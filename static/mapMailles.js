@@ -8,7 +8,7 @@ displayMailleLayerFicheEspece(observationsMaille, taxonYearMin, $YEARMAX);
 $('.pointer').css('cursor', 'pointer');
 //display nb observations
 $("#nbObs").html("Nombre d'observation(s): "+ observationsPoint.length);
-);
+
 
 });
 
