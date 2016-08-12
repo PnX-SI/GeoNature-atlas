@@ -39,6 +39,9 @@ ZOOM_LEVEL_POINT = 11
 # Nombre de 'x' dernieres observations de la carte sur la page d'acceuil
 LIMIT_OBSERVATION = 100
 
+#Limite d'observation à partir duquel on passe à l'affichage en cluster
+LIMIT_CLUSTER_POINT = 1000
+
 # rang taxonomique qui fixe jusque quel taxon remonte la filiation taxonomique (hierachie dans la fiche d'identite)
 LIMIT_RANG_TAXONOMIQUE_HIERARCHIE = 13
 
