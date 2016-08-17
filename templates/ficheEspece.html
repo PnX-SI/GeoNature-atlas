@@ -45,8 +45,9 @@
         <link rel="stylesheet" href="{{url_for('static', filename='/css/icones.css') }}" />
 
         <!-- LightBox -->
-        <link rel="stylesheet" href="{{url_for('static', filename='/lib/lightBox/css/bootstrap.lightbox.css') }}" />
-        <script src="{{url_for('static', filename='/lib/lightBox/js/bootstrap.lightbox.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/lightbox2/css/lightbox.min.css') }}" />
+        
+        
 
 
 
@@ -72,23 +73,22 @@
                             {% if ( (firstPhoto.url  == None) and (firstPhoto.path == None) ) or (firstPhoto == None)  %}
                                 <img src="{{url_for('static', filename='images/Photo_non_disponible.png') }}" style="width:100%;height: 100%; border-right: solid 1px;">
                             {% elif firstPhoto.path != None %}
-                                <img class ="imgToCarousel" id="myImg" src="{{configuration.URL_PHOTO}}{{firstPhoto.path}}" style="width:100%;height: 100%;">
-                                <p class="imgDescription main"> {{firstPhoto.title}} - &copy; {{firstPhoto.author}} </p>
+                                <a href="{{firstPhoto.url}}" data-lightbox="imageSet" data-title="{{firstPhoto.title}} - &copy; {{firstPhoto.author}}" >
+                                    <img class ="imgToCarousel" id="myImg" src="{{configuration.URL_PHOTO}}{{firstPhoto.path}}" style="width:100%;height: 100%;">
+                                    <p class="imgDescription main"> {{firstPhoto.title}} - &copy; {{firstPhoto.author}} </p>
+                                </a>
                             {% else %}
-                                <img class ="imgToCarousel" id="myImg" src="{{firstPhoto.url}}" style="width:100%;height: 100%;">
+                            
+                            <a href="{{firstPhoto.url}}" data-lightbox="imageSet" data-title="{{firstPhoto.title}} - &copy; {{firstPhoto.author}}" >
+                                <img  id="myImg" src="{{firstPhoto.url}}" style="width:100%;height: 100%;">
                                 <p class="imgDescription main"> {{firstPhoto.title}} - &copy; {{firstPhoto.author}} </p>
-                            {% endif %}
+                            </a>
+                           {% endif %}
                         </div>
 
                     </div>
 
-                    <!-- TEST -->
-                    <div id="myModal" class="modal">
-                        <span class="close" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
-                        <img class="modal-content" id="img01">
-                         <!-- Modal Caption (Image Text) -->
-                        <div id="caption"></div>
-                    </div>
+
 
                     <div class="col-sm-5" id="taxonIdentity">
                         {% if taxon.taxonSearch.nom_vern != None %}
@@ -184,13 +184,14 @@
                             {% endif %}
                             
                                 {% if photo.path != None %}
+                                <a href="{{configuration.URL_PHOTO}}{{photo.path}}" data-lightbox="imageSet" data-title="{{photo.title}} - &copy; {{photo.author}}" >
                                     <img class ="imgToCarousel" src="{{configuration.URL_PHOTO}}{{photo.path}}" alt="{{photo.title}}">
+                                </a>
                                 {% else %}
+                                <a href="{{photo.url}}" data-lightbox="imageSet" data-title="{{photo.title}} - &copy; {{photo.author}}" >
                                     <img class ="imgToCarousel" src="{{photo.url}}" alt="{{photo.title}}"> 
-                                {% endif %}
-                                    <p class="imgDescription"> {{photo.title}} - &copy; {{photo.author}} </p>
-                            
-                                
+                                </a>
+                                {% endif %}                                 
                             </div>
                         {% endfor %}
                                                       <!-- Left and right controls -->
@@ -312,6 +313,8 @@
 
       
     </div>
+
+    <script  src="{{url_for('static', filename='/lib/lightbox2/js/lightbox.min.js') }}" ></script>
     
     <script type="text/javascript" src="/atlas/static/conf/calculCustom.js"></script>
 

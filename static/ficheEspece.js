@@ -1,5 +1,5 @@
 // Get the modal
-var modal = document.getElementById('myModal');
+/*var modal = document.getElementById('myModal');
 
 // Get the image and insert it inside the modal - use its "alt" text as a caption
 var img = document.getElementById('myImg');
@@ -19,13 +19,13 @@ lisUrl = [];
 for (i=0; i<carousselImg.length; i++){
 	lisUrl.push(carousselImg[i].src)
 }
-console.log(carousselImg);
-console.log(lisUrl);
 
-var i = 1;
+
+
+var i = 0;
 modal.onclick = function(){
 	if(i==lisUrl.length){
-		i=1
+		i=0
 	}
 	modalImg.src = lisUrl[i]
 	i = i+1;
@@ -37,4 +37,5 @@ var span = document.getElementsByClassName("close")[0];
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() { 
   modal.style.display = "none";
-}
+}*/
+

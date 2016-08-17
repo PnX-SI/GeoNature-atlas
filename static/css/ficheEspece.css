@@ -279,8 +279,9 @@ text {
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
+    z-index: 9999; /* Sit on top */
+    padding-top: 60px; /* Location of the box */
+    padding-bottom: 60px
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -295,7 +296,8 @@ text {
     margin: auto;
     display: block;
     width: 80%;
-    max-width: 700px;
+    max-width: 60vw;
+    background-color: transparent;
 }
 
 /* Caption of Modal Image (Image Text) - Same Width as the Image */
@@ -351,4 +353,33 @@ text {
     .modal-content {
         width: 100%;
     }
+}
+
+
+/*Lightbox*/
+
+.modal-content img{
+  display: block;
+  margin: 0 auto;
+}
+
+#previous {
+  margin: 20px;
+  font-size: 40px;
+  font-weight: bold;
+  color: white;
+  position: absolute;
+  top: 50%;
+
+}
+
+#next {
+  position: absolute;
+  margin: 20px;
+  font-size: 40px;
+  font-weight: bold;
+  color: white;
+  top: 50%;
+  left:100%;
+
 }
