@@ -86,14 +86,6 @@ p.imgDescription.main {
 
 }
 
-.CarouselImg:hover p.imgDescription{
-	visibility: visible;
-
-}
-
-
-
-
 
 
 
@@ -160,13 +152,6 @@ p.imgDescription.main {
 	padding-top: 10px;
 }
 
-
-.CarouselImg img {
-  width: auto;
-  height: 225px;
-  max-height: 225px;
-  margin: 0 auto;
-}
 
 
 .nav {
@@ -272,114 +257,26 @@ text {
 
 
 
+/*Carousel*/
 
-/*Modal Carousel Photo*/
-
-/* The Modal (background) */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 9999; /* Sit on top */
-    padding-top: 60px; /* Location of the box */
-    padding-bottom: 60px
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+.carousel {
+width:100%; 
+margin:0 auto; /* center your carousel if other than 100% */ 
 }
 
-/* Modal Content (Image) */
-.modal-content {
-    margin: auto;
-    display: block;
-    width: 80%;
-    max-width: 60vw;
-    background-color: transparent;
+  #fixed .slider-size {
+    height: 300px; 
+    width: 100%;
+  }
+
+
+.carousel-caption {
+  right: 0%;
+  left: 0%;
+  padding: 10px;
 }
 
-/* Caption of Modal Image (Image Text) - Same Width as the Image */
-#caption {
-    margin: auto;
-    display: block;
-    width: 80%;
-    max-width: 700px;
-    text-align: center;
-    color: #ccc;
-    padding: 10px 0;
-    height: 150px;
+.carousel-indicators {
+  bottom: 0px;
 }
 
-/* Add Animation - Zoom in the Modal */
-.modal-content, #caption { 
-    -webkit-animation-name: zoom;
-    -webkit-animation-duration: 0.6s;
-    animation-name: zoom;
-    animation-duration: 0.6s;
-}
-
-@-webkit-keyframes zoom {
-    from {-webkit-transform:scale(0)} 
-    to {-webkit-transform:scale(1)}
-}
-
-@keyframes zoom {
-    from {transform:scale(0)} 
-    to {transform:scale(1)}
-}
-
-/* The Close Button */
-.close {
-    position: absolute;
-    top: 15px;
-    right: 35px;
-    color: #f1f1f1;
-    font-size: 40px;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.close:hover,
-.close:focus {
-    color: #bbb;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-/* 100% Image Width on Smaller Screens */
-@media only screen and (max-width: 700px){
-    .modal-content {
-        width: 100%;
-    }
-}
-
-
-/*Lightbox*/
-
-.modal-content img{
-  display: block;
-  margin: 0 auto;
-}
-
-#previous {
-  margin: 20px;
-  font-size: 40px;
-  font-weight: bold;
-  color: white;
-  position: absolute;
-  top: 50%;
-
-}
-
-#next {
-  position: absolute;
-  margin: 20px;
-  font-size: 40px;
-  font-weight: bold;
-  color: white;
-  top: 50%;
-  left:100%;
-
-}

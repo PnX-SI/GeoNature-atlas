@@ -173,40 +173,64 @@
         <div class="col-sm-4">
             {% if photoCarousel | length >= 1 %}
             <div class="panel panel-default">
-                <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                  <div id="fixed" class="carousel slide" data-ride="carousel" data-interval="false">
+                      <!-- Indicators -->
+                      <ol class="carousel-indicators">
+                      {% for i in range(photoCarousel|length) %}
+                            {% if loop.first %}
+                            <li data-target="#fixed" data-slide-to="{{i}}" class="active"></li>
+                            {%  else %}
+                            <li data-target="#fixed" data-slide-to="{{i}}"></li>
+                            {% endif %}
+                      {% endfor %}
+                      </ol>
+
                       <!-- Wrapper for slides -->
-                    <div class="carousel-inner" role="listbox">
+                      <div class="carousel-inner">
                         {% for photo in photoCarousel %}
                             {% if loop.first %}
-                            <div class="item active CarouselImg">
+                            <div class="item active">
                             {% else %}
-                            <div class="item CarouselImg">
+                            <div class="item">
                             {% endif %}
-                            
                                 {% if photo.path != None %}
                                 <a href="{{configuration.URL_PHOTO}}{{photo.path}}" data-lightbox="imageSet" data-title="{{photo.title}} - &copy; {{photo.author}}" >
-                                    <img class ="imgToCarousel" src="{{configuration.URL_PHOTO}}{{photo.path}}" alt="{{photo.title}}">
-                                </a>
+                                  <div style="background:url({{configuration.URL_PHOTO}}{{photo.path}}) center center; background-size:cover;" class="slider-size">
                                 {% else %}
                                 <a href="{{photo.url}}" data-lightbox="imageSet" data-title="{{photo.title}} - &copy; {{photo.author}}" >
-                                    <img class ="imgToCarousel" src="{{photo.url}}" alt="{{photo.title}}"> 
+                                  <div style="background:url({{photo.url}}) center center; background-size:cover;" class="slider-size">
+                                {% endif %}
+                                      <div class="carousel-caption">
+                                       {{photo.title}} - &copy; {{photo.author}}
+                                      </div>
+                                  </div>
                                 </a>
-                                {% endif %}                                 
                             </div>
                         {% endfor %}
-                                                      <!-- Left and right controls -->
-                          <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                          </a>
-                          <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                          </a>
-                        
+<!--                                 <div class="item">
+                                  <div style="background:url(http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/pleine_page/public/patrimoine/9698/body/037466.jpg?itok=fivFAvtU) center center; background-size:cover;" class="slider-size">
+                                    <div class="carousel-caption">
+                                    Avengers!
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="item">
+                                  <div style="background:url(http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/pleine_page/public/patrimoine/9698/body/037466.jpg?itok=fivFAvtU) center center; background-size:cover;" class="slider-size">
+                                  <div class="carousel-caption">
+                                    Avengers!
+                                  </div>
+                                  </div>
+                                </div> -->
+                      </div>
+
+                      <!-- Controls -->
+                      <a class="left carousel-control" href="javascript:void(0)" data-slide="prev" data-target="#fixed">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                      </a>
+                      <a class="right carousel-control" href="javascript:void(0)" data-slide="next" data-target="#fixed">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                      </a>
                     </div>
-                
-                </div>
             </div>
             {% endif %}
 
