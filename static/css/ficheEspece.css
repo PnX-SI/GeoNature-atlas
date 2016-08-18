@@ -136,6 +136,17 @@ p.imgDescription.main {
 }
 
 
+/*Medias*/
+i.btn-more{
+    position: relative;
+    float: right;
+}
+
+i.btn-more:hover{
+	cursor: pointer;
+}
+/*END*/
+
 
 /*Other Informations block*/
 

@@ -41,7 +41,7 @@ def searchEspece(connection, cd_ref):
     req = connection.execute(text(sql), thiscdref = cd_ref)
     listTaxonsChild = list()
     for r in req:
-        temp = {'lb_nom': r.lb_nom, 'nom_vern':r.nom_vern, 'cd_ref':r.cd_ref, 'tri_rang' : r.tri_rang, 'group2_inpn': deleteAccent(r.group2_inpn)}
+        temp = {'lb_nom': r.lb_nom, 'nom_vern':r.nom_vern, 'cd_ref':r.cd_ref, 'tri_rang' : r.tri_rang, 'group2_inpn': utils.deleteAccent(r.group2_inpn)}
         listTaxonsChild.append(temp)
 
     return {'taxonSearch':taxonSearch, 'listTaxonsChild': listTaxonsChild }

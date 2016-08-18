@@ -38,23 +38,28 @@ def switchMedia(raw):
              9 : "<iframe src='https://player.vimeo.com/video/"+raw.url+"?color=ffffff&title=0&byline=0&portrait=0' width='640' height='360'\
              frameborder='0' webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>"}
 
-def getVideo_and_sound(connection, cd_ref):
+def getVideo_and_audio(connection, cd_ref):
     sql = "SELECT * \
     FROM atlas.vm_medias \
-    WHERE id_type in (5, 6, 7, 8, 9) AND cd_ref = :thiscdref"
+    WHERE id_type in (5, 6, 7, 8, 9) AND cd_ref = :thiscdref \
+    ORDER BY date_media DESC "
 
     req = connection.execute(text(sql), thiscdref = cd_ref)
-    tabMedias = list()
+    tabMedias = {'audio' :list(), 'video': list()} 
     for r in req:
         path = switchMedia(r)
         temp = {'id_type': r.id_type, 'path': path[r.id_type], 'title': r.titre, 'author':r.auteur, 'description': r.desc_media}
-        tabMedias.append(temp)
+        if r.id_type == 5:
+            tabMedias['audio'].append(temp)
+        else:
+            tabMedias['video'].append(temp)
     return tabMedias
 
 def getLinks_and_articles(connection, cd_ref):
     sql = "SELECT * \
     FROM atlas.vm_medias \
-    WHERE id_type in (3, 4) AND cd_ref = :thiscdref"
+    WHERE id_type in (3, 4) AND cd_ref = :thiscdref\
+    ORDER BY date_media DESC"
     req = connection.execute(text(sql), thiscdref = cd_ref)
     tabArticles = list()
     for r in req:

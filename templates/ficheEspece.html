@@ -325,25 +325,58 @@
                         </div>
                     
             </div>
-            {% if videoSound | length > 0 %}
+            {% if (videoAudio.video | length > 0 ) or (videoAudio.audio | length > 0) %}
             <div class="panel panel-default" style="padding: 10px;">
-                {% for media in videoSound %}
-                    <h4> {{media.title}}</h4> 
-                    {% if media.id_type == 5 %}
-                        <audio controls>
-                            <source src="{{media.path}}" type="audio/mpeg">
-                        </audio>
-                    {% elif media.id_type == 6 %}
-                        <video controls>
-                          <source src="{{media.path}}" type="video/mp4">
-                        </video>
+                {% for video in videoAudio.video %}
+                    <h4> {{video.title}}</h4> 
+                    {% if loop.first %}
+                        {% if video.id_type == 6 %}
+                            <video controls>
+                              <source src="{{video.path}}" type="video/mp4">
+                            </video>
+                            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#moreVideo">Plus de vidéo</button>
+                        {% else %}
+                            {{video.path|safe}}
+                        {% endif %}
+                        {% if not loop.last %}
+                        <hr>
+                        {% endif %}
                     {% else %}
-                        {{media.path|safe}}
-                    {% endif %}
-                    {% if not loop.last %}
-                    <hr>
+                        <div id="moreVideo" class="collapse">
+                            {% if video.id_type == 6 %}
+                                <video controls>
+                                  <source src="{{video.path}}" type="video/mp4">
+                                </video>
+                                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#moreVideo">Plus de vidéo</button>
+                            {% else %}
+                                {{video.path|safe}}
+                            {% endif %}
+                            {% if not loop.last %}
+                            <hr>
+                            {% endif %}
+                        </div>
                     {% endif %}
                 {% endfor %}
+                    <hr>
+
+                    <h4>{{videoAudio.audio[0].title}}
+                        <i class="btn-more" data-toggle="collapse" data-target="#moreAudio" rel="tooltip" title="Afficher plus d'enregistrement "> <span class="glyphicon glyphicon-plus"> </span> </i>
+                    </h4> 
+                    {% if videoAudio.audio | length > 0 %}
+                    {% endif %}  
+                    <audio controls>
+                            <source src="{{ videoAudio.audio[0].path }}" type="audio/mpeg">
+                    </audio>
+
+                    <div id="moreAudio" class="collapse">
+                        {% for audio in range (1, videoAudio.audio |length) %}
+                            <h4> {{audio.title}} </h4>
+                            <audio controls>
+                                <source src="{{ videoAudio.audio[0].path }}" type="audio/mpeg">
+                            </audio>
+                        {% endfor %}
+                    </div>
+
             </div>
             {% endif %}
 

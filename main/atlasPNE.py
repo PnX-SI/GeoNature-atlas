@@ -59,7 +59,7 @@ def ficheEspece(cd_ref):
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
     firstPhoto = vmMedias.getFirstPhoto(connection, cd_ref)
     photoCarousel = vmMedias.getPhotoCarousel(connection, cd_ref)
-    videoSound = vmMedias.getVideo_and_sound(connection, cd_ref)
+    videoAudio = vmMedias.getVideo_and_audio(connection, cd_ref)
     articles = vmMedias.getLinks_and_articles(connection, cd_ref)
     taxonDescritpion = vmCorTaxonAttribut.getAttributesTaxon(connection, cd_ref, config.ATTR_DESC, config.ATTR_COMMENTAIRE, config.ATTR_MILIEU, config.ATTR_CORROLOGIE)
     observers = vmObservationsRepository.getObservers(session, cd_ref)
@@ -72,7 +72,7 @@ def ficheEspece(cd_ref):
 
     return render_template('ficheEspece.html', taxon=taxon, listeTaxonsSearch=listeTaxonsSearch, observations=observations,\
      cd_ref=cd_ref, altitudes=altitudes, months=months, synonyme=synonyme, communes=communes, communesSearch=communesSearch, taxonomyHierarchy = taxonomyHierarchy,\
-      firstPhoto= firstPhoto, photoCarousel=photoCarousel, videoSound=videoSound, articles=articles, taxonDescritpion=taxonDescritpion, observers=observers, \
+      firstPhoto= firstPhoto, photoCarousel=photoCarousel, videoAudio=videoAudio, articles=articles, taxonDescritpion=taxonDescritpion, observers=observers, \
       configuration=configuration)
 
 
