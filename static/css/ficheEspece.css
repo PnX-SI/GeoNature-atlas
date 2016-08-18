@@ -135,6 +135,21 @@ p.imgDescription.main {
 	padding: 0px;
 }
 
+
+
+/*Other Informations block*/
+
+#otherInformationsPanel{
+	margin-top: 20px;
+}
+
+div#otherInformations{
+	padding-top: 10px;
+}
+
+/*	*/
+
+
 #picto img{
 	padding-right: 10px;
 }

@@ -165,6 +165,55 @@
                 </div>
             </div>
 
+            <div class="panel panel-default" id="otherInformationsPanel">
+                <div class="row" id="otherInformations">
+                          <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#artciles"><b>{{articles|length}}</b> Articles</a></li>
+                            <li><a data-toggle="tab" href="#communes"> <b>{{communes|length}}</b> Communes</a></li>
+                            <li><a data-toggle="tab" href="#observateurs"> <b>{{observers|length}} </b> Observateurs</a></li>
+                          </ul>
+
+                        <div class="tab-content" style="width:100%;">
+                            <div id = "artciles" class="tab-pane fade in active">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <th> Titre </th>
+                                        <th> Auteur </th>
+                                    </thead>
+                                    <tbody>
+                                        {% for article in articles %}
+                                            <tr>
+                                            
+                                                <td> <a href="{{article.url}}" target="_blank"> {{article.title}} </a> </td>
+                                                <td> {{article.author}} </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="communes" class="tab-pane fade">
+                                         <p>
+                                                {% for com in communes %}
+                                                    <a href = "{{url_for('main.ficheCommune', insee = com.insee) }}"> {{com.commune_maj}} </a>
+                                                    {% if not loop.last %}
+                                                    ,
+                                                    {% endif %}
+                                                {% endfor %}
+                                                </p>    
+                            </div>
+                           
+                            <div id="observateurs" class="tab-pane fade">
+                                {% for o in observers %}
+                                    {{o }}
+                                    {% if  not loop.last %}
+                                    -
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                </div>
+            </div>
+
 
         </div>
 
@@ -276,6 +325,7 @@
                         </div>
                     
             </div>
+            {% if videoSound | length > 0 %}
             <div class="panel panel-default" style="padding: 10px;">
                 {% for media in videoSound %}
                     <h4> {{media.title}}</h4> 
@@ -295,6 +345,7 @@
                     {% endif %}
                 {% endfor %}
             </div>
+            {% endif %}
 
         
             <div class="panel panel-default">
@@ -305,38 +356,7 @@
                     <div id="phenologyChart" style="height: 200px;"> </div>
                 
             </div>
-            <div class="panel panel-default">
-                <div class="row" id="otherInformations">
-                    
-                          <h4>Autres informations</h4>
-                          <ul class="nav nav-tabs">
-                            <li class="active"><a data-toggle="tab" href="#communes"> <b>{{communes|length}}</b> Communes</a></li>
-                            <li><a data-toggle="tab" href="#observateurs"> <b>{{observers|length}} </b> Observateurs</a></li>
-                          </ul>
 
-                        <div class="tab-content" style="width:100%;">
-                            <div id="communes" class="tab-pane fade in active">
-                                         <p>
-                                                {% for com in communes %}
-                                                    <a href = "{{url_for('main.ficheCommune', insee = com.insee) }}"> {{com.commune_maj}} </a>
-                                                    {% if not loop.last %}
-                                                    ,
-                                                    {% endif %}
-                                                {% endfor %}
-                                                </p>    
-                            </div>
-                           
-                            <div id="observateurs" class="tab-pane fade">
-                                {% for o in observers %}
-                                    {{o }}
-                                    {% if  not loop.last %}
-                                    -
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        </div>
-                </div>
-            </div>
 
         </div>
      
