@@ -30,7 +30,7 @@ def index():
     communesSearch = vmCommunesRepository.getAllCommunes(session)
     mostViewTaxon = vmTaxonsMostView.mostViewTaxon(connection)
     configuration = {'STRUCTURE' : config.STRUCTURE, 'HOMEMAP': True, 'NB_LAST_OBS': config.NB_LAST_OBS, 'AFFICHAGE_MAILLE': config.AFFICHAGE_MAILLE, \
-    'URL_PHOTO': config.URL_PHOTO}
+    'URL_PHOTO': config.URL_MEDIAS}
     
     connection.close()
     session.close()
@@ -59,18 +59,19 @@ def ficheEspece(cd_ref):
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
     firstPhoto = vmMedias.getFirstPhoto(connection, cd_ref)
     photoCarousel = vmMedias.getPhotoCarousel(connection, cd_ref)
+    videoSound = vmMedias.getVideo_and_sound(connection, cd_ref)
     taxonDescritpion = vmCorTaxonAttribut.getAttributesTaxon(connection, cd_ref, config.ATTR_DESC, config.ATTR_COMMENTAIRE, config.ATTR_MILIEU, config.ATTR_CORROLOGIE)
     observers = vmObservationsRepository.getObservers(session, cd_ref)
     configuration = {'STRUCTURE' : config.STRUCTURE, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY,\
     'AFFICHAGE_MAILLE' : config.AFFICHAGE_MAILLE, 'ZOOM_LEVEL_POINT': config.ZOOM_LEVEL_POINT, 'LIMIT_CLUSTER_POINT': config.LIMIT_CLUSTER_POINT, 'FICHE_ESPECE': True, \
-    'URL_PHOTO': config.URL_PHOTO}
+    'URL_PHOTO': config.URL_MEDIAS}
     
     connection.close()
     session.close()
 
     return render_template('ficheEspece.html', taxon=taxon, listeTaxonsSearch=listeTaxonsSearch, observations=observations,\
      cd_ref=cd_ref, altitudes=altitudes, months=months, synonyme=synonyme, communes=communes, communesSearch=communesSearch, taxonomyHierarchy = taxonomyHierarchy,\
-      firstPhoto= firstPhoto, photoCarousel=photoCarousel, taxonDescritpion=taxonDescritpion, observers=observers, configuration=configuration)
+      firstPhoto= firstPhoto, photoCarousel=photoCarousel, videoSound=videoSound, taxonDescritpion=taxonDescritpion, observers=observers, configuration=configuration)
 
 
 @main.route('/commune/<insee>', methods=['GET', 'POST'])

@@ -1,6 +1,9 @@
 #! /usr/bin/python
 # -*- coding:utf-8 -*-
 
+import config
+
+
 from sqlalchemy.sql import text
 
 def getFirstPhoto(connection, cd_ref):
@@ -20,3 +23,36 @@ def getPhotoCarousel(connection, cd_ref):
     for r in req:
          tabURL.append({'url': r.url, 'path': r.chemin, 'title': r.titre, 'author': r.auteur})
     return tabURL
+
+def switchMedia(raw):
+    goodPath = str()
+    if raw.url == None:
+        goodPath = config.URL_MEDIAS+raw.chemin
+    else:
+        goodPath = raw.url
+
+    return { 5 : goodPath,
+             6: goodPath,
+             7 : "<iframe width='560' height='315' src='https://www.youtube.com/embed/"+raw.url+"' frameborder='0' allowfullscreen></iframe>",
+             8 : "<iframe frameborder='0' width='480' height='270' src='//www.dailymotion.com/embed/video/"+raw.url+"' allowfullscreen></iframe>",
+             9 : "<iframe src='https://player.vimeo.com/video/"+raw.url+"?color=ffffff&title=0&byline=0&portrait=0' width='640' height='360'\
+             frameborder='0' webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>"}
+
+#return all the media : video, article, 
+def getVideo_and_sound(connection, cd_ref):
+    sql = "SELECT * \
+    FROM atlas.vm_medias \
+    WHERE id_type in (5, 6, 7, 8, 9) AND cd_ref = :thiscdref"
+
+    req = connection.execute(text(sql), thiscdref = cd_ref)
+    tabMedias = list()
+    for r in req:
+        path = switchMedia(r)
+        temp = {'id_type': r.id_type, 'path': path[r.id_type], 'title': r.titre, 'author':r.auteur, 'description': r.desc_media}
+        tabMedias.append(temp)
+    return tabMedias
+
+
+
+
+

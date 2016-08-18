@@ -207,20 +207,6 @@
                                 </a>
                             </div>
                         {% endfor %}
-<!--                                 <div class="item">
-                                  <div style="background:url(http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/pleine_page/public/patrimoine/9698/body/037466.jpg?itok=fivFAvtU) center center; background-size:cover;" class="slider-size">
-                                    <div class="carousel-caption">
-                                    Avengers!
-                                    </div>
-                                  </div>
-                                </div>
-                                <div class="item">
-                                  <div style="background:url(http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/pleine_page/public/patrimoine/9698/body/037466.jpg?itok=fivFAvtU) center center; background-size:cover;" class="slider-size">
-                                  <div class="carousel-caption">
-                                    Avengers!
-                                  </div>
-                                  </div>
-                                </div> -->
                       </div>
 
                       <!-- Controls -->
@@ -290,6 +276,26 @@
                         </div>
                     
             </div>
+            <div class="panel panel-default" style="padding: 10px;">
+                {% for media in videoSound %}
+                    <h4> {{media.title}}</h4> 
+                    {% if media.id_type == 5 %}
+                        <audio controls>
+                            <source src="{{media.path}}" type="audio/mpeg">
+                        </audio>
+                    {% elif media.id_type == 6 %}
+                        <video controls>
+                          <source src="{{media.path}}" type="video/mp4">
+                        </video>
+                    {% else %}
+                        {{media.path|safe}}
+                    {% endif %}
+                    {% if not loop.last %}
+                    <hr>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
         
             <div class="panel panel-default">
                 
