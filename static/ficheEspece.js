@@ -2,7 +2,6 @@
 
 var myBoolean = true;
 $('#btn-more-audio').click(function(){
-    $(this).find('span').toggleClass('glyphicon glyphicon-plus').toggleClass('glyphicon glyphicon-minus');
     if (myBoolean){
    		 $(this).attr('data-original-title', "Masquer les enregistrements")
    		 myBoolean = false;
@@ -15,7 +14,6 @@ $('#btn-more-audio').click(function(){
 
 var myBooleanVideo = true;
 $('#btn-more-video').click(function(){
-    $(this).find('span').toggleClass('glyphicon glyphicon-plus').toggleClass('glyphicon glyphicon-minus');
     if (myBoolean){
    		 $(this).attr('data-original-title', "Masquer les vidéos")
    		 myBooleanVideo = false;
@@ -26,10 +24,19 @@ $('#btn-more-video').click(function(){
    	}
 });
 
-
-
-
+$('.btn-more').click(function(){
+	$(this).find('span').toggleClass('glyphicon glyphicon-chevron-down').toggleClass('glyphicon glyphicon-chevron-up');
+})
 
 
 $("[rel=tooltip]").tooltip({ placement: 'right'});
+
+
+
+// Other information accordion
+
+
+$('.collapse').on('show.bs.collapse', function () {
+    $('.collapse.in').collapse('hide');
+});
 

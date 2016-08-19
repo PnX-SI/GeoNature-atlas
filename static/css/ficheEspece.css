@@ -145,6 +145,10 @@ i.btn-more{
 i.btn-more:hover{
 	cursor: pointer;
 }
+
+hr.small-hr {
+	margin: 5px;
+}
 /*END*/
 
 
@@ -154,21 +158,31 @@ i.btn-more:hover{
 	margin-top: 20px;
 }
 
+#otherInformations{
+	padding-right: 20px;
+	padding-left: 20px;
+}
+
 div#otherInformations{
 	padding-top: 10px;
 }
 
-/*	*/
+.hiddenRow {
+    padding: 0 !important;
+}
+
+tr.accordion-toggle {
+	cursor: pointer;
+}
+
+/*END*/
 
 
 #picto img{
 	padding-right: 10px;
 }
 
-#otherInformations{
-	padding-right: 20px;
-	padding-left: 20px;
-}
+
 
 #mapPanel{
 	margin-bottom: 2px;

@@ -73,15 +73,15 @@
                             {% if ( (firstPhoto.url  == None) and (firstPhoto.path == None) ) or (firstPhoto == None)  %}
                                 <img src="{{url_for('static', filename='images/Photo_non_disponible.png') }}" style="width:100%;height: 100%; border-right: solid 1px;">
                             {% elif firstPhoto.path != None %}
-                                <a href="{{firstPhoto.url}}" data-lightbox="imageSet" data-title="{{firstPhoto.title}} - &copy; {{firstPhoto.author}}" >
+                                <a href="{{firstPhoto.url}}" data-lightbox="imageSet" data-title="{{firstPhoto.title}}  &copy; {{firstPhoto.author}}" >
                                     <img class ="imgToCarousel" id="myImg" src="{{configuration.URL_PHOTO}}{{firstPhoto.path}}" style="width:100%;height: 100%;">
-                                    <p class="imgDescription main"> {{firstPhoto.title}} - &copy; {{firstPhoto.author}} </p>
+                                    <p class="imgDescription main"> {{firstPhoto.title}}  &copy; {{firstPhoto.author}} </p>
                                 </a>
                             {% else %}
                             
-                            <a href="{{firstPhoto.url}}" data-lightbox="imageSet" data-title="{{firstPhoto.title}} - &copy; {{firstPhoto.author}}" >
+                            <a href="{{firstPhoto.url}}" data-lightbox="imageSet" data-title="{{firstPhoto.title}}  &copy; {{firstPhoto.author}}" >
                                 <img  id="myImg" src="{{firstPhoto.url}}" style="width:100%;height: 100%;">
-                                <p class="imgDescription main"> {{firstPhoto.title}} - &copy; {{firstPhoto.author}} </p>
+                                <p class="imgDescription main"> {{firstPhoto.title}}  &copy; {{firstPhoto.author}} </p>
                             </a>
                            {% endif %}
                         </div>
@@ -168,25 +168,48 @@
             <div class="panel panel-default" id="otherInformationsPanel">
                 <div class="row" id="otherInformations">
                           <ul class="nav nav-tabs">
-                            <li class="active"><a data-toggle="tab" href="#artciles"><b>{{articles|length}}</b> Articles</a></li>
-                            <li><a data-toggle="tab" href="#communes"> <b>{{communes|length}}</b> Communes</a></li>
-                            <li><a data-toggle="tab" href="#observateurs"> <b>{{observers|length}} </b> Observateurs</a></li>
+                            <li class="active"><a data-toggle="tab" href="#artciles"><b>{{articles|length}}</b> articles</a></li>
+                            <li><a data-toggle="tab" href="#communes"> <b>{{communes|length}}</b> communes</a></li>
+                            <li><a data-toggle="tab" href="#observateurs"> <b>{{observers|length}} </b> observateurs</a></li>
                           </ul>
 
                         <div class="tab-content" style="width:100%;">
                             <div id = "artciles" class="tab-pane fade in active">
                                 <table class="table table-striped">
                                     <thead>
+                                        <th> </th>
                                         <th> Titre </th>
                                         <th> Auteur </th>
                                     </thead>
                                     <tbody>
-                                        {% for article in articles %}
-                                            <tr>
-                                            
-                                                <td> <a href="{{article.url}}" target="_blank"> {{article.title}} </a> </td>
-                                                <td> {{article.author}} </td>
+                                        {% for i in range (articles | length) %}
+                                            <tr class="accordion-toggle" data-toggle="collapse" data-target=".moreInfo{{i}}">
+                                                <td> {% if articles[i].id_type == 3 %} <span class="glyphicon glyphicon-link"> </span>
+                                                     {% else %} <span class="glyphicon glyphicon-paperclip"> </span>
+                                                     {% endif %}
+                                                </td>
+                                                
+                                                <td> 
+                                                    <a href="{{articles[i].url}}" target="_blank"> {{articles[i].title}} </a>
+                                                 </td>
+                                                
+                                                <td> 
+                                                    {{articles[i].author}}       
+                                                </td> 
+                                                <td>
+                                                   <i class="btn-more"> <span class="glyphicon glyphicon-chevron-down "> </span></i>
+                                                </td>
+                                                                   
                                             </tr>
+                                            <tr> 
+                                                <td colspan ="4" class="hiddenRow" style="padding:0px;">
+                                                    <div  class="collapse moreInfo{{i}}">
+                                                        <strong> Description: </strong> <br> {{articles[i].description}} <br>
+                                                        <strong> Date: </strong> {{articles[i].date}} 
+                                                    </div>
+                                                </td>
+                                            </tr>
+
                                         {% endfor %}
                                     </tbody>
                                 </table>
@@ -199,7 +222,7 @@
                                                     ,
                                                     {% endif %}
                                                 {% endfor %}
-                                                </p>    
+                                        </p>    
                             </div>
                            
                             <div id="observateurs" class="tab-pane fade">
@@ -243,14 +266,14 @@
                             <div class="item">
                             {% endif %}
                                 {% if photo.path != None %}
-                                <a href="{{configuration.URL_PHOTO}}{{photo.path}}" data-lightbox="imageSet" data-title="{{photo.title}} - &copy; {{photo.author}}" >
+                                <a href="{{configuration.URL_PHOTO}}{{photo.path}}" data-lightbox="imageSet" data-title="{{photo.title}}  &copy; {{photo.author}}" >
                                   <div style="background:url({{configuration.URL_PHOTO}}{{photo.path}}) center center; background-size:cover;" class="slider-size">
                                 {% else %}
-                                <a href="{{photo.url}}" data-lightbox="imageSet" data-title="{{photo.title}} - &copy; {{photo.author}}" >
+                                <a href="{{photo.url}}" data-lightbox="imageSet" data-title="{{photo.title}}  &copy; {{photo.author}}" >
                                   <div style="background:url({{photo.url}}) center center; background-size:cover;" class="slider-size">
                                 {% endif %}
                                       <div class="carousel-caption">
-                                       {{photo.title}} - &copy; {{photo.author}}
+                                       {{photo.title}} &copy; {{photo.author}}
                                       </div>
                                   </div>
                                 </a>
@@ -329,9 +352,9 @@
             <div class="panel panel-default" style="padding: 10px;">
 
                 {% if videoAudio.video |length > 0 %}
-                    <h4> <strong>  Video </strong> ({{videoAudio.video | length}})
+                    <h4> <span class="glyphicon glyphicon-film"> </span> <strong>  Video </strong> ({{videoAudio.video | length}})
                         {% if videoAudio.video | length > 1 %}
-                         <i class ="btn-more" id="btn-more-video" data-toggle="collapse" data-target="#moreVideo" rel="tooltip" title="Afficher plus de video "> <span class="glyphicon glyphicon-plus"> </span> </i>
+                         <i class ="btn-more" id="btn-more-video" data-toggle="collapse" data-target="#moreVideo" rel="tooltip" title="Afficher plus de video "> <span class="glyphicon glyphicon-chevron-down"> </span> </i>
                         {% endif %}  
                     </h4>
                     <hr class="small-hr">
@@ -351,7 +374,6 @@
                                     <video controls>
                                       <source src="{{videoAudio.video[i].path}}" type="video/mp4">
                                     </video>
-                                    <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#moreVideo">Plus de vidéo</button>
                                 {% else %}
                                     {{videoAudio.video[i].path|safe}}
                                 {% endif %}
@@ -361,12 +383,13 @@
                 {% endif %}
 
                 {% if videoAudio.audio | length > 0 %}
-                    <h4> <strong>  Audio </strong> ({{videoAudio.audio | length}})
+                <br> <br>
+                    <h4><span class="glyphicon glyphicon-volume-up"> </span> <strong>  Audio  </strong> ({{videoAudio.audio | length}})
                         {% if videoAudio.audio | length > 1 %}
-                        <i class ="btn-more" id="btn-more-audio" data-toggle="collapse" data-target="#moreAudio" rel="tooltip" title="Afficher plus d'enregistrement "> <span class="glyphicon glyphicon-plus"> </span> </i>
+                        <i class ="btn-more" id="btn-more-audio" data-toggle="collapse" data-target="#moreAudio" rel="tooltip" title="Afficher plus d'enregistrement "> <span class="glyphicon glyphicon-chevron-down"> </span> </i>
                         {% endif %}
                     </h4>
-                    <hrclass="small-hr"> 
+                    <hr class="small-hr"> 
 
                     <h4>{{videoAudio.audio[0].title}}</h4>                     
                     <audio controls>
