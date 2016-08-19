@@ -27,29 +27,62 @@
         {% include 'navbar.html' %}
 
 		<div class="container-fluid">
-			
-			<!-- Introduction -->
-			<div class="col-sm-5"> 
-				<h1>
-					Bienvenue sur l'atlas de la faune et de la flore du Parc national des Ecrins
-				</h1>
-				<p>
-					Il permet de consulter des fiches sur l'ensemble des espèces observées par les agents du parc national depuis sa création en 1973.
-				</p>
-				<p>
-					Celles-ci se basent sur les observations réalisées en temps réel par les agents et présente une vue d'ensemble des espèces observées mais en aucun cas un inventaire exhaustif des espèces du territoire.
-				</p>
-				
-			</div>
-			
-			<!-- PHOTO (aléatoire ?) -->
-			<div class="col-sm-7"> 
-				<a href="espece/247044">
-					<img src="/atlas/static/images/247044-home.jpg" width="100%">
-				</a>
-			</div>
-			
+						<!-- SAUT DE LIGNE -->
 			<div class="col-sm-12" style="height:20px"></div>
+			<!-- Introduction -->
+			<div class="col-sm-12">
+				<div class="panel panel-default">
+					<div class="row">
+						<div class="col-sm-4 textIntroduction"> 
+							<h1>
+								Bienvenue sur l'atlas de la faune et de la flore du Parc national des Ecrins
+							</h1>
+							<p>
+								Il permet de consulter des fiches sur l'ensemble des espèces observées par les agents du parc national depuis sa création en 1973.
+							</p>
+							<p>
+								Celles-ci se basent sur les observations réalisées en temps réel par les agents et présente une vue d'ensemble des espèces observées mais en aucun cas un inventaire exhaustif des espèces du territoire.
+							</p>
+						</div>
+						<div class="col-sm-8">
+							<a href="espece/247044">
+								<img src="/atlas/static/images/247044-home.jpg" width="100%">
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		
+			<div class="col-sm-12" style="height:20px"></div>
+
+			<!-- Statistiques -->
+<!-- 			<div class="col-sm-12">
+				<div class="panel panel-default">
+					<div class="row">
+						<div class ="col-xs-6 col-sm-4 col-lg-3">
+							<div class="thumbnail">
+								<h1> 550 000 </h1>
+								<h4> Observations </h2>
+								<span class="glyphicon glyphicon-search">
+							</div>
+						</div>
+						<div class ="col-xs-6 col-sm-4 col-lg-3">
+							<div class="thumbnail">
+								<h1> 550 000 </h1>
+								<h4> Observateurs </h2>
+								<span class="glyphicon glyphicon-search">
+							</div>
+						</div>
+						<div class ="col-xs-6 col-sm-4 col-lg-3">
+							<div class="thumbnail">
+								<h1> 550 000 </h1>
+								<h4> Observateurs </h2>
+								<span class="glyphicon glyphicon-search">
+							</div>
+					</div>
+				</div>
+
+			</div> -->
 			
 			<!-- Dernières espèces observées -->
 			<div class="col-sm-12"> 
@@ -94,13 +127,17 @@
 			<div class="col-sm-12"> 
 				<div class="panel panel-default">
 					<div class="panel-heading"><strong>Espèces les plus observées à cette période</strong></div>
-					<div class="row" style="padding: 5px;">
+					<div class="row thumbnail-row">
 					{% for tax in mostViewTaxon %}
-						<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+						<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col">
 						    <div class="hovereffect">
-						        <img class="img-responsive-logo" src="{{url_for('static', filename='images/picto_' + tax.group2_inpn +'.png') }}" alt="">
+						        {% if tax.path == None %}
+						        <img class="default-logo " src="{{url_for('static', filename='images/picto_' + tax.group2_inpn +'.png') }}" alt="">
+						        {% else %}
+						        	<img class="img-responsive-logo" src="{{tax.path}}" alt="tax.taxonName">
+						        {% endif %}
 						        <div class="overlay">
-						           <h2>{{tax.taxonName}}</h2>
+						           <h2>{{tax.taxonName}}</h2>	
 						           <a class="info" href="{{url_for('main.ficheEspece',cd_ref=tax.cd_ref)}}">Fiche espèce</a>
 						        </div>
 						    </div>

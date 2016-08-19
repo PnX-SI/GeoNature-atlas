@@ -11,6 +11,12 @@ body {
 	background-color: #E3E7E8;
 }
 
+
+.textIntroduction{
+  padding-left: 20px;
+}
+
+
 #mapRow{
 
   max-height: 600px;
@@ -88,15 +94,35 @@ table#tableEspece {
   float: left;
 }
 
-
-
-.img-responsive-logo{
+/*// Block most observations
+*/
+.default-logo{
   margin: 0 auto;
-  padding-bottom: 20%;
-  padding-top: 20%;
+  padding-bottom: 100px;
+  padding-top: 100px;
 }
 
+.img-responsive-logo{
+  width: 100%;
+}
+
+.thumbnail-row{
+  margin: 0px;
+  margin-top: 10px;
+}
+
+.thumbnail-col{
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+}
+
+
+
+
+
 /* Effect on hover*/
+
 
 .hovereffect {
 width:100%;
@@ -122,6 +148,7 @@ transition:all .4s ease-in-out
 }
 
 .hovereffect img {
+height: 250px;
 display:block;
 position:relative;
 -webkit-transition:all .4s linear;
