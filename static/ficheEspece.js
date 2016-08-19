@@ -1,41 +1,35 @@
-// Get the modal
-/*var modal = document.getElementById('myModal');
+// Change tooltip and glyphycon for media block
 
-// Get the image and insert it inside the modal - use its "alt" text as a caption
-var img = document.getElementById('myImg');
-var modalImg = document.getElementById("img01");
-var captionText = document.getElementById("caption");
-img.onclick = function(){
-    modal.style.display = "block";
-    modalImg.src = this.src;
-    modalImg.alt = this.alt;
-    captionText.innerHTML = this.alt;
-}
+var myBoolean = true;
+$('#btn-more-audio').click(function(){
+    $(this).find('span').toggleClass('glyphicon glyphicon-plus').toggleClass('glyphicon glyphicon-minus');
+    if (myBoolean){
+   		 $(this).attr('data-original-title', "Masquer les enregistrements")
+   		 myBoolean = false;
+   	}
+   	else {
+   		$(this).attr('data-original-title', "Afficher plus d'enregistrements")
+   		myBoolean = true;
+   	}
+});
+
+var myBooleanVideo = true;
+$('#btn-more-video').click(function(){
+    $(this).find('span').toggleClass('glyphicon glyphicon-plus').toggleClass('glyphicon glyphicon-minus');
+    if (myBoolean){
+   		 $(this).attr('data-original-title', "Masquer les vidéos")
+   		 myBooleanVideo = false;
+   	}
+   	else {
+   		$(this).attr('data-original-title', "Afficher plus de vidéos")
+   		myBooleanVideo = true;
+   	}
+});
 
 
-carousselImg = $(".imgToCarousel")
-lisUrl = [];
-
-for (i=0; i<carousselImg.length; i++){
-	lisUrl.push(carousselImg[i].src)
-}
 
 
 
-var i = 0;
-modal.onclick = function(){
-	if(i==lisUrl.length){
-		i=0
-	}
-	modalImg.src = lisUrl[i]
-	i = i+1;
-}
 
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() { 
-  modal.style.display = "none";
-}*/
+$("[rel=tooltip]").tooltip({ placement: 'right'});
 

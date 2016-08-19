@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <meta http-equiv="cache-control" content="no-cache" />
 
-        <title>{{taxon.taxonSearch.lb_nom}}</title>
+        <title> {%if taxon.taxonSearch.nom_vern %}  {{taxon.taxonSearch.nom_vern}} | {% endif %} {{taxon.taxonSearch.lb_nom}}</title>
 
         <!-- Jquery -->
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/jquery-ui.css') }}" />
@@ -272,7 +272,7 @@
             
             <div class="panel panel-default" style="padding: 10px;">
 
-                        <h4>Information sur l'espèce</h4>
+                        <h4> <strong> Information sur l'espèce </strong> </h4>
                           <ul class="nav nav-tabs" style="margin-botton:10px;">
                             <li class="active"><a data-toggle="tab" href="#description">Description</a></li>
                             <li><a data-toggle="tab" href="#commentaire">Commentaire</a></li>
@@ -327,55 +327,61 @@
             </div>
             {% if (videoAudio.video | length > 0 ) or (videoAudio.audio | length > 0) %}
             <div class="panel panel-default" style="padding: 10px;">
-                {% for video in videoAudio.video %}
-                    <h4> {{video.title}}</h4> 
-                    {% if loop.first %}
-                        {% if video.id_type == 6 %}
-                            <video controls>
-                              <source src="{{video.path}}" type="video/mp4">
-                            </video>
-                            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#moreVideo">Plus de vidéo</button>
-                        {% else %}
-                            {{video.path|safe}}
-                        {% endif %}
-                        {% if not loop.last %}
-                        <hr>
-                        {% endif %}
-                    {% else %}
-                        <div id="moreVideo" class="collapse">
-                            {% if video.id_type == 6 %}
-                                <video controls>
-                                  <source src="{{video.path}}" type="video/mp4">
-                                </video>
-                                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#moreVideo">Plus de vidéo</button>
-                            {% else %}
-                                {{video.path|safe}}
-                            {% endif %}
-                            {% if not loop.last %}
-                            <hr>
-                            {% endif %}
-                        </div>
-                    {% endif %}
-                {% endfor %}
-                    <hr>
 
-                    <h4>{{videoAudio.audio[0].title}}
-                        <i class="btn-more" data-toggle="collapse" data-target="#moreAudio" rel="tooltip" title="Afficher plus d'enregistrement "> <span class="glyphicon glyphicon-plus"> </span> </i>
-                    </h4> 
-                    {% if videoAudio.audio | length > 0 %}
-                    {% endif %}  
+                {% if videoAudio.video |length > 0 %}
+                    <h4> <strong>  Video </strong> ({{videoAudio.video | length}})
+                        {% if videoAudio.video | length > 1 %}
+                         <i class ="btn-more" id="btn-more-video" data-toggle="collapse" data-target="#moreVideo" rel="tooltip" title="Afficher plus de video "> <span class="glyphicon glyphicon-plus"> </span> </i>
+                        {% endif %}  
+                    </h4>
+                    <hr class="small-hr">
+                    <h4>{{videoAudio.video[0].title}}</h4>
+                    {% if videoAudio.video[0].id_type == 6 %}
+                        <video controls>
+                          <source src="{{video.path}}" type="video/mp4">
+                        </video>
+                        {% else %}
+                            {{videoAudio.video[0].path|safe}}
+                        {% endif %}
+                    
+                    <div id="moreVideo" class="collapse">
+                        {% for i in range (1, videoAudio.video |length) %}
+                            <h4> {{videoAudio.video[i].title}}</h4>
+                            {% if videoAudio.video[i].id_type == 6 %}
+                                    <video controls>
+                                      <source src="{{videoAudio.video[i].path}}" type="video/mp4">
+                                    </video>
+                                    <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#moreVideo">Plus de vidéo</button>
+                                {% else %}
+                                    {{videoAudio.video[i].path|safe}}
+                                {% endif %}
+                            
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if videoAudio.audio | length > 0 %}
+                    <h4> <strong>  Audio </strong> ({{videoAudio.audio | length}})
+                        {% if videoAudio.audio | length > 1 %}
+                        <i class ="btn-more" id="btn-more-audio" data-toggle="collapse" data-target="#moreAudio" rel="tooltip" title="Afficher plus d'enregistrement "> <span class="glyphicon glyphicon-plus"> </span> </i>
+                        {% endif %}
+                    </h4>
+                    <hrclass="small-hr"> 
+
+                    <h4>{{videoAudio.audio[0].title}}</h4>                     
                     <audio controls>
                             <source src="{{ videoAudio.audio[0].path }}" type="audio/mpeg">
                     </audio>
 
                     <div id="moreAudio" class="collapse">
-                        {% for audio in range (1, videoAudio.audio |length) %}
-                            <h4> {{audio.title}} </h4>
+                        {% for i in range (1, videoAudio.audio |length) %}
+                            <h4> {{videoAudio.audio[i].title}} </h4>
                             <audio controls>
-                                <source src="{{ videoAudio.audio[0].path }}" type="audio/mpeg">
+                                <source src="{{ videoAudio.audio[i].path }}" type="audio/mpeg">
                             </audio>
                         {% endfor %}
                     </div>
+                {% endif %}
 
             </div>
             {% endif %}
