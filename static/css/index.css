@@ -17,6 +17,28 @@ body {
 }
 
 
+/*Stat block*/
+
+.stat-panel{
+  padding: 10px;
+}
+
+.stat-thumbnail{
+  text-align: center;
+ background-color:  #E3E7E8;
+ margin-bottom: 0px;
+ border-radius: 0px;
+}
+.stat-thumbnail span {
+  font-size: 40px;
+}
+
+.panel-heading h3 {
+  margin: 0px;
+}
+
+/*END*/
+
 #mapRow{
 
   max-height: 600px;

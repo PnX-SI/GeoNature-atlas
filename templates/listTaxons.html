@@ -43,7 +43,6 @@
     
 
                     {% for taxon in taxonomyHierarchy %}
-                    <a> test </a>
                         {{taxon.nom_rang}} :
                         <i>
                         {% if ( taxon.tri_rang >= configuration.LIMIT_FICHE_LISTE_HIERARCHY) %}
