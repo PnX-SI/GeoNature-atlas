@@ -63,7 +63,7 @@
 						<div class ="col-sm-3 ">
 							<div class="thumbnail stat-thumbnail">
 								<span class="glyphicon glyphicon-search"> </span>
-								<h1> 550 000 </h1>
+								<h1> {{stat.nbTotalObs}} </h1>
 								<h4> observations </h2>
 								<button onclick="location.href='#mapBeginning';" type="button">  Voir les {{configuration.NB_LAST_OBS}} dernières observations  </button>
 							</div>
@@ -71,7 +71,7 @@
 						<div class =" col-sm-3">
 							<div class="thumbnail stat-thumbnail">
 								<span class="glyphicon glyphicon-leaf"> </span>
-								<h1> 5000 </h1>
+								<h1> {{stat.nbTotalTaxons}} </h1>
 								<h4> espèces </h2>
 									<form method="POST" onsubmit="completeAction('#searchFormTaxonsStat', hiddenInputTaxonStat)"  action=""  id='searchFormTaxonsStat' class="navbar-form" role="search">
 						               <div class="form-group has-feedback">
@@ -86,7 +86,7 @@
 						<div class ="col-sm-3">
 							<div class="thumbnail stat-thumbnail">
 								<img id="picto" src="{{url_for('static', filename='images/church.png') }}"> 
-								<h1> X </h1>
+								<h1>  {{stat.town}}</h1>
 								<h4> communes </h2>
 									<form method="POST" onsubmit="completeAction('#searchFormCommunesStat', hiddenInputCommunesStat)" id='searchFormCommunesStat' action=""  class="navbar-form" role="search">
 						               <div class="form-group has-feedback">
@@ -101,9 +101,9 @@
 						<div class ="col-sm-3">
 							<div class="thumbnail stat-thumbnail">
 								<span class="glyphicon glyphicon-camera"> </span>
-								<h1> X </h1>
-								<h4> photo </h2>
-									<button type="button"> Galerie photo </button>
+								<h1> {{stat.photo}} </h1>
+								<h4> photos </h2>
+									<button type="button"> Galerie photos </button>
 							</div>
 						</div>
 						

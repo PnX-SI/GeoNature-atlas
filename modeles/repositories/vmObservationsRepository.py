@@ -5,6 +5,7 @@ import sys
 sys.path.insert(0, APP_DIR + '/modeles/entities')
 sys.path.insert(0, BASE_DIR)
 from modeles import utils
+import config
 from vmObservations import VmObservations
 from tCommunes import LCommune
 from vmTaxref import VmTaxref
@@ -15,6 +16,7 @@ from sqlalchemy.sql import text
 from sqlalchemy.orm import sessionmaker
 import ast
 from datetime import datetime
+import config
 
 
 currentYear = datetime.now().year
@@ -145,16 +147,33 @@ def getObservers(session, cd_ref):
 
 
 
-def mostViewTaxon(connection):
-    sql = "SELECT * FROM atlas.vm_taxon_most_view_periode"
+
+def statIndex(connection):
+    result = {'nbTotalObs': None, 'nbTotalTaxons': None, 'town': None, 'photo': None}
+
+    sql = "SELECT COUNT(*) AS count \
+    FROM atlas.vm_observations "
     req = connection.execute(text(sql))
-    tabTax = list()
     for r in req:
-        if r.nom_vern != None:
-            nom_verna = r.nom_vern.split(',')
-            taxonName = nom_verna[0]+' | ' + r.lb_nom
-        else:
-            taxonName = r.lb_nom
-        temp ={'cd_ref': r.cd_ref, 'taxonName':taxonName, 'url': r.url, 'chemin': r.chemin, 'group2_inpn': utils.deleteAccent(r.group2_inpn)}
-        tabTax.append(temp)
-    return tabTax
+        result['nbTotalObs'] = r.count
+
+    sql = "SELECT COUNT(*) AS count\
+    FROM atlas.vm_communes"
+    req=connection.execute(text(sql))
+    for r in req:
+        result['town'] = r.count
+
+    sql = "SELECT COUNT(DISTINCT cd_ref) AS count \
+    FROM atlas.vm_taxons"
+    connection.execute(text(sql))
+    req=connection.execute(text(sql))
+    for r in req:
+        result['nbTotalTaxons'] = r.count
+
+    sql= "SELECT COUNT (DISTINCT id_media) AS count \
+    FROM atlas.vm_medias \
+    WHERE id_type IN (:idType1, :id_type2)"
+    req = connection.execute(text(sql), idType1 = config.ATTR_MAIN_PHOTO, id_type2=config.ATTR_OTHER_PHOTO)
+    for r in req:
+        result['photo']= r.count
+    return result

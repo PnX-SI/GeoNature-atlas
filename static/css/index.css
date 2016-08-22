@@ -37,6 +37,28 @@ body {
   margin: 0px;
 }
 
+button:focus {outline:0;}
+
+.stat-thumbnail button{
+  padding: 6px 12px;
+  border-radius: 4px;
+  background-color: white;
+  color: black;
+  border-color: black;
+}
+
+.stat-thumbnail button:hover{
+  background-color: #E3E7E8;
+  color: black;
+  border-color: black;
+}
+
+.stat-thumbnail input{
+  border-color: black;
+}
+
+
+
 /*END*/
 
 #mapRow{
