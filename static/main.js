@@ -9,28 +9,28 @@ $(document).ready(function() {
 
 
 // generate the autocompletion with the list of item, the input id and the form id
-autocompleteSearch = function(list, inputID, formID){
+autocompleteSearch = function(list, inputID, formID, nbProposal){
 
     // get the id of the hidden input
-  temp = $(formID).find("input[type='hidden']").attr('id')
-  hiddenID ='#'+temp
+  temp = $(formID).find("input[type='hidden']").attr('id');
+  hiddenID ='#'+temp;
   // get the id of the text input
-  temp = $(formID).find("input[type='text']").attr('id')
-  textID = '#'+temp
+  temp = $(formID).find("input[type='text']").attr('id');
+  textID = '#'+temp;
 
 
 $(inputID).autocomplete({
 
-
     source: function (request, response) {
     var results = $.ui.autocomplete.filter(list, request.term);
-    response(results.slice(0, 20))},
+    response(results.slice(0, nbProposal))},
          focus: function(event, ui) {
-          $(textID).val(ui.item.label)
             return false;
         },
        select : function (event, ui){
+          $(textID).val(ui.item.label)
           $(hiddenID).val(ui.item.value);
+          console.log($(hiddenID).val());
           $(formID).submit();
       return false;
         }
@@ -39,19 +39,14 @@ $(inputID).autocomplete({
 }
 
 // complete dynamically the form action on search submit with the hidden value
-function completeAction(id){
+function completeAction(id, hiddenID){
 
-  var inputInter = $(id).find('input');
-  hiddenInput = inputInter[1];
-  value = hiddenInput.value;
-    console.log(value);
-
+  value = $(hiddenID).val();
   var path;
-
-  if (id == "#searchFormTaxons"){
+  if (id == "#searchFormTaxons" || id == "#searchFormTaxonsStat"){
     path = "/atlas/espece/"+parseInt(value);
   }
-  if (id == "#searchFormCommunes"){
+  if (id == "#searchFormCommunes" || id == "#searchFormCommunesStat" ){
     path = "/atlas/commune/"+value;
   }
 
@@ -62,18 +57,28 @@ function completeAction(id){
 
 
 $( "#searchCommunes" ).focus(function() {
-  autocompleteSearch(communesSearch, "#searchCommunes", "#searchFormCommunes")
+  autocompleteSearch(communesSearch, "#searchCommunes", "#searchFormCommunes", 20)
 });
 
 $( "#searchTaxons" ).focus(function() {
-   autocompleteSearch(listeTaxonsSearch, "#searchTaxons", "#searchFormTaxons");
+   autocompleteSearch(listeTaxonsSearch, "#searchTaxons", "#searchFormTaxons", 20);
 });
+
+// Autocomplete bloc stat
+
+$( "#searchTaxonsStat" ).focus(function() {
+   autocompleteSearch(listeTaxonsSearch, "#searchTaxonsStat", "#searchFormTaxonsStat", 10);
+});
+
+$( "#searchCommunesStat" ).focus(function() {
+   autocompleteSearch(communesSearch, "#searchCommunesStat", "#searchFormCommunesStat", 10);
+});
+
 
 
 // child list display
 
 var childList = $('#childList');
-console.log(childList);
 
 $('#buttonChild').click(function(){
   $('#buttonChild').find('span').toggleClass("glyphicon glyphicon-chevron-right").toggleClass('glyphicon glyphicon-chevron-down');
@@ -93,3 +98,8 @@ $('#buttonChild').click(function(){
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 })
+
+test = $("#searchFormTaxonsStat").find('input');
+ hiddenInput = test[1];
+  
+  console.log(hiddenInput);

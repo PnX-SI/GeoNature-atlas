@@ -59,35 +59,51 @@
 			<div class="col-sm-12">
 				<div class="panel panel-default stat-panel">
 					<div class="row">
-						<div class="panel-heading"><strong> <h3> L'altas du Parc National des Ecrins </h3> </strong></div>
+						<div class="panel-heading"><strong> <h3> L'atlas du Parc national des Ecrins </h3> </strong></div>
 						<div class ="col-sm-3 ">
 							<div class="thumbnail stat-thumbnail">
-								<span class="glyphicon glyphicon-search" style="font-size:40px;"> </span>
+								<span class="glyphicon glyphicon-search"> </span>
 								<h1> 550 000 </h1>
 								<h4> observations </h2>
-								
+								<button onclick="location.href='#mapBeginning';" type="button">  Voir les {{configuration.NB_LAST_OBS}} dernières observations  </button>
 							</div>
 						</div>
-						<div class =" col-sm-3 " style="font-size:40px;">
+						<div class =" col-sm-3">
 							<div class="thumbnail stat-thumbnail">
 								<span class="glyphicon glyphicon-leaf"> </span>
 								<h1> 5000 </h1>
 								<h4> espèces </h2>
+									<form method="POST" onsubmit="completeAction('#searchFormTaxonsStat', hiddenInputTaxonStat)"  action=""  id='searchFormTaxonsStat' class="navbar-form" role="search">
+						               <div class="form-group has-feedback">
+						                 <input id="searchTaxonsStat" type="text" class="form-control"  placeholder="Rechercher une espèce &nbsp; &nbsp; &nbsp;">
+						                 <i class="glyphicon glyphicon-search form-control-feedback"></i>
+						                 <input id ="hiddenInputTaxonStat"  type="hidden" name="cd_ref">
+						               </div>       
+            						</form>
 								
 							</div>
 						</div>
 						<div class ="col-sm-3">
 							<div class="thumbnail stat-thumbnail">
-								<span class="glyphicon glyphicon-user"> </span>
+								<img id="picto" src="{{url_for('static', filename='images/church.png') }}"> 
 								<h1> X </h1>
-								<h4> observateurs </h2>
+								<h4> communes </h2>
+									<form method="POST" onsubmit="completeAction('#searchFormCommunesStat', hiddenInputCommunesStat)" id='searchFormCommunesStat' action=""  class="navbar-form" role="search">
+						               <div class="form-group has-feedback">
+						                 <input id="searchCommunesStat" type="text" class="form-control"  placeholder="Rechercher une commune;" >
+						                 <i class="glyphicon glyphicon-search form-control-feedback"></i>
+						               	 <input id="hiddenInputCommunesStat"  type="hidden" name="insee">
+						               </div>
+						                 
+					            	</form>
 							</div>
 						</div>
 						<div class ="col-sm-3">
 							<div class="thumbnail stat-thumbnail">
 								<span class="glyphicon glyphicon-camera"> </span>
 								<h1> X </h1>
-								<h4> photos </h2>
+								<h4> photo </h2>
+									<button type="button"> Galerie photo </button>
 							</div>
 						</div>
 						
@@ -99,12 +115,12 @@
 			<div class="col-sm-12"> 
 					  <!-- CARTO des 100 dernières observations -->
 					  <div class="panel panel-default">
+					  	<div class="panel-heading" id="mapBeginning"><strong> Les {{configuration.NB_LAST_OBS}} dernières observations </strong></div>
 					  	<div class="row" id="mapRow">
 							 <div class="col-sm-8">
 								<div id="map"> </div>
 							 </div>
 							 <div id="listMap" class = "col-sm-4"> 
-							 	<h5> <b> Les {{configuration.NB_LAST_OBS}} dernières observations </b> </h5>
 								<table id='tableEspece' class="table table-striped">
 									
 									<tbody>
@@ -137,7 +153,7 @@
 			<!-- ESPECES PERIODE -->
 			<div class="col-sm-12"> 
 				<div class="panel panel-default">
-					<div class="panel-heading"><strong>Espèces les plus observées à cette période</strong></div>
+					<div class="panel-heading"><strong>Les espèces les plus observées en ce moment</strong></div>
 					<div class="row thumbnail-row">
 					{% for tax in mostViewTaxon %}
 						<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col">

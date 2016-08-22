@@ -10,20 +10,20 @@
 
         <div class="col-sm-2 col-md-2">
 
-            <form method="POST" onsubmit="completeAction('#searchFormTaxons')"  action=""  id='searchFormTaxons' action=""  class="navbar-form" role="search">
+            <form method="POST" onsubmit="completeAction('#searchFormTaxons', hiddenInputTaxons)"  action=""  id='searchFormTaxons' class="navbar-form" role="search">
 
                <div class="form-group has-feedback">
-                 <input id="searchTaxons" type="text" class="form-control"  placeholder="Rechercher une espèce &nbsp; &nbsp; &nbsp;" data-placement="left" data-toggle="tooltip" data-original-title="Rechercher une espèce par son nom latin ou son nom 'français' ">
+                 <input id="searchTaxons" type="text" class="form-control"  placeholder="Rechercher une espèce &nbsp; &nbsp; &nbsp;" data-placement="left" data-toggle="tooltip" data-original-title="Rechercher une espèce par son nom latin ou son nom commun ">
                  <span class="glyphicon glyphicon-search form-control-feedback"></span>
                </div>
-                 <input id = "hidden-input"  type="hidden" name="cd_ref">
+                 <input id="hiddenInputTaxons"  type="hidden" name="cd_ref">
             
             </form>
         </div>
         <div class="col-sm-2 col-md-2">
 
 
-            <form method="POST" onsubmit="completeAction('#searchFormCommunes')" id='searchFormCommunes' action=""  class="navbar-form" role="search">
+            <form method="POST" onsubmit="completeAction('#searchFormCommunes', hiddenInputCommunes)" id='searchFormCommunes' action=""  class="navbar-form" role="search">
 
                <div class="form-group has-feedback">
                  <input id="searchCommunes" type="text" class="form-control"  placeholder="Rechercher une commune;" >
