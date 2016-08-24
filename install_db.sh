@@ -81,7 +81,6 @@ then
     # Mise en place des mailles et d la table de l'emprise du territoire
     echo "Découpage des mailles et creation de la table des mailles"
     cd data/ref
-    rm -f output_clip.dbf output_clip.prj output_clip.shp output_clip.shx
 
 
     rm -f L93*.dbf L93*.prj L93*.sbn L93*.sbx L93*.shp L93*.shx

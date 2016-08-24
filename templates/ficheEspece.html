@@ -70,19 +70,13 @@
                 <div class= "row" id="rowImg">
                     <div class="col-sm-6 col-lg-6" id="imgCol" > 
                         <div class="imgWrapper">
-                            {% if ( (firstPhoto.url  == None) and (firstPhoto.path == None) ) or (firstPhoto == None)  %}
+                            {% if firstPhoto.path == None %}
                                 <img src="{{url_for('static', filename='images/Photo_non_disponible.png') }}" style="width:100%;height: 100%; border-right: solid 1px;">
-                            {% elif firstPhoto.path != None %}
-                                <a href="{{firstPhoto.url}}" data-lightbox="imageSet" data-title="{{firstPhoto.title}}  &copy; {{firstPhoto.author}}" >
-                                    <img class ="imgToCarousel" id="myImg" src="{{configuration.URL_PHOTO}}{{firstPhoto.path}}" style="width:100%;height: 100%;">
+                            {% else %}
+                                <a href="{{firstPhoto.path}}" data-lightbox="imageSet" data-title="{{firstPhoto.title}}  &copy; {{firstPhoto.author}}" >
+                                    <img class ="imgToCarousel" id="myImg" src="{{firstPhoto.path}}" style="width:100%;height: 100%;">
                                     <p class="imgDescription main"> {{firstPhoto.title}}  &copy; {{firstPhoto.author}} </p>
                                 </a>
-                            {% else %}
-                            
-                            <a href="{{firstPhoto.url}}" data-lightbox="imageSet" data-title="{{firstPhoto.title}}  &copy; {{firstPhoto.author}}" >
-                                <img  id="myImg" src="{{firstPhoto.url}}" style="width:100%;height: 100%;">
-                                <p class="imgDescription main"> {{firstPhoto.title}}  &copy; {{firstPhoto.author}} </p>
-                            </a>
                            {% endif %}
                         </div>
 
@@ -265,13 +259,8 @@
                             {% else %}
                             <div class="item">
                             {% endif %}
-                                {% if photo.path != None %}
-                                <a href="{{configuration.URL_PHOTO}}{{photo.path}}" data-lightbox="imageSet" data-title="{{photo.title}}  &copy; {{photo.author}}" >
-                                  <div style="background:url({{configuration.URL_PHOTO}}{{photo.path}}) center center; background-size:cover;" class="slider-size">
-                                {% else %}
-                                <a href="{{photo.url}}" data-lightbox="imageSet" data-title="{{photo.title}}  &copy; {{photo.author}}" >
-                                  <div style="background:url({{photo.url}}) center center; background-size:cover;" class="slider-size">
-                                {% endif %}
+                                <a href="{{photo.path}}" data-lightbox="imageSet" data-title="{{photo.title}}  &copy; {{photo.author}}" >
+                                  <div style="background:url({{photo.path}}) center center; background-size:cover;" class="slider-size">
                                       <div class="carousel-caption">
                                        {{photo.title}} &copy; {{photo.author}}
                                       </div>

@@ -3,6 +3,7 @@
 from atlas.manage import engine
 from sqlalchemy import MetaData, Table
 import unicodedata
+import config
 
 
 class GenericTable:
@@ -24,4 +25,13 @@ def serializeQuery( data, columnDef):
 
 
 def deleteAccent(string): 
-    return unicodedata.normalize('NFD', string).encode('ascii', 'ignore')  
+    return unicodedata.normalize('NFD', string).encode('ascii', 'ignore')
+
+def findPath(row):
+    goodPath = str()
+    if row.chemin == None and row.url == None:
+        return None
+    elif row.chemin != None:
+        return config.URL_MEDIAS+row.chemin
+    else:
+        return row.url

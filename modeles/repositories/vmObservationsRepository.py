@@ -210,14 +210,9 @@ def genericStatMedias(connection, tab):
                 LIMIT 10"
         req = connection.execute(sql)
         for r in req:
-            goodPath = str()
-            if r.chemin == None:
-                goodPath = r.url
-            else:
-                goodPath = config.URL_MEDIAS+r.chemin
             shorterName = r.nom_vern.split(",")
             shorterName = shorterName[0]
-            temp = {'cd_ref': r.cd_ref, 'lb_nom' : r.lb_nom, 'nom_vern': shorterName, 'path': goodPath, 'author': r.auteur, 'group2_inpn': utils.deleteAccent(r.group2_inpn)}
+            temp = {'cd_ref': r.cd_ref, 'lb_nom' : r.lb_nom, 'nom_vern': shorterName, 'path': utils.findPath(r), 'author': r.auteur, 'group2_inpn': utils.deleteAccent(r.group2_inpn)}
             tabStat[i].append(temp)
         random.shuffle(tabStat[0])
         random.shuffle(tabStat[1])

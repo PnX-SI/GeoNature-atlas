@@ -60,3 +60,14 @@ ATTR_CORROLOGIE = 103
 ####ID DES ATTRIBUTS DES MEDIAS DE LA TABLE vm_medias
 ATTR_MAIN_PHOTO = 1
 ATTR_OTHER_PHOTO = 2
+
+
+## BLOC STAT : parametre pour le bloc statistique 2 de la page d'acceuil
+# mettre dans RANG_STAT le couple 'rang taxonomique' - 'nom du taxon corepondant au rang' pour avoir des statistique sur ce rang -
+#Fonctionne à tous les niveau de rang présent dans la table taxref - Important: mettre au maximum deux 'couples' dans le tableau
+
+# exemple RANG_STAT = [{'ordre': '"Lepidoptera"'}, {'classe': 'Insecta'}]
+#         RANG_STAT_FR ['Papillon', 'Insecte']
+
+RANG_STAT = [{'regne': 'Animalia'}, {'regne': 'Plantae'}] 
+RANG_STAT_FR = ['Faune', 'Flore']
