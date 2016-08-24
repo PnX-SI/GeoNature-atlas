@@ -25,9 +25,9 @@ body {
 
 .stat-thumbnail{
   text-align: center;
- background-color:  #E3E7E8;
- margin-bottom: 0px;
- border-radius: 0px;
+  background-color:  #E3E7E8;
+  margin-bottom: 0px;
+  border-radius: 0px;
 }
 .stat-thumbnail span {
   font-size: 40px;
@@ -55,6 +55,24 @@ button:focus {outline:0;}
 
 .stat-thumbnail input{
   border-color: black;
+}
+
+/*Custom Stat Block*/
+
+.stat-custom-panel {
+  padding: 10px;
+}
+
+.stat-custom-panel span {
+  font-size: 15px;
+}
+
+.statMedias{
+  text-align: center;
+  float: left;
+}
+.thumbnail-stat-medias{
+  padding: 0px;
 }
 
 
@@ -130,7 +148,7 @@ ul#stat {
 
 table#tableEspece {
   display: block;
-  height: 600px;
+  max-height: 600px;
   overflow-y: scroll;
 }
 

@@ -63,7 +63,7 @@ def getLinks_and_articles(connection, cd_ref):
     req = connection.execute(text(sql), thiscdref = cd_ref)
     tabArticles = list()
     for r in req:
-        temp = {'id_type': r.id_type, 'url': r.url, 'title': r.titre, 'author':r.auteur, 'description': r.desc_media}
+        temp = {'id_type': r.id_type, 'url': r.url, 'title': r.titre, 'author':r.auteur, 'description': r.desc_media, 'date': r.date_media}
         tabArticles.append(temp)
     return tabArticles
 

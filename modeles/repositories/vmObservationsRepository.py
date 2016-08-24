@@ -17,6 +17,7 @@ from sqlalchemy.orm import sessionmaker
 import ast
 from datetime import datetime
 import config
+import random
 
 
 currentYear = datetime.now().year
@@ -177,3 +178,46 @@ def statIndex(connection):
     for r in req:
         result['photo']= r.count
     return result
+
+
+def genericStat (connection, tab):
+    tabStat = list()
+    for pair in tab:
+        rang, nomTaxon = pair.items()[0]
+        sql= "SELECT COUNT (o.id_synthese) AS nb_obs, \
+            COUNT (DISTINCT t.cd_ref) AS nb_taxons \
+            FROM atlas.vm_taxons t \
+            JOIN atlas.vm_observations o ON o.cd_ref = t.cd_ref \
+            WHERE t."+rang+"= '"+nomTaxon+"'"
+        req = connection.execute(sql)
+        for r in req:
+            temp = {'nb_obs': r.nb_obs, 'nb_taxons': r.nb_taxons}
+            tabStat.insert(0, temp)
+    return tabStat
+
+def genericStatMedias(connection, tab):
+    tabStat = [list(), list()]
+    for i in range(len(tab)):
+        rang, nomTaxon = tab[i].items()[0]
+        print nomTaxon
+        sql= "SELECT COUNT(o.id_synthese) as nb_obs, o.cd_ref, t.lb_nom, t.nom_vern, m.url, m.chemin, m.auteur \
+                FROM atlas.vm_observations o \
+                JOIN atlas.vm_taxons t ON t.cd_ref = o.cd_ref \
+                JOIN atlas.vm_medias m ON m.cd_ref = o.cd_ref \
+                WHERE t."+rang+"= '"+nomTaxon+"' AND m.id_type = 1 \
+                GROUP BY o.cd_ref, t.lb_nom, t.nom_vern, m.url, m.chemin, m.auteur \
+                ORDER BY nb_obs DESC \
+                LIMIT 10"
+        req = connection.execute(sql)
+        for r in req:
+            goodPath = str()
+            if r.chemin == None:
+                goodPath = r.url
+            else:
+                goodPath = config.URL_MEDIAS+r.chemin
+            temp = {'cd_ref': r.cd_ref, 'lb_nom' : r.lb_nom, 'nom_vern': r.nom_vern, 'path': goodPath, 'author': r.auteur}
+            tabStat[i].append(temp)
+        random.shuffle(tabStat[0])
+        random.shuffle(tabStat[1])
+    return tabStat
+

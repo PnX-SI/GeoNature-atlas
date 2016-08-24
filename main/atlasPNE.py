@@ -30,14 +30,16 @@ def index():
     communesSearch = vmCommunesRepository.getAllCommunes(session)
     mostViewTaxon = vmTaxonsMostView.mostViewTaxon(connection)
     stat = vmObservationsRepository.statIndex(connection)
+    customStat = vmObservationsRepository.genericStat(connection, config.RANG_STAT)
+    customStatMedias = vmObservationsRepository.genericStatMedias(connection, config.RANG_STAT)
     configuration = {'STRUCTURE' : config.STRUCTURE, 'HOMEMAP': True, 'NB_LAST_OBS': config.NB_LAST_OBS, 'AFFICHAGE_MAILLE': config.AFFICHAGE_MAILLE, \
-    'URL_PHOTO': config.URL_MEDIAS}
+    'URL_PHOTO': config.URL_MEDIAS, 'RANG_STAT_FR': config.RANG_STAT_FR}
     
     connection.close()
     session.close()
 
     return render_template('index.html', listeTaxonsSearch=listeTaxonsSearch, observations=observations, communesSearch=communesSearch, \
-     mostViewTaxon=mostViewTaxon, stat=stat, configuration = configuration)
+     mostViewTaxon=mostViewTaxon, stat=stat, customStat = customStat, customStatMedias=customStatMedias, configuration = configuration)
 
 
 @main.route('/espece/<int:cd_ref>', methods=['GET', 'POST'])
