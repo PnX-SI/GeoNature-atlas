@@ -215,7 +215,9 @@ def genericStatMedias(connection, tab):
                 goodPath = r.url
             else:
                 goodPath = config.URL_MEDIAS+r.chemin
-            temp = {'cd_ref': r.cd_ref, 'lb_nom' : r.lb_nom, 'nom_vern': r.nom_vern, 'path': goodPath, 'author': r.auteur}
+            shorterName = r.nom_vern.split(",")
+            shorterName = shorterName[0]
+            temp = {'cd_ref': r.cd_ref, 'lb_nom' : r.lb_nom, 'nom_vern': shorterName, 'path': goodPath, 'author': r.auteur}
             tabStat[i].append(temp)
         random.shuffle(tabStat[0])
         random.shuffle(tabStat[1])

@@ -70,10 +70,24 @@ button:focus {outline:0;}
 .statMedias{
   text-align: center;
   float: left;
+  width: 100%;
 }
 .thumbnail-stat-medias{
   padding: 0px;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
 }
+
+.thumbnail-caption-medias{
+  padding-top: 5px;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+  .slider-size {
+    height: 150px; 
+    width: 100%;
+  }
 
 
 
