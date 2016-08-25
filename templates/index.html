@@ -215,13 +215,13 @@
 
 	<!-- AJOUT CAMILLE -->	
 	<script type="text/javascript" src="/atlas/static/conf/calculCustom.js"></script>
-    <script type="text/javascript" src="/atlas/static/conf/custom.js"></script>
     	    <script type="text/javascript">
 			  var listeTaxonsSearch = {{listeTaxonsSearch|tojson}} 
 			  ,observations = {{observations|tojson}}
 			  ,communesSearch = {{communesSearch|tojson}}
 			  , configuration = {{configuration|tojson}},
-			  url_limit_territory = "{{url_for('static', filename='territoire.json') }}";
+			  url_limit_territory = "{{url_for('static', filename='territoire.json') }}",
+			  MAP = {{configuration.MAP|tojson}};
         </script>
     
     <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>

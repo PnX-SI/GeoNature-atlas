@@ -1,4 +1,5 @@
-currentDate = new Date()
+var currentDate = new Date();
+YEARMAX = currentDate.getFullYear();
 
 function getLegend(yearMin, yearMax){
 	var interMin = yearMin % 10;

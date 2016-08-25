@@ -419,7 +419,6 @@
     
     <script type="text/javascript" src="/atlas/static/conf/calculCustom.js"></script>
 
-    <script type="text/javascript" src="/atlas/static/conf/custom.js"></script>
 
 
     <script> 
@@ -433,7 +432,8 @@
                  communesSearch = {{communesSearch|tojson}},
                  configuration = {{configuration|tojson}},
                  url_limit_territory = "{{url_for('static', filename='territoire.json') }}",
-                 taxonYearMin = {{taxon.taxonSearch.yearmin}};
+                 taxonYearMin = {{taxon.taxonSearch.yearmin}},
+                 MAP = {{configuration.MAP|tojson}};
 
     </script>  
 

@@ -5,7 +5,7 @@ generateSliderOnMap();
 // Layer display on window ready
 
 $(function(){
-  displayMailleLayerFicheEspece(observationsMaille, taxonYearMin, $YEARMAX);
+  displayMailleLayerFicheEspece(observationsMaille, taxonYearMin, YEARMAX);
   //display nb observations
   $("#nbObs").html("Nombre d'observation(s): "+ observationsPoint.length);
 

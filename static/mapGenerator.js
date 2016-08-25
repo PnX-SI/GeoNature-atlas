@@ -2,23 +2,19 @@ function generateMap() {
 
 
     //map initialization
-firstMapTile = L.tileLayer(FIRST_MAP.url, {attribution : FIRST_MAP.attribution} );
+firstMapTile = L.tileLayer(MAP.FIRST_MAP.url, {attribution : MAP.FIRST_MAP.attribution} );
+orthoMap =  L.tileLayer(MAP.SECOND_MAP.url, {attribution: MAP.SECOND_MAP.attribution});
 
 baseMap = {};
-baseMap[FIRST_MAP.tileName]=firstMapTile;
+baseMap[MAP.FIRST_MAP.tileName]=firstMapTile;
 
-  // loop over additional maps
-  ADDITIONAL_MAP.forEach(function(map){
-     tempName = map.tileName;
-    baseMap[tempName]  = L.tileLayer(map.url, {attribution: map.attribution})
-  });
 
 
       var map = L.map('map',{
         crs: L.CRS.EPSG3857,
-        center: latLong, 
+        center: MAP.LAT_LONG, 
         geosearch: true,
-        zoom: setZoom,
+        zoom: MAP.ZOOM,
         layers : [firstMapTile],
         fullscreenControl: true,
         });
@@ -291,23 +287,6 @@ function displayMarkerLayerFicheEspece(observationsPoint, yearMin, yearMax){
 }
 
 
-// Display slider
-
-/*if (configuration.FICHE_ESPECE == true){
-  var mySlider = new Slider('#slider', {
-    value: [taxonYearMin, $YEARMAX],
-    min : taxonYearMin,
-    max : $YEARMAX,
-    step: $STEP,
-  });
-
-  $("#yearMax").html("&nbsp;&nbsp;"+ $YEARMAX);
-  $("#yearMin").html(taxonYearMin + "&nbsp;&nbsp;");
-
-}*/
-
-
-
 
 // ***************Fonction lastObservations: mapHome et mapCommune*****************
 
@@ -393,11 +372,7 @@ function printEspece(tabEspece, tabCdRef){
   return stringEspece
 }
 
-/*  tabEspece.forEach(function(espece){
-      stringEspece += "<li> "+espece+"</li>"
-  })
-  return stringEspece;
-}*/
+
 
 function onEachFeatureMailleLastObs(feature, layer){
     popupContent = "<b>Espèces observées dans la maille: </b> <ul> "+printEspece(feature.properties.list_taxon, feature.properties.list_cdref) + "</ul>";
@@ -563,15 +538,15 @@ function generateSliderOnMap(){
     });
 
     map.addControl(new SliderControl());
-
+        
         mySlider = new Slider('#sliderControl', {
-        value: [taxonYearMin, $YEARMAX],
+        value: [taxonYearMin, YEARMAX],
         min : taxonYearMin,
-        max : $YEARMAX,
-        step: $STEP,
+        max : YEARMAX,
+        step: MAP.STEP,
       });
 
-    $("#yearMax").html("&nbsp;&nbsp;&nbsp;&nbsp;"+ $YEARMAX);
+    $("#yearMax").html("&nbsp;&nbsp;&nbsp;&nbsp;"+ YEARMAX);
     $("#yearMin").html(taxonYearMin + "&nbsp;&nbsp;&nbsp;&nbsp");
 
 

@@ -78,15 +78,14 @@
 
         <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
 
-        <script type="text/javascript" src="/atlas/static/conf/custom.js"></script>
         <script type="text/javascript">
         var communesSearch = {{communesSearch|tojson}},
             listeTaxonsSearch = {{listeTaxonsSearch|tojson}},
             configuration = {{configuration|tojson}},
             observations = {{observations|tojson}},
             communeGeoJson = {{referenciel.communeGeoJson|tojson}},
-            url_limit_territory = "{{url_for('static', filename='territoire.json') }}";
-            console.log({{listTaxons|tojson}});
+            url_limit_territory = "{{url_for('static', filename='territoire.json') }}",
+            MAP = {{configuration.MAP|tojson}};
         </script>
         <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
         <script src="{{url_for('static', filename='mapCommune.js') }}"></script>
