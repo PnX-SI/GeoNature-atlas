@@ -196,10 +196,9 @@ def genericStat (connection, tab):
     return tabStat
 
 def genericStatMedias(connection, tab):
-    tabStat = [list(), list()]
+    tabStat = list()
     for i in range(len(tab)):
         rang, nomTaxon = tab[i].items()[0]
-        print nomTaxon
         sql= "SELECT COUNT(o.id_synthese) as nb_obs, o.cd_ref, t.lb_nom, t.nom_vern, t.group2_inpn, m.url, m.chemin, m.auteur \
                 FROM atlas.vm_observations o \
                 JOIN atlas.vm_taxons t ON t.cd_ref = o.cd_ref \
@@ -209,12 +208,15 @@ def genericStatMedias(connection, tab):
                 ORDER BY nb_obs DESC \
                 LIMIT 10"
         req = connection.execute(sql)
+        tabStat.insert(0, list())
         for r in req:
             shorterName = r.nom_vern.split(",")
             shorterName = shorterName[0]
             temp = {'cd_ref': r.cd_ref, 'lb_nom' : r.lb_nom, 'nom_vern': shorterName, 'path': utils.findPath(r), 'author': r.auteur, 'group2_inpn': utils.deleteAccent(r.group2_inpn)}
             tabStat[i].append(temp)
-        random.shuffle(tabStat[0])
-        random.shuffle(tabStat[1])
+    if len(tabStat[0]) == 0:
+        return None
+    for i in len(tabStat):
+        random.shuffle(tabStat[i])
     return tabStat
 

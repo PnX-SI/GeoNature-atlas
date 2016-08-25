@@ -44,6 +44,16 @@ body {
 
 /*Custom Stat Block*/
 
+.row-medias{
+  margin-right: -5px;
+  margin-left: -5px;
+}
+
+.stat-medias-wrapper{
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
 .stat-custom-panel {
   padding: 10px;
 }
@@ -73,6 +83,11 @@ body {
     height: 150px; 
     width: 100%;
   }
+
+.col-stat-medias{
+  padding-right: 5px;
+  padding-left: 5px;
+}
 
 
 

@@ -112,59 +112,35 @@
 			</div>
 
 			<div class="col-sm-12">
-				<div class="row">
-					<div class="col-sm-6">
+				<div class="row row-medias">
+				{% for i in range(customStat | length) %}
+					<div class="col-sm-6 stat-medias-wrapper">
 							<div class="panel panel-default statMedias">
 								<div class="panel-heading">
-									<strong>{{configuration.RANG_STAT_FR[0]}}</strong> <br>
-									<strong>{{customStat[0].nb_obs}} </strong> observations |  <strong>{{customStat[0].nb_taxons}}</strong> espèces
+									<strong>{{configuration.RANG_STAT_FR[i]}}</strong> <br>
+									<strong>{{customStat[i].nb_obs}} </strong> observations |  <strong>{{customStat[i].nb_taxons}}</strong> espèces
 								</div>
 								<h5> <span class="glyphicon glyphicon-eye-open" > </span> Espèces à découvrir </h5>
-
-								{% for i in range(3) %}	
-									<div class="col-sm-4">
-										<div class ="thumbnail-stat-medias">
-											{% if customStatMedias[0][i].path == None %}
-											<div class="slider-size" style="background:url({{url_for('static', filename='images/picto_' + customStatMedias[0][i].group2_inpn +'.png') }}) center center; background-size:cover;"> 
-											{% else %}
-										    <div class="slider-size" style="background:url({{customStatMedias[0][i].path}}) center center; background-size:cover;">
-										    {% endif %} 
-										    </div>
-										    <div class="thumbnail-caption-medias" >
-										        <p> {{customStatMedias[0][i].nom_vern}} <br> <i> {{customStatMedias[0][i].lb_nom}} </i>  </p>
-										        <p><a href="{{url_for('main.ficheEspece',cd_ref=customStatMedias[0][i].cd_ref)}}" class="btn btn-default" role="button">Fiche espèce</a></p>
-										    </div>
-										</div>
+					{% for j in range(3) %}
+								<div class="col-sm-4 col-stat-medias">
+									<div class ="thumbnail-stat-medias">
+										{% if customStatMedias[i][j].path == None %}
+										<div class="slider-size" style="background:url({{url_for('static', filename='images/picto_' + customStatMedias[i][j].group2_inpn +'.png') }}) center center; background-size:cover;"> 
+										{% else %}
+									    <div class="slider-size" style="background:url({{customStatMedias[i][j].path}}) center center; background-size:cover;">
+									    {% endif %} 
+									    </div>
+									    <div class="thumbnail-caption-medias" >
+									        <p> {{customStatMedias[i][j].nom_vern}} <br> <i> {{customStatMedias[i][j].lb_nom}} </i>  </p>
+									        <p><a href="{{url_for('main.ficheEspece',cd_ref=customStatMedias[i][j].cd_ref)}}" class="btn btn-default" role="button">Fiche espèce</a></p>
+									    </div>
 									</div>
-							    {% endfor %}
-							 </div>
+								</div>					
+				{% endfor %}
+							</div>
 					</div>
-					<div class="col-sm-6">
-							<div class="panel panel-default statMedias">
-								<div class="panel-heading">
-									<strong>{{configuration.RANG_STAT_FR[1]}}</strong> <br>
-									<strong>{{customStat[1].nb_obs}} </strong> observations |  <strong>{{customStat[1].nb_taxons}}</strong> espèces
-								</div>
-								<h5> <span class="glyphicon glyphicon-eye-open" > </span> Espèces à découvrir </h5>
 
-								{% for i in range(3) %}	
-									<div class="col-sm-4">
-										<div class ="thumbnail-stat-medias">
-											{% if customStatMedias[0][i].path == None %}
-											<div class="slider-size" style="background:url({{url_for('static', filename='images/picto_' + customStatMedias[1][i].group2_inpn +'.png') }}) center center; background-size:cover;"> 
-											{% else %}
-										    <div class="slider-size" style="background:url({{customStatMedias[1][i].path}}) center center; background-size:cover;">
-										    {% endif %} 
-										    </div>
-										    <div class="thumbnail-caption-medias" >
-										        <p> {{customStatMedias[1][i].nom_vern}} <br> <i> {{customStatMedias[1][i].lb_nom}} </i>  </p>
-										        <p><a href="{{url_for('main.ficheEspece',cd_ref=customStatMedias[1][i].cd_ref)}}" class="btn btn-default" role="button">Fiche espèce</a></p>
-										    </div>
-										</div>
-									</div>
-							    {% endfor %}
-							 </div>
-					</div>
+			{% endfor %}
 				</div>
 			</div>
 

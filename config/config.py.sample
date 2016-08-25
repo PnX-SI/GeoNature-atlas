@@ -37,7 +37,7 @@ AFFICHAGE_MAILLE = True
 ZOOM_LEVEL_POINT = 11
 
 # Nombre de 'x' dernieres observations de la carte sur la page d'acceuil
-LIMIT_OBSERVATION = 100
+NB_LAST_OBS = 100
 
 #Limite d'observation à partir duquel on passe à l'affichage en cluster
 LIMIT_CLUSTER_POINT = 1000
