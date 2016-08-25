@@ -208,7 +208,7 @@ def genericStatMedias(connection, tab):
                 ORDER BY nb_obs DESC \
                 LIMIT 10"
         req = connection.execute(sql)
-        tabStat.insert(0, list())
+        tabStat.insert(i, list())
         for r in req:
             shorterName = r.nom_vern.split(",")
             shorterName = shorterName[0]
@@ -216,7 +216,7 @@ def genericStatMedias(connection, tab):
             tabStat[i].append(temp)
     if len(tabStat[0]) == 0:
         return None
-    for i in len(tabStat):
+    for i in range(len(tabStat)):
         random.shuffle(tabStat[i])
     return tabStat
 
