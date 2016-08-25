@@ -114,7 +114,7 @@
 			{% if customStatMedias != None %}
 			<div class="col-sm-12">
 				<div class="row row-medias">
-				{% for i in range(customStat | length) %}
+				{% for i in range(customStatMedias | length) %}
 					<div class="col-sm-6 stat-medias-wrapper">
 							<div class="panel panel-default statMedias">
 								<div class="panel-heading">
@@ -123,20 +123,25 @@
 								</div>
 								<h5> <span class="glyphicon glyphicon-eye-open" > </span> Espèces à découvrir </h5>
 					{% for j in range(3) %}
+						{% if loop.index < customStatMedias[i] | length %}
 								<div class="col-sm-4 col-stat-medias">
 									<div class ="thumbnail-stat-medias">
 										{% if customStatMedias[i][j].path == None %}
-										<div class="slider-size" style="background:url({{url_for('static', filename='images/picto_' + customStatMedias[i][j].group2_inpn +'.png') }}) center center; background-size:cover;"> 
+										<div class="slider-size" style="background:url({{url_for('static', filename='images/picto_' + customStatMedias[i][j].group2_inpn +'.png') }}) center center; background-size:cover;">
 										{% else %}
 									    <div class="slider-size" style="background:url({{customStatMedias[i][j].path}}) center center; background-size:cover;">
 									    {% endif %} 
+									    	<div class="stat-medias-hovereffet">
+									    		<img src="{{url_for('static', filename='images/eye.png') }}"> 
+									    	</div>
 									    </div>
 									    <div class="thumbnail-caption-medias" >
 									        <p> {{customStatMedias[i][j].nom_vern}} <br> <i> {{customStatMedias[i][j].lb_nom}} </i>  </p>
 									        <p><a href="{{url_for('main.ficheEspece',cd_ref=customStatMedias[i][j].cd_ref)}}" class="btn btn-default" role="button">Fiche espèce</a></p>
 									    </div>
 									</div>
-								</div>					
+								</div>	
+						{% endif %}				
 				{% endfor %}
 							</div>
 					</div>

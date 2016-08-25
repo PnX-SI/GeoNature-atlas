@@ -84,10 +84,27 @@ body {
     width: 100%;
   }
 
+  .slider-size:hover{
+    cursor:pointer;
+    visibility: visible;
+  }
+
 .col-stat-medias{
   padding-right: 5px;
   padding-left: 5px;
 }
+
+.stat-medias-hovereffet{
+  overflow: hidden;
+  position: absolute;
+  visibility: hidden;
+  left: 40%;
+  top:15%;
+}
+
+/*.stat-medias-hovereffet:hover{
+  visibility: visible;
+}*/
 
 
 

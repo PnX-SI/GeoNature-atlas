@@ -98,7 +98,7 @@ then
 
     #conversion en json
     rm  -f ../../static/territoire.json
-    ogr2ogr -f "GeoJSON" -t_srs "EPSG:4326" ../../static/territoire.json PNE_aoa.shp
+    ogr2ogr -f "GeoJSON" -t_srs "EPSG:4326" ../../static/territoire.json $limit_shp
 
     cd ../../
    

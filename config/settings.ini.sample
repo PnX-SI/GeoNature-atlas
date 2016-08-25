@@ -65,4 +65,4 @@ time=15
 taillemaille=5
 
 # chemin vers le shp de l'emprise du territoire 
-limit_shp="mon/chemin/vers/la/couche/.shp"
+limit_shp="/home/USER/atlas/data/ref/ma_couche.shp"
