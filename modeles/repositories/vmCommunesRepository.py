@@ -37,10 +37,6 @@ def getCommuneFromInsee(connection, insee):
 
     return req[0].commune_maj
 
-def getCommunesObservations(cd_ref):
-    return session.query(distinct(VmObservations.insee), VmObservations.insee, VmCommunes.commune_maj)\
-    .join(VmCommunes, VmObservations.insee == VmCommunes.insee).group_by(VmObservations.insee, VmCommunes.commune_min, VmCommunes.commune_maj)\
-    .filter(VmObservations.cd_ref==cd_ref).all()
 
 
 def getCommunesObservationsChilds(connection, cd_ref):
@@ -51,7 +47,7 @@ def getCommunesObservationsChilds(connection, cd_ref):
     WHERE obs.cd_ref in ( \
     SELECT * from atlas.find_all_taxons_childs(:thiscdref) \
     )OR obs.cd_ref = :thiscdref \
-    GROUP BY com.commune_maj, com.insee".encode('UTF-8')
+    ORDER BY com.commune_maj ASC".encode('UTF-8')
     req = connection.execute(text(sql), thiscdref = cd_ref)
     listCommunes = list()
     for r in req:

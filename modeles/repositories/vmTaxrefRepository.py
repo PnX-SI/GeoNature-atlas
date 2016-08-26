@@ -48,8 +48,12 @@ def searchEspece(connection, cd_ref):
 
 
 
-def getSynonymy(session, cd_ref):
-    return session.query(VmTaxref.lb_nom).filter(VmTaxref.cd_ref==cd_ref).all()
+def getSynonymy(connection, cd_ref):
+    sql = "SELECT nom_complet_html, lb_nom \
+    FROM atlas.vm_taxref \
+    WHERE cd_ref = :thiscdref \
+    ORDER BY lb_nom ASC"
+    return connection.execute(text(sql), thiscdref = cd_ref)
 
 
 def getCd_ref(cd_nom):

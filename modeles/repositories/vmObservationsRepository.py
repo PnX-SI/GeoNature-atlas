@@ -123,11 +123,16 @@ def lastObservationsCommune(connection, mylimit, insee):
 
 
 
-def getObservers(session, cd_ref):
-    req= session.query(distinct(VmObservations.observateurs),VmObservations.observateurs).filter(VmObservations.cd_ref==cd_ref).all()
+def getObservers(connection, cd_ref):
+    sql = "SELECT distinct observateurs \
+    FROM atlas.vm_observations \
+    WHERE cd_ref in ( \
+    SELECT * from atlas.find_all_taxons_childs(:thiscdref) \
+    )OR cd_ref = :thiscdref"
+    req = connection.execute(text(sql), thiscdref = cd_ref)
     setObs = set()
     for r in req:
-        tabObs = r[1].split(', ')
+        tabObs = r.observateurs.split(', ')
         for o in tabObs:
             o = o.lower()
             setObs.add(o)
@@ -136,7 +141,6 @@ def getObservers(session, cd_ref):
         tabInter= s.split(' ')
         fullName= str()
         i=0
-        print len(tabInter)
         while i<len(tabInter):
             if i == len(tabInter)-1:
                 fullName += tabInter[i].capitalize()
@@ -144,7 +148,7 @@ def getObservers(session, cd_ref):
                 fullName += tabInter[i].capitalize() + " "
             i=i+1              
         finalList.append(fullName)
-    return finalList
+    return sorted(finalList)
 
 
 
