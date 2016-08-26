@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8" />
@@ -35,7 +35,7 @@
 					<div class="row">
 						<div class="col-sm-4 textIntroduction"> 
 							<h1>
-								Bienvenue sur l'atlas de la faune et de la flore du Parc national des Ecrins
+								Bienvenue sur l'atlas de la faune et de la flore du {{configuration.STRUCTURE}}
 							</h1>
 							<p>
 								Il permet de consulter des fiches sur l'ensemble des espèces observées par les agents du parc national depuis sa création en 1973.
@@ -45,9 +45,7 @@
 							</p>
 						</div>
 						<div class="col-sm-8">
-							<a href="espece/247044">
-								<img src="/atlas/static/images/247044-home.jpg" width="100%">
-							</a>
+							<img src="{{url_for('static', filename='custom/images/accueil-intro.jpg') }}" width="100%">
 						</div>
 					</div>
 				</div>
@@ -59,7 +57,7 @@
 			<div class="col-sm-12">
 				<div class="panel panel-default stat-panel">
 					<div class="row">
-						<div class="panel-heading"><strong> <h3> L'atlas du Parc national des Ecrins </h3> </strong></div>
+						<div class="panel-heading"><strong> <h3> L'atlas du {{configuration.STRUCTURE}} </h3> </strong></div>
 						<div class ="col-sm-3 ">
 							<div class="thumbnail stat-thumbnail">
 								<span class="glyphicon glyphicon-search"> </span>
