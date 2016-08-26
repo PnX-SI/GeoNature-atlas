@@ -8,3 +8,5 @@ debug.py
 data/ref/PNE_aoa.*
 static/territoire.json
 static/images/ancien
+static/custom/images/*
+static/custom/custom.css
