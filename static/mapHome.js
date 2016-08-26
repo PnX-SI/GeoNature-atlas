@@ -61,7 +61,10 @@ $(function(){
   // zoom on the popup on observation click
 
   currentLayer.on('click', function(e){
-      map.setView(e.latlng, 12);
+    console.log(map.getZoom());
+    if (map.getZoom()<14) {
+      map.setView(e.latlng, 14);
+    }
   });
 
 
