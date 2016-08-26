@@ -1,13 +1,18 @@
-var map = generateMap()
+var map = generateMap();
+generateSliderOnMap();
 
 
 // affichage des mailles
 $(function(){
-displayMailleLayerFicheEspece(observationsMaille, taxonYearMin, $YEARMAX);
+displayMailleLayerFicheEspece(observationsMaille, taxonYearMin, YEARMAX);
 // pointer on first and last obs
 $('.pointer').css('cursor', 'pointer');
 //display nb observations
-$("#nbObs").html("Nombre d'observation(s): "+ observationsPoint.length);
+    nbObs=0;
+    myGeoJson.features.forEach(function(l){
+      nbObs += l.properties.nb_observations
+      })
+$("#nbObs").html("Nombre d'observation(s): "+ nbObs);
 
 
 });

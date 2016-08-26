@@ -10,6 +10,8 @@ Morris.Bar({
             hideHover: 'auto',
             resize: true,
             axes: true,
+            gridIntegers: true
+            /*yLabelFormat: function(y){return y != Math.round(y)?'':y;}*/
 /*            horizontal: true
 */        });
 

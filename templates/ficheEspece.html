@@ -324,12 +324,12 @@
                                 {% endif %}
                             </div>
                             <div id="synonymes" class="tab-pane fade">
-                                {%for syn in synonyme %} 
-                                    {% if not syn.lb_nom == taxon.lb_nom %}
-                                    {{syn.lb_nom}}
+                                {% for syn in synonyme %} 
+                                    {% if not syn.lb_nom == taxon.taxonSearch.lb_nom %}
+                                    {{ syn.nom_complet_html | safe}}
                                     {% endif %}
-                                    {% if ( (not loop.last) and (not syn.lb_nom == taxon.lb_nom) ) %}
-                                    -
+                                    {% if ( (not loop.last) and (not syn.lb_nom == taxon.taxonSearch.lb_nom) ) %}
+                                    |
                                     {% endif %}
                                 {% endfor %}
                             </div>

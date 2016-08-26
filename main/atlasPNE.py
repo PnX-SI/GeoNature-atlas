@@ -56,7 +56,7 @@ def ficheEspece(cd_ref):
         observations = {'point': vmObservationsRepository.searchObservationsChilds(connection, cd_ref), 'maille' : vmObservationsMaillesRepository.getObservationsMaillesChilds(connection, cd_ref)}
     altitudes = vmAltitudesRepository.getAltitudesChilds(connection, cd_ref)
     months = vmMoisRepository.getMonthlyObservationsChilds(connection, cd_ref)
-    synonyme = vmTaxrefRepository.getSynonymy(session, cd_ref)
+    synonyme = vmTaxrefRepository.getSynonymy(connection, cd_ref)
     communes = vmCommunesRepository.getCommunesObservationsChilds(connection, cd_ref)
     communesSearch = vmCommunesRepository.getAllCommunes(session)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
@@ -65,7 +65,7 @@ def ficheEspece(cd_ref):
     videoAudio = vmMedias.getVideo_and_audio(connection, cd_ref)
     articles = vmMedias.getLinks_and_articles(connection, cd_ref)
     taxonDescritpion = vmCorTaxonAttribut.getAttributesTaxon(connection, cd_ref, config.ATTR_DESC, config.ATTR_COMMENTAIRE, config.ATTR_MILIEU, config.ATTR_CORROLOGIE)
-    observers = vmObservationsRepository.getObservers(session, cd_ref)
+    observers = vmObservationsRepository.getObservers(connection, cd_ref)
     configuration = {'STRUCTURE' : config.STRUCTURE, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY,\
     'AFFICHAGE_MAILLE' : config.AFFICHAGE_MAILLE, 'ZOOM_LEVEL_POINT': config.ZOOM_LEVEL_POINT, 'LIMIT_CLUSTER_POINT': config.LIMIT_CLUSTER_POINT, 'FICHE_ESPECE': True, \
     'URL_PHOTO': config.URL_MEDIAS, 'MAP': config.MAP}
