@@ -10,3 +10,5 @@ static/territoire.json
 static/images/ancien
 static/custom/images/*
 static/custom/custom.css
+main/configuration/config.py
+main/configuration/settings.ini
