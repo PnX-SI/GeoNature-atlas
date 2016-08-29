@@ -47,7 +47,7 @@ function completeAction(id, hiddenID){
     path = configuration.URL_APPLICATION+"/espece/"+parseInt(value);
   }
   if (id == "#searchFormCommunes" || id == "#searchFormCommunesStat" ){
-    path = configuration.URL_APPLICATION+"commune/"+value;
+    path = configuration.URL_APPLICATION+"/commune/"+value;
   }
 
     $(id).attr("action", path);
