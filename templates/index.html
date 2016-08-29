@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>Atlas faune et flore</title>
+        <title>{{configuration.NOM_APPLICATION}}</title>
 
         <!-- Bootrap -->
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap/css/bootstrap.min.css') }}"></link>
@@ -22,9 +22,7 @@
         <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='css/index.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='custom/custom.css') }}" />
-
-
-				
+	
     </head>
 
     <body>
@@ -50,7 +48,7 @@
 							</p>
 						</div>
 						<div class="col-sm-8">
-							<img src="{{url_for('static', filename='custom/images/accueil-intro.jpg') }}" width="100%">
+							<img src="{{url_for('static', filename='custom/images/accueil-intro.jpg') }}" width="100%" alt="{{configuration.NOM_APPLICATION}}">
 						</div>
 					</div>
 				</div>
