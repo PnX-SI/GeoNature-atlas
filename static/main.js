@@ -44,10 +44,10 @@ function completeAction(id, hiddenID){
   value = $(hiddenID).val();
   var path;
   if (id == "#searchFormTaxons" || id == "#searchFormTaxonsStat"){
-    path = "/atlas/espece/"+parseInt(value);
+    path = configuration.URL_APPLICATION+"/espece/"+parseInt(value);
   }
   if (id == "#searchFormCommunes" || id == "#searchFormCommunesStat" ){
-    path = "/atlas/commune/"+value;
+    path = configuration.URL_APPLICATION+"commune/"+value;
   }
 
     $(id).attr("action", path);
