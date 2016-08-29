@@ -3,11 +3,21 @@ body {
 	background-color: #E3E7E8;
 }
 
+#col2 {
+	width: 60% !important;
+	margin-left: 3%;
+}
+
+#col3 {
+	width: 37% !important;
+}
+
 .navbar{
 	margin-bottom: 0px;
 	border-radius: 0px;
 	border-bottom-color: #148A1F;
 }
+
 
 .container-fluid{
 	padding-left: 0px;
@@ -101,7 +111,7 @@ p.imgDescription.main {
 
 #mapStat li {
 	margin-top: 15px;
-	margin-bottom: 20px;
+	margin-bottom: 15px;
 	display: inline-block; 
     width: 100px;
     text-align: center;
@@ -237,11 +247,8 @@ h5#buttonChild:hover {
 	background-color: white;
 }
 
-svg {
-	margin: 10px;
-	padding-right: 13px;
-	padding-left: 10px;
-}
+#graphBloc svg {
+	padding: 5px;}
 
 rect{
 	fill: #2466D1;
@@ -253,12 +260,6 @@ rect.highlight {
 
 text {
 	color: blue;
-}
-
-.boxShadow {
-
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-
 }
 
 

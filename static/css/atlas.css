@@ -11,25 +11,33 @@ body {
 
 
 #sideBar{
+	position: absolute;
 	width: 40px;
-	padding-left: 10px;
-	padding-right: 10px;
-	margin-right: 0px;
-	margin-top: -20px;
-	padding-top: 15px;
-	background-color: #148A1F;
-	height: 1000px;
-	text-align: center;
+	background-color: #7F8182;
+	height: 1000000px;
 }
 #sidebar_menu {
 	list-style: none;
-	padding-left: 0px;
+	padding: 0px;
+	padding-left: 25%;
+	width: 100%;
+    margin: 0 auto;
+    margin-top: 25px;
 }
 
 #sidebar_menu li{
-	margin-bottom: 20px;
+	margin-bottom: 30px;
 }
 
 #sidebar_menu a {
 	color: white;
 }
+
+#sidebar-wrapper span {
+	font-size: 120%;
+}
+
+#sidebar-wrapper a:hover{
+	cursor: pointer;
+	color: black;
+};

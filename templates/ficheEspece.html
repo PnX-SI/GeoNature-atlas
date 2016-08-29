@@ -63,15 +63,16 @@
     {% include 'navbar.html' %}
 
     <!-- SAUT DE LIGNE -->
+    <div id="sideBar">
+        {% include 'sideBar.html' %}
+    </div>
 
     <div class="col-sm-12" style="height:20px"></div>
 
     <div class="container-fluid">
-        <div id="sideBar"class="col-sm-1">
-        {% include 'sideBar.html' %}
-        </div>
 
-        <div class='col-sm-7'>
+
+        <div class='col-sm-7' id="col2">
             <div class="panel panel-default" id="identityPanel">
                 <div class= "row" id="rowImg">
                     {% if firstPhoto != None %}
@@ -115,10 +116,6 @@
                             {% endfor %}
                         </div>
 
-
-
-                    
-                    
                         {% if taxon.listTaxonsChild|length > 0 %}
                             <h5 id="buttonChild"> Noms des taxons agregés sur cette fiche:  <span class="glyphicon glyphicon-chevron-right"> </span> </h5> 
                                 <div hidden="hidden" id="childList">
@@ -237,7 +234,7 @@
 
         
 
-        <div class="col-sm-4">
+        <div class="col-sm-4" id="col3">
             {% if photoCarousel | length >= 1 %}
             <div class="panel panel-default">
                   <div id="fixed" class="carousel slide" data-ride="carousel" data-interval="false">
@@ -400,7 +397,7 @@
             {% endif %}
 
         
-            <div class="panel panel-default">
+            <div class="panel panel-default" id="graphBloc">
                 
                     <h3 class="text-primary text-center"> Observations par classes d'altitudes </h3>
                     <div id="altiChart" style="height: 200px;"></div>
