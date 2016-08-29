@@ -141,7 +141,7 @@
                         {% endif %}
                     </div>  
                     <div class="col-xs-1" id="logoCol">
-                        <img id="logoImg"src= "/atlas/static/images/picto_{{taxon.taxonSearch.group2_inpn|urlencode}}.png" alt ="{{taxon.taxonSearch.group2_inpn}}" title = "{{taxon.group2_inpn}}">
+                        <img id="logoImg"src= "{{url_for('static', filename='images/picto_'+ taxon.taxonSearch.group2_inpn|urlencode+'.png') }}" alt ="{{taxon.taxonSearch.group2_inpn}}" title = "{{taxon.taxonSearch.group2_inpn}}">
                     </div>
                 </div>  
             </div>
@@ -421,7 +421,7 @@
 
     <script  src="{{url_for('static', filename='/lib/lightbox2/js/lightbox.min.js') }}" ></script>
     
-    <script type="text/javascript" src="/atlas/static/conf/calculCustom.js"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='conf/calculCustom.js') }}"></script>
 
 
 
@@ -441,7 +441,7 @@
     </script>  
 
 
-    <script type="text/javascript" src="/atlas/static/chart.js"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='chart.js') }}"></script>
 
    
    <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
