@@ -116,7 +116,7 @@ def ficheRangTaxonomie(cd_ref):
     session.close()
 
     configuration = {'STRUCTURE' : config.STRUCTURE, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY, 'URL_APPLICATION': config.URL_APPLICATION}
-    return render_template('ficheRang.html',  myType=myType ,listTaxons = listTaxons, referenciel = referenciel, communesSearch = communesSearch,\
+    return render_template('ficheRangTaxonomique.html',  myType=myType ,listTaxons = listTaxons, referenciel = referenciel, communesSearch = communesSearch,\
         listeTaxonsSearch = listeTaxonsSearch, taxonomyHierarchy=taxonomyHierarchy, configuration=configuration)
 
 

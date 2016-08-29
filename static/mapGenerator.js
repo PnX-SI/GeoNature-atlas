@@ -2,19 +2,19 @@ function generateMap() {
 
 
     //map initialization
-firstMapTile = L.tileLayer(MAP.FIRST_MAP.url, {attribution : MAP.FIRST_MAP.attribution} );
-orthoMap =  L.tileLayer(MAP.SECOND_MAP.url, {attribution: MAP.SECOND_MAP.attribution});
+firstMapTile = L.tileLayer(configuration.MAP.FIRST_MAP.url, {attribution : configuration.MAP.FIRST_MAP.attribution} );
+orthoMap =  L.tileLayer(configuration.MAP.SECOND_MAP.url, {attribution: configuration.MAP.SECOND_MAP.attribution});
 
 baseMap = {};
-baseMap[MAP.FIRST_MAP.tileName]=firstMapTile;
+baseMap[configuration.MAP.FIRST_MAP.tileName]=firstMapTile;
 
 
 
       var map = L.map('map',{
         crs: L.CRS.EPSG3857,
-        center: MAP.LAT_LONG, 
+        center: configuration.MAP.LAT_LONG, 
         geosearch: true,
-        zoom: MAP.ZOOM,
+        zoom: configuration.MAP.ZOOM,
         layers : [firstMapTile],
         fullscreenControl: true,
         });
@@ -51,7 +51,7 @@ baseMap[MAP.FIRST_MAP.tileName]=firstMapTile;
         var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
      
         container.style.backgroundColor = 'white';
-        container.style.backgroundImage = "url(http://188.165.118.87/atlas/static/images/logo_earth_map.PNG)";
+        container.style.backgroundImage = "url("+configuration.URL_APPLICATION+"/static/images/logo_earth_map.PNG)";
         container.style.width = '50px';
         container.style.height = '50px';
         container.style.border = 'solid white 1px';
@@ -63,14 +63,14 @@ baseMap[MAP.FIRST_MAP.tileName]=firstMapTile;
 
         container.onclick = function(){
           if(currentTileMap == "topo"){
-          container.style.backgroundImage = "url(http://188.165.118.87/atlas/static/images/logo_topo_map.PNG)";
+          container.style.backgroundImage = "url("+configuration.URL_APPLICATION+"/static/images/logo_topo_map.PNG)";
           $(container).attr("data-original-title", "Plan");
           map.removeLayer(firstMapTile);
           orthoMap.addTo(map);
           currentTileMap = "earth";
           }
           else{
-          container.style.backgroundImage = "url(http://188.165.118.87/atlas/static/images/logo_earth_map.PNG)";
+          container.style.backgroundImage = "url("+configuration.URL_APPLICATION+"/static/images/logo_earth_map.PNG)";
           $(container).attr("data-original-title", "Photos aérienne");
           map.removeLayer(orthoMap);
           firstMapTile.addTo(map);
@@ -543,7 +543,7 @@ function generateSliderOnMap(){
         value: [taxonYearMin, YEARMAX],
         min : taxonYearMin,
         max : YEARMAX,
-        step: MAP.STEP,
+        step: configuration.MAP.STEP,
       });
 
     $("#yearMax").html("&nbsp;&nbsp;&nbsp;&nbsp;"+ YEARMAX);
