@@ -74,21 +74,23 @@
         <div class='col-sm-7'>
             <div class="panel panel-default" id="identityPanel">
                 <div class= "row" id="rowImg">
+                    {% if firstPhoto != None %}
                     <div class="col-sm-6 col-lg-6" id="imgCol" > 
                         <div class="imgWrapper">
-                            {% if firstPhoto.path == None %}
-                                <img src="{{url_for('static', filename='images/Photo_non_disponible.png') }}" style="width:100%;height: 100%; border-right: solid 1px;">
-                            {% else %}
+                            
                                 <a href="{{firstPhoto.path}}" data-lightbox="imageSet" data-title="{{firstPhoto.title}}  &copy; {{firstPhoto.author}}" >
                                     <img class ="imgToCarousel" id="myImg" src="{{firstPhoto.path}}" style="width:100%;height: 100%;">
                                     <p class="imgDescription main"> {{firstPhoto.title}}  &copy; {{firstPhoto.author}} </p>
                                 </a>
-                           {% endif %}
+                           
                         </div>
 
                     </div>
-
                     <div class="col-sm-5" id="taxonIdentity">
+                    {% else %}
+                    <div class="col-sm-11" id="taxonIdentity">
+                    {% endif %}
+
                         {% if taxon.taxonSearch.nom_vern != None %}
                             <h3>  {{taxon.taxonSearch.nom_vern}} 
                         
@@ -113,12 +115,7 @@
                             {% endfor %}
                         </div>
 
-                        <div id="inpnLink">
-                            <br> <br>
-                            <a href='https://inpn.mnhn.fr/espece/cd_nom/{{taxon.taxonSearch.cd_ref}}' target="_blank"> 
-                                <img width="30%" src="{{url_for('static', filename='images/logo_inpn.png') }}">
-                             </a>
-                        </div>
+
 
                     
                     

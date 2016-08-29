@@ -28,7 +28,6 @@ def deleteAccent(string):
     return unicodedata.normalize('NFD', string).encode('ascii', 'ignore')
 
 def findPath(row):
-    goodPath = str()
     if row.chemin == None and row.url == None:
         return None
     elif row.chemin != None:

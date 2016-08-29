@@ -464,7 +464,7 @@ function generateLegende(htmlLegend){
         container.style.height = '25px';
         container.style.border = 'solid white 1px';
         container.style.cursor = 'pointer';
-        $(container).html("<img src='http://188.165.118.87/atlas/static/images/info.png' alt='Légende'>")
+        $(container).html("<img src='"+configuration.URL_APPLICATION+"/static/images/info.png' alt='Légende'>")
         $(container).attr("data-placement", "right");
         $(container).attr("data-toggle", "tooltip");
         $(container).attr("data-original-title", "Légende");

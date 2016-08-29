@@ -4,7 +4,7 @@ config/settings.ini
 config/config.py
 log/*
 static/conf/custom.js
-debug.py
+main/debug.py
 data/ref/PNE_aoa.*
 static/territoire.json
 static/images/ancien

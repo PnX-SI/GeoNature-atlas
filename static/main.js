@@ -99,7 +99,5 @@ $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 })
 
-test = $("#searchFormTaxonsStat").find('input');
- hiddenInput = test[1];
+
   
-  console.log(hiddenInput);

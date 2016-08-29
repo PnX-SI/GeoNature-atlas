@@ -22,6 +22,10 @@ body {
 	padding-left: 15px;
 }
 
+#taxonIdentity h3{
+	margin-top: 5px;
+}
+
 #rowImg{
 	margin-left: 0px;
 }
