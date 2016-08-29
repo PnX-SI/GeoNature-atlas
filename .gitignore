@@ -8,7 +8,6 @@ debug.py
 data/ref/PNE_aoa.*
 static/territoire.json
 static/images/ancien
-static/custom/images/*
-static/custom/custom.css
+static/custom/*
 main/configuration/config.py
 main/configuration/settings.ini

@@ -9,7 +9,7 @@
         <script type=text/javascript src="{{url_for('static', filename='/lib/jquery-1.12.4.min.js') }}"></script>
 
 
-        		<!-- Leaflet -->
+                <!-- Leaflet -->
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/leaflet/leaflet.css') }}" />
         <script src="{{url_for('static', filename='/lib/leaflet/leaflet.js') }}"></script>
         <script src="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.min.js') }}"></script>
@@ -27,9 +27,8 @@
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css') }}" />
         <script src="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
 
-        <!-- Application -->
         <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />       
-        <link rel="stylesheet" href="{{url_for('static', filename='/css/commune.css') }}" />
+        <link rel="stylesheet" href="{{url_for('static', filename='/css/listEspeces.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='/css/icones.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='custom/custom.css') }}" />
 
@@ -60,21 +59,122 @@
     
             <div class="row" id="clear">
                     <div class="panel panel-default">
-                 		{% include 'listeTaxons.html' %}
-                 	</div>
+                        {% include 'tabTaxons.html' %}
+                    </div>
             </div>
         </div>
                 
     
-        <div class="col-sm-5">
+        <div class="col-sm-5" id="mapWrapper">
             <div  class="panel panel-default" id="mapContainer">
                 <div class="panel-heading"><strong>
                      <h4> Carte des {{configuration.NB_LAST_OBS}} dernières observations de la commune de <i>{{referenciel.communeName}}</i></h4> </strong>
                 </div>
                 <div class="panel-body">
-          	   	     <div id="map"> </div>
+                     <div id="map"> </div>
                 </div>
-          	</div>
+            </div>
+        </div> 
+        
+    </div>
+      
+
+
+        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+
+        <script type="text/javascript">
+        var communesSearch = {{communesSearch|tojson}},
+            listeTaxonsSearch = {{listeTaxonsSearch|tojson}},
+            configuration = {{configuration|tojson}},
+            observations = {{observations|tojson}},
+            communeGeoJson = {{referenciel.communeGeoJson|tojson}},
+            url_limit_territory = "{{url_for('static', filename='territoire.json') }}";
+        </script>
+        <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
+        <script src="{{url_for('static', filename='mapCommune.js') }}"></script>
+
+        <script src="{{url_for('static', filename='listeEspeces.js') }}"></script>
+        <script src="{{url_for('static', filename='main.js') }}"></script>
+
+   </body> 
+</html>
+
+<!DOCTYPE html>
+<html>
+   <head>
+        <meta charset="utf-8" />
+        <title></title>
+
+        <!-- Jquery -->
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/jquery-ui.css') }}" />
+        <script type=text/javascript src="{{url_for('static', filename='/lib/jquery-1.12.4.min.js') }}"></script>
+
+
+                <!-- Leaflet -->
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/leaflet/leaflet.css') }}" />
+        <script src="{{url_for('static', filename='/lib/leaflet/leaflet.js') }}"></script>
+        <script src="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.css') }}" />
+
+        <!-- DataTable-->
+        <script type=text/javascript src="{{url_for('static', filename='lib/dataTable/datatables.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/dataTable/jquery.dataTables.min.css') }}" />
+
+
+        <!-- Bootrap -->
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap/css/bootstrap.min.css') }}"></link>
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap-switch/css/bootstrap-switch.min.css') }}"></link>
+        <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css') }}" />
+        <script src="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
+
+        <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />       
+        <link rel="stylesheet" href="{{url_for('static', filename='/css/listEspeces.css') }}" />
+        <link rel="stylesheet" href="{{url_for('static', filename='/css/icones.css') }}" />
+        <link rel="stylesheet" href="{{url_for('static', filename='custom/custom.css') }}" />
+
+
+
+
+       
+   </head>
+   <body>
+    {% include 'navbar.html' %}
+
+    <div class="container-fluid">
+            
+        <div class="col-sm-7">
+            <div class="row ">
+                <div class="panel panel-default" id="parent">
+                    <h4> <b>  Commune de {{referenciel.communeName}} </b> </h4>
+    
+                    <ul id="stat">
+                        <li> <span data-icon="&#xe037;" style="font-size: 30px;"></span> </br> <b> {{listTaxons.nbObsTotal}} </b> </br> Observations  </li>
+                        <li> <span data-icon="&#xe03b;"  style="font-size: 30px;"></span> </br> <b> {{listTaxons.taxons|length}} </b> </br> Espèces  </li>
+                        <li> <span data-icon="&#xe040;"  style="font-size: 30px;"></span> </br> <b> X  </b> </br> Observateurs  </li>
+                    </ul>
+                </div>
+            </div>
+    
+
+    
+            <div class="row" id="clear">
+                    <div class="panel panel-default">
+                        {% include 'tabTaxons.html' %}
+                    </div>
+            </div>
+        </div>
+                
+    
+        <div class="col-sm-5" id="mapWrapper">
+            <div  class="panel panel-default" id="mapContainer">
+                <div class="panel-heading"><strong>
+                     <h4> Carte des {{configuration.NB_LAST_OBS}} dernières observations de la commune de <i>{{referenciel.communeName}}</i></h4> </strong>
+                </div>
+                <div class="panel-body">
+                     <div id="map"> </div>
+                </div>
+            </div>
         </div> 
         
     </div>
