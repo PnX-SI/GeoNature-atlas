@@ -36,7 +36,7 @@
 			<div class="col-sm-12">
 				<div class="panel panel-default">
 					<div class="row">
-						<div class="col-sm-4 textIntroduction"> 
+						<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 textIntroduction"> 
 							<h1>
 								Bienvenue sur l'atlas de la faune et de la flore du {{configuration.STRUCTURE}}
 							</h1>
@@ -47,7 +47,7 @@
 								Celles-ci se basent sur les observations réalisées en temps réel par les agents et présente une vue d'ensemble des espèces observées mais en aucun cas un inventaire exhaustif des espèces du territoire.
 							</p>
 						</div>
-						<div class="col-sm-8">
+						<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
 							<img src="{{url_for('static', filename='custom/images/accueil-intro.jpg') }}" width="100%" alt="{{configuration.NOM_APPLICATION}}">
 						</div>
 					</div>
@@ -57,11 +57,11 @@
 			<div class="col-sm-12" style="height:20px"></div>
 
 			<!-- Statistiques -->
-			<div class="col-sm-12">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<div class="panel panel-default stat-panel">
 					<div class="row">
 						<div class="panel-heading"><strong> <h3> L'atlas du {{configuration.STRUCTURE}} </h3> </strong></div>
-						<div class ="col-sm-3 ">
+						<div class = "col-lg-3 col-md-3 col-sm-6 col-xs-12">
 							<div class="thumbnail stat-thumbnail">
 								<span class="glyphicon glyphicon-search"> </span>
 								<h1> {{stat.nbTotalObs}} </h1>
@@ -69,7 +69,7 @@
 								<p><a href="#mapBeginning" class="btn btn-default" role="button">Voir les {{configuration.NB_LAST_OBS}} dernières observations</a></p>
 							</div>
 						</div>
-						<div class =" col-sm-3">
+						<div class = "col-lg-3 col-md-3 col-sm-6 col-xs-12">
 							<div class="thumbnail stat-thumbnail">
 								<span class="glyphicon glyphicon-leaf"> </span>
 								<h1> {{stat.nbTotalTaxons}} </h1>
@@ -84,7 +84,7 @@
 								
 							</div>
 						</div>
-						<div class ="col-sm-3">
+						<div class ="col-lg-3 col-md-3 col-sm-6 col-xs-12">
 							<div class="thumbnail stat-thumbnail">
 								<img id="picto" src="{{url_for('static', filename='images/commune-icone.png') }}"> 
 								<h1>  {{stat.town}}</h1>
@@ -99,7 +99,7 @@
 					            	</form>
 							</div>
 						</div>
-						<div class ="col-sm-3">
+						<div class ="col-lg-3 col-md-3 col-sm-6 col-xs-12">
 							<div class="thumbnail stat-thumbnail">
 								<span class="glyphicon glyphicon-camera"> </span>
 								<h1> {{stat.photo}} </h1>
@@ -116,7 +116,7 @@
 			<div class="col-sm-12">
 				<div class="row row-medias">
 				{% for i in range(customStatMedias | length) %}
-					<div class="col-sm-6 stat-medias-wrapper">
+					<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 stat-medias-wrapper">
 							<div class="panel panel-default statMedias">
 								<div class="panel-heading">
 									<strong>{{configuration.RANG_STAT_FR[i]}}</strong> <br>
@@ -159,10 +159,10 @@
 					  <div class="panel panel-default">
 					  	<div class="panel-heading" id="mapBeginning"><strong> Les {{configuration.NB_LAST_OBS}} dernières observations </strong></div>
 					  	<div class="row" id="mapRow">
-							 <div class="col-sm-8">
+							 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
 								<div id="map"> </div>
 							 </div>
-							 <div id="listMap" class = "col-sm-4"> 
+							 <div id="listMap" class = "col-lg-4 col-md-4 col-sm-4 col-xs-12"> 
 								<table id='tableEspece' class="table table-striped">
 									
 									<tbody>
