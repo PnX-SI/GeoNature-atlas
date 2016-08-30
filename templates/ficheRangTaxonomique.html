@@ -44,10 +44,10 @@
 
         <div class="col-sm-12">
             <div class="row ">
-                <div class="panel panel-default">
-                    <h3>  Espèces observées pour le taxon <i>{{referenciel.lb_nom}}</i> ({{referenciel.nom_rang}}) </h3>
+                <div class="panel panel-default" id="parent">
+                    <h4> <b> Espèces observées pour le taxon <i>{{referenciel.lb_nom}}</i> ({{referenciel.nom_rang}}) </b> </h4>
     
-
+                    <div id="hierarchy">
                     {% for taxon in taxonomyHierarchy %}
                         {{taxon.nom_rang}} :
                         <i>
@@ -63,9 +63,19 @@
                         {% endif %}
                                         
                     {% endfor %}
+                    </div>
+                     <ul id="statHierarchy">
+                        <li> <span data-icon="&#xe037;" style="font-size: 30px;"></span> </br> <b> {{listTaxons.nbObsTotal}} </b> </br> Observations  </li>
+                        <li> <span data-icon="&#xe03b;"  style="font-size: 30px;"></span> </br> <b> {{listTaxons.taxons|length}} </b> </br> Espèces  </li>
+                        <li> <span data-icon="&#xe040;"  style="font-size: 30px;"></span> </br> <b> X  </b> </br> Observateurs  </li>
+                    </ul>
                 </div>
+
+
             </div>
-            <div class="row">
+
+
+            <div class="row" id="clear">
                 <div class="panel panel-default">
 
                     {% include 'tabTaxons.html' %}

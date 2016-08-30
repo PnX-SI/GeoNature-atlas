@@ -84,15 +84,7 @@ cursor: default;
 
 }
 
-.boxShadow {
 
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-
-}
-
-#idContainer {
-	float: left;
-}
 
 #stat li {
 
@@ -108,6 +100,20 @@ ul#stat {
 	padding: 5px;
 	margin-bottom: -65px;
 	margin-left: 32%;
+
+}
+
+#statHierarchy li {
+
+	float: left;
+    width: 100px;
+    text-align: center;
+    border-right: 1px solid #e8e8e8;
+    list-style-type: none; 
+}
+
+ul#statHierarchy {
+
 
 }
 

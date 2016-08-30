@@ -10,23 +10,33 @@ TEMPLATE_DIR = APP_DIR+'/templates'
 from main.configuration import config
 from sqlalchemy import create_engine, MetaData, Table
 
+from flask.ext.compress import Compress
+
 bootstrap = Bootstrap()
 db = SQLAlchemy()
+compress = Compress()
 
-#renvoie une instance de app l appli Flask et d'engine: la connection a la base de donnee
-def create_app(config_name):
+#renvoie une instance de app l appli Flask
+def create_app():
     app = Flask(__name__, template_folder=TEMPLATE_DIR)
     app.debug = True
 
-    from main import main as main_blueprint
+
+    from main.atlasRoutes import main as main_blueprint
+
     app.register_blueprint(main_blueprint)
+
+    from main.atlasAPI import api
+    app.register_blueprint(api, url_prefix='/api')
+
     bootstrap.init_app(app)
 
-    return dict(app=app)
+    compress.init_app(app)
+
+    return app
 
 
 
-globalApp = create_app('development')
-app = globalApp['app']
+app = create_app()
 
 

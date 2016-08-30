@@ -1,16 +1,16 @@
 #! /usr/bin/python
 # -*- coding:utf-8 -*-
-import os
 
 from flask import Flask, request, render_template, jsonify
-from werkzeug.wrappers import Response
 from configuration import config
 from modeles.repositories import vmTaxonsRepository, vmObservationsRepository, vmAltitudesRepository, \
  vmSearchTaxonRepository, vmMoisRepository, vmTaxrefRepository, vmCommunesRepository, vmObservationsMaillesRepository, vmMedias, vmCorTaxonAttribut, \
  vmTaxonsMostView
-from . import main
 import json
 from . import utils
+
+from flask import Blueprint
+main = Blueprint('main', __name__)
 
 
 
@@ -18,8 +18,6 @@ from . import utils
 def index():
     session = utils.loadSession()
     connection = utils.engine.connect()
-
-    listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons(session)
     if config.AFFICHAGE_MAILLE:
         observations = vmObservationsMaillesRepository.lastObservationsMailles(connection, config.NB_LAST_OBS, config.ATTR_MAIN_PHOTO)
     else:
@@ -35,7 +33,7 @@ def index():
     connection.close()
     session.close()
 
-    return render_template('index.html', listeTaxonsSearch=listeTaxonsSearch, observations=observations, communesSearch=communesSearch, \
+    return render_template('index.html', observations=observations, communesSearch=communesSearch, \
      mostViewTaxon=mostViewTaxon, stat=stat, customStat = customStat, customStatMedias=customStatMedias, configuration = configuration)
 
 
@@ -45,12 +43,12 @@ def ficheEspece(cd_ref):
     connection = utils.engine.connect()
 
     cd_ref = int(cd_ref)
-    listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons(session)
+    #listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons(session)
     taxon = vmTaxrefRepository.searchEspece(connection, cd_ref)
-    if config.AFFICHAGE_MAILLE:
-        observations = {'maille' : vmObservationsMaillesRepository.getObservationsMaillesChilds(connection, cd_ref) }
-    else:
-        observations = {'point': vmObservationsRepository.searchObservationsChilds(connection, cd_ref), 'maille' : vmObservationsMaillesRepository.getObservationsMaillesChilds(connection, cd_ref)}
+    # if config.AFFICHAGE_MAILLE:
+    #     observations = {'maille' : vmObservationsMaillesRepository.getObservationsMaillesChilds(connection, cd_ref) }
+    # else:
+    #     observations = {'point': vmObservationsRepository.searchObservationsChilds(connection, cd_ref), 'maille' : vmObservationsMaillesRepository.getObservationsMaillesChilds(connection, cd_ref)}
     altitudes = vmAltitudesRepository.getAltitudesChilds(connection, cd_ref)
     months = vmMoisRepository.getMonthlyObservationsChilds(connection, cd_ref)
     synonyme = vmTaxrefRepository.getSynonymy(connection, cd_ref)
@@ -70,7 +68,7 @@ def ficheEspece(cd_ref):
     connection.close()
     session.close()
 
-    return render_template('ficheEspece.html', taxon=taxon, listeTaxonsSearch=listeTaxonsSearch, observations=observations,\
+    return render_template('ficheEspece.html', taxon=taxon, listeTaxonsSearch=[], observations=[],\
      cd_ref=cd_ref, altitudes=altitudes, months=months, synonyme=synonyme, communes=communes, communesSearch=communesSearch, taxonomyHierarchy = taxonomyHierarchy,\
       firstPhoto= firstPhoto, photoCarousel=photoCarousel, videoAudio=videoAudio, articles=articles, taxonDescritpion=taxonDescritpion, observers=observers, \
       configuration=configuration)

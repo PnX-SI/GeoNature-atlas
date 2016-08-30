@@ -4,12 +4,15 @@ generateSliderOnMap();
 
 // Layer display on window ready
 
-$(function(){
-  displayMailleLayerFicheEspece(observationsMaille, taxonYearMin, YEARMAX);
+console.log(cd_ref)
+$.ajax({
+  url: configuration.URL_APPLICATION+'/api/observationsMailleAndPoint/'+cd_ref, 
+  dataType: "json"
+  }).done(function(observations) {
+
+  displayMailleLayerFicheEspece(observations.maille, taxonYearMin, YEARMAX);
   //display nb observations
   $("#nbObs").html("Nombre d'observation(s): "+ observationsPoint.length);
-
-
 
 })
 

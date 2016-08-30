@@ -2,7 +2,6 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <meta http-equiv="cache-control" content="no-cache" />
 
         <title> {%if taxon.taxonSearch.nom_vern %}  {{taxon.taxonSearch.nom_vern}} | {% endif %} {{taxon.taxonSearch.lb_nom}}</title>
 
@@ -422,15 +421,15 @@
     <script> 
              var dataset = {{altitudes|tojson}},
                  months = {{months|tojson}}
-                 {% if not configuration.AFFICHAGE_MAILLE %}
-                 observationsPoint = {{observations.point|tojson}},
-                 {% endif %}
-                 observationsMaille = {{observations.maille|tojson}}
+
+                 var observationsPoint = [];
+                 var observationsMaille = [];
                  listeTaxonsSearch = {{listeTaxonsSearch|tojson}},
                  communesSearch = {{communesSearch|tojson}},
                  configuration = {{configuration|tojson}},
                  url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}",
-                 taxonYearMin = {{taxon.taxonSearch.yearmin}};
+                 taxonYearMin = {{taxon.taxonSearch.yearmin}},
+                 cd_ref = {{taxon.taxonSearch.cd_ref}};
 
     </script>  
 

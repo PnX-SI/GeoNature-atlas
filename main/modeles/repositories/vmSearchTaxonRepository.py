@@ -12,6 +12,6 @@ def listeTaxons(session):
     req = session.query(VmSearchTaxon.nom_search, VmSearchTaxon.cd_ref,).all()
     taxonList = list()
     for r in req:
-        temp = { 'label' : r[0], 'value' : r[1]}
+        temp = {'label':r[0], 'value':r[1]}
         taxonList.append(temp)
     return taxonList

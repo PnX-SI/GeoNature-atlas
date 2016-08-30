@@ -40,9 +40,9 @@ def searchObservationsChilds(connection, cd_ref):
     observations = connection.execute(text(sql), thiscdref = cd_ref)
     obsList = list()
     for o in observations:
-        temp = {'id_synthese': o.id_synthese, 'geojson_point':ast.literal_eval(o.geojson_point), 'cd_ref': o.cd_ref, 'dateobs': str(o.dateobs),\
-                'observateurs':o.observateurs, 'altitude_retenue': o.altitude_retenue,
-                'effectif_total': o.effectif_total, 'year': o.dateobs.year}
+        temp = {'id_synthese':o.id_synthese,'geojson_point':ast.literal_eval(o.geojson_point),'cd_ref':o.cd_ref,'dateobs':str(o.dateobs),\
+                'observateurs':o.observateurs,'altitude_retenue':o.altitude_retenue,
+                'effectif_total':o.effectif_total,'year':o.dateobs.year}
         obsList.append(temp)
     return obsList
 
