@@ -43,12 +43,7 @@ def ficheEspece(cd_ref):
     connection = utils.engine.connect()
 
     cd_ref = int(cd_ref)
-    #listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons(session)
     taxon = vmTaxrefRepository.searchEspece(connection, cd_ref)
-    # if config.AFFICHAGE_MAILLE:
-    #     observations = {'maille' : vmObservationsMaillesRepository.getObservationsMaillesChilds(connection, cd_ref) }
-    # else:
-    #     observations = {'point': vmObservationsRepository.searchObservationsChilds(connection, cd_ref), 'maille' : vmObservationsMaillesRepository.getObservationsMaillesChilds(connection, cd_ref)}
     altitudes = vmAltitudesRepository.getAltitudesChilds(connection, cd_ref)
     months = vmMoisRepository.getMonthlyObservationsChilds(connection, cd_ref)
     synonyme = vmTaxrefRepository.getSynonymy(connection, cd_ref)
