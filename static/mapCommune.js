@@ -1,4 +1,4 @@
-mapCommune = generateMap();
+var map = generateMap();
 
 
 $(function(){
@@ -15,12 +15,12 @@ $(function(){
 				fillOpacity: 0
 			}
 		}
-	}).addTo(mapCommune);
+	}).addTo(map);
 
 	var bounds = L.latLngBounds([]);
 	var layerBounds = communeLayer.getBounds();
 	bounds.extend(layerBounds);
-	mapCommune.fitBounds(bounds);
+	map.fitBounds(bounds);
 
 	// Display the 'x' last observations
 		// MAILLE

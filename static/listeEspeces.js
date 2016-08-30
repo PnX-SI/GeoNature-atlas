@@ -1,17 +1,6 @@
-
-/*// sort the table
-$(document).ready(function() 
-    { 
-        $("#myTable")
-        .tablesorter();
-
-    } 
-); 
-*/
-
-
 $(document).ready(function(){
   $('#myTable').show();
+  console.log($('#myTable'));
     $('#myTable').DataTable({
     	"order":[5, 'desc'],
     	"lengthChange": false,
@@ -46,4 +35,4 @@ $('th').click( function(){
     $(this).find('span').toggleClass('glyphicon glyphicon-menu-down').toggleClass('glyphicon glyphicon-menu-up');
 });
 
-    
+

@@ -27,9 +27,11 @@
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css') }}" />
         <script src="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
 
+
+
         <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />       
-        <link rel="stylesheet" href="{{url_for('static', filename='/css/listEspeces.css') }}" />
-        <link rel="stylesheet" href="{{url_for('static', filename='/css/icones.css') }}" />
+        <link rel="stylesheet" href="{{url_for('static', filename='css/listEspeces.css') }}" />
+        <link rel="stylesheet" href="{{url_for('static', filename='css/icones.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='custom/custom.css') }}" />
 
 
@@ -88,7 +90,7 @@
             configuration = {{configuration|tojson}},
             observations = {{observations|tojson}},
             communeGeoJson = {{referenciel.communeGeoJson|tojson}},
-            url_limit_territory = "{{url_for('static', filename='territoire.json') }}";
+            url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
         </script>
         <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
         <script src="{{url_for('static', filename='mapCommune.js') }}"></script>
