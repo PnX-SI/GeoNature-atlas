@@ -108,6 +108,13 @@ p.imgDescription.main {
  height: 600px; 
 }
 
+#loadingGif {
+	position: relative;
+	left:50%;
+	top:200px;
+	z-index: 1000000;
+}
+
 
 #mapStat li {
 	margin-top: 15px;

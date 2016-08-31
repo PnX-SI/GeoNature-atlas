@@ -152,11 +152,7 @@ function styleMaille(feature) {
 // **** Lexique ****
 // GLOBAL VARIABLE: its can be use EVERYWHERE
 
-// Current observation Layer: leaflet layer type
-var currentLayer; 
 
-// Current observation geoJson:  type object
-var myGeoJson;
 
 
 // Geojson Maille

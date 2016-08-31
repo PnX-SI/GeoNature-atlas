@@ -14,12 +14,27 @@ def searchTaxon():
     return Response(json.dumps(listeTaxonsSearch), mimetype='application/json')
 
 @api.route('/observationsMailleAndPoint/<int:cd_ref>', methods=['GET'])
-def getObservationsPoint(cd_ref):
+def getObservationsMailleAndPoint(cd_ref):
 	connection = utils.engine.connect()
 	observations = {'point': vmObservationsRepository.searchObservationsChilds(connection, cd_ref),\
 	'maille' : vmObservationsMaillesRepository.getObservationsMaillesChilds(connection, cd_ref)}
 	connection.close()
 	return Response(json.dumps(observations), mimetype='application/json')
+
+
 	
+@api.route('/observationsMaille/<int:cd_ref>', methods=['GET'])
+def getObservationsMaille(cd_ref):
+	connection = utils.engine.connect()
+	observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(connection, cd_ref)
+	connection.close()
+	return Response(json.dumps(observations), mimetype='application/json')	
+
+@api.route('/observationsPoint/<int:cd_ref>', methods=['GET'])
+def getObservationsPoint(cd_ref):
+	connection = utils.engine.connect()
+	observations = vmObservationsRepository.searchObservationsChilds(connection, cd_ref)
+	connection.close()
+	return Response(json.dumps(observations), mimetype='application/json')	
 
 
