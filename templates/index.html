@@ -4,14 +4,14 @@
         <meta charset="utf-8" />
         <title>{{configuration.NOM_APPLICATION}}</title>
 
-        <!-- Bootstrap -->
-        <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap/css/bootstrap.min.css') }}"></link>
-        <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
-
         <!-- Jquery -->
         <script type=text/javascript src="{{url_for('static', filename='/lib/jquery-1.12.4.min.js') }}"></script>
 		<script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
+		
+		<!-- Bootstrap -->
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}"></link>
+        <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
 
         <!-- Leaflet -->
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/leaflet/leaflet.css') }}" />
@@ -127,7 +127,7 @@
 								<h5> <span class="glyphicon glyphicon-eye-open" > </span> Espèces à découvrir </h5>
 					{% for j in range(3) %}
 						{% if loop.index < customStatMedias[i] | length %}
-								<div class="col-sm-4 col-stat-medias">
+								<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col-stat-medias">
 									<div class ="thumbnail-stat-medias">
 										{% if customStatMedias[i][j].path == None %}
 										<div class="slider-size" style="background:url({{url_for('static', filename='images/picto_' + customStatMedias[i][j].group2_inpn +'.png') }}) center center; background-size:cover;">

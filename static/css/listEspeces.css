@@ -1,27 +1,9 @@
-
 .panel {
 	margin-top: 10px;
 	padding: 5px;
 }
 
-#presentation{
-	height: 20%;
-}
-
-#corps{
-	height: 80%;
-}
-
-
-.navbar{
-	margin-bottom: 0px;
-}
-
-#page {
-	background-color: #E3E7E8;
-}	
-
-#mapWrapper{
+#mapWrapper {
 	position: fixed;
 	left: 58%;
 }
@@ -30,21 +12,8 @@
 	margin-top: 10px;
 }
 
-#map{
+#map {
 	height: 600px;
-  }
-
- .legend {
-    line-height: 16px;
-    background-color: white;
-    opacity: 0.7;
-}
-.legend i {
-    width: 18px;
-    height: 18px;
-    float: left;
-    margin-right: 8px;
-
 }
 
 #clear {
@@ -57,14 +26,11 @@
 	height: 140px;
 }
 
-
 table.dataTable thead .sorting, 
 table.dataTable thead .sorting_asc, 
 table.dataTable thead .sorting_desc {
     background : none;
 }
-
-
 
 .dataTables_wrapper .dataTables_paginate .paginate_button {
 	padding: 0px;
@@ -75,19 +41,11 @@ table.dataTable thead .sorting_desc {
 	border: none;
 }
 
-#myTable_wrapper {
-	margin: 10px
-}
-
 .pagination>.disabled>a, .pagination>.disabled>a:focus, .pagination>.disabled>a:hover, .pagination>.disabled>span, .pagination>.disabled>span:focus, .pagination>.disabled>span:hover {
-cursor: default;
-
+	cursor: default;
 }
-
-
 
 #stat li {
-
 	float: left;
     width: 100px;
     text-align: center;
@@ -100,11 +58,9 @@ ul#stat {
 	padding: 5px;
 	margin-bottom: -65px;
 	margin-left: 32%;
-
 }
 
 #statHierarchy li {
-
 	float: left;
     width: 100px;
     text-align: center;
@@ -114,11 +70,9 @@ ul#stat {
 
 ul#statHierarchy {
 
-
 }
 
 .leaflet-bar.leaflet-control.leaflet-control-custom img {
-
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -126,16 +80,11 @@ ul#statHierarchy {
 
 }
 
-
-.generalLegend{
+.generalLegend {
 	opacity: 1;
 	line-height: 20px;
-	
 }
 
 .generalLegend i {
-
 	margin: 5px;
-
 }
-

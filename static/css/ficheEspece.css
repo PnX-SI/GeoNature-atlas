@@ -1,8 +1,3 @@
-body {
-
-	background-color: #E3E7E8;
-}
-
 #col2 {
 	width: 60% !important;
 	margin-left: 3%;
@@ -11,18 +6,6 @@ body {
 #col3 {
 	width: 37% !important;
 }
-
-.navbar{
-	margin-bottom: 0px;
-	border-radius: 0px;
-	border-bottom-color: #148A1F;
-}
-
-
-.container-fluid{
-	padding-left: 0px;
-}
-
 
 #identityPanel{
 	padding-right: 5px;
@@ -71,27 +54,21 @@ p.imgDescription.main {
   padding: 5px;
 }
 
-
 .imgWrapper:hover p.imgDescription {
   visibility: visible;
-
 }
 
-
-
-
-#logoCol{
+#logoCol {
 	padding-left: 0px;
 }
 
-#logoImg{
+#logoImg {
 	padding-top: 5px;
 } 
 
 .nav>li>a {
 	padding: 10px 7px;
 }
-
 
 #mapContainer {
 	padding-right: 0px;
@@ -102,10 +79,8 @@ p.imgDescription.main {
 	padding-left: 0px;
 }
 
-
-#map{
-
- height: 600px; 
+#map {
+	height: 600px; 
 }
 
 #loadingGif {
@@ -114,7 +89,6 @@ p.imgDescription.main {
 	top:200px;
 	z-index: 1000000;
 }
-
 
 #mapStat li {
 	margin-top: 15px;
@@ -135,7 +109,8 @@ p.imgDescription.main {
 
 
 /*Medias*/
-i.btn-more{
+
+i.btn-more {
     position: relative;
     float: right;
 }
@@ -147,6 +122,7 @@ i.btn-more:hover{
 hr.small-hr {
 	margin: 5px;
 }
+
 /*END*/
 
 
@@ -175,12 +151,9 @@ tr.accordion-toggle {
 
 /*END*/
 
-
 #picto img{
 	padding-right: 10px;
 }
-
-
 
 #mapPanel{
 	margin-bottom: 2px;
@@ -190,17 +163,9 @@ tr.accordion-toggle {
 	padding-top: 10px;
 }
 
-
-
 .nav {
 	margin-bottom: 10px;
 }
-
-
-
-
-
-
 
 #slider .slider-track-high, #slider12c .slider-track-high {
 	background: green;
@@ -214,11 +179,9 @@ tr.accordion-toggle {
 	background: #909596;
 }
 
-
 h5#buttonChild:hover {
 	cursor: pointer
 }
-
 
 .legend {
     line-height: 10px;
@@ -226,19 +189,19 @@ h5#buttonChild:hover {
      background-color: white;
     opacity: 0.7;
 }
+
 .legend i {
     width: 18px;
     height: 18px;
     float: left;
     margin-right: 8px;
-
 }
 
-.legend:hover{
+.legend:hover {
 	opacity: 1;
 }
 
-/* graphiques */
+/* Graphiques */
 
 #graphContainer {
 	margin-left: 30px;
@@ -250,6 +213,7 @@ h5#buttonChild:hover {
 #graphContainer h3 {
 	margin-top: 0px;
 }
+
 #altiChart {
 	background-color: white;
 }
@@ -269,7 +233,6 @@ text {
 	color: blue;
 }
 
-
 .leaflet-bar.leaflet-control.leaflet-control-custom img {
 
     display: block;
@@ -285,19 +248,17 @@ text {
 }
 
 
-
 /*Carousel*/
 
 .carousel {
-width:100%; 
-margin:0 auto; /* center your carousel if other than 100% */ 
+	width:100%; 
+	margin:0 auto; /* center your carousel if other than 100% */ 
 }
 
-  #fixed .slider-size {
+#fixed .slider-size {
     height: 300px; 
     width: 100%;
-  }
-
+}
 
 .carousel-caption {
   right: 0%;
@@ -308,4 +269,3 @@ margin:0 auto; /* center your carousel if other than 100% */
 .carousel-indicators {
   bottom: 0px;
 }
-

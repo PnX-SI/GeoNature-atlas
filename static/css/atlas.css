@@ -2,19 +2,25 @@ body {
 	background-color: #E3E7E8;
 }
 
-
 .navbar {
+	margin-bottom: 0px;
 	border: 0px !important;
 	border-radius: 0px;
+	border-bottom-color: #148A1F;
 }
 
+.container-fluid {
+  padding-left: 0px;
+  padding-right: 0px;
+}
 
 #sideBar{
 	position: absolute;
 	width: 40px;
-	background-color: #7F8182;
+	background-color: #333333;
 	height: 1000000px;
 }
+
 #sidebar_menu {
 	list-style: none;
 	padding: 0px;
