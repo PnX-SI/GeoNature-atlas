@@ -147,7 +147,10 @@
                     </div>
                     <div class="col-sm-2" id="mapStat">
                         <ul>
-                            <li> <span data-icon="&#xe037;" style="font-size: 30px;"></span> </br> <b> {{observations.maille|length}} </b> </br> Observations  </li>
+                            <li> <span data-icon="&#xe037;" style="font-size: 30px;"></span> </br> 
+                                <span id="nbObsLateral"> 
+                                     <img id="loadingObs" src="{{url_for('static', filename='images/loading2.svg') }}" style="width: 20px;"> <b> </b> </br> Observations  </li>
+                                </span>
                             <li> <img id="picto" src="{{url_for('static', filename='images/church.png') }}" style="width"> <br> <b> {{communes|length}}</b> </br>Communes </li>
                             <li> <span data-icon="&#xe040;"  style="font-size: 30px;"> </span> </br> <b> {{observers|length}} </b> </br> Observateurs </li>
                             <li id="firstObs" class="pointer"> <span data-icon="&#xe037;" style="font-size: 25px; color: brown"></span> </br> <b> 1ère observation </b> </br>  {{taxon.taxonSearch.yearmin|int}} </li>
