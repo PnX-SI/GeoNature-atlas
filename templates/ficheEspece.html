@@ -30,7 +30,7 @@
         <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.css') }}" />
 
         <!-- D3 -->
-        <script src="{{url_for('static', filename='/lib/d3/d3.min.js') }}"></script>
+        <script src="{{url_for('static', filename='lib/d3/d3.min.js') }}"></script>
 
         <!-- MorrisJs -->
         <script src="{{url_for('static', filename='lib/morrisJs/morris.min.js') }}"></script>
@@ -39,12 +39,12 @@
         <script src="{{url_for('static', filename='lib/raphaelJs/raphael.min.js') }}"></script>
 
         <!-- LightBox -->
-        <link rel="stylesheet" href="{{url_for('static', filename='/lib/lightbox2/css/lightbox.min.css') }}" />
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/lightbox2/css/lightbox.min.css') }}" />
 
         <!-- CSS Application -->
         <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />
-        <link rel="stylesheet" href="{{url_for('static', filename='/css/ficheEspece.css') }}" />
-        <link rel="stylesheet" href="{{url_for('static', filename='/css/icones.css') }}" />
+        <link rel="stylesheet" href="{{url_for('static', filename='css/ficheEspece.css') }}" />
+        <link rel="stylesheet" href="{{url_for('static', filename='css/icones.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='custom/custom.css') }}" />
 
     </head>
@@ -56,33 +56,31 @@
         {% include 'sideBar.html' %}
     </div>
 	
-    <!-- SAUT DE LIGNE -->
-
-    <div class="col-sm-12" style="height:20px"></div>
-
     <div class="container-fluid" id="page">
 
-
-        <div class='col-sm-7' id="col2">
+        <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
             <div class="panel panel-default" id="identityPanel">
                 <div class= "row" id="rowImg">
-                    {% if firstPhoto != None %}
-                    <div class="col-sm-6 col-lg-6" id="imgCol" > 
+                    {% if firstPhoto != None %} 
+					<!-- Si il y a une photo principale -->
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="imgCol" > 
                         <div class="imgWrapper">
-                            
-                                <a href="{{firstPhoto.path}}" data-lightbox="imageSet" data-title="{{firstPhoto.title}}  &copy; {{firstPhoto.author}}" >
-                                    <img class ="imgToCarousel" id="myImg" src="{{firstPhoto.path}}" style="width:100%;height: 100%;">
-                                    <p class="imgDescription main"> {{firstPhoto.title}}  &copy; {{firstPhoto.author}} </p>
-                                </a>
-                           
+                            <a href="{{firstPhoto.path}}" data-lightbox="imageSet" data-title="{{firstPhoto.title}}  &copy; {{firstPhoto.author}}" >
+                                <img class="imgToCarousel" id="myImg" src="{{firstPhoto.path}}" style="width:100%; height:100%;">
+                                <p class="imgDescription main"> {{firstPhoto.title}}  &copy; {{firstPhoto.author}} </p>
+                            </a>
                         </div>
 
                     </div>
-                    <div class="col-sm-5" id="taxonIdentity">
-                    {% else %}
-                    <div class="col-sm-11" id="taxonIdentity">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="taxonIdentity">
+                    {% else %} 
+					<!-- Si pas de photo, alors le premier bloc occupe toute la largeur -->
+                    <div class="col-sm-12" id="taxonIdentity">
                     {% endif %}
-
+						<div id="logoCol">
+							<img id="logoImg"src= "{{url_for('static', filename='images/picto_'+ taxon.taxonSearch.group2_inpn|urlencode+'.png') }}" alt ="{{taxon.taxonSearch.group2_inpn}}" title = "{{taxon.taxonSearch.group2_inpn}}">
+						</div>
+						<div>
                         {% if taxon.taxonSearch.nom_vern != None %}
                             <h3>  {{taxon.taxonSearch.nom_vern}} 
                         
@@ -108,8 +106,9 @@
                         </div>
 
                         {% if taxon.listTaxonsChild|length > 0 %}
-                            <h5 id="buttonChild"> Noms des taxons agregés sur cette fiche:  <span class="glyphicon glyphicon-chevron-right"> </span> </h5> 
-                                <div hidden="hidden" id="childList">
+                        <h5 id="buttonChild"> Taxons agrégés sur cette fiche:  <span class="glyphicon glyphicon-chevron-right"> </span> 
+						</h5> 
+                        <div hidden="hidden" id="childList">
                                     {% for child in taxon.listTaxonsChild %}
                                      <i>
                                         {% if ( child.tri_rang >= configuration.LIMIT_FICHE_LISTE_HIERARCHY) %}
@@ -122,12 +121,10 @@
                                           ,
                                     {% endif %}
                                 {% endfor %}
-                                </div>
+                        </div>
                         {% endif %}
-                    </div>  
-                    <div class="col-xs-1" id="logoCol">
-                        <img id="logoImg"src= "{{url_for('static', filename='images/picto_'+ taxon.taxonSearch.group2_inpn|urlencode+'.png') }}" alt ="{{taxon.taxonSearch.group2_inpn}}" title = "{{taxon.taxonSearch.group2_inpn}}">
-                    </div>
+						</div>
+					</div>  
                 </div>  
             </div>
             <div class="panel panel-default" id="mapPanel">
@@ -145,7 +142,7 @@
                                 </span>
                             <li> <img id="picto" src="{{url_for('static', filename='images/church.png') }}" style="width"> <br> <b> {{communes|length}}</b> </br>Communes </li>
                             <li> <span data-icon="&#xe040;"  style="font-size: 30px;"> </span> </br> <b> {{observers|length}} </b> </br> Observateurs </li>
-                            <li id="firstObs" class="pointer"> <span data-icon="&#xe037;" style="font-size: 25px; color: brown"></span> </br> <b> 1ère observation </b> </br>  {{taxon.taxonSearch.yearmin|int}} </li>
+                            <li id="firstObs" class="pointer"> <span data-icon="&#xe037;" style="font-size: 25px; color: brown"></span> </br> <b> Première observation </b> </br>  {{taxon.taxonSearch.yearmin|int}} </li>
                             <li id="lastObs" class="pointer"> <span data-icon="&#xe037;" style="font-size: 25px; color: blue"></span> </br> <b> Dernière observation </b> </br> {{taxon.taxonSearch.yearmax|int}}  </li>
 
                         </ul>
@@ -230,7 +227,7 @@
 
         
 
-        <div class="col-sm-4" id="col3">
+        <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
             {% if photoCarousel | length >= 1 %}
             <div class="panel panel-default">
                   <div id="fixed" class="carousel slide" data-ride="carousel" data-interval="false">
