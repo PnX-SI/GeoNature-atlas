@@ -4,15 +4,16 @@
         <meta charset="utf-8" />
         <title>{{configuration.NOM_APPLICATION}}</title>
 
-        <!-- Bootrap -->
+        <!-- Bootstrap -->
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap/css/bootstrap.min.css') }}"></link>
         <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
 
         <!-- Jquery -->
         <script type=text/javascript src="{{url_for('static', filename='/lib/jquery-1.12.4.min.js') }}"></script>
+		<script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
-		
-		<!-- Leaflet -->
+
+        <!-- Leaflet -->
         <link rel="stylesheet" href="{{url_for('static', filename='/lib/leaflet/leaflet.css') }}" />
         <script src="{{url_for('static', filename='/lib/leaflet/leaflet.js') }}"></script>
         <script src="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.min.js') }}"></script>
@@ -30,7 +31,7 @@
         {% include 'navbar.html' %}
 
 		<div class="container-fluid">
-						<!-- SAUT DE LIGNE -->
+			<!-- SAUT DE LIGNE -->
 			<div class="col-sm-12" style="height:20px"></div>
 			<!-- Introduction -->
 			<div class="col-sm-12">
@@ -53,7 +54,8 @@
 					</div>
 				</div>
 			</div>
-		
+
+			<!-- SAUT DE LIGNE -->
 			<div class="col-sm-12" style="height:20px"></div>
 
 			<!-- Statistiques -->
@@ -61,15 +63,15 @@
 				<div class="panel panel-default stat-panel">
 					<div class="row">
 						<div class="panel-heading"><strong> <h3> L'atlas du {{configuration.STRUCTURE}} </h3> </strong></div>
-						<div class = "col-lg-3 col-md-3 col-sm-6 col-xs-12">
+						<div class = "col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
 							<div class="thumbnail stat-thumbnail">
 								<span class="glyphicon glyphicon-search"> </span>
 								<h1> {{stat.nbTotalObs}} </h1>
 								<h4> observations </h2>
-								<p><a href="#mapBeginning" class="btn btn-default" role="button">Voir les {{configuration.NB_LAST_OBS}} dernières observations</a></p>
+								<p><a href="#DernieresObservations" class="btn btn-default" role="button">Voir les {{configuration.NB_LAST_OBS}} dernières observations</a></p>
 							</div>
 						</div>
-						<div class = "col-lg-3 col-md-3 col-sm-6 col-xs-12">
+						<div class = "col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
 							<div class="thumbnail stat-thumbnail">
 								<span class="glyphicon glyphicon-leaf"> </span>
 								<h1> {{stat.nbTotalTaxons}} </h1>
@@ -84,10 +86,10 @@
 								
 							</div>
 						</div>
-						<div class ="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+						<div class ="col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
 							<div class="thumbnail stat-thumbnail">
 								<img id="picto" src="{{url_for('static', filename='images/commune-icone.png') }}"> 
-								<h1>  {{stat.town}}</h1>
+								<h1> {{stat.town}}</h1>
 								<h4> communes </h2>
 									<form method="POST" onsubmit="completeAction('#searchFormCommunesStat', hiddenInputCommunesStat)" id='searchFormCommunesStat' action=""  class="navbar-form" role="search">
 						               <div class="form-group has-feedback">
@@ -99,7 +101,7 @@
 					            	</form>
 							</div>
 						</div>
-						<div class ="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+						<div class ="col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
 							<div class="thumbnail stat-thumbnail">
 								<span class="glyphicon glyphicon-camera"> </span>
 								<h1> {{stat.photo}} </h1>
@@ -157,12 +159,12 @@
 			<div class="col-sm-12"> 
 					  <!-- CARTO des 100 dernières observations -->
 					  <div class="panel panel-default">
-					  	<div class="panel-heading" id="mapBeginning"><strong> Les {{configuration.NB_LAST_OBS}} dernières observations </strong></div>
+					  	<div class="panel-heading" id="DernieresObservations"><strong> Les {{configuration.NB_LAST_OBS}} dernières observations </strong></div>
 					  	<div class="row" id="mapRow">
-							 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+							 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
 								<div id="map"> </div>
 							 </div>
-							 <div id="listMap" class = "col-lg-4 col-md-4 col-sm-4 col-xs-12"> 
+							 <div id="listMap" class = "col-lg-4 col-md-4 col-sm-12 col-xs-12"> 
 								<table id='tableEspece' class="table table-striped">
 									
 									<tbody>
@@ -174,8 +176,8 @@
 											<td class="singleTaxon img"> <img width="15px" height="15px" src="{{configuration.URL_PHOTO}}{{obs.url}}"> </td>
 											{% endif %}
 											<td class="singleTaxon name" idSynthese = "{{obs.id_synthese}}" cdref="{{obs.cd_ref}}" > {{obs.taxon}}</td>
-											<td class="singleTaxon" idSynthese = "{{obs.id_synthese}}"> {{obs.dateobs}} </td>
-											<td> <a href = "{{url_for('main.ficheEspece',cd_ref=obs.cd_ref)}}"> <img height="20" width="20" src ="{{url_for('static', filename='images/logo_files.png') }}" alt="Lien vers la fiche espèce" title="Lien vers la fiche espèce"> </a> </td> 
+											<td class="singleTaxon date" idSynthese = "{{obs.id_synthese}}"> {{obs.dateobs}} </td>
+											<td class="singleTaxon detail"> <a href = "{{url_for('main.ficheEspece',cd_ref=obs.cd_ref)}}"> <img height="20" width="20" src ="{{url_for('static', filename='images/logo_files.png') }}" alt="Lien vers la fiche espèce" title="Lien vers la fiche espèce"> </a> </td> 
 											<td class="hiddenTd" hidden ="true"> {{obs.cd_ref}} </td>
 										</tr>
 										{% endfor %}
@@ -187,8 +189,6 @@
 					</div>
 			</div>
 
-			
-						
 			<!-- SAUT DE LIGNE -->
 			<div class="col-sm-12" style="height:20px"></div>
 			
@@ -218,32 +218,15 @@
 			
 		</div>
 
-
-	<!-- AJOUT CAMILLE -->	
-    	    <script type="text/javascript">
-			  var observations = {{observations|tojson}}
-			  ,communesSearch = {{communesSearch|tojson}}
-			  , configuration = {{configuration|tojson}},
-			  url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
+    	<script type="text/javascript">
+			var observations = {{observations|tojson}}
+			,communesSearch = {{communesSearch|tojson}}
+			, configuration = {{configuration|tojson}},
+			url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
         </script>
-    
-    <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
-    <script src="{{url_for('static', filename='mapHome.js') }}"></script>
-	<!-- FIN AJOUT CAMILLE -->		
-		
-	<!-- JQUERY APPELE 2 FOIS ? -->	
-	
-	    <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
-	    <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
-
-
-	
-		
+		<script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
+		<script src="{{url_for('static', filename='mapHome.js') }}"></script>	
 	    <script src="{{url_for('static', filename='main.js') }}"></script>
-
-<script> 
-
-		</script>
 
     </body>
 </html>
