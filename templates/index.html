@@ -5,7 +5,7 @@
         <title>{{configuration.NOM_APPLICATION}}</title>
 
         <!-- Jquery -->
-        <script type=text/javascript src="{{url_for('static', filename='/lib/jquery-1.12.4.min.js') }}"></script>
+        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
 		<script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
 		
@@ -14,8 +14,8 @@
         <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
 
         <!-- Leaflet -->
-        <link rel="stylesheet" href="{{url_for('static', filename='/lib/leaflet/leaflet.css') }}" />
-        <script src="{{url_for('static', filename='/lib/leaflet/leaflet.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet.css') }}" />
+        <script src="{{url_for('static', filename='lib/leaflet/leaflet.js') }}"></script>
         <script src="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.css') }}" />
 
@@ -30,7 +30,7 @@
 
         {% include 'navbar.html' %}
 
-		<div class="container-fluid">
+		<div class="container-fluid" id="page">
 			<!-- SAUT DE LIGNE -->
 			<div class="col-sm-12" style="height:20px"></div>
 			<!-- Introduction -->
