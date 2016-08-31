@@ -1,7 +1,10 @@
 var map = generateMap();
 
+    // Current observation Layer: leaflet layer type
+var currentLayer; 
 
-$(function(){
+// Current observation geoJson:  type object
+var myGeoJson;
 
 	// Diplay limit of the territory
 	var communeLayer = L.geoJson(communeGeoJson, {
@@ -43,13 +46,31 @@ $(function(){
 						"<i style='border: solid 2px blue;'> &nbsp; &nbsp; &nbsp;</i> Limite du "+configuration.STRUCTURE
 
 	htmlLegend = configuration.AFFICHAGE_MAILLE ? htmlLegendMaille : htmlLegendPoint;
-
+// General Legend
 	generateLegende(htmlLegend);
 
-});
 
 
-// General Legend
 
 
+// display observation on click
+
+function displayObsTaxonPoint(insee, cd_ref){
+	console.log(insee);
+	$.ajax({
+  url: configuration.URL_APPLICATION+'/api/observations/'+insee+'/'+cd_ref, 
+  dataType: "json"
+	}).done(function(observations){
+		map.removeLayer(currentLayer);
+		displayMarkerLayerPointLastObs(observations);
+
+	});
+}
+
+
+$(".displayObs").click(function(){
+	
+	displayObsTaxonPoint($(this).attr('insee'), $(this).attr('cdRef'));
+	console.log($(this).attr('insee'));
+})
 

@@ -21,14 +21,14 @@ def getAllCommune(session):
 
 
 def getCommuneFromInsee(connection, insee):
-    sql = "SELECT l.commune_maj, \
+    sql = "SELECT l.commune_maj, l.insee, \
            st_asgeojson(st_transform(l.the_geom, 4326)) as commune_geojson \
            FROM layers.l_communes l \
            WHERE l.insee = :thisInsee"
     req = connection.execute(text(sql), thisInsee = insee)
     communeObj = dict()
     for r in req:
-        communeObj = {'communeName': r.commune_maj, 'communeGeoJson' : ast.literal_eval(r.commune_geojson)}
+        communeObj = {'communeName': r.commune_maj, 'insee': r.insee, 'communeGeoJson' : ast.literal_eval(r.commune_geojson)}
     return communeObj
 
 

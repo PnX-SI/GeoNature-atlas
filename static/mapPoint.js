@@ -22,7 +22,7 @@ $.ajax({
     $('#loadingObs').hide();
 
       //display nb observations
-  $("#nbObs").html("Nombre d'observation(s): "+ observations.maille.length);
+  $("#nbObs").html("Nombre d'observation(s): "+ observations.length);
   $("#nbObsLateral").html("<b>"+observations.length+" </b> </br> Observations" );
 
     var mailleBoolean = false;

@@ -7,14 +7,14 @@ api = Blueprint('api', __name__)
 
 
 @api.route('/searchTaxon/', methods=['GET'])
-def searchTaxon():
+def searchTaxonAPI():
     session = utils.loadSession()
     listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons(session)
     session.close()
     return Response(json.dumps(listeTaxonsSearch), mimetype='application/json')
 
 @api.route('/observationsMailleAndPoint/<int:cd_ref>', methods=['GET'])
-def getObservationsMailleAndPoint(cd_ref):
+def getObservationsMailleAndPointAPI(cd_ref):
 	connection = utils.engine.connect()
 	observations = {'point': vmObservationsRepository.searchObservationsChilds(connection, cd_ref),\
 	'maille' : vmObservationsMaillesRepository.getObservationsMaillesChilds(connection, cd_ref)}
@@ -24,17 +24,26 @@ def getObservationsMailleAndPoint(cd_ref):
 
 	
 @api.route('/observationsMaille/<int:cd_ref>', methods=['GET'])
-def getObservationsMaille(cd_ref):
+def getObservationsMailleAPI(cd_ref):
 	connection = utils.engine.connect()
 	observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(connection, cd_ref)
 	connection.close()
 	return Response(json.dumps(observations), mimetype='application/json')	
 
 @api.route('/observationsPoint/<int:cd_ref>', methods=['GET'])
-def getObservationsPoint(cd_ref):
+def getObservationsPointAPI(cd_ref):
 	connection = utils.engine.connect()
 	observations = vmObservationsRepository.searchObservationsChilds(connection, cd_ref)
 	connection.close()
-	return Response(json.dumps(observations), mimetype='application/json')	
+	return Response(json.dumps(observations), mimetype='application/json')
+
+
+@api.route('/observations/<insee>/<int:cd_ref>', methods=['GET'])
+def getObservationsCommuneTaxonAPI(insee, cd_ref):
+	connection = utils.engine.connect()
+	observations = vmObservationsRepository.getObservationTaxonCommune(connection, insee, cd_ref)
+	connection.close()
+	return Response(json.dumps(observations), mimetype='application/json')
+
 
 

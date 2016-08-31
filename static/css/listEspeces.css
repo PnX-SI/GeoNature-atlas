@@ -88,3 +88,13 @@ ul#statHierarchy {
 .generalLegend i {
 	margin: 5px;
 }
+
+
+
+.eye {
+	padding-left: 20%
+}
+
+.displayObs {
+	cursor: pointer;
+}

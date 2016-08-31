@@ -85,12 +85,13 @@ def ficheCommune(insee):
 
     configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'NB_LAST_OBS' : config.NB_LAST_OBS, 'AFFICHAGE_MAILLE': config.AFFICHAGE_MAILLE, 'MAP': config.MAP, \
     'URL_APPLICATION': config.URL_APPLICATION}
+    myType = 1
 
     session.close()
     connection.close()
 
     return render_template('ficheCommune.html', listTaxons = listTaxons, referenciel = commune, communesSearch = communesSearch, observations = observations, \
-    listeTaxonsSearch = listeTaxonsSearch,  configuration = configuration)
+    listeTaxonsSearch = listeTaxonsSearch,  configuration = configuration, myType=myType)
 
 
 @main.route('/liste/<cd_ref>', methods=['GET', 'POST'])
@@ -103,13 +104,13 @@ def ficheRangTaxonomie(cd_ref):
     communesSearch = vmCommunesRepository.getAllCommunes(session)
     listeTaxonsSearch = vmSearchTaxonRepository.listeTaxons(session)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
-    myType = 2
+    
 
     connection.close()
     session.close()
 
     configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY, 'URL_APPLICATION': config.URL_APPLICATION}
-    return render_template('ficheRangTaxonomique.html',  myType=myType ,listTaxons = listTaxons, referenciel = referenciel, communesSearch = communesSearch,\
+    return render_template('ficheRangTaxonomique.html', listTaxons = listTaxons, referenciel = referenciel, communesSearch = communesSearch,\
         listeTaxonsSearch = listeTaxonsSearch, taxonomyHierarchy=taxonomyHierarchy, configuration=configuration)
 
 

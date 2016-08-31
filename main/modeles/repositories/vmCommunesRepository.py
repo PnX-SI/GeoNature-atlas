@@ -24,13 +24,14 @@ def getAllCommunes(session):
 
 def getCommuneFromInsee(connection, insee):
     sql = "SELECT c.commune_maj, \
+           c.insee, \
            c.commune_geojson \
            FROM atlas.vm_communes c \
            WHERE c.insee = :thisInsee"
     req = connection.execute(text(sql), thisInsee = insee)
     communeObj = dict()
     for r in req:
-        communeObj = {'communeName': r.commune_maj, 'communeGeoJson' : ast.literal_eval(r.commune_geojson)}
+        communeObj = {'communeName': r.commune_maj, 'insee': str(r.insee), 'communeGeoJson' : ast.literal_eval(r.commune_geojson)}
     return communeObj
 
 

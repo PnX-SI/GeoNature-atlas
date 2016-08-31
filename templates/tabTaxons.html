@@ -8,6 +8,9 @@
                 <th> Nom Vernaculaire <span class="glyphicon glyphicon-menu-down" </span></th>
                 <th id="sorted"> Nombre d'observation(s) <span class="glyphicon glyphicon-menu-down" </span> </th>
                 <th> Dernière observation <span class="glyphicon glyphicon-menu-down"> </th>
+                {% if myType == 1 %}
+                <th> Observations </th>
+                {% endif %}
                 <th> Fiche </th>
 
             </tr>
@@ -22,6 +25,9 @@
                 <td> {% if taxon.nom_vern == None %} - {% else %} {{taxon.nom_vern}} {% endif %}</td>
                 <td> {{taxon.nb_obs}} </td>
                 <td> {{taxon.last_obs}} </td>
+                {% if myType == 1 %}
+                <td class="displayObs"  insee ="{{referenciel.insee}}" cdRef= "{{taxon.cd_ref}}"> <img class="eye" src ="{{url_for('static', filename='images/eye_black.png') }}"> </td>
+                {% endif %}
                 <td> <a href = "{{url_for('main.ficheEspece',cd_ref=taxon.cd_ref)}}"> <img src ="{{url_for('static', filename='images/logo_files.png') }}" alt="Lien vers la fiche espèce" title="Lien vers la fiche espèce"> </a> </td> 
              </tr>
                 {% endfor %}

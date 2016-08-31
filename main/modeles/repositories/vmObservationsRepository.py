@@ -92,7 +92,7 @@ def lastObservations(connection, mylimit, idPhoto):
 
 
 def lastObservationsCommune(connection, mylimit, insee):
-    sql = "SELECT o.id_synthese, o.cd_ref, o.dateobs, o.altitude_retenue,o.geojson_point, o.effectif_total, t.lb_nom, t.nom_vern, o.geojson_point \
+    sql = "SELECT o.id_synthese, o.cd_ref, o.dateobs, o.altitude_retenue,o.geojson_point, o.effectif_total, t.lb_nom, t.nom_vern \
     FROM atlas.vm_observations o \
     JOIN layers.l_communes c ON ST_Intersects(st_transform(o.the_geom_point, 2154), c.the_geom) \
     JOIN atlas.vm_taxons t ON  o.cd_ref = t.cd_ref \
@@ -100,6 +100,29 @@ def lastObservationsCommune(connection, mylimit, insee):
     ORDER BY o.dateobs DESC \
     LIMIT 100"
     observations = connection.execute(text(sql), thisInsee = insee)
+    obsList=list()
+    for o in observations:
+        if o.nom_vern:
+            taxon = o.nom_vern + ' | ' + o.lb_nom
+        else:
+            taxon = o.lb_nom
+        temp = {'id_synthese' : o.id_synthese,
+                'cd_ref': o.cd_ref,
+                'dateobs': str(o.dateobs),
+                'altitude_retenue' : o.altitude_retenue,
+                'effectif_total' : o.effectif_total,
+                'taxon': taxon,
+                'geojson_point':ast.literal_eval(o.geojson_point),
+                }
+        obsList.append(temp)
+    return obsList
+
+def getObservationTaxonCommune(connection, insee, cd_ref):
+    sql = "SELECT o.id_synthese, o.cd_ref, o.dateobs, o.altitude_retenue, o.geojson_point, o.effectif_total, t.lb_nom, t.nom_vern\
+    FROM atlas.vm_observations o\
+    JOIN atlas.vm_taxons t ON t.cd_ref = o.cd_ref \
+    WHERE o.cd_ref = :thiscdref AND o.insee = :thisInsee"
+    observations = connection.execute(text(sql), thiscdref=cd_ref, thisInsee = insee)
     obsList=list()
     for o in observations:
         if o.nom_vern:
@@ -219,4 +242,3 @@ def genericStatMedias(connection, tab):
     for i in range(len(tabStat)):
         random.shuffle(tabStat[i])
     return tabStat
-
