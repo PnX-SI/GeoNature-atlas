@@ -7,7 +7,6 @@ $(document).ready(function() {
   });
 });
 
-
     autocompleteSearch = function(list, inputID, formID, nbProposal){
 
         // get the id of the hidden input
@@ -39,16 +38,18 @@ $(document).ready(function() {
 
 // generate the autocompletion with the list of item, the input id and the form id
 
+    $( "#searchCommunes" ).focus(function() {
+      autocompleteSearch(communesSearch, "#searchCommunes", "#searchFormCommunes", 20)
+    });
+    $( "#searchCommunesStat" ).focus(function() {
+       autocompleteSearch(communesSearch, "#searchCommunesStat", "#searchFormCommunesStat", 10);
+    });
+
 
 $.ajax({
   url: configuration.URL_APPLICATION+'/api/searchTaxon/',
   dataType: "json"
   }).done(function(list) {
-
-
-        $( "#searchCommunes" ).focus(function() {
-      autocompleteSearch(communesSearch, "#searchCommunes", "#searchFormCommunes", 20)
-    });
 
     $( "#searchTaxons" ).focus(function() {
        autocompleteSearch(list, "#searchTaxons", "#searchFormTaxons", 20);
@@ -60,9 +61,7 @@ $.ajax({
        autocompleteSearch(list, "#searchTaxonsStat", "#searchFormTaxonsStat", 10);
     });
 
-    $( "#searchCommunesStat" ).focus(function() {
-       autocompleteSearch(communesSearch, "#searchCommunesStat", "#searchFormCommunesStat", 10);
-    });
+
 });
 
 // complete dynamically the form action on search submit with the hidden value
@@ -106,9 +105,9 @@ $('#buttonChild').click(function(){
 
 // tootip
 
-$(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
+
+$('[data-toggle="tooltip"]').tooltip(); 
+
 
 
   

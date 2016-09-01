@@ -90,7 +90,8 @@
 
 
         <script type="text/javascript">
-        var communesSearch = {{communesSearch|tojson}};
+        var communesSearch = {{communesSearch|tojson}},
+            configuration = {{configuration|tojson}};
         </script>
         <script src="{{url_for('static', filename='listeEspeces.js') }}"></script>
         <script src="{{url_for('static', filename='main.js') }}"></script>

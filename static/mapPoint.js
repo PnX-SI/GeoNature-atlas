@@ -27,7 +27,7 @@ $.ajax({
   $("#nbObsLateral").html("<b>"+observations.maille.length+" </b> </br> Observations" );
 
     var mailleBoolean = false;
-    if (observations.maille.length > 1000) {
+    if (observations.maille.length > 500) {
        displayMailleLayerFicheEspece(observations.maille, taxonYearMin, YEARMAX);
        mailleBoolean = true;
     }

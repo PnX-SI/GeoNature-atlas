@@ -429,14 +429,13 @@
 
     <script type="text/javascript" src="{{url_for('static', filename='chart.js') }}"></script>
 
-   
+   <script src="{{url_for('static', filename='main.js') }}"></script>
    <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
    {% if configuration.AFFICHAGE_MAILLE %}
         <script src="{{url_for('static', filename='mapMailles.js') }}"></script>
     {% else %}
         <script src="{{url_for('static', filename='mapPoint.js') }}"></script>
     {% endif %}
-    <script src="{{url_for('static', filename='main.js') }}"></script>
     <script src="{{url_for('static', filename='ficheEspece.js') }}"></script>
 
     </body>

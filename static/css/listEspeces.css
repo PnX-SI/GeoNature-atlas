@@ -135,3 +135,8 @@ ul#statHierarchy {
     margin-right: 8px;
     opacity: 0.7;
 }
+
+
+.hiddenSpan{
+	visibility: hidden;
+}

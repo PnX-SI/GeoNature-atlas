@@ -143,8 +143,10 @@ def getObservationTaxonCommune(connection, insee, cd_ref):
 
 def observersParser(req):
     setObs = set()
+    tabObs = list()
     for r in req:
-        tabObs = r.observateurs.split(', ')
+        if r.observateurs != None:
+            tabObs = r.observateurs.split(', ')
         for o in tabObs:
             o = o.lower()
             setObs.add(o)

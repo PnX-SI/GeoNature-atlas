@@ -73,7 +73,7 @@ $(function(){
 
 
 
-htmlLegend = "<i style='border: solid 1px red;'> &nbsp; &nbsp; &nbsp;</i> <span> Maille comportant au moin une observation </span> "
+htmlLegend = "<i style='border: solid 1px red;'> &nbsp; &nbsp; &nbsp;</i> <span> Maille comportant au moins une observation </span> "
               + "<br> <br> <i style='border: solid 2px blue;'> &nbsp; &nbsp; &nbsp;</i> Limite du "+ configuration.STRUCTURE;
 
 
