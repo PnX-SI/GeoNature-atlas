@@ -43,7 +43,6 @@ baseMap[configuration.MAP.FIRST_MAP.tileName]=firstMapTile;
 
       options: {
         position: 'bottomleft' 
-        //control position - allowed: 'topleft', 'topright', 'bottomleft', 'bottomright'
       },
 
     onAdd: function (map) {
@@ -198,7 +197,6 @@ function generateGeojsonMaille(observations, yearMin, yearMax) {
 
 // Display Maille layer
 
-var i = 0; // compteur pour ne pas rajouter la légende à chaque fois
 function displayMailleLayerFicheEspece(observationsMaille, yearMin, yearMax){
   myGeoJson = generateGeojsonMaille(observationsMaille, yearMin, yearMax);
   currentLayer = L.geoJson(myGeoJson, {
@@ -208,11 +206,13 @@ function displayMailleLayerFicheEspece(observationsMaille, yearMin, yearMax){
   currentLayer.addTo(map);
 
 // ajout de la légende
+console.log("trace");
 
-    if(i == 0){
+    if(compteurLegend == 0){
     var legend = L.control({position: 'bottomright'});
 
     legend.onAdd = function (map) {
+      console.log(legend);
 
         var div = L.DomUtil.create('div', 'info legend'),
             grades = [0, 1, 2, 5, 10, 20, 50, 100],
@@ -230,7 +230,7 @@ function displayMailleLayerFicheEspece(observationsMaille, yearMin, yearMax){
     };
 
     legend.addTo(map);
-    i=i+1;
+    compteurLegend=compteurLegend+1;
   }
 
 }

@@ -6,6 +6,9 @@ var currentLayer;
 // Current observation geoJson:  type object
 var myGeoJson;
 
+var compteurLegend = 0; // compteur pour ne pas rajouter la légende à chaque fois
+
+
 	// Diplay limit of the territory
 	var communeLayer = L.geoJson(communeGeoJson, {
 		style : function(){
