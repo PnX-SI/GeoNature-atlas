@@ -190,6 +190,15 @@ h5#buttonChild:hover {
 	padding: 5px;
 }
 
+rect{
+	fill: #2466D1;
+}
+
+rect.highlight {
+    fill: purple;
+	padding: 5px;
+}
+
 text {
 	color: blue;
 }
