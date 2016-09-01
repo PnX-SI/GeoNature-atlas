@@ -9,14 +9,14 @@ body {
 	border-bottom-color: #333333;
 }
 
+.ui-autocomplete {
+    z-index: 2000;
+}
+
 #page {
   padding-left: 40px;
   padding-right: 0px;
   margin-top: 20px;
-}
-
-.ui-menu .ui-menu-item a{
-    z-index: 2000;
 }
 
 /* Sidebar */
