@@ -148,8 +148,30 @@ function styleMaille(feature) {
 
 
 
-// **** Lexique ****
-// GLOBAL VARIABLE: its can be use EVERYWHERE
+function generateLegendMaille(){
+    var legend = L.control({position: 'bottomright'});
+
+    legend.onAdd = function (map) {
+
+        var div = L.DomUtil.create('div', 'info legend'),
+            grades = [0, 1, 2, 5, 10, 20, 50, 100],
+            labels = ["<strong> Nombre <br> d'observations </strong> <br>"];
+
+        // loop through our density intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+            labels.push(
+                '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+'));
+        }
+        div.innerHTML = labels.join('<br>');
+
+        return div;
+    };
+
+    legend.addTo(map);
+    compteurLegend=compteurLegend+1;
+}
+
 
 
 
@@ -206,34 +228,65 @@ function displayMailleLayerFicheEspece(observationsMaille, yearMin, yearMax){
   currentLayer.addTo(map);
 
 // ajout de la légende
-console.log("trace");
 
     if(compteurLegend == 0){
-    var legend = L.control({position: 'bottomright'});
-
-    legend.onAdd = function (map) {
-      console.log(legend);
-
-        var div = L.DomUtil.create('div', 'info legend'),
-            grades = [0, 1, 2, 5, 10, 20, 50, 100],
-            labels = ["<strong> Nombre <br> d'observations </strong> <br>"];
-
-        // loop through our density intervals and generate a label with a colored square for each interval
-        for (var i = 0; i < grades.length; i++) {
-            labels.push(
-                '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+'));
-        }
-        div.innerHTML = labels.join('<br>');
-
-        return div;
-    };
-
-    legend.addTo(map);
-    compteurLegend=compteurLegend+1;
+      generateLegendMaille();
   }
 
 }
+
+
+function generateGeojsonMailleCommune(observations){
+   var i=0;
+  myGeoJson = {'type': 'FeatureCollection',
+             'features' : []
+          }
+  tabProperties =[]
+  while (i<observations.length){
+      geometry = observations[i].geojson_maille;
+      idMaille = observations[i].id_maille;
+      properties = {id_maille : idMaille, nb_observations : 1, last_observation: observations[i].annee};
+      var j = i+1;
+      while (j<observations.length && observations[j].id_maille <= idMaille){
+          properties.nb_observations +=  observations[j].nb_observations;
+        
+        if (observations[j].annee >=  properties.last_observation){
+          properties.last_observation = observations[j].annee
+        }
+        j = j+1
+      }
+      myGeoJson.features.push({
+          'type' : 'Feature',
+          'properties' : properties,
+          'geometry' : geometry   
+      })
+      // on avance jusqu' à j 
+      i = j  ;
+    }
+
+  return myGeoJson
+}
+
+function displayMailleLayerCommune(observations){
+  myGeoJson = generateGeojsonMailleCommune(observations);
+  currentLayer = L.geoJson(myGeoJson, {
+      onEachFeature : onEachFeatureMaille,
+      style: styleMaille,
+  });
+  currentLayer.addTo(map);
+
+// ajout de la légende
+
+    if(compteurLegend == 0){
+      generateLegendMaille();
+  }
+
+}
+
+
+
+
+
 
 
 // GeoJson Point

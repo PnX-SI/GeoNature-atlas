@@ -90,12 +90,13 @@ function displayObsTaxonMaille(insee, cd_ref){
 	}).done(function(observations){
 		$('#loadingGif').hide();
 		map.removeLayer(currentLayer);
-		displayMailleLayerFicheEspece(observations, 1800, 2016);
+		displayMailleLayerCommune(observations);
 	});
 }
 
 
 $(".displayObs").click(function(){
+	console.log("click");
 
 	if(configuration.AFFICHAGE_MAILLE){
 		displayObsTaxonMaille($(this).attr('insee'), $(this).attr('cdRef'));
