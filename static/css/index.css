@@ -66,16 +66,6 @@
   padding-left: 5px;
 }
 
-.slider-size {
-    height: 150px; 
-    width: 100%;
-}
-
-.slider-size:hover{
-    cursor:pointer;
-    visibility: visible;
-}
-
 .col-stat-medias{
   padding-right: 5px;
   padding-left: 5px;
@@ -139,43 +129,6 @@ td.singleTaxon.detail {
 
 /* END Latest observations */
 
-#statContainer{
-  float: left;
-}
-
-ul#stat {
-  float: left;
-  padding-left: 0px;
-}
-
-#stat li {
-    float: left;
-    width: 90px;
-    text-align: center;
-    list-style-type: none; 
-}
-
-.float  {
-  float:left;
-}
-
-.legend {
-    line-height: 16px;
-    color: #555;
-     background-color: white;
-    opacity: 1;
-}
-.legend i {
-    width: 18px;
-    height: 18px;
-    float: left;
-    margin-right: 8px;
-
-}
-
-.caption h4 {
-  float: left;
-}
 
 /*// BLOCK actual species */
 
