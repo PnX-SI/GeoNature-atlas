@@ -55,22 +55,43 @@ var myGeoJson;
 
 // display observation on click
 
-function displayObsTaxonPoint(insee, cd_ref){
-	console.log(insee);
+function displayObsTaxon(insee, cd_ref){
 	$.ajax({
   url: configuration.URL_APPLICATION+'/api/observations/'+insee+'/'+cd_ref, 
   dataType: "json"
 	}).done(function(observations){
 		map.removeLayer(currentLayer);
-		displayMarkerLayerPointLastObs(observations);
+		if(configuration.AFFICHAGE_MAILLE){
+			
+		}else {
+			displayMarkerLayerPointLastObs(observations);
+		}
 
+
+	});
+}
+
+function displayObsTaxonMaille(insee, cd_ref){
+	$.ajax({
+	  url: configuration.URL_APPLICATION+'/api/observationsMaille/'+insee+'/'+cd_ref, 
+	  dataType: "json"
+	}).done(function(observations){
+		map.removeLayer(currentLayer);
+		displayMailleLayerFicheEspece(observations, 1800, 2016);
 	});
 }
 
 
 $(".displayObs").click(function(){
-	
-	displayObsTaxonPoint($(this).attr('insee'), $(this).attr('cdRef'));
-	console.log($(this).attr('insee'));
+
+	if(configuration.AFFICHAGE_MAILLE){
+		displayObsTaxonMaille($(this).attr('insee'), $(this).attr('cdRef'));
+	}else{
+		displayObsTaxon($(this).attr('insee'), $(this).attr('cdRef'));
+	}
+	var name = ($(this).parent().find('.name').html());
+	$('#titleMap').fadeOut(500, function(){
+		$(this).html("Carte des observations du taxon:"+ name).fadeIn(500);
+	})
 })
 

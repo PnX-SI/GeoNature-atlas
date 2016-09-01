@@ -83,3 +83,21 @@ def lastObservationsCommuneMaille(connection, mylimit, insee):
                 }
         obsList.append(temp)
     return obsList
+
+
+def getObservationsTaxonCommuneMaille(connection, insee, cd_ref):
+    sql = "SELECT \
+    obs.id_maille, \
+    obs.geojson_maille, \
+    o.dateobs, \
+    extract(YEAR FROM o.dateobs) as annee \
+    FROM atlas.vm_observations_mailles obs \
+    JOIN atlas.vm_observations o ON o.id_synthese = obs.id_synthese \
+    WHERE o.insee = :thisInsee AND obs.cd_ref = :thiscdref  \
+    ORDER BY id_maille"
+    observations = connection.execute(text(sql), thisInsee=insee, thiscdref = cd_ref)
+    tabObs = list()
+    for o in observations:
+        temp = {'id_maille': o.id_maille, 'nb_observations': 1, 'annee': o.annee, 'dateobs': str(o.dateobs), 'geojson_maille':ast.literal_eval(o.geojson_maille)}
+        tabObs.append(temp)
+    return tabObs

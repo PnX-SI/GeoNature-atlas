@@ -70,7 +70,7 @@
         <div class="col-sm-5" id="mapWrapper">
             <div  class="panel panel-default" id="mapContainer">
                 <div class="panel-heading"><strong>
-                     <h4> Carte des {{configuration.NB_LAST_OBS}} dernières observations de la commune de <i>{{referenciel.communeName}}</i></h4> </strong>
+                     <h4 id="titleMap"> Carte des {{configuration.NB_LAST_OBS}} dernières observations de la commune de <i>{{referenciel.communeName}}</i></h4> </strong>
                 </div>
                 <div class="panel-body">
                      <div id="map"> </div>
@@ -86,7 +86,6 @@
 
         <script type="text/javascript">
         var communesSearch = {{communesSearch|tojson}},
-            listeTaxonsSearch = {{listeTaxonsSearch|tojson}},
             configuration = {{configuration|tojson}},
             observations = {{observations|tojson}},
             communeGeoJson = {{referenciel.communeGeoJson|tojson}},
