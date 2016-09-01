@@ -1,19 +1,19 @@
 #identityPanel{
-	padding-right: 5px;
 }
 
 #taxonIdentity{
 	padding-top: 10px;
 	padding-bottom: 10px;
-	padding-right: 0px;
+	padding-right: 10px;
 }
 
 #taxonIdentity h3{
 	margin-top: 5px;
 }
 
-#rowImg{
+#rowIdentity{
 	margin-left: 0px;
+	margin-right: 0px;
 }
 
 #imgCol{
@@ -51,11 +51,15 @@ p.imgDescription.main {
   visibility: visible;
 }
 
-#logoCol {
+#groupLogoCol {
 	padding-left: 0px;
 	position: absolute;
-	right: 4%;
-	top: 10%;
+	right: 0%;
+	top: 4%;
+}
+
+#taxonomy {
+	margin-top: 30px;
 }
 
 .nav>li>a {
