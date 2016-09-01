@@ -175,50 +175,15 @@ h5#buttonChild:hover {
 	cursor: pointer
 }
 
-.legend {
-    line-height: 10px;
-    color: #555;
-     background-color: white;
-    opacity: 0.7;
-}
-
-.legend i {
-    width: 18px;
-    height: 18px;
-    float: left;
-    margin-right: 8px;
-}
-
-.legend:hover {
-	opacity: 1;
-}
 
 /* Graphiques */
-
-#graphContainer {
-	margin-left: 30px;
-	padding: 10px;
-	padding-bottom: 15px;
-	background-color: white;
-}
-
-#graphContainer h3 {
-	margin-top: 0px;
-}
 
 #altiChart {
 	background-color: white;
 }
 
 #graphBloc svg {
-	padding: 5px;}
-
-rect{
-	fill: #2466D1;
-}
-
-rect.highlight {
-    fill: purple;
+	padding: 5px;
 }
 
 text {
@@ -226,17 +191,10 @@ text {
 }
 
 .leaflet-bar.leaflet-control.leaflet-control-custom img {
-
     display: block;
     margin-left: auto;
     margin-right: auto;
     margin-top: 3px;
-
-}
-
-.generalLegend{
-	line-height: 18px;
-	opacity: 1;
 }
 
 

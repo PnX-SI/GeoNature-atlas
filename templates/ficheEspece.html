@@ -251,7 +251,7 @@
                             <div class="item">
                             {% endif %}
                                 <a href="{{photo.path}}" data-lightbox="imageSet" data-title="{{photo.title}}  &copy; {{photo.author}}" >
-                                  <div style="background:url({{photo.path}}) center center; background-size:cover;" class="slider-size">
+                                  <div class="slider-size" style="background-image: url({{photo.path}})">
                                       <div class="carousel-caption">
                                        {{photo.title}} &copy; {{photo.author}}
                                       </div>
