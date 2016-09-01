@@ -174,7 +174,7 @@ function generateGeojsonMaille(observations, yearMin, yearMax) {
           properties.nb_observations +=  observations[j].nb_observations;
           properties.tabDateobs.push(new Date(observations[i].dateobs));
         }
-        if (observations[j].annee >=  observations[j-1].annee){
+        if (observations[j].annee >=  properties.last_observation){
           properties.last_observation = observations[j].annee
         }
         j = j+1

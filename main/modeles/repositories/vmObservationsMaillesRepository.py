@@ -86,15 +86,16 @@ def lastObservationsCommuneMaille(connection, mylimit, insee):
 
 
 def getObservationsTaxonCommuneMaille(connection, insee, cd_ref):
-    sql = "SELECT \
-    obs.id_maille, \
-    obs.geojson_maille, \
-    o.dateobs, \
-    extract(YEAR FROM o.dateobs) as annee \
-    FROM atlas.vm_observations_mailles obs \
-    JOIN atlas.vm_observations o ON o.id_synthese = obs.id_synthese \
-    WHERE o.insee = :thisInsee AND obs.cd_ref = :thiscdref  \
-    ORDER BY id_maille"
+    sql ="SELECT \
+        obs.id_maille, \
+        obs.geojson_maille, \
+        o.dateobs, \
+        extract(YEAR FROM o.dateobs) as annee \
+        FROM atlas.vm_observations_mailles obs \
+        JOIN atlas.vm_communes c ON ST_intersects (c.the_geom, obs.geom) \
+        JOIN atlas.vm_observations o ON o.id_synthese = obs.id_synthese \
+        WHERE obs.cd_ref = :thiscdref  AND c.insee = :thisInsee \
+        ORDER BY obs.id_maille"
     observations = connection.execute(text(sql), thisInsee=insee, thiscdref = cd_ref)
     tabObs = list()
     for o in observations:

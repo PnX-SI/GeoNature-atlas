@@ -89,12 +89,17 @@ ul#statHierarchy {
 	margin: 5px;
 }
 
-
-
 .eye {
 	padding-left: 20%
 }
 
 .displayObs {
 	cursor: pointer;
+}
+
+#loadingGif {
+	z-index: 1000000;
+	position:absolute;
+	left: 40%;
+	top: 40%;
 }

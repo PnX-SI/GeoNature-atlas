@@ -58,8 +58,13 @@ var myGeoJson;
 function displayObsTaxon(insee, cd_ref){
 	$.ajax({
   url: configuration.URL_APPLICATION+'/api/observations/'+insee+'/'+cd_ref, 
-  dataType: "json"
+  dataType: "json",
+    beforeSend: function(){
+    $('#loadingGif').show();
+    $('#loadingGif').attr("src", configuration.URL_APPLICATION+'/static/images/loading.svg');
+  }
 	}).done(function(observations){
+		$('#loadingGif').hide();
 		map.removeLayer(currentLayer);
 		if(configuration.AFFICHAGE_MAILLE){
 			
@@ -74,8 +79,13 @@ function displayObsTaxon(insee, cd_ref){
 function displayObsTaxonMaille(insee, cd_ref){
 	$.ajax({
 	  url: configuration.URL_APPLICATION+'/api/observationsMaille/'+insee+'/'+cd_ref, 
-	  dataType: "json"
+	  dataType: "json",
+	  beforeSend: function(){
+	  	$('#loadingGif').show();
+	    $('#loadingGif').attr("src", configuration.URL_APPLICATION+'/static/images/loading.svg');
+  	}
 	}).done(function(observations){
+		$('#loadingGif').hide();
 		map.removeLayer(currentLayer);
 		displayMailleLayerFicheEspece(observations, 1800, 2016);
 	});

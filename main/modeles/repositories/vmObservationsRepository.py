@@ -117,9 +117,7 @@ def lastObservationsCommune(connection, mylimit, insee):
         obsList.append(temp)
     return obsList
 
-
-
-def getObservationTaxonMaille(connection, insee, cd_ref):
+def getObservationTaxonCommune(connection, insee, cd_ref):
     sql = "SELECT o.id_synthese, o.cd_ref, o.dateobs, o.altitude_retenue, o.geojson_point, o.effectif_total, t.lb_nom, t.nom_vern\
     FROM atlas.vm_observations o\
     JOIN atlas.vm_taxons t ON t.cd_ref = o.cd_ref \
