@@ -15,6 +15,10 @@ body {
   margin-top: 20px;
 }
 
+.ui-menu .ui-menu-item a{
+    z-index: 2000;
+}
+
 /* Sidebar */
 
 #sideBar{
@@ -77,6 +81,7 @@ body {
     background-color: white;
     opacity: 0.7;
 	padding: 5px;
+	border-radius: 4px;
 }
 
 .legend i {

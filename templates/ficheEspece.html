@@ -80,9 +80,9 @@
 						<div id="groupLogoCol">
 							<img src="{{url_for('static', filename='images/picto_'+ taxon.taxonSearch.group2_inpn|urlencode+'.png') }}" alt="{{taxon.taxonSearch.group2_inpn}}" title ="{{taxon.taxonSearch.group2_inpn}}">
 						</div>
-						<div>
+						<div id="taxonName">
                         {% if taxon.taxonSearch.nom_vern != None %}
-                            <h3>  {{taxon.taxonSearch.nom_vern}} 
+                            <h3> {{taxon.taxonSearch.nom_vern}} </h3>
                         
                         {% endif %}
                             <h3> {{taxon.taxonSearch.nom_complet_html|safe}} </h3>

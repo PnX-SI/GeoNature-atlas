@@ -51,11 +51,17 @@ p.imgDescription.main {
   visibility: visible;
 }
 
+/*  */
+
 #groupLogoCol {
 	padding-left: 0px;
 	position: absolute;
-	right: 0%;
+	right: 2%;
 	top: 4%;
+}
+
+#taxonName {
+	max-width: 85%;
 }
 
 #taxonomy {
@@ -195,7 +201,7 @@ rect{
 }
 
 rect.highlight {
-    fill: purple;
+    fill: #333333;
 	padding: 5px;
 }
 
