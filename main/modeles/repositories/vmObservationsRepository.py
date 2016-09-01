@@ -141,16 +141,7 @@ def getObservationTaxonCommune(connection, insee, cd_ref):
     return obsList
 
 
-
-
-
-def getObservers(connection, cd_ref):
-    sql = "SELECT distinct observateurs \
-    FROM atlas.vm_observations \
-    WHERE cd_ref in ( \
-    SELECT * from atlas.find_all_taxons_childs(:thiscdref) \
-    )OR cd_ref = :thiscdref"
-    req = connection.execute(text(sql), thiscdref = cd_ref)
+def observersParser(req):
     setObs = set()
     for r in req:
         tabObs = r.observateurs.split(', ')
@@ -172,7 +163,22 @@ def getObservers(connection, cd_ref):
     return sorted(finalList)
 
 
+def getObservers(connection, cd_ref):
+    sql = "SELECT distinct observateurs \
+    FROM atlas.vm_observations \
+    WHERE cd_ref in ( \
+    SELECT * from atlas.find_all_taxons_childs(:thiscdref) \
+    )OR cd_ref = :thiscdref"
+    req = connection.execute(text(sql), thiscdref = cd_ref)
+    return observersParser(req)
 
+
+def getObserversCommunes(connection, insee):
+    sql= "SELECT distinct observateurs \
+    FROM atlas.vm_observations \
+    WHERE insee = :thisInsee"
+    req = connection.execute(text(sql), thisInsee=insee)
+    return observersParser(req)
 
 def statIndex(connection):
     result = {'nbTotalObs': None, 'nbTotalTaxons': None, 'town': None, 'photo': None}
@@ -203,6 +209,7 @@ def statIndex(connection):
     for r in req:
         result['photo']= r.count
     return result
+
 
 
 def genericStat (connection, tab):

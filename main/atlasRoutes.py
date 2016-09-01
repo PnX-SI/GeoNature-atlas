@@ -82,6 +82,7 @@ def ficheCommune(insee):
     else:
         observations = vmObservationsRepository.lastObservationsCommune(connection, config.NB_LAST_OBS, insee)
 
+    observers = vmObservationsRepository.getObserversCommunes(connection, insee)
     configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'NB_LAST_OBS' : config.NB_LAST_OBS, 'AFFICHAGE_MAILLE': config.AFFICHAGE_MAILLE, 'MAP': config.MAP, \
     'URL_APPLICATION': config.URL_APPLICATION}
     myType = 1
@@ -90,7 +91,7 @@ def ficheCommune(insee):
     connection.close()
 
     return render_template('ficheCommune.html', listTaxons = listTaxons, referenciel = commune, communesSearch = communesSearch, observations = observations, \
-    configuration = configuration, myType=myType)
+    observers=observers, configuration = configuration, myType=myType)
 
 
 @main.route('/liste/<cd_ref>', methods=['GET', 'POST'])
@@ -102,6 +103,7 @@ def ficheRangTaxonomie(cd_ref):
     referenciel = vmTaxrefRepository.getInfoFromCd_ref(session, cd_ref)
     communesSearch = vmCommunesRepository.getAllCommunes(session)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
+    observers = vmObservationsRepository.getObservers(connection, cd_ref)
     
 
     connection.close()
@@ -109,6 +111,6 @@ def ficheRangTaxonomie(cd_ref):
 
     configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY, 'URL_APPLICATION': config.URL_APPLICATION}
     return render_template('ficheRangTaxonomique.html', listTaxons = listTaxons, referenciel = referenciel, communesSearch = communesSearch,\
-        taxonomyHierarchy=taxonomyHierarchy, configuration=configuration)
+        taxonomyHierarchy=taxonomyHierarchy, observers=observers, configuration=configuration)
 
 
