@@ -7,18 +7,10 @@ $(document).ready(function() {
   });
 });
 
-    autocompleteSearch = function(list, inputID, formID, nbProposal){
-
-        // get the id of the hidden input
-      temp = $(formID).find("input[type='hidden']").attr('id');
-      hiddenID ='#'+temp;
-      // get the id of the text input
-      temp = $(formID).find("input[type='text']").attr('id');
-      textID = '#'+temp;
+    autocompleteSearch = function(list, inputID, urlDestination, nbProposal){
 
 
     $(inputID).autocomplete({
-
         source: function (request, response) {
         var results = $.ui.autocomplete.filter(list, request.term);
         response(results.slice(0, nbProposal))},
@@ -26,10 +18,13 @@ $(document).ready(function() {
                 return false;
             },
            select : function (event, ui){
-              $(textID).val(ui.item.label)
-              $(hiddenID).val(ui.item.value);
-              console.log($(hiddenID).val());
-              $(formID).submit();
+              var url = ui.item.value;
+              if (urlDestination == "espece"){
+                  location.href = configuration.URL_APPLICATION+"/espece/"+url;
+              } else {
+                  location.href = configuration.URL_APPLICATION+"/commune/"+url;
+              }
+              
           return false;
             }
     });
@@ -39,10 +34,10 @@ $(document).ready(function() {
 // generate the autocompletion with the list of item, the input id and the form id
 
     $( "#searchCommunes" ).focus(function() {
-      autocompleteSearch(communesSearch, "#searchCommunes", "#searchFormCommunes", 20)
+      autocompleteSearch(communesSearch, "#searchCommunes", "commune", 20)
     });
     $( "#searchCommunesStat" ).focus(function() {
-       autocompleteSearch(communesSearch, "#searchCommunesStat", "#searchFormCommunesStat", 10);
+       autocompleteSearch(communesSearch, "#searchCommunesStat", "commune", 10);
     });
 
 
@@ -50,38 +45,40 @@ $.ajax({
   url: configuration.URL_APPLICATION+'/api/searchTaxon/',
   dataType: "json"
   }).done(function(list) {
+      $('[loading="true"]').css("background-image", "none")
+      $('[loading="true"]').prop("disabled", false);
+      $('[loading="true"]').attr('placeholder', "Rechercher une espèce")
+
 
     $( "#searchTaxons" ).focus(function() {
-       autocompleteSearch(list, "#searchTaxons", "#searchFormTaxons", 20);
+       autocompleteSearch(list, "#searchTaxons", "espece", 20);
     });
 
     // Autocomplete bloc stat
 
     $( "#searchTaxonsStat" ).focus(function() {
-       autocompleteSearch(list, "#searchTaxonsStat", "#searchFormTaxonsStat", 10);
+       autocompleteSearch(list, "#searchTaxonsStat", "espce", 10);
     });
-
 
 });
 
-// complete dynamically the form action on search submit with the hidden value
-function completeAction(id, hiddenID){
 
-  value = $(hiddenID).val();
-  var path;
-  if (id == "#searchFormTaxons" || id == "#searchFormTaxonsStat"){
-    path = configuration.URL_APPLICATION+"/espece/"+parseInt(value);
+
+/*$('#searchTaxons').autocomplete({
+  source: function(request, response){
+    $.ajax({
+      url: configuration.URL_APPLICATION+'/api/searchTaxon/',
+      dataType: "json",
+      type: 'GET',
+      success: function(data){
+        console.log(data);
+        $('#searchTaxon').removeClass('ui-autocomplete-loading');
+        var results = $.ui.autocomplete.filter(data, request.term);
+        response(results.slice(0, 20))
+      }
+    });
   }
-  if (id == "#searchFormCommunes" || id == "#searchFormCommunesStat" ){
-    path = configuration.URL_APPLICATION+"/commune/"+value;
-  }
-
-    $(id).attr("action", path);
-
-}
-
-
-
+});*/
 
 
 
@@ -105,8 +102,9 @@ $('#buttonChild').click(function(){
 
 // tootip
 
-
-$('[data-toggle="tooltip"]').tooltip(); 
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();
+})
 
 
 

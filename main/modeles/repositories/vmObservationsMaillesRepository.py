@@ -66,8 +66,8 @@ def lastObservationsCommuneMaille(connection, mylimit, insee):
     JOIN atlas.vm_taxons t ON  o.cd_ref = t.cd_ref \
     WHERE c.insee = :thisInsee \
     ORDER BY obs.dateobs DESC \
-    LIMIT 100"
-    observations = connection.execute(text(sql), thisInsee = insee)
+    LIMIT :thislimit"
+    observations = connection.execute(text(sql), thisInsee = insee, mylimit=thislimit)
     obsList=list()
     for o in observations:
         if o.nom_vern:

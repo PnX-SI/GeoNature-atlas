@@ -1,6 +1,5 @@
 $(document).ready(function(){
   $('#myTable').show();
-  $('.hiddenCol').hide();
     $('#myTable').DataTable({
     	"order":[5, 'desc'],
     	"lengthChange": false,

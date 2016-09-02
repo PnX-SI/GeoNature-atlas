@@ -77,9 +77,9 @@
 								<span class="glyphicon glyphicon-leaf"> </span>
 								<h1> {{stat.nbTotalTaxons}} </h1>
 								<h4> espèces </h2>
-									<form method="POST" onsubmit="completeAction('#searchFormTaxonsStat', hiddenInputTaxonStat)"  action=""  id='searchFormTaxonsStat' class="navbar-form" role="search">
+									<form method="POST" id='searchFormTaxonsStat' class="navbar-form" role="search">
 						               <div class="form-group has-feedback">
-						                 <input id="searchTaxonsStat" type="text" class="form-control"  placeholder="Rechercher une espèce &nbsp; &nbsp; &nbsp;">
+						                 <input id="searchTaxonsStat" type="text" class="form-control"  placeholder="Rechercher une espèce &nbsp; &nbsp; &nbsp;" loading="true" style="background-image: url('{{url_for('static', filename='images/loading3.gif') }}');" disabled>
 						                 <i class="glyphicon glyphicon-search form-control-feedback"></i>
 						                 <input id ="hiddenInputTaxonStat"  type="hidden" name="cd_ref">
 						               </div>       

@@ -27,6 +27,14 @@
 	margin: 0px;
 }
 
+#searchTaxonsStat{
+	background-position: right center;
+    background-repeat: no-repeat;
+    background-size: 25px 25px;
+    background-position-x: calc(100% - 25px);
+    cursor: grab;
+}
+
 
 /*Custom Stat Block*/
 

@@ -77,8 +77,8 @@
 					<!-- Si pas de photo, alors le premier bloc occupe toute la largeur -->
                     <div class="col-sm-12" id="taxonIdentity">
                     {% endif %}
-						<div id="groupLogoCol">
-							<img src="{{url_for('static', filename='images/picto_'+ taxon.taxonSearch.group2_inpn|urlencode+'.png') }}" alt="{{taxon.taxonSearch.group2_inpn}}" title ="{{taxon.taxonSearch.group2_inpn}}">
+						<div id="groupLogoCol" >
+							<img src="{{url_for('static', filename='images/picto_'+ taxon.taxonSearch.group2_inpn|urlencode+'.png') }}" alt="{{taxon.taxonSearch.group2_inpn}}" title ="{{taxon.taxonSearch.group2_inpn}}" data-toggle="tooltip" data-original-title="{{taxon.taxonSearch.group2_inpn}}" data-placement="right">
 						</div>
 						<div id="taxonName">
                         {% if taxon.taxonSearch.nom_vern != None %}
@@ -429,8 +429,9 @@
 
     <script type="text/javascript" src="{{url_for('static', filename='chart.js') }}"></script>
 
-   <script src="{{url_for('static', filename='main.js') }}"></script>
+   
    <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
+   <script src="{{url_for('static', filename='main.js') }}"></script>
    {% if configuration.AFFICHAGE_MAILLE %}
         <script src="{{url_for('static', filename='mapMailles.js') }}"></script>
     {% else %}
