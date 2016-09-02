@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
 
-        <title> {%if taxon.taxonSearch.nom_vern %}  {{taxon.taxonSearch.nom_vern}} | {% endif %} {{taxon.taxonSearch.lb_nom}}</title>
+        <title> {%if taxon.taxonSearch.nom_vern %}  {{taxon.taxonSearch.nom_vern}} | {% endif %} {{taxon.taxonSearch.lb_nom}} | {{configuration.NOM_APPLICATION}}</title>
 
         <!-- Jquery -->
         <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />

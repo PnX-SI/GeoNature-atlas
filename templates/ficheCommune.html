@@ -2,7 +2,7 @@
 <html>
    <head>
         <meta charset="utf-8" />
-        <title></title>
+        <title>Commune de {{referenciel.communeName}} | {{configuration.NOM_APPLICATION}}</title>
 
         <!-- Jquery -->
         <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
@@ -37,7 +37,10 @@
    <body>
     {% include 'navbar.html' %}
 
-    <div class="container-fluid">
+		<div id="sideBar">
+			{% include 'sideBar.html' %}
+		</div>
+		<div class="container-fluid" id="page">
             
         <div class="col-sm-7">
             <div class="row ">

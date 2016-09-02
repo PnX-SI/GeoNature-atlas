@@ -2,48 +2,43 @@
 <html>
    <head>
         <meta charset="utf-8" />
-        <title></title>
+        <title>{{referenciel.lb_nom}} ({{referenciel.nom_rang}}) | {{configuration.NOM_APPLICATION}}</title>
 
         <!-- Jquery -->
-        <link rel="stylesheet" href="{{url_for('static', filename='/lib/jquery-ui.css') }}" />
-        <script type=text/javascript src="{{url_for('static', filename='/lib/jquery-1.12.4.min.js') }}"></script>
-
+        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
+		<script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+		<link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
 
         <!-- DataTable-->
         <script type=text/javascript src="{{url_for('static', filename='lib/dataTable/datatables.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/dataTable/jquery.dataTables.min.css') }}" />
 
-        <!-- Bootrap -->
-        <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap/css/bootstrap.min.css') }}"></link>
-        <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap-switch/css/bootstrap-switch.min.css') }}"></link>
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}"></link>
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap-switch/css/bootstrap-switch.min.css') }}"></link>
         <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
 
-
-        
-
-
-        <link rel="stylesheet" href="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css') }}" />
-        <script src="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css') }}" />
+        <script src="{{url_for('static', filename='lib/node_modules/bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
 
         <!-- CSS Application -->
         <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />       
         <link rel="stylesheet" href="{{url_for('static', filename='css/listEspeces.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='css/icones.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='custom/custom.css') }}" />
-       
-
-
-
 
    </head>
 
    <body>
     {% include 'navbar.html' %}
 
-    <div class="container-fluid">
+		<div id="sideBar">
+			{% include 'sideBar.html' %}
+		</div>
+		<div class="container-fluid" id="page">
 
         <div class="col-sm-12">
-            <div class="row ">
+            <div class="row rowMargin">
                 <div class="panel panel-default" id="parent">
                     <h4> <b> Espèces observées pour le taxon <i>{{referenciel.lb_nom}}</i> ({{referenciel.nom_rang}}) </b> </h4>
     
@@ -75,7 +70,7 @@
             </div>
 
 
-            <div class="row" id="clear">
+            <div class="row rowMargin" id="clear">
                 <div class="panel panel-default">
 
                     {% include 'tabTaxons.html' %}
@@ -84,9 +79,6 @@
         </div>
 
     </div>
-
-
-        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
 
 
         <script type="text/javascript">

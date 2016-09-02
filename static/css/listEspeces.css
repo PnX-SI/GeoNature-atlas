@@ -16,6 +16,11 @@
 	height: 600px;
 }
 
+.rowMargin {
+	margin-left: 0px;
+	margin-right: 0px
+}
+
 #clear {
 	clear:both;
 }
