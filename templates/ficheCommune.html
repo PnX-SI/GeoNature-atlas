@@ -5,13 +5,13 @@
         <title></title>
 
         <!-- Jquery -->
-        <link rel="stylesheet" href="{{url_for('static', filename='/lib/jquery-ui.css') }}" />
-        <script type=text/javascript src="{{url_for('static', filename='/lib/jquery-1.12.4.min.js') }}"></script>
+        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
+        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
 
-
-                <!-- Leaflet -->
-        <link rel="stylesheet" href="{{url_for('static', filename='/lib/leaflet/leaflet.css') }}" />
-        <script src="{{url_for('static', filename='/lib/leaflet/leaflet.js') }}"></script>
+        <!-- Leaflet -->
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet.css') }}" />
+        <script src="{{url_for('static', filename='lib/leaflet/leaflet.js') }}"></script>
         <script src="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.css') }}" />
 
@@ -19,25 +19,20 @@
         <script type=text/javascript src="{{url_for('static', filename='lib/dataTable/datatables.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/dataTable/jquery.dataTables.min.css') }}" />
 
-
-        <!-- Bootrap -->
-        <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap/css/bootstrap.min.css') }}"></link>
-        <link rel="stylesheet" href="{{url_for('static', filename='/lib/bootstrap-switch/css/bootstrap-switch.min.css') }}"></link>
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}"></link>
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap-switch/css/bootstrap-switch.min.css') }}"></link>
         <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
-        <link rel="stylesheet" href="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css') }}" />
-        <script src="{{url_for('static', filename='/lib/node_modules/bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css') }}" />
+        <script src="{{url_for('static', filename='lib/node_modules/bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
 
-
-
+       <!-- Atlas -->
         <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />       
         <link rel="stylesheet" href="{{url_for('static', filename='css/listEspeces.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='css/icones.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='custom/custom.css') }}" />
 
 
-
-
-       
    </head>
    <body>
     {% include 'navbar.html' %}
@@ -83,8 +78,6 @@
       
 
 
-        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
-
         <script type="text/javascript">
         var communesSearch = {{communesSearch|tojson}},
             configuration = {{configuration|tojson}},
@@ -100,6 +93,3 @@
 
    </body> 
 </html>
-
-
-

@@ -64,7 +64,7 @@ AFFICHAGE_MAILLE = True
 # Niveau de zoom à partir duquel on passe à l'affichage en point (si AFFICHAGE_MAILLE = False)
 ZOOM_LEVEL_POINT = 11
 
-# Nombre des 'x' derniàres observations affichées sur la carte de la page d'accueil
+# Nombre des 'x' dernières observations affichées sur la carte de la page d'accueil
 NB_LAST_OBS = 100
 
 # Nombre d'observations à partir duquel on passe à l'affichage en cluster
