@@ -58,31 +58,6 @@ def lastObservationsMailles(connection, mylimit, idPhoto):
         obsList.append(temp)
     return obsList
 
-# def lastObservationsCommuneMaille(connection, mylimit, insee):
-#     sql = "SELECT obs.id_synthese, o.cd_ref, obs.dateobs, t.lb_nom, t.nom_vern, o.geojson_maille, o.id_maille \
-#     FROM atlas.vm_observations_mailles o \
-#     JOIN layers.l_communes c ON ST_Intersects(o.geom, c.the_geom) \
-#     JOIN atlas.vm_observations obs ON obs.id_synthese = o.id_synthese \
-#     JOIN atlas.vm_taxons t ON  o.cd_ref = t.cd_ref \
-#     WHERE c.insee = :thisInsee \
-#     ORDER BY obs.dateobs DESC \
-#     LIMIT :thislimit"
-#     observations = connection.execute(text(sql), thisInsee = insee, mylimit=thislimit)
-#     obsList=list()
-#     for o in observations:
-#         if o.nom_vern:
-#             taxon = o.nom_vern + ' | ' + o.lb_nom
-#         else:
-#             taxon = o.lb_nom
-#         temp = {'id_synthese' : o.id_synthese,
-#                 'cd_ref': o.cd_ref,
-#                 'dateobs': str(o.dateobs),
-#                 'taxon': taxon,
-#                 'geojson_maille':ast.literal_eval(o.geojson_maille),
-#                 'id_maille' : o.id_maille
-#                 }
-#         obsList.append(temp)
-#     return obsList
 
 def lastObservationsCommuneMaille(connection, mylimit, insee):
     sql ="WITH last_obs AS (SELECT obs.cd_ref, obs.dateobs, t.lb_nom, t.nom_vern, st_transform(obs.the_geom_point, 2154) as l_geom \
