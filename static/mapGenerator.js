@@ -140,8 +140,7 @@ function styleMaille(feature) {
     return {
         fillColor: getColor(feature.properties.nb_observations),
         weight: 2,
-        opacity: 0,
-       // dashArray: '3',
+        color: 'black',
         fillOpacity: 0.8
     };
 }
@@ -282,11 +281,6 @@ function displayMailleLayerCommune(observations){
   }
 
 }
-
-
-
-
-
 
 
 // GeoJson Point
