@@ -96,19 +96,20 @@
 .stat-medias-hovereffet{
   display:none;
   position: absolute;
-  left: 40%;
+  left: 35%;
   top:25%;
 }
-.stat-medias-hovereffet{
-	-webkit-transition: .3s ease-in-out;
-	transition: .3s ease-in-out;
-	-ms-transition: .3s ease-in-out;
-	transition: .3s ease-in-out;
-}
+
 
 .img-custom-medias:hover .stat-medias-hovereffet{
 	display: block;
 	
+}
+
+.img-custom-medias:hover{
+	-ms-transform:scale(1.1);
+	-webkit-transform:scale(1.1);
+	transform:scale(1.1);
 }
 
 

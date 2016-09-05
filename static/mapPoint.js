@@ -20,7 +20,6 @@ $.ajax({
   }).done(function(observations) {
     $('#loadingGif').hide();
     $('#loadingObs').hide();
-    console.log(observations);
 
       //display nb observations
   $("#nbObs").html("Nombre d'observation(s): "+ observations.maille.length);
