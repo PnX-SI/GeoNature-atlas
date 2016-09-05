@@ -482,6 +482,7 @@ function displayMailleLayerLastObs(observations){
       observations.sort(compare);
       var geojsonMaille = generateGeoJsonMailleLastObs(observations);
       currentLayer = L.geoJson(geojsonMaille,{onEachFeature: onEachFeatureMailleLastObs, style:styleMailleLastObs });
+      console.log(currentLayer);
       currentLayer.addTo(map);
 
     }
