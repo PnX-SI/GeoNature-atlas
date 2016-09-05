@@ -116,19 +116,22 @@ def lastObservationsCommuneMaille(connection, mylimit, insee):
 
 #Use for API
 def getObservationsTaxonCommuneMaille(connection, insee, cd_ref):
-    sql ="SELECT \
-        obs.id_maille, \
-        obs.geojson_maille, \
-        o.dateobs, \
-        extract(YEAR FROM o.dateobs) as annee \
-        FROM atlas.vm_observations_mailles obs \
-        JOIN atlas.vm_communes c ON ST_intersects (c.the_geom, obs.geom) \
-        JOIN atlas.vm_observations o ON o.id_synthese = obs.id_synthese \
-        WHERE obs.cd_ref = :thiscdref  AND c.insee = :thisInsee \
-        ORDER BY obs.id_maille"
+    sql = "WITH obs_point AS (SELECT st_transform(obs.the_geom_point, 2154) as l_geom, \
+     extract(YEAR FROM obs.dateobs) as annee \
+    FROM atlas.vm_observations obs \
+    JOIN layers.l_communes c ON ST_Intersects(st_transform(obs.the_geom_point, 2154), c.the_geom) \
+    JOIN atlas.vm_taxons t ON obs.cd_ref = t.cd_ref \
+    WHERE c.insee = :thisInsee AND t.cd_ref = :thiscdref \
+    ) \
+    SELECT l.annee, m.geojson_maille, m.id_maille \
+    FROM atlas.t_mailles_territoire m \
+    JOIN obs_point l ON st_intersects(l.l_geom, m.geom) \
+    ORDER BY m.id_maille"
     observations = connection.execute(text(sql), thisInsee=insee, thiscdref = cd_ref)
     tabObs = list()
     for o in observations:
-        temp = {'id_maille': o.id_maille, 'nb_observations': 1, 'annee': o.annee, 'dateobs': str(o.dateobs), 'geojson_maille':ast.literal_eval(o.geojson_maille)}
+        temp = {'id_maille': o.id_maille, 'nb_observations': 1, 'annee': o.annee, 'geojson_maille':ast.literal_eval(o.geojson_maille)}
         tabObs.append(temp)
     return tabObs
+
+

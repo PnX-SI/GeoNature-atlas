@@ -96,7 +96,6 @@ function displayObsTaxonMaille(insee, cd_ref){
 
 
 $(".displayObs").click(function(){
-	console.log("click");
 
 	if(configuration.AFFICHAGE_MAILLE){
 		displayObsTaxonMaille($(this).attr('insee'), $(this).attr('cdRef'));

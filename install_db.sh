@@ -104,7 +104,7 @@ then
    
     # Creation de la table t_maille_territoire avec la taille de maille passée en parametre
     sudo -n -u postgres -s psql -d $db_name -c "CREATE TABLE atlas.t_mailles_territoire as
-                                                SELECT m.geom
+                                                SELECT m.geom, ST_AsGeoJSON(st_transform(t.geom, 4326))
                                                 FROM atlas.t_mailles_"$taillemaille" m, atlas.t_layer_territoire t
                                                 WHERE ST_Intersects(m.geom, t.geom);
                                                 CREATE INDEX index_gist_t_mailles_territoire
