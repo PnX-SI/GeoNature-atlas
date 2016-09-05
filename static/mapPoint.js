@@ -4,11 +4,16 @@ generateSliderOnMap();
 
 // Layer display on window ready
 
+/*GLOBAL VARIABLE*/
+
     // Current observation Layer: leaflet layer type
 var currentLayer; 
 
 // Current observation geoJson:  type object
 var myGeoJson;
+
+var compteurLegend = 0; // counter to not put the legend each time
+
 
 $.ajax({
   url: configuration.URL_APPLICATION+'/api/observationsMailleAndPoint/'+cd_ref, 
@@ -43,7 +48,7 @@ $.ajax({
 
 
               map.removeLayer(currentLayer);
-              if(map.getZoom() >= 11){
+              if(map.getZoom() >= configuration.ZOOM_LEVEL_POINT){
                 displayMarkerLayerFicheEspece(observations.point, yearMin, yearMax);
               }else{
                 displayMailleLayerFicheEspece(observations.maille, yearMin, yearMax)
@@ -63,9 +68,8 @@ $.ajax({
             var legendblock = $("div.info");
 
             map.on("zoomend", function(){
-            zoomLev = map.getZoom();
 
-            if (zoomLev >= configuration.ZOOM_LEVEL_POINT){
+            if (map.getZoom() >= configuration.ZOOM_LEVEL_POINT){
               map.removeLayer(currentLayer);
               legendblock.attr("hidden", "true");
 
@@ -75,7 +79,7 @@ $.ajax({
 
               displayMarkerLayerFicheEspece(observations.point, yearMin, yearMax);
             }
-            if (zoomLev <= configuration.ZOOM_LEVEL_POINT -1 ){
+            if (map.getZoom() <= configuration.ZOOM_LEVEL_POINT -1 ){
               // display legend
               map.removeLayer(currentLayer);
 
@@ -89,6 +93,7 @@ $.ajax({
 
             });
 
+    // if not display Maille
     }else {
             // Slider event
             mySlider.on("change",function(){
