@@ -6,10 +6,10 @@
 
         <!-- Jquery -->
         <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
-        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+		<script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
-        
-        <!-- Bootstrap -->
+		
+		<!-- Bootstrap -->
         <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}"></link>
         <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
 
@@ -19,7 +19,10 @@
         <script src="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.css') }}" />
 
-        <!-- CSS Application Atlas -->
+         <!-- LightBox -->
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/lightbox2/css/lightbox.min.css') }}" />
+
+        <!-- CSS Application -->
         <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='css/index.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='custom/custom.css') }}" />
@@ -50,7 +53,9 @@
 							</p>
 						</div>
 						<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-							<img src="{{url_for('static', filename='custom/images/accueil-intro.jpg') }}" width="100%" alt="{{configuration.NOM_APPLICATION}}">
+							<a href="{{url_for('static', filename='custom/images/accueil-intro.jpg') }}" data-lightbox="imageSet">
+								<img src="{{url_for('static', filename='custom/images/accueil-intro.jpg') }}" width="100%" alt="{{configuration.NOM_APPLICATION}}">
+							</a>
 						</div>
 					</div>
 				</div>
@@ -130,15 +135,15 @@
 						{% if loop.index < customStatMedias[i] | length %}
 								<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col-stat-medias">
 									<div class ="thumbnail-stat-medias">
-										{% if customStatMedias[i][j].path == None %}
-										<div class="slider-size" style="background-image: url({{url_for('static', filename='images/picto_' + customStatMedias[i][j].group2_inpn +'.png') }})">
-										{% else %}
-									    <div class="slider-size" style="background-image: url({{customStatMedias[i][j].path}})">
-									    {% endif %} 
-									    	<div class="stat-medias-hovereffet">
-									    		<img src="{{url_for('static', filename='images/eye.png') }}"> 
-									    	</div>
-									    </div>
+										<div class="zoom-wrapper">
+											<a href="{{customStatMedias[i][j].path}}" data-lightbox="imageSet" data-title="{{customStatMedias[i][j].title}}  &copy; {{customStatMedias[i][j].author}}">
+										    	<div class="img-custom-medias" style="background-image: url({{customStatMedias[i][j].path}})">
+											    	<div class="stat-medias-hovereffet">
+											    		<img src="{{url_for('static', filename='images/eye.png') }}"> 
+											    	</div>
+											    </div>
+											</a>
+										</div>
 									    <div class="thumbnail-caption-medias" >
 									        <p> {{customStatMedias[i][j].nom_vern}} <br> <i> {{customStatMedias[i][j].lb_nom}} </i>  </p>
 									        <p><a href="{{url_for('main.ficheEspece',cd_ref=customStatMedias[i][j].cd_ref)}}" class="btn btn-default" role="button">Fiche espèce</a></p>
@@ -219,6 +224,7 @@
 			
 		</div>
 
+		<script  src="{{url_for('static', filename='lib/lightbox2/js/lightbox.min.js') }}" ></script>
     	<script type="text/javascript">
 			var observations = {{observations|tojson}}
 			,communesSearch = {{communesSearch|tojson}}

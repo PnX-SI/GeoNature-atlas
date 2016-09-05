@@ -79,17 +79,38 @@
   padding-left: 5px;
 }
 
-.stat-medias-hovereffet{
-  overflow: hidden;
-  position: absolute;
-  visibility: hidden;
-  left: 40%;
-  top:15%;
+.zoom-wrapper{
+	overflow: hidden;
 }
 
-/*.stat-medias-hovereffet:hover{
-  visibility: visible;
-}*/
+.img-custom-medias{
+    height: 150px;
+    width: 100%;
+    background-position: center center;
+    background-size: cover;
+    -webkit-transition: .3s ease-in-out;
+	transition: .3s ease-in-out;
+	-ms-transition: .3s ease-in-out;
+}
+
+.stat-medias-hovereffet{
+  display:none;
+  position: absolute;
+  left: 40%;
+  top:25%;
+}
+.stat-medias-hovereffet{
+	-webkit-transition: .3s ease-in-out;
+	transition: .3s ease-in-out;
+	-ms-transition: .3s ease-in-out;
+	transition: .3s ease-in-out;
+}
+
+.img-custom-medias:hover .stat-medias-hovereffet{
+	display: block;
+	
+}
+
 
 /* END Stat Block */
 

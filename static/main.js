@@ -64,24 +64,6 @@ $.ajax({
 
 
 
-/*$('#searchTaxons').autocomplete({
-  source: function(request, response){
-    $.ajax({
-      url: configuration.URL_APPLICATION+'/api/searchTaxon/',
-      dataType: "json",
-      type: 'GET',
-      success: function(data){
-        console.log(data);
-        $('#searchTaxon').removeClass('ui-autocomplete-loading');
-        var results = $.ui.autocomplete.filter(data, request.term);
-        response(results.slice(0, 20))
-      }
-    });
-  }
-});*/
-
-
-
 
 // child list display
 
@@ -106,6 +88,3 @@ $(document).ready(function(){
   $('[data-toggle="tooltip"]').tooltip();
 })
 
-
-
-  
