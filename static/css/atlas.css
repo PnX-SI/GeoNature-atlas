@@ -6,7 +6,7 @@ body {
 .navbar {
 	margin-bottom: 0px;
 	border-radius: 0px;
-	border-bottom-color: #333333;
+	border-bottom-color: white;
 }
 
 .ui-autocomplete {
@@ -14,7 +14,7 @@ body {
 }
 
 #page {
-  padding-left: 40px;
+  padding-left: 60px;
   padding-right: 0px;
   margin-top: 20px;
 }
@@ -23,7 +23,7 @@ body {
 
 #sideBar{
 	position: fixed;
-	width: 40px;
+	width: 60px;
 	background-color: #333333;
 	height: 100%;
 }
@@ -31,18 +31,26 @@ body {
 #sidebar_menu {
 	list-style: none;
 	padding: 0px;
-	padding-left: 25%;
 	width: 100%;
     margin: 0 auto;
-    margin-top: 25px;
 }
 
 #sidebar_menu li{
-	margin-bottom: 30px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	color: white;
+	cursor: pointer;
+	text-align: center;
+	border-bottom: 1px solid white;
+}
+
+#sidebar_menu li:hover{
+	background-color: #ccccb3;
 }
 
 #sidebar_menu a {
 	color: white;
+	text-decoration: none;
 }
 
 #sidebar-wrapper span {
