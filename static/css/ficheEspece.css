@@ -89,7 +89,7 @@ p.imgDescription.main {
 	position: relative;
 	left:50%;
 	top:200px;
-	z-index: 1000000;
+	z-index: 10;
 }
 
 #mapStat li {

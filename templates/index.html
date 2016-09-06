@@ -74,7 +74,7 @@
 								<span class="glyphicon glyphicon-search"> </span>
 								<h1> {{stat.nbTotalObs}} </h1>
 								<h4> observations </h2>
-								<p><a href="#DernieresObservations" class="btn btn-default" role="button">Voir les {{configuration.NB_LAST_OBS}} dernières observations</a></p>
+								<p><a id="localScroll" href="#DernieresObservations" class="btn btn-default" role="button">Voir les {{configuration.NB_LAST_OBS}} dernières observations</a></p>
 							</div>
 						</div>
 						<div class = "col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
@@ -112,7 +112,7 @@
 								<span class="glyphicon glyphicon-camera"> </span>
 								<h1> {{stat.photo}} </h1>
 								<h4> photos </h2>
-								<p><a class="btn btn-default" role="button">Galerie photos</a></p>
+								<p><a href = "{{url_for('main.developpement') }}" class="btn btn-default" role="button">Galerie photos</a></p>
 							</div>
 						</div>
 						
@@ -162,10 +162,10 @@
 
 			
 			<!-- Dernières espèces observées -->
-			<div class="col-sm-12"> 
+			<div class="col-sm-12" id="DernieresObservations"> 
 					  <!-- CARTO des 100 dernières observations -->
-					  <div class="panel panel-default">
-					  	<div class="panel-heading" id="DernieresObservations"><strong> Les {{configuration.NB_LAST_OBS}} dernières observations </strong></div>
+					  <div class="panel panel-default" >
+					  	<div class="panel-heading" ><strong> Les {{configuration.NB_LAST_OBS}} dernières observations </strong></div>
 					  	<div class="row" id="mapRow">
 							 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
 								<div id="map"> </div>

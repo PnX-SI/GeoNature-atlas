@@ -87,3 +87,14 @@ $(document).ready(function(){
   $('[data-toggle="tooltip"]').tooltip();
 })
 
+
+// animation index.html
+
+$(document).ready(function() {
+   $('#localScroll').on('click', function(){
+    var dest = $('#DernieresObservations');
+    var speed = 750;
+    $('html, body').animate({scrollTop: $(dest).offset().top}, speed);
+    return false;
+   })
+});

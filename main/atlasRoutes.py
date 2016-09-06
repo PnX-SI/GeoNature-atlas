@@ -113,4 +113,12 @@ def ficheRangTaxonomie(cd_ref):
     return render_template('ficheRangTaxonomique.html', listTaxons = listTaxons, referenciel = referenciel, communesSearch = communesSearch,\
         taxonomyHierarchy=taxonomyHierarchy, observers=observers, configuration=configuration)
 
+@main.route('/developpement', methods=['GET', 'POST'])
+def developpement():
+    session = utils.loadSession()
 
+    communesSearch = vmCommunesRepository.getAllCommunes(session)
+    configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'URL_APPLICATION': config.URL_APPLICATION}
+
+    session.close()
+    return render_template('developpement.html', communesSearch = communesSearch, configuration=configuration)

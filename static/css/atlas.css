@@ -113,3 +113,16 @@ body {
     cursor: grab;
 }
 
+
+
+/*LightBox*/
+.lb-nav{
+	z-index: 100;
+}
+
+/*Page 'Developpement'*/
+
+#developpement{
+	font-family: 'Open Sans';
+	text-align: center;
+}
