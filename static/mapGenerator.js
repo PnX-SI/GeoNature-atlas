@@ -324,8 +324,10 @@ function displayMarkerLayerFicheEspece(observationsPoint, yearMin, yearMax){
       currentLayer = L.markerClusterGroup();
       currentLayer.addLayer(newLayer);
       map.addLayer(currentLayer)
+
   } else {
     currentLayer.addTo(map);
+
   }
 }
 

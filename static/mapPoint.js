@@ -66,20 +66,21 @@ $.ajax({
 
             // ZoomEvent: change maille to point
             var legendblock = $("div.info");
-
+            var activeMode = "Maille";
             map.on("zoomend", function(){
-
-            if (map.getZoom() >= configuration.ZOOM_LEVEL_POINT){
+            if (activeMode != "Point" && map.getZoom() >= configuration.ZOOM_LEVEL_POINT ){
               map.removeLayer(currentLayer);
               legendblock.attr("hidden", "true");
+
 
                 years = mySlider.getValue();
                 yearMin = years[0];
                 yearMax = years[1];
 
               displayMarkerLayerFicheEspece(observations.point, yearMin, yearMax);
+              activeMode = "Point";
             }
-            if (map.getZoom() <= configuration.ZOOM_LEVEL_POINT -1 ){
+            if (activeMode != "Maille" && map.getZoom() <= configuration.ZOOM_LEVEL_POINT -1 ){
               // display legend
               map.removeLayer(currentLayer);
 
@@ -89,6 +90,7 @@ $.ajax({
                 yearMin = years[0];
                 yearMax = years[1];
               displayMailleLayerFicheEspece(observations.maille, yearMin, yearMax);
+              activeMode = "Maille"
             }
 
             });
@@ -115,17 +117,6 @@ $.ajax({
     }
 
 })
-
-
- 
-
- 
-
-
-
-
-
-
 
 
 // Legende
