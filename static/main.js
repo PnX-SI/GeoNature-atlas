@@ -9,7 +9,6 @@ $(document).ready(function() {
 
     autocompleteSearch = function(list, inputID, urlDestination, nbProposal){
 
-
     $(inputID).autocomplete({
         source: function (request, response) {
         var results = $.ui.autocomplete.filter(list, request.term);
