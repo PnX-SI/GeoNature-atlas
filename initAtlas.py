@@ -5,8 +5,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 
 APP_DIR = os.path.abspath(os.path.dirname(__file__))
-TEMPLATE_DIR = APP_DIR+'/templates'
-print "appdir"+APP_DIR
 
 from main.configuration import config
 from sqlalchemy import create_engine, MetaData, Table
