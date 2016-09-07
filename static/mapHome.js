@@ -17,8 +17,8 @@ $(function(){
 
     // interaction list - map 
       $('.tabEspece').click(function(){
-         $(this).siblings().removeClass('active');
-         $(this).addClass('active');
+         $(this).siblings().removeClass('current');
+         $(this).addClass('current');
         var id_synthese = $(this).attr('idSynthese');
         p = (currentLayer._layers);
         var selectLayer;
@@ -44,8 +44,8 @@ $(function(){
 
       // interaction list - map 
       $('.tabEspece').click(function(){
-         $(this).siblings().removeClass('active');
-         $(this).addClass('active');
+         $(this).siblings().removeClass('current');
+         $(this).addClass('current');
         var id_synthese = $(this).attr('idSynthese');
          console.log(id_synthese);
 

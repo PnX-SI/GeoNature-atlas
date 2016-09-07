@@ -103,7 +103,6 @@
 
 .img-custom-medias:hover .stat-medias-hovereffet{
 	display: block;
-	
 }
 
 .img-custom-medias:hover{
@@ -151,15 +150,14 @@ table#tableEspece {
 .tabEspece:hover{
 	background-color: #cccccc;
 }
-.tabEspece.active:hover{
-	background-color: #cccccc;
+
+.tabEspece.current{
+	background-color: #e6e6e6;
+	font-weight: bold;
 }
 
 .singleTaxon{
  	cursor: pointer
-}
-.tabEspece.active{
-font-weight: bold;
 }
 
 td.singleTaxon.name {
