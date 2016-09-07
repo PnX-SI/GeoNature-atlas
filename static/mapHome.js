@@ -16,9 +16,10 @@ $(function(){
     displayMailleLayerLastObs(observations)
 
     // interaction list - map 
-      $('.singleTaxon').click(function(){
+      $('.tabEspece').click(function(){
+         $(this).siblings().removeClass('active');
+         $(this).addClass('active');
         var id_synthese = $(this).attr('idSynthese');
-
         p = (currentLayer._layers);
         var selectLayer;
         for (var key in p) {
@@ -46,6 +47,8 @@ $(function(){
          $(this).siblings().removeClass('active');
          $(this).addClass('active');
         var id_synthese = $(this).attr('idSynthese');
+         console.log(id_synthese);
+
         var p = (currentLayer._layers);
         var selectLayer;
         for (var key in p) {
