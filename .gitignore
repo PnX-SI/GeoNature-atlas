@@ -17,4 +17,5 @@ static/custom/custom.css
 static/custom/images/*
 static/custom/templates/presentation.html
 static/custom/templates/footer.html
+static/custom/templates/introduction.html
 
