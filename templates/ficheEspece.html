@@ -50,10 +50,10 @@
     </head>
 
     <body>
-    {% include 'navbar.html' %}
+    {% include 'templates/navbar.html' %}
 
 	<div id="sideBar">
-        {% include 'sideBar.html' %}
+        {% include 'templates/sideBar.html' %}
     </div>
 	
     <div class="container-fluid" id="page">
@@ -398,11 +398,11 @@
                 
             </div>
 
-
+            
         </div>
      
 
-      
+      {% include 'static/custom/templates/footer.html' %}
     </div>
 
     <script  src="{{url_for('static', filename='lib/lightbox2/js/lightbox.min.js') }}" ></script>

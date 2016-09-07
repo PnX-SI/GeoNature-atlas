@@ -20,10 +20,10 @@
 
    </head>
    <body>
-    {% include 'navbar.html' %}
+    {% include 'templates/navbar.html' %}
 
 		<div id="sideBar">
-			{% include 'sideBar.html' %}
+			{% include 'templates/sideBar.html' %}
 		</div>
 		<div class="container-fluid" id="page">
             <div id="developpement">
@@ -31,8 +31,9 @@
                 <h3> <a href = "{{url_for('main.index') }}"> Retourner sur l'atlas  </a> </h3>
             </div>
             
-       
+            
          </div>
+        
       
         <!-- JQUERY UI -->
         <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>

@@ -33,7 +33,7 @@ def index():
     connection.close()
     session.close()
 
-    return render_template('index.html', observations=observations, communesSearch=communesSearch, \
+    return render_template('templates/index.html', observations=observations, communesSearch=communesSearch, \
      mostViewTaxon=mostViewTaxon, stat=stat, customStat = customStat, customStatMedias=customStatMedias, configuration = configuration)
 
 
@@ -63,7 +63,7 @@ def ficheEspece(cd_ref):
     connection.close()
     session.close()
 
-    return render_template('ficheEspece.html', taxon=taxon, listeTaxonsSearch=[], observations=[],\
+    return render_template('templates/ficheEspece.html', taxon=taxon, listeTaxonsSearch=[], observations=[],\
      cd_ref=cd_ref, altitudes=altitudes, months=months, synonyme=synonyme, communes=communes, communesSearch=communesSearch, taxonomyHierarchy = taxonomyHierarchy,\
       firstPhoto= firstPhoto, photoCarousel=photoCarousel, videoAudio=videoAudio, articles=articles, taxonDescritpion=taxonDescritpion, observers=observers, \
       configuration=configuration)
@@ -90,7 +90,7 @@ def ficheCommune(insee):
     session.close()
     connection.close()
 
-    return render_template('ficheCommune.html', listTaxons = listTaxons, referenciel = commune, communesSearch = communesSearch, observations = observations, \
+    return render_template('templates/ficheCommune.html', listTaxons = listTaxons, referenciel = commune, communesSearch = communesSearch, observations = observations, \
     observers=observers, configuration = configuration, myType=myType)
 
 
@@ -110,7 +110,7 @@ def ficheRangTaxonomie(cd_ref):
     session.close()
 
     configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY, 'URL_APPLICATION': config.URL_APPLICATION}
-    return render_template('ficheRangTaxonomique.html', listTaxons = listTaxons, referenciel = referenciel, communesSearch = communesSearch,\
+    return render_template('templates/ficheRangTaxonomique.html', listTaxons = listTaxons, referenciel = referenciel, communesSearch = communesSearch,\
         taxonomyHierarchy=taxonomyHierarchy, observers=observers, configuration=configuration)
 
 @main.route('/developpement', methods=['GET', 'POST'])
@@ -121,4 +121,4 @@ def developpement():
     configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'URL_APPLICATION': config.URL_APPLICATION}
 
     session.close()
-    return render_template('developpement.html', communesSearch = communesSearch, configuration=configuration)
+    return render_template('templates/developpement.html', communesSearch = communesSearch, configuration=configuration)

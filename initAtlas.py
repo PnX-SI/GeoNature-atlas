@@ -6,6 +6,7 @@ from flask_bootstrap import Bootstrap
 
 APP_DIR = os.path.abspath(os.path.dirname(__file__))
 TEMPLATE_DIR = APP_DIR+'/templates'
+print "appdir"+APP_DIR
 
 from main.configuration import config
 from sqlalchemy import create_engine, MetaData, Table
@@ -18,7 +19,7 @@ compress = Compress()
 
 #renvoie une instance de app l appli Flask
 def create_app():
-    app = Flask(__name__, template_folder=TEMPLATE_DIR)
+    app = Flask(__name__, template_folder=APP_DIR)
     app.debug = True
 
 

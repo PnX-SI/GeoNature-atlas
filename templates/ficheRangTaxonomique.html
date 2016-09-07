@@ -29,10 +29,10 @@
    </head>
 
    <body>
-    {% include 'navbar.html' %}
+    {% include 'templates/navbar.html' %}
 
 		<div id="sideBar">
-			{% include 'sideBar.html' %}
+			{% include 'templates/sideBar.html' %}
 		</div>
 		<div class="container-fluid" id="page">
 
@@ -72,11 +72,11 @@
             <div class="row rowMargin" id="clear">
                 <div class="panel panel-default">
 
-                    {% include 'tabTaxons.html' %}
+                    {% include 'templates/tabTaxons.html' %}
                 </div>
             </div>
         </div>
-
+        {% include 'static/custom/templates/footer.html' %}
     </div>
         <!-- JQUERY UI -->
         <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
