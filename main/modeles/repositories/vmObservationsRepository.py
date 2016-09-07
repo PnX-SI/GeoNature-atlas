@@ -62,10 +62,10 @@ def firstObservationChild(connection, cd_ref):
 def lastObservations(connection, mylimit, idPhoto):
     sql = "SELECT obs.*, \
     tax.lb_nom, tax.nom_vern, tax.group2_inpn, \
-    medias.url \
+    medias.url, medias.chemin \
     FROM atlas.vm_observations obs \
     JOIN atlas.vm_taxons tax ON tax.cd_ref = obs.cd_ref \
-    LEFT JOIN atlas.vm_medias medias ON medias.cd_ref = obs.cd_ref AND medias.id_media = :thisidphoto\
+    LEFT JOIN atlas.vm_medias medias ON medias.cd_ref = obs.cd_ref AND medias.id_type = :thisidphoto\
     ORDER BY obs.dateobs DESC \
     LIMIT :thislimit "
 
@@ -85,7 +85,7 @@ def lastObservations(connection, mylimit, idPhoto):
                 'taxon': taxon,
                 'geojson_point':ast.literal_eval(o.geojson_point),
                 'group2_inpn': utils.deleteAccent(o.group2_inpn),
-                'urlImage' : o.url
+                'pathImg' : utils.findPath(o)
                 }
         obsList.append(temp)
     return obsList

@@ -176,10 +176,10 @@
 									<tbody>
 										{% for obs in observations %}
 										<tr class='tabEspece' idSynthese = "{{obs.id_synthese}}">
-											{% if obs.urlImage == None %}
+											{% if obs.pathImg == None %}
 											<td class="singleTaxon img"> <img class="singleTaxon" width="80%" src="{{url_for('static', filename='images/picto_' + obs.group2_inpn +'.png') }}"> </td>
 											{% else %}
-											<td class="singleTaxon img"> <img width="15px" height="15px" src="{{configuration.URL_PHOTO}}{{obs.url}}"> </td>
+											<td class="singleTaxon img"> <div class ="pictoImg" style="background-image:url({{obs.pathImg}});"></div> </td>
 											{% endif %}
 											<td class="singleTaxon name" cdref="{{obs.cd_ref}}" > {{obs.taxon}}</td>
 											<td class="singleTaxon date"> {{obs.dateobs}} </td>

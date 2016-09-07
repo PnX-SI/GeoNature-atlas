@@ -134,6 +134,13 @@
   padding-left: 0px;
 }
 
+.pictoImg{
+	width: 100%;
+    background-position: center center;
+    background-size: cover;
+	height: 60px;
+}
+
 table#tableEspece {
   display: block;
   max-height: 600px;
@@ -141,6 +148,9 @@ table#tableEspece {
 }
 
 .tabEspece:hover{
+	background-color: #cccccc;
+}
+.tabEspece.active:hover{
 	background-color: #cccccc;
 }
 
