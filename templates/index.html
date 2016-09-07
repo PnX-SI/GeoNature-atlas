@@ -136,7 +136,7 @@
 								<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col-stat-medias">
 									<div class ="thumbnail-stat-medias">
 										<div class="zoom-wrapper">
-											<a href="{{customStatMedias[i][j].path}}" data-lightbox="imageSet" data-title="{{customStatMedias[i][j].title}}  &copy; {{customStatMedias[i][j].author}}">
+											<a href="{{url_for('main.ficheEspece',cd_ref=customStatMedias[i][j].cd_ref)}}" >
 										    	<div class="img-custom-medias" style="background-image: url({{customStatMedias[i][j].path}})">
 											    	<div class="stat-medias-hovereffet">
 											    		<img src="{{url_for('static', filename='images/eye.png') }}"> 
