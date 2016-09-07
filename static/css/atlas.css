@@ -134,3 +134,21 @@ body {
 	font-family: 'Open Sans';
 	text-align: center;
 }
+
+/*Footer*/
+
+.footer-list{
+	float: left;
+	padding: 0px;
+	margin: 0px;
+}
+
+.footer-li{
+	float: left;
+	padding-right: 20px;
+	list-style: none;
+}
+
+#clear{
+	clear: both;
+}
