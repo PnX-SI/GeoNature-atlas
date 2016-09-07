@@ -171,18 +171,18 @@
 								<div id="map"> </div>
 							 </div>
 							 <div id="listMap" class = "col-lg-4 col-md-4 col-sm-12 col-xs-12"> 
-								<table id='tableEspece' class="table table-striped">
+								<table id='tableEspece' class="table">
 									
 									<tbody>
 										{% for obs in observations %}
-										<tr class='tabEspece'>
+										<tr class='tabEspece' idSynthese = "{{obs.id_synthese}}">
 											{% if obs.urlImage == None %}
 											<td class="singleTaxon img"> <img class="singleTaxon" width="80%" src="{{url_for('static', filename='images/picto_' + obs.group2_inpn +'.png') }}"> </td>
 											{% else %}
 											<td class="singleTaxon img"> <img width="15px" height="15px" src="{{configuration.URL_PHOTO}}{{obs.url}}"> </td>
 											{% endif %}
-											<td class="singleTaxon name" idSynthese = "{{obs.id_synthese}}" cdref="{{obs.cd_ref}}" > {{obs.taxon}}</td>
-											<td class="singleTaxon date" idSynthese = "{{obs.id_synthese}}"> {{obs.dateobs}} </td>
+											<td class="singleTaxon name" cdref="{{obs.cd_ref}}" > {{obs.taxon}}</td>
+											<td class="singleTaxon date"> {{obs.dateobs}} </td>
 											<td class="singleTaxon detail"> <a href = "{{url_for('main.ficheEspece',cd_ref=obs.cd_ref)}}"> <img height="20" width="20" src ="{{url_for('static', filename='images/logo_files.png') }}" alt="Lien vers la fiche espèce" title="Lien vers la fiche espèce"> </a> </td> 
 											<td class="hiddenTd" hidden ="true"> {{obs.cd_ref}} </td>
 										</tr>

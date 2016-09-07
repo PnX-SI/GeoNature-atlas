@@ -42,7 +42,9 @@ $(function(){
     displayMarkerLayerPointLastObs(observations);
 
       // interaction list - map 
-      $('.singleTaxon').click(function(){
+      $('.tabEspece').click(function(){
+         $(this).siblings().removeClass('active');
+         $(this).addClass('active');
         var id_synthese = $(this).attr('idSynthese');
         var p = (currentLayer._layers);
         var selectLayer;

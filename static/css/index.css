@@ -140,10 +140,15 @@ table#tableEspece {
   overflow-y: scroll;
 }
 
-.
+.tabEspece:hover{
+	background-color: #cccccc;
+}
 
 .singleTaxon{
  	cursor: pointer
+}
+.tabEspece.active{
+font-weight: bold;
 }
 
 td.singleTaxon.name {
