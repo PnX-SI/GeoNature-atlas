@@ -209,7 +209,7 @@
 						        {% if tax.path == None %}
 						        <img class="default-logo " src="{{url_for('static', filename='images/picto_' + tax.group2_inpn +'.png') }}" alt="">
 						        {% else %}
-						        	<img class="img-responsive-logo" src="{{tax.path}}" alt="tax.taxonName">
+						        <div class="img-responsive-logo" style="background-image:url({{tax.path}})"> </div>
 						        {% endif %}
 						        <div class="overlay">
 						           <h2>{{tax.taxonName}}</h2>	

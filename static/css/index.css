@@ -192,6 +192,10 @@ td.singleTaxon.detail {
 
 .img-responsive-logo{
   width: 100%;
+  height: 250px;
+  background-position: center center;
+  background-size: cover;
+
 }
 
 .thumbnail-row{
@@ -230,7 +234,7 @@ td.singleTaxon.detail {
 	transition:all .4s ease-in-out
 }
 
-.hovereffect img {
+.hovereffect .img-responsive-logo {
 	height: 250px;
 	display:block;
 	position:relative;
@@ -271,7 +275,7 @@ td.singleTaxon.detail {
 	box-shadow:0 0 5px #fff;
 }
 
-.hovereffect:hover img {
+.hovereffect:hover .img-responsive-logo {
 	-ms-transform:scale(1.2);
 	-webkit-transform:scale(1.2);
 	transform:scale(1.2);
