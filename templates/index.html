@@ -137,12 +137,12 @@
 									<div class ="thumbnail-stat-medias">
 										<div class="zoom-wrapper">
 											<a href="{{url_for('main.ficheEspece',cd_ref=customStatMedias[i][j].cd_ref)}}" >
-										    	<div class="img-custom-medias" style="background-image: url({{customStatMedias[i][j].path}})">
-											    	<div class="stat-medias-hovereffet">
-											    		<img src="{{url_for('static', filename='images/eye.png') }}"> 
-											    		<h2 class="overlay-obs"> {{customStatMedias[i][j].nb_obs}} observations </h2>
-											    	</div>
-											    </div>
+										    	<div class="img-custom-medias" style="background-image: url({{customStatMedias[i][j].path}})"> </div>
+										    	<div class="stat-medias-hovereffet">
+										    		<img src="{{url_for('static', filename='images/eye.png') }}"> 
+										    		<h2 class="overlay-obs"> {{customStatMedias[i][j].nb_obs}} observations </h2>
+										    	</div>
+											    
 											</a>
 										</div>
 									    <div class="thumbnail-caption-medias" >
