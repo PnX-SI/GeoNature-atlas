@@ -17,6 +17,7 @@ $(document).ready(function() {
                 return false;
             },
            select : function (event, ui){
+             $(inputID).val(ui.item.label);
               var url = ui.item.value;
               if (urlDestination == "espece"){
                   location.href = configuration.URL_APPLICATION+"/espece/"+url;

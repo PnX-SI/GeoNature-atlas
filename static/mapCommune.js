@@ -72,7 +72,7 @@ function displayObsTaxon(insee, cd_ref){
 		if(configuration.AFFICHAGE_MAILLE){
 			
 		}else {
-			displayMarkerLayerPointLastObs(observations);
+			displayMarkerLayerPointCommune(observations);
 		}
 
 
@@ -94,17 +94,23 @@ function displayObsTaxonMaille(insee, cd_ref){
 	});
 }
 
+$(document).ready(function(){
+	if(configuration.MYTYPE == 1){
 
-$(".displayObs").click(function(){
+		$(".taxonRow").click(function(){
+			     $(this).siblings().removeClass('current');
+		         $(this).addClass('current');
 
-	if(configuration.AFFICHAGE_MAILLE){
-		displayObsTaxonMaille($(this).attr('insee'), $(this).attr('cdRef'));
-	}else{
-		displayObsTaxon($(this).attr('insee'), $(this).attr('cdRef'));
+			if(configuration.AFFICHAGE_MAILLE){
+				displayObsTaxonMaille($(this).attr('insee'), $(this).attr('cdRef'));
+			}else{
+				displayObsTaxon($(this).attr('insee'), $(this).attr('cdRef'));
+			}
+			var name = ($(this).find('.name').html());
+			$('#titleMap').fadeOut(500, function(){
+				$(this).html("Observations du taxon:"+ name).fadeIn(500);
+			})
+		});
 	}
-	var name = ($(this).parent().find('.name').html());
-	$('#titleMap').fadeOut(500, function(){
-		$(this).html("Carte des observations du taxon:"+ name).fadeIn(500);
-	})
-})
+});
 

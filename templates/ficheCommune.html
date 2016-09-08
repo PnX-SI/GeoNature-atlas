@@ -14,6 +14,8 @@
         <script src="{{url_for('static', filename='lib/leaflet/leaflet.js') }}"></script>
         <script src="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.css') }}" />
+        <script src="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.css') }}" />
 
         <!-- DataTable-->
         <script type=text/javascript src="{{url_for('static', filename='lib/dataTable/datatables.min.js') }}"></script>
@@ -85,7 +87,6 @@
         <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
 
         <script type="text/javascript">
-        console.log({{communesSearch|tojson}});
         var communesSearch = {{communesSearch|tojson}},
             configuration = {{configuration|tojson}},
             observations = {{observations|tojson}},

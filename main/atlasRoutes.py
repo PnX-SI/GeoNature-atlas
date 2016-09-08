@@ -84,14 +84,14 @@ def ficheCommune(insee):
 
     observers = vmObservationsRepository.getObserversCommunes(connection, insee)
     configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'NB_LAST_OBS' : config.NB_LAST_OBS, 'AFFICHAGE_MAILLE': config.AFFICHAGE_MAILLE, 'MAP': config.MAP, \
-    'URL_APPLICATION': config.URL_APPLICATION}
-    myType = 1
+    'URL_APPLICATION': config.URL_APPLICATION, 'MYTYPE' : 1}
+    
 
     session.close()
     connection.close()
 
     return render_template('templates/ficheCommune.html', listTaxons = listTaxons, referenciel = commune, communesSearch = communesSearch, observations = observations, \
-    observers=observers, configuration = configuration, myType=myType)
+    observers=observers, configuration = configuration)
 
 
 @main.route('/liste/<cd_ref>', methods=['GET', 'POST'])

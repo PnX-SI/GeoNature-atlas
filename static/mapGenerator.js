@@ -342,16 +342,16 @@ function onEachFeaturePointLastObs(feature, layer){
     popupContent = "<b>Espèce: </b>"+ feature.properties.taxon_name+
                 "</br><b>Date: </b>"+ feature.properties.dateobs+"</br><b>Altitude: </b>"+ feature.properties.altitude_retenue;
 
-     // verifie si le champs effectif est rempli
-      if(configuration.HOMEMAP){
-                layer.bindPopup(popupContent + "</br> <a href='./espece/"+feature.properties.cd_ref+"'> Fiche espèce </a>")
-      }
-      else {
-          layer.bindPopup(popupContent + "</br> <a href='../espece/"+feature.properties.cd_ref+"'> Fiche espèce </a>")
-      }
+                layer.bindPopup(popupContent + "</br> <a href='"+ configuration.URL_APPLICATION+"/espece/"+feature.properties.cd_ref+"'> Fiche espèce </a>")
 }
 
+function onEachFeaturePointCommune(feature, layer){
+    popupContent = "<b>Espèce: </b>"+ feature.properties.taxon_name+
+                "</br><b>Date: </b>"+ feature.properties.dateobs+"</br><b>Altitude: </b>"+ feature.properties.altitude_retenue+
+                "</br><b> Observateurs(s): </b>"+ feature.properties.observateurs
 
+                layer.bindPopup(popupContent + "</br> <a href='"+ configuration.URL_APPLICATION+"/espece/"+feature.properties.cd_ref+"'> Fiche espèce </a>")
+}
 
 
 function generateGeojsonPointLastObs(observationsPoint){
@@ -365,6 +365,7 @@ function generateGeojsonPointLastObs(observationsPoint){
                             'dateobs': obs.dateobs,
                             'altitude_retenue' : obs.altitude_retenue,
                             'effectif_total' : obs.effectif_total,
+                            'observateurs': obs.observateurs
                             }
               myGeoJson.features.push({
                 'type' : 'Feature',
@@ -377,15 +378,33 @@ function generateGeojsonPointLastObs(observationsPoint){
 
 
 function displayMarkerLayerPointLastObs(observationsPoint){
-  myGeojson = generateGeojsonPointLastObs(observationsPoint)
+  myGeojson = generateGeojsonPointLastObs(observationsPoint);
   currentLayer = L.geoJson(myGeojson, {
           onEachFeature : onEachFeaturePointLastObs,
           pointToLayer: function (feature, latlng) {
                            return L.circleMarker(latlng);
                            }
   });
-    currentLayer.addTo(map);
+      newLayer = currentLayer;
+      currentLayer = L.markerClusterGroup();
+      currentLayer.addLayer(newLayer);
+      map.addLayer(currentLayer)
   }
+
+
+function displayMarkerLayerPointCommune(observationsPoint){
+  myGeojson = generateGeojsonPointLastObs(observationsPoint);
+  currentLayer = L.geoJson(myGeojson, {
+          onEachFeature : onEachFeaturePointCommune,
+          pointToLayer: function (feature, latlng) {
+                           return L.circleMarker(latlng);
+                           }
+  });
+      newLayer = currentLayer;
+      currentLayer = L.markerClusterGroup();
+      currentLayer.addLayer(newLayer);
+      map.addLayer(currentLayer)
+}
 
 //  ** MAILLE ***
 
