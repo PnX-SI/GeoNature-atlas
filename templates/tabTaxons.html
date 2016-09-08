@@ -1,10 +1,10 @@
     <table id="myTable" class="list-taxon-table" style="display:none;">
         <thead>
             <tr>
-                <th> <span class="glyphicon glyphicon-menu-down"> </th>
-                <th> Nom Scientifique <span class="glyphicon glyphicon-menu-down" </span></th>
-                <th> <span class="glyphicon glyphicon-menu-down"> </th>
-                <th> <span class="glyphicon glyphicon-menu-down"> </th>
+                <th> Groupe <span class="glyphicon glyphicon-menu-down"> </span> </th>
+                <th> Nom Scientifique <span class="glyphicon glyphicon-menu-down"> </span></th>
+                <th> Protection <span class="glyphicon glyphicon-menu-down"> </th>
+                <th> Patrimonial<span class="glyphicon glyphicon-menu-down"> </th>
                 <th> Nom Vernaculaire <span class="glyphicon glyphicon-menu-down" </span></th>
                 <th id="sorted"> Nombre d'observation(s) <span class="glyphicon glyphicon-menu-down" </span> </th>
                 <th> Dernière observation <span class="glyphicon glyphicon-menu-down"> </th>
@@ -17,7 +17,7 @@
         </thead>
         <tbody>
                 {% for taxon in listTaxons.taxons %}
-            <tr>  
+            <tr class="taxonRow" insee ="{{referenciel.insee}}" cdRef= "{{taxon.cd_ref}}">  
                 <td> <img src= "{{url_for('static', filename='images/picto_'+ taxon.group2_inpn|urlencode+'.png') }}"  data-placement="right" data-toggle="tooltip" title="{{taxon.group2_inpn}}"> <span class="hiddenSpan"> {{taxon.group2_inpn}} </span> </td>
                 <td class="name"> {{taxon.nom_complet_html|safe}} </td>
                 <td> {% if taxon.protection_stricte == 'oui' %} <a href = "https://inpn.mnhn.fr/espece/cd_nom/{{taxon.cd_ref}}/tab/statut" target="_blank"> <img src = "{{url_for('static', filename='images/logo_protection.png') }}" style = "width : 40px; height: 40px" data-placement="left" data-toggle="tooltip" title="Ce taxon béneficie d'un statut de protection"> </a> {% endif %} </td></td>
@@ -26,7 +26,7 @@
                 <td> {{taxon.nb_obs}} </td>
                 <td> {{taxon.last_obs}} </td>
                 {% if myType == 1 %}
-                <td class="displayObs"  insee ="{{referenciel.insee}}" cdRef= "{{taxon.cd_ref}}"> <img class="eye" src ="{{url_for('static', filename='images/eye_black.png') }}"> </td>
+                <td class="displayObs" > <img class="eye" src ="{{url_for('static', filename='images/eye_black.png') }}"> </td>
                 {% endif %}
                 <td> <a href = "{{url_for('main.ficheEspece',cd_ref=taxon.cd_ref)}}"> <img src ="{{url_for('static', filename='images/logo_files.png') }}" alt="Lien vers la fiche espèce" title="Lien vers la fiche espèce"> </a> </td> 
              </tr>

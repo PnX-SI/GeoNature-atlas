@@ -118,7 +118,7 @@ def lastObservationsCommune(connection, mylimit, insee):
     return obsList
 
 def getObservationTaxonCommune(connection, insee, cd_ref):
-    sql = "SELECT o.id_synthese, o.cd_ref, o.dateobs, o.altitude_retenue, o.geojson_point, o.effectif_total, t.lb_nom, t.nom_vern\
+    sql = "SELECT o.id_synthese, o.cd_ref, o.dateobs, o.altitude_retenue, o.geojson_point, o.effectif_total, t.lb_nom, t.nom_vern, o.observateurs \
     FROM atlas.vm_observations o\
     JOIN atlas.vm_taxons t ON t.cd_ref = o.cd_ref \
     WHERE o.cd_ref = :thiscdref AND o.insee = :thisInsee"
@@ -130,6 +130,7 @@ def getObservationTaxonCommune(connection, insee, cd_ref):
         else:
             taxon = o.lb_nom
         temp = {'id_synthese' : o.id_synthese,
+                'observateurs': o.observateurs,
                 'cd_ref': o.cd_ref,
                 'dateobs': str(o.dateobs),
                 'altitude_retenue' : o.altitude_retenue,

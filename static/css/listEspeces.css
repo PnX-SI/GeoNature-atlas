@@ -103,3 +103,14 @@ ul#statHierarchy {
 .hiddenSpan{
 	visibility: hidden;
 }
+
+
+tbody tr:hover{
+	background-color: #cccccc !important;
+	cursor: pointer;
+}
+
+tbody tr.current{
+	background-color: #e6e6e6 !important;
+	font-weight: bold;
+}
