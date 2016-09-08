@@ -58,6 +58,10 @@ STRUCTURE = unicode(STRUCTURE, 'utf-8') # Fonction permettant d'encoder ce nom e
 NOM_APPLICATION = "Biodiversité du Parc national des Écrins"
 NOM_APPLICATION = unicode(NOM_APPLICATION, 'utf-8') # Fonction permettant d'encoder ce nom en utf-8, à ne pas modifier
 
+# Bloc d'introdution presentant l'atlas affichage True/False
+AFFICHAGE_INTRODUCTION = False
+
+
 # Afficher les observations par maille ou point / True = maille False = point
 AFFICHAGE_MAILLE = True
 

@@ -28,7 +28,7 @@ def index():
     customStat = vmObservationsRepository.genericStat(connection, config.RANG_STAT)
     customStatMedias = vmObservationsRepository.genericStatMedias(connection, config.RANG_STAT)
     configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'HOMEMAP': True, 'NB_LAST_OBS': config.NB_LAST_OBS, 'AFFICHAGE_MAILLE': config.AFFICHAGE_MAILLE, \
-    'URL_PHOTO': config.URL_MEDIAS, 'RANG_STAT_FR': config.RANG_STAT_FR, 'MAP': config.MAP, 'URL_APPLICATION': config.URL_APPLICATION}
+    'URL_PHOTO': config.URL_MEDIAS, 'RANG_STAT_FR': config.RANG_STAT_FR, 'MAP': config.MAP, 'URL_APPLICATION': config.URL_APPLICATION, 'AFFICHAGE_INTRODUCTION': config.AFFICHAGE_INTRODUCTION}
     
     connection.close()
     session.close()

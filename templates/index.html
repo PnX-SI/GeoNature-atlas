@@ -38,28 +38,9 @@
 		<div class="container-fluid" id="page">
 
 			<!-- Introduction -->
-			<div class="col-sm-12">
-				<div class="panel panel-default">
-					<div class="row">
-						<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 textIntroduction"> 
-							<h1>
-								Bienvenue sur l'atlas de la faune et de la flore du {{configuration.STRUCTURE}}
-							</h1>
-							<p>
-								Il permet de consulter des fiches sur l'ensemble des espèces observées par les agents du parc national depuis sa création en 1973.
-							</p>
-							<p>
-								Celles-ci se basent sur les observations réalisées en temps réel par les agents et présente une vue d'ensemble des espèces observées mais en aucun cas un inventaire exhaustif des espèces du territoire.
-							</p>
-						</div>
-						<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-							<a href="{{url_for('static', filename='custom/images/accueil-intro.jpg') }}" data-lightbox="imageSet">
-								<img src="{{url_for('static', filename='custom/images/accueil-intro.jpg') }}" width="100%" alt="{{configuration.NOM_APPLICATION}}">
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
+			{% if configuration.AFFICHAGE_INTRODUCTION %}
+				{% include 'static/custom/templates/introduction.html' %}
+			{% endif %}
 
 			<!-- SAUT DE LIGNE -->
 			<div class="col-sm-12" style="height:20px"></div>
