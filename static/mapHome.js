@@ -47,7 +47,6 @@ $(function(){
          $(this).siblings().removeClass('current');
          $(this).addClass('current');
         var id_synthese = $(this).attr('idSynthese');
-         console.log(id_synthese);
 
         var p = (currentLayer._layers);
         var selectLayer;

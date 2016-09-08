@@ -140,6 +140,7 @@
 										    	<div class="img-custom-medias" style="background-image: url({{customStatMedias[i][j].path}})">
 											    	<div class="stat-medias-hovereffet">
 											    		<img src="{{url_for('static', filename='images/eye.png') }}"> 
+											    		<h2 class="overlay-obs"> {{customStatMedias[i][j].nb_obs}} observations </h2>
 											    	</div>
 											    </div>
 											</a>
@@ -183,7 +184,8 @@
 											{% endif %}
 											<td class="singleTaxon name" cdref="{{obs.cd_ref}}" > {{obs.taxon}}</td>
 											<td class="singleTaxon date"> {{obs.dateobs}} </td>
-											<td class="singleTaxon detail"> <a href = "{{url_for('main.ficheEspece',cd_ref=obs.cd_ref)}}"> <img height="20" width="20" src ="{{url_for('static', filename='images/logo_files.png') }}" alt="Lien vers la fiche espèce" title="Lien vers la fiche espèce"> </a> </td> 
+											<td class="singleTaxon detail"> <a href = "{{url_for('main.ficheEspece',cd_ref=obs.cd_ref)}}"> <img height="20" width="20" src ="{{url_for('static', filename='images/logo_files.png') }}" data-toggle="tooltip" data-original-title="Voir la fiche espèce" data-placement="left"> 
+											</a> </td> 
 											<td class="hiddenTd" hidden ="true"> {{obs.cd_ref}} </td>
 										</tr>
 										{% endfor %}

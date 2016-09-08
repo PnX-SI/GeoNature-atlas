@@ -93,11 +93,32 @@
 	-ms-transition: .3s ease-in-out;
 }
 
+.zoom-wrapper a:link {
+    text-decoration: none;
+}
+
 .stat-medias-hovereffet{
   display:none;
-  position: absolute;
-  left: 35%;
-  top:25%;
+}
+.stat-medias-hovereffet img {
+    position: relative;
+    top: 10px;
+}
+
+.overlay-obs{
+	color:#fff;
+	text-align:center;
+	position:relative;
+	top:100px;
+	font-size:13px;
+	background:rgba(0,0,0,0.6);
+	-webkit-transform:translatey(-100px);
+	-ms-transform:translatey(-100px);
+	transform:translatey(-100px);
+	-webkit-transition:all .2s ease-in-out;
+	transition:all .2s ease-in-out;
+	padding:10px;
+	text-decoration: none;
 }
 
 

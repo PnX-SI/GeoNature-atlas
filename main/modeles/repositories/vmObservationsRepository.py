@@ -246,7 +246,7 @@ def genericStatMedias(connection, tab):
         for r in req:
             shorterName = r.nom_vern.split(",")
             shorterName = shorterName[0]
-            temp = {'cd_ref': r.cd_ref, 'lb_nom' : r.lb_nom, 'nom_vern': shorterName, 'path': utils.findPath(r), 'author': r.auteur, 'group2_inpn': utils.deleteAccent(r.group2_inpn)}
+            temp = {'cd_ref': r.cd_ref, 'lb_nom' : r.lb_nom, 'nom_vern': shorterName, 'path': utils.findPath(r), 'author': r.auteur, 'group2_inpn': utils.deleteAccent(r.group2_inpn), 'nb_obs': r.nb_obs}
             tabStat[i].append(temp)
     if len(tabStat[0]) == 0:
         return None
