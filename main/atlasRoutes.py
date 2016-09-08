@@ -84,7 +84,7 @@ def ficheCommune(insee):
 
     observers = vmObservationsRepository.getObserversCommunes(connection, insee)
     configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'NB_LAST_OBS' : config.NB_LAST_OBS, 'AFFICHAGE_MAILLE': config.AFFICHAGE_MAILLE, 'MAP': config.MAP, \
-    'URL_APPLICATION': config.URL_APPLICATION, 'MYTYPE' : 1}
+    'URL_APPLICATION': config.URL_APPLICATION, 'MYTYPE' : 1, 'PATRIMONIALITE': config.PATRIMONIALITE, 'PROTECTION': config.PROTECTION}
     
 
     session.close()
@@ -109,7 +109,8 @@ def ficheRangTaxonomie(cd_ref):
     connection.close()
     session.close()
 
-    configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY, 'URL_APPLICATION': config.URL_APPLICATION}
+    configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY,\
+     'URL_APPLICATION': config.URL_APPLICATION, 'PATRIMONIALITE': config.PATRIMONIALITE, 'PROTECTION': config.PROTECTION}
     return render_template('templates/ficheRangTaxonomique.html', listTaxons = listTaxons, referenciel = referenciel, communesSearch = communesSearch,\
         taxonomyHierarchy=taxonomyHierarchy, observers=observers, configuration=configuration)
 
