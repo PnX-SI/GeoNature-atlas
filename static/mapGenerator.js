@@ -385,9 +385,7 @@ function displayMarkerLayerPointLastObs(observationsPoint){
                            return L.circleMarker(latlng);
                            }
   });
-      newLayer = currentLayer;
-      currentLayer = L.markerClusterGroup();
-      currentLayer.addLayer(newLayer);
+
       map.addLayer(currentLayer)
   }
 

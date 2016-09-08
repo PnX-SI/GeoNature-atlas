@@ -24,12 +24,43 @@ database_connection = "postgresql://geonatatlas:monpassachanger@localhost:5432/g
 
 
 
+# Customisation application
 
 
-### Customisation application
 
-#Map
-IGNAPIKEY = 'myIGN-KEY';
+# nom de la structure
+STRUCTURE = "Nom de la structure"
+STRUCTURE = unicode(STRUCTURE, 'utf-8')
+
+# Nom de l'application
+NOM_APPLICATION = "Nom de l application"
+NOM_APPLICATION = unicode(NOM_APPLICATION, 'utf-8') # Fonction permettant d'encoder ce nom en utf-8, à ne pas modifier
+
+#URL de l'application depuis la racine
+URL_APPLICATION = ""
+
+
+######  PAGE ACCUEIL #######
+
+# Bloc d'introdution presentant l'atlas affichage True/False
+AFFICHAGE_INTRODUCTION = True
+
+
+## BLOC STAT : parametre pour le bloc statistique 2 de la page d'acceuil
+# mettre dans RANG_STAT le couple 'rang taxonomique' - 'nom du taxon corepondant au rang' pour avoir des statistique sur ce rang -
+#Fonctionne à tous les niveau de rang présent dans la table taxref - Important: mettre au maximum deux 'couples' dans le tableau
+
+# exemple RANG_STAT = [{'ordre': '"Lepidoptera"'}, {'classe': 'Insecta'}]
+#         RANG_STAT_FR ['Papillon', 'Insecte']
+
+RANG_STAT = [{'regne': 'Animalia'}, {'regne': 'Plantae'}] 
+RANG_STAT_FR = ['Faune', 'Flore']
+
+
+
+
+###### Cartographie #######
+IGNAPIKEY = 'myIGNkey';
 
 MAP = { 
     'LAT_LONG': [44.7952, 6.2287],
@@ -47,58 +78,49 @@ MAP = {
         'STEP': 1
 }
 
-# URL de l'application depuis la racine du serveur web
-URL_APPLICATION = "/atlas"
-
-# Nom de la structure
-STRUCTURE = "Parc national des Écrins"
-STRUCTURE = unicode(STRUCTURE, 'utf-8') # Fonction permettant d'encoder ce nom en utf-8, à ne pas modifier
-
-# Nom de l'application
-NOM_APPLICATION = "Biodiversité du Parc national des Écrins"
-NOM_APPLICATION = unicode(NOM_APPLICATION, 'utf-8') # Fonction permettant d'encoder ce nom en utf-8, à ne pas modifier
-
-# Bloc d'introdution presentant l'atlas affichage True/False
-AFFICHAGE_INTRODUCTION = False
 
 
-# Afficher les observations par maille ou point / True = maille False = point
-AFFICHAGE_MAILLE = True
+# affiche par maille / True = maille False = point
+AFFICHAGE_MAILLE = False
 
-# Niveau de zoom à partir duquel on passe à l'affichage en point (si AFFICHAGE_MAILLE = False)
+# Niveau de zoom à partir duquel on passe à l'affiche en point (si AFFICHAGE_MAILLE = False)
 ZOOM_LEVEL_POINT = 11
 
-# Nombre des 'x' dernières observations affichées sur la carte de la page d'accueil
-NB_LAST_OBS = 100
-
-# Nombre d'observations à partir duquel on passe à l'affichage en cluster
+#Limite d'observation à partir duquel on passe à l'affichage en cluster
 LIMIT_CLUSTER_POINT = 1000
 
-# Rang taxonomique qui fixe jusqu'à quel niveau remonte la filiation taxonomique (hierarchie dans la fiche d'identite)
+# Nombre de 'x' dernieres observations de la carte sur la page d'acceuil
+NB_LAST_OBS = 100
+
+
+####### FICHE ESPECE #######
+
+
+# rang taxonomique qui fixe jusque quel taxon remonte la filiation taxonomique (hierachie dans la fiche d'identite: Famille, Ordre etc... )
 LIMIT_RANG_TAXONOMIQUE_HIERARCHIE = 13
 
-# Rang taxonomique qui fixe le niveau auquel on bascule entre l'affichage de la fiche espèce ou de la liste des espèces du rang.  Exemple : ** 35 = ESPECE **  On prend tout ce qui est inférieur ou égal à l'espèce pour faire des fiches et ce qui est supérieur pour les listes
-LIMIT_FICHE_LISTE_HIERARCHY = 35
+# rang taxonomique qui fixe la limite de l'affichage de la fiche espece ou de la liste  ** 35 = ESPECE **  on prend tout ce qui est inferieur ou egal a l'espece pour faire des fiches et ce qui est superieur pour les listes
+LIMIT_FICHE_LISTE_HIERARCHY = 28
 
-# URL du répertoire de stockage des médias (avant static/images/)
-URL_MEDIAS = "chemin_vers_le_dossier_de_stockage"
+#URL du stockage des photo
 
-# ID DES ATTRIBUTS DESCRIPTIFS DES TAXONS DE LA TABLE vm_cor_taxon_attribut
+URL_MEDIAS = "lien vers le serveur d hebergement des medias"
+
+
+####ID DES ATTRIBUTS DESCRIPTIF DES TAXONS DE LA TABLE vm_cor_taxon_attribut
 ATTR_DESC = 100
 ATTR_COMMENTAIRE = 101
 ATTR_MILIEU = 102
 ATTR_CORROLOGIE = 103
 
-# ID DES TYPES DE MEDIAS DE LA TABLE vm_medias
+
+####ID DES ATTRIBUTS DES MEDIAS DE LA TABLE vm_medias
 ATTR_MAIN_PHOTO = 1
 ATTR_OTHER_PHOTO = 2
 
-## BLOC STAT : Paramètres pour le bloc statistique 2 de la page d'accueil
-# Mettre dans RANG_STAT le couple 'rang taxonomique' - 'nom du taxon correspondant au rang' pour avoir des statistiques sur ce rang -
-# Fonctionne à tous les niveaux de rang présents dans la table vm_taxref - Important: mettre au maximum deux 'couples' dans le tableau
 
-# exemple RANG_STAT = [{'ordre': '"Lepidoptera"'}, {'classe': 'Insecta'}]
-#         RANG_STAT_FR ['Papillon', 'Insecte']
+#### FICHE COMMUNE ET RANG TAXONOMIQUE #####
 
-RANG_STAT = [{'regne': 'Animalia'}, {'regne': 'Plantae'}] 
-RANG_STAT_FR = ['Faune', 'Flore']
+# La table des taxons contient-elle les informations suivantes ?
+PATRIMONIALITE = True
+PROTECTION = True

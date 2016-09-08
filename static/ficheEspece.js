@@ -24,12 +24,12 @@ $('#btn-more-video').click(function(){
    	}
 });
 
-$('.btn-more').click(function(){
+$('.accordion-toggle').click(function(){
 	$(this).find('span').toggleClass('glyphicon glyphicon-chevron-down').toggleClass('glyphicon glyphicon-chevron-up');
 })
 
 
-$("[rel=tooltip]").tooltip({ placement: 'right'});
+$("[rel=tooltip]").tooltip();
 
 
 
