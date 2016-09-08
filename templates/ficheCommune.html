@@ -66,15 +66,17 @@
                     
         
             <div class="col-sm-5" id="mapWrapper">
-                <div  class="panel panel-default" id="mapContainer">
-                    <img id ="loadingGif" src="">
-                    <div class="panel-heading"><strong>
-                         <h4 id="titleMap"> Carte des {{configuration.NB_LAST_OBS}} dernières observations de la commune de <i>{{referenciel.communeName}}</i></h4> </strong>
-                    </div>
-                    <div class="panel-body">
-                         <div id="map"> </div>
-                    </div>
-                </div>
+				<div class="row ">
+					<div  class="panel panel-default" id="mapContainer">
+						<img id ="loadingGif" src="">
+						<div class="panel-heading"><strong>
+							 <h4 id="titleMap"> {{configuration.NB_LAST_OBS}} dernières observations sur la commune de <i>{{referenciel.communeName}}</i></h4> </strong>
+						</div>
+						<div class="panel-body">
+							 <div id="map"> </div>
+						</div>
+					</div>
+				</div>
             </div> 
         {% include 'static/custom/templates/footer.html' %}
         </div>
