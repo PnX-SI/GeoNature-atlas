@@ -20,17 +20,23 @@ sudo apachectl restart
 
 sudo apt-get install -y postgresql-9.4
 
-sudo apt-get install python-setuptools
+sudo apt-get install -y python-setuptools
 
 sudo apt-get install -y python python-pip
 sudo apt-get install -y python-gdal
 
-sudo apt-get install python-virtualenv
+sudo apt-get install -y python-virtualenv
 virtualenv ./
 
 source ./bin/activate
 pip install -r requirements.txt
 deactivate
+
+cp ./main/configuration/config.py.sample ./main/configuration/config.py
+cp ./main/configuration/settings.ini.sample ./main/configuration/settings.ini.sample
+cp ./static/custom/templates/footer.html.sample cp ./static/custom/templates/footer.html
+cp ./static/custom/templates/introduction.html.sample cp ./static/custom/templates/introduction.html
+cp ./static/custom/custom.css.sample ./static/custom/custom.css
 
 
 
