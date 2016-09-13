@@ -14,20 +14,20 @@ def deleteNone(r):
     else:
         return r
 
-def getFirstPhoto(connection, cd_ref):
+def getFirstPhoto(connection, cd_ref, id):
     sql= "SELECT * \
     FROM atlas.vm_medias \
-    WHERE cd_ref IN ( SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)) OR cd_ref = :thiscdref AND id_type=1"
-    req = connection.execute(text(sql), thiscdref = cd_ref)
+    WHERE (cd_ref IN ( SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)) OR cd_ref = :thiscdref) AND id_type=:thisid"
+    req = connection.execute(text(sql), thiscdref = cd_ref, thisid=id)
     
     for r in req:
         return {'path': utils.findPath(r), 'title': deleteNone(r.titre), 'author': deleteNone(r.auteur)}
 
-def getPhotoCarousel(connection, cd_ref):
+def getPhotoCarousel(connection, cd_ref, id):
     sql= "SELECT * \
     FROM atlas.vm_medias \
-    WHERE cd_ref IN ( SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)) OR cd_ref = :thiscdref AND id_type=2"
-    req = connection.execute(text(sql), thiscdref = cd_ref)
+    WHERE (cd_ref IN ( SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)) OR cd_ref = :thiscdref) AND id_type= :thisid"
+    req = connection.execute(text(sql), thiscdref = cd_ref, thisid=id)
     tabURL = list()
     for r in req:
         tabURL.append({'path': utils.findPath(r), 'title': deleteNone(r.titre), 'author': deleteNone(r.auteur)})
@@ -40,20 +40,20 @@ def switchMedia(raw):
     else:
         goodPath = raw.url
 
-    return { 5 : goodPath,
-             6: goodPath,
-             7 : "<iframe width='100%' height='315' src='https://www.youtube.com/embed/"+raw.url+"' frameborder='0' allowfullscreen></iframe>",
-             8 : "<iframe frameborder='0' width='100%' height='315' src='//www.dailymotion.com/embed/video/"+raw.url+"' allowfullscreen></iframe>",
-             9 : "<iframe src='https://player.vimeo.com/video/"+raw.url+"?color=ffffff&title=0&byline=0&portrait=0' width='640' height='360'\
+    return { config.ATTR_AUDIO : goodPath,
+             config.ATTR_VIDEO_HEBERGEE: goodPath,
+             config.ATTR_YOUTUBE : "<iframe width='100%' height='315' src='https://www.youtube.com/embed/"+raw.url+"' frameborder='0' allowfullscreen></iframe>",
+             config.ATTR_DAYLIMOTION : "<iframe frameborder='0' width='100%' height='315' src='//www.dailymotion.com/embed/video/"+raw.url+"' allowfullscreen></iframe>",
+             config.ATTR_VIMEO : "<iframe src='https://player.vimeo.com/video/"+raw.url+"?color=ffffff&title=0&byline=0&portrait=0' width='640' height='360'\
              frameborder='0' webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>"}
 
-def getVideo_and_audio(connection, cd_ref):
+def getVideo_and_audio(connection, cd_ref, id5, id6, id7, id8, id9):
     sql = "SELECT * \
     FROM atlas.vm_medias \
-    WHERE id_type in (5, 6, 7, 8, 9) AND cd_ref = :thiscdref \
+    WHERE id_type in (:id5, :id6, :id7, :id8, :id9) AND cd_ref = :thiscdref \
     ORDER BY date_media DESC "
 
-    req = connection.execute(text(sql), thiscdref = cd_ref)
+    req = connection.execute(text(sql), thiscdref = cd_ref, id5=id5, id6=id6, id7=id7, id8=id8, id9=id9)
     tabMedias = {'audio' :list(), 'video': list()} 
     for r in req:
         path = switchMedia(r)
@@ -64,12 +64,12 @@ def getVideo_and_audio(connection, cd_ref):
             tabMedias['video'].append(temp)
     return tabMedias
 
-def getLinks_and_articles(connection, cd_ref):
+def getLinks_and_articles(connection, cd_ref, id3, id4):
     sql = "SELECT * \
     FROM atlas.vm_medias \
-    WHERE id_type in (3, 4) AND cd_ref = :thiscdref\
+    WHERE id_type in (:id3, :id4) AND cd_ref = :thiscdref\
     ORDER BY date_media DESC"
-    req = connection.execute(text(sql), thiscdref = cd_ref)
+    req = connection.execute(text(sql), thiscdref = cd_ref, id3=id3, id4=id4)
     tabArticles = list()
     for r in req:
         temp = {'id_type': r.id_type, 'path': utils.findPath(r), 'title': deleteNone(r.titre), 'author':deleteNone(r.auteur), 'description': deleteNone(r.desc_media), 'date': deleteNone(r.date_media)}
