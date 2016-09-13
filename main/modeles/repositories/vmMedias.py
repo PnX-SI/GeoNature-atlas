@@ -8,6 +8,12 @@ from ...configuration import config
 
 from sqlalchemy.sql import text
 
+def deleteNone(r):
+    if r == None:
+        return ''
+    else:
+        return r
+
 def getFirstPhoto(connection, cd_ref):
     sql= "SELECT * \
     FROM atlas.vm_medias \
@@ -15,7 +21,7 @@ def getFirstPhoto(connection, cd_ref):
     req = connection.execute(text(sql), thiscdref = cd_ref)
     
     for r in req:
-        return {'path': utils.findPath(r), 'title': r.titre, 'author': r.auteur}
+        return {'path': utils.findPath(r), 'title': deleteNone(r.titre), 'author': deleteNone(r.auteur)}
 
 def getPhotoCarousel(connection, cd_ref):
     sql= "SELECT * \
@@ -24,7 +30,7 @@ def getPhotoCarousel(connection, cd_ref):
     req = connection.execute(text(sql), thiscdref = cd_ref)
     tabURL = list()
     for r in req:
-         tabURL.append({'path': utils.findPath(r), 'title': r.titre, 'author': r.auteur})
+        tabURL.append({'path': utils.findPath(r), 'title': deleteNone(r.titre), 'author': deleteNone(r.auteur)})
     return tabURL
 
 def switchMedia(raw):
@@ -51,7 +57,7 @@ def getVideo_and_audio(connection, cd_ref):
     tabMedias = {'audio' :list(), 'video': list()} 
     for r in req:
         path = switchMedia(r)
-        temp = {'id_type': r.id_type, 'path': path[r.id_type], 'title': r.titre, 'author':r.auteur, 'description': r.desc_media}
+        temp = {'id_type': r.id_type, 'path': path[r.id_type], 'title': r.titre, 'author': deleteNone(r.auteur), 'description': deleteNone(r.desc_media)}
         if r.id_type == 5:
             tabMedias['audio'].append(temp)
         else:
@@ -66,7 +72,7 @@ def getLinks_and_articles(connection, cd_ref):
     req = connection.execute(text(sql), thiscdref = cd_ref)
     tabArticles = list()
     for r in req:
-        temp = {'id_type': r.id_type, 'path': utils.findPath(r), 'title': r.titre, 'author':r.auteur, 'description': r.desc_media, 'date': r.date_media}
+        temp = {'id_type': r.id_type, 'path': utils.findPath(r), 'title': deleteNone(r.titre), 'author':deleteNone(r.auteur), 'description': deleteNone(r.desc_media), 'date': deleteNone(r.date_media)}
         tabArticles.append(temp)
     return tabArticles
 
