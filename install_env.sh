@@ -29,11 +29,9 @@ sudo apt-get install python-virtualenv
 virtualenv ./
 
 source ./bin/activate
+pip install -r requirements.txt
+deactivate
 
-pip install flask
-
-
- pip install -r requirements.txt
 
 
 
