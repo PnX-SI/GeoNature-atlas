@@ -121,21 +121,45 @@ body {
     cursor: grab;
 }
 
+/* LightBox */
 
-
-/*LightBox*/
 .lb-nav{
 	z-index: 100;
 }
 
-/*Page 'Developpement'*/
+/* Page PHOTOS */
+
+.img-responsive-logo{
+  width: 100%;
+  height: 250px;
+  background-position: center center;
+  background-size: cover;
+}
+
+.img-responsive-logo {
+	height: 250px;
+	display:block;
+	position:relative;
+	-webkit-transition:all .4s linear;
+	transition:all .4s linear;
+}
+
+#photos {
+
+}
+
+.photo-espece {
+	padding: 0px;
+}
+
+/* Page 'Developpement' */
 
 #developpement{
 	font-family: 'Open Sans';
 	text-align: center;
 }
 
-/*Footer*/
+/* Footer */
 
 .footer{
 	text-align: center;

@@ -17,7 +17,6 @@
         <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />       
         <link rel="stylesheet" href="{{url_for('static', filename='custom/custom.css') }}" />
 
-
    </head>
    <body>
     {% include 'templates/navbar.html' %}
@@ -30,9 +29,96 @@
 				<div class="row rowMargin">
 					<div class="panel panel-default" id="">
 						<h1>Galerie photos</h1>
+						<p>
+							<img src="{{url_for('static', filename='images/picto_Insectes.png') }}" alt="Insectes" title="Insectes">
+							<img src="{{url_for('static', filename='images/picto_Mammiferes.png') }}" alt="Mammiferes" title="Mammiferes">
+							<img src="{{url_for('static', filename='images/picto_Oiseaux.png') }}" alt="Oiseaux" title="Oiseaux">
+							<img src="{{url_for('static', filename='images/picto_Angiospermes.png') }}" alt="Angiospermes" title="Angiospermes">
+						</p>
 					</div>
 				</div>
 			</div>
+			
+			<div class="col-sm-12">
+				<div class="panel panel-default" id="photos">
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
+						<div class="img-responsive-logo" style="background-image:url(http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/patrimoine/9592/body/033395.jpg)" alt="Marmotte"> </div>
+					</div>
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
+						<div class="img-responsive-logo" style="background-image:url(http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/patrimoine/9658/body/035131.jpg)" alt="Marmotte"> </div>
+					</div>
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
+						<div class="img-responsive-logo" style="background-image:url(http://portail.ecrins-parcnational.fr/taxhub/static/medias/2623_545_Buse_variable.jpg)" alt="Marmotte"> </div>
+					</div>
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
+						<div class="img-responsive-logo" style="background-image:url(http://portail.ecrins-parcnational.fr/taxhub/static/medias/128345_Myrtille_a_Villar-dArene.jpg)" alt="Marmotte"> </div>
+					</div>
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
+						<div class="img-responsive-logo" style="background-image:url(http://portail.ecrins-parcnational.fr/taxhub/static/medias/124308_Sorbier_des_oiseleurs.jpg)" alt="Marmotte"> </div>
+					</div>
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
+						<div class="img-responsive-logo" style="background-image:url(http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/patrimoine/9594/body/033420.jpg)"> </div>
+					</div>
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
+						<div class="img-responsive-logo" style="background-image:url(http://portail.ecrins-parcnational.fr/taxhub/static/medias/127219_540_Trefle_des_Alpes.jpg)"> </div>
+					</div>
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
+						<div class="img-responsive-logo" style="background-image:url(http://portail.ecrins-parcnational.fr/taxhub/static/medias/2645_185_Aigle_royal.jpg)"> </div>
+					</div>
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
+						<div class="img-responsive-logo" style="background-image:url(http://portail.ecrins-parcnational.fr/taxhub/static/medias/2645_190_Aigle_royal.jpg )"> </div>
+					</div>
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
+						<div class="img-responsive-logo" style="background-image:url(http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/styles/pleine_page/public/patrimoine/9597/body/028888.jpg)"> </div>
+					</div>
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
+						<div class="img-responsive-logo" style="background-image:url(http://portail.ecrins-parcnational.fr/taxhub/static/medias/54496_337_LApollon_-_Parnassius_apollo.jpg)"> </div>
+					</div>
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
+						<div class="img-responsive-logo" style="background-image:url(http://portail.ecrins-parcnational.fr/taxhub/static/medias/3764_Mesange_charbonniere.jpg)"> </div>
+					</div>
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
+						<div class="img-responsive-logo" style="background-image:url(http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/patrimoine/9592/body/033395.jpg)"> </div>
+					</div>
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
+						<div class="img-responsive-logo" style="background-image:url(http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/patrimoine/9592/body/033395.jpg)"> </div>
+					</div>
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
+						<div class="img-responsive-logo" style="background-image:url(http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/patrimoine/9592/body/033395.jpg)"> </div>
+					</div>
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
+						<div class="img-responsive-logo" style="background-image:url(http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/patrimoine/9592/body/033395.jpg)"> </div>
+					</div>
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
+						<div class="img-responsive-logo" style="background-image:url(http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/patrimoine/9592/body/033395.jpg)"> </div>
+					</div>
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
+						<div class="img-responsive-logo" style="background-image:url(http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/patrimoine/9592/body/033395.jpg)"> </div>
+					</div>
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
+						<div class="img-responsive-logo" style="background-image:url(http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/patrimoine/9592/body/033395.jpg)"> </div>
+					</div>
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
+						<div class="img-responsive-logo" style="background-image:url(http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/patrimoine/9592/body/033395.jpg)"> </div>
+					</div>
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
+						<div class="img-responsive-logo" style="background-image:url(http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/patrimoine/9592/body/033395.jpg)"> </div>
+					</div>
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
+						<div class="img-responsive-logo" style="background-image:url(http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/patrimoine/9592/body/033395.jpg)"> </div>
+					</div>
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
+						<div class="img-responsive-logo" style="background-image:url(http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/patrimoine/9592/body/033395.jpg)"> </div>
+					</div>
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
+						<div class="img-responsive-logo" style="background-image:url(http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/patrimoine/9592/body/033395.jpg)"> </div>
+					</div>
+				</div>
+			</div>
+			
+			{% if configuration.AFFICHAGE_FOOTER %}
+                {% include 'static/custom/templates/footer.html' %}
+            {% endif %}
          </div>
         
       
