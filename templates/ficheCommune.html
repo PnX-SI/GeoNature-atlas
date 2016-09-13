@@ -80,7 +80,9 @@
 					</div>
 				</div>
             </div> 
-        {% include 'static/custom/templates/footer.html' %}
+            {% if configuration.AFFICHAGE_FOOTER %}
+                {% include 'static/custom/templates/footer.html' %}
+            {% endif %}
         </div>
       
         <!-- JQUERY UI -->

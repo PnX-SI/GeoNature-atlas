@@ -137,18 +137,7 @@ body {
 
 /*Footer*/
 
-.footer-list{
-	float: left;
-	padding: 0px;
-	margin: 0px;
+.footer{
+	text-align: center;
 }
 
-.footer-li{
-	float: left;
-	padding-right: 20px;
-	list-style: none;
-}
-
-#clear{
-	clear: both;
-}

@@ -76,7 +76,9 @@
                 </div>
             </div>
         </div>
-        {% include 'static/custom/templates/footer.html' %}
+            {% if configuration.AFFICHAGE_FOOTER %}
+                {% include 'static/custom/templates/footer.html' %}
+            {% endif %}
     </div>
         <!-- JQUERY UI -->
         <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>

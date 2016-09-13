@@ -57,7 +57,7 @@ $.ajax({
     // Autocomplete bloc stat
 
     $( "#searchTaxonsStat" ).focus(function() {
-       autocompleteSearch(list, "#searchTaxonsStat", "espce", 10);
+       autocompleteSearch(list, "#searchTaxonsStat", "espece", 10);
     });
 
 });

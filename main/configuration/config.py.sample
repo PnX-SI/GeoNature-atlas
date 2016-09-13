@@ -1,26 +1,8 @@
 #! /usr/bin/python
 # -*- coding:utf-8 -*-
 
-class Config:
-    SECRET_KEY = "f(\xdfyx9d#x1n\xc4U=?\xa8}\x96\45u:H"
-    
-    @staticmethod
-    def init_app(app):
-        pass
 
-class DeveloppementConfig(Config):
-    DEBUG = True
-    SQLALCHEMY_DATABASE_URI = "postgresql://geonatatlas:monpassachanger@localhost:5432/geonaturedb"
-
-class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = "postgresql://geonatatlas:monpassachanger@localhost:5432/geonaturedb" 
-
-config = {
-    'development':DeveloppementConfig,
-    'production': ProductionConfig
-    }
-
-database_connection = "postgresql://geonatatlas:monpassachanger@localhost:5432/geonaturedb"
+database_connection = "postgresql://user:monpassachanger@IPADRESSE:5432/databaseName"
 
 
 
@@ -43,7 +25,9 @@ URL_APPLICATION = ""
 ######  PAGE ACCUEIL #######
 
 # Bloc d'introdution presentant l'atlas affichage True/False
-AFFICHAGE_INTRODUCTION = True
+AFFICHAGE_INTRODUCTION = False
+# Footer
+AFFICHAGE_FOOTER = False
 
 
 ## BLOC STAT : parametre pour le bloc statistique 2 de la page d'acceuil
