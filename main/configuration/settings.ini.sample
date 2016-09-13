@@ -7,7 +7,7 @@
 drop_apps_db=false
 
 # Host de la base de données de l'application
-db_host=geonatdbhost
+db_host=localhost
 
 # Port pour base de données de l'application
 db_port=5432
@@ -56,7 +56,7 @@ attr_commentaire=101
 attr_milieu=102
 attr_corrologie=103
 
-# Paramètre pour la vue vm_most_view_taxon_periode : Espece les plus observées sur la periode 'moin X jour, plus X jours' - Par défault 15 jours 
+# Paramètre pour la vue vm_most_view_taxon_periode : Especes les plus observées sur la periode 'moins X jour, plus X jours' - Par défault 15 jours 
 time=15
 
 #####MAILLES#####
@@ -65,4 +65,4 @@ time=15
 taillemaille=5
 
 # chemin vers le shp de l'emprise du territoire 
-limit_shp="/home/USER/atlas/data/ref/ma_couche.shp"
+limit_shp="/home/USER/atlas/data/ref/emprise_territoire.shp"
