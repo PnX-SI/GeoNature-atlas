@@ -27,13 +27,16 @@
 		<div class="container-fluid" id="page">
             <div class="col-sm-12">
 				<div class="row rowMargin">
-					<div class="panel panel-default" id="">
+					<div class="panel panel-default" id="filtresPhotos">
 						<h1>Galerie photos</h1>
 						<p>
 							<img src="{{url_for('static', filename='images/picto_Insectes.png') }}" alt="Insectes" title="Insectes">
 							<img src="{{url_for('static', filename='images/picto_Mammiferes.png') }}" alt="Mammiferes" title="Mammiferes">
 							<img src="{{url_for('static', filename='images/picto_Oiseaux.png') }}" alt="Oiseaux" title="Oiseaux">
 							<img src="{{url_for('static', filename='images/picto_Angiospermes.png') }}" alt="Angiospermes" title="Angiospermes">
+							<img src="{{url_for('static', filename='images/picto_Gasteropodes.png') }}" alt="Gasteropodes" title="Gasteropodes">
+							<img src="{{url_for('static', filename='images/picto_Gymnospermes.png') }}" alt="Gymnospermes" title="Gymnospermes">
+							<img src="{{url_for('static', filename='images/picto_Reptiles.png') }}" alt="Reptiles" title="Reptiles">
 						</p>
 					</div>
 				</div>
@@ -42,7 +45,14 @@
 			<div class="col-sm-12">
 				<div class="panel panel-default" id="photos">
 					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
-						<div class="img-responsive-logo" style="background-image:url(http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/patrimoine/9592/body/033395.jpg)" alt="Marmotte"> </div>
+						<div class="hovereffect">
+							<div class="img-responsive-logo" style="background-image:url(http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/patrimoine/9592/body/033395.jpg)" alt="Marmotte"> </div>
+							<div class="overlay">
+								<h2>Marmotte des Alpes | Marmota marmota
+								<br/>17598 observations</h2>	
+								<a class="info" href="/espece/61143">Fiche espèce</a>
+							</div>
+						</div>
 					</div>
 					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
 						<div class="img-responsive-logo" style="background-image:url(http://www.ecrins-parcnational.fr/sites/ecrins-parcnational.com/files/patrimoine/9658/body/035131.jpg)" alt="Marmotte"> </div>
