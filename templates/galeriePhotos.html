@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+   <head>
+        <meta charset="utf-8" />
+        <title>Galerie photo</title>
+
+        <!-- Jquery -->
+        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
+
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}"></link>
+        <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
+
+       <!-- Atlas -->
+        <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />       
+        <link rel="stylesheet" href="{{url_for('static', filename='custom/custom.css') }}" />
+
+
+   </head>
+   <body>
+    {% include 'templates/navbar.html' %}
+
+		<div id="sideBar">
+			{% include 'templates/sideBar.html' %}
+		</div>
+		<div class="container-fluid" id="page">
+            <div class="col-sm-12">
+				<div class="row rowMargin">
+					<div class="panel panel-default" id="">
+						<h1>Galerie photos</h1>
+					</div>
+				</div>
+			</div>
+         </div>
+        
+      
+        <!-- JQUERY UI -->
+        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+
+        <script type="text/javascript">
+        var communesSearch = {{communesSearch|tojson}},
+            configuration = {{configuration|tojson}};
+         </script>
+        <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
+        <script src="{{url_for('static', filename='mapCommune.js') }}"></script>
+
+        <script src="{{url_for('static', filename='listeEspeces.js') }}"></script>
+        <script src="{{url_for('static', filename='main.js') }}"></script>
+
+   </body> 
+</html>
