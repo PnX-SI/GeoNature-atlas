@@ -7,11 +7,11 @@ Atlas WEB dynamique Faune-Flore basé sur les données présentes dans la synth�
 
 Il permet de générer dynamiquement des fiches espèces avec des données calculées automatiquement (cartes de répartition, répartition altitudinale et phénologique, communes, secteurs, observateurs...) ainsi que des données saisies pour chaque espèce (photos, description...). 
 
-Interrogez vos observations naturalistes, croisez-les avec TAXREF, publiez votre atlas en ligne dynamique
+**Interrogez vos observations naturalistes, croisez-les avec TAXREF, publiez votre atlas en ligne dynamique**
 
 .. image :: docs/images/geonature-atlas-schema-01.jpg
 
-Ou déployez l'ensemble complet d'applications de gestion de données naturalistes (UsersHub `<https://github.com/PnEcrins/UsersHub>`_, `TaxHub <https://github.com/PnX-SI/TaxHub>`_, `GeoNature <https://github.com/PnEcrins/GeoNature>`_)
+**Ou déployez l'ensemble complet d'applications de gestion de données naturalistes (`UsersHub <https://github.com/PnEcrins/UsersHub>`_, `TaxHub <https://github.com/PnX-SI/TaxHub>`_, `GeoNature <https://github.com/PnEcrins/GeoNature>`_)**
 
 .. image :: docs/images/geonature-atlas-schema-02.jpg
 
