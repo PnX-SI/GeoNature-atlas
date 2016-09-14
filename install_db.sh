@@ -37,6 +37,9 @@ if ! database_exists $db_name
 then
 
     echo "Création de la base..."
+
+    sudo -u postgres psql -c "CREATE ROLE $user_pg WITH PASSWORD '$user_pg_pass' "
+    sudo -u postgres psql -c "CREATE ROLE $admin_pg WITH PASSWORD '$user_pg_pass' "
     sudo -n -u postgres -s createdb -O $user_pg $db_name
     echo "Ajout de postgis à la base"
     sudo -n -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgis;"

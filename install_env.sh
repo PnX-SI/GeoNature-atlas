@@ -18,12 +18,13 @@ sudo apt-get install libapache2-mod-wsgi
 sudo apachectl restart
 
 
-sudo apt-get install -y postgresql-9.4
+sudo apt-get install -y postgresql-9.4 postgis
 
 sudo apt-get install -y python-setuptools
 
 sudo apt-get install -y python python-pip
 sudo apt-get install -y python-gdal
+sudo apt-get install gdal-bin
 
 sudo apt-get install -y python-virtualenv
 virtualenv ./
@@ -34,8 +35,9 @@ deactivate
 
 cp ./main/configuration/config.py.sample ./main/configuration/config.py
 cp ./main/configuration/settings.ini.sample ./main/configuration/settings.ini
-cp ./static/custom/templates/footer.html.sample cp ./static/custom/templates/footer.html
-cp ./static/custom/templates/introduction.html.sample cp ./static/custom/templates/introduction.html
+cp ./static/custom/templates/footer.html.sample ./static/custom/templates/footer.html
+cp ./static/custom/templates/introduction.html.sample ./static/custom/templates/introduction.html
+cp ./static/custom/templates/presentation.html.sample ./static/custom/templates/presentation.html
 cp ./static/custom/custom.css.sample ./static/custom/custom.css
 
 
