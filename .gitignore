@@ -5,7 +5,7 @@ config/config.py
 log/*
 static/conf/custom.js
 main/debug.py
-data/ref/PNE_aoa.*
+data/ref/emprise_territoire.*
 static/territoire.json
 static/images/ancien
 main/configuration/config.py
