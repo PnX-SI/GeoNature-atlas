@@ -11,7 +11,7 @@ Il permet de générer dynamiquement des fiches espèces avec des données calcu
 
 .. image :: docs/images/geonature-atlas-schema-01.jpg
 
-**Ou déployez l'ensemble complet d'applications de gestion de données naturalistes (`UsersHub <https://github.com/PnEcrins/UsersHub>`_, `TaxHub <https://github.com/PnX-SI/TaxHub>`_, `GeoNature <https://github.com/PnEcrins/GeoNature>`_)**
+**Ou déployez l'ensemble complet d'applications de gestion de données naturalistes** (`UsersHub <https://github.com/PnEcrins/UsersHub>`_, `TaxHub <https://github.com/PnX-SI/TaxHub>`_, `GeoNature <https://github.com/PnEcrins/GeoNature>`_)
 
 .. image :: docs/images/geonature-atlas-schema-02.jpg
 
