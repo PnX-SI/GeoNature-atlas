@@ -11,6 +11,7 @@ from . import utils
 
 from flask import Blueprint
 main = Blueprint('main', __name__)
+import psycopg2
 
 
 
@@ -18,6 +19,7 @@ main = Blueprint('main', __name__)
 def index():
     session = utils.loadSession()
     connection = utils.engine.connect()
+    
     if config.AFFICHAGE_MAILLE:
         observations = vmObservationsMaillesRepository.lastObservationsMailles(connection, config.NB_LAST_OBS, config.ATTR_MAIN_PHOTO)
     else:

@@ -32,13 +32,17 @@ AFFICHAGE_FOOTER = False
 
 ## BLOC STAT : parametre pour le bloc statistique 2 de la page d'acceuil
 # mettre dans RANG_STAT le couple 'rang taxonomique' - 'nom du taxon corepondant au rang' pour avoir des statistique sur ce rang -
-#Fonctionne à tous les niveau de rang présent dans la table taxref - Important: mettre au maximum deux 'couples' dans le tableau
+#Fonctionne à tous les niveaux de rang présent dans la table taxref -
 
-# exemple RANG_STAT = [{'ordre': '"Lepidoptera"'}, {'classe': 'Insecta'}]
-#         RANG_STAT_FR ['Papillon', 'Insecte']
+# exemple RANG_STAT = [{'ordre': ['Lepidoptera']}, {'classe': ['Insecta', 'Arachnida']}]
+#         RANG_STAT_FR ['Papillon', 'Insecte et Araignées']
 
-RANG_STAT = [{'regne': 'Animalia'}, {'regne': 'Plantae'}] 
-RANG_STAT_FR = ['Faune', 'Flore']
+RANG_STAT = [{'phylum': ["Arthropoda", "Mollusca"]}, {'phylum': ["Chordata"]}, {'regne': ['Plantae', ]}] 
+RANG_STAT_FR = ['Invertebrés', 'Vertebrés', 'Flore']
+
+#Ne pas toucher
+for i in range(len(RANG_STAT_FR)):
+    RANG_STAT_FR[i]=unicode( RANG_STAT_FR[i], 'utf-8')
 
 
 

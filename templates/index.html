@@ -105,16 +105,16 @@
 			<div class="col-sm-12">
 				<div class="row row-medias">
 				{% for i in range(customStatMedias | length) %}
-					<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 stat-medias-wrapper">
+					<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 stat-medias-wrapper">
 							<div class="panel panel-default statMedias">
 								<div class="panel-heading">
 									<strong>{{configuration.RANG_STAT_FR[i]}}</strong> <br>
 									<strong>{{customStat[i].nb_obs}} </strong> observations |  <strong>{{customStat[i].nb_taxons}}</strong> espèces
 								</div>
 								<h5> <span class="glyphicon glyphicon-eye-open" > </span> Espèces à découvrir </h5>
-					{% for j in range(3) %}
+					{% for j in range(2) %}
 						{% if loop.index < customStatMedias[i] | length %}
-								<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col-stat-medias">
+								<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-stat-medias">
 									<div class ="thumbnail-stat-medias">
 										<div class="zoom-wrapper">
 											<a href="{{url_for('main.ficheEspece',cd_ref=customStatMedias[i][j].cd_ref)}}" >
@@ -127,7 +127,7 @@
 											</a>
 										</div>
 									    <div class="thumbnail-caption-medias" >
-									        <p> {{customStatMedias[i][j].nom_vern}} <br> <i> {{customStatMedias[i][j].lb_nom}} </i>  </p>
+									        <p> {% if customStatMedias[i][j].nom_vern != None %} {{customStatMedias[i][j].nom_vern}} {% endif %} <br> <i> {{customStatMedias[i][j].lb_nom}} </i>  </p>
 									        <p><a href="{{url_for('main.ficheEspece',cd_ref=customStatMedias[i][j].cd_ref)}}" class="btn btn-default" role="button">Fiche espèce</a></p>
 									    </div>
 									</div>

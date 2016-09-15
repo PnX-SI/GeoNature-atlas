@@ -223,8 +223,8 @@ def genericStat (connection, tab):
             COUNT (DISTINCT t.cd_ref) AS nb_taxons \
             FROM atlas.vm_taxons t \
             JOIN atlas.vm_observations o ON o.cd_ref = t.cd_ref \
-            WHERE t."+rang+"= '"+nomTaxon+"'"
-        req = connection.execute(sql)
+            WHERE t."+rang+" IN :nomTaxon"
+        req = connection.execute(text(sql), nomTaxon=tuple(nomTaxon))
         for r in req:
             temp = {'nb_obs': r.nb_obs, 'nb_taxons': r.nb_taxons}
             tabStat.insert(0, temp)
@@ -238,15 +238,17 @@ def genericStatMedias(connection, tab):
                 FROM atlas.vm_observations o \
                 JOIN atlas.vm_taxons t ON t.cd_ref = o.cd_ref \
                 JOIN atlas.vm_medias m ON m.cd_ref = o.cd_ref \
-                WHERE t."+rang+"= '"+nomTaxon+"' AND m.id_type = 1 \
+                WHERE t."+rang+" IN :nomTaxon AND m.id_type = 1 \
                 GROUP BY o.cd_ref, t.lb_nom, t.nom_vern, m.url, m.chemin, m.auteur, t.group2_inpn \
-                ORDER BY nb_obs DESC \
+                ORDER BY RANDOM() \
                 LIMIT 10"
-        req = connection.execute(sql)
+        req = connection.execute(text(sql), nomTaxon=tuple(nomTaxon))
         tabStat.insert(i, list())
         for r in req:
-            shorterName = r.nom_vern.split(",")
-            shorterName = shorterName[0]
+            shorterName = None
+            if r.nom_vern != None:
+                shorterName = r.nom_vern.split(",")
+                shorterName = shorterName[0]
             temp = {'cd_ref': r.cd_ref, 'lb_nom' : r.lb_nom, 'nom_vern': shorterName, 'path': utils.findPath(r), 'author': r.auteur, 'group2_inpn': utils.deleteAccent(r.group2_inpn), 'nb_obs': r.nb_obs}
             tabStat[i].append(temp)
     if len(tabStat[0]) == 0:
