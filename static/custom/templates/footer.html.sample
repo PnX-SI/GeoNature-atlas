@@ -1,14 +1,14 @@
     <footer class="footer">
-      <div class="container footer-container">
-        <ul class="footer-list">
-        	<li class="footer-li"> <a href="">Accueil</a> </li>
-        	<li class="footer-li"> <a href="">Site du {{configuration.STRUCTURE}}</a> </li>
-        	<li class="footer-li"> <a href="">Conception et crédits  </a> </li> 
-        	<li class="footer-li"> <a href="http://www.ecrins-parcnational.fr/mentions-legales"> Mentions légales </a> </li>
-        </ul>
+        <p>
+             <a href=""> Accueil  |  </a> 
+            <a href=""> Site du Parc national des Ecrins |  </a> 
+            <a href=""> Conception et crédits |  </a> 
+            <a href="http://www.ecrins-parcnational.fr/mentions-legales"> Mentions légales   </a> 
+       <p>
 
-        <div id="clear">
-        	<p class="text-muted">{{configuration.NOM_APPLICATION}} - Atlas de la faune et de la flore du {{configuration.STRUCTURE}}, 2016</p>
+
+        <div id="clear"> 
+            <p class="text-muted"> Biodiv' Ecrins - Atlas du la faune et de la flore du Parc national des Ecrins, 2016</p>
         </div>
-      </div>
+      
     </footer>

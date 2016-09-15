@@ -21,6 +21,7 @@ sudo apachectl restart
 sudo apt-get install -y postgresql-9.4 postgis
 
 sudo apt-get install -y python-setuptools
+sudo apt-get install libpq-dev python-dev
 
 sudo apt-get install -y python python-pip
 sudo apt-get install -y python-gdal
@@ -31,7 +32,7 @@ virtualenv ./
 
 source ./bin/activate
 pip install -r requirements.txt
-deactivate
+
 
 cp ./main/configuration/config.py.sample ./main/configuration/config.py
 cp ./main/configuration/settings.ini.sample ./main/configuration/settings.ini
