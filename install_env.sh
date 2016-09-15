@@ -30,7 +30,7 @@ sudo apt-get install gdal-bin
 sudo apt-get install -y python-virtualenv
 virtualenv ./
 
-source ./bin/activate
+. ./bin/activate
 pip install -r requirements.txt
 
 
