@@ -21,11 +21,11 @@ sudo apachectl restart
 sudo apt-get install -y postgresql-9.4 postgis
 
 sudo apt-get install -y python-setuptools
-sudo apt-get install libpq-dev python-dev
+sudo apt-get install -y libpq-dev python-dev
 
 sudo apt-get install -y python python-pip
 sudo apt-get install -y python-gdal
-sudo apt-get install gdal-bin
+sudo apt-get install -y gdal-bin
 
 sudo apt-get install -y python-virtualenv
 virtualenv ./

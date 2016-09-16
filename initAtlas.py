@@ -2,7 +2,6 @@ import os
 import sys
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
-from flask_bootstrap import Bootstrap
 
 APP_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -11,7 +10,6 @@ from sqlalchemy import create_engine, MetaData, Table
 
 from flask.ext.compress import Compress
 
-bootstrap = Bootstrap()
 db = SQLAlchemy()
 compress = Compress()
 
@@ -28,7 +26,6 @@ def create_app():
     from main.atlasAPI import api
     app.register_blueprint(api, url_prefix='/api')
 
-    bootstrap.init_app(app)
 
     compress.init_app(app)
 
