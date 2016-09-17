@@ -5,12 +5,12 @@ from sqlalchemy.sql import text
 
 
 
-def getAttributesTaxon(connection, cd_ref, attrDesc, attrComment, attrMilieu, attrCorro):
+def getAttributesTaxon(connection, cd_ref, attrDesc, attrComment, attrMilieu, attrChoro):
     sql = "SELECT * from atlas.vm_cor_taxon_attribut \
-    WHERE id_attribut IN (:thisattrDesc, :thisattrComment, :thisattrMilieu, :thisattrCorro) AND cd_ref = :thiscdref"
-    req=connection.execute(text(sql), thiscdref=cd_ref, thisattrDesc=attrDesc, thisattrComment=attrComment, thisattrMilieu=attrMilieu, thisattrCorro=attrCorro)
+    WHERE id_attribut IN (:thisattrDesc, :thisattrComment, :thisattrMilieu, :thisattrChoro) AND cd_ref = :thiscdref"
+    req=connection.execute(text(sql), thiscdref=cd_ref, thisattrDesc=attrDesc, thisattrComment=attrComment, thisattrMilieu=attrMilieu, thisattrChoro=attrChoro)
     
-    descTaxon = {'description': None , 'commentaire': None, 'milieu': None, 'corrologie': None}
+    descTaxon = {'description': None , 'commentaire': None, 'milieu': None, 'chorologie': None}
     for r in req:
         if r.id_attribut == attrDesc:
             descTaxon['description'] = r.valeur_attribut
@@ -18,6 +18,6 @@ def getAttributesTaxon(connection, cd_ref, attrDesc, attrComment, attrMilieu, at
             descTaxon['commentaire'] = r.valeur_attribut
         elif r.id_attribut == attrMilieu:
             descTaxon['milieu'] = r.valeur_attribut
-        elif r.id_attribut == attrCorro:
-            descTaxon['corrologie'] = r.valeur_attribut
+        elif r.id_attribut == attrChoro:
+            descTaxon['chorologie'] = r.valeur_attribut
     return descTaxon
