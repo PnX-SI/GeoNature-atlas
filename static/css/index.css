@@ -97,9 +97,6 @@
 	-ms-transition: .3s ease-in-out;
 }
 
-
-
-
 .stat-medias-hovereffet{
   display:none;
    position: absolute;
@@ -113,7 +110,6 @@
 .zoom-wrapper:hover .stat-medias-hovereffet{
 	display: block;
 }
-
 
 .stat-medias-hovereffet img {
     position: relative;
@@ -136,15 +132,11 @@
 	text-decoration: none;
 }
 
-
-
-
 .zoom-wrapper:hover .img-custom-medias{
 	-ms-transform:scale(1.1);
 	-webkit-transform:scale(1.1);
 	transform:scale(1.1);
 }
-
 
 .stat-object a{
 	-webkit-transition: all 0.5s ease;
@@ -159,21 +151,21 @@
   max-height: 600px;
 }
 
-#map{
+#map {
   width: 100%; height: 600px;
  }
 
-#listMap{
+#listMap {
   padding-left: 0px;
 }
 
-.pictoImg{
+.pictoImg {
 	width: 100%;
     background-position: center center;
     background-size: cover;
 	height: 60px;
 	border-radius: 6px;
-	max-width: 60px;
+	min-width: 60px;
 }
 
 table#tableEspece {
@@ -182,16 +174,16 @@ table#tableEspece {
   overflow-y: scroll;
 }
 
-.tabEspece:hover{
+.tabEspece:hover {
 	background-color: #cccccc;
 }
 
-.tabEspece.current{
+.tabEspece.current {
 	background-color: #e6e6e6;
 	font-weight: bold;
 }
 
-.singleTaxon{
+.singleTaxon {
  	cursor: pointer
 }
 
@@ -201,6 +193,7 @@ td.singleTaxon.name {
 
 td.singleTaxon.img {
   width: 15%;
+  text-align: center;
 }
 
 td.singleTaxon.date {
@@ -233,7 +226,6 @@ td.singleTaxon.detail {
   padding-right: 5px;
   padding-bottom: 5px;
 }
-
 
 .higlight {
   font-size: 20px;

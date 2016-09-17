@@ -51,6 +51,13 @@ p.imgDescription.main {
   visibility: visible;
 }
 
+#zoomPhotos {
+    position: absolute;
+    top: 92%;
+    left: 95%;
+    color: white;
+}
+
 /*  */
 
 #groupLogoCol {
