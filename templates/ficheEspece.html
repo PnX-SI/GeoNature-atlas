@@ -66,7 +66,7 @@
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="imgCol" > 
                         <div class="imgWrapper">
                             <span class="glyphicon glyphicon-search" id="zoomPhotos"> </span>
-                            <a href="{{firstPhoto.path}}" data-lightbox="imageSet" data-title="{{firstPhoto.title}}  &copy; {{firstPhoto.author}}" >
+                            <a href="{{firstPhoto.path}}" data-lightbox="imageSet" data-title="{{firstPhoto.title}} &copy; {{firstPhoto.author}}">
                                 <img class="imgToCarousel" id="myImg" src="{{firstPhoto.path}}" style="width:100%; height:100%;" alt="{{firstPhoto.title}} &copy; {{firstPhoto.author}}">
                                 <p class="imgDescription main">{{firstPhoto.title}} &copy; {{firstPhoto.author}}</p>
                             </a>
@@ -264,7 +264,7 @@
                             <div class="item">
                             {% endif %}
                                 <a href="{{photo.path}}" data-lightbox="imageSet" data-title="{{photo.title}}  &copy; {{photo.author}}" >
-                                  <div class="slider-size" style="background-image: url({{photo.path}})">
+                                  <div class="slider-size" style="background-image: url({{photo.path}})" alt="{{photo.title}} &copy; {{photo.author}}">
                                       <div class="carousel-caption">
                                         {{photo.title}} &copy; {{photo.author}} 
                                       </div>
@@ -347,7 +347,7 @@
                 {% if videoAudio.video |length > 0 %}
                     <h4> <span class="glyphicon glyphicon-film"> </span> <strong>  Video </strong> ({{videoAudio.video | length}})
                         {% if videoAudio.video | length > 1 %}
-                         <i class ="btn-more" id="btn-more-video" data-toggle="collapse" data-target="#moreVideo" data-placement="left" rel="tooltip" title="Afficher plus de video "> <span class="glyphicon glyphicon-chevron-down"> </span> </i>
+                         <i class ="btn-more" id="btn-more-video" data-toggle="collapse" data-target="#moreVideo" data-placement="left" rel="tooltip" title="Afficher plus de videos"> <span class="glyphicon glyphicon-chevron-down"> </span> </i>
                         {% endif %}  
                     </h4>
                     <hr class="small-hr">
@@ -377,9 +377,9 @@
 
                 {% if videoAudio.audio | length > 0 %}
 
-                    <h4><span class="glyphicon glyphicon-volume-up"> </span> <strong>  Audio  </strong> ({{videoAudio.audio | length}})
+                    <h4><span class="glyphicon glyphicon-volume-up"></span> <strong>Audio</strong> ({{videoAudio.audio | length}})
                         {% if videoAudio.audio | length > 1 %}
-                        <i class ="btn-more" id="btn-more-audio" data-toggle="collapse" data-target="#moreAudio" rel="tooltip" title="Afficher plus d'enregistrement "> <span class="glyphicon glyphicon-chevron-down"> </span> </i>
+                        <i class ="btn-more" id="btn-more-audio" data-toggle="collapse" data-target="#moreAudio" rel="tooltip" title="Afficher plus d'enregistrements"> <span class="glyphicon glyphicon-chevron-down"> </span> </i>
                         {% endif %}
                     </h4>
                     <hr class="small-hr"> 
@@ -403,29 +403,20 @@
             {% endif %}
 
             <div class="panel panel-default" id="graphBloc">
-                
-                    <h3 class="text-primary text-center"> Observations par classes d'altitudes </h3>
-                    <div id="altiChart" style="height: 200px;"></div>
-                    <h3 class="text-primary text-center"> Observations mensuelles </h3>
-                    <div id="phenologyChart" style="height: 200px;"> </div>
-                
+                <h3 class="text-primary text-center"> Observations par classes d'altitudes </h3>
+                <div id="altiChart" style="height: 200px;"></div>
+                <h3 class="text-primary text-center"> Observations mensuelles </h3>
+                <div id="phenologyChart" style="height: 200px;"> </div>
             </div>
-
-            
         </div>
-     
-
-
     </div>
-            {% if configuration.AFFICHAGE_FOOTER %}
-                {% include 'static/custom/templates/footer.html' %}
-            {% endif %}
+        {% if configuration.AFFICHAGE_FOOTER %}
+            {% include 'static/custom/templates/footer.html' %}
+        {% endif %}
 
     <script  src="{{url_for('static', filename='lib/lightbox2/js/lightbox.min.js') }}" ></script>
     
     <script type="text/javascript" src="{{url_for('static', filename='conf/calculCustom.js') }}"></script>
-
-
 
     <script> 
              var dataset = {{altitudes|tojson}},
@@ -439,16 +430,13 @@
                  url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}",
                  taxonYearMin = {{taxon.taxonSearch.yearmin}},
                  cd_ref = {{taxon.taxonSearch.cd_ref}};
-
     </script>  
-
 
     <script type="text/javascript" src="{{url_for('static', filename='chart.js') }}"></script>
 
-   
-   <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
-   <script src="{{url_for('static', filename='main.js') }}"></script>
-   {% if configuration.AFFICHAGE_MAILLE %}
+    <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
+    <script src="{{url_for('static', filename='main.js') }}"></script>
+    {% if configuration.AFFICHAGE_MAILLE %}
         <script src="{{url_for('static', filename='mapMailles.js') }}"></script>
     {% else %}
         <script src="{{url_for('static', filename='mapPoint.js') }}"></script>
