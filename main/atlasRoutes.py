@@ -55,9 +55,9 @@ def ficheEspece(cd_ref):
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
     firstPhoto = vmMedias.getFirstPhoto(connection, cd_ref, config.ATTR_MAIN_PHOTO)
     photoCarousel = vmMedias.getPhotoCarousel(connection, cd_ref, config.ATTR_OTHER_PHOTO)
-    videoAudio = vmMedias.getVideo_and_audio(connection, cd_ref, config.ATTR_AUDIO, config.ATTR_VIDEO_HEBERGEE, config.ATTR_YOUTUBE, config.ATTR_DAYLIMOTION, config.ATTR_VIMEO)
+    videoAudio = vmMedias.getVideo_and_audio(connection, cd_ref, config.ATTR_AUDIO, config.ATTR_VIDEO_HEBERGEE, config.ATTR_YOUTUBE, config.ATTR_DAILYMOTION, config.ATTR_VIMEO)
     articles = vmMedias.getLinks_and_articles(connection, cd_ref, config.ATTR_LIEN, config.ATTR_PDF)
-    taxonDescritpion = vmCorTaxonAttribut.getAttributesTaxon(connection, cd_ref, config.ATTR_DESC, config.ATTR_COMMENTAIRE, config.ATTR_MILIEU, config.ATTR_CORROLOGIE)
+    taxonDescritpion = vmCorTaxonAttribut.getAttributesTaxon(connection, cd_ref, config.ATTR_DESC, config.ATTR_COMMENTAIRE, config.ATTR_MILIEU, config.ATTR_CHOROLOGIE)
     observers = vmObservationsRepository.getObservers(connection, cd_ref)
     configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY,\
     'AFFICHAGE_MAILLE' : config.AFFICHAGE_MAILLE, 'ZOOM_LEVEL_POINT': config.ZOOM_LEVEL_POINT, 'LIMIT_CLUSTER_POINT': config.LIMIT_CLUSTER_POINT, 'FICHE_ESPECE': True, \

@@ -43,7 +43,7 @@ def switchMedia(raw):
     return { config.ATTR_AUDIO : goodPath,
              config.ATTR_VIDEO_HEBERGEE: goodPath,
              config.ATTR_YOUTUBE : "<iframe width='100%' height='315' src='https://www.youtube.com/embed/"+raw.url+"' frameborder='0' allowfullscreen></iframe>",
-             config.ATTR_DAYLIMOTION : "<iframe frameborder='0' width='100%' height='315' src='//www.dailymotion.com/embed/video/"+raw.url+"' allowfullscreen></iframe>",
+             config.ATTR_DAILYMOTION : "<iframe frameborder='0' width='100%' height='315' src='//www.dailymotion.com/embed/video/"+raw.url+"' allowfullscreen></iframe>",
              config.ATTR_VIMEO : "<iframe src='https://player.vimeo.com/video/"+raw.url+"?color=ffffff&title=0&byline=0&portrait=0' width='640' height='360'\
              frameborder='0' webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>"}
 

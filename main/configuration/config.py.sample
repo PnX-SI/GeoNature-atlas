@@ -1,53 +1,50 @@
 #! /usr/bin/python
 # -*- coding:utf-8 -*-
 
-
 database_connection = "postgresql://user:monpassachanger@IPADRESSE:5432/databaseName"
 
+#################################
+### Customisation application ###
+#################################
 
-
-# Customisation application
-
-
-
-# nom de la structure
+# Nom de la structure
 STRUCTURE = "Nom de la structure"
-STRUCTURE = unicode(STRUCTURE, 'utf-8')
+STRUCTURE = unicode(STRUCTURE, 'utf-8') # Fonction permettant d'encoder ce nom en utf-8, à ne pas modifier
 
 # Nom de l'application
 NOM_APPLICATION = "Nom de l application"
 NOM_APPLICATION = unicode(NOM_APPLICATION, 'utf-8') # Fonction permettant d'encoder ce nom en utf-8, à ne pas modifier
 
-#URL de l'application depuis la racine
+# URL de l'application depuis la racine du domaine
 URL_APPLICATION = ""
 
+###### PAGE ACCUEIL #######
 
-######  PAGE ACCUEIL #######
-
-# Bloc d'introdution presentant l'atlas affichage True/False
+# Bloc d'introduction presentant l'atlas. Affichage True/False
 AFFICHAGE_INTRODUCTION = False
+
 # Footer
 AFFICHAGE_FOOTER = False
 
-
-## BLOC STAT : parametre pour le bloc statistique 2 de la page d'acceuil
-# mettre dans RANG_STAT le couple 'rang taxonomique' - 'nom du taxon corepondant au rang' pour avoir des statistique sur ce rang -
-#Fonctionne à tous les niveaux de rang présent dans la table taxref -
+## BLOC STAT : parametre pour le bloc statistique 2 de la page d'accueil
+# Mettre dans RANG_STAT le couple 'rang taxonomique' - 'nom du taxon corepondant au rang' pour avoir des statistique sur ce rang -
+# Fonctionne à tous les niveaux de rang présents dans la table taxref -
 
 # exemple RANG_STAT = [{'ordre': ['Lepidoptera']}, {'classe': ['Insecta', 'Arachnida']}]
 #         RANG_STAT_FR ['Papillon', 'Insecte et Araignées']
 
-RANG_STAT = [{'phylum': ["Arthropoda", "Mollusca"]}, {'phylum': ["Chordata"]}, {'regne': ['Plantae', ]}] 
+RANG_STAT = [{'phylum': ["Arthropoda", "Mollusca"]}, {'phylum': ["Chordata"]}, {'regne': ["Plantae"]}] 
 RANG_STAT_FR = ['Invertebrés', 'Vertebrés', 'Flore']
 
-#Ne pas toucher
+# Fonction à ne pas modifier
 for i in range(len(RANG_STAT_FR)):
     RANG_STAT_FR[i]=unicode( RANG_STAT_FR[i], 'utf-8')
 
 
-
-
+###########################
 ###### Cartographie #######
+###########################
+
 IGNAPIKEY = 'myIGNkey';
 
 MAP = { 
@@ -62,47 +59,48 @@ MAP = {
               "tileName" : 'Ortho IGN'
             },
         'ZOOM' : 10,
-        # Pas du slider sur les annees d observations: 1 = pas de 1 ans sur le slider
+        # Pas du slider sur les annees d'observations: 1 = pas de 1 an sur le slider
         'STEP': 1
 }
 
 
-
-# affiche par maille / True = maille False = point
+# Affichage des observations par maille ou point
+# True = maille / False = point
 AFFICHAGE_MAILLE = False
 
-# Niveau de zoom à partir duquel on passe à l'affiche en point (si AFFICHAGE_MAILLE = False)
+# Niveau de zoom à partir duquel on passe à l'affichage en point (si AFFICHAGE_MAILLE = False)
 ZOOM_LEVEL_POINT = 11
 
-#Limite d'observation à partir duquel on passe à l'affichage en cluster
+# Limite du  nombre d'observations à partir duquel on passe à l'affichage en cluster
 LIMIT_CLUSTER_POINT = 1000
 
 # Nombre de 'x' dernieres observations de la carte sur la page d'acceuil
 NB_LAST_OBS = 100
 
 
+############################
 ####### FICHE ESPECE #######
+############################
 
-
-# rang taxonomique qui fixe jusque quel taxon remonte la filiation taxonomique (hierachie dans la fiche d'identite: Famille, Ordre etc... )
+# Rang taxonomique qui fixe jusqu'à quel taxon remonte la filiation taxonomique (hierarchie dans la fiche d'identite : Famille, Ordre etc... )
 LIMIT_RANG_TAXONOMIQUE_HIERARCHIE = 13
 
-# rang taxonomique qui fixe la limite de l'affichage de la fiche espece ou de la liste  ** 35 = ESPECE **  on prend tout ce qui est inferieur ou egal a l'espece pour faire des fiches et ce qui est superieur pour les listes
+# Rang taxonomique qui fixe la limite de l'affichage de la fiche espece ou de la liste
+# 35 = ESPECE
+# On prend alors tout ce qui est inferieur ou egal a l'espece pour faire des fiches et ce qui est superieur pour les listes
 LIMIT_FICHE_LISTE_HIERARCHY = 28
 
-#URL du stockage des photo
+# URL du stockage des photos et autres médias
 
-URL_MEDIAS = "lien vers le serveur d hebergement des medias"
+URL_MEDIAS = "url du serveur d'hebergement des medias"
 
-
-####ID DES ATTRIBUTS DESCRIPTIF DES TAXONS DE LA TABLE vm_cor_taxon_attribut
+#### ID DES ATTRIBUTS DESCRIPTIFS DES TAXONS DE LA TABLE vm_cor_taxon_attribut
 ATTR_DESC = 100
 ATTR_COMMENTAIRE = 101
 ATTR_MILIEU = 102
-ATTR_CORROLOGIE = 103
+ATTR_CHOROLOGIE = 103
 
-
-####ID DES ATTRIBUTS DES MEDIAS DE LA TABLE vm_medias
+#### ID DES TYPES DE MEDIAS DE LA TABLE vm_medias
 ATTR_MAIN_PHOTO = 1
 ATTR_OTHER_PHOTO = 2
 ATTR_LIEN = 3
@@ -110,12 +108,13 @@ ATTR_PDF = 4
 ATTR_AUDIO = 5
 ATTR_VIDEO_HEBERGEE = 6
 ATTR_YOUTUBE = 7
-ATTR_DAYLIMOTION = 8
+ATTR_DAILYMOTION = 8
 ATTR_VIMEO = 9
 
 
-
+############################################
 #### FICHE COMMUNE ET RANG TAXONOMIQUE #####
+############################################
 
 # La table des taxons contient-elle les informations suivantes ?
 PATRIMONIALITE = True
