@@ -67,8 +67,8 @@
                         <div class="imgWrapper">
                             <span class="glyphicon glyphicon-search" id="zoomPhotos"> </span>
                             <a href="{{firstPhoto.path}}" data-lightbox="imageSet" data-title="{{firstPhoto.title}}  &copy; {{firstPhoto.author}}" >
-                                <img class="imgToCarousel" id="myImg" src="{{firstPhoto.path}}" style="width:100%; height:100%;">
-                                <p class="imgDescription main">{{firstPhoto.title}} &copy; {{firstPhoto.author}}  </p>
+                                <img class="imgToCarousel" id="myImg" src="{{firstPhoto.path}}" style="width:100%; height:100%;" alt="{{firstPhoto.title}} &copy; {{firstPhoto.author}}">
+                                <p class="imgDescription main">{{firstPhoto.title}} &copy; {{firstPhoto.author}}</p>
                             </a>
                         </div>
 
@@ -139,12 +139,12 @@
                         <ul>
                             <li> <span data-icon="&#xe037;" style="font-size: 30px;"></span> </br> 
                                 <span id="nbObsLateral"> 
-                                     <img id="loadingObs" src="{{url_for('static', filename='images/loading2.svg') }}" style="width: 20px;"> <b> </b> </br> Observations  </li>
+                                     <img id="loadingObs" src="{{url_for('static', filename='images/loading2.svg') }}" style="width: 20px;"><br/>Observations</li>
                                 </span>
-                            <li> <img id="picto" src="{{url_for('static', filename='images/church.png') }}" style="width"> <br> <b> {{communes|length}}</b> </br>Communes </li>
-                            <li> <span data-icon="&#xe040;"  style="font-size: 30px;"> </span> </br> <b> {{observers|length}} </b> </br> Observateurs </li>
-                            <li id="firstObs" class="pointer"> <span data-icon="&#xe037;" style="font-size: 25px; color: brown"></span> </br> <b> Première observation </b> </br>  {{taxon.taxonSearch.yearmin|int}} </li>
-                            <li id="lastObs" class="pointer"> <span data-icon="&#xe037;" style="font-size: 25px; color: blue"></span> </br> <b> Dernière observation </b> </br> {{taxon.taxonSearch.yearmax|int}}  </li>
+                            <li> <img id="picto" src="{{url_for('static', filename='images/church.png')}}" style="width"><br/><b>{{communes|length}}</b><br/>Communes</li>
+                            <li> <span data-icon="&#xe040;"  style="font-size: 30px;"></span><br/><b>{{observers|length}}</b><br/>Observateurs</li>
+                            <li id="firstObs" class="pointer"><span data-icon="&#xe037;" style="font-size: 25px; color: brown"></span><br/><b>Première observation</b><br/>{{taxon.taxonSearch.yearmin|int}}</li>
+                            <li id="lastObs" class="pointer"><span data-icon="&#xe037;" style="font-size: 25px; color: blue"></span><br/><b>Dernière observation</b><br/>{{taxon.taxonSearch.yearmax|int}}</li>
 
                         </ul>
                     </div>
@@ -155,14 +155,17 @@
                 <div class="row" id="otherInformations">
                           <ul class="nav nav-tabs">
                             {% if articles | length != 0 %}
-                            <li class="active"><a data-toggle="tab" href="#artciles"><b>{{articles|length}}</b> articles</a></li>
-                            {% endif %}
+                            <li class="active"><a data-toggle="tab" href="#articles"><b>{{articles|length}}</b> articles</a></li>
                             <li><a data-toggle="tab" href="#communes"> <b>{{communes|length}}</b> communes</a></li>
+                            {% else %}
+                            <li class="active"><a data-toggle="tab" href="#communes"> <b>{{communes|length}}</b> communes</a></li>
+                            {% endif %}
                             <li><a data-toggle="tab" href="#observateurs"> <b>{{observers|length}} </b> observateurs</a></li>
                           </ul>
 
                         <div class="tab-content" style="width:100%;">
-                            <div id = "artciles" class="tab-pane fade in active">
+                            {% if articles | length != 0 %}
+                            <div id="articles" class="tab-pane fade in active">
                                 <table class="table table-striped">
                                     <thead>
                                         <th> </th>
@@ -170,7 +173,7 @@
                                         <th> Auteur </th>
                                     </thead>
                                     <tbody>
-                                        {% if articles | length != 0 %}
+                                        
                                             {% for i in range (articles | length) %}
                                                 <tr class="accordion-toggle" data-toggle="collapse" data-target=".moreInfo{{i}}">
                                                     <td> {% if articles[i].id_type == 3 %} <span class="glyphicon glyphicon-link"> </span>
@@ -200,16 +203,21 @@
                                                 </tr>
 
                                             {% endfor %}
-                                        {% endif %}
+                                        
                                     </tbody>
                                 </table>
                             </div>
+                            {% endif %}
+                            {% if articles | length != 0 %}
                             <div id="communes" class="tab-pane fade">
+                            {% else %}
+                            <div id="communes" class="tab-pane fade in active">
+                            {% endif %}
                                          <p>
                                                 {% for com in communes %}
                                                     <a href = "{{url_for('main.ficheCommune', insee = com.insee) }}"> {{com.commune_maj}} </a>
                                                     {% if not loop.last %}
-                                                    ,
+                                                    -
                                                     {% endif %}
                                                 {% endfor %}
                                         </p>    
