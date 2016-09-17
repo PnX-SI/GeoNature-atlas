@@ -7,6 +7,7 @@ body {
 	margin-bottom: 0px;
 	border-radius: 0px;
 	border-bottom-color: white;
+    z-index: 9999;
 }
 
 .ui-autocomplete {
@@ -31,6 +32,7 @@ body {
 	width: 60px;
 	background-color: #333333;
 	height: 100%;
+    z-index: 9998;
 }
 
 #sidebar_menu {
