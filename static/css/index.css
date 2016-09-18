@@ -97,6 +97,12 @@
 	-ms-transition: .3s ease-in-out;
 }
 
+@media (max-width: 992px) {
+.img-custom-medias{
+    height: 400px;
+    }
+}
+
 .stat-medias-hovereffet{
   display:none;
    position: absolute;

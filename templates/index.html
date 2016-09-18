@@ -49,51 +49,49 @@
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<div class="panel panel-default stat-panel">
 					<div class="row">
-						<div class="panel-heading"><strong> <h3> L'atlas du {{configuration.STRUCTURE}} </h3> </strong></div>
+						<div class="panel-heading"><strong><h3>L'atlas du {{configuration.STRUCTURE}}</h3></strong></div>
 						<div class = "col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
 							<div class="thumbnail stat-thumbnail">
 								<span class="glyphicon glyphicon-search"> </span>
-								<h1> {{stat.nbTotalObs}} </h1>
-								<h4> observations </h2>
+								<h1>{{stat.nbTotalObs}}</h1>
+								<h4> observations</h4>
 								<p><a id="localScroll" href="#DernieresObservations" class="btn btn-default" role="button">Voir les {{configuration.NB_LAST_OBS}} dernières observations</a></p>
 							</div>
 						</div>
 						<div class = "col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
 							<div class="thumbnail stat-thumbnail">
-								<span class="glyphicon glyphicon-leaf"> </span>
-								<h1> {{stat.nbTotalTaxons}} </h1>
-								<h4> espèces </h2>
-									<form method="POST" id='searchFormTaxonsStat' class="navbar-form" role="search">
-						               <div class="form-group has-feedback">
-						                 <input id="searchTaxonsStat" type="text" class="form-control"  placeholder="Rechercher une espèce &nbsp; &nbsp; &nbsp;" loading="true" style="background-image: url('{{url_for('static', filename='images/loading3.gif') }}');" disabled>
-						                 <i class="glyphicon glyphicon-search form-control-feedback"></i>
-						                 <input id ="hiddenInputTaxonStat"  type="hidden" name="cd_ref">
-						               </div>       
-            						</form>
-								
+								<span class="glyphicon glyphicon-leaf"></span>
+								<h1>{{stat.nbTotalTaxons}}</h1>
+								<h4> espèces</h4>
+								<form method="POST" id='searchFormTaxonsStat' class="navbar-form" role="search">
+                                    <div class="form-group has-feedback">
+						                <input id="searchTaxonsStat" type="text" class="form-control"  placeholder="Rechercher une espèce &nbsp; &nbsp; &nbsp;" loading="true" style="background-image: url('{{url_for('static', filename='images/loading3.gif') }}');" disabled>
+						                <i class="glyphicon glyphicon-search form-control-feedback"></i>
+						                <input id ="hiddenInputTaxonStat" type="hidden" name="cd_ref">
+						            </div>       
+                                </form>
 							</div>
 						</div>
 						<div class ="col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
 							<div class="thumbnail stat-thumbnail">
-								<img id="picto" src="{{url_for('static', filename='images/commune-icone.png') }}"> 
-								<h1> {{stat.town}}</h1>
-								<h4> communes </h2>
-									<form method="POST" onsubmit="completeAction('#searchFormCommunesStat', hiddenInputCommunesStat)" id='searchFormCommunesStat' action=""  class="navbar-form" role="search">
-						               <div class="form-group has-feedback">
-						                 <input id="searchCommunesStat" type="text" class="form-control"  placeholder="Rechercher une commune" >
-						                 <i class="glyphicon glyphicon-search form-control-feedback"></i>
-						               	 <input id="hiddenInputCommunesStat"  type="hidden" name="insee">
-						               </div>
-						                 
-					            	</form>
+								<img id="picto" src="{{url_for('static', filename='images/commune-icone.png')}}"> 
+								<h1>{{stat.town}}</h1>
+								<h4> communes</h4>
+								<form method="POST" onsubmit="completeAction('#searchFormCommunesStat', hiddenInputCommunesStat)" id='searchFormCommunesStat' action=""  class="navbar-form" role="search">
+						            <div class="form-group has-feedback">
+						                <input id="searchCommunesStat" type="text" class="form-control"  placeholder="Rechercher une commune" >
+						                <i class="glyphicon glyphicon-search form-control-feedback"></i>
+						             	<input id="hiddenInputCommunesStat" type="hidden" name="insee">
+						            </div>          
+					           	</form>
 							</div>
 						</div>
 						<div class ="col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
 							<div class="thumbnail stat-thumbnail">
-								<span class="glyphicon glyphicon-camera"> </span>
-								<h1> {{stat.photo}} </h1>
-								<h4> photos </h2>
-								<p><a href = "{{url_for('main.developpement') }}" class="btn btn-default" role="button">Galerie photos</a></p>
+								<span class="glyphicon glyphicon-camera"></span>
+								<h1>{{stat.photo}}</h1>
+								<h4> photos</h4>
+								<p><a href = "{{url_for('main.developpement')}}" class="btn btn-default" role="button">Galerie photos</a></p>
 							</div>
 						</div>
 						
@@ -108,7 +106,7 @@
 					<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 stat-medias-wrapper">
 							<div class="panel panel-default statMedias">
 								<div class="panel-heading">
-									 <h3>{{configuration.RANG_STAT_FR[i]}} </h3>
+									<h3>{{configuration.RANG_STAT_FR[i]}} </h3>
 									<span class="higlight">{{customStat[i].nb_obs}} </span> observations |  <span class="higlight"> {{customStat[i].nb_taxons}}</span> espèces
 								</div>
 								<h5> <span class="glyphicon glyphicon-eye-open" > </span> Espèces à découvrir </h5>
@@ -123,7 +121,6 @@
 										    		<img src="{{url_for('static', filename='images/eye.png') }}"> 
 										    		<h2 class="overlay-obs"> {{customStatMedias[i][j].nb_obs}} observations </h2>
 										    	</div>
-											    
 											</a>
 										</div>
 									    <div class="thumbnail-caption-medias" >
@@ -145,36 +142,42 @@
 			
 			<!-- Dernières espèces observées -->
 			<div class="col-sm-12" id="DernieresObservations"> 
-					  <!-- CARTO des 100 dernières observations -->
-					  <div class="panel panel-default" >
-					  	<div class="panel-heading" ><strong> Les {{configuration.NB_LAST_OBS}} dernières observations </strong></div>
+					<!-- CARTE des 100 dernières observations -->
+					<div class="panel panel-default" >
+					  	<div class="panel-heading"><strong>Les {{configuration.NB_LAST_OBS}} dernières observations</strong></div>
 					  	<div class="row" id="mapRow">
 							 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-								<div id="map"> </div>
+								<div id="map"></div>
 							 </div>
-							 <div id="listMap" class = "col-lg-4 col-md-4 col-sm-12 col-xs-12"> 
+							 <div id="listMap" class="col-lg-4 col-md-4 col-sm-12 col-xs-12"> 
 								<table id='tableEspece' class="table">
 									
 									<tbody>
 										{% for obs in observations %}
 										<tr class='tabEspece' idSynthese = "{{obs.id_synthese}}">
 											{% if obs.pathImg == None %}
-											<td class="singleTaxon img"> <img class="singleTaxon" width="80%" src="{{url_for('static', filename='images/picto_' + obs.group2_inpn +'.png') }}"> </td>
+											<td class="singleTaxon img">
+                                                <img class="singleTaxon" width="80%" src="{{url_for('static', filename='images/picto_' + obs.group2_inpn +'.png')}}" data-toggle="tooltip" data-original-title="{{obs.group2_inpn}}" data-placement="left">
+                                            </td>
 											{% else %}
-											<td class="singleTaxon img"> <div class ="pictoImg" style="background-image:url({{obs.pathImg}});"></div> </td>
+											<td class="singleTaxon img">
+                                                <div class ="pictoImg" style="background-image:url({{obs.pathImg}});" data-toggle="tooltip" data-original-title="{{obs.group2_inpn}}" data-placement="left"></div>
+                                            </td>
 											{% endif %}
 											<td class="singleTaxon name" cdref="{{obs.cd_ref}}" > {{obs.taxon}}</td>
 											<td class="singleTaxon date"> {{obs.dateobs}} </td>
-											<td class="singleTaxon detail"> <a href = "{{url_for('main.ficheEspece',cd_ref=obs.cd_ref)}}"> <img height="20" width="20" src ="{{url_for('static', filename='images/logo_files.png') }}" data-toggle="tooltip" data-original-title="Voir la fiche espèce" data-placement="left"> 
-											</a> </td> 
-											<td class="hiddenTd" hidden ="true"> {{obs.cd_ref}} </td>
+											<td class="singleTaxon detail">
+                                                <a href = "{{url_for('main.ficheEspece',cd_ref=obs.cd_ref)}}">
+                                                    <img height="20" width="20" src ="{{url_for('static', filename='images/logo_files.png') }}" data-toggle="tooltip" data-original-title="Consulter la fiche espèce" data-placement="left"> 
+                                                </a>
+                                            </td> 
+											<td class="hiddenTd" hidden ="true">{{obs.cd_ref}}</td>
 										</tr>
 										{% endfor %}
 									</tbody>
 								</table>	
 							 </div>
 						</div>
-
 					</div>
 			</div>
 
