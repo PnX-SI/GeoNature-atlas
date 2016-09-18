@@ -1,14 +1,17 @@
     <footer class="footer">
         <p>
-             <a href=""> Accueil  |  </a> 
-            <a href=""> Site du Parc national des Ecrins |  </a> 
-            <a href=""> Conception et crédits |  </a> 
-            <a href="http://www.ecrins-parcnational.fr/mentions-legales"> Mentions légales   </a> 
-       <p>
-
+            <a href="{{url_for('main.index')}}">Accueil</a> | 
+            <a href="http://www.ecrins-parcnational.fr" target="_blank">Site du {{configuration.STRUCTURE}}</a> | 
+            <a href="">Conception et crédits</a> |  
+            <a href="http://www.ecrins-parcnational.fr/mentions-legales" target="_blank">Mentions légales</a> 
+        <p>
 
         <div id="clear"> 
-            <p class="text-muted"> Biodiv' Ecrins - Atlas du la faune et de la flore du Parc national des Ecrins, 2016</p>
+            <p class="text-muted">
+                {{configuration.NOM_APPLICATION}} - Atlas de la faune et de la flore du {{configuration.STRUCTURE}}, 2016
+                <br/>
+                Réalisé avec <a href="https://github.com/PnEcrins/GeoNature-atlas" target="_blank">GeoNature-atlas</a>, développé par le <a href="http://www.ecrins-parcnational.fr" target="_blank">Parc national des Ecrins</a>
+            </p>
         </div>
       
     </footer>
