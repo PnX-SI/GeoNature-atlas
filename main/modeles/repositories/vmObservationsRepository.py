@@ -227,7 +227,7 @@ def genericStat (connection, tab):
         req = connection.execute(text(sql), nomTaxon=tuple(nomTaxon))
         for r in req:
             temp = {'nb_obs': r.nb_obs, 'nb_taxons': r.nb_taxons}
-            tabStat.insert(0, temp)
+            tabStat.append(temp)
     return tabStat
 
 def genericStatMedias(connection, tab):

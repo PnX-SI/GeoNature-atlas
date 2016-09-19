@@ -11,6 +11,7 @@ static/images/ancien
 main/configuration/config.py
 main/configuration/settings.ini
 robots.txt
+venv/*
 
 static/custom/territoire.json
 static/custom/custom.css
