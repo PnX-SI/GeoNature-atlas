@@ -70,7 +70,7 @@ then
                                                 USING gist(geom);"
     
     echo "Création de la structure de la base..."
-    sed -i "s/WHERE id_attribut  IN (100, 101, 102, 103);$/WHERE id_attribut  IN ($attr_desc, $attr_commentaire, $attr_milieu, $attr_chorologie)/" data/atlas.sql
+    sed -i "s/WHERE id_attribut IN (100, 101, 102, 103);$/WHERE id_attribut  IN ($attr_desc, $attr_commentaire, $attr_milieu, $attr_chorologie);/" data/atlas.sql
     sed -i "s/current_date -15;$/current_date -$time/" data/atlas.sql
     sed -i "s/current_date +15;$/current_date +$time/" data/atlas.sql
     

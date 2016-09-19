@@ -34,4 +34,10 @@ $('th').click( function(){
     $(this).find('span').toggleClass('glyphicon glyphicon-menu-down').toggleClass('glyphicon glyphicon-menu-up');
 });
 
-
+// Load /espece/cd_ref on row click
+if(configuration.MYTYPE != 1){
+  $(".taxonRow").click(function(){
+     cd_ref = $(this).attr('cdRef');
+     location.href = configuration.URL_APPLICATION+'/espece/'+cd_ref;
+  });
+}
