@@ -14,7 +14,7 @@ sudo apt-get -y upgrade
 cd "$(dirname "$0")"
 
 sudo apt-get install -y apache2
-sudo apt-get install libapache2-mod-wsgi
+sudo apt-get install -y libapache2-mod-wsgi
 sudo apachectl restart
 
 

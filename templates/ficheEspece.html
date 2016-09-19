@@ -291,7 +291,9 @@
                         <h4> <strong> Information sur l'espèce </strong> </h4>
                           <ul class="nav nav-tabs" style="margin-botton:10px;">
                             <li class="active"><a data-toggle="tab" href="#description">Description</a></li>
+                            {% if taxonDescritpion.commentaire != None %}
                             <li><a data-toggle="tab" href="#commentaire">Commentaire</a></li>
+                            {% endif %}
                             <li><a data-toggle="tab" href="#milieu">Milieu</a></li>
                             <li><a data-toggle="tab" href="#chorologie">Répartition</a></li>
                             <li><a data-toggle="tab" href="#synonymes">Synonymes</a></li>
@@ -306,13 +308,12 @@
                                 {{taxonDescritpion.description}}
                                 {% endif %}
                             </div>
+                            {% if taxonDescritpion.commentaire != None %}
                             <div id="commentaire" class="tab-pane fade">
-                                {% if taxonDescritpion.commentaire == None %}
-                                    Non renseigné pour le moment
-                                {% else %}
-                                    {{taxonDescritpion.commentaire}}
-                                {% endif %}
+
+                                {{taxonDescritpion.commentaire}}     
                             </div>
+                            {% endif %}
                             <div id="milieu" class="tab-pane fade">
                                 {% if taxonDescritpion.milieu == None %}
                                     Non renseigné pour le moment
