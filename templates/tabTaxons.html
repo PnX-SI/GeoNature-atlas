@@ -22,7 +22,13 @@
         <tbody>
                 {% for taxon in listTaxons.taxons %}
             <tr class="taxonRow" insee ="{{referenciel.insee}}" cdRef= "{{taxon.cd_ref}}">  
-                <td> <img src= "{{url_for('static', filename='images/picto_'+ taxon.group2_inpn|urlencode+'.png') }}"  data-placement="right" data-toggle="tooltip" title="{{taxon.group2_inpn}}"> <span class="hiddenSpan"> {{taxon.group2_inpn}} </span> </td>
+                <td> 
+                    {% if taxon.path == None %}
+                    <img src= "{{url_for('static', filename='images/picto_'+ taxon.group2_inpn|urlencode+'.png') }}" data-toggle="tooltip" data-placement="right" title="{{taxon.group2_inpn}}"> 
+                    {% else %}
+                     <div class ="pictoImgList" style="background-image:url({{taxon.path}});" data-toggle="tooltip" title="{{taxon.group2_inpn}}" data-placement="right"></div>
+                    {% endif %}
+                    <span class="hiddenSpan"> {{taxon.group2_inpn}} </span> </td>
                 <td class="name"> {{taxon.nom_complet_html|safe}} </td>
                 <td> {% if taxon.nom_vern == None %} - {% else %} {{taxon.nom_vern}} {% endif %}</td>                
                 {% if configuration.PROTECTION %}

@@ -109,3 +109,12 @@ tbody tr.current{
 	background-color: #e6e6e6 !important;
 	font-weight: bold;
 }
+
+.pictoImgList {
+	width: 80px;
+    background-position: center center;
+    background-size: cover;
+	height: 80px;
+	border-radius: 6px;
+
+}

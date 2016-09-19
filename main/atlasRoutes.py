@@ -77,7 +77,7 @@ def ficheCommune(insee):
     session = utils.loadSession()
     connection = utils.engine.connect()
 
-    listTaxons = vmTaxonsRepository.getTaxonsCommunes(session, str(insee))
+    listTaxons = vmTaxonsRepository.getTaxonsCommunes(connection, insee)
     commune = vmCommunesRepository.getCommuneFromInsee(connection, insee)
     communesSearch = vmCommunesRepository.getAllCommunes(session)
     if config.AFFICHAGE_MAILLE:
