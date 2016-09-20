@@ -67,7 +67,7 @@
                         <div class="imgWrapper">
                             <span class="glyphicon glyphicon-search" id="zoomPhotos"> </span>
                             <a href="{{firstPhoto.path}}" data-lightbox="imageSet" data-title="{{firstPhoto.title}} &copy; {{firstPhoto.author}}">
-                                <img class="imgToCarousel" id="myImg" src="{{firstPhoto.path}}" style="width:100%; height:100%;" alt="{{firstPhoto.title}} &copy; {{firstPhoto.author}}">
+                                <img id="mainImg" src="{{firstPhoto.path}}" style="width:100%;" alt="{{firstPhoto.title}} &copy; {{firstPhoto.author}}">
                                 <p class="imgDescription main">{{firstPhoto.title}} &copy; {{firstPhoto.author}}</p>
                             </a>
                         </div>
@@ -106,7 +106,7 @@
                             {% endfor %}
                         </div>
 						
-						<div id="inpnLink">
+                        <div id="inpnLink">
                             <a href='https://inpn.mnhn.fr/espece/cd_nom/{{taxon.taxonSearch.cd_ref}}' target="_blank"> 
                                 <img width="130px" src="{{url_for('static', filename='images/logo_inpn.png') }}"  data-toggle="tooltip" data-original-title="Consultez la fiche espèce sur l'INPN" data-placement="right">
                              </a>
@@ -249,7 +249,7 @@
         <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
             {% if photoCarousel | length >= 1 %}
             <div class="panel panel-default">
-                  <div id="fixed" class="carousel slide" data-ride="carousel" data-interval="false">
+                <div id="fixed" class="carousel slide" data-ride="carousel" data-interval="false">
                       <!-- Indicators -->
                       <ol class="carousel-indicators">
                       {% for i in range(photoCarousel|length) %}
@@ -287,7 +287,7 @@
                       <a class="right carousel-control" href="javascript:void(0)" data-slide="next" data-target="#fixed">
                         <span class="glyphicon glyphicon-chevron-right"></span>
                       </a>
-                    </div>
+                </div>
             </div>
             {% endif %}
 

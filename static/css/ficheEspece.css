@@ -1,25 +1,29 @@
-#identityPanel{
+#identityPanel {
 }
 
-#taxonIdentity{
+#taxonIdentity {
 	padding-top: 10px;
 	padding-bottom: 10px;
 	padding-right: 10px;
 }
 
-#taxonIdentity h3{
+#taxonIdentity h3 {
 	margin-top: 5px;
 }
 
-#rowIdentity{
+#rowIdentity {
 	margin-left: 0px;
 	margin-right: 0px;
 }
 
-#imgCol{
+#imgCol {
 	padding-right: 0px;
 	padding-left: 0px;
-/}
+}
+
+#mainImg {
+	width: 100%;
+}
 
 /*Display legend on images */
 
@@ -45,6 +49,7 @@ p.imgDescription.main {
   opacity: 0.5;
   margin-bottom: 0px;
   padding: 5px;
+  text-decoration: none;
 }
 
 .imgWrapper:hover p.imgDescription {

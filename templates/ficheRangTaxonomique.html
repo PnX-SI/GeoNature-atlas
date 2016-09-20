@@ -46,9 +46,9 @@
                         {{taxon.nom_rang}} :
                         <i>
                         {% if ( taxon.tri_rang >= configuration.LIMIT_FICHE_LISTE_HIERARCHY) %}
-                             <a href = "{{url_for('main.ficheEspece', cd_ref = taxon.cd_ref) }}"> {{taxon.lb_nom}}</a> 
+                             <a href = "{{url_for('main.ficheEspece', cd_ref = taxon.cd_ref) }}">{{taxon.lb_nom}}</a> 
                         {% else %}
-                             <a href = "{{url_for('main.ficheRangTaxonomie', cd_ref = taxon.cd_ref) }}">{{taxon.lb_nom}} </a> 
+                             <a href = "{{url_for('main.ficheRangTaxonomie', cd_ref = taxon.cd_ref) }}">{{taxon.lb_nom}}</a> 
                             
                         {% endif %}
                         </i>
@@ -59,9 +59,9 @@
                     {% endfor %}
                     </div>
                      <ul id="statHierarchy">
-                        <li> <span data-icon="&#xe037;" style="font-size: 30px;"></span> </br> <b> {{listTaxons.nbObsTotal}} </b> </br> Observations  </li>
-                        <li> <span data-icon="&#xe03b;"  style="font-size: 30px;"></span> </br> <b> {{listTaxons.taxons|length}} </b> </br> Espèces  </li>
-                        <li> <span data-icon="&#xe040;"  style="font-size: 30px;"></span> </br> <b> {{observers | length}}  </b> </br> Observateurs  </li>
+                        <li><span data-icon="&#xe037;" style="font-size: 30px;"></span><br/><b>{{listTaxons.nbObsTotal}}</b><br/>observations</li>
+                        <li><span data-icon="&#xe03b;" style="font-size: 30px;"></span><br/><b>{{listTaxons.taxons|length}}</b><br/>espèces</li>
+                        <li><span data-icon="&#xe040;" style="font-size: 30px;"></span><br/><b>{{observers | length}}</b><br/>observateurs</li>
                     </ul>
                 </div>
 
@@ -76,10 +76,13 @@
                 </div>
             </div>
         </div>
-            {% if configuration.AFFICHAGE_FOOTER %}
-                {% include 'static/custom/templates/footer.html' %}
-            {% endif %}
+            
     </div>
+    
+    {% if configuration.AFFICHAGE_FOOTER %}
+        {% include 'static/custom/templates/footer.html' %}
+    {% endif %}
+    
         <!-- JQUERY UI -->
         <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
         <script type="text/javascript">
