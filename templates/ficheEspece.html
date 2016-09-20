@@ -79,7 +79,7 @@
                     <div class="col-sm-12" id="taxonIdentity">
                     {% endif %}
 						<div id="groupLogoCol" >
-							<img src="{{url_for('static', filename='images/picto_'+ taxon.taxonSearch.group2_inpn|urlencode+'.png') }}" alt="{{taxon.taxonSearch.group2_inpn}}" title ="{{taxon.taxonSearch.group2_inpn}}" data-toggle="tooltip" data-original-title="{{taxon.taxonSearch.group2_inpn}}" data-placement="right">
+							<img src="{{url_for('static', filename='images/picto_'+ taxon.taxonSearch.group2_inpn|urlencode+'.png') }}" alt="{{taxon.taxonSearch.group2_inpn}}" data-toggle="tooltip" data-original-title="{{taxon.taxonSearch.group2_inpn}}" data-placement="right">
 						</div>
 						<div id="taxonName">
                         {% if taxon.taxonSearch.nom_vern != None %}
@@ -105,9 +105,15 @@
                                 {% endif %}
                             {% endfor %}
                         </div>
-
+						
+						<div id="inpnLink">
+                            <a href='https://inpn.mnhn.fr/espece/cd_nom/{{taxon.taxonSearch.cd_ref}}' target="_blank"> 
+                                <img width="130px" src="{{url_for('static', filename='images/logo_inpn.png') }}"  data-toggle="tooltip" data-original-title="Consultez la fiche espèce sur l'INPN" data-placement="right">
+                             </a>
+                        </div>
+						
                         {% if taxon.listTaxonsChild|length > 0 %}
-                        <h5 id="buttonChild"> Taxons agrégés sur cette fiche:  <span class="glyphicon glyphicon-chevron-right"> </span> 
+                        <h5 id="buttonChild">Taxons agrégés sur cette fiche: <span class="glyphicon glyphicon-chevron-right"></span> 
 						</h5> 
                         <div hidden="hidden" id="childList">
                                     {% for child in taxon.listTaxonsChild %}
@@ -139,10 +145,10 @@
                         <ul>
                             <li> <span data-icon="&#xe037;" style="font-size: 30px;"></span> </br> 
                                 <span id="nbObsLateral"> 
-                                     <img id="loadingObs" src="{{url_for('static', filename='images/loading2.svg') }}" style="width: 20px;"><br/>Observations</li>
+                                     <img id="loadingObs" src="{{url_for('static', filename='images/loading2.svg') }}" style="width: 20px;"><br/>observations</li>
                                 </span>
-                            <li> <img id="picto" src="{{url_for('static', filename='images/church.png')}}" style="width"><br/><b>{{communes|length}}</b><br/>Communes</li>
-                            <li> <span data-icon="&#xe040;"  style="font-size: 30px;"></span><br/><b>{{observers|length}}</b><br/>Observateurs</li>
+                            <li> <img id="picto" src="{{url_for('static', filename='images/church.png')}}" style="width"><br/><b>{{communes|length}}</b><br/>communes</li>
+                            <li> <span data-icon="&#xe040;"  style="font-size: 30px;"></span><br/><b>{{observers|length}}</b><br/>observateurs</li>
                             <li id="firstObs" class="pointer"><span data-icon="&#xe037;" style="font-size: 25px; color: brown"></span><br/><b>Première observation</b><br/>{{taxon.taxonSearch.yearmin|int}}</li>
                             <li id="lastObs" class="pointer"><span data-icon="&#xe037;" style="font-size: 25px; color: blue"></span><br/><b>Dernière observation</b><br/>{{taxon.taxonSearch.yearmax|int}}</li>
 
@@ -213,14 +219,14 @@
                             {% else %}
                             <div id="communes" class="tab-pane fade in active">
                             {% endif %}
-                                         <p>
-                                                {% for com in communes %}
-                                                    <a href = "{{url_for('main.ficheCommune', insee = com.insee) }}"> {{com.commune_maj}} </a>
-                                                    {% if not loop.last %}
-                                                    -
-                                                    {% endif %}
-                                                {% endfor %}
-                                        </p>    
+                                <p>
+                                    {% for com in communes %}
+                                        <a href = "{{url_for('main.ficheCommune', insee = com.insee)}}">{{com.commune_maj}}</a>
+                                        {% if not loop.last %}
+                                         -
+                                        {% endif %}
+                                    {% endfor %}
+                                </p>    
                             </div>
                            
                             <div id="observateurs" class="tab-pane fade">
@@ -288,7 +294,7 @@
             
             <div class="panel panel-default" style="padding: 10px;">
 
-                        <h4> <strong> Information sur l'espèce </strong> </h4>
+                        <h4><strong>Informations sur l'espèce</strong></h4>
                           <ul class="nav nav-tabs" style="margin-botton:10px;">
                             <li class="active"><a data-toggle="tab" href="#description">Description</a></li>
                             {% if taxonDescritpion.commentaire != None %}
@@ -404,10 +410,10 @@
             {% endif %}
 
             <div class="panel panel-default" id="graphBloc">
-                <h3 class="text-primary text-center"> Observations par classes d'altitudes </h3>
-                <div id="altiChart" style="height: 200px;"></div>
-                <h3 class="text-primary text-center"> Observations mensuelles </h3>
-                <div id="phenologyChart" style="height: 200px;"> </div>
+                <h3 class="text-center">Observations par classes d'altitudes</h3>
+                <div id="altiChart"></div>
+                <h3 class="text-center">Observations mensuelles</h3>
+                <div id="phenologyChart"></div>
             </div>
         </div>
     </div>
