@@ -12,12 +12,10 @@
 								Celles-ci se basent sur les observations réalisées en temps réel par les agents et présente une vue d'ensemble des espèces observées mais en aucun cas un inventaire exhaustif des espèces du territoire.
 							</p>
 							<p>
-								<a href="{{url_for('main.presentation') }}">En savoir plus</a>
+								<a href="{{url_for('main.presentation') }}" class="btn btn-default">En savoir plus</a>
 						</div>
 						<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-							<a href="{{url_for('static', filename='custom/images/accueil-intro.jpg') }}" data-lightbox="imageSet">
-								<img src="{{url_for('static', filename='custom/images/accueil-intro.jpg') }}" width="100%" alt="{{configuration.NOM_APPLICATION}}">
-							</a>
+							<img src="{{url_for('static', filename='custom/images/accueil-intro.jpg') }}" width="100%" alt="{{configuration.NOM_APPLICATION}}">
 						</div>
 					</div>
 				</div>
