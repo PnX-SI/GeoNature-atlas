@@ -8,6 +8,19 @@ body {
 	border-radius: 0px;
 	border-bottom-color: white;
     z-index: 1999;
+    height: 60px;
+}
+
+.logoStructure {
+    height: 60px;
+    margin: -15px;
+    padding-right: 15px;
+}
+
+.titreAppli {
+    font-size: 18px;
+    line-height: 30px;
+    padding-right: 40px;
 }
 
 .ui-autocomplete {
@@ -17,7 +30,7 @@ body {
 #page {
   padding-left: 60px;
   padding-right: 0px;
-  margin-top: 20px;
+  margin-top: 25px;
 }
 
 .rowMargin {
@@ -33,6 +46,7 @@ body {
 	background-color: #333333;
 	height: 100%;
     z-index: 1998;
+    margin-top: 10px;
 }
 
 #sidebar_menu {
