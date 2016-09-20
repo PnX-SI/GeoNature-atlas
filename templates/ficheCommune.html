@@ -29,10 +29,11 @@
         <script src="{{url_for('static', filename='lib/node_modules/bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
 
        <!-- Atlas -->
-        <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />       
-        <link rel="stylesheet" href="{{url_for('static', filename='css/listEspeces.css') }}" />
-        <link rel="stylesheet" href="{{url_for('static', filename='css/icones.css') }}" />
-        <link rel="stylesheet" href="{{url_for('static', filename='custom/custom.css') }}" />
+        <link rel="shortcut icon" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}"/>       
+        <link rel="stylesheet" href="{{url_for('static', filename='css/listEspeces.css') }}"/>
+        <link rel="stylesheet" href="{{url_for('static', filename='css/icones.css') }}"/>
+        <link rel="stylesheet" href="{{url_for('static', filename='custom/custom.css') }}"/>
 
 
    </head>
@@ -45,14 +46,13 @@
 		<div class="container-fluid" id="page">
             
             <div class="col-sm-7">
-                <div class="row ">
+                <div class="row">
                     <div class="panel panel-default" id="parent">
-                        <h4> <b>  Commune de {{referenciel.communeName}} </b> </h4>
-        
+                        <h4><b>Commune de {{referenciel.communeName}}</b></h4>
                         <ul id="stat">
-                            <li> <span data-icon="&#xe037;" style="font-size: 30px;"></span> </br> <b> {{listTaxons.nbObsTotal}} </b> </br> Observations  </li>
-                            <li> <span data-icon="&#xe03b;"  style="font-size: 30px;"></span> </br> <b> {{listTaxons.taxons|length}} </b> </br> Espèces  </li>
-                            <li> <span data-icon="&#xe040;"  style="font-size: 30px;"></span> </br> <b> {{observers | length}}  </b> </br> Observateurs  </li>
+                            <li><span data-icon="&#xe037;" style="font-size: 30px;"></span><br/><b>{{listTaxons.nbObsTotal}}</b><br/>observations</li>
+                            <li><span data-icon="&#xe03b;" style="font-size: 30px;"></span></br><b>{{listTaxons.taxons|length}}</b><br/>espèces</li>
+                            <li><span data-icon="&#xe040;" style="font-size: 30px;"></span></br><b>{{observers | length}}</b><br/>observateurs</li>
                         </ul>
                     </div>
                 </div>

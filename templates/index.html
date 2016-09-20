@@ -23,10 +23,11 @@
         <link rel="stylesheet" href="{{url_for('static', filename='lib/lightbox2/css/lightbox.min.css') }}" />
 
         <!-- CSS Application -->
+        <link rel="shortcut icon" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
         <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='css/index.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='custom/custom.css') }}" />
-	
+        	
     </head>
 
     <body>
@@ -187,7 +188,7 @@
 			<!-- ESPECES PERIODE -->
 			<div class="col-sm-12"> 
 				<div class="panel panel-default">
-					<div class="panel-heading"><strong>Les espèces les plus observées en ce moment</strong></div>
+					<div class="panel-heading"><strong>A voir en ce moment</strong></div>
 					<div class="row thumbnail-row">
 					{% for tax in mostViewTaxon %}
 						<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col">
