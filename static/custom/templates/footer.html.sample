@@ -26,5 +26,5 @@
       ga('create', '{{configuration.ID_GOOGLE_ANALYTICS}}', 'auto');
       ga('send', 'pageview');
     </script>
-	{% endif %}
+    {% endif %}
     
