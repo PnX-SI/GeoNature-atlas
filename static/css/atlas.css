@@ -3,6 +3,19 @@ body {
 	padding-top: 50px;
 }
 
+#page {
+  padding-left: 60px;
+  padding-right: 0px;
+  margin-top: 25px;
+}
+
+.rowMargin {
+	margin-left: 0px;
+	margin-right: 0px
+}
+
+/* Navbar */
+
 .navbar {
 	margin-bottom: 0px;
 	border-radius: 0px;
@@ -20,23 +33,19 @@ body {
 .titreAppli {
     font-size: 18px;
     line-height: 30px;
-    padding-right: 40px;
+    padding-right: 20px;
+}
+
+@media (max-width: 767px){
+.navbar-collapse {
+    background-color: #333;
+    }
 }
 
 .ui-autocomplete {
     z-index: 2000;
 }
 
-#page {
-  padding-left: 60px;
-  padding-right: 0px;
-  margin-top: 25px;
-}
-
-.rowMargin {
-	margin-left: 0px;
-	margin-right: 0px
-}
 
 /* Sidebar */
 
@@ -90,11 +99,6 @@ body {
     width: 100%;
 	background-position: center center;
 	background-size: cover;
-}
-
-@media (min-width: 768px)
-.slider-size {
-    height: 300px; 
 }
 
 .slider-size:hover{
