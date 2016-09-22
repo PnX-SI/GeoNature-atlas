@@ -35,7 +35,7 @@ def getPhotoCarousel(connection, cd_ref, id):
 
 def switchMedia(raw):
     goodPath = str()
-    if raw.url == None:
+    if raw.chemin != None and raw.chemin[0] == 's':
         goodPath = config.URL_MEDIAS+raw.chemin
     else:
         goodPath = raw.url
@@ -77,6 +77,44 @@ def getLinks_and_articles(connection, cd_ref, id3, id4):
     return tabArticles
 
 
+def getPhotosGallery(connection, id1):
+    sql= """ SELECT m.url, m.chemin, t.nom_vern, t.lb_nom, m.cd_ref
+         FROM atlas.vm_medias m
+        JOIN atlas.vm_taxons t ON t.cd_ref = m.cd_ref
+        WHERE m.id_type = :thisID
+        ORDER BY RANDOM()
+        LIMiT 24"""
+    req = connection.execute(text(sql), thisID = id1)
+    tabPhotos = list()
+    for r in req:
+        if r.nom_vern != None:
+            nom_verna = r.nom_vern.split(',')
+            taxonName = nom_verna[0]+' | ' + r.lb_nom
+        else:
+            taxonName = r.lb_nom
+        temp={'path':utils.findPath(r), 'name':taxonName, 'cd_ref':r.cd_ref}
+        tabPhotos.append(temp)
+    return tabPhotos
+
+
+def getPhotosGalleryByGroup(connection, id1, INPNgroup):
+    sql= """ SELECT m.url, m.chemin, t.nom_vern, t.lb_nom, m.cd_ref
+         FROM atlas.vm_medias m
+        JOIN atlas.vm_taxons t ON t.cd_ref = m.cd_ref
+        WHERE m.id_type = :thisID AND t.group2_inpn = :thisGroup
+        ORDER BY RANDOM()
+        LIMiT 24"""
+    req = connection.execute(text(sql), thisID = id1, thisGroup=INPNgroup)
+    tabPhotos = list()
+    for r in req:
+        if r.nom_vern != None:
+            nom_verna = r.nom_vern.split(',')
+            taxonName = nom_verna[0]+' | ' + r.lb_nom
+        else:
+            taxonName = r.lb_nom
+        temp={'path':utils.findPath(r), 'name':taxonName, 'cd_ref':r.cd_ref}
+        tabPhotos.append(temp)
+    return tabPhotos
 
 
 
