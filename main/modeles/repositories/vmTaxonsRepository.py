@@ -68,5 +68,15 @@ def getTaxonsChildsList(connection, cd_ref):
         nbObsTotal = nbObsTotal+ r.nb_obs
     return {'taxons': taxonRankList, 'nbObsTotal' : nbObsTotal}
 
+def getINPNgroup(connection):
+    sql=""" SELECT DISTINCT group2_inpn FROM atlas.vm_taxons """
+    req = connection.execute(text(sql))
+    groupList = list()
+    for r in req:
+        temp={'group':utils.deleteAccent(r.group2_inpn), 'groupAccent': r.group2_inpn}
+        groupList.append(temp)
+    return groupList
+    
+
 
 

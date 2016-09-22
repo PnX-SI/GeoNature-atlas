@@ -120,19 +120,24 @@ def ficheRangTaxonomie(cd_ref):
 @main.route('/developpement', methods=['GET', 'POST'])
 def developpement():
     session = utils.loadSession()
+    
 
     communesSearch = vmCommunesRepository.getAllCommunes(session)
     configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'URL_APPLICATION': config.URL_APPLICATION}
 
+    
     session.close()
     return render_template('templates/developpement.html', communesSearch = communesSearch, configuration=configuration)
 	
 @main.route('/photos', methods=['GET', 'POST'])
 def photos():
     session = utils.loadSession()
-
+    connection = utils.engine.connect()
+    
+    groups = vmTaxonsRepository.getINPNgroup(connection)
     communesSearch = vmCommunesRepository.getAllCommunes(session)
     configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'URL_APPLICATION': config.URL_APPLICATION}
 
     session.close()
-    return render_template('templates/galeriePhotos.html', communesSearch = communesSearch, configuration=configuration)
+    connection.close()
+    return render_template('templates/galeriePhotos.html', communesSearch = communesSearch, groups=groups, configuration=configuration)

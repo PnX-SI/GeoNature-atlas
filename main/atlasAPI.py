@@ -1,7 +1,8 @@
 from flask import jsonify, json, Blueprint
 from werkzeug.wrappers import Response
 from . import utils
-from modeles.repositories import vmSearchTaxonRepository, vmObservationsRepository, vmObservationsMaillesRepository
+from modeles.repositories import vmSearchTaxonRepository, vmObservationsRepository, vmObservationsMaillesRepository, vmMedias
+from configuration import config
 
 api = Blueprint('api', __name__)
 
@@ -52,5 +53,17 @@ def getObservationsCommuneTaxonMailleAPI(insee, cd_ref):
     connection.close()
     return Response(json.dumps(observations), mimetype='application/json')
 
+@api.route('/photoGroup/<group>', methods=['GET'])
+def getPhotosGroup(group):
+    connection = utils.engine.connect()
+    photos = vmMedias.getPhotosGalleryByGroup(connection,config.ATTR_MAIN_PHOTO, config.ATTR_OTHER_PHOTO, group)
+    connection.close()
+    return Response(json.dumps(photos), mimetype='application/json')
 
+@api.route('/photosGallery', methods=['GET'])
+def getPhotosGallery():
+    connection = utils.engine.connect()
+    photos=vmMedias.getPhotosGallery(connection, config.ATTR_MAIN_PHOTO, config.ATTR_OTHER_PHOTO)
+    connection.close()
+    return Response(json.dumps(photos), mimetype='application/json')
 

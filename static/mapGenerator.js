@@ -289,7 +289,7 @@ function generateGeojsonPointFicheEspece(observationsPoint, yearMin, yearMax){
       observationsPoint.forEach(function(obs){
           if(obs.year >= yearMin && obs.year <= yearMax ) {
               geometry = obs.geojson_point;
-              properties = {'id_synthese' : obs.id_synthese,
+              properties = {'id_observation' : obs.id_observation,
                             'cd_ref': obs.cd_ref,
                             'dateobsCompare': new Date(obs.dateobs),
                             'dateobsPopup': obs.dateobs,
@@ -359,7 +359,7 @@ function generateGeojsonPointLastObs(observationsPoint){
 
       observationsPoint.forEach(function(obs){
               geometry = obs.geojson_point;
-              properties = {'id_synthese' : obs.id_synthese,
+              properties = {'id_observation' : obs.id_observation,
                              'taxon_name' : obs.taxon,
                             'cd_ref': obs.cd_ref,
                             'dateobs': obs.dateobs,
@@ -461,12 +461,12 @@ function generateGeoJsonMailleLastObs(observations) {
   while (i<observations.length){
       geometry = observations[i].geojson_maille;
       idMaille = observations[i].id_maille;
-      properties = {id_maille : idMaille, list_taxon : [observations[i].taxon], list_cdref:[observations[i].cd_ref], list_id_synthese: [observations[i].id_synthese] };
+      properties = {id_maille : idMaille, list_taxon : [observations[i].taxon], list_cdref:[observations[i].cd_ref], list_id_observation: [observations[i].id_observation] };
       var j = i+1;
       while (j<observations.length && observations[j].id_maille == idMaille){
            properties.list_taxon.push(observations[j].taxon);
            properties.list_cdref.push(observations[j].cd_ref);
-           properties.list_id_synthese.push(observations[j].id_synthese);
+           properties.list_id_observation.push(observations[j].id_observation);
         j = j+1
       }
       myGeoJson.features.push({
@@ -482,9 +482,9 @@ function generateGeoJsonMailleLastObs(observations) {
 }
 
 
-function find_id_synthese_in_array(tab_id, id_synthese){
+function find_id_observation_in_array(tab_id, id_observation){
   i = 0 ;
-  while (i < tab_id.length && tab_id[i] != id_synthese){
+  while (i < tab_id.length && tab_id[i] != id_observation){
     i = i+1
   }
   return i != tab_id.length
