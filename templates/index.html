@@ -19,9 +19,6 @@
         <script src="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.css') }}" />
 
-         <!-- LightBox -->
-        <link rel="stylesheet" href="{{url_for('static', filename='lib/lightbox2/css/lightbox.min.css') }}" />
-
         <!-- CSS Application -->
         <link rel="shortcut icon" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
         <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />
@@ -147,7 +144,7 @@
 					<div class="panel panel-default" >
 					  	<div class="panel-heading"><strong>Les {{configuration.NB_LAST_OBS}} dernières observations</strong></div>
 					  	<div class="row" id="mapRow">
-							 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+							 <div id="blocMap" class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
 								<div id="map"></div>
 							 </div>
 							 <div id="listMap" class="col-lg-4 col-md-4 col-sm-12 col-xs-12"> 
@@ -169,7 +166,7 @@
 											<td class="singleTaxon date"> {{obs.dateobs}} </td>
 											<td class="singleTaxon detail">
                                                 <a href = "{{url_for('main.ficheEspece',cd_ref=obs.cd_ref)}}">
-                                                    <img height="20" width="20" src ="{{url_for('static', filename='images/logo_files.png') }}" data-toggle="tooltip" data-original-title="Consulter la fiche espèce" data-placement="left"> 
+                                                    <span class="glyphicon glyphicon-list" data-toggle="tooltip" data-original-title="Consulter la fiche espèce" data-placement="left"> </span> 
                                                 </a>
                                             </td> 
 											<td class="hiddenTd" hidden ="true">{{obs.cd_ref}}</td>
@@ -215,7 +212,6 @@
 			{% include 'static/custom/templates/footer.html' %}
 		{% endif %}
         
-		<script  src="{{url_for('static', filename='lib/lightbox2/js/lightbox.min.js') }}" ></script>
     	<script type="text/javascript">
 			var observations = {{observations|tojson}}
 			,communesSearch = {{communesSearch|tojson}}
