@@ -56,14 +56,14 @@ def getObservationsCommuneTaxonMailleAPI(insee, cd_ref):
 @api.route('/photoGroup/<group>', methods=['GET'])
 def getPhotosGroup(group):
     connection = utils.engine.connect()
-    photos = vmMedias.getPhotosGalleryByGroup(connection,config.ATTR_MAIN_PHOTO, group)
+    photos = vmMedias.getPhotosGalleryByGroup(connection,config.ATTR_MAIN_PHOTO, config.ATTR_OTHER_PHOTO, group)
     connection.close()
     return Response(json.dumps(photos), mimetype='application/json')
 
-@api.route('/photoGallery', methods=['GET'])
+@api.route('/photosGallery', methods=['GET'])
 def getPhotosGallery():
     connection = utils.engine.connect()
-    photos=vmMedias.getPhotosGallery(connection, config.ATTR_MAIN_PHOTO)
+    photos=vmMedias.getPhotosGallery(connection, config.ATTR_MAIN_PHOTO, config.ATTR_OTHER_PHOTO)
     connection.close()
     return Response(json.dumps(photos), mimetype='application/json')
 

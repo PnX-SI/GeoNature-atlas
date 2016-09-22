@@ -136,9 +136,8 @@ def photos():
     
     groups = vmTaxonsRepository.getINPNgroup(connection)
     communesSearch = vmCommunesRepository.getAllCommunes(session)
-    photos=vmMedias.getPhotosGallery(connection, config.ATTR_MAIN_PHOTO)
     configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'URL_APPLICATION': config.URL_APPLICATION}
 
     session.close()
     connection.close()
-    return render_template('templates/galeriePhotos.html', communesSearch = communesSearch,photos=photos,groups=groups, configuration=configuration)
+    return render_template('templates/galeriePhotos.html', communesSearch = communesSearch, groups=groups, configuration=configuration)

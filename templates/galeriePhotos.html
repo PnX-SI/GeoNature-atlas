@@ -11,6 +11,10 @@
         <!-- Bootstrap -->
         <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}"></link>
         <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
+        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+
+        <!-- LightBox -->
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/lightbox2/css/lightbox.min.css') }}" />
 
         <!-- Atlas -->
         <link rel="shortcut icon" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
@@ -29,33 +33,20 @@
 				<div class="row rowMargin">
 					<div class="panel panel-default" id="filtresPhotos">
 						<h1>Galerie photos</h1>
+
 						<p>
 						{% for group in groups %}
 
 							<img class="INPNgroup" src="{{url_for('static', filename='images/picto_' + group.group +'.png')}}" alt="{{group.groupAccent}}" title="{{group.groupAccent}}">
-	
 						{% endfor %}
+						<a href="#DernieresObservations" class="btn btn-default" role="button">Tous les groupes</a>
 						</p>
 					</div>
 				</div>
 			</div>
 			
 			<div class="col-sm-12" id="insertPhotos">
-				<div class="panel panel-default" id="photos">
 
-					{% for photo in photos%}
-					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece">
-						<div class="hovereffect">
-							<div class="img-responsive-logo" style="background-image:url({{photo.path}})" alt="{{photo.name}}"> </div>
-							<div class="overlay">
-										<h2>{{photo.name}}
-										<br/>X observations </h2>	
-										<a class="info" href="{{url_for('main.ficheEspece',cd_ref=photo.cd_ref)}}">Fiche espèce</a>
-							</div>
-						</div>
-					</div>
-					{% endfor %}
-				</div>
 			</div>
 			
 			{% if configuration.AFFICHAGE_FOOTER %}
@@ -64,19 +55,20 @@
          </div>
         
       
-        <!-- JQUERY UI -->
-        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+
 
         <script type="text/javascript">
         var communesSearch = {{communesSearch|tojson}},
             configuration = {{configuration|tojson}};
          </script>
-        <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
-        <script src="{{url_for('static', filename='mapCommune.js') }}"></script>
 
-        <script src="{{url_for('static', filename='listeEspeces.js') }}"></script>
+
         <script src="{{url_for('static', filename='galleryPhoto.js') }}"></script>
         <script src="{{url_for('static', filename='main.js') }}"></script>
+
+
+
+        <script  src="{{url_for('static', filename='lib/lightbox2/js/lightbox.min.js') }}" ></script>
 
    </body> 
 </html>

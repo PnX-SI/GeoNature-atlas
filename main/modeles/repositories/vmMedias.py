@@ -77,14 +77,13 @@ def getLinks_and_articles(connection, cd_ref, id3, id4):
     return tabArticles
 
 
-def getPhotosGallery(connection, id1):
-    sql= """ SELECT m.url, m.chemin, t.nom_vern, t.lb_nom, m.cd_ref
+def getPhotosGallery(connection, id1, id2):
+    sql= """ SELECT m.url, m.chemin, t.nom_vern, t.lb_nom, m.cd_ref, m.auteur, m.titre
          FROM atlas.vm_medias m
         JOIN atlas.vm_taxons t ON t.cd_ref = m.cd_ref
-        WHERE m.id_type = :thisID
-        ORDER BY RANDOM()
-        LIMiT 24"""
-    req = connection.execute(text(sql), thisID = id1)
+        WHERE m.id_type IN (:thisID1, :thisID2)
+        ORDER BY RANDOM()"""
+    req = connection.execute(text(sql), thisID1 = id1, thisID2 = id2)
     tabPhotos = list()
     for r in req:
         if r.nom_vern != None:
@@ -92,19 +91,18 @@ def getPhotosGallery(connection, id1):
             taxonName = nom_verna[0]+' | ' + r.lb_nom
         else:
             taxonName = r.lb_nom
-        temp={'path':utils.findPath(r), 'name':taxonName, 'cd_ref':r.cd_ref}
+        temp={'path':utils.findPath(r), 'name':taxonName, 'cd_ref':r.cd_ref,'author': r.auteur, 'title':r.titre}
         tabPhotos.append(temp)
     return tabPhotos
 
 
-def getPhotosGalleryByGroup(connection, id1, INPNgroup):
-    sql= """ SELECT m.url, m.chemin, t.nom_vern, t.lb_nom, m.cd_ref
+def getPhotosGalleryByGroup(connection, id1, id2, INPNgroup):
+    sql= """ SELECT m.url, m.chemin, t.nom_vern, t.lb_nom, m.cd_ref, m.auteur, m.titre
          FROM atlas.vm_medias m
         JOIN atlas.vm_taxons t ON t.cd_ref = m.cd_ref
-        WHERE m.id_type = :thisID AND t.group2_inpn = :thisGroup
-        ORDER BY RANDOM()
-        LIMiT 24"""
-    req = connection.execute(text(sql), thisID = id1, thisGroup=INPNgroup)
+        WHERE m.id_type IN  (:thisID1, :thisID2) AND t.group2_inpn = :thisGroup
+        ORDER BY RANDOM()"""
+    req = connection.execute(text(sql), thisID1=id1, thisID2=id2, thisGroup=INPNgroup)
     tabPhotos = list()
     for r in req:
         if r.nom_vern != None:
@@ -112,7 +110,7 @@ def getPhotosGalleryByGroup(connection, id1, INPNgroup):
             taxonName = nom_verna[0]+' | ' + r.lb_nom
         else:
             taxonName = r.lb_nom
-        temp={'path':utils.findPath(r), 'name':taxonName, 'cd_ref':r.cd_ref}
+        temp={'path':utils.findPath(r), 'name':taxonName, 'cd_ref':r.cd_ref, 'author': r.auteur, 'title':r.titre}
         tabPhotos.append(temp)
     return tabPhotos
 
