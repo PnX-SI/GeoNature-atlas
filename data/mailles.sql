@@ -9,7 +9,7 @@ CREATE MATERIALIZED VIEW atlas.vm_observations_mailles AS
 WITH DATA;
 
 
-create unique index on atlas.vm_observations_mailles (id_synthese);
+create unique index on atlas.vm_observations_mailles (id_observation);
 create index on atlas.vm_observations_mailles (id_maille);
 create index on atlas.vm_observations_mailles (cd_ref);
 create index on atlas.vm_observations_mailles (geojson_maille);

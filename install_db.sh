@@ -30,18 +30,18 @@ then
             echo "Suppression de la base..."
             sudo -n -u postgres -s dropdb $db_name
         else
-            echo "La base de données existe et le fichier de settings indique de ne pas la supprimer."
+            echo "La base de donnÃ©es existe et le fichier de settings indique de ne pas la supprimer."
         fi
 fi        
 if ! database_exists $db_name 
 then
 
-    echo "Création de la base..."
+    echo "CrÃ©ation de la base..."
 
     sudo -u postgres psql -c "CREATE USER $user_pg WITH PASSWORD '$user_pg_pass' "
     sudo -u postgres psql -c "CREATE USER $admin_pg WITH PASSWORD '$user_pg_pass' "
     sudo -n -u postgres -s createdb -O $user_pg $db_name
-    echo "Ajout de postgis à la base"
+    echo "Ajout de postgis Ã  la base"
     sudo -n -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgis;"
     sudo -n -u postgres -s psql -d $db_name -c "CREATE EXTENSION  IF NOT EXISTS postgres_fdw;"
     sudo -n -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog; COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';"
@@ -50,10 +50,8 @@ then
     sudo -n -u postgres -s psql -d $db_name -c "CREATE USER MAPPING FOR $atlas_source_user SERVER geonaturedbserver OPTIONS (user '$atlas_source_user', password '$atlas_source_pass') ;"
 
 
-    # Mise en place de la structure de la base et des données permettant son fonctionnement avec l'atlas
-    echo "Grant..."
-    sed -i "s/TO geonatatlas;$/TO $user_pg;/" data/grant.sql
-    export PGPASSWORD=$admin_pg_pass;psql -h $db_host -U $admin_pg -d $db_name -f data/grant.sql &> log/install_db.log
+    # Mise en place de la structure de la base et des donnÃ©es permettant son fonctionnement avec l'atlas
+
 
     sudo -n -u postgres -s psql -d $db_name -c "CREATE SCHEMA synthese AUTHORIZATION geonatatlas;
                                                 CREATE SCHEMA taxonomie AUTHORIZATION geonatatlas;
@@ -63,26 +61,27 @@ then
                                                 CREATE SCHEMA atlas AUTHORIZATION geonatatlas;"
     
     #ajout du shape des limite du territoire
-    export PGPASSWORD=$user_pg_pass;shp2pgsql -W "cp850" -s 2154 -D -I $limit_shp atlas.t_layer_territoire | psql -h $db_host -U $user_pg $db_name
+
+    export PGPASSWORD=$admin_pg_pass;shp2pgsql -W "cp850" -s 2154 -D -I $limit_shp atlas.t_layer_territoire | psql -h $db_host -U $admin_pg $db_name
     #Creation de l'index GIST sur la layer territoire
     sudo -n -u postgres -s psql -d $db_name -c "CREATE INDEX index_gist_t_layer_territoire
                                                 ON atlas.t_layer_territoire
                                                 USING gist(geom);"
     
-    echo "Création de la structure de la base..."
+    echo "CrÃ©ation de la structure de la base..."
     sed -i "s/WHERE id_attribut IN (100, 101, 102, 103);$/WHERE id_attribut  IN ($attr_desc, $attr_commentaire, $attr_milieu, $attr_chorologie);/" data/atlas.sql
     sed -i "s/current_date -15;$/current_date -$time/" data/atlas.sql
     sed -i "s/current_date +15;$/current_date +$time/" data/atlas.sql
     
-    export PGPASSWORD=$user_pg_pass;psql -h $db_host -U $user_pg -d $db_name -f data/atlas.sql  &>> log/install_db.log
+    export PGPASSWORD=$admin_pg_pass;psql -h $db_host -U $admin_pg -d $db_name -f data/atlas.sql  &>> log/install_db.log
 
     echo "Affectation des droits sur la base source..."
-    sed -i "s/TO geonatatlas;$/TO $user_pg;/" data/atlas_source.sql
+    #sed -i "s/TO geonatatlas;$/TO $admin_pg;/" data/atlas_source.sql
     export PGPASSWORD=$admin_source_pass;psql -h $db_source_host -U $admin_source_user -d $db_source_name -f data/atlas_source.sql  &>> log/install_db.log
    
 
     # Mise en place des mailles et d la table de l'emprise du territoire
-    echo "Découpage des mailles et creation de la table des mailles"
+    echo "DÃ©coupage des mailles et creation de la table des mailles"
     cd data/ref
 
 
@@ -94,9 +93,9 @@ then
 
 
     #ajout des mailles non decoupees
-    export PGPASSWORD=$user_pg_pass;shp2pgsql -W "cp850" -s 2154 -D -I L93_1x1.shp atlas.t_mailles_1 | psql -h $db_host -U $user_pg $db_name
-    export PGPASSWORD=$user_pg_pass;shp2pgsql -W "cp850" -s 2154 -D -I L93_5K.shp atlas.t_mailles_5 | psql -h $db_host -U $user_pg $db_name
-    export PGPASSWORD=$user_pg_pass;shp2pgsql -W "cp850" -s 2154 -D -I L93_10K.shp atlas.t_mailles_10 | psql -h $db_host -U $user_pg $db_name
+    export PGPASSWORD=$admin_pg_pass;shp2pgsql -W "cp850" -s 2154 -D -I L93_1x1.shp atlas.t_mailles_1 | psql -h $db_host -U $admin_pg $db_name
+    export PGPASSWORD=$admin_pg_pass;shp2pgsql -W "cp850" -s 2154 -D -I L93_5K.shp atlas.t_mailles_5 | psql -h $db_host -U $admin_pg $db_name
+    export PGPASSWORD=$admin_pg_pass;shp2pgsql -W "cp850" -s 2154 -D -I L93_10K.shp atlas.t_mailles_10 | psql -h $db_host -U $admin_pg $db_name
 
 
     #conversion en json
@@ -105,7 +104,7 @@ then
 
     cd ../../
    
-    # Creation de la table t_maille_territoire avec la taille de maille passée en parametre
+    # Creation de la table t_maille_territoire avec la taille de maille passÃ©e en parametre
     sudo -n -u postgres -s psql -d $db_name -c "CREATE TABLE atlas.t_mailles_territoire as
                                                 SELECT m.geom, ST_AsGeoJSON(st_transform(t.geom, 4326))
                                                 FROM atlas.t_mailles_"$taillemaille" m, atlas.t_layer_territoire t
@@ -123,6 +122,10 @@ then
     echo "Creation de la table des mailles..."
     #ajout de la tabme vm_mailles_observations
     export PGPASSWORD=$user_pg_pass;psql -h $db_host -U $user_pg -d $db_name -f data/mailles.sql  &> log/install_mailles.log
+
+    echo "Grant..."
+    sed -i "s/TO geonatatlas;$/TO $admin_pg;/" data/grant.sql
+    export PGPASSWORD=$admin_pg_pass;psql -h $db_host -U $admin_pg -d $db_name -f data/grant.sql &> log/install_db.log
     
     cd data/ref
     rm -f L*.shp L*.dbf L*.prj L*.sbn L*.sbx L*.shx output_clip.*
