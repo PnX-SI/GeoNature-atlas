@@ -315,6 +315,10 @@ body {
     left: 40%;
 }
 
+.thumbnail-stat-medias .stat-medias-hovereffet img {
+	left: 0%;
+}
+
 .overlay-obs{
 	color:#fff;
 	text-align:center;
@@ -337,7 +341,7 @@ body {
 	transform:scale(1.1);
 }
 
-.stat-object a{
+ a{
 	-webkit-transition: all 0.5s ease;
     transition: all 0.5s ease;
 }
@@ -351,3 +355,15 @@ body {
 	transition: .3s ease-in-out;
 	-ms-transition: .3s ease-in-out;
 }
+
+
+a.btn.btn-default{
+	color: white;
+	background-color: #333333 !important;
+}
+
+
+a.btn.btn-default:hover{
+	background-color: #981D97 !important;
+}
+

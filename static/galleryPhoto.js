@@ -11,6 +11,8 @@ function generateHtmlPhoto(photos){
 		if(photos.length == 0){
 			htmlPhoto = "<h3> Aucune photo pour ce groupe </h3>";
 		}else{
+
+		//$('#insertPhotos').fadeOut();
 		htmlPhoto = "";
 		}
 	}
@@ -49,11 +51,14 @@ $(document).ready(function(){
 		  }
 
 		  }).done(function(photos) {
+		  	console.log(photos);
 		  	 generateHtmlPhoto(photos)
 
-	
+			console.log("hauteur"+ $(document).height())
 		  	 $(window).scroll(function(){
-	  	  		if($(window).scrollTop() + $(window).height() >= $(document).height()){
+		  	 	console.log($(window).scrollTop() + $(window).height());	
+	  	  		if($(window).scrollTop() + $(window).height() >= $(document).height()*0.80){
+	  	  			console.log("bottom")
 	  	  			generateHtmlPhoto(photos)
 	  	 		 }
 	 			});
@@ -82,12 +87,11 @@ $('.INPNgroup').click(function(){
 			compteurGroup +=1;
 
 			$(window).scroll(function(){
-	  	  		if($(window).scrollTop() + $(window).height() >= $(document).height()){
-	  	  			generateHtmlPhoto(photos)
+	  	  		if($(window).scrollTop() + $(window).height() >= $(document).height()*0.80){
+	  	  			generateHtmlPhoto(photos);
 	  	 		 }
 	 			});
 
 		})
 });
-
 
