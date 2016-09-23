@@ -141,16 +141,25 @@ hr.small-hr {
 	margin: 5px;
 }
 
-/*END*/
+/* Bloc d'infos sur l'espèce */
 
+#blocInfos {
+	padding: 10px;
+}
+
+.glossarizer_replaced{
+    border-bottom: 1px #333 dotted;
+    cursor: help;
+    display: inline;
+}
 
 /*Other Informations block*/
 
-#otherInformationsPanel{
+#otherInformationsPanel {
 	margin-top: 20px;
 }
 
-#otherInformations{
+#otherInformations {
 	padding-right: 20px;
 	padding-left: 20px;
 }

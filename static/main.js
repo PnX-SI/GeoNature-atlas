@@ -31,7 +31,7 @@ $(document).ready(function() {
 
     }
 
-// generate the autocompletion with the list of item, the input id and the form id
+// Generate the autocompletion with the list of item, the input id and the form id
 
     $( "#searchCommunes" ).focus(function() {
       autocompleteSearch(communesSearch, "#searchCommunes", "commune", 20)
@@ -62,9 +62,6 @@ $.ajax({
 
 });
 
-
-
-
 // child list display
 
 var childList = $('#childList');
@@ -81,15 +78,13 @@ $('#buttonChild').click(function(){
 
 })
 
-
-// tootip
+// Tooltip
 
 $(document).ready(function(){
   $('[data-toggle="tooltip"]').tooltip();
 })
 
-
-// animation index.html
+// Animation index.html
 
 $(document).ready(function() {
    $('#localScroll').on('click', function(){
@@ -99,3 +94,17 @@ $(document).ready(function() {
     return false;
    })
 });
+
+// Glossarizer JQUERY utilisé dans la bloc d'infos de la fiche espèce (si paramètre GLOSSAIRE activé)
+if (configuration.GLOSSAIRE) {
+	$(function(){
+		$('#blocInfos').glossarizer({
+			sourceURL: configuration.URL_APPLICATION+'/static/custom/glossaire.json',
+			callback: function(){
+
+				// Callback fired after glossarizer finishes its job
+				 new tooltip();
+			}
+		});
+	});
+}

@@ -40,7 +40,7 @@
 				{% include 'static/custom/templates/introduction.html' %}
 			{% endif %}
 
-			{% if configuration.AFFICHAGE_STAT_GLOBALES == True %}
+			{% if configuration.AFFICHAGE_STAT_GLOBALES %}
 			<!-- Statistiques globales -->
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<div class="panel panel-default stat-panel">
@@ -96,7 +96,7 @@
 			</div>
 			{% endif %}	
 			
-			{% if customStatMedias != None and configuration.AFFICHAGE_RANG_STAT == True %}
+			{% if customStatMedias != None and configuration.AFFICHAGE_RANG_STAT %}
 			<!-- Statistiques par rang taxonomique -->
 			<div class="col-sm-12">
 				<div class="row row-medias">
@@ -143,7 +143,7 @@
 			</div>
 			{% endif %}
 
-			{% if configuration.AFFICHAGE_DERNIERES_OBS == True %}
+			{% if configuration.AFFICHAGE_DERNIERES_OBS %}
 			<!-- Dernières espèces observées (Carte et liste) -->
 			<div class="col-sm-12" id="DernieresObservations"> 
 					<div class="panel panel-default" >
@@ -176,7 +176,7 @@
                                                     <span class="glyphicon glyphicon-list" data-toggle="tooltip" data-original-title="Consulter la fiche espèce" data-placement="left"> </span> 
                                                 </a>
                                             </td> 
-											<td class="hiddenTd" hidden ="true">{{obs.cd_ref}}</td>
+											<td class="hiddenTd" hidden="true">{{obs.cd_ref}}</td>
 										</tr>
 										{% endfor %}
 									</tbody>
@@ -187,7 +187,7 @@
 			</div>
 			{% endif %}
 
-			{% if configuration.AFFICHAGE_EN_CE_MOMENT == True %}
+			{% if configuration.AFFICHAGE_EN_CE_MOMENT %}
 			<!-- ESPECES PERIODE -->
 			<div class="col-sm-12" id="mostViewNow"> 
 				<div class="panel panel-default">

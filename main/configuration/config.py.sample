@@ -23,6 +23,8 @@ URL_APPLICATION = ""
 # Code de suivi des statistiques Google Analytics (si AFFICHAGE_FOOTER = True)
 ID_GOOGLE_ANALYTICS = "UA-xxxxxxx-xx"
 
+# Utiliser et afficher le glossaire
+GLOSSAIRE = True
 
 ###########################
 ###### Cartographie #######
