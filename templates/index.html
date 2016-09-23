@@ -40,9 +40,6 @@
 				{% include 'static/custom/templates/introduction.html' %}
 			{% endif %}
 
-			<!-- SAUT DE LIGNE -->
-			<div class="col-sm-12" style="height:20px"></div>
-			
 			{% if configuration.AFFICHAGE_STAT_GLOBALES == True %}
 			<!-- Statistiques globales -->
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -190,14 +187,11 @@
 			</div>
 			{% endif %}
 
-			<!-- SAUT DE LIGNE -->
-			<div class="col-sm-12" style="height:20px"></div>
-			
 			{% if configuration.AFFICHAGE_EN_CE_MOMENT == True %}
 			<!-- ESPECES PERIODE -->
 			<div class="col-sm-12" id="mostViewNow"> 
 				<div class="panel panel-default">
-					<div class="panel-heading"><h3>A voir en ce moment<span class="glyphicon glyphicon-question-sign helpTip" data-toggle="tooltip" data-original-title="Espèces les plus observées durant les 30 jours en cours, toutes années confondues" data-placement="right"></span></h3></div>
+					<div class="panel-heading"><h3>A voir en ce moment <span class="glyphicon glyphicon-question-sign helpTip" data-toggle="tooltip" data-original-title="Espèces les plus observées durant les 30 jours en cours, toutes années confondues" data-placement="right"></span></h3></div>
 					<div class="row thumbnail-row">
 					{% for tax in mostViewTaxon %}
 						<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col">

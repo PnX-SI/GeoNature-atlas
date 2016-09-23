@@ -156,7 +156,11 @@
 
 /* Latest observations */
 
-#mapRow{
+#DernieresObservations {
+	clear: both;
+}
+
+#mapRow {
 	max-height: 600px;
 }
 
