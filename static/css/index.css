@@ -261,3 +261,10 @@ td.singleTaxon.detail {
 .higlight {
   font-size: 20px;
 }
+
+.helpTip {
+	color: #333333;
+	font-size: 16px;
+	top: -5px;
+	left: 3px;
+}
