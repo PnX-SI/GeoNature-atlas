@@ -4,7 +4,9 @@
 database_connection = "postgresql://user:monpassachanger@IPADRESSE:5432/databaseName"
 
 #################################
+#################################
 ### Customisation application ###
+#################################
 #################################
 
 # Nom de la structure
@@ -18,30 +20,8 @@ NOM_APPLICATION = unicode(NOM_APPLICATION, 'utf-8') # Fonction permettant d'enco
 # URL de l'application depuis la racine du domaine
 URL_APPLICATION = ""
 
-###### PAGE ACCUEIL #######
-
-# Bloc d'introduction presentant l'atlas. Affichage True/False
-AFFICHAGE_INTRODUCTION = False
-
-# Afficher le Footer sur toutes les pages (static/custom/templates/footer.html)
-AFFICHAGE_FOOTER = False
-
 # Code de suivi des statistiques Google Analytics (si AFFICHAGE_FOOTER = True)
 ID_GOOGLE_ANALYTICS = "UA-xxxxxxx-xx"
-
-## BLOC STAT : parametre pour le bloc statistique 2 de la page d'accueil
-# Mettre dans RANG_STAT le couple 'rang taxonomique' - 'nom du taxon corepondant au rang' pour avoir des statistique sur ce rang -
-# Fonctionne à tous les niveaux de rang présents dans la table taxref -
-
-# exemple RANG_STAT = [{'ordre': ['Lepidoptera']}, {'classe': ['Insecta', 'Arachnida']}]
-#         RANG_STAT_FR ['Papillon', 'Insecte et Araignées']
-
-RANG_STAT = [{'phylum': ["Arthropoda", "Mollusca"]}, {'phylum': ["Chordata"]}, {'regne': ["Plantae"]}] 
-RANG_STAT_FR = ['Invertebrés', 'Vertebrés', 'Flore']
-
-# Fonction à ne pas modifier
-for i in range(len(RANG_STAT_FR)):
-    RANG_STAT_FR[i]=unicode( RANG_STAT_FR[i], 'utf-8')
 
 
 ###########################
@@ -66,7 +46,6 @@ MAP = {
         'STEP': 1
 }
 
-
 # Affichage des observations par maille ou point
 # True = maille / False = point
 AFFICHAGE_MAILLE = False
@@ -79,6 +58,40 @@ LIMIT_CLUSTER_POINT = 1000
 
 # Nombre de 'x' dernieres observations de la carte sur la page d'acceuil
 NB_LAST_OBS = 100
+
+
+###########################
+###### PAGE ACCUEIL #######
+###########################
+
+# Bloc d'introduction presentant l'atlas. Affichage True/False
+AFFICHAGE_INTRODUCTION = False
+
+# Afficher le Footer sur toutes les pages (static/custom/templates/footer.html)
+AFFICHAGE_FOOTER = False
+
+# Bloc de statistiques globales. Affichage True/False
+AFFICHAGE_STAT_GLOBALES = True
+
+# Bloc de statistiques globales. Affichage True/False
+AFFICHAGE_STAT_GLOBALES = True
+
+## BLOC STAT PAR RANG : Parametre pour le bloc statistique 2 de la page d'accueil (statistiques par rang remontant 2 espèces aléatoirement ayant au moins une photo)
+# Ce bloc peut être affiché ou non et peut être affiché sur 2, 3 ou 4 colonnes. Il est ainsi possible de mettre autant de blocs que souhaité (2, 3, 4, 6, 8...)
+# Mettre dans RANG_STAT le couple 'rang taxonomique' - 'nom du taxon correspondant au rang' pour avoir des statistique sur ce rang -
+# Fonctionne à tous les niveaux de rang présents dans la table taxref -
+
+# exemple RANG_STAT = [{'ordre': ['Lepidoptera']}, {'classe': ['Insecta', 'Arachnida']}]
+#         RANG_STAT_FR ['Papillon', 'Insecte et Araignées']
+
+AFFICHAGE_RANG_STAT = True
+COLONNES_RANG_STAT = 3
+RANG_STAT = [{'phylum': ["Arthropoda", "Mollusca"]}, {'phylum': ["Chordata"]}, {'regne': ["Plantae"]}] 
+RANG_STAT_FR = ['Faune invertébrée', 'Faune vertébrée', 'Flore']
+
+# Fonction à ne pas modifier
+for i in range(len(RANG_STAT_FR)):
+    RANG_STAT_FR[i]=unicode( RANG_STAT_FR[i], 'utf-8')
 
 
 ############################
