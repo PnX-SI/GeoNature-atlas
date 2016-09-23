@@ -6,7 +6,7 @@ from ...configuration import config
 
 
 def mostViewTaxon(connection):
-    sql = "SELECT * FROM atlas.vm_taxons_most_view_temp"
+    sql = "SELECT * FROM atlas.vm_taxons_plus_observes"
     req = connection.execute(text(sql))
     tabTax = list()
     for r in req:

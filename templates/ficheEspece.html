@@ -149,9 +149,7 @@
                     <div class="col-sm-2" id="mapStat">
                         <ul>
                             <li> <span data-icon="&#xe037;" style="font-size: 30px;"></span> </br> 
-                                <span id="nbObsLateral"> 
-                                     <img id="loadingObs" src="{{url_for('static', filename='images/loading2.svg') }}" style="width: 20px;"><br/>observations</li>
-                                </span>
+                                    <b>{{taxon.taxonSearch.nb_obs}}</b> </br> observations</li>
                             <li> <img id="picto" src="{{url_for('static', filename='images/church.png')}}" style="width"><br/><b>{{communes|length}}</b><br/>communes</li>
                             <li> <span data-icon="&#xe040;"  style="font-size: 30px;"></span><br/><b>{{observers|length}}</b><br/>observateurs</li>
                             <li id="firstObs" class="pointer"><span data-icon="&#xe037;" style="font-size: 25px; color: brown"></span><br/><b>Première observation</b><br/>{{taxon.taxonSearch.yearmin|int}}</li>
@@ -442,7 +440,8 @@
                  configuration = {{configuration|tojson}},
                  url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}",
                  taxonYearMin = {{taxon.taxonSearch.yearmin}},
-                 cd_ref = {{taxon.taxonSearch.cd_ref}};
+                 cd_ref = {{taxon.taxonSearch.cd_ref}},
+                 nb_obs = {{taxon.taxonSearch.nb_obs}}
     </script>  
 
     <script type="text/javascript" src="{{url_for('static', filename='chart.js') }}"></script>

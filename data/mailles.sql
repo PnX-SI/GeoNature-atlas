@@ -1,6 +1,6 @@
 CREATE MATERIALIZED VIEW atlas.vm_observations_mailles AS 
  SELECT obs.cd_ref,
-    obs.id_synthese,
+    obs.id_observation,
     m.id_maille,
     m.geom,
     st_asgeojson(st_transform(m.geom, 4326)) AS geojson_maille

@@ -24,11 +24,8 @@ $.ajax({
 
   }).done(function(observations) {
     $('#loadingGif').hide();
-    $('#loadingObs').hide();
 
       //display nb observations
-  $("#nbObs").html("Nombre d'observation(s): "+ observations.maille.length);
-  $("#nbObsLateral").html("<b>"+observations.maille.length+" </b> </br> Observations" );
 
     var mailleBoolean = false;
     if (observations.maille.length > 500) {

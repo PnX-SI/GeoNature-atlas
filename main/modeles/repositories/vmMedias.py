@@ -78,7 +78,7 @@ def getLinks_and_articles(connection, cd_ref, id3, id4):
 
 
 def getPhotosGallery(connection, id1, id2):
-    sql= """ SELECT m.url, m.chemin, t.nom_vern, t.lb_nom, m.cd_ref, m.auteur, m.titre
+    sql= """ SELECT m.url, m.chemin, t.nom_vern, t.lb_nom, t.nb_obs, m.cd_ref, m.auteur, m.titre
          FROM atlas.vm_medias m
         JOIN atlas.vm_taxons t ON t.cd_ref = m.cd_ref
         WHERE m.id_type IN (:thisID1, :thisID2)
@@ -91,13 +91,13 @@ def getPhotosGallery(connection, id1, id2):
             taxonName = nom_verna[0]+' | ' + r.lb_nom
         else:
             taxonName = r.lb_nom
-        temp={'path':utils.findPath(r), 'name':taxonName, 'cd_ref':r.cd_ref,'author': r.auteur, 'title':r.titre}
+        temp={'path':utils.findPath(r), 'name':taxonName, 'cd_ref':r.cd_ref,'author': r.auteur, 'title':r.titre, 'nb_obs': r.nb_obs}
         tabPhotos.append(temp)
     return tabPhotos
 
 
 def getPhotosGalleryByGroup(connection, id1, id2, INPNgroup):
-    sql= """ SELECT m.url, m.chemin, t.nom_vern, t.lb_nom, m.cd_ref, m.auteur, m.titre
+    sql= """ SELECT m.url, m.chemin, t.nom_vern, t.lb_nom, m.cd_ref, m.auteur, m.titre, t.nb_obs
          FROM atlas.vm_medias m
         JOIN atlas.vm_taxons t ON t.cd_ref = m.cd_ref
         WHERE m.id_type IN  (:thisID1, :thisID2) AND t.group2_inpn = :thisGroup
@@ -110,7 +110,7 @@ def getPhotosGalleryByGroup(connection, id1, id2, INPNgroup):
             taxonName = nom_verna[0]+' | ' + r.lb_nom
         else:
             taxonName = r.lb_nom
-        temp={'path':utils.findPath(r), 'name':taxonName, 'cd_ref':r.cd_ref, 'author': r.auteur, 'title':r.titre}
+        temp={'path':utils.findPath(r), 'name':taxonName, 'cd_ref':r.cd_ref, 'author': r.auteur, 'title':r.titre, 'nb_obs': r.nb_obs}
         tabPhotos.append(temp)
     return tabPhotos
 

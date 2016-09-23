@@ -50,6 +50,29 @@ atlas_source_user=geonatatlas
 # Pass du user atlas sur la base de données source (lecture seule)
 atlas_source_pass=monpassachanger
 
+###COMMUNES####
+communes_shp=/home/theo/atlas/data/ref/communes.shp
+colonne_insee=CODE_INSEE
+colonne_nom_commune=NOM
+
+###TERRITOIRE####
+# Chemin vers le SHP de l'emprise du territoire 
+limit_shp="/home/USER/atlas/data/ref/emprise_territoire.shp"
+
+
+##### MAILLES #####
+
+# Mon territoire se situe pas en métropole ?
+metropole=true
+# si 'false': rajouter dans le dossier /data/ref un 'shapefile' du maille de votre territoire sous le nom 'custom_maille.shp'
+chemin_custom_maille=/home/theo/data/ref/custom_maille.shp
+
+#sinon, choisissez la taille de vos mailles
+# Taille des mailles : valeurs possibles 1, 5 ou 10
+taillemaille=5
+
+
+
 #### ID DES ATTRIBUTS DESCRIPTIFS DES TAXONS DE LA vm_cor_taxon_attribut --  !! si changement: modifier également le config.py
 attr_desc=100
 attr_commentaire=101
@@ -58,11 +81,3 @@ attr_chorologie=103
 
 # Paramètre pour la vue vm_most_view_taxon_periode : Especes les plus observées sur la periode 'moins X jour, plus X jours' - Par défaut 15 jours 
 time=15
-
-##### MAILLES #####
-
-# Taille des mailles : valeurs possibles 1, 5 ou 10
-taillemaille=5
-
-# Chemin vers le SHP de l'emprise du territoire 
-limit_shp="/home/USER/atlas/data/ref/emprise_territoire.shp"

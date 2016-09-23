@@ -159,7 +159,7 @@
 									
 									<tbody>
 										{% for obs in observations %}
-										<tr class='tabEspece' idSynthese = "{{obs.id_synthese}}">
+										<tr class='tabEspece' idSynthese = "{{obs.id_observation}}">
 											{% if obs.pathImg == None %}
 											<td class="singleTaxon img">
                                                 <img class="singleTaxon" width="80%" src="{{url_for('static', filename='images/picto_' + obs.group2_inpn +'.png')}}" data-toggle="tooltip" data-original-title="{{obs.group2_inpn}}" data-placement="left">

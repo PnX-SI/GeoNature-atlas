@@ -146,7 +146,6 @@ function styleMaille(feature) {
 }
 
 
-
 function generateLegendMaille(){
     var legend = L.control({position: 'bottomright'});
 
@@ -588,7 +587,7 @@ function generateSliderOnMap(){
         $(sliderContainer).css("margin-left", "200px");
         $(sliderContainer).css("text-align", "center");
         $(sliderContainer).append("<p> <span id='yearMin'> </span> <input id='sliderControl' type='text'/> <span id='yearMax'>  </span>  </p>"
-                            +"<p id='nbObs'> Nombre d'observation(s): </p>");
+                            +"<p id='nbObs'> Nombre d'observation(s): "+nb_obs+" </p>");
 
 
 

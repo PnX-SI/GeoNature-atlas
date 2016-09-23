@@ -20,7 +20,7 @@ def deleteAccent(string):
 
 #with distinct the result in a array not an object, 0: lb_nom, 1: nom_vern
 def getTaxonsCommunes(connection, insee):
-    sql = """SELECT DISTINCT o.cd_ref, MAX(o.dateobs) as last_obs, COUNT(o.id_synthese) AS nb_obs, t.nom_complet_html, t.nom_vern, t.group2_inpn, t.patrimonial, t.protection_stricte, m.url, m.chemin
+    sql = """SELECT DISTINCT o.cd_ref, MAX(o.dateobs) as last_obs, COUNT(o.id_observation) AS nb_obs, t.nom_complet_html, t.nom_vern, t.group2_inpn, t.patrimonial, t.protection_stricte, m.url, m.chemin
         FROM atlas.vm_observations o
         JOIN atlas.vm_taxons t ON t.cd_ref=o.cd_ref
         LEFT JOIN atlas.vm_medias m ON m.cd_ref=o.cd_ref AND m.id_type=1
@@ -42,7 +42,7 @@ def getTaxonsCommunes(connection, insee):
 def getTaxonsChildsList(connection, cd_ref):
     rank = config.LIMIT_FICHE_LISTE_HIERARCHY
     sql = """SELECT tax.nom_complet_html, 
-    count(obs.id_synthese) as nb_obs, 
+    count(obs.id_observation) as nb_obs, 
     tax.nom_vern, 
     max(obs.dateobs) as last_obs, 
     tax.cd_ref, 

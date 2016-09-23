@@ -13,6 +13,11 @@ main/configuration/settings.ini
 robots.txt
 venv/*
 
+data/ref/communes.shp
+data/ref/communes.shx
+data/ref/communes.dbf
+data/ref/communes.prj
+
 static/custom/territoire.json
 static/custom/glossaire.json
 static/custom/custom.css

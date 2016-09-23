@@ -24,13 +24,11 @@ $.ajax({
   }
   }).done(function(observations) {
     $('#loadingGif').hide();
-    $('#loadingObs').hide();
 
     // affichage des mailles
     displayMailleLayerFicheEspece(observations, taxonYearMin, YEARMAX);
 
       //display nb observations
-  $("#nbObs").html("Nombre d'observation(s): "+ observations.length);
   $("#nbObsLateral").html("<b>"+observations.length+" </b> </br> Observations" );
 
 
