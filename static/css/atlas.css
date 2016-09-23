@@ -346,6 +346,11 @@ body {
     transition: all 0.5s ease;
 }
 
+li.sidebar-brand {
+	-webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
 .img-custom-medias{
 	height: 250px;
     width: 100%;
@@ -364,6 +369,7 @@ a.btn.btn-default{
 
 
 a.btn.btn-default:hover{
-	background-color: #981D97 !important;
+	background-color: #cccccc !important;
+	color: black;
 }
 
