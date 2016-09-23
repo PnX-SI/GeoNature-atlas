@@ -317,12 +317,12 @@
                                {% if taxonDescription.description == None %}
                                 Non renseignée pour le moment
                                 {% else %}
-                                {{taxonDescription.description}}
+                                {{taxonDescription.description | safe }}
                                 {% endif %}
                         </div>
                         {% if taxonDescription.commentaire != None %}
                         <div id="commentaire" class="tab-pane fade">
-                                {{taxonDescription.commentaire}}     
+                                {{taxonDescription.commentaire  | safe}}     
                         </div>
                         {% endif %}
                         <div id="milieu" class="tab-pane fade">
