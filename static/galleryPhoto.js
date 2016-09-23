@@ -1,13 +1,13 @@
 
 var compteurJson = 0;
 var compteurGroup = 0;
-var booleanGroup = false;
+var clearHtml = false;
 
 function generateHtmlPhoto(photos){
 	var htmlPhoto = $('#insertPhotos').html()
 
 
-	if (booleanGroup && compteurGroup <1){ 
+	if (clearHtml && compteurGroup <1){ 
 		if(photos.length == 0){
 			htmlPhoto = "<h3> Aucune photo pour ce groupe </h3>";
 		}else{
@@ -16,6 +16,8 @@ function generateHtmlPhoto(photos){
 		htmlPhoto = "";
 		}
 	}
+
+	console.log(htmlPhoto);
 		if (compteurJson <= photos.length){
 	  	 slicePhoto = photos.slice(compteurJson, compteurJson+22);
 	  	 compteurJson = compteurJson + 22;
@@ -36,10 +38,14 @@ function generateHtmlPhoto(photos){
 	$('#insertPhotos').html(htmlPhoto);
 }
 
-function scrollEvent(photos){
-	  	 
-}
 
+function scrollEvent(photos){
+	 $(window).scroll(function(){
+	  	if($(window).scrollTop() + $(window).height() >= $(document).height()*0.80){
+	  		generateHtmlPhoto(photos)
+	 	}
+	});
+}
 
 
 $(document).ready(function(){
@@ -51,25 +57,29 @@ $(document).ready(function(){
 		  }
 
 		  }).done(function(photos) {
-		  	console.log(photos);
-		  	 generateHtmlPhoto(photos)
+		  	 generateHtmlPhoto(photos);
+		  	 scrollEvent(photos);
 
-			console.log("hauteur"+ $(document).height())
-		  	 $(window).scroll(function(){
-		  	 	console.log($(window).scrollTop() + $(window).height());	
-	  	  		if($(window).scrollTop() + $(window).height() >= $(document).height()*0.80){
-	  	  			console.log("bottom")
-	  	  			generateHtmlPhoto(photos)
-	  	 		 }
-	 			});
+
+		  	$('#allGroups').click(function(){
+				clearHtml = true;
+				compteurJson = 0;
+				compteurGroup = 0;
+				$(window).off("scroll");
+				generateHtmlPhoto(photos);
+				clearHtml = false;
+				scrollEvent(photos);
+		})
 		  	
 		});
+
+
 })
 
 
 $('.INPNgroup').click(function(){
 	compteurJson = 0;
-	booleanGroup = true;
+	clearHtml = true;
 	compteurGroup =0;
 	group = $(this).attr('alt');
 	$(window).off("scroll");
@@ -77,7 +87,6 @@ $('.INPNgroup').click(function(){
 		  url: configuration.URL_APPLICATION+'/api/photoGroup/'+group,
 		  dataType: "json",
 		  beforeSend: function(){
-		  	console.log("loasd"+group);
 		    // $('#loadingGif').attr("src", configuration.URL_APPLICATION+'/static/images/loading.svg')
 		  }
 
