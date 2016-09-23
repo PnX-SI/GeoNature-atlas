@@ -26,7 +26,7 @@ def searchObservation(cd_ref):
 
 
 def searchObservationsChilds(connection, cd_ref):
-    sql = "select obs.id_synthese, \
+    sql = "select obs.id_observation, \
     obs.geojson_point, \
     obs.cd_ref, \
     obs.dateobs, \
@@ -40,7 +40,7 @@ def searchObservationsChilds(connection, cd_ref):
     observations = connection.execute(text(sql), thiscdref = cd_ref)
     obsList = list()
     for o in observations:
-        temp = {'id_synthese':o.id_synthese,'geojson_point':ast.literal_eval(o.geojson_point),'cd_ref':o.cd_ref,'dateobs':str(o.dateobs),\
+        temp = {'id_observation':o.id_observation,'geojson_point':ast.literal_eval(o.geojson_point),'cd_ref':o.cd_ref,'dateobs':str(o.dateobs),\
                 'observateurs':o.observateurs,'altitude_retenue':o.altitude_retenue,
                 'effectif_total':o.effectif_total,'year':o.dateobs.year}
         obsList.append(temp)
@@ -77,7 +77,7 @@ def lastObservations(connection, mylimit, idPhoto):
             taxon = inter[0] +' | '+ o.lb_nom
         else:
             taxon = o.lb_nom
-        temp = {'id_synthese' : o.id_synthese,
+        temp = {'id_observation' : o.id_observation,
                 'cd_ref': o.cd_ref,
                 'dateobs': str(o.dateobs),
                 'altitude_retenue' : o.altitude_retenue,
@@ -92,7 +92,7 @@ def lastObservations(connection, mylimit, idPhoto):
 
 
 def lastObservationsCommune(connection, mylimit, insee):
-    sql = "SELECT o.id_synthese, o.cd_ref, o.dateobs, o.altitude_retenue,o.geojson_point, o.effectif_total, t.lb_nom, t.nom_vern \
+    sql = "SELECT o.id_observation, o.cd_ref, o.dateobs, o.altitude_retenue,o.geojson_point, o.effectif_total, t.lb_nom, t.nom_vern \
     FROM atlas.vm_observations o \
     JOIN atlas.vm_communes c ON ST_Intersects(st_transform(o.the_geom_point, 2154), c.the_geom) \
     JOIN atlas.vm_taxons t ON  o.cd_ref=t.cd_ref \
@@ -106,7 +106,7 @@ def lastObservationsCommune(connection, mylimit, insee):
             taxon = o.nom_vern + ' | ' + o.lb_nom
         else:
             taxon = o.lb_nom
-        temp = {'id_synthese' : o.id_synthese,
+        temp = {'id_observation' : o.id_observation,
                 'cd_ref': o.cd_ref,
                 'dateobs': str(o.dateobs),
                 'altitude_retenue' : o.altitude_retenue,
@@ -118,7 +118,7 @@ def lastObservationsCommune(connection, mylimit, insee):
     return obsList
 
 def getObservationTaxonCommune(connection, insee, cd_ref):
-    sql = "SELECT o.id_synthese, o.cd_ref, o.dateobs, o.altitude_retenue, o.geojson_point, o.effectif_total, t.lb_nom, t.nom_vern, o.observateurs \
+    sql = "SELECT o.id_observation, o.cd_ref, o.dateobs, o.altitude_retenue, o.geojson_point, o.effectif_total, t.lb_nom, t.nom_vern, o.observateurs \
     FROM atlas.vm_observations o\
     JOIN atlas.vm_taxons t ON t.cd_ref = o.cd_ref \
     WHERE o.cd_ref = :thiscdref AND o.insee = :thisInsee"
@@ -129,7 +129,7 @@ def getObservationTaxonCommune(connection, insee, cd_ref):
             taxon = o.nom_vern + ' | ' + o.lb_nom
         else:
             taxon = o.lb_nom
-        temp = {'id_synthese' : o.id_synthese,
+        temp = {'id_observation' : o.id_observation,
                 'observateurs': o.observateurs,
                 'cd_ref': o.cd_ref,
                 'dateobs': str(o.dateobs),
@@ -219,7 +219,7 @@ def genericStat (connection, tab):
     tabStat = list()
     for pair in tab:
         rang, nomTaxon = pair.items()[0]
-        sql= "SELECT COUNT (o.id_synthese) AS nb_obs, \
+        sql= "SELECT COUNT (o.id_observation) AS nb_obs, \
             COUNT (DISTINCT t.cd_ref) AS nb_taxons \
             FROM atlas.vm_taxons t \
             JOIN atlas.vm_observations o ON o.cd_ref = t.cd_ref \
@@ -234,7 +234,7 @@ def genericStatMedias(connection, tab):
     tabStat = list()
     for i in range(len(tab)):
         rang, nomTaxon = tab[i].items()[0]
-        sql= "SELECT COUNT(o.id_synthese) as nb_obs, o.cd_ref, t.lb_nom, t.nom_vern, t.group2_inpn, m.url, m.chemin, m.auteur \
+        sql= "SELECT COUNT(o.id_observation) as nb_obs, o.cd_ref, t.lb_nom, t.nom_vern, t.group2_inpn, m.url, m.chemin, m.auteur \
                 FROM atlas.vm_observations o \
                 JOIN atlas.vm_taxons t ON t.cd_ref = o.cd_ref \
                 JOIN atlas.vm_medias m ON m.cd_ref = o.cd_ref \

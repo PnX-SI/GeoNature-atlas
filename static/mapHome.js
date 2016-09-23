@@ -19,11 +19,11 @@ $(function(){
       $('.tabEspece').click(function(){
          $(this).siblings().removeClass('current');
          $(this).addClass('current');
-        var id_synthese = $(this).attr('idSynthese');
+        var id_observation = $(this).attr('idSynthese');
         p = (currentLayer._layers);
         var selectLayer;
         for (var key in p) {
-          if (find_id_synthese_in_array(p[key].feature.properties.list_id_synthese, id_synthese) ){
+          if (find_id_observation_in_array(p[key].feature.properties.list_id_observation, id_observation) ){
               selectLayer = p[key];
           }
         }
@@ -46,12 +46,12 @@ $(function(){
       $('.tabEspece').click(function(){
          $(this).siblings().removeClass('current');
          $(this).addClass('current');
-        var id_synthese = $(this).attr('idSynthese');
+        var id_observation = $(this).attr('idSynthese');
 
         var p = (currentLayer._layers);
         var selectLayer;
         for (var key in p) {
-          if (p[key].feature.properties.id_synthese == id_synthese){
+          if (p[key].feature.properties.id_observation == id_observation){
             selectLayer = p[key];
           }
       }

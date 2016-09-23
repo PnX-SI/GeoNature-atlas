@@ -13,7 +13,7 @@ def getObservationsMaillesChilds(connection, cd_ref):
     o.dateobs, \
     extract(YEAR FROM o.dateobs) as annee \
     FROM atlas.vm_observations_mailles obs \
-    JOIN atlas.vm_observations o ON o.id_synthese = obs.id_synthese \
+    JOIN atlas.vm_observations o ON o.id_observation = obs.id_observation \
     WHERE obs.cd_ref in (SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)) \
     OR obs.cd_ref = :thiscdref \
     ORDER BY id_maille"
@@ -32,7 +32,7 @@ def lastObservationsMailles(connection, mylimit, idPhoto):
     medias.url, medias.chemin \
     FROM atlas.vm_observations_mailles obs \
     JOIN atlas.vm_taxons tax ON tax.cd_ref = obs.cd_ref \
-    JOIN atlas.vm_observations o ON o.id_synthese=obs.id_synthese \
+    JOIN atlas.vm_observations o ON o.id_observation=obs.id_observation \
     LEFT JOIN atlas.vm_medias medias ON medias.cd_ref = obs.cd_ref AND medias.id_type = 1\
     ORDER BY o.dateobs DESC \
     LIMIT :thislimit "
@@ -45,7 +45,7 @@ def lastObservationsMailles(connection, mylimit, idPhoto):
             taxon = inter[0] +' | '+ o.lb_nom
         else:
             taxon = o.lb_nom
-        temp = {'id_synthese' : o.id_synthese,
+        temp = {'id_observation' : o.id_observation,
                 'id_maille' : o.id_maille,
                 'cd_ref': o.cd_ref,
                 'dateobs': str(o.dateobs),

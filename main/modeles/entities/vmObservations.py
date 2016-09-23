@@ -14,7 +14,7 @@ Base = declarative_base()
 class VmObservations(Base):
     __table__ = Table(
     'vm_observations', metadata,
-    Column('id_synthese', Integer, primary_key=True, unique=True),
+    Column('id_observation', Integer, primary_key=True, unique=True),
     Column('id_source', Integer),
     Column('id_fiche_source', String(50)),
     Column('code_fiche_source', String(50)),
