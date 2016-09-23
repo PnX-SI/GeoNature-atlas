@@ -59,7 +59,6 @@ LIMIT_CLUSTER_POINT = 1000
 # Nombre de 'x' dernieres observations de la carte sur la page d'acceuil
 NB_LAST_OBS = 100
 
-
 ###########################
 ###### PAGE ACCUEIL #######
 ###########################
@@ -73,8 +72,11 @@ AFFICHAGE_FOOTER = False
 # Bloc de statistiques globales. Affichage True/False
 AFFICHAGE_STAT_GLOBALES = True
 
-# Bloc de statistiques globales. Affichage True/False
-AFFICHAGE_STAT_GLOBALES = True
+# Bloc avec carte et liste des dernières observations. Affichage True/False
+AFFICHAGE_DERNIERES_OBS = True
+
+# Bloc avec espèces à voir en ce moment. Affichage True/False
+AFFICHAGE_EN_CE_MOMENT = True
 
 ## BLOC STAT PAR RANG : Parametre pour le bloc statistique 2 de la page d'accueil (statistiques par rang remontant 2 espèces aléatoirement ayant au moins une photo)
 # Ce bloc peut être affiché ou non et peut être affiché sur 2, 3 ou 4 colonnes. Il est ainsi possible de mettre autant de blocs que souhaité (2, 3, 4, 6, 8...)
@@ -92,7 +94,6 @@ RANG_STAT_FR = ['Faune invertébrée', 'Faune vertébrée', 'Flore']
 # Fonction à ne pas modifier
 for i in range(len(RANG_STAT_FR)):
     RANG_STAT_FR[i]=unicode( RANG_STAT_FR[i], 'utf-8')
-
 
 ############################
 ####### FICHE ESPECE #######
