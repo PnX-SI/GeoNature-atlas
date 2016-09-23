@@ -206,6 +206,12 @@ tr.accordion-toggle {
 	background: #909596;
 }
 
+/* Slider années sur la carte des observations */
+.slider-handle {
+	background-color: #333333 !important;
+	background-image: linear-gradient(to bottom,#333333 0,#5d5d5d 100%)
+}
+
 h5#buttonChild:hover {
 	cursor: pointer
 }
