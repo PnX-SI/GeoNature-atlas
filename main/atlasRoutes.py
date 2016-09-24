@@ -109,7 +109,6 @@ def ficheRangTaxonomie(cd_ref):
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
     observers = vmObservationsRepository.getObservers(connection, cd_ref)
     
-
     connection.close()
     session.close()
 
@@ -122,13 +121,21 @@ def ficheRangTaxonomie(cd_ref):
 def developpement():
     session = utils.loadSession()
     
-
     communesSearch = vmCommunesRepository.getAllCommunes(session)
     configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'URL_APPLICATION': config.URL_APPLICATION}
 
-    
     session.close()
     return render_template('templates/developpement.html', communesSearch = communesSearch, configuration=configuration)
+    
+@main.route('/presentation', methods=['GET', 'POST'])
+def presentation():
+    session = utils.loadSession()
+    
+    communesSearch = vmCommunesRepository.getAllCommunes(session)
+    configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'URL_APPLICATION': config.URL_APPLICATION, 'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER, 'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS}
+
+    session.close()
+    return render_template('static/custom/templates/presentation.html', communesSearch = communesSearch, configuration=configuration)
 	
 @main.route('/photos', methods=['GET', 'POST'])
 def photos():

@@ -6,18 +6,17 @@
 
         <!-- Jquery -->
         <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
+		<script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
-
 
         <!-- Bootstrap -->
         <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}"></link>
         <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
 
-       <!-- Atlas -->
+        <!-- Atlas -->
         <link rel="shortcut icon" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
         <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />       
         <link rel="stylesheet" href="{{url_for('static', filename='custom/custom.css') }}" />
-
 
    </head>
    <body>
@@ -28,25 +27,20 @@
 		</div>
 		<div class="container-fluid" id="page">
             <div id="developpement">
-                <h1> Fonctionnalité en cours <br> de développement... </h1>
-                <h3> <a href = "{{url_for('main.index') }}"> Retourner sur l'atlas  </a> </h3>
+                <h1>Fonctionnalité en cours<br/>de développement...</h1>
+                <h3><a href = "{{url_for('main.index') }}">Retourner sur l'atlas</a></h3>
             </div>
-            
-            
-         </div>
+        </div>
+		
+		{% if configuration.AFFICHAGE_FOOTER %}
+			{% include 'static/custom/templates/footer.html' %}
+		{% endif %}
         
-      
-        <!-- JQUERY UI -->
-        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
-
         <script type="text/javascript">
         var communesSearch = {{communesSearch|tojson}},
             configuration = {{configuration|tojson}};
-         </script>
-        <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
-        <script src="{{url_for('static', filename='mapCommune.js') }}"></script>
+        </script>
 
-        <script src="{{url_for('static', filename='listeEspeces.js') }}"></script>
         <script src="{{url_for('static', filename='main.js') }}"></script>
 
    </body> 

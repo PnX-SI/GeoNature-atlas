@@ -1,10 +1,145 @@
 <!DOCTYPE html>
 <html>
    <head>
+        <meta charset="utf-8" />
+        <title>Présentation de l'atlas | {{configuration.NOM_APPLICATION}}</title>
+
+        <!-- Jquery -->
+        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
+		<script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}"></link>
+        <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
+
+        <!-- Atlas -->
+        <link rel="shortcut icon" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />
+        <link rel="stylesheet" href="{{url_for('static', filename='css/presentation.css') }}" />
+        <link rel="stylesheet" href="{{url_for('static', filename='custom/custom.css') }}" />
 
    </head>
    <body>
-        <h3> Test </h3>
- 
+    {% include 'templates/navbar.html' %}
+
+		<div id="sideBar">
+			{% include 'templates/sideBar.html' %}
+		</div>
+		<div class="container-fluid" id="page">
+            
+            
+            <!-- Carousel
+            ================================================== -->
+            <div id="myCarousel" class="carousel slide" data-ride="carousel" style="margin-top: -15px">
+              <!-- Indicators -->
+              <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+                <li data-target="#myCarousel" data-slide-to="3"></li>
+              </ol>
+              <div class="carousel-inner" role="listbox">
+                <div class="item active" style="background-image: url(http://portail.ecrins-parcnational.fr/taxhub/static/medias/60686_364_Hermine_blanche_en_pelage_dhiver.jpg) ; background-size: cover; background-position: center center;">
+                  <div class="container">
+                    <div class="carousel-caption">
+                      <h1>Faune vertébrée et invertébrée</h1>
+                      <p>Découvrez plus de 300.000 observations des 2000 espèces</p>
+                      <!-- <p><a class="btn btn-lg btn-default" href="#" role="button">Sign up today</a></p> -->
+                    </div>
+                  </div>
+                </div>
+                <div class="item" style="background-image: url(http://portail.ecrins-parcnational.fr/taxhub/static/medias/92486_712_Lis_de_Pompone.jpg) ; background-size: cover; background-position: center center;">
+                  <div class="container">
+                    <div class="carousel-caption">
+                      <h1>Flore</h1>
+                      <p>Parcourez les fiches espèces des 2000 espèces</p>
+                      <p><a class="btn btn-lg btn-default" href="#" role="button">Learn more</a></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="item" style="background-image: url({{url_for('static', filename='custom/images/01-observateurs.jpg') }}) ; background-size: cover; background-position: top center;">
+                  <div class="container">
+                    <div class="carousel-caption">
+                      <h1>40 ans d'observations</h1>
+                      <p>Connaissance, gestion et communication. Inventaires, suivis, relevés scientifiques...</p>
+                      <p><a class="btn btn-lg btn-default" href="#" role="button">Bla bla bla</a></p>
+                    </div>
+                  </div>
+                </div>
+                 <div class="item" style="background-image: url({{url_for('static', filename='custom/images/02-photographes.jpg') }}) ; background-size: cover; background-position: bottom center;">
+                  <div class="container">
+                    <div class="carousel-caption">
+                      <h1>Des centaines de photos</h1>
+                      <p>Prises par les agents du parc national au quotidien</p>
+                      <p><a class="btn btn-lg btn-default" href="{{url_for('main.photos')}}" role="button">Visitez la galerie</a></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Précédent</span>
+              </a>
+              <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Suivant</span>
+              </a>
+            </div><!-- /.carousel -->
+            
+            
+            
+
+            <!-- Marketing messaging and featurettes
+            ================================================== -->
+            <!-- Wrap the rest of the page in another container to center all the content. -->
+
+            <div class="container marketing">
+              
+              <!-- Texte de présentation général -->
+            
+              <h3>Présentation</h3>
+              <p>Voila une belle présentation de l'atlas...</p>
+              
+              <!-- Three columns of text below the carousel -->
+              <div class="row">
+                <div class="col-lg-4">
+                  <img class="img-circle" src="{{url_for('static', filename='custom/images/03-determination.jpg') }}" alt="Generic placeholder image" width="140" height="140">
+                  <h2>Fiches espèces</h2>
+                  <p>Retrouvez la fiche de chaque espèce avec leur carte des observations, leur répartition altitudinale et mensuelle, ainsi que des descriptions, photos, vidéos, audios et liens complémentaires</p>
+                  <p><a class="btn btn-default" href="#" role="button">Exemple &raquo;</a></p>
+                </div><!-- /.col-lg-4 -->
+                <div class="col-lg-4">
+                  <img class="img-circle" src="{{url_for('static', filename='custom/images/04-loupe.jpg') }}" alt="Generic placeholder image" width="140" height="140">
+                  <h2>Fiches communes</h2>
+                  <p>Découvrez les espèces observées sur chaque commune du parc national et affichez leurs observations sur la carte de la commune.</p>
+                  <p><a class="btn btn-default" href="#" role="button">Exemple &raquo;</a></p>
+                </div><!-- /.col-lg-4 -->
+                <div class="col-lg-4">
+                  <img class="img-circle" src="{{url_for('static', filename='custom/images/06-photographe.jpg') }}" alt="Generic placeholder image" width="140" height="140">
+                  <h2>Galerie photos</h2>
+                  <p>Plus de 1000 photos prises par les agents du parc national lors de leurs missions sur le terrain.</p>
+                  <p><a class="btn btn-default" href="{{url_for('main.photos')}}" role="button">Parcourir &raquo;</a></p>
+                </div><!-- /.col-lg-4 -->
+              </div><!-- /.row -->
+            
+            </div>
+            
+        </div>
+		
+		{% if configuration.AFFICHAGE_FOOTER %}
+			{% include 'static/custom/templates/footer.html' %}
+		{% endif %}
+        
+        <script type="text/javascript">
+        var communesSearch = {{communesSearch|tojson}},
+            configuration = {{configuration|tojson}};
+        </script>
+
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
+        
+        <script src="{{url_for('static', filename='main.js') }}"></script>
+
    </body> 
 </html>
