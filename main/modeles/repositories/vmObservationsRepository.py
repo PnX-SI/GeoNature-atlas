@@ -236,14 +236,12 @@ def genericStatMedias(connection, tab):
     tabStat = list()
     for i in range(len(tab)):
         rang, nomTaxon = tab[i].items()[0]
-        sql= "SELECT COUNT(o.id_observation) as nb_obs, o.cd_ref, t.lb_nom, t.nom_vern, t.group2_inpn, m.url, m.chemin, m.auteur \
-                FROM atlas.vm_observations o \
-                JOIN atlas.vm_taxons t ON t.cd_ref = o.cd_ref \
-                JOIN atlas.vm_medias m ON m.cd_ref = o.cd_ref \
-                WHERE t."+rang+" IN :nomTaxon AND m.id_type = 1 \
-                GROUP BY o.cd_ref, t.lb_nom, t.nom_vern, m.url, m.chemin, m.auteur, t.group2_inpn \
+        sql= "SELECT t.nb_obs, t.cd_ref, t.lb_nom, t.nom_vern, t.group2_inpn, m.url, m.chemin, m.auteur \
+                FROM atlas.vm_taxons t \
+                JOIN atlas.vm_medias m ON m.cd_ref = t.cd_ref AND m.id_type = 1 \
+                WHERE t."+rang+" IN :nomTaxon \
                 ORDER BY RANDOM() \
-                LIMIT 10"
+                LIMIT 10 "
         req = connection.execute(text(sql), nomTaxon=tuple(nomTaxon))
         tabStat.insert(i, list())
         for r in req:
@@ -251,10 +249,9 @@ def genericStatMedias(connection, tab):
             if r.nom_vern != None:
                 shorterName = r.nom_vern.split(",")
                 shorterName = shorterName[0]
-            temp = {'cd_ref': r.cd_ref, 'lb_nom' : r.lb_nom, 'nom_vern': shorterName, 'path': utils.findPath(r), 'author': r.auteur, 'group2_inpn': utils.deleteAccent(r.group2_inpn), 'nb_obs': r.nb_obs}
+            temp = {'cd_ref': r.cd_ref, 'lb_nom' : r.lb_nom, 'nom_vern': shorterName, 'path': utils.findPath(r), 'author': r.auteur, 'group2_inpn':utils.deleteAccent(r.group2_inpn), 'nb_obs': r.nb_obs}
             tabStat[i].append(temp)
     if len(tabStat[0]) == 0:
         return None
-    for i in range(len(tabStat)):
-        random.shuffle(tabStat[i])
-    return tabStat
+    else :
+        return tabStat
