@@ -32,7 +32,11 @@
             <div class="col-sm-12">
 				<div class="row rowMargin">
 					<div class="panel panel-default" id="filtresPhotos">
-						<h1>Galerie photos</h1>
+						<h1>Galerie photos <span id="nbPhotos"></span>  </h1>
+                        <h3>
+                            <span id="group"> </span>
+                        </h3>
+                        
 
 						<p>
 						{% for group in groups %}
@@ -40,6 +44,10 @@
 							<img class="INPNgroup" src="{{url_for('static', filename='images/picto_' + group.group +'.png')}}" alt="{{group.groupAccent}}" title="{{group.groupAccent}}">
 						{% endfor %}
 						<a id="allGroups" class="btn btn-default" role="button">Tous les groupes</a>
+                        <span id="sort" class="glyphicon glyphicon-sort"> </span>
+
+                        <input type="text" class="form-control" id="searchPhotos" placeholder="Rechercher une espèce">
+
 						</p>
 					</div>
 				</div>
@@ -53,9 +61,6 @@
                 {% include 'static/custom/templates/footer.html' %}
             {% endif %}
          </div>
-        
-      
-
 
         <script type="text/javascript">
         var communesSearch = {{communesSearch|tojson}},

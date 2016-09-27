@@ -1,30 +1,32 @@
 
 var compteurJson = 0;
-var compteurGroup = 0;
 var clearHtml = false;
 
+
 function generateHtmlPhoto(photos){
-	var htmlPhoto = $('#insertPhotos').html()
-
-
-	if (clearHtml && compteurGroup <1){ 
+	
+	if (clearHtml){ 
 		if(photos.length == 0){
-			htmlPhoto = "<h3> Aucune photo pour ce groupe </h3>";
+			htmlPhoto = "<h3> Aucun résultat pour cette recherche </h3>";
 		}else{
-
-		//$('#insertPhotos').fadeOut();
 		htmlPhoto = "";
 		}
+	} else{
+		htmlPhoto = $('#insertPhotos').html()
 	}
 
-	console.log(htmlPhoto);
 		if (compteurJson <= photos.length){
 	  	 slicePhoto = photos.slice(compteurJson, compteurJson+22);
 	  	 compteurJson = compteurJson + 22;
-	  	 slicePhoto.forEach(function(photo){
+	  		slicePhoto.forEach(function(photo){
+
+	  		if (photo.title.indexOf("'") != -1){
+	  			photo.title = photo.title.split("'").join("&#39;");
+			}
+
 			onePhoto = "<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece'> \
 						  <div class='zoom-wrapper'> \
-					 		<a href='"+photo.path+"' data-lightbox='imageSet' data-title='"+photo.title+"  &copy; "+photo.author+"'>\
+					 		<a href='"+photo.path+"' data-lightbox='imageSet' data-title='"+photo.title +" &copy; "+photo.author+"'>\
 								<div class='img-custom-medias' style='background-image:url("+photo.path+")' alt='"+photo.name+"'> </div> \
 								<div class='stat-medias-hovereffet'> \
 						    		 <h2 class='overlay-obs'>"+photo.name+" </br> </br>"+photo.nb_obs+" observations </h2>  <img src='"+configuration.URL_APPLICATION+"/static/images/eye.png'></div> </a> </div> </div> </div>"
@@ -39,13 +41,30 @@ function generateHtmlPhoto(photos){
 }
 
 
+
+
+function orderBynbObs(json){
+
+	json.sort(function(a, b){
+		if(a.nb_obs >= b.nb_obs)
+			return -1
+		if(a.nb_obs < b.nb_obs)
+			return 1
+		return 1
+	})
+}
+
+
 function scrollEvent(photos){
 	 $(window).scroll(function(){
+	 	clearHtml = false;
+	 	console.log(clearHtml);
 	  	if($(window).scrollTop() + $(window).height() >= $(document).height()*0.80){
 	  		generateHtmlPhoto(photos)
 	 	}
 	});
 }
+
 
 
 $(document).ready(function(){
@@ -58,18 +77,46 @@ $(document).ready(function(){
 
 		  }).done(function(photos) {
 		  	 generateHtmlPhoto(photos);
+		  	 $('#nbPhotos').html(photos.length + " - photos");
 		  	 scrollEvent(photos);
-
 
 		  	$('#allGroups').click(function(){
 				clearHtml = true;
 				compteurJson = 0;
-				compteurGroup = 0;
 				$(window).off("scroll");
 				generateHtmlPhoto(photos);
-				clearHtml = false;
+				$('#group').html("");
+				$('#nbPhotos').html(photos.length + " photos");
 				scrollEvent(photos);
 		})
+
+		  	$('#sort').click(function(){
+		  		orderBynbObs(photos);
+	  			clearHtml = true;
+				compteurJson=0;
+				generateHtmlPhoto(photos);
+
+		  	})
+
+		  	// search a photo by the name of the species
+			$('#searchPhotos').on('keyup', function() {
+				$(window).off("scroll");
+				keyString = this.value;
+				filterJsonPhoto = photos.filter(function(obj){
+					name = obj.name.toLowerCase();
+					title = obj.title.toLowerCase();
+					author = obj.author.toLowerCase();
+					return (name.includes(keyString.toLowerCase()) || title.includes(keyString.toLowerCase()) || author.includes(keyString.toLowerCase()))
+				})
+
+				clearHtml = true; compteurJson=0;
+				generateHtmlPhoto(filterJsonPhoto);
+				$('#nbPhotos').html(filterJsonPhoto.length + " photos");
+				scrollEvent(filterJsonPhoto)
+			});
+
+
+
 		  	
 		});
 
@@ -77,10 +124,11 @@ $(document).ready(function(){
 })
 
 
+
+
 $('.INPNgroup').click(function(){
 	compteurJson = 0;
 	clearHtml = true;
-	compteurGroup =0;
 	group = $(this).attr('alt');
 	$(window).off("scroll");
 	$.ajax({
@@ -91,16 +139,14 @@ $('.INPNgroup').click(function(){
 		  }
 
 		  }).done(function(photos) {
-		  	console.log(photos.length);
-			generateHtmlPhoto(photos)
-			compteurGroup +=1;
+				generateHtmlPhoto(photos);
+				$('#group').html(group);
+				$('#nbPhotos').html(" - " +photos.length + " photos");
+				clearHtml = false;
+				
+				scrollEvent(photos)
+	 		});
 
-			$(window).scroll(function(){
-	  	  		if($(window).scrollTop() + $(window).height() >= $(document).height()*0.80){
-	  	  			generateHtmlPhoto(photos);
-	  	 		 }
-	 			});
-
-		})
 });
+
 
