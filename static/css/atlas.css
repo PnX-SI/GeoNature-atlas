@@ -354,7 +354,7 @@ li.sidebar-brand {
 	text-decoration: none;
 }
 
-.img-custom-medias{
+.img-custom-medias {
 	height: 250px;
     width: 100%;
     background-position: center center;
@@ -364,14 +364,23 @@ li.sidebar-brand {
 	-ms-transition: .3s ease-in-out;
 }
 
-.zoom-wrapper:hover .img-custom-medias{
+.zoom-wrapper:hover .img-custom-medias {
 	-ms-transform:scale(1.1);
 	-webkit-transform:scale(1.1);
 	transform:scale(1.1);
 }
 
-#filtresPhotos #searchPhotos{
+#filtresPhotos #searchPhotos {
     margin-top: 15px;
+}
+
+#allGroups {
+    margin: 0 10px;
+}
+
+#sort {
+    font-size: 24px;
+    vertical-align: middle;
 }
 
 #insertPhotos{
