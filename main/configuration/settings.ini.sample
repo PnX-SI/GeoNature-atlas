@@ -1,9 +1,9 @@
 #
 #  GeoNature-atlas
-#  Configuration PostgreSQL
-#..........................
+#  Configuration PostgreSQL et BDD
+#.................................
 
-# Effacer la base de donnée existante lors de l'installation
+# Effacer la base de données existante lors de l'installation
 drop_apps_db=false
 
 # Host de la base de données de l'application
@@ -15,69 +15,81 @@ db_port=5432
 # Nom de la base de données de l'application
 db_name=geonatureatlas
 
-# Nom de l'utilisateur propriétaire de la base PostgreSQL
+# Nom de l'utilisateur BDD, utilisé par l'application, lecteur des vues matérialisées uniquement
 user_pg=geonatatlas
 
-# Nom du superutilisateur PostgreSQL
+# Nom du propriétaire de la BDD, utilisé pour créer et mettre à jour la BDD
 admin_pg=geonatadmin
 
-# Password du propriétaire de la base geonaturedb
+# Password de l'utilisateur de l'application
 user_pg_pass=monpassachanger
 
-# Password du superuser de la base geonaturedb
+# Password du propriétaire de la BDD
 admin_pg_pass=monpassachanger
 
-#####SOURCES#####
+# GeoNature-atlas est-il connecté à une BDD GeoNature ?
+geonature_source=true
 
-# Host de la base de données source Geonature 
+################################################
+##### CONNEXION A LA BDD GEONATURE SOURCE ######
+################################################
+# Necessaire uniquement si on veut se connecter à la BDD source GeoNature en foreign data wrapper 
+# Si vous n'utilisez pas GeoNature, vous pouvez vous inspirer du fichier data/atlas_geonature.sql pour vous connecter à une autre BDD mère
+
+# Host de la BDD GeoNature source
 db_source_host=localhost
 
-# Port pour la base de données source Geonature
+# Port de la BDD GeoNature source
 db_source_port=5432
 
-# Nom de la base de données source Geonature
+# Nom de la BDD GeoNature source
 db_source_name=geonaturedb
 
-# Nom du user admin sur la base de données source
+# Nom de l'utilisateur admin dans la BDD GeoNature source
 admin_source_user=geonatadmin
 
-# Pass du user admin sur la base de données source
+# Pass de l'utilisateur admin dans la BDD GeoNature source
 admin_source_pass=monpassachanger
 
-# Nom du user atlas sur la base de données source (lecture seule)
+# Nom de l'utilisateur atlas dans la BDD GeoNature source (lecture seule)
 atlas_source_user=geonatatlas
 
-# Pass du user atlas sur la base de données source (lecture seule)
+# Pass de l'utilisateur atlas dans la BDD GeoNature source (lecture seule)
 atlas_source_pass=monpassachanger
 
-###COMMUNES####
-communes_shp=/home/theo/atlas/data/ref/communes.shp
+### COMMUNES ####
+
+# Creer la table des communes à partir d'un shapefile ? 
+# Si false, modifiez la creation de 'atlas.vm_communes' dans data/atlas.sql
+import_commune_shp=true
+
+communes_shp=/home/USER/atlas/data/ref/mescommunes.shp
 colonne_insee=CODE_INSEE
 colonne_nom_commune=NOM
 
-###TERRITOIRE####
+### TERRITOIRE ####
 # Chemin vers le SHP de l'emprise du territoire 
 limit_shp="/home/USER/atlas/data/ref/emprise_territoire.shp"
 
-
 ##### MAILLES #####
 
-# Mon territoire se situe pas en métropole ?
+# Mon territoire se situe en métropole ? Dans ce cas, on utilise les mailles fournies par l'INPN
 metropole=true
-# si 'false': rajouter dans le dossier /data/ref un 'shapefile' du maille de votre territoire sous le nom 'custom_maille.shp'
-chemin_custom_maille=/home/theo/data/ref/custom_maille.shp
 
-#sinon, choisissez la taille de vos mailles
-# Taille des mailles : valeurs possibles 1, 5 ou 10
+# Choisissez alors la taille de vos mailles à utiliser (en km) / Valeurs possibles 1, 5 ou 10
 taillemaille=5
 
+# Si 'metropole=false', rajoutez dans le dossier /data/ref un SHP des mailles de votre territoire et renseignez son chemin
+chemin_custom_maille=/home/USER/data/ref/custom_maille.shp
 
-
-#### ID DES ATTRIBUTS DESCRIPTIFS DES TAXONS DE LA vm_cor_taxon_attribut --  !! si changement: modifier également le config.py
+#### ID DES TYPES DES ATTRIBUTS DESCRIVANT LES TAXONS DANS atlas.vm_cor_taxon_attribut --  
+## !! si changement: modifier également dans main/configuration/config.py
 attr_desc=100
 attr_commentaire=101
 attr_milieu=102
 attr_chorologie=103
 
-# Paramètre pour la vue vm_most_view_taxon_periode : Especes les plus observées sur la periode 'moins X jour, plus X jours' - Par défaut 15 jours 
+# Paramètre pour la vue atlas.vm_taxons_plus_observes
+# Especes les plus observées sur la periode 'moins X jour, plus X jours par rapport à la date du jour, toutes années confondues'
+# 15 jours par défaut
 time=15

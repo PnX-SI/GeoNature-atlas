@@ -1,6 +1,7 @@
--- Création des foreign data wrappers pour se connecter à la base mère de GeoNature
+-- Création des tables filles en foreign data wrappers, connectées à la base mère de GeoNature (geonaturedbserver)
 
 --SYNTHESE
+
 CREATE FOREIGN TABLE synthese.syntheseff
 (
   id_synthese serial NOT NULL,
@@ -64,7 +65,6 @@ CREATE FOREIGN TABLE taxonomie.taxref
 ALTER TABLE taxonomie.taxref OWNER TO myuser;
 GRANT ALL ON TABLE taxonomie.taxref TO myuser;
 
-
 CREATE FOREIGN TABLE taxonomie.cor_taxon_attribut
 (
   id_attribut integer NOT NULL,
@@ -75,8 +75,6 @@ CREATE FOREIGN TABLE taxonomie.cor_taxon_attribut
   OPTIONS (schema_name 'taxonomie', table_name 'cor_taxon_attribut');
 ALTER TABLE taxonomie.cor_taxon_attribut OWNER TO myuser;
 GRANT ALL ON TABLE taxonomie.cor_taxon_attribut TO myuser;
-
-
 
 CREATE FOREIGN TABLE taxonomie.t_medias
 (
@@ -94,6 +92,3 @@ CREATE FOREIGN TABLE taxonomie.t_medias
   OPTIONS (schema_name 'taxonomie', table_name 't_medias');
 ALTER TABLE taxonomie.t_medias OWNER TO myuser;
 GRANT ALL ON TABLE taxonomie.t_medias TO myuser;
-
-
-

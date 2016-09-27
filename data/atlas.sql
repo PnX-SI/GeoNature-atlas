@@ -1,4 +1,4 @@
---VUES MATERIALISEES
+--VUES MATERIALISEES--
 
 --Copie du contenu de taxref (à partir du schéma taxonomie de TaxHub)
 
@@ -36,7 +36,7 @@ create index on atlas.vm_observations (cd_ref);
 create index on atlas.vm_observations (insee);
 create index on atlas.vm_observations (altitude_retenue);
 create index on atlas.vm_observations (dateobs);
-CREATE INDEX index_gist_synthese_the_geom_point ON atlas.vm_observations USING gist (the_geom_point);
+CREATE INDEX index_gist_vm_observations_the_geom_point ON atlas.vm_observations USING gist (the_geom_point);
 
   
 --Tous les taxons ayant au moins une observation

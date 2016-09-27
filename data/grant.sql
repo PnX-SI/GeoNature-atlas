@@ -1,4 +1,4 @@
--- Affectation de droits en lecture à l'utilisateur de l'application
+-- Affectation de droits en lecture sur les VM à l'utilisateur de l'application ($user_pg)
 
 SET search_path = public, pg_catalog;
 
@@ -10,7 +10,6 @@ SET search_path = public, pg_catalog;
 --REVOKE ALL ON TABLE geometry_columns FROM my_reader_user;
 --GRANT ALL ON TABLE geometry_columns TO my_reader_user;
 
-
 --
 -- Name: spatial_ref_sys; Type: ACL; Schema: public; Owner: -
 --
@@ -19,9 +18,7 @@ SET search_path = public, pg_catalog;
 REVOKE ALL ON TABLE spatial_ref_sys FROM my_reader_user;
 GRANT ALL ON TABLE spatial_ref_sys TO my_reader_user;*/
 
-
 GRANT USAGE ON SCHEMA atlas TO my_reader_user;
-
 
 GRANT SELECT ON TABLE atlas.vm_altitudes TO my_reader_user;
 GRANT SELECT ON TABLE atlas.vm_communes TO my_reader_user;
