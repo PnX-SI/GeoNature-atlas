@@ -60,17 +60,17 @@ def lastObservationsMailles(connection, mylimit, idPhoto):
 
 
 def lastObservationsCommuneMaille(connection, mylimit, insee):
-    sql ="WITH last_obs AS (SELECT obs.cd_ref, obs.dateobs, t.lb_nom, t.nom_vern, st_transform(obs.the_geom_point, 2154) as l_geom \
+    sql ="WITH last_obs AS (SELECT obs.cd_ref, obs.dateobs, t.lb_nom, t.nom_vern, obs.the_geom_point as l_geom \
     FROM atlas.vm_observations obs \
-    JOIN layers.l_communes c ON ST_Intersects(obs.the_geom_point, c.the_geom) \
+    JOIN atlas.vm_communes c ON ST_Intersects(obs.the_geom_point, c.the_geom) \
     JOIN atlas.vm_taxons t ON  obs.cd_ref = t.cd_ref \
     WHERE c.insee = :thisInsee \
     ORDER BY obs.dateobs DESC \
     LIMIT :thislimit \
     )\
-    SELECT l.lb_nom, l.nom_vern, l.cd_ref, m.id_maille, m.geojson_maille \
+    SELECT l.lb_nom, l.nom_vern, l.cd_ref, m.id_maille,ST_ASGEOJSON(ST_TRANSFORM(m.the_geom, 4326)) AS geojson_maille \
     FROM atlas.t_mailles_territoire m \
-    JOIN last_obs  l ON st_intersects(l.l_geom, m.geom) \
+    JOIN last_obs  l ON st_intersects(l.l_geom, m.the_geom) \
     GROUP BY l.lb_nom, l.cd_ref, m.id_maille, l.nom_vern"
     observations = connection.execute(text(sql), thisInsee = insee, thislimit=mylimit)
     obsList=list()
@@ -91,19 +91,14 @@ def lastObservationsCommuneMaille(connection, mylimit, insee):
 
 #Use for API
 def getObservationsTaxonCommuneMaille(connection, insee, cd_ref):
-    sql = "WITH obs_point AS (SELECT st_transform(obs.the_geom_point, 2154) as l_geom, \
-     extract(YEAR FROM obs.dateobs) as annee \
-    FROM atlas.vm_observations obs \
-    JOIN layers.l_communes c ON ST_Intersects(st_transform(obs.the_geom_point, 2154), c.the_geom) \
-    JOIN atlas.vm_taxons t ON obs.cd_ref = t.cd_ref \
-    WHERE c.insee = :thisInsee AND t.cd_ref = :thiscdref \
-    ) \
-    SELECT l.annee, m.geojson_maille, m.id_maille \
-    FROM atlas.t_mailles_territoire m \
-    JOIN obs_point l ON st_intersects(l.l_geom, m.geom) \
-    ORDER BY m.id_maille"
+    sql = """SELECT o.cd_ref, t.id_maille, ST_ASGEOJSON(ST_TRANSFORM(t.the_geom, 4326)) AS geojson_maille, extract(YEAR FROM o.dateobs) as annee
+            FROM atlas.vm_observations o
+            JOIN atlas.vm_communes c ON ST_INTERSECTS(o.the_geom_point, c.the_geom)  
+            JOIN atlas.t_mailles_territoire t ON ST_INTERSECTS(t.the_geom, o.the_geom_point)
+            WHERE o.cd_ref = :thiscdref AND c.insee = :thisInsee
+            ORDER BY id_maille"""
     observations = connection.execute(text(sql), thisInsee=insee, thiscdref = cd_ref)
-    tabObs = list()
+    tabObs = list() 
     for o in observations:
         temp = {'id_maille': o.id_maille, 'nb_observations': 1, 'annee': o.annee, 'geojson_maille':ast.literal_eval(o.geojson_maille)}
         tabObs.append(temp)
