@@ -95,14 +95,5 @@ CREATE FOREIGN TABLE taxonomie.t_medias
 ALTER TABLE taxonomie.t_medias OWNER TO myuser;
 GRANT ALL ON TABLE taxonomie.t_medias TO myuser;
 
-CREATE FOREIGN TABLE taxonomie.bib_types_media
-(
- id_type integer NOT NULL,
-    type_media character(100) NOT NULL,
-    desc_type_media text
-)
- SERVER geonaturedbserver
-  OPTIONS (schema_name 'taxonomie', table_name 'bib_types_media');
-ALTER TABLE taxonomie.bib_types_media OWNER TO myuser;
-GRANT ALL ON TABLE taxonomie.bib_types_media TO myuser;
+
 

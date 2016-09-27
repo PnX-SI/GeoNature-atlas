@@ -53,7 +53,7 @@ def getTaxonsChildsList(connection, cd_ref):
     m.chemin
     FROM atlas.vm_taxons tax 
     JOIN atlas.vm_observations obs on obs.cd_ref = tax.cd_ref 
-    JOIN atlas.bib_taxref_rangs bib_rang on tax.nom_rang = bib_rang.nom_rang
+    JOIN atlas.bib_taxref_rangs bib_rang on tax.id_rang= bib_rang.id_rang
     LEFT JOIN atlas.vm_medias m ON m.cd_ref = tax.cd_ref AND m.id_type=1 
     where tax.cd_ref in ( select * from atlas.find_all_taxons_childs(:thiscdref) 
     ) AND (bib_rang.tri_rang >= :thisRank) 

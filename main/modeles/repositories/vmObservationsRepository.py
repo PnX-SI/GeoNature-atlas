@@ -94,7 +94,7 @@ def lastObservations(connection, mylimit, idPhoto):
 def lastObservationsCommune(connection, mylimit, insee):
     sql = "SELECT o.id_observation, o.cd_ref, o.dateobs, o.altitude_retenue,o.geojson_point, o.effectif_total, t.lb_nom, t.nom_vern \
     FROM atlas.vm_observations o \
-    JOIN atlas.vm_communes c ON ST_Intersects(st_transform(o.the_geom_point, 2154), c.the_geom) \
+    JOIN atlas.vm_communes c ON ST_Intersects(o.the_geom_point, c.the_geom) \
     JOIN atlas.vm_taxons t ON  o.cd_ref=t.cd_ref \
     WHERE c.insee = :thisInsee \
     ORDER BY o.dateobs DESC \

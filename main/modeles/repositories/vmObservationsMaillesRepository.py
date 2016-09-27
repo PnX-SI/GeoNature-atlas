@@ -62,7 +62,7 @@ def lastObservationsMailles(connection, mylimit, idPhoto):
 def lastObservationsCommuneMaille(connection, mylimit, insee):
     sql ="WITH last_obs AS (SELECT obs.cd_ref, obs.dateobs, t.lb_nom, t.nom_vern, st_transform(obs.the_geom_point, 2154) as l_geom \
     FROM atlas.vm_observations obs \
-    JOIN layers.l_communes c ON ST_Intersects(st_transform(obs.the_geom_point, 2154), c.the_geom) \
+    JOIN layers.l_communes c ON ST_Intersects(obs.the_geom_point, c.the_geom) \
     JOIN atlas.vm_taxons t ON  obs.cd_ref = t.cd_ref \
     WHERE c.insee = :thisInsee \
     ORDER BY obs.dateobs DESC \
