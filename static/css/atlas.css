@@ -9,6 +9,21 @@ body {
   margin-top: 25px;
 }
 
+a{
+	-webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+a.btn.btn-default{
+	color: white;
+	background-color: #333333 !important;
+}
+
+a.btn.btn-default:hover{
+	background-color: #cccccc !important;
+	color: black;
+}
+
 .rowMargin {
 	margin-left: 0px;
 	margin-right: 0px
@@ -81,6 +96,11 @@ body {
 #sidebar_menu a {
 	color: white;
 	text-decoration: none;
+}
+
+li.sidebar-brand {
+	-webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
 }
 
 #sidebar-wrapper span {
@@ -280,16 +300,16 @@ body {
 
 /*END FOOTER*/
 
-/* Gallerie Photo et fiche par groupe */
+/* Galerie Photo et fiche par groupe */
 
 .INPNgroup {
 	cursor: pointer;
+    padding: 2px;
 }
 
 .INPNgroup:hover {
-	background-color: grey;
+	background-color: #ababab;
 }
-
 
 .zoom-wrapper{
 	overflow: hidden;
@@ -303,8 +323,6 @@ body {
    left: 0;
    width: 100%;
 }
-
-
 
 .zoom-wrapper:hover .stat-medias-hovereffet{
 	display: block;
@@ -336,22 +354,6 @@ body {
 	text-decoration: none;
 }
 
-.zoom-wrapper:hover .img-custom-medias{
-	-ms-transform:scale(1.1);
-	-webkit-transform:scale(1.1);
-	transform:scale(1.1);
-}
-
- a{
-	-webkit-transition: all 0.5s ease;
-    transition: all 0.5s ease;
-}
-
-li.sidebar-brand {
-	-webkit-transition: all 0.5s ease;
-    transition: all 0.5s ease;
-}
-
 .img-custom-medias{
 	height: 250px;
     width: 100%;
@@ -362,15 +364,19 @@ li.sidebar-brand {
 	-ms-transition: .3s ease-in-out;
 }
 
-
-a.btn.btn-default{
-	color: white;
-	background-color: #333333 !important;
+.zoom-wrapper:hover .img-custom-medias{
+	-ms-transform:scale(1.1);
+	-webkit-transform:scale(1.1);
+	transform:scale(1.1);
 }
 
-
-a.btn.btn-default:hover{
-	background-color: #cccccc !important;
-	color: black;
+#filtresPhotos #searchPhotos{
+    margin-top: 15px;
 }
+
+#insertPhotos{
+    margin-bottom: 20px;
+}
+
+/* END Galerie photos */
 

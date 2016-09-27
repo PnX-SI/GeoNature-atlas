@@ -18,7 +18,7 @@ def deleteAccent(string):
     return unicodedata.normalize('NFD', string).encode('ascii', 'ignore')  
 
 
-#with distinct the result in a array not an object, 0: lb_nom, 1: nom_vern
+# With distinct the result in a array not an object, 0: lb_nom, 1: nom_vern
 def getTaxonsCommunes(connection, insee):
     sql = """SELECT DISTINCT o.cd_ref, MAX(o.dateobs) as last_obs, COUNT(o.id_observation) AS nb_obs, t.nom_complet_html, t.nom_vern, t.group2_inpn, t.patrimonial, t.protection_stricte, m.url, m.chemin
         FROM atlas.vm_observations o
@@ -68,8 +68,12 @@ def getTaxonsChildsList(connection, cd_ref):
         nbObsTotal = nbObsTotal+ r.nb_obs
     return {'taxons': taxonRankList, 'nbObsTotal' : nbObsTotal}
 
-def getINPNgroup(connection):
-    sql=""" SELECT DISTINCT group2_inpn FROM atlas.vm_taxons """
+# Get list of INPN groups with at list one photo
+def getINPNgroupPhotos(connection):
+    sql=""" SELECT DISTINCT count(*) AS nb_photos, group2_inpn FROM atlas.vm_taxons T
+    JOIN atlas.vm_medias M on M.cd_ref = T.cd_ref
+    GROUP BY group2_inpn
+    ORDER BY nb_photos DESC """
     req = connection.execute(text(sql))
     groupList = list()
     for r in req:
@@ -77,6 +81,3 @@ def getINPNgroup(connection):
         groupList.append(temp)
     return groupList
     
-
-
-

@@ -6,12 +6,12 @@
 
         <!-- Jquery -->
         <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
+		<script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
 
         <!-- Bootstrap -->
         <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}"></link>
         <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
-        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
 
         <!-- LightBox -->
         <link rel="stylesheet" href="{{url_for('static', filename='lib/lightbox2/css/lightbox.min.css') }}" />
@@ -32,48 +32,37 @@
             <div class="col-sm-12">
 				<div class="row rowMargin">
 					<div class="panel panel-default" id="filtresPhotos">
-						<h1>Galerie photos <span id="nbPhotos"></span>  </h1>
-                        <h3>
-                            <span id="group"> </span>
-                        </h3>
-                        
-
+						<h1>Galerie photos <span id="group"></span></h1>
 						<p>
-						{% for group in groups %}
-
-							<img class="INPNgroup" src="{{url_for('static', filename='images/picto_' + group.group +'.png')}}" alt="{{group.groupAccent}}" title="{{group.groupAccent}}">
-						{% endfor %}
-						<a id="allGroups" class="btn btn-default" role="button">Tous les groupes</a>
-                        <span id="sort" class="glyphicon glyphicon-sort"> </span>
-
-                        <input type="text" class="form-control" id="searchPhotos" placeholder="Rechercher une espèce">
-
+						    {% for group in groups %}
+							    <img class="INPNgroup" src="{{url_for('static', filename='images/picto_' + group.group +'.png')}}" alt="{{group.groupAccent}}" data-toggle="tooltip" data-original-title="{{group.groupAccent}}" data-placement="top">
+						    {% endfor %}
+						    <a id="allGroups" class="btn btn-default" role="button" data-toggle="tooltip" data-original-title="Afficher les photos de tous les groupes" data-placement="top">Tous les groupes</a>
+                            <span id="sort" class="glyphicon glyphicon-sort" data-toggle="tooltip" data-original-title="Trier les photos par nombre d'observations" data-placement="top"></span>
+                            <input type="text" class="form-control" id="searchPhotos" placeholder="Rechercher une espèce">
+                            <h4 id="nbPhotos"></h4>
 						</p>
 					</div>
 				</div>
 			</div>
 			
 			<div class="col-sm-12" id="insertPhotos">
-
 			</div>
 			
-			{% if configuration.AFFICHAGE_FOOTER %}
-                {% include 'static/custom/templates/footer.html' %}
-            {% endif %}
-         </div>
-
+        </div>
+        
+        {% if configuration.AFFICHAGE_FOOTER %}
+            {% include 'static/custom/templates/footer.html' %}
+        {% endif %}
+        
+        <script src="{{url_for('static', filename='lib/lightbox2/js/lightbox.min.js') }}"></script>
         <script type="text/javascript">
-        var communesSearch = {{communesSearch|tojson}},
-            configuration = {{configuration|tojson}};
-         </script>
-
+            var communesSearch = {{communesSearch|tojson}},
+                 configuration = {{configuration|tojson}};
+        </script>
 
         <script src="{{url_for('static', filename='galleryPhoto.js') }}"></script>
         <script src="{{url_for('static', filename='main.js') }}"></script>
-
-
-
-        <script  src="{{url_for('static', filename='lib/lightbox2/js/lightbox.min.js') }}" ></script>
 
    </body> 
 </html>

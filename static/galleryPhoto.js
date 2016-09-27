@@ -75,9 +75,10 @@ $(document).ready(function(){
 		    // $('#loadingGif').attr("src", configuration.URL_APPLICATION+'/static/images/loading.svg')
 		  }
 
+          // Count and display number of photos
 		  }).done(function(photos) {
 		  	 generateHtmlPhoto(photos);
-		  	 $('#nbPhotos').html(photos.length + " - photos");
+		  	 $('#nbPhotos').html(photos.length + " photos");
 		  	 scrollEvent(photos);
 
 		  	$('#allGroups').click(function(){
@@ -88,7 +89,7 @@ $(document).ready(function(){
 				$('#group').html("");
 				$('#nbPhotos').html(photos.length + " photos");
 				scrollEvent(photos);
-		})
+			})
 
 		  	$('#sort').click(function(){
 		  		orderBynbObs(photos);
@@ -115,15 +116,9 @@ $(document).ready(function(){
 				scrollEvent(filterJsonPhoto)
 			});
 
-
-
-		  	
 		});
 
-
 })
-
-
 
 
 $('.INPNgroup').click(function(){
@@ -136,17 +131,17 @@ $('.INPNgroup').click(function(){
 		  dataType: "json",
 		  beforeSend: function(){
 		    // $('#loadingGif').attr("src", configuration.URL_APPLICATION+'/static/images/loading.svg')
-		  }
-
+		    }
+            
+		  // Count and display number of photos in 1 group
 		  }).done(function(photos) {
 				generateHtmlPhoto(photos);
-				$('#group').html(group);
-				$('#nbPhotos').html(" - " +photos.length + " photos");
+				$('#group').html("("+group+")");
+				$('#nbPhotos').html(photos.length + " photos");
 				clearHtml = false;
 				
 				scrollEvent(photos)
 	 		});
 
 });
-
 

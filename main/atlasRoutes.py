@@ -142,9 +142,9 @@ def photos():
     session = utils.loadSession()
     connection = utils.engine.connect()
     
-    groups = vmTaxonsRepository.getINPNgroup(connection)
+    groups = vmTaxonsRepository.getINPNgroupPhotos(connection)
     communesSearch = vmCommunesRepository.getAllCommunes(session)
-    configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'URL_APPLICATION': config.URL_APPLICATION}
+    configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'URL_APPLICATION': config.URL_APPLICATION, 'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER, 'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS}
 
     session.close()
     connection.close()
