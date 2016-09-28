@@ -86,7 +86,11 @@ then
                                                     ON atlas.l_communes USING gist (the_geom); "
         rm ./data/ref/communes_3857.*
     fi
-
+	
+	# Suppression du fichier de log d'installation si il existe déjà puis création de ce fichier vide.
+	rm  -f ./log/install_db.log
+	nano ./log/install_db.log
+	
     echo "Création de la structure de la BDD..."
     # Si j'utilise GeoNature ($geonature_source = True), alors je créé les tables filles en FDW connectées à la BDD de GeoNature
     if [ $geonature_source ]; then
@@ -169,13 +173,13 @@ then
 
     echo "Creation de la VM des observations de chaque taxon par mailles..."
     # Création de la vue matérialisée vm_mailles_observations (nombre d'observations par maille et par taxon)
-    export PGPASSWORD=$admin_pg_pass;psql -h $db_host -U $admin_pg -d $db_name -f data/observations_mailles.sql  &> log/install_mailles.log
+    export PGPASSWORD=$admin_pg_pass;psql -h $db_host -U $admin_pg -d $db_name -f data/observations_mailles.sql  &>> log/install_mailles.log
 
 	# Affectation de droits en lecture sur les VM à l'utilisateur de l'application ($user_pg)
     echo "Grant..."
     sudo cp data/grant.sql /tmp/grant.sql
     sudo sed -i "s/my_reader_user;$/$user_pg;/" /tmp/grant.sql
-    export PGPASSWORD=$admin_pg_pass;psql -h $db_host -U $admin_pg -d $db_name -f /tmp/grant.sql &> log/install_db.log
+    export PGPASSWORD=$admin_pg_pass;psql -h $db_host -U $admin_pg -d $db_name -f /tmp/grant.sql &>> log/install_db.log
     
 	# Affectation de droits en lecture sur les VM à l'utilisateur de l'application ($user_pg)
     cd data/ref
