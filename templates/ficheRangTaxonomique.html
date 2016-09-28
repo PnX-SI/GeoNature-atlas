@@ -6,17 +6,19 @@
 
         <!-- Jquery -->
         <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
+		<script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
 		<link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
 
-        <!-- DataTable-->
+        <!-- DataTable -->
         <script type=text/javascript src="{{url_for('static', filename='lib/dataTable/datatables.min.js') }}"></script>
-        <link rel="stylesheet" href="{{url_for('static', filename='lib/dataTable/jquery.dataTables.min.css') }}"> </link>
-
+		<script type=text/javascript src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" />
+        <!--  <link rel="stylesheet" href="{{url_for('static', filename='lib/dataTable/jquery.dataTables.min.css') }}" />  -->
+		
         <!-- Bootstrap -->
         <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}"></link>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap-switch/css/bootstrap-switch.min.css') }}"></link>
         <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
-
         <link rel="stylesheet" href="{{url_for('static', filename='lib/node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css') }}" />
         <script src="{{url_for('static', filename='lib/node_modules/bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
 
@@ -38,8 +40,8 @@
 		<div class="container-fluid" id="page">
 
         <div class="col-sm-12">
-            <div class="row rowMargin">
-                <div class="panel panel-default" id="parent">
+            <div class="panel panel-default" id="parent">
+				<div class="row rowMargin">
                     <h4> <b> Espèces observées pour le taxon <i>{{referenciel.lb_nom}}</i> ({{referenciel.nom_rang}}) </b> </h4>
     
                     <div id="hierarchy">
@@ -65,14 +67,11 @@
                         <li><span data-icon="&#xe040;" style="font-size: 30px;"></span><br/><b>{{observers | length}}</b><br/>observateurs</li>
                     </ul>
                 </div>
-
-
             </div>
 
-
-            <div class="row rowMargin" id="clear">
-                <div class="panel panel-default">
-
+            
+            <div class="panel panel-default">
+				<div class="row rowMargin" id="clear">
                     {% include 'templates/tabTaxons.html' %}
                 </div>
             </div>
@@ -84,15 +83,12 @@
         {% include 'static/custom/templates/footer.html' %}
     {% endif %}
     
-        <!-- JQUERY UI -->
-        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
         <script type="text/javascript">
         var communesSearch = {{communesSearch|tojson}},
             configuration = {{configuration|tojson}};
         </script>
         <script src="{{url_for('static', filename='listeEspeces.js') }}"></script>
         <script src="{{url_for('static', filename='main.js') }}"></script>
-
 
   </body>
 

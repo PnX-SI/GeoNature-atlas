@@ -19,7 +19,7 @@ $(document).ready(function(){
       "aoColumnDefs" : [
       {
        'bSortable' : false,
-       'aTargets' : [7]
+       'aTargets' : [7,8]
      }]
     });
     $('.dataTables_filter input').attr("placeholder", "Rechercher dans la liste ").attr("class", "form-control").css("font-weight", "normal");
