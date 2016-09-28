@@ -14,7 +14,9 @@
         <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
 
         <!-- LightBox -->
+
         <link rel="stylesheet" href="{{url_for('static', filename='lib/lightbox2/css/lightbox.min.css') }}" />
+
 
         <!-- Atlas -->
         <link rel="shortcut icon" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
@@ -72,7 +74,7 @@
             {% include 'static/custom/templates/footer.html' %}
         {% endif %}
         
-        <script src="{{url_for('static', filename='lib/lightbox2/js/lightbox.min.js') }}"></script>
+        
         <script type="text/javascript">
             var communesSearch = {{communesSearch|tojson}},
                  configuration = {{configuration|tojson}};
@@ -80,6 +82,8 @@
 
         <script src="{{url_for('static', filename='galleryPhoto.js') }}"></script>
         <script src="{{url_for('static', filename='main.js') }}"></script>
+
+        <script src="{{url_for('static', filename='lib/lightbox2/js/lightbox.min.js') }}"></script>
 
    </body> 
 </html>

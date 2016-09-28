@@ -27,7 +27,7 @@ function generateHtmlPhoto(photos){
 			}
 
 			onePhoto = "<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece '> \
-						  <div class='zoom-wrapper'> \
+						  <div class='zoom-wrapper' cdRef='"+photo.cd_ref+"'> \
 					 		<a href='"+photo.path+"' data-lightbox='imageSet' data-title='"+photo.title +" &copy; "+photo.author+"'>\
 								<div class='img-custom-medias' style='background-image:url("+photo.path+")' alt='"+photo.name+"'> </div> \
 								<div class='stat-medias-hovereffet'> \
@@ -40,7 +40,10 @@ function generateHtmlPhoto(photos){
 		})
 	 }
 	$('#insertPhotos').html(htmlPhoto);
+
 }
+
+
 
 
 function scrollEvent(photos){
@@ -126,9 +129,6 @@ $(document).ready(function(){
 				$('#nbPhotos').html(photos.length + " photos");
 				scrollEvent(photos);
 			})
-
-
-
 
 		  	// search a photo by the name of the species
 			$('#searchPhotos').on('keyup', function() {
