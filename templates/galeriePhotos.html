@@ -31,23 +31,40 @@
 		<div class="container-fluid" id="page">
             <div class="col-sm-12">
 				<div class="row rowMargin">
-					<div class="panel panel-default" id="filtresPhotos">
-						<h1>Galerie photos <span id="group"></span></h1>
-						<p>
-						    {% for group in groups %}
-							    <img class="INPNgroup" src="{{url_for('static', filename='images/picto_' + group.group +'.png')}}" alt="{{group.groupAccent}}" data-toggle="tooltip" data-original-title="{{group.groupAccent}}" data-placement="top">
-						    {% endfor %}
-						    <a id="allGroups" class="btn btn-default" role="button" data-toggle="tooltip" data-original-title="Afficher les photos de tous les groupes" data-placement="top">Tous les groupes</a>
-                            <span id="sort" class="glyphicon glyphicon-sort" data-toggle="tooltip" data-original-title="Trier les photos par nombre d'observations" data-placement="top"></span>
-                            <input type="text" class="form-control" id="searchPhotos" placeholder="Rechercher une espèce">
-                            <h4 id="nbPhotos"></h4>
-						</p>
+					<div class="panel panel-default">
+						<h1 class="title">Galerie photos <span id="group"></span></h1>
+                            <div id="filtresPhotos">
+        						<ul class="floatParent">
+        						    {% for group in groups %}
+        							    <li class="floatLeft"> 
+                                            <img class="INPNgroup" src="{{url_for('static', filename='images/picto_' + group.group +'.png')}}" alt="{{group.groupAccent}}" data-toggle="tooltip" data-original- title="{{group.groupAccent}}" data-placement="top">
+                                        </li>
+        						    {% endfor %}
+                               
+        						    <li class="floatLeft bottom"> 
+                                        <a id="allGroups" class="btn btn-default" role="button" data-toggle="tooltip" data-original-title="Afficher les photos de tous les groupes" data-placement="top">Tous les groupes</a>
+                                    </li>
+                                     <li class="floatLeft bottom"> 
+                                        <span id="orderPhotos" class="sortedButton">
+                                            <span id="sort" class="glyphicon glyphicon-sort" data-toggle="tooltip" data-original-title="Trier les photos par nombre d'observations" data-placement="top"></span>
+                                        </span>
+                                    </li>
+        						    <li class="floatLeft bottom">
+                                        <input type="text" class="form-control" id="searchPhotos" placeholder="Rechercher une espèce">
+                                    </li>
+                                 </ul>
+                            </div>
+                        <h3 id="nbPhotos"></h4> 
 					</div>
+
 				</div>
 			</div>
 			
-			<div class="col-sm-12" id="insertPhotos">
-			</div>
+            <div class="col-sm-12">
+                
+		          <div class="col-sm-12 panel panel-default" id="insertPhotos"></div>
+                
+            </div>
 			
         </div>
         

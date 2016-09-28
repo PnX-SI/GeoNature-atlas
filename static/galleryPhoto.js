@@ -3,11 +3,13 @@ var compteurJson = 0;
 var clearHtml = false;
 
 
+
+// populate HTML with the selected photos
 function generateHtmlPhoto(photos){
 	
 	if (clearHtml){ 
 		if(photos.length == 0){
-			htmlPhoto = "<h3> Aucun résultat pour cette recherche </h3>";
+			htmlPhoto = "<h3> <span style='padding:10px;'> Aucun résultat pour cette recherche </span> </h3>";
 		}else{
 		htmlPhoto = "";
 		}
@@ -24,7 +26,7 @@ function generateHtmlPhoto(photos){
 	  			photo.title = photo.title.split("'").join("&#39;");
 			}
 
-			onePhoto = "<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece'> \
+			onePhoto = "<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece '> \
 						  <div class='zoom-wrapper'> \
 					 		<a href='"+photo.path+"' data-lightbox='imageSet' data-title='"+photo.title +" &copy; "+photo.author+"'>\
 								<div class='img-custom-medias' style='background-image:url("+photo.path+")' alt='"+photo.name+"'> </div> \
@@ -41,30 +43,56 @@ function generateHtmlPhoto(photos){
 }
 
 
-
-
-function orderBynbObs(json){
-
-	json.sort(function(a, b){
-		if(a.nb_obs >= b.nb_obs)
-			return -1
-		if(a.nb_obs < b.nb_obs)
-			return 1
-		return 1
-	})
-}
-
-
 function scrollEvent(photos){
 	 $(window).scroll(function(){
 	 	clearHtml = false;
-	 	console.log(clearHtml);
 	  	if($(window).scrollTop() + $(window).height() >= $(document).height()*0.80){
 	  		generateHtmlPhoto(photos)
 	 	}
 	});
 }
 
+
+
+// ORDER event
+function orderPhotosEvent(photos) {
+
+  		$('body').on('click', "#sort", function() {
+
+  		span = $('#orderPhotos').find('span');
+  		$(span).toggleClass('glyphicon glyphicon-sort').toggleClass('glyphicon glyphicon-random');
+  		$(span).attr("id", "random");
+  		$(span).attr("data-original-title", "Trier de manière aléatoire")
+  		sortedPhotos = photos.slice().sort(function(a,b){
+  			if(a.nb_obs >= b.nb_obs)
+				return -1
+			if(a.nb_obs < b.nb_obs)
+				return 1
+			return 0
+  		})
+			clearHtml = true; compteurJson=0;
+			
+		generateHtmlPhoto(sortedPhotos);
+		$(window).off("scroll");
+		scrollEvent(sortedPhotos);
+
+	});
+}
+
+
+function sufflePhotosEvent(photos){
+		$('body').on('click', "#random", function() {
+	  	
+	  	span = $('#orderPhotos').find('span');
+  		$(span).toggleClass('glyphicon glyphicon-sort').toggleClass('glyphicon glyphicon-random');
+  		$(span).attr("id", "sort");
+  		$(span).attr("data-original-title", "Trier les photos par nombre d'observations");
+  		clearHtml = true; compteurJson=0;
+  		generateHtmlPhoto(photos)
+  		$(window).off("scroll");
+		scrollEvent(photos);
+	})
+}
 
 
 $(document).ready(function(){
@@ -81,7 +109,15 @@ $(document).ready(function(){
 		  	 $('#nbPhotos').html(photos.length + " photos");
 		  	 scrollEvent(photos);
 
+		  	 	orderPhotosEvent(photos);	
+
+		  	 	sufflePhotosEvent(photos);
+
+
 		  	$('#allGroups').click(function(){
+		  		$("body").off("click");
+		  		orderPhotosEvent(photos);		  	 
+		  		sufflePhotosEvent(photos);
 				clearHtml = true;
 				compteurJson = 0;
 				$(window).off("scroll");
@@ -91,17 +127,14 @@ $(document).ready(function(){
 				scrollEvent(photos);
 			})
 
-		  	$('#sort').click(function(){
-		  		orderBynbObs(photos);
-	  			clearHtml = true;
-				compteurJson=0;
-				generateHtmlPhoto(photos);
 
-		  	})
+
 
 		  	// search a photo by the name of the species
 			$('#searchPhotos').on('keyup', function() {
 				$(window).off("scroll");
+				$("body").off("click");
+				$('#group').html("");
 				keyString = this.value;
 				filterJsonPhoto = photos.filter(function(obj){
 					name = obj.name.toLowerCase();
@@ -113,7 +146,10 @@ $(document).ready(function(){
 				clearHtml = true; compteurJson=0;
 				generateHtmlPhoto(filterJsonPhoto);
 				$('#nbPhotos').html(filterJsonPhoto.length + " photos");
-				scrollEvent(filterJsonPhoto)
+				scrollEvent(filterJsonPhoto);
+		  	 	orderPhotosEvent(photos);	
+		  	 	sufflePhotosEvent(photos);
+
 			});
 
 		});
@@ -126,6 +162,12 @@ $('.INPNgroup').click(function(){
 	clearHtml = true;
 	group = $(this).attr('alt');
 	$(window).off("scroll");
+	$("#page").off("click");
+	span = $('#orderPhotos').find('span')
+	$(span).attr("class", "glyphicon glyphicon-sort");
+	$(span).attr("data-original-title", "Trier les photos par nombre d'observations");
+	$(span).attr("id", "sort");
+
 	$.ajax({
 		  url: configuration.URL_APPLICATION+'/api/photoGroup/'+group,
 		  dataType: "json",
@@ -139,9 +181,14 @@ $('.INPNgroup').click(function(){
 				$('#group').html("("+group+")");
 				$('#nbPhotos').html(photos.length + " photos");
 				clearHtml = false;
-				
-				scrollEvent(photos)
-	 		});
+				scrollEvent(photos);
+		  	 	orderPhotosEvent(photos);	
+		  	 	sufflePhotosEvent();
 
+		 })
 });
+
+
+
+
 

@@ -304,11 +304,10 @@ li.sidebar-brand {
 
 .INPNgroup {
 	cursor: pointer;
-    padding: 2px;
 }
 
-.INPNgroup:hover {
-	background-color: #ababab;
+.INPNgroup img{
+	padding: 0px;
 }
 
 .zoom-wrapper{
@@ -370,22 +369,64 @@ li.sidebar-brand {
 	transform:scale(1.1);
 }
 
-#filtresPhotos #searchPhotos {
-    margin-top: 15px;
-}
 
 #allGroups {
     margin: 0 10px;
 }
 
-#sort {
+#sort, #random {
     font-size: 24px;
     vertical-align: middle;
 }
 
 #insertPhotos{
     margin-bottom: 20px;
+    padding: 0px;
 }
 
+#filtresPhotos{
+	float: left;
+    width: 100%;
+}
+
+.floatParent{
+	float: left;
+	padding: 0px;
+	margin: 0px;
+}
+
+
+#orderPhotos{
+	padding-top: 8px;
+}
+
+
+.floatLeft{
+	float: left;
+	list-style-type: none;
+	margin-left: 5px;
+	}
+
+.floatLeft.bottom {
+	margin-top: 8px;
+}
+
+#nbPhotos{
+	clear: both;
+	padding-left: 15px;
+    padding-top: 10px;
+}
+
+#searchPhotos{
+	margin-left: 15px;
+}
+
+.title{
+	padding-left: 15px;
+}
+
+.sortedButton{
+	cursor: pointer;
+}
 /* END Galerie photos */
 
