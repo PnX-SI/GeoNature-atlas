@@ -201,11 +201,11 @@ Comme indiqué dans le fichier ``settings.ini``, vous pouvez faire de même pour
 
 L'application se base entièrement sur des vues matérialisées. Par défaut, celles-ci sont proposées pour requêter les données dans une BDD GeoNature. Mais cela, laisse la possibilité de la connecter à une autre BDD.
 
-.. image :: docs/images/geonature-atlas-schema-02.jpg
+.. image :: images/geonature-atlas-schema-02.jpg
 
 Ainsi si vous n'utiliser pas GeoNature comme données sources, commencez par éditer la vue atlas.vm_observations dans ``data/atlas.sql`` en respectant impérativement les noms de champs.
 
-.. image :: docs/images/geonature-atlas-schema-01.jpg
+.. image :: images/geonature-atlas-schema-01.jpg
 
 Plus de détails sur les différentes vues matérialisées dans le fichier ``data/vues_materialisees_maj.rst`` qui indique aussi comment automatiser leur mise à jour.
 
