@@ -2,8 +2,11 @@
 CHANGELOG
 =========
 
-1.0.0.dev0
--------------------
+1.0.1.dev0 (unreleased)
+-----------------------
+
+1.0.0 (2016-09-28)
+-----------------------
 
 Première version complète et fonctionnelle de GeoNature-atlas
 
@@ -23,9 +26,7 @@ Première version complète et fonctionnelle de GeoNature-atlas
 
 **A venir**
 
-* Compléments et mises à jour de la documentation
-* Finition de la galerie photo (compteur, tri, liens vers fiches espèce, tooltip, recherche espèce)
+* Finition de la galerie photo (liens vers fiches espèce)
 * Fiche par groupe
 * Gestion forcable des types d'affichage cartographique en mode point (mailles, clusters ou points à n'importe qu'elle échelle)
-* CSS des listes d'espèces
-* Maquette par défaut pour la page de présentation de l'atlas
+* CSS des listes d'espèces (communes et rangs taxonomiques)
