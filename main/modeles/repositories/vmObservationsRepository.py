@@ -60,14 +60,15 @@ def firstObservationChild(connection, cd_ref):
 
     
 def lastObservations(connection, mylimit, idPhoto):
-    sql = "SELECT obs.*, \
-    tax.lb_nom, tax.nom_vern, tax.group2_inpn, \
-    medias.url, medias.chemin \
-    FROM atlas.vm_observations obs \
-    JOIN atlas.vm_taxons tax ON tax.cd_ref = obs.cd_ref \
-    LEFT JOIN atlas.vm_medias medias ON medias.cd_ref = obs.cd_ref AND medias.id_type = :thisidphoto\
-    ORDER BY obs.dateobs DESC \
-    LIMIT :thislimit "
+    sql = """SELECT obs.*, 
+    tax.lb_nom, tax.nom_vern, tax.group2_inpn, 
+    medias.url, medias.chemin 
+    FROM atlas.vm_observations obs 
+    JOIN atlas.vm_taxons tax ON tax.cd_ref = obs.cd_ref 
+    LEFT JOIN atlas.vm_medias medias ON medias.cd_ref = obs.cd_ref AND medias.id_type = :thisidphoto
+    WHERE  obs.dateobs >= (CURRENT_TIMESTAMP - INTERVAL :thislimit)
+    ORDER BY obs.dateobs DESC """
+    
 
     observations = connection.execute(text(sql), thislimit = mylimit, thisidphoto=idPhoto)
     obsList=list()

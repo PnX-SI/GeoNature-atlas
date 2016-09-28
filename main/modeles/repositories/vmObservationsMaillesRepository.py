@@ -26,16 +26,16 @@ def getObservationsMaillesChilds(connection, cd_ref):
 
 # last observation for index.html
 def lastObservationsMailles(connection, mylimit, idPhoto):
-    sql = "SELECT obs.*, \
-    tax.lb_nom, tax.nom_vern, tax.group2_inpn, \
-    o.dateobs, o.altitude_retenue, \
-    medias.url, medias.chemin \
-    FROM atlas.vm_observations_mailles obs \
-    JOIN atlas.vm_taxons tax ON tax.cd_ref = obs.cd_ref \
-    JOIN atlas.vm_observations o ON o.id_observation=obs.id_observation \
-    LEFT JOIN atlas.vm_medias medias ON medias.cd_ref = obs.cd_ref AND medias.id_type = 1\
-    ORDER BY o.dateobs DESC \
-    LIMIT :thislimit "
+    sql = """SELECT obs.*, 
+    tax.lb_nom, tax.nom_vern, tax.group2_inpn, 
+    o.dateobs, o.altitude_retenue, 
+    medias.url, medias.chemin 
+    FROM atlas.vm_observations_mailles obs 
+    JOIN atlas.vm_taxons tax ON tax.cd_ref = obs.cd_ref 
+    JOIN atlas.vm_observations o ON o.id_observation=obs.id_observation 
+    WHERE  obs.dateobs >= (CURRENT_TIMESTAMP - INTERVAL :thislimit) 
+    LEFT JOIN atlas.vm_medias medias ON medias.cd_ref = obs.cd_ref AND medias.id_type = 1
+    ORDER BY o.dateobs DESC """
 
     observations = connection.execute(text(sql), thislimit = mylimit)
     obsList=list()

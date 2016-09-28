@@ -51,7 +51,7 @@
 								<span class="glyphicon glyphicon-search"></span>
 								<h1>{{stat.nbTotalObs}}</h1>
 								<h4> observations</h4>
-								<p><a id="localScroll" href="#DernieresObservations" class="btn btn-default" role="button">Voir les {{configuration.NB_LAST_OBS}} dernières observations</a></p>
+								<p><a id="localScroll" href="#DernieresObservations" class="btn btn-default" role="button">Voir les dernières observations</a></p>
 							</div>
 						</div>
 						<div class = "col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
@@ -147,7 +147,7 @@
 			<!-- Dernières espèces observées (Carte et liste) -->
 			<div class="col-sm-12" id="DernieresObservations"> 
 					<div class="panel panel-default" >
-					  	<div class="panel-heading"><h3>Les {{configuration.NB_LAST_OBS}} dernières observations</h3></div>
+					  	<div class="panel-heading"><h3> {{configuration.TEXT_LAST_OBS}} {{observations | length}} observations</h3></div>
 					  	<div class="row" id="mapRow">
 							<!-- CARTE des dernières observations -->
 							<div id="blocMap" class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
