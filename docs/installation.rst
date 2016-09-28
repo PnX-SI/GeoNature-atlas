@@ -82,9 +82,9 @@ Vous pouvez renommer le dossier qui contient l'application (dans un dossier ``/h
 ::
 
     cd atlas/
-	./install_env.sh
-	
-	
+    ./install_env.sh
+
+
 Configuration d'Apache
 ======================
 
@@ -203,7 +203,7 @@ L'application se base entièrement sur des vues matérialisées. Par défaut, ce
 
 .. image :: images/geonature-atlas-schema-02.jpg
 
-Ainsi si vous n'utiliser pas GeoNature comme données sources, commencez par éditer la vue atlas.vm_observations dans ``data/atlas.sql`` en respectant impérativement les noms de champs.
+Ainsi si vous n'utiliser pas GeoNature comme données sources, commencez par éditer la vue ``atlas.vm_observations`` dans ``data/atlas.sql`` en respectant impérativement les noms de champs.
 
 .. image :: images/geonature-atlas-schema-01.jpg
 
@@ -235,17 +235,16 @@ Ouvrir le fichier de configuration ``main/configuration/config.py``.
 - renseigner l'url de l'application '/atlas' ou '' si il n'y a pas de 'sous-domaine' dans la conf apache
 - customiser l'application...
 
-
 Customisation de l'application
 ==============================   
 	
-	
+A rédiger	
 	
 Mise à jour de l'application
 ============================
 
 - Télécharger puis dézipper la nouvelle version de l'atlas à installer dans ``/home/monuser``.
-- Renommer l'ancienne version de l'atlas puis la nouvelle version, en lui donnant le nom du répertoire précédemment utilisé si vous voulez de devoir modifier votre configuration Apache.
+- Renommer l'ancienne version de l'atlas puis la nouvelle version, en lui donnant le nom du répertoire précédemment utilisé si vous voulez éviter de devoir modifier votre configuration Apache.
 - Ou y créer un nouveau répertoire pour l'application et ``git clone`` de la version souhaitée depuis le dépot Github.
 
 :notes:
@@ -253,7 +252,7 @@ Mise à jour de l'application
     A la racine de l'application, un fichier ``VERSION`` permet de savoir quelle version est installée. 
 
 - Copier ``main/configuration/settings.ini`` et ``main/configuration/config.py`` depuis l'ancienne version vers la nouvelle pour récupérer vos paramètres de configuration
-- Copier ``static/custom`/` depuis l'ancienne version vers la nouvelle pour récupérer toute votre customisation (CSS, templates, images...)
+- Copier ``static/custom/`` depuis l'ancienne version vers la nouvelle pour récupérer toute votre customisation (CSS, templates, images...)
 - Redémarrez Apache
 
 Attention à bien lire les notes de chaque version, qui peuvent indiquer des opérations spécifiques à faire, notamment des nouveaux paramètres à ajouter dans votre configuration et/ou des modifications à appliquer dans la BDD
@@ -262,114 +261,8 @@ Attention à bien lire les notes de chaque version, qui peuvent indiquer des op�
 Mise à jour des couches de référence
 ====================================
 
-Limite du territoire ou communes
+Limite du territoire ou communes.
+	
+Voir les parties concernées dans ``install_db.sh``.
 	
 	
-	
-	
-	
-	
-	
-	
-
-
-
-
-Installation et configuration du serveur Apache
-==============================
-
-???? Partir de doc GeoSites ou doc GeoNature pour Apache ???
-
-Installation d'Apache
-
-::
-
-    sudo apt-get install apache2 libapache2-mod-wsgi 
-
-Activer le mode WSGI et redémarrer le serveur:
-
-::
-
-    sudo a2enmod rewrite
-    sudo apache2ctl restart
-
-Créer un alias dans le fichier de configuration d'Apache : ``/etc/apache2/sites-available/000-default.conf`` en remplaçant les chemins selon votre installation :
-
-::
-
-    WSGIScriptAlias /atlas /home/MyUserName/atlas/atlas.wsgi
-    
-    <Directory "/home/MyUserName/atlas">
-       WSGIApplicationGroup %{GLOBAL}
-       WSGIScriptReloading On
-       Order deny,allow
-       Allow from all
-    </Directory>
-
-???? Créer un autre alias et l'activer plutôt que modifier celui par défaut ????
-???? Partie ci-dessous à virer ?????
-
-Créez un fichier de configuration apache ``.htaccess`` à partir du fichier d'exemple :
-
-::
-
-    cp .htaccess.sample .htaccess
-
-Si l'url de votre application n'est pas celle de votre domaine (ou sous domaine), modifiez la partie 
-
-::
-
-    RewriteBase / 
-
-Et indiquez le chemin après le ``/``. Par exemple si votre application se trouve à cette url ``http://mondomaine/atlas``, modifiez la variable ``RewriteBase`` ainsi
-
-::
-
-    RewriteBase /atlas/ 
-       
-
-
-
-#################################
- 
-**Personnaliser les classes d'altitude**
-
-* Pour modifier la vue ``vm_altitudes`` et l'adapter aux altitudes de votre territoire, vous devez modifier le contenu de la table ``atlas.bib_altitudes``.
-    
-* Le champ ``id_altitude`` ne doit pas comporter de doublons et l'altitude la plus basse doit avoir l'``id_altitude`` = 1.
-    
-* L'amplitude des tranches altitudinales peut être personnalisée, ainsi que le nombre de tranches.
-    
-* Le champ ``label_altitude`` ne doit pas commencer par un chiffre. La méthode la plus générique consiste à générer automatiquement le contenu de ce champ grace à la commande SQL suivante :
- 
-  ::  
-  
-        UPDATE atlas.bib_altitudes set label_altitude = '_' || altitude_min || '_' || altitude_max+1;
-        
-Dès que votre table ``atlas.bib_altitudes`` est complétée, vous pouvez mettre à jour la vue ``atlas.vm_altitudes`` grace à la commande SQL suivante :
- 
-::
-
-    select atlas.create_vm_altitudes();
-
-#################################
-
-Vous pouvez alimenter l'atlas avec une autre source de données que GeoNature à condition de respecter le nom et le typage des champs retournés par la vue.
-
-Ou vous pouvez simplement décider de l'adapter à votre GeoNature par exemple en changeant l'``id_organisme`` dont vous souhaitez afficher les données dans la condition WHERE de la vue ``atlas.vm_observations``.
-
-Modifiez les images dans le répertoire ``/custom/images/``.
-
-TODO !!!! Dissocier les images de l'atlas (pictos, boutons...), les images liées à la custo (à mettre dans un dossier à part comme /medias/, voir Geotrek et les images liées au contenu)
-
-Vous pouvez modifier les pages d'information en éditant les fichiers HTML dans le répertoire ``/templates/`` et notamment, adaptez le contenu des fichiers :
-
-!!!!! Modifier le texte de présentation générale, quelques labels dans une surcouche ??? Fichier de langue ???
-
-!!!!! Pensez à la procédure de mise à jour de l'appli et regrouper le plus possible les fichiers de customisation et de surcouche pour les rapatrier facilement au moment d'une mise à jour. 
-    
-
-Développement
-=============
-
-Généricité à compléter...

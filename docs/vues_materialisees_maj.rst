@@ -78,8 +78,6 @@ Vous pouvez alimenter l'atlas avec une autre source de données que GeoNature à
 
 Ou vous pouvez simplement décider de l'adapter à votre GeoNature par exemple en changeant l'``id_organisme`` dont vous souhaitez afficher les données dans la condition WHERE de la vue ``atlas.vm_observations``.
 
-Modifiez les images dans le répertoire ``/custom/images/``.
-
 
 
 
