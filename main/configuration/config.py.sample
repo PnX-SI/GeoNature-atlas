@@ -61,7 +61,7 @@ LIMIT_CLUSTER_POINT = 1000
 # Carte de la page d'accueil: observations des 'x' derniers jours. Bien mettre en anglais et non accordé
 NB_DAY_LAST_OBS = '7 day'
 # Texte à afficher pour décrire la cartographie des 'dernières observations'
-TEXT_LAST_OBS = u'Cette semaine les agents du parc ont fait'
+TEXT_LAST_OBS = u'Les observations des agents ces 7 derniers jours'
 
 # Carte de la fiche commune: nombre des 'x' dernières observations affichées
 NB_LAST_OBS=100

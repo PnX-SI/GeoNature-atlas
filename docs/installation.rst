@@ -195,7 +195,7 @@ Attention à ne pas mettre de 'quote' dans les variables, même pour les chaines
 
 L'atlas n'est pas livré avec la couche SHP de l'emprise du territoire. 
 
-Uploadez votre fichier .shp de l'emprise de votre territoire dans le dossier ``./data/ref`` sous le nom ``emprise_territoire.shp``. Attention à bien mettre les fichiers .shp, .dbf, .shx et prj.
+Uploadez votre fichier .shp de l'emprise de votre territoire dans le dossier ``data/ref`` sous le nom ``emprise_territoire.shp``. Attention à bien mettre les fichiers .shp, .dbf, .shx et prj.
 
 Comme indiqué dans le fichier ``settings.ini``, vous pouvez faire de même pour importer un SHP des communes de votre territoire.
 
@@ -209,12 +209,31 @@ Ainsi si vous n'utiliser pas GeoNature comme données sources, commencez par éd
 
 Plus de détails sur les différentes vues matérialisées dans le fichier ``data/vues_materialisees_maj.rst`` qui indique aussi comment automatiser leur mise à jour.
 
->> Voir documentation vues_materialisées.rst
->> Exemple atlas.vm_observations basé sur une BDD SICEN
+>> Fournir exemple atlas.vm_observations basé sur une BDD SICEN
 
 Par ailleurs, si vous n'utilisez pas GeoNature, il vous faut installer TaxHub (https://github.com/PnX-SI/TaxHub/) ou au moins sa BDD (https://github.com/PnX-SI/TaxHub/blob/master/data/taxhubdb.sql), pour gérer les attributs (description, commentaire, milieu et chorologie) ainsi que les médias rattachés à chaque espèce (photos, videos, audios et articles)
 
->> A préciser.
+Si vous souhaitez uniquement installer le schéma ``taxonomie`` de TAXHUB dans la BDD de l'atlas, il vous faut éxécuter ces quelques lignes : https://github.com/PnX-SI/TaxHub/blob/master/install_db.sh#L47-L64
+
+>> A préciser et automatiser. PB à solutionner, pour cela il faudrait commencer par créér la BDD, y intégrer le schéma taxonomie de TaxHub puis lancer le script l'installation automatique de la BDD de GeoNature-atlas. Hors son script ne fonctionne pas si la BDD existe déjà... Ajouter paramètre pour gérer cela. En attendant, si on veut faire cela, il faut éxécuter ce qu'il y a dans ``install_db.sh`` bout par bout à la main, sans le lancer globalement...
+
+Ca donnerait un truc de ce genre à intégrer dans ``install_db.sh`` et à n'éxécuter que si un paramètre ``INSTALL_TAXHUB_DB`` est à True...
+
+::
+
+    cd data
+    wget https://raw.githubusercontent.com/PnX-SI/TaxHub/master/data/taxhubdb.sql
+    export PGPASSWORD=$user_pg_pass;psql -h $db_host -U $user_pg -d $db_name -f taxhubdb.sql  &>> logs/install_db.log
+    wget https://github.com/PnX-SI/TaxHub/raw/master/data/inpn/TAXREF_INPN_v9.0.zip
+    unzip TAXREF_INPN_v9.0.zip -d /tmp
+    wget https://raw.githubusercontent.com/PnX-SI/TaxHub/master/data/inpn/data_inpn_v9_taxhub.sql
+    export PGPASSWORD=$admin_pg_pass;psql -h $db_host -U $admin_pg -d $db_name  -f data/inpn/data_inpn_v9_taxhub.sql &>> logs/install_db.log
+    # data/vm_hierarchie_taxo.sql est encore utilisé ?
+    wget https://raw.githubusercontent.com/PnX-SI/TaxHub/master/data/inpn/taxhubdata.sql
+    export PGPASSWORD=$user_pg_pass;psql -h $db_host -U $user_pg -d $db_name -f data/taxhubdata.sql  &>> logs/install_db.log
+    rm /tmp/*.txt
+    rm /tmp/*.csv
+    cd ..
 
 Lancez le fichier fichier d'installation de la base de données en sudo :
 
@@ -238,7 +257,7 @@ Ouvrir le fichier de configuration ``main/configuration/config.py``.
 Customisation de l'application
 ==============================   
 	
-A rédiger	
+En plus de la configuration, vous pouvez customisez l'application en modifiant et ajoutant des fichiers présents dans le répertoire ``static/custom/`` (css, templates, images
 	
 Mise à jour de l'application
 ============================

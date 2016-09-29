@@ -17,6 +17,10 @@
   min-height: 200px;
 }
 
+.stat-object .form-control{
+    width: 100%;
+}
+
 .stat-thumbnail{
   text-align: center;
   background-color:  #E3E7E8;
