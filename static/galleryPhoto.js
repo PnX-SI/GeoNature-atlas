@@ -6,6 +6,7 @@ var clearHtml = false;
 
 // populate HTML with the selected photos
 function generateHtmlPhoto(photos){
+	window.lightbox.init();
 	
 	if (clearHtml){ 
 		if(photos.length == 0){
