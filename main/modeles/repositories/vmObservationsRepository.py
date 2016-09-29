@@ -207,7 +207,8 @@ def statIndex(connection):
         result['nbTotalTaxons'] = r.count
 
     sql= "SELECT COUNT (DISTINCT id_media) AS count \
-    FROM atlas.vm_medias \
+    FROM atlas.vm_medias m \
+    JOIN atlas.vm_taxons t ON t.cd_ref = m.cd_ref \
     WHERE id_type IN (:idType1, :id_type2)"
     req = connection.execute(text(sql), idType1 = config.ATTR_MAIN_PHOTO, id_type2=config.ATTR_OTHER_PHOTO)
     for r in req:
