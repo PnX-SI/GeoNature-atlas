@@ -16,29 +16,34 @@ from sqlalchemy.orm import sessionmaker
 
 #recherche l espece corespondant au cd_nom et tout ces fils
 def searchEspece(connection, cd_ref):
-    sql= "WITH limit_obs AS (select min(yearmin) AS yearmin, max(yearmax) AS yearmax, SUM(nb_obs) AS nb_obs FROM atlas.vm_taxons WHERE cd_ref in (SELECT * FROM atlas.find_all_taxons_childs(:thiscdref))\
-         OR cd_ref = :thiscdref)\
-    SELECT * \
-    FROM atlas.vm_taxref taxref, limit_obs \
-    WHERE taxref.cd_nom = :thiscdref"
+    sql= """WITH limit_obs AS (select :thiscdref as cd_ref, min(yearmin) AS yearmin, max(yearmax) AS yearmax, SUM(nb_obs) AS nb_obs FROM atlas.vm_taxons WHERE cd_ref in (SELECT * FROM atlas.find_all_taxons_childs(:thiscdref))
+         OR cd_ref = :thiscdref)
+    SELECT taxref.*, l.*, t2.patrimonial, t2.protection_stricte
+    FROM atlas.vm_taxref taxref
+    JOIN limit_obs l ON l.cd_ref = taxref.cd_nom
+    LEFT JOIN atlas.vm_taxons t2 ON t2.cd_ref = taxref.cd_ref
+    WHERE taxref.cd_nom = :thiscdref"""
     req = connection.execute(text(sql), thiscdref = cd_ref)
     taxonSearch = dict()
     for r in req:
         taxonSearch = {'cd_ref': r.cd_ref, 'lb_nom': r.lb_nom, 'nom_vern': r.nom_vern, 'nom_complet_html': r.nom_complet_html, 'group2_inpn': utils.deleteAccent(r.group2_inpn),\
-        'yearmin': r.yearmin, 'yearmax':r.yearmax, 'nb_obs': r.nb_obs }
+        'yearmin': r.yearmin, 'yearmax':r.yearmax, 'nb_obs': r.nb_obs, 'patrimonial': r.patrimonial, 'protection': r.protection_stricte }
 
-    sql="SELECT tax.lb_nom, \
-    tax.nom_vern, \
-    tax.cd_ref, \
-    br.tri_rang, \
-    tax.group2_inpn \
-    FROM atlas.vm_taxons tax \
-    JOIN atlas.bib_taxref_rangs br ON br.id_rang = tax.id_rang \
-    where tax.cd_ref IN ( SELECT * FROM atlas.find_all_taxons_childs(:thiscdref))".encode('utf-8')
+    sql="""SELECT tax.lb_nom, 
+    tax.nom_vern, 
+    tax.cd_ref, 
+    br.tri_rang, 
+    tax.group2_inpn, 
+    tax.patrimonial, 
+    tax.protection_stricte,
+    tax.nb_obs
+    FROM atlas.vm_taxons tax 
+    JOIN atlas.bib_taxref_rangs br ON br.id_rang = tax.id_rang 
+    where tax.cd_ref IN ( SELECT * FROM atlas.find_all_taxons_childs(:thiscdref))"""
     req = connection.execute(text(sql), thiscdref = cd_ref)
     listTaxonsChild = list()
     for r in req:
-        temp = {'lb_nom': r.lb_nom, 'nom_vern':r.nom_vern, 'cd_ref':r.cd_ref, 'tri_rang' : r.tri_rang, 'group2_inpn': utils.deleteAccent(r.group2_inpn)}
+        temp = {'lb_nom': r.lb_nom, 'nom_vern':r.nom_vern, 'cd_ref':r.cd_ref, 'tri_rang' : r.tri_rang, 'group2_inpn': utils.deleteAccent(r.group2_inpn), 'patrimonial': r.patrimonial, 'protection': r.protection_stricte}
         listTaxonsChild.append(temp)
 
     return {'taxonSearch':taxonSearch, 'listTaxonsChild': listTaxonsChild }

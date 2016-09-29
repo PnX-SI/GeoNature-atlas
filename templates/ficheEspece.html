@@ -91,7 +91,16 @@
                             <h3> {{taxon.taxonSearch.nom_vern}} </h3>
                         
                         {% endif %}
-                            <h3> {{taxon.taxonSearch.nom_complet_html|safe}} </h3>
+                            <h3> {{taxon.taxonSearch.nom_complet_html|safe}} 
+                            {% if taxon.taxonSearch.protection != None %}
+                                <a href="https://inpn.mnhn.fr/espece/cd_nom/{{taxon.taxonSearch.cd_ref}}/tab/statut" target="_blank">
+                                    <img class="caractEspece" width="130px" src="{{url_for('static', filename='images/logo_protection.png') }}"  data-toggle="tooltip" data-original-title="Ce taxon bénéficie d'un statut de protection" data-placement="right"></a>
+                            {% endif %}
+                            {% if taxon.taxonSearch.patrimonial != None %}
+                                <img class="caractEspece" width="130px" src="{{url_for('static', filename='custom/images/logo_patrimonial.png') }}"  data-toggle="tooltip" data-original-title="Ce taxon est patrimonial pour le {{configuration.STRUCTURE}}" data-placement="right">
+                            {% endif %}
+
+                            </h3>
                         
 
                         <div id="taxonomy">
@@ -115,25 +124,38 @@
                             <a href='https://inpn.mnhn.fr/espece/cd_nom/{{taxon.taxonSearch.cd_ref}}' target="_blank"> 
                                 <img width="130px" src="{{url_for('static', filename='images/logo_inpn.png') }}"  data-toggle="tooltip" data-original-title="Consultez la fiche espèce sur l'INPN" data-placement="right">
                              </a>
+
+
                         </div>
 						
                         {% if taxon.listTaxonsChild|length > 0 %}
-                        <h5 id="buttonChild">Taxons agrégés sur cette fiche: <span class="glyphicon glyphicon-chevron-right"></span> 
-						</h5> 
-                        <div hidden="hidden" id="childList">
-                                    {% for child in taxon.listTaxonsChild %}
-                                     <i>
-                                        {% if ( child.tri_rang >= configuration.LIMIT_FICHE_LISTE_HIERARCHY) %}
-                                            <a href = "{{url_for('main.ficheEspece', cd_ref = child.cd_ref) }}"> {{child.lb_nom}}</a> 
-                                        {% else %}
-                                            <a href = "{{url_for('main.ficheRangTaxonomie', cd_ref = child.cd_ref) }}">{{child.lb_nom}} </a> 
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Taxon(s) aggrégé(s) sur cette fiche</button>
+
+                                <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                                  <div class="modal-dialog modal-sm" role="document">
+                                    <div class="modal-content">
+                                      Coucou test
+                                    </div>
+                                  </div>
+                                </div>
+
+<!-- 
+                            <h5 id="buttonChild"> <b>{{taxon.listTaxonsChild|length }}</b> taxon(s) agrégé(s) sur cette fiche: <span class="glyphicon glyphicon-chevron-right"></span> 
+    						</h5> 
+                            <div hidden="hidden" id="childList">
+                                        {% for child in taxon.listTaxonsChild %}
+                                         <i>
+                                            {% if ( child.tri_rang >= configuration.LIMIT_FICHE_LISTE_HIERARCHY) %}
+                                                <a href = "{{url_for('main.ficheEspece', cd_ref = child.cd_ref) }}"> {{child.lb_nom}}</a> 
+                                            {% else %}
+                                                <a href = "{{url_for('main.ficheRangTaxonomie', cd_ref = child.cd_ref) }}">{{child.lb_nom}} </a> 
+                                            {% endif %}
+                                            </i>
+                                            {% if not loop.last %}
+                                              ,
                                         {% endif %}
-                                        </i>
-                                        {% if not loop.last %}
-                                          ,
-                                    {% endif %}
-                                {% endfor %}
-                        </div>
+                                    {% endfor %}
+                            </div> -->
                         {% endif %}
 						</div>
 					</div>  

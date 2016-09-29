@@ -23,6 +23,13 @@
 
 #mainImg {
 	width: 100%;
+
+}
+
+.caractEspece{
+	width: 30px;
+	height: 30px;
+	margin-bottom: 10px;
 }
 
 /*Display legend on images */
