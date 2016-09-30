@@ -207,9 +207,9 @@ Ainsi si vous n'utiliser pas GeoNature comme données sources, commencez par éd
 
 .. image :: images/geonature-atlas-schema-01.jpg
 
-Plus de détails sur les différentes vues matérialisées dans le fichier ``data/vues_materialisees_maj.rst`` qui indique aussi comment automatiser leur mise à jour.
+Plus de détails sur les différentes vues matérialisées dans le fichier `<vues_materialisees_maj.rst>`_  qui indique aussi comment automatiser leur mise à jour.
 
->> Fournir exemple atlas.vm_observations basé sur une BDD SICEN
+Vous y trouverez aussi un exemple d'adaptation de la vue ``atlas.vm_observations`` basé sur une BDD SICEN.
 
 Par ailleurs, si vous n'utilisez pas GeoNature, il vous faut installer TaxHub (https://github.com/PnX-SI/TaxHub/) ou au moins sa BDD (https://github.com/PnX-SI/TaxHub/blob/master/data/taxhubdb.sql), pour gérer les attributs (description, commentaire, milieu et chorologie) ainsi que les médias rattachés à chaque espèce (photos, videos, audios et articles)
 
@@ -234,6 +234,8 @@ Ca donnerait un truc de ce genre à intégrer dans ``install_db.sh`` et à n'éx
     rm /tmp/*.txt
     rm /tmp/*.csv
     cd ..
+
+En attendant, si vous souhaitez installer le schéma taxonomie de TaxHub dans la BDD de GeoNature-atlas, il faut le faire étape par étape (voir ci-dessus) puis suivre les commandes du fichier `install_db.sh <../install_db.sh>`_ pas à pas sans le lancer globalement.
 
 Lancez le fichier fichier d'installation de la base de données en sudo :
 
@@ -282,6 +284,31 @@ Mise à jour des couches de référence
 
 Limite du territoire ou communes.
 	
-Voir les parties concernées dans ``install_db.sh``.
-	
-	
+Voir les parties concernées dans `install_db.sh <../install_db.sh#L65-L88>`_.
+
+
+Développement
+=============
+
+Technologies
+
+.. image :: images/dev-technologies.png
+
+Architecture du code (MVC)
+
+.. image :: images/dev-architecture-code-mvc.png
+
+Architecture de l'application
+
+.. image :: images/dev-architecture-application.png
+
+Des données sont renvoyés aux templates par l'ORM, d'autres le sont sous forme d'API (fichiers JSON chargés en AJAX) pour charger certaines pages plus rapidement (observations sur les fiches espèces et auto-complétion de la recherche) :
+
+
+
+Pour en savoir plus, consultez le rapport de stage de Théo Lechemia (https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/2016-09-30-rapport_stage_Theo-Lechemia.pdf) ou sa présentation (https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/2016-09-soutenance-Theo-Lechemia.pdf)
+
+
+
+
+

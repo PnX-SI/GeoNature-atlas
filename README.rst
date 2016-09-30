@@ -15,11 +15,11 @@ Il permet de générer dynamiquement des fiches espèces avec des données calcu
 
 .. image :: docs/images/geonature-atlas-schema-02.jpg
 
-Présentation générale : https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/2016-09-GeoNature-atlas-PRESENTATION.pdf
-
 Documentation d'installation : https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/installation.rst
 
-Rapport intermédiaire de stage (Théo Lechemia) : https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/2016-06-30-rapport-intermediaire-stage-Theo-Lechemia.pdf
+Présentation générale : https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/2016-09-GeoNature-atlas-PRESENTATION.pdf
+
+Rapport de stage (Théo Lechemia) : https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/2016-09-30-rapport_stage_Theo-Lechemia.pdf
 
 Soutenance de stage (Théo Lechemia) : https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/2016-09-soutenance-Theo-Lechemia.pdf
 

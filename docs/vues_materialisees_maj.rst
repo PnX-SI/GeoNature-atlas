@@ -13,6 +13,8 @@ Pour cela une BDD fille de GeoNature est créée avec les schémas utiles à l'a
 
 Cela permet de créer un lien dynamique entre les 2 bases de données. A chaque fois qu'une requête est éxecutée dans une table de l'atlas (BDD fille), le FDW permet d'interroger directement dans le BDD mère (celle de GeoNature) et ainsi d'avoir les données à jour en temps réel. 
 
+.. image :: images/bdd-fdw-vm.png
+
 Néanmoins pour plus de généricité et permettre à une structure d'utiliser GeoNature-atlas sans disposer de GeoNature, l'application ne requête jamais directement dans ces schémas liés à GeoNature. 
 
 En effet elle requête uniquement sur des vues créées dans le schéma spécifique ``atlas``.
@@ -57,7 +59,13 @@ Voir ``data/atlas.sql`` pour plus de précisions.
 
 Pour créer la vue ``atlas.vm_observations_mailles``, remplacer le fichier ``data/ref/emprise_territoire.sample.shp`` par le fichier SHP de l'emprise de votre territore. Il est possible de choisir la table des mailles (1, 5 ou 10 km) en modifiant la variable ``taillemaille`` du fichier ``config/settings.ini``
 
-[Insérer un schema des BDD]
+.. image :: images/mcd-atlas.png
+
+.. image :: images/mcd-vm.png
+
+.. image :: images/mcd-attributs-medias.png
+
+.. image :: images/bdd-observations-mailles.png
 
 En se basant sur ``saisie.saisie_observation`` de SICEN (en l'important dans la BDD de GeoNature-atlas ou en y accédant à distance avec un FDW), la vue ``atlas.vm_observations`` donne : 
 
