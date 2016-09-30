@@ -422,8 +422,7 @@
                                 {% endif %}
                         </div>
                         <div id="synonymes" class="tab-pane fade">
-                            {{synonyme|length}}
-                            {% if synonyme | length == 0 %}
+                            {% if synonyme | length == 1 %}
                                 Aucun synonyme pour ce taxon
                             {% else %}
                                 {% for syn in synonyme %} 

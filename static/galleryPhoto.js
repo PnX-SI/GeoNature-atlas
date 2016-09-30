@@ -4,6 +4,7 @@ var clearHtml = false;
 
 
 
+
 // populate HTML with the selected photos
 function generateHtmlPhoto(photos){
 	window.lightbox.enable();

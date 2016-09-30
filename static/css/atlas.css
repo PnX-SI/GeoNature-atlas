@@ -15,13 +15,14 @@ a{
 }
 
 a.btn.btn-default{
-	color: white;
-	background-color: #333333 !important;
+	color: black;
+	border-color: black; 
+	background-color: white !important;
 }
 
 a.btn.btn-default:hover{
 	background-color: #cccccc !important;
-	color: black;
+	color: white;
 }
 
 .rowMargin {
@@ -428,5 +429,8 @@ li.sidebar-brand {
 .sortedButton{
 	cursor: pointer;
 }
+
+
+
 /* END Galerie photos */
 

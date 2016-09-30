@@ -69,7 +69,7 @@ colonne_nom_commune=NOM
 
 ### TERRITOIRE ####
 # Chemin vers le SHP de l'emprise du territoire 
-limit_shp="/home/USER/atlas/data/ref/emprise_territoire.shp"
+limit_shp=/home/USER/atlas/data/ref/emprise_territoire.shp
 
 ##### MAILLES #####
 
@@ -93,3 +93,4 @@ attr_chorologie=103
 # Especes les plus observées sur la periode 'moins X jour, plus X jours par rapport à la date du jour, toutes années confondues'
 # 15 jours par défaut
 time=15
+
