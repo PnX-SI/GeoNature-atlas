@@ -516,7 +516,6 @@
 
     <script  src="{{url_for('static', filename='lib/lightbox2/js/lightbox.min.js') }}" ></script>
     
-    <script type="text/javascript" src="{{url_for('static', filename='conf/calculCustom.js') }}"></script>
 
     <script> 
              var dataset = {{altitudes|tojson}},
@@ -532,7 +531,7 @@
                  cd_ref = {{taxon.taxonSearch.cd_ref}},
                  nb_obs = {{taxon.taxonSearch.nb_obs}}
     </script>  
-
+    <script src="{{url_for('static', filename='ficheEspece.js') }}"></script>
     <script type="text/javascript" src="{{url_for('static', filename='chart.js') }}"></script>
 
     <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
