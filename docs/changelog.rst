@@ -2,11 +2,28 @@
 CHANGELOG
 =========
 
-1.0.1.dev0 (unreleased)
+1.1.1.dev0 (unreleased)
 -----------------------
 
+1.1.0 (2016-09-30)
+------------------
+
+Dernier jour de stage de Théo Lechemia, développeur initial de GeoNature-atlas
+
+**Nouveautés**
+
+* Ajout d'une liste des espèces observées par groupe
+* Ajout des icones sur les fiches des espèces qui sont patrimoniales et/ou protégées
+
+**Corrections**
+
+* Correction de l'installation
+* Compléments dans la documentation
+* Autres corrections mineures (CSS, lightbox, statistiques)
+
+
 1.0.0 (2016-09-28)
------------------------
+------------------
 
 Première version complète et fonctionnelle de GeoNature-atlas
 
