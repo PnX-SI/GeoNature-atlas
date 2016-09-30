@@ -43,12 +43,12 @@
                 {% if configuration.PATRIMONIALITE %}
                 <td>
 					{% if taxon.patrimonial == 'oui' %} 
-					<img src="{{url_for('static', filename='images/logo_pne.jpg') }}" style="width : 30px; height: 30px" data-placement="left" data-toggle="tooltip" data-original-title="Ce taxon est patrimonial pour le {{configuration.STRUCTURE}}">
+					<img src="{{url_for('static', filename='custom/images/logo_patrimonial.png') }}" style="width : 30px; height: 30px" data-placement="left" data-toggle="tooltip" data-original-title="Ce taxon est patrimonial pour le {{configuration.STRUCTURE}}">
 					{% endif %}
 				</td>
                 {% endif %}
                 <td>{{taxon.nb_obs}}</td>
-                <td>{{taxon.last_obs}}</td>
+                <td>{{taxon.last_obs | int}}</td>
                 {% if configuration.MYTYPE == 1 %}
                 <td>
 					<span class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-original-title="Afficher les observations sur la commune" data-placement="right"> </span>

@@ -26,7 +26,7 @@ def searchEspece(connection, cd_ref):
     req = connection.execute(text(sql), thiscdref = cd_ref)
     taxonSearch = dict()
     for r in req:
-        taxonSearch = {'cd_ref': r.cd_ref, 'lb_nom': r.lb_nom, 'nom_vern': r.nom_vern, 'nom_complet_html': r.nom_complet_html, 'group2_inpn': utils.deleteAccent(r.group2_inpn),\
+        taxonSearch = {'cd_ref': r.cd_ref, 'lb_nom': r.lb_nom, 'nom_vern': r.nom_vern, 'nom_complet_html': r.nom_complet_html, 'group2_inpn': utils.deleteAccent(r.group2_inpn), 'groupAccent': r.group2_inpn,\
         'yearmin': r.yearmin, 'yearmax':r.yearmax, 'nb_obs': r.nb_obs, 'patrimonial': r.patrimonial, 'protection': r.protection_stricte }
 
     sql="""SELECT tax.lb_nom, 
@@ -43,7 +43,8 @@ def searchEspece(connection, cd_ref):
     req = connection.execute(text(sql), thiscdref = cd_ref)
     listTaxonsChild = list()
     for r in req:
-        temp = {'lb_nom': r.lb_nom, 'nom_vern':r.nom_vern, 'cd_ref':r.cd_ref, 'tri_rang' : r.tri_rang, 'group2_inpn': utils.deleteAccent(r.group2_inpn), 'patrimonial': r.patrimonial, 'protection': r.protection_stricte}
+        temp = {'lb_nom': r.lb_nom, 'nom_vern':r.nom_vern, 'cd_ref':r.cd_ref, 'tri_rang' : r.tri_rang, 'group2_inpn': utils.deleteAccent(r.group2_inpn), 'patrimonial': r.patrimonial, \
+         'nb_obs': r.nb_obs, 'protection': r.protection_stricte}
         listTaxonsChild.append(temp)
 
     return {'taxonSearch':taxonSearch, 'listTaxonsChild': listTaxonsChild }
@@ -55,7 +56,13 @@ def getSynonymy(connection, cd_ref):
     FROM atlas.vm_taxref \
     WHERE cd_ref = :thiscdref \
     ORDER BY lb_nom ASC"
-    return connection.execute(text(sql), thiscdref = cd_ref)
+    req = connection.execute(text(sql), thiscdref = cd_ref)
+    tabSyn = list()
+    for r in req:
+        temp = {'lb_nom': r.lb_nom, 'nom_complet_html': r.nom_complet_html}
+        tabSyn.append(temp)
+    return tabSyn
+
 
 
 def getCd_ref(cd_nom):

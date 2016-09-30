@@ -1,5 +1,8 @@
 // Change tooltip and glyphycon for media block
 
+  var currentDate = new Date();
+  YEARMAX = currentDate.getFullYear();
+
 var myBoolean = true;
 $('#btn-more-audio').click(function(){
     if (myBoolean){

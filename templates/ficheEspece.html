@@ -84,7 +84,9 @@
                     <div class="col-sm-12" id="taxonIdentity">
                     {% endif %}
 						<div id="groupLogoCol" >
-							<img src="{{url_for('static', filename='images/picto_'+ taxon.taxonSearch.group2_inpn|urlencode+'.png') }}" alt="{{taxon.taxonSearch.group2_inpn}}" data-toggle="tooltip" data-original-title="{{taxon.taxonSearch.group2_inpn}}" data-placement="right">
+                            <a href="{{url_for('main.ficheGroupe', groupe=taxon.taxonSearch.groupAccent ) }}">
+							     <img src="{{url_for('static', filename='images/picto_'+ taxon.taxonSearch.group2_inpn|urlencode+'.png') }}" alt="{{taxon.taxonSearch.group2_inpn}}" data-toggle="tooltip" data-original-title="{{taxon.taxonSearch.group2_inpn}}" data-placement="right">
+                             </a>
 						</div>
 						<div id="taxonName">
                         {% if taxon.taxonSearch.nom_vern != None %}
@@ -129,15 +131,75 @@
                         </div>
 						
                         {% if taxon.listTaxonsChild|length > 0 %}
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Taxon(s) aggrégé(s) sur cette fiche</button>
+                           <!-- Button trigger modal -->
+                           <a id="btn-taxons-fils" class="btn btn-default" data-toggle="modal" data-target="#myModal"> <b> {{taxon.listTaxonsChild | length}} </b> taxon(s) inférieur(s) agrégé(s) sur cette fiche</a>
 
-                                <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-                                  <div class="modal-dialog modal-sm" role="document">
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                  <div class="modal-dialog" role="document">
                                     <div class="modal-content">
-                                      Coucou test
+                                          <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h3 class="modal-title" id="myModalLabel">Taxon(s) agrégé(s) sur cette fiche</h3>
+                                          </div>
+                                          <div class="modal-body">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th> Nom Vernaculaire </th>
+                                                        <th> Nom scientifique </th>
+                                                        {% if configuration.PROTECTION %}
+                                                        <th>Protection</th>
+                                                        {% endif %}
+                                                        {% if configuration.PATRIMONIALITE %}
+                                                        <th>Patrimonial</th>
+                                                        {% endif %}
+                                                        <th>Observations </th>
+                                                        <th> Fiche </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for child in taxon.listTaxonsChild %}
+                                                    <a href = "{{url_for('main.ficheEspece', cd_ref = child.cd_ref) }}"> 
+                                                        <tr>
+                                                            <td>
+                                                            {% if child.nom_vern != None %}
+                                                             {{child.nom_vern}} 
+                                                            {% else %}
+                                                             - 
+                                                            </td>
+                                                            {% endif %}
+                                                            <td> {{child.lb_nom}} </td>
+                                                            <td>
+                                                            {% if child.protection != None %}
+                                                                <a href="https://inpn.mnhn.fr/espece/cd_nom/{{taxon.taxonSearch.cd_ref}}/tab/statut" target="_blank">
+                                                                    <img class="caractEspece" width="130px" src="{{url_for('static', filename='images/logo_protection.png') }}"  data-toggle="tooltip" data-original-title="Ce taxon bénéficie d'un statut de protection" data-placement="right"></a>
+                                                            {% endif %}
+                                                            </td>
+                                                            <td>
+                                                            {% if child.patrimonial != None %}
+                                                                <img class="caractEspece" width="130px" src="{{url_for('static', filename='custom/images/logo_patrimonial.png') }}"  data-toggle="tooltip" data-original-title="Ce taxon est patrimonial pour le {{configuration.STRUCTURE}}" data-placement="right">
+                                                            {% endif %}
+                                                            </td>
+                                                            <td> {{child.nb_obs}} </td>
+                                                            <td>
+                                                                <a href = "{{url_for('main.ficheEspece', cd_ref = child.cd_ref) }}"> 
+                                                                    <span id="ficheGlyficon"  data-toggle="tooltip" data-original-title="Consulter la fiche espèce" data-placement="right" class="glyphicon glyphicon-list"></span> 
+                                                                </a>
+                                                            </td>
+                                                        
+                                                        </tr>
+                                                    </a>
+                                                {% endfor %}
+
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
+
                                   </div>
-                                </div>
+                              </div>
 
 <!-- 
                             <h5 id="buttonChild"> <b>{{taxon.listTaxonsChild|length }}</b> taxon(s) agrégé(s) sur cette fiche: <span class="glyphicon glyphicon-chevron-right"></span> 
@@ -360,6 +422,10 @@
                                 {% endif %}
                         </div>
                         <div id="synonymes" class="tab-pane fade">
+                            {{synonyme|length}}
+                            {% if synonyme | length == 0 %}
+                                Aucun synonyme pour ce taxon
+                            {% else %}
                                 {% for syn in synonyme %} 
                                     {% if not syn.lb_nom == taxon.taxonSearch.lb_nom %}
                                     {{ syn.nom_complet_html | safe}}
@@ -368,6 +434,7 @@
                                     |
                                     {% endif %}
                                 {% endfor %}
+                            {% endif %}
                         </div>
                 </div>
             </div>

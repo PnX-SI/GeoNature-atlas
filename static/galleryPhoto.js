@@ -7,6 +7,7 @@ var clearHtml = false;
 // populate HTML with the selected photos
 function generateHtmlPhoto(photos){
 	window.lightbox.enable();
+
 	
 	if (clearHtml){ 
 		if(photos.length == 0){
@@ -62,6 +63,7 @@ function scrollEvent(photos){
 function orderPhotosEvent(photos) {
 
   		$('body').on('click', "#sort", function() {
+  		$('#searchPhotos').val('');	
 
   		span = $('#orderPhotos').find('span');
   		$(span).toggleClass('glyphicon glyphicon-sort').toggleClass('glyphicon glyphicon-random');
@@ -86,6 +88,7 @@ function orderPhotosEvent(photos) {
 
 function sufflePhotosEvent(photos){
 		$('body').on('click', "#random", function() {
+		$('#searchPhotos').val('');	
 	  	
 	  	span = $('#orderPhotos').find('span');
   		$(span).toggleClass('glyphicon glyphicon-sort').toggleClass('glyphicon glyphicon-random');
@@ -119,6 +122,7 @@ $(document).ready(function(){
 
 
 		  	$('#allGroups').click(function(){
+		  		$('#searchPhotos').val('');	
 		  		$("body").off("click");
 		  		orderPhotosEvent(photos);		  	 
 		  		sufflePhotosEvent(photos);
@@ -159,6 +163,7 @@ $(document).ready(function(){
 
 
 $('.INPNgroup').click(function(){
+	$('#searchPhotos').val('');	
 	compteurJson = 0;
 	clearHtml = true;
 	group = $(this).attr('alt');

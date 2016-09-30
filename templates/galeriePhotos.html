@@ -52,7 +52,7 @@
                                         </span>
                                     </li>
         						    <li class="floatLeft bottom">
-                                        <input type="text" class="form-control" id="searchPhotos" placeholder="Rechercher une espèce">
+                                        <input type="text" class="form-control" id="searchPhotos" placeholder="Rechercher une espèce" value="">
                                     </li>
                                  </ul>
                             </div>
@@ -75,18 +75,21 @@
         {% endif %}
         
 
-        <script src="{{url_for('static', filename='lib/lightbox2/js/lightbox.min.js') }}"></script> 
+        
 
         <script type="text/javascript">
             var communesSearch = {{communesSearch|tojson}},
                  configuration = {{configuration|tojson}};
         </script>
+        
 
-        <script src="{{url_for('static', filename='galleryPhoto.js') }}"></script>
+        <div id="hide">
+            <script src="{{url_for('static', filename='lib/lightbox2/js/lightbox.min.js') }}"></script> 
+            <script src="{{url_for('static', filename='galleryPhoto.js') }}"></script>
 
-        <script src="{{url_for('static', filename='main.js') }}"></script>
-
-
+            <script src="{{url_for('static', filename='main.js') }}"></script>
+        </div>
 
    </body> 
+
 </html>

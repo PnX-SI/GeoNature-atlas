@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+   <head>
+        <meta charset="utf-8" />
+        <title>{{referenciel}}| {{configuration.NOM_APPLICATION}}</title>
+
+        <!-- Jquery -->
+        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
+		
+		<link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
+
+        <!-- DataTable -->
+        <script type=text/javascript src="{{url_for('static', filename='lib/dataTable/datatables.min.js') }}"></script>
+        <script type=text/javascript src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" />
+        <!--  <link rel="stylesheet" href="{{url_for('static', filename='lib/dataTable/jquery.dataTables.min.css') }}" />  -->
+		
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}"></link>
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap-switch/css/bootstrap-switch.min.css') }}"></link>
+        <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css') }}" />
+        <script src="{{url_for('static', filename='lib/node_modules/bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
+
+        <!-- CSS Application -->
+        <link rel="shortcut icon" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />       
+        <link rel="stylesheet" href="{{url_for('static', filename='css/listEspeces.css') }}" />
+        <link rel="stylesheet" href="{{url_for('static', filename='css/icones.css') }}" />
+        <link rel="stylesheet" href="{{url_for('static', filename='custom/custom.css') }}" />
+
+   </head>
+
+   <body>
+    {% include 'templates/navbar.html' %}
+
+		<div id="sideBar">
+			{% include 'templates/sideBar.html' %}
+		</div>
+		<div class="container-fluid" id="page">
+
+        <div class="col-sm-12">
+            <div class="panel panel-default" id="parent">
+				<div class="row rowMargin">
+                    <h1> Les {{ referenciel }} </h1>
+                    <div id="allGroups">
+                    {% for group in groups %}
+                        <li class="floatLeft"> 
+                            <a href="{{url_for('main.ficheGroupe', groupe=group.groupAccent ) }}">
+                                <img class="INPNgroup" src="{{url_for('static', filename='images/picto_' + group.group +'.png')}}" alt="{{group.groupAccent}}" data-toggle="tooltip" data-original- title="{{group.groupAccent}}" data-placement="top">
+                            </a>
+                        </li>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="panel panel-default">
+				<div class="row rowMargin" id="clear">
+                    {% include 'templates/tabTaxons.html' %}
+                </div>
+            </div>
+        </div>
+            
+    </div>
+    
+    {% if configuration.AFFICHAGE_FOOTER %}
+        {% include 'static/custom/templates/footer.html' %}
+    {% endif %}
+        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+        <script type="text/javascript">
+        var communesSearch = {{communesSearch|tojson}},
+            configuration = {{configuration|tojson}};
+        </script>
+        <script src="{{url_for('static', filename='listeEspeces.js') }}"></script>
+        <script src="{{url_for('static', filename='main.js') }}"></script>
+
+  </body>
+
+
+</html>
