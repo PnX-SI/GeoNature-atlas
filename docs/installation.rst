@@ -250,16 +250,16 @@ Lancez le fichier fichier d'installation de la base de données en sudo :
 Configuration de l'application
 ==============================   
 
-Ouvrir le fichier de configuration ``main/configuration/config.py``.
+Editer le fichier de configuration ``main/configuration/config.py``.
 
 - renseigner la variable 'database_connection'
-- renseigner l'url de l'application '/atlas' ou '' si il n'y a pas de 'sous-domaine' dans la conf apache
-- customiser l'application...
+- renseigner l'URL de l'application à partir de la racine du serveur WEB ('/atlas' ou '' par exemple)
+- redémarrez Apache pour que les modifications soient prises en compte (`sudo apachectl restart`)
 
 Customisation de l'application
 ==============================   
 	
-En plus de la configuration, vous pouvez customisez l'application en modifiant et ajoutant des fichiers présents dans le répertoire ``static/custom/`` (css, templates, images
+En plus de la configuration, vous pouvez customisez l'application en modifiant et ajoutant des fichiers dans le répertoire ``static/custom/`` (css, templates, images)
 	
 Mise à jour de l'application
 ============================
@@ -290,25 +290,18 @@ Voir les parties concernées dans `install_db.sh <../install_db.sh#L65-L88>`_.
 Développement
 =============
 
-Technologies
+**Technologies**
 
 .. image :: images/dev-technologies.png
 
-Architecture du code (MVC)
+**Architecture du code (MVC)**
 
 .. image :: images/dev-architecture-code-mvc.png
 
-Architecture de l'application
+**Architecture de l'application**
 
 .. image :: images/dev-architecture-application.png
 
-Des données sont renvoyés aux templates par l'ORM, d'autres le sont sous forme d'API (fichiers JSON chargés en AJAX) pour charger certaines pages plus rapidement (observations sur les fiches espèces et auto-complétion de la recherche) :
+Des données sont renvoyées aux templates par l'ORM, d'autres le sont sous forme d'API (fichiers JSON chargés en AJAX) pour charger certaines pages plus rapidement (observations sur les fiches espèces et auto-complétion de la recherche) :
 
-
-
-Pour en savoir plus, consultez le rapport de stage de Théo Lechemia (https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/2016-09-30-rapport_stage_Theo-Lechemia.pdf) ou sa présentation (https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/2016-09-soutenance-Theo-Lechemia.pdf)
-
-
-
-
-
+Pour en savoir plus, consultez le document `<vues_materialisees_maj.rst>`_ ainsi que le rapport de stage de Théo Lechemia (https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/2016-09-30-rapport_stage_Theo-Lechemia.pdf) ou sa présentation (https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/2016-09-soutenance-Theo-Lechemia.pdf)

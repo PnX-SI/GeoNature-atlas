@@ -59,11 +59,19 @@ Voir ``data/atlas.sql`` pour plus de précisions.
 
 Pour créer la vue ``atlas.vm_observations_mailles``, remplacer le fichier ``data/ref/emprise_territoire.sample.shp`` par le fichier SHP de l'emprise de votre territore. Il est possible de choisir la table des mailles (1, 5 ou 10 km) en modifiant la variable ``taillemaille`` du fichier ``config/settings.ini``
 
+**Modèle conceptuel du schéma `atlas`**
+
 .. image :: images/mcd-atlas.png
+
+**A partir de TAXREF et des observations, on génère la vue des taxonset on calcule des informations sur chaque taxon (carte des observations, graphiques, taxonomie...)**
 
 .. image :: images/mcd-vm.png
 
+**On peut aussi décrire chaque taxon (attributs) et y associer des médias (photos, audios, vidéos, articles...)**
+
 .. image :: images/mcd-attributs-medias.png
+
+**A partir des observations ponctuelles et des mailles, on créér une vue contenant le nombre d'observations de chaque espèce par maille**
 
 .. image :: images/bdd-observations-mailles.png
 
