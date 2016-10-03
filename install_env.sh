@@ -17,8 +17,7 @@ sudo apt-get install -y apache2
 sudo apt-get install -y libapache2-mod-wsgi
 sudo apachectl restart
 
-
-sudo apt-get install -y postgresql-9.4 postgis
+sudo apt-get install -y postgresql postgis
 
 sudo apt-get install -y python-setuptools
 sudo apt-get install -y libpq-dev python-dev

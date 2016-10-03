@@ -63,7 +63,7 @@ Pour créer la vue ``atlas.vm_observations_mailles``, remplacer le fichier ``dat
 
 .. image :: images/mcd-atlas.png
 
-**A partir de TAXREF et des observations, on génère la vue des taxonset on calcule des informations sur chaque taxon (carte des observations, graphiques, taxonomie...)**
+**A partir de TAXREF et des observations, on génère la vue des taxons et on calcule des informations sur chaque taxon (carte des observations, graphiques, taxonomie...)**
 
 .. image :: images/mcd-vm.png
 
@@ -75,7 +75,7 @@ Pour créer la vue ``atlas.vm_observations_mailles``, remplacer le fichier ``dat
 
 .. image :: images/bdd-observations-mailles.png
 
-En se basant sur ``saisie.saisie_observation`` de SICEN (en l'important dans la BDD de GeoNature-atlas ou en y accédant à distance avec un FDW), la vue ``atlas.vm_observations`` donne : 
+En se basant sur ``saisie.saisie_observation`` de SICEN (en l'important dans la BDD de GeoNature-atlas ou en y accédant à distance avec un FDW), la vue ``atlas.vm_observations`` est à adapter comme ceci : 
 
 ::
 
@@ -83,9 +83,9 @@ En se basant sur ``saisie.saisie_observation`` de SICEN (en l'important dans la 
      SELECT s.id_obs AS id_observation,
         s.code_insee AS insee,
         s.date_obs AS dateobs,
-        s.observateur AS observateurs,
-        s.elevation AS altitude_retenue,
-        st_centroid(s.geom) AS the_geom_point,
+        REPLACE (md.liste_nom_auteur(observateur), ' & ', ', ') AS observateurs,
+        s.elevation AS altitude_retenue, 
+        st_transform(st_setsrid(st_centroid(s.geom), 2154), 3857) AS the_geom_point,
         s.effectif AS effectif_total,
         tx.cd_ref,
         st_asgeojson(st_transform(st_setsrid(st_centroid(s.geom), 2154), 4326)) AS geojson_point
@@ -140,6 +140,6 @@ Ajouter la ligne suivante en prenant soin de mettre à jour les paramètres de c
     
 ::
 
-    0 4 * * * export PGPASSWORD='monpassachanger';psql -h localhost -U geonatatlas -d geonatureatlas -c "SELECT RefreshAllMaterializedViews('atlas');"
+    0 4 * * * export PGPASSWORD='monpassachanger';psql -h localhost -U geonatadmin -d geonatureatlas -c "SELECT RefreshAllMaterializedViews('atlas');"
 
-Pour enregistrer et sortir : ``Ctrl + O`` puis ``Ctrl + X``
+Pour enregistrer et sortir : ``Ctrl + O``, ENTER puis ``Ctrl + X``

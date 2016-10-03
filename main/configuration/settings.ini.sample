@@ -27,6 +27,9 @@ user_pg_pass=monpassachanger
 # Password du propriétaire de la BDD
 admin_pg_pass=monpassachanger
 
+# Installer le schéma taxonomie de TaxHub dans la BDD de GeoNature-atlas ?
+install_taxonomie=false
+
 # GeoNature-atlas est-il connecté à une BDD GeoNature ?
 geonature_source=true
 
