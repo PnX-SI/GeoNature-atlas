@@ -344,13 +344,13 @@
         }
         this.$lightbox.find('.lb-prev, .lb-next').show();
       } else {
-        if (this.currentImageIndex > 0) {
+        if (this.currentImageIndex >= 0) {
           this.$lightbox.find('.lb-prev').show();
           if (alwaysShowNav) {
             this.$lightbox.find('.lb-prev').css('opacity', '1');
           }
         }
-        if (this.currentImageIndex < this.album.length - 1) {
+        if (this.currentImageIndex <= this.album.length - 1) {
           this.$lightbox.find('.lb-next').show();
           if (alwaysShowNav) {
             this.$lightbox.find('.lb-next').css('opacity', '1');
