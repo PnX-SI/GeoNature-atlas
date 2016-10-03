@@ -25,7 +25,7 @@ Dans un soucis de performance et pour ne pas requêter en permanence sur la base
 
 Vous pouvez alimenter l'atlas avec une autre source de données que GeoNature à condition de respecter le nom et le typage des champs retournés par la vue.
 
-Ou vous pouvez simplement décider de l'adapter à votre GeoNature par exemple en changeant l'``id_organisme`` dont vous souhaitez afficher les données dans la condition WHERE de la vue ``atlas.vm_observations``.
+Ou vous pouvez simplement décider de l'adapter à votre GeoNature, par exemple en changeant l'``id_organisme`` dont vous souhaitez afficher les données dans la condition WHERE de la vue ``atlas.vm_observations``.
 
 
 Liste des vues matérialisées

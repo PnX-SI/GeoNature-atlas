@@ -55,7 +55,7 @@ Ces opérations doivent être faites en tant qu'administrateur (en sudo ou avec 
 	
 **2. Récupérez la dernière version (X.Y.Z à remplacer par le numéro de version) de GeoNature-atlas sur le dépot (https://github.com/PnEcrins/GeoNature-atlas/releases)**
 	
-Ces opérations doivent être faite avec l'utilisateur courant (autre que ``root``), ``monuser`` dans l'exemple :
+Ces opérations doivent être faites avec l'utilisateur courant (autre que ``root``), ``monuser`` dans l'exemple :
 
 ::
 
@@ -132,19 +132,25 @@ Installation de la base de données
 
 Modifiez le fichier de configuration de la BDD et de son installation automatique ``main/configuration/settings.ini``. 
 
-Attention à ne pas mettre de 'quote' dans les valeurs, même pour les chaines de caractères.
 
 :notes:
 
     Suivez bien les indications en commentaire dans ce fichier
+
+:notes:
+
+    Attention à ne pas mettre de 'quote' dans les valeurs, même pour les chaines de caractères.
+    
+:notes:
+
+    Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci en localhost car la création d'une BDD recquiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adaptez les commandes du fichier `install_db.sh` en les executant une par une.
+
 	
-L'application se base entièrement sur des vues matérialisées. Par défaut, celles-ci sont proposées pour requêter les données dans une BDD GeoNature. Mais cela, laisse la possibilité de la connecter à une autre BDD.
+L'application se base entièrement sur des vues matérialisées. Par défaut, celles-ci sont proposées pour requêter les données dans une BDD GeoNature.
 
 .. image :: images/geonature-atlas-schema-02.jpg
 
-Ainsi si vous n'utilisez pas GeoNature comme données sources (geonature_source=false), commencez par éditer la vue ``atlas.vm_observations`` dans ``data/atlas.sql`` en respectant impérativement les noms de champs.
-
-Ou plutôt faire l'adaptation après l'installation ?
+Cela laisse donc la possibilité de la connecter à une autre BDD en adaptant la vue ``atlas.vm_observations`` dans ``data/atlas.sql`` (en respectant impérativement les noms de champs).
 
 .. image :: images/geonature-atlas-schema-01.jpg
 
@@ -154,9 +160,9 @@ Vous y trouverez aussi un exemple d'adaptation de la vue ``atlas.vm_observations
 
 Par ailleurs, si vous n'utilisez pas GeoNature, il vous faut installer TaxHub (https://github.com/PnX-SI/TaxHub/) ou au moins sa BDD, pour gérer les attributs (description, commentaire, milieu et chorologie) ainsi que les médias rattachés à chaque espèce (photos, videos, audios et articles)
 
-L'installation du schéma `taxonomie` de TaxHub dans la BDD de l'atlas peut se faire automatiquement lors de l'installation de la BDD avec le paramètre `install_taxonomie=true`.
+L'installation du schéma `taxonomie` de TaxHub dans la BDD de l'atlas peut se faire automatiquement lors de l'installation de la BDD avec le paramètre ``install_taxonomie=true``.
 
-A noter aussi que si vous ne connectez pas l'atlas à une BDD GeoNature, une table exemple `synthese.syntheseff` comprenant 2 observations est créée. A vous d'adapter les vues après l'installation pour les connecter à vos données sources.
+A noter aussi que si vous ne connectez pas l'atlas à une BDD GeoNature(``geonature_source=false``), une table exemple `synthese.syntheseff` comprenant 2 observations est créée. A vous d'adapter les vues après l'installation pour les connecter à vos données sources.
 
 Lancez le fichier fichier d'installation de la base de données en sudo :
 
@@ -167,35 +173,55 @@ Lancez le fichier fichier d'installation de la base de données en sudo :
 :notes:
 
     Vous pouvez consulter le log de cette installation de la base dans ``log/install_db.log`` et vérifier qu'aucune erreur n'est intervenue. 
+    
+Vous pouvez alors modifier les vues, notamment ``atlas.vm_observations`` pour les adapter à votre contexte (ajouter les données partenaires, filtrer les espèces, limiter à un rang taxonomique...) ou le connecter à une autre BDD source (en important les données ou en s'y connectant en FDW).
 
 Configuration de l'application
 ==============================   
 
 Editer le fichier de configuration ``main/configuration/config.py``.
 
-- renseigner la variable 'database_connection'
-- renseigner l'URL de l'application à partir de la racine du serveur WEB ('/atlas' ou '' par exemple)
-- redémarrez Apache pour que les modifications soient prises en compte (`sudo apachectl restart`)
+- Renseignez la variable 'database_connection'
+- Renseignez l'URL de l'application à partir de la racine du serveur WEB ('/atlas' ou '' par exemple)
+- Renseignez les autres paramètres selon votre contexte
+- Redémarrez Apache pour que les modifications soient prises en compte (``sudo apachectl restart``)
 
 Customisation de l'application
 ==============================   
 	
-En plus de la configuration, vous pouvez customisez l'application en modifiant et ajoutant des fichiers dans le répertoire ``static/custom/`` (css, templates, images)
+En plus de la configuration, vous pouvez customiser l'application en modifiant et ajoutant des fichiers dans le répertoire ``static/custom/`` (css, templates, images)
 	
 Mise à jour de l'application
 ============================
 
 - Télécharger puis dézipper la nouvelle version de l'atlas à installer dans ``/home/monuser``.
 - Renommer l'ancienne version de l'atlas puis la nouvelle version, en lui donnant le nom du répertoire précédemment utilisé si vous voulez éviter de devoir modifier votre configuration Apache.
-- Ou y créer un nouveau répertoire pour l'application et ``git clone`` de la version souhaitée depuis le dépot Github.
+- Vous pouvez aussi créer un nouveau répertoire pour l'application dans ``home/monuser/`` et cloner la version souhaitée depuis le dépot Github (``git clone``).
 
 :notes:
 
     A la racine de l'application, un fichier ``VERSION`` permet de savoir quelle version est installée. 
 
 - Copier ``main/configuration/settings.ini`` et ``main/configuration/config.py`` depuis l'ancienne version vers la nouvelle pour récupérer vos paramètres de configuration
+
+::
+
+    cd atlas-nouvelle-version
+    cp ../VERSION-PRECEDENTE/main/configuration/settings.ini main/configuration/settings.ini
+    cp ../VERSION-PRECEDENTE/main/configuration/config.py main/configuration/config.py
+
 - Copier ``static/custom/`` depuis l'ancienne version vers la nouvelle pour récupérer toute votre customisation (CSS, templates, images...)
+
+::
+
+    cp -aR ../static/custom/ ./static
+    
 - Redémarrez Apache
+
+::
+
+    sudo apachectl restart
+    
 
 Attention à bien lire les notes de chaque version, qui peuvent indiquer des opérations spécifiques à faire, notamment des nouveaux paramètres à ajouter dans votre configuration et/ou des modifications à appliquer dans la BDD
 
