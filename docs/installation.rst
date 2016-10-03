@@ -214,7 +214,7 @@ Mise à jour de l'application
 
 ::
 
-    cp -aR ../static/custom/ ./static
+    cp -aR ../VERSION-PRECEDENTE/static/custom/ ./static
     
 - Redémarrez Apache
 
