@@ -35,7 +35,8 @@ Seule ``atlas.vm_observations`` doit éventuellements être adaptée, les autres
 
 Voir ``data/atlas.sql`` pour plus de précisions.
 
-- ``atlas.vm_taxref`` qui renvoie toutes les données de ``taxonomie.taxref``. Champs à préciser pour ceux qui n'ont pas ``taxonomie.taxref`` (TaxHub - https://github.com/PnX-SI/TaxHub)
+- ``atlas.vm_taxref`` qui renvoie toutes les données de ``taxonomie.taxref``. 
+Les champs de cette table sont ``cd_nom``, ``id_statut``, ``id_habitat``, ``id_rang``, ``regne``, ``phylum``, ``classe``, ``ordre``, ``famille``, ``cd_taxsup``, ``cd_ref``, ``lb_nom``, ``lb_auteur``, ``nom_complet``, ``nom_valide``, ``nom_vern``, ``nom_vern_eng``, ``group1_inpn``, ``group2_inpn``, ``nom_complet_html`` et ``cd_sup``.
 
 - ``atlas.vm_observations`` qui renvoie la liste de toutes les observations.
 
