@@ -68,7 +68,7 @@ def lastObservationsCommuneMaille(connection, mylimit, insee):
     ORDER BY obs.dateobs DESC \
     LIMIT :thislimit \
     )\
-    SELECT l.lb_nom, l.nom_vern, l.cd_ref, m.id_maille,ST_ASGEOJSON(ST_TRANSFORM(m.the_geom, 4326)) AS geojson_maille \
+    SELECT l.lb_nom, l.nom_vern, l.cd_ref, m.id_maille, m.geojson_maille \
     FROM atlas.t_mailles_territoire m \
     JOIN last_obs  l ON st_intersects(l.l_geom, m.the_geom) \
     GROUP BY l.lb_nom, l.cd_ref, m.id_maille, l.nom_vern"
@@ -91,7 +91,7 @@ def lastObservationsCommuneMaille(connection, mylimit, insee):
 
 #Use for API
 def getObservationsTaxonCommuneMaille(connection, insee, cd_ref):
-    sql = """SELECT o.cd_ref, t.id_maille, ST_ASGEOJSON(ST_TRANSFORM(t.the_geom, 4326)) AS geojson_maille, extract(YEAR FROM o.dateobs) as annee
+    sql = """SELECT o.cd_ref, t.id_maille, t.geojson_maille, extract(YEAR FROM o.dateobs) as annee
             FROM atlas.vm_observations o
             JOIN atlas.vm_communes c ON ST_INTERSECTS(o.the_geom_point, c.the_geom)  
             JOIN atlas.t_mailles_territoire t ON ST_INTERSECTS(t.the_geom, o.the_geom_point)
