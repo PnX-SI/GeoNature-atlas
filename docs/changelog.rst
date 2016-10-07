@@ -10,7 +10,7 @@ CHANGELOG
 
 **Amélioriations**
 
-* Corrections minimums dans l'installation de la BDD
+* Corrections minimes dans l'installation de la BDD
 * Ajout de SHP exemples pour faciliter les tests de l'installation avec des données de tests.
 
 1.1.1 (2016-10-03)
