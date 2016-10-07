@@ -31,7 +31,7 @@ Installation de l'environnement et de l'application
 
 Le script ``install_env.sh`` va automatiquement installer les outils nécessaires à l'application si ils ne sont pas déjà sur le serveur : 
 
-- PostgreSQL 9
+- PostgreSQL 9.3+
 - PostGIS 2
 - Apache 2
 - Python 2.7
@@ -60,7 +60,7 @@ Ces opérations doivent être faites avec l'utilisateur courant (autre que ``roo
 ::
 
     cd /home/monuser
-    wget https://github.com/PnEcrins/GeoNature-atlas/archive/X.Y.Z.zip
+    wget https://github.com/PnEcrins/GeoNature-atlas/archive/vX.Y.Z.zip
     
 :notes:
 
@@ -70,7 +70,7 @@ Dézippez l'archive :
 	
 ::
 
-    unzip X.Y.Z.zip
+    unzip vX.Y.Z.zip
 	
 Vous pouvez renommer le dossier qui contient l'application (dans un dossier ``/home/monuser/atlas/`` par exemple) :
 	
@@ -86,6 +86,73 @@ Vous pouvez renommer le dossier qui contient l'application (dans un dossier ``/h
     ./install_env.sh
 
 
+Installation de la base de données
+==================================
+
+Modifiez le fichier de configuration de la BDD et de son installation automatique ``main/configuration/settings.ini``. 
+
+
+:notes:
+
+    Suivez bien les indications en commentaire dans ce fichier
+
+:notes:
+
+    Attention à ne pas mettre de 'quote' dans les valeurs, même pour les chaines de caractères.
+    
+:notes:
+
+    Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci en localhost car la création d'une BDD recquiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adaptez les commandes du fichier `install_db.sh` en les executant une par une.
+
+	
+L'application se base entièrement sur des vues matérialisées. Par défaut, celles-ci sont proposées pour requêter les données dans une BDD GeoNature.
+
+.. image :: images/geonature-atlas-schema-02.jpg
+
+Cela laisse donc la possibilité de la connecter à une autre BDD en adaptant la vue ``atlas.vm_observations`` dans ``data/atlas.sql`` (en respectant impérativement les noms de champs).
+
+.. image :: images/geonature-atlas-schema-01.jpg
+
+Plus de détails sur les différentes vues matérialisées dans le fichier `<vues_materialisees_maj.rst>`_  qui indique aussi comment automatiser leur mise à jour.
+
+Vous y trouverez aussi un exemple d'adaptation de la vue ``atlas.vm_observations`` basé sur une BDD SICEN.
+
+Par ailleurs, si vous n'utilisez pas GeoNature, il vous faut installer TaxHub (https://github.com/PnX-SI/TaxHub/) ou au moins sa BDD, pour gérer les attributs (description, commentaire, milieu et chorologie) ainsi que les médias rattachés à chaque espèce (photos, videos, audios et articles)
+
+L'installation du schéma `taxonomie` de TaxHub dans la BDD de l'atlas peut se faire automatiquement lors de l'installation de la BDD avec le paramètre ``install_taxonomie=true``.
+
+A noter aussi que si vous ne connectez pas l'atlas à une BDD GeoNature(``geonature_source=false``), une table exemple ``synthese.syntheseff`` comprenant 2 observations est créée. A vous d'adapter les vues après l'installation pour les connecter à vos données sources.
+
+Lancez le fichier fichier d'installation de la base de données en sudo :
+
+::
+
+    sudo ./install_db.sh
+    
+:notes:
+
+    Vous pouvez consulter le log de cette installation de la base dans ``log/install_db.log`` et vérifier qu'aucune erreur n'est intervenue. 
+    
+Vous pouvez alors modifier les vues, notamment ``atlas.vm_observations`` pour les adapter à votre contexte (ajouter les données partenaires, filtrer les espèces, limiter à un rang taxonomique...) ou le connecter à une autre BDD source (en important les données ou en s'y connectant en FDW).
+
+
+Configuration de l'application
+==============================   
+
+Editer le fichier de configuration ``main/configuration/config.py``.
+
+- Renseignez la variable 'database_connection'
+- Renseignez l'URL de l'application à partir de la racine du serveur WEB ('/atlas' ou '' par exemple)
+- Renseignez les autres paramètres selon votre contexte
+- Redémarrez Apache pour que les modifications soient prises en compte (``sudo apachectl restart``)
+
+
+Customisation de l'application
+==============================   
+	
+En plus de la configuration, vous pouvez customiser l'application en modifiant et ajoutant des fichiers dans le répertoire ``static/custom/`` (css, templates, images)
+	
+    
 Configuration d'Apache
 ======================
 
@@ -126,71 +193,7 @@ Activez le virtualhost puis redémarrez Apache :
     sudo a2ensite atlas
     sudo apachectl restart
 
-   
-Installation de la base de données
-==================================
 
-Modifiez le fichier de configuration de la BDD et de son installation automatique ``main/configuration/settings.ini``. 
-
-
-:notes:
-
-    Suivez bien les indications en commentaire dans ce fichier
-
-:notes:
-
-    Attention à ne pas mettre de 'quote' dans les valeurs, même pour les chaines de caractères.
-    
-:notes:
-
-    Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci en localhost car la création d'une BDD recquiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adaptez les commandes du fichier `install_db.sh` en les executant une par une.
-
-	
-L'application se base entièrement sur des vues matérialisées. Par défaut, celles-ci sont proposées pour requêter les données dans une BDD GeoNature.
-
-.. image :: images/geonature-atlas-schema-02.jpg
-
-Cela laisse donc la possibilité de la connecter à une autre BDD en adaptant la vue ``atlas.vm_observations`` dans ``data/atlas.sql`` (en respectant impérativement les noms de champs).
-
-.. image :: images/geonature-atlas-schema-01.jpg
-
-Plus de détails sur les différentes vues matérialisées dans le fichier `<vues_materialisees_maj.rst>`_  qui indique aussi comment automatiser leur mise à jour.
-
-Vous y trouverez aussi un exemple d'adaptation de la vue ``atlas.vm_observations`` basé sur une BDD SICEN.
-
-Par ailleurs, si vous n'utilisez pas GeoNature, il vous faut installer TaxHub (https://github.com/PnX-SI/TaxHub/) ou au moins sa BDD, pour gérer les attributs (description, commentaire, milieu et chorologie) ainsi que les médias rattachés à chaque espèce (photos, videos, audios et articles)
-
-L'installation du schéma `taxonomie` de TaxHub dans la BDD de l'atlas peut se faire automatiquement lors de l'installation de la BDD avec le paramètre ``install_taxonomie=true``.
-
-A noter aussi que si vous ne connectez pas l'atlas à une BDD GeoNature(``geonature_source=false``), une table exemple `synthese.syntheseff` comprenant 2 observations est créée. A vous d'adapter les vues après l'installation pour les connecter à vos données sources.
-
-Lancez le fichier fichier d'installation de la base de données en sudo :
-
-::
-
-    sudo ./install_db.sh
-    
-:notes:
-
-    Vous pouvez consulter le log de cette installation de la base dans ``log/install_db.log`` et vérifier qu'aucune erreur n'est intervenue. 
-    
-Vous pouvez alors modifier les vues, notamment ``atlas.vm_observations`` pour les adapter à votre contexte (ajouter les données partenaires, filtrer les espèces, limiter à un rang taxonomique...) ou le connecter à une autre BDD source (en important les données ou en s'y connectant en FDW).
-
-Configuration de l'application
-==============================   
-
-Editer le fichier de configuration ``main/configuration/config.py``.
-
-- Renseignez la variable 'database_connection'
-- Renseignez l'URL de l'application à partir de la racine du serveur WEB ('/atlas' ou '' par exemple)
-- Renseignez les autres paramètres selon votre contexte
-- Redémarrez Apache pour que les modifications soient prises en compte (``sudo apachectl restart``)
-
-Customisation de l'application
-==============================   
-	
-En plus de la configuration, vous pouvez customiser l'application en modifiant et ajoutant des fichiers dans le répertoire ``static/custom/`` (css, templates, images)
-	
 Mise à jour de l'application
 ============================
 
@@ -292,8 +295,6 @@ Redémarrez PostgreSQL pour que ces modifications soient prises en compte :
 ::
 
     sudo /etc/init.d/postgresql restart
-
-
 
 
 Développement
