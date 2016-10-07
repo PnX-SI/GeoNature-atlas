@@ -2,8 +2,16 @@
 CHANGELOG
 =========
 
-1.1.2.dev0 (unreleased)
+1.1.3.dev0 (unreleased)
 -----------------------
+
+1.1.2 (2016-10-07)
+-----------------------
+
+**Amélioriations**
+
+* Corrections minimums dans l'installation de la BDD
+* Ajout de SHP exemples pour faciliter les tests de l'installation avec des données de tests.
 
 1.1.1 (2016-10-03)
 ------------------
@@ -13,7 +21,7 @@ CHANGELOG
 * Optimisation du temps de chargement de la page d'accueil en améliorant la requête des statistiques par rang taxonomique
 * Amélioration de l'installation sans GeoNature en permettant d'installer le schéma ``taxonomie`` de la BDD de TaxHub dans la BDD de GeoNature-atlas
 * Intégration d'un exemple de table de données source (``synthese.syntheseff``) et de 2 observations exemple pour que l'installation automatisée fonctionne entièrement même sans GeoNature
-* Compléments et corrections de la documntation
+* Compléments et corrections de la documentation
 
 1.1.0 (2016-09-30)
 ------------------
