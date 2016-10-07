@@ -66,13 +66,13 @@ atlas_source_pass=monpassachanger
 # Si false, modifiez la creation de 'atlas.vm_communes' dans data/atlas.sql
 import_commune_shp=true
 
-communes_shp=/home/USER/atlas/data/ref/mescommunes.shp
+communes_shp=/home/USER/atlas/data/ref/communes-pne.shp
 colonne_insee=CODE_INSEE
 colonne_nom_commune=NOM
 
 ### TERRITOIRE ####
 # Chemin vers le SHP de l'emprise du territoire 
-limit_shp=/home/USER/atlas/data/ref/emprise_territoire.shp
+limit_shp=/home/USER/atlas/data/ref/territoire-pne.shp
 
 ##### MAILLES #####
 
