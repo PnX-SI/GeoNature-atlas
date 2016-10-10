@@ -62,7 +62,7 @@ then
     # Création des schémas de la BDD
 
     sudo -n -u postgres -s psql -d $db_name -c "CREATE SCHEMA atlas AUTHORIZATION $admin_pg;"  &>> log/install_db.log
-	if !$install_taxonomie 
+	if ($install_taxonomie = false)
 	then
         sudo -n -u postgres -s psql -d $db_name -c "CREATE SCHEMA taxonomie AUTHORIZATION $admin_pg;"  &>> log/install_db.log
     fi
@@ -121,10 +121,10 @@ then
 			);
 			INSERT INTO synthese.syntheseff 
 			  (cd_nom, insee, observateurs, altitude_retenue, the_geom_point, effectif_total)
-			  VALUES (67111, 05122, 'Mon observateur', 1254, '0101000020110F000052C7B622B3AB1A41D1F5B32AE70A5541', 3);
+			  VALUES (67111, 05122, 'Mon observateur', 1254, '0101000020110F0000B19F3DEA8636264124CB9EB2D66A5541', 3);
 			INSERT INTO synthese.syntheseff 
 			  (cd_nom, insee, observateurs, altitude_retenue, the_geom_point, effectif_total)
-			  VALUES (67111, 05122, 'Mon observateur 3', 940, '0101000020110F0000327AEA00FEB4184186BA592FFC105541', 2);" &>> log/install_db.log
+			  VALUES (67111, 05122, 'Mon observateur 3', 940, '0101000020110F00001F548906D05E25413391E5EE2B795541', 2);" &>> log/install_db.log
 	fi
     
     # Si j'installe le schéma taxonomie de TaxHub dans la BDD de GeoNature-atlas ($install_taxonomie = True), alors je récupère les fichiers dans le dépôt de TaxHub et les éxécute
