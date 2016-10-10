@@ -30,8 +30,10 @@ GLOSSAIRE = False
 ###### Cartographie #######
 ###########################
 
+# Clé IGN si vous utilisez l'API Geoportail pour afficher les fonds cartographiques
 IGNAPIKEY = 'myIGNkey';
 
+# Configuration des cartes (centre du territoire, couches CARTE et ORTHO, échelle par défaut...)
 MAP = { 
     'LAT_LONG': [44.7952, 6.2287],
     'FIRST_MAP': { 

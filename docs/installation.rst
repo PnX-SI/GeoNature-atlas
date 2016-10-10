@@ -170,7 +170,8 @@ Copier/collez-y ces lignes en renseignant votre nom d'utilisateur à la place de
      <Directory "/home/MONUSER/atlas">
        WSGIApplicationGroup %{GLOBAL}
        WSGIScriptReloading On
-       Require all granted
+       Order deny,allow
+       Allow from all
      </Directory>
 
 :notes:
