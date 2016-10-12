@@ -194,7 +194,7 @@ then
         
         # Creation de la table atlas.t_mailles_territoire avec la taille de maille passée en parametre ($taillemaille). Pour cela j'intersecte toutes les mailles avec mon territoire
         export PGPASSWORD=$admin_pg_pass;psql -h $db_host -U $admin_pg -d $db_name -c "CREATE TABLE atlas.t_mailles_territoire as
-                                                    SELECT m.geom AS the_geom, ST_AsGeoJSON(st_transform(t.the_geom, 4326)) as geojson_maille
+                                                    SELECT m.geom AS the_geom, ST_AsGeoJSON(st_transform(m.geom, 4326)) as geojson_maille
                                                     FROM atlas.t_mailles_"$taillemaille" m, atlas.t_layer_territoire t
                                                     WHERE ST_Intersects(m.geom, t.the_geom);
                                                     CREATE INDEX index_gist_t_mailles_territoire
