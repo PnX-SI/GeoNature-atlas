@@ -10,7 +10,7 @@ CHANGELOG
 
 **Améliorations**
 
-* Ajout d'un lien vers les fiches espèces dans les galerie photo
+* Ajout d'un lien vers les fiches espèces dans la galerie photo
 * Correction de l'installation automatique de la BDD
 * Complements documentation
 
