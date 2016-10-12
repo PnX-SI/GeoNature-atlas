@@ -2,21 +2,30 @@
 CHANGELOG
 =========
 
-1.1.3.dev0 (unreleased)
+1.1.4.dev0 (unreleased)
 -----------------------
+
+1.1.3 (2016-10-12)
+-----------------------
+
+**Améliorations**
+
+* Ajout d'un lien vers les fiches espèces dans les galerie photo
+* Correction de l'installation automatique de la BDD
+* Complements documentation
 
 1.1.2 (2016-10-07)
 -----------------------
 
-**Amélioriations**
+**Améliorations**
 
 * Corrections minimes dans l'installation de la BDD
-* Ajout de SHP exemples pour faciliter les tests de l'installation avec des données de tests.
+* Ajout de SHP exemples pour faciliter les tests de l'installation avec des données de tests
 
 1.1.1 (2016-10-03)
 ------------------
 
-**Amélioriations**
+**Améliorations**
 
 * Optimisation du temps de chargement de la page d'accueil en améliorant la requête des statistiques par rang taxonomique
 * Amélioration de l'installation sans GeoNature en permettant d'installer le schéma ``taxonomie`` de la BDD de TaxHub dans la BDD de GeoNature-atlas
