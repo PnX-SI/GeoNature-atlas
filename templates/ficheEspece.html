@@ -93,16 +93,18 @@
                             <h3> {{taxon.taxonSearch.nom_vern}} </h3>
                         
                         {% endif %}
-                            <h3> {{taxon.taxonSearch.nom_complet_html|safe}} 
-                            {% if taxon.taxonSearch.protection != None %}
+                            <i>
+	                            <h3> {{taxon.taxonSearch.lb_nom}} - <span style="padding-right: 5px; font-size: 20px;"> {{taxon.taxonSearch.lb_auteur}} </span> 
+	                        </i>
+                            {% if taxon.taxonSearch.protection == 'oui' %}
                                 <a href="https://inpn.mnhn.fr/espece/cd_nom/{{taxon.taxonSearch.cd_ref}}/tab/statut" target="_blank">
                                     <img class="caractEspece" width="130px" src="{{url_for('static', filename='images/logo_protection.png') }}"  data-toggle="tooltip" data-original-title="Ce taxon bénéficie d'un statut de protection" data-placement="right"></a>
                             {% endif %}
-                            {% if taxon.taxonSearch.patrimonial != None %}
+                            {% if taxon.taxonSearch.patrimonial == 'oui' %}
                                 <img class="caractEspece" width="130px" src="{{url_for('static', filename='custom/images/logo_patrimonial.png') }}"  data-toggle="tooltip" data-original-title="Ce taxon est patrimonial pour le {{configuration.STRUCTURE}}" data-placement="right">
                             {% endif %}
 
-                            </h3>
+                             </h3>
                         
 
                         <div id="taxonomy">
