@@ -44,7 +44,7 @@ then
 	echo "Création de la BDD..."
 
     sudo -u postgres psql -c "CREATE USER $user_pg WITH PASSWORD '$user_pg_pass' "  &>> log/install_db.log
-    sudo -u postgres psql -c "CREATE USER $admin_pg WITH PASSWORD '$admin_pg_pass' "  &>> log/install_db.log
+    sudo -u postgres psql -c "CREATE USER $admin_pg WITH SUPERUSER PASSWORD '$admin_pg_pass' "  &>> log/install_db.log
     sudo -n -u postgres -s createdb -O $admin_pg $db_name
     echo "Ajout de postGIS et pgSQL à la base de données"
     sudo -n -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgis;"  &>> log/install_db.log
