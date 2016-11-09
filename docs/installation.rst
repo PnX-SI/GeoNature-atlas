@@ -172,6 +172,7 @@ Copier/collez-y ces lignes en renseignant votre nom d'utilisateur à la place de
        WSGIScriptReloading On
        Order deny,allow
        Allow from all
+       Require all granted
      </Directory>
 
 :notes:
