@@ -66,11 +66,13 @@ atlas_source_pass=monpassachanger
 # Si false, modifiez la creation de 'atlas.vm_communes' dans data/atlas.sql
 import_commune_shp=true
 
+# Chemin et nom des colonnes du SHP des communes du territoire. Laisser tel quel (en modifiant uniquement USER) pour utiliser les communes du PnEcrins par défaut
 communes_shp=/home/USER/atlas/data/ref/communes-pne.shp
-colonne_insee=CODE_INSEE
-colonne_nom_commune=NOM
+colonne_insee=insee
+colonne_nom_commune=commune_ma
 
 ### TERRITOIRE ####
+
 # Chemin vers le SHP de l'emprise du territoire 
 limit_shp=/home/USER/atlas/data/ref/territoire-pne.shp
 
