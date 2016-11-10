@@ -85,7 +85,7 @@ metropole=true
 taillemaille=5
 
 # Si 'metropole=false', rajoutez dans le dossier /data/ref un SHP des mailles de votre territoire et renseignez son chemin
-chemin_custom_maille=/home/USER/data/ref/custom_maille.shp
+chemin_custom_maille=/home/USER/atlas/data/ref/custom_maille.shp
 
 #### ID DES TYPES DES ATTRIBUTS DESCRIVANT LES TAXONS DANS atlas.vm_cor_taxon_attribut --  
 ## !! si changement: modifier également dans main/configuration/config.py
