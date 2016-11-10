@@ -62,7 +62,7 @@ then
     # Création des schémas de la BDD
 
     sudo -n -u postgres -s psql -d $db_name -c "CREATE SCHEMA atlas AUTHORIZATION $admin_pg;"  &>> log/install_db.log
-	if ($install_taxonomie = false)
+	if [ $install_taxonomie = "false" ]
 	then
         sudo -n -u postgres -s psql -d $db_name -c "CREATE SCHEMA taxonomie AUTHORIZATION $admin_pg;"  &>> log/install_db.log
     fi
