@@ -2,8 +2,21 @@
 CHANGELOG
 =========
 
-1.1.4.dev0 (unreleased)
+1.2.0.dev0 (unreleased)
 -----------------------
+
+1.2.0 (2016-11-15)
+-----------------------
+
+**Evolutions**
+
+* Mise à jour de Leaflet (version 0.7.7 à la version 1.0.1)
+
+**Corrections**
+
+* Correction du bug d'affichage de la protection et patrimonialité sur les fiches espèces. Fix #63
+* Correction de l'installation automatique de la BDD ($admin_pg désormais créé en superuser)
+* Corrections et précisions dans la documentation
 
 1.1.3 (2016-10-12)
 -----------------------
