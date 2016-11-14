@@ -31,6 +31,7 @@
         <script src="{{url_for('static', filename='lib/leaflet/leaflet.js') }}"></script>
         <script src="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.css') }}" />
+		<link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.Default.css') }}" />
         <script src="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.css') }}" />
 		
@@ -94,17 +95,16 @@
                         
                         {% endif %}
                             <h3> {{taxon.taxonSearch.nom_complet_html|safe}} 
-                            {% if taxon.taxonSearch.protection != None %}
+                            {% if taxon.taxonSearch.protection == 'oui' %}
+                                <br/>
                                 <a href="https://inpn.mnhn.fr/espece/cd_nom/{{taxon.taxonSearch.cd_ref}}/tab/statut" target="_blank">
                                     <img class="caractEspece" width="130px" src="{{url_for('static', filename='images/logo_protection.png') }}"  data-toggle="tooltip" data-original-title="Ce taxon bénéficie d'un statut de protection" data-placement="right"></a>
                             {% endif %}
-                            {% if taxon.taxonSearch.patrimonial != None %}
+                            {% if taxon.taxonSearch.patrimonial == 'oui' %}
                                 <img class="caractEspece" width="130px" src="{{url_for('static', filename='custom/images/logo_patrimonial.png') }}"  data-toggle="tooltip" data-original-title="Ce taxon est patrimonial pour le {{configuration.STRUCTURE}}" data-placement="right">
                             {% endif %}
-
                             </h3>
-                        
-
+                            
                         <div id="taxonomy">
                             {% for taxon in taxonomyHierarchy %}
                                 {{taxon.nom_rang}} :

@@ -26,7 +26,7 @@ def searchEspece(connection, cd_ref):
     req = connection.execute(text(sql), thiscdref = cd_ref)
     taxonSearch = dict()
     for r in req:
-        taxonSearch = {'cd_ref': r.cd_ref, 'lb_nom': r.lb_nom, 'nom_vern': r.nom_vern, 'nom_complet_html': r.nom_complet_html, 'group2_inpn': utils.deleteAccent(r.group2_inpn), 'groupAccent': r.group2_inpn,\
+        taxonSearch = {'cd_ref': r.cd_ref, 'lb_nom': r.lb_nom, 'nom_vern': r.nom_vern, 'lb_nom': r.lb_nom, 'lb_auteur':r.lb_auteur, 'nom_complet_html': r.nom_complet_html, 'group2_inpn': utils.deleteAccent(r.group2_inpn), 'groupAccent': r.group2_inpn,\
         'yearmin': r.yearmin, 'yearmax':r.yearmax, 'nb_obs': r.nb_obs, 'patrimonial': r.patrimonial, 'protection': r.protection_stricte }
 
     sql="""SELECT tax.lb_nom, 
