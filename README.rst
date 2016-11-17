@@ -5,6 +5,8 @@ GeoNature-atlas
 
 Atlas WEB dynamique Faune-Flore basé sur les données présentes dans la synthèse de `GeoNature <https://github.com/PnEcrins/GeoNature>`_.
 
+Utilisé pour Biodiv'Ecrins, l'atlas de faune et de la flore du Parc national des Ecrins (http://biodiversite.ecrins-parcnational.fr).
+
 Il permet de générer dynamiquement des fiches espèces avec des données calculées automatiquement (cartes de répartition, répartition altitudinale et phénologique, communes, secteurs, observateurs...) ainsi que des données saisies pour chaque espèce (photos, description...). 
 
 **Interrogez vos observations naturalistes, croisez-les avec TAXREF, publiez votre atlas en ligne dynamique**
