@@ -130,7 +130,7 @@ Une fonction, générée lors de la création de la BDD de GeoNature-atlas perme
   
         SELECT RefreshAllMaterializedViews('atlas');
 
-* Pour automatiser l'éxecution de cette fonction (chaque nuit à 4 heures dans cet exemple), ajoutez la dans le crontab de l'utilisateur ``root`` :
+* Pour automatiser l'éxecution de cette fonction (toutes les heures dans cet exemple), ajoutez la dans le crontab de l'utilisateur ``postgres`` :
     
   ::  
   
@@ -141,6 +141,6 @@ Ajouter la ligne suivante en prenant soin de mettre à jour les paramètres de c
     
 ::
 
-    0 4 * * * export PGPASSWORD='monpassachanger';psql -h localhost -U geonatadmin -d geonatureatlas -c "SELECT RefreshAllMaterializedViews('atlas');"
+    0 * * * * psql -d geonatureatlas -c "SELECT RefreshAllMaterializedViews('atlas');"
 
 Pour enregistrer et sortir : ``Ctrl + O``, ENTER puis ``Ctrl + X``
