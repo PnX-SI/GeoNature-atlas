@@ -143,9 +143,9 @@ $(document).ready(function(){
 				$('#group').html("");
 				keyString = this.value;
 				filterJsonPhoto = photos.filter(function(obj){
-					name = obj.name.toLowerCase();
-					title = obj.title.toLowerCase();
-					author = obj.author.toLowerCase();
+					if(obj.name){name = obj.name.toLowerCase();} else {name = 'Nom non renseigné';}
+					if(obj.title){title = obj.title.toLowerCase();} else {title = 'Titre non renseigné';}
+					if(obj.author){author = obj.author.toLowerCase();} else {author = 'Auteurnon renseigné';}
 					return (name.includes(keyString.toLowerCase()) || title.includes(keyString.toLowerCase()) || author.includes(keyString.toLowerCase()))
 				})
 
