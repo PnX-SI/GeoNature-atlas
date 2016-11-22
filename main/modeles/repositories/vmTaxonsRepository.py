@@ -23,7 +23,7 @@ def getTaxonsCommunes(connection, insee):
     sql = """SELECT DISTINCT o.cd_ref, max(date_part('year'::text, o.dateobs)) as last_obs, COUNT(o.id_observation) AS nb_obs, t.nom_complet_html, t.nom_vern, t.group2_inpn, t.patrimonial, t.protection_stricte, m.url, m.chemin
         FROM atlas.vm_observations o
         JOIN atlas.vm_taxons t ON t.cd_ref=o.cd_ref
-        LEFT JOIN atlas.vm_medias m ON m.cd_ref=o.cd_ref AND m.id_type=1
+        LEFT JOIN atlas.vm_medias m ON m.cd_ref=o.cd_ref AND m.id_type="""+ str(config.ATTR_MAIN_PHOTO) +"""
         WHERE o.insee = :thisInsee
         GROUP BY o.cd_ref, t.nom_vern, t.nom_complet_html, t.group2_inpn, t.patrimonial, t.protection_stricte, m.url, m.chemin
         ORDER BY nb_obs DESC"""
@@ -44,7 +44,7 @@ def getTaxonsChildsList(connection, cd_ref):
     sql = """SELECT *, tax.cd_ref
     FROM atlas.vm_taxons tax 
     JOIN atlas.bib_taxref_rangs bib_rang on tax.id_rang= bib_rang.id_rang
-    LEFT JOIN atlas.vm_medias m ON m.cd_ref = tax.cd_ref AND m.id_type=1 
+    LEFT JOIN atlas.vm_medias m ON m.cd_ref = tax.cd_ref AND m.id_type="""+ str(config.ATTR_MAIN_PHOTO) +""" 
     WHERE tax.cd_ref in ( select * from atlas.find_all_taxons_childs(:thiscdref) 
     ) """.encode('UTF-8')
     req = connection.execute(text(sql), thiscdref = cd_ref)
@@ -74,8 +74,8 @@ def getINPNgroupPhotos(connection):
 def getTaxonsGroup(connection, groupe):
     sql=""" SELECT t.cd_ref, t.nom_complet_html, t.nom_vern, t.nb_obs, t.group2_inpn, t.protection_stricte, t.patrimonial, t.yearmax, m.chemin, m.url, t.nb_obs
             FROM atlas.vm_taxons t
-            LEFT JOIN atlas.vm_medias m ON m.cd_ref = t.cd_ref 
-            WHERE t.group2_inpn = :thisGroupe 
+            LEFT JOIN atlas.vm_medias m ON m.cd_ref = t.cd_ref AND m.id_type="""+ str(config.ATTR_MAIN_PHOTO) +""" 
+            WHERE t.group2_inpn = :thisGroupe
             GROUP BY t.cd_ref, t.nom_complet_html, t.nom_vern, t.nb_obs, t.group2_inpn, t.protection_stricte, t.patrimonial, t.yearmax, m.chemin, m.url """
     req = connection.execute(text(sql), thisGroupe = groupe)
     tabTaxons = list()
