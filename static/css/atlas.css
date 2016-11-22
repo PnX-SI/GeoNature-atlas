@@ -117,6 +117,10 @@ li.sidebar-brand {
 	color: black;
 }
 
+.sidebar-brand .glyphicon {
+    font-size: 20px;
+}
+
 /* END sidebar */
 
 .slider-size {
@@ -288,13 +292,6 @@ li.sidebar-brand {
 }
 
 /*// END block actual species */
-
-/* Page 'Developpement' */
-
-#developpement{
-	font-family: 'Open Sans';
-	text-align: center;
-}
 
 /* Footer */
 

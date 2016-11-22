@@ -135,19 +135,6 @@ def ficheGroupe(groupe):
     return render_template('templates/ficheGroupe.html', listTaxons = listTaxons,  communesSearch = communesSearch, referenciel= groupe, groups=groups, configuration=configuration)
 
 
-
-@main.route('/developpement', methods=['GET', 'POST'])
-def developpement():
-    session = utils.loadSession()
-    
-    communesSearch = vmCommunesRepository.getAllCommunes(session)
-    configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'URL_APPLICATION': config.URL_APPLICATION}
-
-    session.close()
-    return render_template('templates/developpement.html', communesSearch = communesSearch, configuration=configuration)
-
-
-    
 @main.route('/presentation', methods=['GET', 'POST'])
 def presentation():
     session = utils.loadSession()
