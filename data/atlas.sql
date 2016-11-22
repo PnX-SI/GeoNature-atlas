@@ -12,6 +12,7 @@ create index on atlas.vm_taxref (lb_nom);
 create index on atlas.vm_taxref (nom_complet);
 create index on atlas.vm_taxref (nom_valide);
 
+
 --Toutes les observations
 
 --DROP materialized view atlas.vm_observations; 
@@ -107,7 +108,7 @@ CREATE MATERIALIZED VIEW atlas.vm_taxons AS
      LEFT JOIN obs_min_taxons omt ON omt.cd_ref = tx.cd_ref
      LEFT JOIN my_taxons t ON t.cd_ref = tx.cd_ref
 WITH DATA;
-
+CREATE UNIQUE INDEX ON atlas.vm_taxons (cd_ref);
 
 --Classes d'altitudes, modifiables selon votre contexte
 
@@ -239,7 +240,7 @@ LEFT JOIN _11 k ON k.cd_ref =  o.cd_ref
 LEFT JOIN _12 l ON l.cd_ref =  o.cd_ref
 WHERE o.cd_ref is not null
 ORDER BY o.cd_ref;
-create unique index on atlas.vm_mois (cd_ref);
+CREATE UNIQUE INDEX ON atlas.vm_mois (cd_ref);
 
 
 -- Communes contenues entièrement dans le territoire
@@ -335,6 +336,7 @@ CREATE MATERIALIZED VIEW atlas.vm_medias AS
            date_media,
            id_type 
    FROM taxonomie.t_medias;
+CREATE UNIQUE INDEX ON atlas.vm_medias (id_media);
 
 
 -- Attributs de chaque taxon (description, commentaire, milieu et chorologie)
@@ -345,7 +347,7 @@ CREATE MATERIALIZED VIEW atlas.vm_cor_taxon_attribut AS
            cd_ref
     FROM taxonomie.cor_taxon_attribut
     WHERE id_attribut IN (100, 101, 102, 103);
-
+CREATE UNIQUE INDEX ON atlas.vm_cor_taxon_attribut (cd_ref,id_attribut);
 
 -- 12 taxons les plus observés sur la période en cours (par défaut -15 jours +15 jours toutes années confondues)
 
@@ -365,6 +367,7 @@ CREATE MATERIALIZED VIEW atlas.vm_taxons_plus_observes AS
   GROUP BY obs.cd_ref, tax.lb_nom, tax.nom_vern, m.url, m.chemin, tax.group2_inpn, m.id_type
   ORDER BY count(*) DESC
  LIMIT 12;
+ CREATE UNIQUE INDEX ON atlas.vm_taxons_plus_observes (cd_ref);
 
     
 --Fonction qui permet de lister tous les taxons enfants d'un taxon

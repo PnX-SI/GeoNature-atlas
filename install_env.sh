@@ -13,6 +13,7 @@ sudo apt-get -y upgrade
 # Go to folder of install_env.sh
 cd "$(dirname "$0")"
 
+sudo apt-get install -y unzip
 sudo apt-get install -y apache2
 sudo apt-get install -y libapache2-mod-wsgi
 sudo apachectl restart

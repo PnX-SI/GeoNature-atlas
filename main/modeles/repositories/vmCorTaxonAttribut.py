@@ -17,7 +17,7 @@ def getAttributesTaxon(connection, cd_ref, attrDesc, attrComment, attrMilieu, at
         elif r.id_attribut == attrComment:
             descTaxon['commentaire'] = r.valeur_attribut
         elif r.id_attribut == attrMilieu:
-            descTaxon['milieu'] = r.valeur_attribut
+            descTaxon['milieu'] = r.valeur_attribut.replace("&"," | ")
         elif r.id_attribut == attrChoro:
             descTaxon['chorologie'] = r.valeur_attribut
     return descTaxon
