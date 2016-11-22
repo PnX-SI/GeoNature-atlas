@@ -30,6 +30,10 @@ a.btn.btn-default:hover{
 	margin-right: 0px
 }
 
+.modal{
+    top: 40px;
+}
+
 /* Navbar */
 
 .navbar {
@@ -297,6 +301,10 @@ li.sidebar-brand {
 .footer{
 	text-align: center;
 	margin-left: 60px;
+}
+
+.credits{
+	text-align: left;
 }
 
 /*END FOOTER*/

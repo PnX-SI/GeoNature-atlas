@@ -25,6 +25,7 @@ static/custom/images/*
 static/custom/templates/presentation.html
 static/custom/templates/footer.html
 static/custom/templates/introduction.html
+static/custom/templates/credits.html
 
 data/ref/communes.dbf
 data/ref/communes.prj
