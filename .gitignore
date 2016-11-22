@@ -25,9 +25,6 @@ static/custom/images/*
 static/custom/templates/presentation.html
 static/custom/templates/footer.html
 static/custom/templates/introduction.html
-static/custom/images/accueil-intro.jpg
-static/custom/images/favicon.ico
-static/custom/images/logo-structure.png
 
 data/ref/communes.dbf
 data/ref/communes.prj

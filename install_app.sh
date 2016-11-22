@@ -18,9 +18,10 @@ cp ./static/custom/templates/introduction.html.sample ./static/custom/templates/
 cp ./static/custom/templates/presentation.html.sample ./static/custom/templates/presentation.html
 cp ./static/custom/custom.css.sample ./static/custom/custom.css
 cp ./static/custom/glossaire.json.sample ./static/custom/glossaire.json
-cp ./static/custom/images/favicon.ico.sample ./static/custom/images/favicon.ico
-cp ./static/custom/images/accueil-intro.jpg.sample ./static/custom/images/accueil-intro.jpg
-cp ./static/custom/images/logo-structure.png.sample ./static/custom/images/logo-structure.png
+cp ./static/images/sample.favicon.ico ./static/custom/images/favicon.ico
+cp ./static/images/sample.accueil-intro.jpg ./static/custom/images/accueil-intro.jpg
+cp ./static/images/sample.logo-structure.png ./static/custom/images/logo-structure.png
+cp ./static/images/sample.logo_patrimonial.png ./static/custom/images/logo_patrimonial.png
 
 cp ./data/ref/communes.dbf.sample ./data/ref/communes.dbf
 cp ./data/ref/communes.prj.sample ./data/ref/communes.prj
