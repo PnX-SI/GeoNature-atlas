@@ -10,6 +10,7 @@ virtualenv ./venv
 . ./venv/bin/activate
 pip install -r requirements.txt
 
+mkdir ./static/custom/images/
 
 cp ./main/configuration/config.py.sample ./main/configuration/config.py
 cp ./main/configuration/settings.ini.sample ./main/configuration/settings.ini
