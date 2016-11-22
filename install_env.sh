@@ -27,18 +27,6 @@ sudo apt-get install -y python-gdal
 sudo apt-get install -y gdal-bin
 
 sudo apt-get install -y python-virtualenv
-virtualenv ./venv
 
-. ./venv/bin/activate
-pip install -r requirements.txt
-
-
-cp ./main/configuration/config.py.sample ./main/configuration/config.py
-cp ./main/configuration/settings.ini.sample ./main/configuration/settings.ini
-cp ./static/custom/templates/footer.html.sample ./static/custom/templates/footer.html
-cp ./static/custom/templates/introduction.html.sample ./static/custom/templates/introduction.html
-cp ./static/custom/templates/presentation.html.sample ./static/custom/templates/presentation.html
-cp ./static/custom/custom.css.sample ./static/custom/custom.css
-cp ./static/custom/glossaire.json.sample ./static/custom/glossaire.json
 
 

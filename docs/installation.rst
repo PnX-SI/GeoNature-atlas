@@ -36,7 +36,7 @@ Le script ``install_env.sh`` va automatiquement installer les outils nécessaire
 - Apache 2
 - Python 2.7
 
-Il va aussi installer les dépendances listées dans le fichier `requirements.txt <https://github.com/PnEcrins/GeoNature-atlas/blob/master/requirements.txt>`_.
+Le script ``install_app.sh`` va préparer l'application et installer les dépendances listées dans le fichier `requirements.txt <https://github.com/PnEcrins/GeoNature-atlas/blob/master/requirements.txt>`_.
 
 **1. Mettre à jour les sources list**
 
@@ -52,7 +52,7 @@ Ces opérations doivent être faites en tant qu'administrateur (en sudo ou avec 
 :notes:
 
     Cet exemple est basé sur une Debian 8. A adapter selon votre OS.
-	
+    
 **2. Récupérez la dernière version (X.Y.Z à remplacer par le numéro de version) de GeoNature-atlas sur le dépot (https://github.com/PnEcrins/GeoNature-atlas/releases)**
 	
 Ces opérations doivent être faites avec l'utilisateur courant (autre que ``root``), ``monuser`` dans l'exemple :
@@ -61,6 +61,7 @@ Ces opérations doivent être faites avec l'utilisateur courant (autre que ``roo
 
     cd /home/monuser
     wget https://github.com/PnEcrins/GeoNature-atlas/archive/vX.Y.Z.zip
+
     
 :notes:
 
@@ -78,12 +79,18 @@ Vous pouvez renommer le dossier qui contient l'application (dans un dossier ``/h
 
     mv GeoNature-atlas-X.Y.Z atlas
 
-**3. Placez-vous dans le dossier qui contient l'application et lancez l'installation automatique de l'environnement :**
+**3. Placez-vous dans le dossier qui contient l'application et lancer l'installation de l'environnement serveur qui installera les logiciels nécessaires au fonctionnement de l'application :
+
+::
+
+    cd /home/monuser/atlas
+    ./install_env.sh
+
+**4.  Lancez l'installation automatique de l'application :**
 	
 ::
 
-    cd atlas/
-    ./install_env.sh
+    ./install_app.sh
 
 
 Installation de la base de données
