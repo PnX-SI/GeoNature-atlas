@@ -145,7 +145,7 @@ $(document).ready(function(){
 				filterJsonPhoto = photos.filter(function(obj){
 					if(obj.name){name = obj.name.toLowerCase();} else {name = 'Nom non renseigné';}
 					if(obj.title){title = obj.title.toLowerCase();} else {title = 'Titre non renseigné';}
-					if(obj.author){author = obj.author.toLowerCase();} else {author = 'Auteurnon renseigné';}
+					if(obj.author){author = obj.author.toLowerCase();} else {author = 'Auteur non renseigné';}
 					return (name.includes(keyString.toLowerCase()) || title.includes(keyString.toLowerCase()) || author.includes(keyString.toLowerCase()))
 				})
 
