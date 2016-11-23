@@ -1,7 +1,7 @@
 $(document).ready(function(){
-  $('#myTable').show();
+    $('#myTable').show();
     $('#myTable').DataTable({
-    	"order":[5, 'desc'],
+    	"order":[defaultSortedColumn, 'desc'],
     	"lengthChange": false,
     	"pageLength": 50,
         "oLanguage": {
@@ -10,21 +10,21 @@ $(document).ready(function(){
             "sInfoEmpty": "",
             "sInfoFiltered": "",
             "sZeroRecords": "Aucune espèce trouvée",
-
-        "oPaginate": {
-           "sPrevious": "Précedent",
-           "sNext" : "Suivant"
-         }
-      },
-      "aoColumnDefs" : [
-      {
-       'bSortable' : false,
-       'aTargets' : [7,8]
-     }]
+            "oPaginate": {
+               "sPrevious": "Précedent",
+               "sNext" : "Suivant"
+            }
+        }
+        ,
+        "aoColumnDefs" : [
+            {
+                'bSortable' : false,
+                'aTargets' : noSordedColumns
+            }
+        ]
     });
     $('.dataTables_filter input').attr("placeholder", "Rechercher dans la liste ").attr("class", "form-control").css("font-weight", "normal");
-    $('.dataTables_empty').text("Aucune espèce trouvée")
-
+    $('.dataTables_empty').text("Aucune espèce trouvée");
 });
 
 
@@ -36,8 +36,8 @@ $('th').click( function(){
 
 // Load /espece/cd_ref on row click
 if(configuration.MYTYPE != 1){
-  $(".taxonRow").click(function(){
-     cd_ref = $(this).attr('cdRef');
-     location.href = configuration.URL_APPLICATION+'/espece/'+cd_ref;
-  });
+    $(".taxonRow").click(function(){
+        cd_ref = $(this).attr('cdRef');
+        location.href = configuration.URL_APPLICATION+'/espece/'+cd_ref;
+    });
 }
