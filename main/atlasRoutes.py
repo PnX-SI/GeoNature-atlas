@@ -114,24 +114,24 @@ def ficheRangTaxonomie(cd_ref):
     session.close()
 
     configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY,\
-     'URL_APPLICATION': config.URL_APPLICATION, 'PATRIMONIALITE': config.PATRIMONIALITE, 'PROTECTION': config.PROTECTION, 'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER, 'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS}
+     'URL_APPLICATION': config.URL_APPLICATION, 'MYTYPE' : 0, 'PATRIMONIALITE': config.PATRIMONIALITE, 'PROTECTION': config.PROTECTION, 'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER, 'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS}
     return render_template('templates/ficheRangTaxonomique.html', listTaxons = listTaxons, referenciel = referenciel, communesSearch = communesSearch,\
         taxonomyHierarchy=taxonomyHierarchy, observers=observers, configuration=configuration)
 
 @main.route('/groupe/<groupe>', methods=['GET', 'POST'])
 def ficheGroupe(groupe):
-    connection = utils.engine.connect()
     session = utils.loadSession()
-
+    connection = utils.engine.connect()
+    
     groups=vmTaxonsRepository.getAllINPNgroup(connection)
     listTaxons = vmTaxonsRepository.getTaxonsGroup(connection, groupe)
     communesSearch = vmCommunesRepository.getAllCommunes(session)
 
-    connection.close()
     session.close()
+    connection.close()
 
     configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY,\
-     'URL_APPLICATION': config.URL_APPLICATION, 'PATRIMONIALITE': config.PATRIMONIALITE, 'PROTECTION': config.PROTECTION, 'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER, 'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS}
+     'URL_APPLICATION': config.URL_APPLICATION, 'MYTYPE' : 0, 'PATRIMONIALITE': config.PATRIMONIALITE, 'PROTECTION': config.PROTECTION, 'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER, 'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS}
     return render_template('templates/ficheGroupe.html', listTaxons = listTaxons,  communesSearch = communesSearch, referenciel= groupe, groups=groups, configuration=configuration)
 
 
@@ -157,3 +157,28 @@ def photos():
     session.close()
     connection.close()
     return render_template('templates/galeriePhotos.html', communesSearch = communesSearch, groups=groups, configuration=configuration)
+    
+#test
+@main.route('/test/<cd_ref>', methods=['GET', 'POST'])
+def test(cd_ref):
+    session = utils.loadSession()
+    connection = utils.engine.connect()
+    
+    if config.AFFICHAGE_MAILLE:
+        observations = vmObservationsMaillesRepository.lastObservationsMailles(connection, config.NB_DAY_LAST_OBS, config.ATTR_MAIN_PHOTO)
+    else:
+        observations = vmObservationsRepository.lastObservations(connection, config.NB_DAY_LAST_OBS, config.ATTR_MAIN_PHOTO)
+
+    listTaxons = vmTaxonsRepository.getTaxonsChildsList(connection, cd_ref)
+    referenciel = vmTaxrefRepository.getInfoFromCd_ref(session, cd_ref)
+    communesSearch = vmCommunesRepository.getAllCommunes(session)
+    taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
+    observers = vmObservationsRepository.getObservers(connection, cd_ref)
+    
+    connection.close()
+    session.close()
+
+    configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY,\
+     'URL_APPLICATION': config.URL_APPLICATION, 'PATRIMONIALITE': config.PATRIMONIALITE, 'PROTECTION': config.PROTECTION, 'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER, 'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS}
+    return render_template('templates/test.html', observations=observations,listTaxons = listTaxons, referenciel = referenciel, communesSearch = communesSearch,\
+        taxonomyHierarchy=taxonomyHierarchy, observers=observers, configuration=configuration)

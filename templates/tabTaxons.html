@@ -1,68 +1,73 @@
-    <table class="table table-hover" id="myTable" style="display:none;"> <!-- Ne s'affiche que lorsque le JS est chargé -->
-        <thead>
-            <tr>
-                <th>Groupe</th>
-                <th>Nom Scientifique</th>
-                <th>Nom Vernaculaire</th>
-                {% if configuration.PROTECTION %}
+<table class="table table-hover" id="myTable" style="display:none;"> <!-- Ne s'affiche que lorsque le JS est chargé -->
+    <thead>
+        <tr>
+            <th>Groupe</th>
+            <th>Nom Scientifique</th>
+            <th>Nom Vernaculaire</th>
+            {% if configuration.PROTECTION %}
                 <th>Protection</th>
-                {% endif %}
-                {% if configuration.PATRIMONIALITE %}
+            {% endif %}
+            {% if configuration.PATRIMONIALITE %}
                 <th>Patrimonial</th>
-                {% endif %}
-                <th id="sorted"> Nombre d'observation(s)</th>
+            {% endif %}
+            <th id="sorted"> Nombre d'observation(s)</th>
                 <th>Dernière observation</th>
-                {% if configuration.MYTYPE == 1 %}
+            {% if configuration.MYTYPE == 1 %}
                 <th>Observations </th>
-                {% endif %}
-                <th>Fiche</th>
-
-            </tr>
-        </thead>
-        <tbody>
-            {% for taxon in listTaxons.taxons %}
+            {% endif %}
+            <th>Fiche</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for taxon in listTaxons.taxons %}
             <tr class="taxonRow" insee="{{referenciel.insee}}" cdRef="{{taxon.cd_ref}}">  
                 <td> 
                     {% if taxon.path == None %}
-                    <img src="{{url_for('static', filename='images/picto_'+ taxon.group2_inpn|urlencode+'.png') }}" data-toggle="tooltip" data-original-title="{{taxon.group2_inpn}}" data-placement="right"> 
+                        <img src="{{url_for('static', filename='images/picto_'+ taxon.group2_inpn|urlencode+'.png') }}" data-toggle="tooltip" data-original-title="{{taxon.group2_inpn}}" data-placement="right"> 
                     {% else %}
-                     <div class="pictoImgList" style="background-image:url({{taxon.path}});" data-toggle="tooltip" data-original-title="{{taxon.group2_inpn}}" data-placement="right"></div>
+                        <div class="pictoImgList" style="background-image:url({{taxon.path}});" data-toggle="tooltip" data-original-title="{{taxon.group2_inpn}}" data-placement="right"></div>
                     {% endif %}
-                    <span class="hiddenSpan">{{taxon.group2_inpn}}</span></td>
-                <td class="name"> {{taxon.nom_complet_html|safe}}</td>
-                <td>{% if taxon.nom_vern == None %} - {% else %} {{taxon.nom_vern}} {% endif %}</td>                
-                {% if configuration.PROTECTION %}
+                    <span class="hiddenSpan">{{taxon.group2_inpn}}</span>
+                </td>
+                <td class="name">
+                    {{taxon.nom_complet_html|safe}}
+                </td>
                 <td>
-					{% if taxon.protection_stricte == 'oui' %} 
-					<a href="https://inpn.mnhn.fr/espece/cd_nom/{{taxon.cd_ref}}/tab/statut" target="_blank">
-						<img src="{{url_for('static', filename='images/logo_protection.png') }}" style="width : 40px; height: 40px" data-placement="left" data-toggle="tooltip" data-original-title="Ce taxon béneficie d'un statut de protection">
-					</a> 
-					{% endif %} 
-				</td>
+                    {% if taxon.nom_vern == None %} 
+                        - 
+                    {% else %} 
+                        {{taxon.nom_vern}} 
+                    {% endif %}
+                </td>                
+                {% if configuration.PROTECTION %}
+                    <td>
+                        {% if taxon.protection_stricte == 'oui' %} 
+                            <a href="https://inpn.mnhn.fr/espece/cd_nom/{{taxon.cd_ref}}/tab/statut" target="_blank">
+                                <img src="{{url_for('static', filename='images/logo_protection.png') }}" style="width : 40px; height: 40px" data-placement="left" data-toggle="tooltip" data-original-title="Ce taxon béneficie d'un statut de protection">
+                            </a> 
+                        {% endif %} 
+                    </td>
                 {% endif %}
                 {% if configuration.PATRIMONIALITE %}
-                <td>
-					{% if taxon.patrimonial == 'oui' %} 
-					<img src="{{url_for('static', filename='custom/images/logo_patrimonial.png') }}" style="width : 30px; height: 30px" data-placement="left" data-toggle="tooltip" data-original-title="Ce taxon est patrimonial pour le {{configuration.STRUCTURE}}">
-					{% endif %}
-				</td>
+                    <td>
+                        {% if taxon.patrimonial == 'oui' %} 
+                        <img src="{{url_for('static', filename='custom/images/logo_patrimonial.png') }}" style="width : 30px; height: 30px" data-placement="left" data-toggle="tooltip" data-original-title="Ce taxon est patrimonial pour le {{configuration.STRUCTURE}}">
+                        {% endif %}
+                    </td>
                 {% endif %}
                 <td>{{taxon.nb_obs}}</td>
                 <td>{{taxon.last_obs | int}}</td>
                 {% if configuration.MYTYPE == 1 %}
-                <td>
-					<span class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-original-title="Afficher les observations sur la commune" data-placement="right"> </span>
-				</td>
+                    <td>
+                        <span class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-original-title="Afficher les observations sur la commune" data-placement="right"> </span>
+                    </td>
                 {% endif %}
                 <td>
-					<a href="{{url_for('main.ficheEspece',cd_ref=taxon.cd_ref)}}">
-						<span class="glyphicon glyphicon-list" data-toggle="tooltip" data-original-title="Consulter la fiche espèce" data-placement="right"> </span>
-					</a>
-				</td> 
+                    <a href="{{url_for('main.ficheEspece',cd_ref=taxon.cd_ref)}}">
+                        <span class="glyphicon glyphicon-list" data-toggle="tooltip" data-original-title="Consulter la fiche espèce" data-placement="right"> </span>
+                    </a>
+                </td> 
             </tr>
-
-            {% endfor %}
-        </tbody>
-    </table>
-
-
+        {% endfor %}
+    </tbody>
+</table>

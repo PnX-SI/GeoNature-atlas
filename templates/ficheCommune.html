@@ -5,8 +5,8 @@
         <title>Commune de {{referenciel.communeName}} | {{configuration.NOM_APPLICATION}} - {{configuration.STRUCTURE}}</title>
 
         <!-- Jquery -->
-        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
-
+        <script type="text/javascript" src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
+        <script type="text/javascript" src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
 
         <!-- Leaflet -->
@@ -19,14 +19,14 @@
 		<link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.Default.css') }}" />
 
         <!-- DataTable -->
-        <script type=text/javascript src="{{url_for('static', filename='lib/dataTable/datatables.min.js') }}"></script>
-		<script type=text/javascript src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+        <script type="text/javascript" src="{{url_for('static', filename='lib/dataTable/datatables.min.js') }}"></script>
+		<script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
 		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" />
         <!--  <link rel="stylesheet" href="{{url_for('static', filename='lib/dataTable/jquery.dataTables.min.css') }}" />  -->
 		
         <!-- Bootstrap -->
         <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}"></link>
-        <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
+        <script type="text/javascript" src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
 
        <!-- Atlas -->
         <link rel="shortcut icon" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
@@ -56,9 +56,7 @@
                         </ul>
                     </div>
                 </div>
-        
-
-        
+   
                 <div class="row rowMargin" id="clear">
                         <div class="panel panel-default">
                             {% include 'templates/tabTaxons.html' %}
@@ -66,7 +64,6 @@
                 </div>
             </div>
                     
-        
             <div class="col-sm-5" id="mapWrapper">
 				<div  class="panel panel-default" id="mapContainer">
 					<div class="row ">
@@ -86,13 +83,19 @@
         {% if configuration.AFFICHAGE_FOOTER %}
             {% include 'static/custom/templates/footer.html' %}
         {% endif %}
-        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+        
         <script type="text/javascript">
-        var communesSearch = {{communesSearch|tojson}},
-            configuration = {{configuration|tojson}},
-            observations = {{observations|tojson}},
-            communeGeoJson = {{referenciel.communeGeoJson|tojson}},
-            url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
+            var communesSearch = {{communesSearch|tojson}};
+            var configuration = {{configuration|tojson}};
+            var observations = {{observations|tojson}};
+            var communeGeoJson = {{referenciel.communeGeoJson|tojson}};
+            var url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
+            //calcul du nb de colonnes pour le fonctionnement de dataTables.js
+            var nbColumn = 7;
+            {% if configuration.PATRIMONIALITE %} nbColumn = nbColumn+1;{% endif %}
+            {% if configuration.PROTECTION %} nbColumn = nbColumn+1;{% endif %}
+            var noSordedColumns=[nbColumn-2,nbColumn-1]; //var for dataTables js lib
+            var defaultSortedColumn=nbColumn-4; //var for dataTables js lib
         </script>
         <script src="{{url_for('static', filename='listeEspeces.js') }}"></script>
 		<script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
