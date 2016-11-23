@@ -1,21 +1,21 @@
 <table class="table table-hover" id="myTable" style="display:none;"> <!-- Ne s'affiche que lorsque le JS est chargé -->
     <thead>
         <tr>
-            <th>Groupe</th>
-            <th>Nom Scientifique</th>
-            <th>Nom Vernaculaire</th>
+            <th data-priority="1">Groupe</th>
+            <th data-priority="2">Nom Scientifique</th>
+            <th data-priority="6">Nom Vernaculaire</th>
             {% if configuration.PROTECTION %}
-                <th>Protection</th>
+                <th data-priority="7">Protection</th>
             {% endif %}
             {% if configuration.PATRIMONIALITE %}
-                <th>Patrimonial</th>
+                <th data-priority="8">Patrimonial</th>
             {% endif %}
-            <th id="sorted"> Nombre d'observation(s)</th>
-                <th>Dernière observation</th>
+            <th id="sorted" data-priority="4"> Nombre d'observation(s)</th>
+                <th data-priority="9">Dernière observation</th>
             {% if configuration.MYTYPE == 1 %}
-                <th>Observations </th>
+                <th data-priority="5">Observations </th>
             {% endif %}
-            <th>Fiche</th>
+            <th data-priority="3">Fiche</th>
         </tr>
     </thead>
     <tbody>
@@ -64,7 +64,7 @@
                 {% endif %}
                 <td>
                     <a href="{{url_for('main.ficheEspece',cd_ref=taxon.cd_ref)}}">
-                        <span class="glyphicon glyphicon-list" data-toggle="tooltip" data-original-title="Consulter la fiche espèce" data-placement="right"> </span>
+                        <span class="glyphicon glyphicon-list" data-toggle="tooltip" data-original-title="Consulter la fiche espèce" data-placement="left"> </span>
                     </a>
                 </td> 
             </tr>

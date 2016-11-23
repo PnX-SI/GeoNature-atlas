@@ -57,15 +57,14 @@ var compteurLegend = 0; // compteur pour ne pas rajouter la légende à chaque f
 
 
 // display observation on click
-
 function displayObsTaxon(insee, cd_ref){
 	$.ajax({
-  url: configuration.URL_APPLICATION+'/api/observations/'+insee+'/'+cd_ref, 
-  dataType: "json",
-    beforeSend: function(){
-    $('#loadingGif').show();
-    $('#loadingGif').attr("src", configuration.URL_APPLICATION+'/static/images/loading.svg');
-  }
+      url: configuration.URL_APPLICATION+'/api/observations/'+insee+'/'+cd_ref, 
+      dataType: "json",
+        beforeSend: function(){
+            $('#loadingGif').show();
+            $('#loadingGif').attr("src", configuration.URL_APPLICATION+'/static/images/loading.svg');
+        }
 	}).done(function(observations){
 		$('#loadingGif').hide();
 		map.removeLayer(currentLayer);
@@ -77,7 +76,7 @@ function displayObsTaxon(insee, cd_ref){
 
 
 	});
-}
+};
 
 function displayObsTaxonMaille(insee, cd_ref){
 	$.ajax({
@@ -92,11 +91,10 @@ function displayObsTaxonMaille(insee, cd_ref){
 		map.removeLayer(currentLayer);
 		displayMailleLayerCommune(observations);
 	});
-}
+};
 
-$(document).ready(function(){
-	if(configuration.MYTYPE == 1){
-
+function refreshObsCommune(){
+    if(configuration.MYTYPE == 1){
 		$(".taxonRow").click(function(){
 			     $(this).siblings().removeClass('current');
 		         $(this).addClass('current');
@@ -111,6 +109,13 @@ $(document).ready(function(){
 				$(this).html("Observations du taxon:"+ name).fadeIn(500);
 			})
 		});
-	}
+    }
+};
+
+$('#myTable').on( 'page.dt', function (){
+    refreshObsCommune();
+});
+$(document).ready(function(){
+	refreshObsCommune();
 });
 
