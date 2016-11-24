@@ -95,7 +95,7 @@ function displayObsTaxonMaille(insee, cd_ref){
 
 function refreshObsCommune(){
     if(configuration.MYTYPE == 1){
-		$(".taxonRow").click(function(){
+        $('#myTable tbody').on('click', '.taxonRow', function () {
 			     $(this).siblings().removeClass('current');
 		         $(this).addClass('current');
 
