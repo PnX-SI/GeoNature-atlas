@@ -69,7 +69,10 @@ ul#stat {
 }
 
 ul#statHierarchy {
-
+    float: left;
+    padding: 5px;
+    margin-left: 38%;
+    margin-top: 10px;
 }
 
 .leaflet-bar.leaflet-control.leaflet-control-custom img {
