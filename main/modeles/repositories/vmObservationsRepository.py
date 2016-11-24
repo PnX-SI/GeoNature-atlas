@@ -177,6 +177,14 @@ def getObservers(connection, cd_ref):
     return observersParser(req)
 
 
+def getGroupeObservers(connection, groupe):
+    sql = "SELECT distinct observateurs \
+    FROM atlas.vm_observations \
+    WHERE cd_ref in (SELECT cd_ref from atlas.vm_taxons WHERE group2_inpn = :thisgroupe)"
+    req = connection.execute(text(sql), thisgroupe = groupe)
+    return observersParser(req)
+
+
 def getObserversCommunes(connection, insee):
     sql= "SELECT distinct observateurs \
     FROM atlas.vm_observations \

@@ -126,13 +126,14 @@ def ficheGroupe(groupe):
     groups=vmTaxonsRepository.getAllINPNgroup(connection)
     listTaxons = vmTaxonsRepository.getTaxonsGroup(connection, groupe)
     communesSearch = vmCommunesRepository.getAllCommunes(session)
+    observers = vmObservationsRepository.getGroupeObservers(connection, groupe)
 
     session.close()
     connection.close()
 
     configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY,\
      'URL_APPLICATION': config.URL_APPLICATION, 'MYTYPE' : 0, 'PATRIMONIALITE': config.PATRIMONIALITE, 'PROTECTION': config.PROTECTION, 'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER, 'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS}
-    return render_template('templates/ficheGroupe.html', listTaxons = listTaxons,  communesSearch = communesSearch, referenciel= groupe, groups=groups, configuration=configuration)
+    return render_template('templates/ficheGroupe.html', listTaxons = listTaxons,  communesSearch = communesSearch, referenciel= groupe, groups=groups, observers=observers,configuration=configuration)
 
 
 @main.route('/presentation', methods=['GET', 'POST'])

@@ -41,6 +41,17 @@
                 <div class="panel panel-default" id="parent">
                     <div class="row rowMargin">
                         <h1> Les {{ referenciel }} </h1>
+                        
+                        <div class="panel panel-default" id="parent">
+                            <div class="row rowMargin">
+                                 <ul id="statHierarchy">
+                                    <li><span data-icon="&#xe037;" style="font-size: 30px;"></span><br/><b>{{listTaxons.nbObsTotal}}</b><br/>observations</li>
+                                    <li><span data-icon="&#xe03b;" style="font-size: 30px;"></span><br/><b>{{listTaxons.taxons|length}}</b><br/>espèces</li>
+                                    <li><span data-icon="&#xe040;" style="font-size: 30px;"></span><br/><b>{{observers | length}}</b><br/>observateurs</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
                         <div id="allGroups">
                         {% for group in groups %}
                             <li class="floatLeft"> 
