@@ -550,10 +550,10 @@ function generateLegende(htmlLegend){
           legendActiv = true;
         
 
-        }else {
-            legend.removeFrom(map)
+          }else {
+            legend.remove(map)
             legendActiv = false;
-        }
+          }
 
       }
         return container;
