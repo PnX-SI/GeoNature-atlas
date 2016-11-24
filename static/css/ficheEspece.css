@@ -117,7 +117,7 @@ p.imgDescription.main {
 	position: relative;
 	left:50%;
 	top:200px;
-	z-index: 10;
+	z-index: 1000;
 }
 
 #mapStat li {
