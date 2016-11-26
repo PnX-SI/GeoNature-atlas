@@ -18,6 +18,7 @@ cp ./static/custom/templates/footer.html.sample ./static/custom/templates/footer
 cp ./static/custom/templates/introduction.html.sample ./static/custom/templates/introduction.html
 cp ./static/custom/templates/presentation.html.sample ./static/custom/templates/presentation.html
 cp ./static/custom/templates/credits.html.sample ./static/custom/templates/credits.html
+cp ./static/custom/templates/mentions-legales.html.sample ./static/custom/templates/mentions-legales.html
 cp ./static/custom/custom.css.sample ./static/custom/custom.css
 cp ./static/custom/glossaire.json.sample ./static/custom/glossaire.json
 cp ./static/images/sample.favicon.ico ./static/custom/images/favicon.ico
