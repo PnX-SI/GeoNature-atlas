@@ -32,10 +32,10 @@ var compteurLegend = 0; // compteur pour ne pas rajouter la légende à chaque f
 		// MAILLE
 	if (configuration.AFFICHAGE_MAILLE){
 		displayMailleLayerLastObs(observations)
-	  }
+	}
 		// POINT
 	else{
-	displayMarkerLayerPointLastObs(observations);
+        displayMarkerLayerPointLastObs(observations);
 
 	}
 
@@ -116,6 +116,7 @@ $('#myTable').on( 'page.dt', function (){
     refreshObsCommune();
 });
 $(document).ready(function(){
-	refreshObsCommune();
+	$('#loadingGif').hide();
+    refreshObsCommune();
 });
 
