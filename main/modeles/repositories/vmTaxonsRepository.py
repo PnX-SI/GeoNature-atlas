@@ -90,7 +90,9 @@ def getTaxonsGroup(connection, groupe):
 
 #get all groupINPN
 def getAllINPNgroup(connection):
-    sql=""" SELECT DISTINCT group2_inpn FROM atlas.vm_taxons """
+    sql=""" SELECT SUM(nb_obs) AS som_obs, group2_inpn from atlas.vm_taxons
+        GROUP BY group2_inpn
+        ORDER by som_obs DESC """
     req = connection.execute(text(sql))
     groupList = list()
     for r in req:

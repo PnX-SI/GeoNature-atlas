@@ -35,7 +35,7 @@ def getPhotoCarousel(connection, cd_ref, id):
 
 def switchMedia(raw):
     goodPath = str()
-    if raw.chemin != None and raw.chemin[0] == 's':
+    if raw.chemin != None and raw.chemin != '':
         goodPath = config.URL_MEDIAS+raw.chemin
     else:
         goodPath = raw.url

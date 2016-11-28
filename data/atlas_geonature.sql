@@ -80,10 +80,10 @@ CREATE FOREIGN TABLE taxonomie.t_medias
 (
   id_media serial NOT NULL,
   cd_ref integer,
-  titre character(255) NOT NULL,
-  url character(255),
-  chemin character(255),
-  auteur character(100),
+  titre character varying(255) NOT NULL,
+  url character varying(255),
+  chemin character varying(255),
+  auteur character varying(100),
   desc_media text,
   date_media date,
   id_type integer NOT NULL
