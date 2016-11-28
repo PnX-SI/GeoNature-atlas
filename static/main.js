@@ -8,8 +8,7 @@ $(document).ready(function() {
   });
 });
 
-    autocompleteSearch = function(list, inputID, urlDestination, nbProposal){
-
+autocompleteSearch = function(list, inputID, urlDestination, nbProposal){
     $(inputID).autocomplete({
         source: function (request, response) {
         var results = $.ui.autocomplete.filter(list, request.term);
@@ -29,11 +28,9 @@ $(document).ready(function() {
           return false;
             }
     });
-
-    }
+};
 
 // Generate the autocompletion with the list of item, the input id and the form id
-
     $( "#searchCommunes" ).focus(function() {
       autocompleteSearch(communesSearch, "#searchCommunes", "commune", 20)
     });
@@ -56,7 +53,6 @@ $.ajax({
     });
 
     // Autocomplete bloc stat
-
     $( "#searchTaxonsStat" ).focus(function() {
        autocompleteSearch(list, "#searchTaxonsStat", "espece", 10);
     });
@@ -64,9 +60,7 @@ $.ajax({
 });
 
 // child list display
-
 var childList = $('#childList');
-
 $('#buttonChild').click(function(){
   $('#buttonChild').find('span').toggleClass("glyphicon glyphicon-chevron-right").toggleClass('glyphicon glyphicon-chevron-down');
  var childList = $('#childList');
@@ -76,17 +70,14 @@ $('#buttonChild').click(function(){
     else {
       childList.attr("hidden", "hidden")
     }
-
 })
 
 // Tooltip
-
 $(document).ready(function(){
   $('[data-toggle="tooltip"]').tooltip();
-})
+});
 
 // Animation index.html
-
 $(document).ready(function() {
    $('#localScroll').on('click', function(){
     var dest = $('#DernieresObservations');
@@ -102,9 +93,8 @@ if (configuration.GLOSSAIRE) {
 		$('#blocInfos').glossarizer({
 			sourceURL: configuration.URL_APPLICATION+'/static/custom/glossaire.json',
 			callback: function(){
-
 				// Callback fired after glossarizer finishes its job
-				 new tooltip();
+				new tooltip();
 			}
 		});
 	});

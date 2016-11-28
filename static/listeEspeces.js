@@ -35,6 +35,10 @@ $(document).ready(function(){
 $('th').click( function(){
     $(this).find('span').toggleClass('glyphicon glyphicon-menu-down').toggleClass('glyphicon glyphicon-menu-up');
 });
+//restauration des tooltip lors du changement de page dans le tadaTables
+$('#myTable tbody').on('click', '.taxonRow', function () {
+    $('[data-toggle="tooltip"]').tooltip();
+});
 
 // Load /espece/cd_ref on row click
 // deactivate because is no compatible with datatables responsive plugin

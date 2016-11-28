@@ -96,9 +96,9 @@ function displayObsTaxonMaille(insee, cd_ref){
 function refreshObsCommune(){
     if(configuration.MYTYPE == 1){
         $('#myTable tbody').on('click', '.taxonRow', function () {
-			     $(this).siblings().removeClass('current');
-		         $(this).addClass('current');
-
+			$(this).siblings().removeClass('current');
+		    $(this).addClass('current');
+            
 			if(configuration.AFFICHAGE_MAILLE){
 				displayObsTaxonMaille($(this).attr('insee'), $(this).attr('cdRef'));
 			}else{

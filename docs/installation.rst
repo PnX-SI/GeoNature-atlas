@@ -79,7 +79,9 @@ Vous pouvez renommer le dossier qui contient l'application (dans un dossier ``/h
 
     mv GeoNature-atlas-X.Y.Z atlas
 
-**3. Placez-vous dans le dossier qui contient l'application et lancer l'installation de l'environnement serveur qui installera les logiciels nécessaires au fonctionnement de l'application :
+**3. Placez-vous dans le dossier qui contient l'application et lancez l'installation de l'environnement serveur :**
+
+Cela installera les logiciels nécessaires au fonctionnement de l'application 
 
 ::
 

@@ -2,8 +2,36 @@
 CHANGELOG
 =========
 
-1.2.0.dev0 (unreleased)
+1.2.2.dev0 (unreleased)
 -----------------------
+
+1.2.1 (2016-11-28)
+-----------------------
+
+**Améliorations**
+
+* Prise en charge des contenus HTML dans les descriptions des articles
+* Ajout du nom de la structure dans les `<title>` des pages
+* Compléments sur les templates par défaut `footer.html`, `introduction.html` et `présentation.html`
+* Ajout de templates par défaut `credits.html` et `mentions-legales.html` accessibles dans une modale depuis le footer
+* Amélioration de l'installation et séparation de l'installation de l'environnement (`install_env.sh`) et de l'application (`install_app.sh`)
+* Amélioration de l'affichage des milieux dans les fiches espèces
+* Mise à jour mineure de l'installation automatique de la BDD
+* Mise à jour de la documentation d'installation
+* Usage des variables des types des médias dans le SQL des listes de taxons
+* Meilleure gestion des images par défaut (photo principale et logos)
+* Révision de tous les pictos des groupes (par @DonovanMaillard)
+* Simplification de la barre verticale de navigation (sidebar)
+* Mise à jour Leaflet 1.0.1 vers 1.0.2
+
+**Corrections**
+
+* Refonte complète de l'usage de jQuery.datatables dans les listes d'espèces (fiches communes, rangs taxonomiques et groupes)
+* Réparation des tooltips et autres débugage dans les listes d'espèces
+* Correction d'un bug sur la recherche dans la galerie photos
+* Correction du z-index du spinner sur les fiches espèces
+* Correction des caractères vides dans les URL et chemins des médias
+* Autres corrections mineures
 
 1.2.0 (2016-11-15)
 -----------------------
