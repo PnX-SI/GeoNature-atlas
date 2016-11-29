@@ -64,7 +64,7 @@ def getVideo_and_audio(connection, cd_ref, id5, id6, id7, id8, id9):
         if switchMedia(r) != None:
             path = switchMedia(r)
             temp = {'id_type': r.id_type, 'path': path[r.id_type], 'title': r.titre, 'author': deleteNone(r.auteur), 'description': deleteNone(r.desc_media)}
-            if r.id_type == 5:
+            if r.id_type == config.ATTR_AUDIO:
                 tabMedias['audio'].append(temp)
             else:
                 tabMedias['video'].append(temp)
