@@ -118,9 +118,13 @@ LIMIT_RANG_TAXONOMIQUE_HIERARCHIE = 13
 # On prend alors tout ce qui est inferieur ou egal a l'espece pour faire des fiches et ce qui est superieur pour les listes
 LIMIT_FICHE_LISTE_HIERARCHY = 28
 
-# URL du stockage des photos et autres médias
+# URL d'accès aux photos et autres médias (URL racine). Par exemple l'url d'accès à Taxhub
+# Cette url sera cachée aux utilisateurs de l'atlas
+REMOTE_MEDIAS_URL = "http://mondomaine.fr/taxhub/"
+# Racine du chemin des fichiers médias stockés dans le champ "chemin" de "atlas.vm_medias"
+# Seule cette partie de l'url sera visible pour les utilisateurs de l'atlas
+REMOTE_MEDIAS_PATH = "static/medias/"
 
-URL_MEDIAS = "url du serveur d'hebergement des medias"
 
 #### ID DES ATTRIBUTS DESCRIPTIFS DES TAXONS DE LA TABLE vm_cor_taxon_attribut
 ATTR_DESC = 100
