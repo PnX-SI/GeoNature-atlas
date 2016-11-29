@@ -4,7 +4,7 @@
 #.................................
 
 # Effacer la base de données existante lors de l'installation
-drop_apps_db=false
+drop_apps_db=true
 
 # Host de la base de données de l'application
 db_host=localhost
@@ -19,13 +19,13 @@ db_name=geonatureatlas
 user_pg=geonatatlas
 
 # Nom du propriétaire de la BDD, utilisé pour créer et mettre à jour la BDD
-admin_pg=geonatadmin
+owner_atlas=geonatuser
 
 # Password de l'utilisateur de l'application
 user_pg_pass=monpassachanger
 
 # Password du propriétaire de la BDD
-admin_pg_pass=monpassachanger
+owner_atlas_pass=monpassachanger
 
 # Installer le schéma taxonomie de TaxHub dans la BDD de GeoNature-atlas ?
 install_taxonomie=false
@@ -48,14 +48,8 @@ db_source_port=5432
 # Nom de la BDD GeoNature source
 db_source_name=geonaturedb
 
-# Nom de l'utilisateur admin dans la BDD GeoNature source
-admin_source_user=geonatadmin
-
-# Pass de l'utilisateur admin dans la BDD GeoNature source
-admin_source_pass=monpassachanger
-
 # Nom de l'utilisateur atlas dans la BDD GeoNature source (lecture seule)
-atlas_source_user=geonatatlas
+atlas_source_user=geonatuser
 
 # Pass de l'utilisateur atlas dans la BDD GeoNature source (lecture seule)
 atlas_source_pass=monpassachanger
@@ -67,14 +61,14 @@ atlas_source_pass=monpassachanger
 import_commune_shp=true
 
 # Chemin et nom des colonnes du SHP des communes du territoire. Laisser tel quel (en modifiant uniquement USER) pour utiliser les communes du PnEcrins par défaut
-communes_shp=/home/USER/atlas/data/ref/communes.shp
+communes_shp=/home/test/atlas/data/ref/communes.shp
 colonne_insee=insee
 colonne_nom_commune=nom_com
 
 ### TERRITOIRE ####
 
 # Chemin vers le SHP de l'emprise du territoire 
-limit_shp=/home/USER/atlas/data/ref/territoire.shp
+limit_shp=/home/test/atlas/data/ref/territoire.shp
 
 ##### MAILLES #####
 
@@ -84,8 +78,8 @@ metropole=true
 # Choisissez alors la taille de vos mailles à utiliser (en km) / Valeurs possibles 1, 5 ou 10
 taillemaille=5
 
-# Si 'metropole=false', rajoutez dans le dossier /data/ref un SHP des mailles de votre territoire et renseignez son chemin
-chemin_custom_maille=/home/USER/atlas/data/ref/custom_maille.shp
+# Si 'metropole=true
+chemin_custom_maille=/home/test/atlas/data/ref/custom_maille.shp
 
 #### ID DES TYPES DES ATTRIBUTS DESCRIVANT LES TAXONS DANS atlas.vm_cor_taxon_attribut --  
 ## !! si changement: modifier également dans main/configuration/config.py

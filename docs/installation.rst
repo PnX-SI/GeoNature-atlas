@@ -60,7 +60,7 @@ Ces opérations doivent être faites avec l'utilisateur courant (autre que ``roo
 ::
 
     cd /home/monuser
-    wget https://github.com/PnEcrins/GeoNature-atlas/archive/vX.Y.Z.zip
+    wget https://github.com/PnEcrins/GeoNature-atlas/archive/X.Y.Z.zip
 
     
 :notes:
@@ -71,7 +71,7 @@ Dézippez l'archive :
 	
 ::
 
-    unzip vX.Y.Z.zip
+    unzip X.Y.Z.zip
 	
 Vous pouvez renommer le dossier qui contient l'application (dans un dossier ``/home/monuser/atlas/`` par exemple) :
 	
