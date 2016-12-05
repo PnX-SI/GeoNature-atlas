@@ -16,7 +16,7 @@ compress = Compress()
 #renvoie une instance de app l appli Flask
 def create_app():
     app = Flask(__name__, template_folder=APP_DIR)
-    app.debug = True
+    app.debug = config.modeDebug
 
 
     from main.atlasRoutes import main as main_blueprint
@@ -31,8 +31,4 @@ def create_app():
 
     return app
 
-
-
 app = create_app()
-
-
