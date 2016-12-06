@@ -150,7 +150,7 @@ $BODY$
 
     monsql = 'CREATE materialized view atlas.vm_altitudes AS WITH ';
     
-    FOR mesaltitudes IN SELECT * FROM atlas.bib_altitudes LOOP
+    FOR mesaltitudes IN SELECT * FROM atlas.bib_altitudes ORDER BY id_altitude LOOP
       IF mesaltitudes.id_altitude = 1 THEN
         monsql = monsql || 'alt' || mesaltitudes.id_altitude ||' AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue <' || mesaltitudes.altitude_max || ' GROUP BY cd_ref) ';
       ELSE
