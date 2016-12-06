@@ -4,7 +4,7 @@
 #.................................
 
 # Effacer la base de données existante lors de l'installation
-drop_apps_db=true
+drop_apps_db=false
 
 # Host de la base de données de l'application
 db_host=localhost
@@ -60,15 +60,15 @@ atlas_source_pass=monpassachanger
 # Si false, modifiez la creation de 'atlas.vm_communes' dans data/atlas.sql
 import_commune_shp=true
 
-# Chemin et nom des colonnes du SHP des communes du territoire. Laisser tel quel (en modifiant uniquement USER) pour utiliser les communes du PnEcrins par défaut
-communes_shp=/home/test/atlas/data/ref/communes.shp
+# Chemin et nom des colonnes du SHP des communes du territoire. Laisser tel quel (en modifiant uniquement MYUSERLINUX) pour utiliser les communes du PnEcrins par défaut
+communes_shp=/home/MYUSERLINUX/atlas/data/ref/communes.shp
 colonne_insee=insee
 colonne_nom_commune=nom_com
 
 ### TERRITOIRE ####
 
 # Chemin vers le SHP de l'emprise du territoire 
-limit_shp=/home/test/atlas/data/ref/territoire.shp
+limit_shp=/home/MYUSERLINUX/atlas/data/ref/territoire.shp
 
 ##### MAILLES #####
 
@@ -79,7 +79,7 @@ metropole=true
 taillemaille=5
 
 # Si 'metropole=true
-chemin_custom_maille=/home/test/atlas/data/ref/custom_maille.shp
+chemin_custom_maille=/home/MYUSERLINUX/atlas/data/ref/custom_maille.shp
 
 #### ID DES TYPES DES ATTRIBUTS DESCRIVANT LES TAXONS DANS atlas.vm_cor_taxon_attribut --  
 ## !! si changement: modifier également dans main/configuration/config.py
