@@ -10,7 +10,7 @@ CHANGELOG
 
 **Améliorations**
 
-* Simplification des utilisateurs PostgreSQL et supression du besoin d'un utilisateur super utilisateur. 
+* Simplification des utilisateurs PostgreSQL et suppression du besoin d'un utilisateur super utilisateur. 
 * Correction des tooltips qui ne fonctionnaient plus sur les pages suivantes dans les listes paginées
 * Amélioration de la gestion des médias et possibilité de cacher l'URL hébergeant les médias.
 * Correction de la création de ``atlas.vm_altitudes``
