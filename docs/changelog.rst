@@ -2,19 +2,36 @@
 CHANGELOG
 =========
 
-1.2.2.dev0 (unreleased)
+1.2.3.dev0 (unreleased)
 -----------------------
 
+1.2.2 (2016-12-14)
+------------------
+
+**Améliorations**
+
+* Simplification des utilisateurs PostgreSQL et supression du besoin d'un utilisateur super utilisateur. 
+* Correction des tooltips qui ne fonctionnaient plus sur les pages suivantes dans les listes paginées
+* Amélioration de la gestion des médias et possibilité de cacher l'URL hébergeant les médias.
+* Correction de la création de ``atlas.vm_altitudes``
+
+**Notes de version**
+
+Si vous mettez à jour l'application, réalisez ces opérations en plus des opérations classiques (https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/installation.rst#mise-à-jour-de-lapplication) :
+
+* Ajouter un paramètre ``modeDebug`` dans le fichier ``main/configuration/config.py`` : https://github.com/PnEcrins/GeoNature-atlas/blob/b055c834d0f5a030f5180fa46097931e4bbd1d93/main/configuration/config.py.sample#L4-L5
+* Ajouter un paramètre ``REMOTE_MEDIAS_PATH`` et renommer le parametre ``URL_MEDIAS`` en ``REMOTE_MEDIAS_URL`` dans le fichier ``main/configuration/config.py`` : https://github.com/PnEcrins/GeoNature-atlas/blob/develop/main/configuration/config.py.sample#L124-L129
+
 1.2.1 (2016-11-28)
------------------------
+------------------
 
 **Améliorations**
 
 * Prise en charge des contenus HTML dans les descriptions des articles
-* Ajout du nom de la structure dans les `<title>` des pages
-* Compléments sur les templates par défaut `footer.html`, `introduction.html` et `présentation.html`
-* Ajout de templates par défaut `credits.html` et `mentions-legales.html` accessibles dans une modale depuis le footer
-* Amélioration de l'installation et séparation de l'installation de l'environnement (`install_env.sh`) et de l'application (`install_app.sh`)
+* Ajout du nom de la structure dans les ``<title>`` des pages
+* Compléments sur les templates par défaut ``footer.html``, ``introduction.html`` et ``présentation.html``
+* Ajout de templates par défaut ``credits.html`` et ``mentions-legales.html`` accessibles dans une modale depuis le footer
+* Amélioration de l'installation et séparation de l'installation de l'environnement (``install_env.sh``) et de l'application (``install_app.sh``)
 * Amélioration de l'affichage des milieux dans les fiches espèces
 * Mise à jour mineure de l'installation automatique de la BDD
 * Mise à jour de la documentation d'installation
@@ -34,7 +51,7 @@ CHANGELOG
 * Autres corrections mineures
 
 1.2.0 (2016-11-15)
------------------------
+------------------
 
 **Evolutions**
 
@@ -43,11 +60,11 @@ CHANGELOG
 **Corrections**
 
 * Correction du bug d'affichage de la protection et patrimonialité sur les fiches espèces. Fix #63
-* Correction de l'installation automatique de la BDD ($admin_pg désormais créé en superuser)
+* Correction de l'installation automatique de la BDD (``$admin_pg`` désormais créé en superuser)
 * Corrections et précisions dans la documentation
 
 1.1.3 (2016-10-12)
------------------------
+------------------
 
 **Améliorations**
 
