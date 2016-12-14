@@ -1,7 +1,6 @@
 #! /usr/bin/python
 # -*- coding:utf-8 -*-
-
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify, redirect
 from configuration import config
 from modeles.repositories import vmTaxonsRepository, vmObservationsRepository, vmAltitudesRepository, \
  vmSearchTaxonRepository, vmMoisRepository, vmTaxrefRepository, vmCommunesRepository, vmObservationsMaillesRepository, vmMedias, vmCorTaxonAttribut, \
@@ -12,9 +11,30 @@ from . import utils
 from flask import Blueprint
 main = Blueprint('main', __name__)
 
+@main.route('/espece/'+config.REMOTE_MEDIAS_PATH+'<image>' , methods=['GET', 'POST'])
+def especeMedias(image):
+    return redirect(config.REMOTE_MEDIAS_URL+config.REMOTE_MEDIAS_PATH+image)
 
+@main.route('/commune/'+config.REMOTE_MEDIAS_PATH+'<image>' , methods=['GET', 'POST'])
+def communeMedias(image):
+    return redirect(config.REMOTE_MEDIAS_URL+config.REMOTE_MEDIAS_PATH+image)
 
-
+@main.route('/liste/'+config.REMOTE_MEDIAS_PATH+'<image>' , methods=['GET', 'POST'])
+def listeMedias(image):
+    return redirect(config.REMOTE_MEDIAS_URL+config.REMOTE_MEDIAS_PATH+image)
+    
+@main.route('/groupe/'+config.REMOTE_MEDIAS_PATH+'<image>' , methods=['GET', 'POST'])
+def groupeMedias(image):
+    return redirect(config.REMOTE_MEDIAS_URL+config.REMOTE_MEDIAS_PATH+image)
+    
+@main.route('/'+config.REMOTE_MEDIAS_PATH+'<image>' , methods=['GET', 'POST'])
+def indexMedias(image):
+    return redirect(config.REMOTE_MEDIAS_URL+config.REMOTE_MEDIAS_PATH+image)
+    
+# @main.route('/<regex("[a-cA-Z0-9]")>/'+config.REMOTE_MEDIAS_PATH+'<image>' , methods=['GET', 'POST'])
+# def myrouteMedias(image):
+    # return redirect(config.REMOTE_MEDIAS_URL+config.REMOTE_MEDIAS_PATH+image)
+    
 @main.route('/' , methods=['GET', 'POST'])
 def index():
     session = utils.loadSession()
@@ -30,7 +50,7 @@ def index():
     customStat = vmObservationsRepository.genericStat(connection, config.RANG_STAT)
     customStatMedias = vmObservationsRepository.genericStatMedias(connection, config.RANG_STAT)
     configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'HOMEMAP': True, 'TEXT_LAST_OBS': config.TEXT_LAST_OBS, 'AFFICHAGE_MAILLE': config.AFFICHAGE_MAILLE, \
-    'URL_PHOTO': config.URL_MEDIAS, 'AFFICHAGE_DERNIERES_OBS': config.AFFICHAGE_DERNIERES_OBS, 'AFFICHAGE_EN_CE_MOMENT': config.AFFICHAGE_EN_CE_MOMENT, 'AFFICHAGE_STAT_GLOBALES': config.AFFICHAGE_STAT_GLOBALES, 'AFFICHAGE_RANG_STAT': config.AFFICHAGE_RANG_STAT, 'COLONNES_RANG_STAT': config.COLONNES_RANG_STAT, 'RANG_STAT_FR': config.RANG_STAT_FR, \
+    'AFFICHAGE_DERNIERES_OBS': config.AFFICHAGE_DERNIERES_OBS, 'AFFICHAGE_EN_CE_MOMENT': config.AFFICHAGE_EN_CE_MOMENT, 'AFFICHAGE_STAT_GLOBALES': config.AFFICHAGE_STAT_GLOBALES, 'AFFICHAGE_RANG_STAT': config.AFFICHAGE_RANG_STAT, 'COLONNES_RANG_STAT': config.COLONNES_RANG_STAT, 'RANG_STAT_FR': config.RANG_STAT_FR, \
 	'MAP': config.MAP, 'URL_APPLICATION': config.URL_APPLICATION, 'AFFICHAGE_INTRODUCTION': config.AFFICHAGE_INTRODUCTION, \
     'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER, 'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS}
     
@@ -63,7 +83,7 @@ def ficheEspece(cd_ref):
 
     configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY, 'PATRIMONIALITE':config.PATRIMONIALITE, \
     'PROTECTION': config.PROTECTION, 'GLOSSAIRE': config.GLOSSAIRE, 'AFFICHAGE_MAILLE' : config.AFFICHAGE_MAILLE, 'ZOOM_LEVEL_POINT': config.ZOOM_LEVEL_POINT, 'LIMIT_CLUSTER_POINT': config.LIMIT_CLUSTER_POINT, 'FICHE_ESPECE': True, \
-    'URL_PHOTO': config.URL_MEDIAS, 'MAP': config.MAP, 'URL_APPLICATION': config.URL_APPLICATION, 'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER, 'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS}
+    'MAP': config.MAP, 'URL_APPLICATION': config.URL_APPLICATION, 'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER, 'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS}
     
     connection.close()
     session.close()

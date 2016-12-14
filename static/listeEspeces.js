@@ -24,20 +24,19 @@ $(document).ready(function(){
                "sPrevious": "Précedent"
                ,"sNext" : "Suivant"
             }
-        } 
+        }
+        ,"fnDrawCallback": function( oSettings ) {
+            //restore tooltips when page change
+            $('[data-toggle="tooltip"]').tooltip(); 
+        }        
     });
     $('.dataTables_filter input').attr("placeholder", "Rechercher dans la liste ").attr("class", "form-control").css("font-weight", "normal");
     $('.dataTables_empty').text("Aucune espèce trouvée");
 });
 
-
 // change de glyphicon
 $('th').click( function(){
     $(this).find('span').toggleClass('glyphicon glyphicon-menu-down').toggleClass('glyphicon glyphicon-menu-up');
-});
-//restauration des tooltip lors du changement de page dans le tadaTables
-$('#myTable tbody').on('click', '.taxonRow', function () {
-    $('[data-toggle="tooltip"]').tooltip();
 });
 
 // Load /espece/cd_ref on row click

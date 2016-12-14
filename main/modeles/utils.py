@@ -31,6 +31,6 @@ def findPath(row):
         if row.chemin == None  and row.url == None:
             return None
         elif row.chemin != None and row.chemin != '':
-            return config.URL_MEDIAS+row.chemin
+            return row.chemin
         else:
             return row.url

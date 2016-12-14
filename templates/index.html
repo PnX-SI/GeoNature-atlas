@@ -115,7 +115,7 @@
 								</div>
 								<h5><span class="glyphicon glyphicon-eye-open"></span> Espèces à découvrir</h5>
 					{% for j in range(2) %}
-						{% if loop.index < customStatMedias[i] | length %}
+						{% if loop.index <= customStatMedias[i] | length %}
 								<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-stat-medias">
 									<div class ="thumbnail-stat-medias">
 										<div class="zoom-wrapper">
