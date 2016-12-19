@@ -152,6 +152,7 @@ then
     fi
     
     # Creation des Vues Matérialisées (et remplacement éventuel des valeurs en dur par les paramètres)
+    echo "Création des vues materialisées"
     sudo cp data/atlas.sql /tmp/atlas.sql
     sudo sed -i "s/WHERE id_attribut IN (100, 101, 102, 103);$/WHERE id_attribut  IN ($attr_desc, $attr_commentaire, $attr_milieu, $attr_chorologie);/" /tmp/atlas.sql
     sudo sed -i "s/date - 15$/date - $time/" /tmp/atlas.sql
