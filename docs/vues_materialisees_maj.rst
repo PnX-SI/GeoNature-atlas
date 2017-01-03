@@ -104,17 +104,29 @@ Pour modifier la vue ``vm_altitudes`` et l'adapter aux altitudes de votre territ
     
 * L'amplitude des tranches altitudinales peut être personnalisée, ainsi que le nombre de tranches.
     
-* Le champ ``label_altitude`` ne doit pas commencer par un chiffre. La méthode la plus générique consiste à générer automatiquement le contenu de ce champ grace à la commande SQL suivante :
+* Le champ ``label_altitude`` ne doit pas commencer par un chiffre. La méthode la plus générique consiste à générer automatiquement le contenu de ce champ :
  
   ::  
   
         UPDATE atlas.bib_altitudes set label_altitude = '_' || altitude_min || '_' || altitude_max+1;
         
-Dès que votre table ``atlas.bib_altitudes`` est complétée, vous pouvez mettre à jour la vue ``atlas.vm_altitudes`` grace à la commande SQL suivante :
+Dès que votre table ``atlas.bib_altitudes`` est complétée, vous pouvez mettre à jour la vue ``atlas.vm_altitudes`` :
  
 ::
 
     select atlas.create_vm_altitudes();
+    
+Redonnez les droits de lecture à votre utilisateur de BDD lecteur applicatif ``user_pg`` (``geonatatlas`` par défaut, à modifier éventuellement si vous l'avez nommé différemment) :
+ 
+::
+
+    GRANT SELECT ON TABLE atlas.vm_altitudes TO geonatatlas;
+
+Redémarrer Apache pour Python reconnaisse le nouveau modèle de BDD :
+
+::
+
+    sudo apachectl restart
 
 
 Mise à jour des vues matérialisées
