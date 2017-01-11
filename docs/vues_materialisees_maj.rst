@@ -146,7 +146,8 @@ Une fonction, générée lors de la création de la BDD de GeoNature-atlas perme
     
   ::  
   
-        sudo crontab -e
+        sudo su postgres
+        crontab -e
 
 
 Ajouter la ligne suivante en prenant soin de mettre à jour les paramètres de connexion à la base de GeoNature-atlas :
