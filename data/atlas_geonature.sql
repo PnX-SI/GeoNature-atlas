@@ -27,7 +27,8 @@ CREATE FOREIGN TABLE synthese.syntheseff
   id_critere_synthese integer,
   the_geom_3857 geometry,
   effectif_total integer,
-  the_geom_2154 geometry
+  the_geom_2154 geometry,
+  diffusable boolean
 )
   SERVER geonaturedbserver
   OPTIONS (schema_name 'synthese', table_name 'syntheseff');
