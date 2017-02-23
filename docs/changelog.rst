@@ -2,8 +2,20 @@
 CHANGELOG
 =========
 
-1.2.3.dev0 (unreleased)
+1.2.4.dev0 (unreleased)
 -----------------------
+
+1.2.3 (2017-02-23)
+------------------
+
+**Nouveautés**
+
+* Améliorations de la documentation
+* Ajout d'un champs ``diffusable`` (oui/non) dans la synthese de GeoNature, utilisable pour ne pas afficher les données sensibles dans l'atlas au moment de la création de la VM des observations. 
+
+**Notes de version**
+
+* Selon votre contexte, reportez l'ajout du champs ``diffusable`` dans ``atlas.vm_observations`` (https://github.com/PnEcrins/GeoNature-atlas/blob/84e9f5bc1b709afcea955bef1fc212abe74e3625/data/atlas.sql#L34) et ``synthese.syntheseff`` (https://github.com/PnEcrins/GeoNature-atlas/blob/84e9f5bc1b709afcea955bef1fc212abe74e3625/data/atlas_geonature.sql#L31)
 
 1.2.2 (2016-12-14)
 ------------------
