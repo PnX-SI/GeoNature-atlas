@@ -142,7 +142,13 @@ Lancez le fichier fichier d'installation de la base de données en sudo :
 
     Vous pouvez consulter le log de cette installation de la base dans ``log/install_db.log`` et vérifier qu'aucune erreur n'est intervenue. 
     
-Vous pouvez alors modifier les vues, notamment ``atlas.vm_observations`` pour les adapter à votre contexte (ajouter les données partenaires, filtrer les espèces, limiter à un rang taxonomique...) ou le connecter à une autre BDD source (en important les données ou en s'y connectant en FDW). Pour cela vous pouvez utiliser le script ``data/update_vm_observations.sql``.
+Vous pouvez alors modifier les vues, notamment ``atlas.vm_observations`` pour les adapter à votre contexte (ajouter les données partenaires, filtrer les espèces, limiter à un rang taxonomique...) ou le connecter à une autre BDD source (en important les données ou en s'y connectant en FDW). 
+
+Le script ``install_db.sh`` supprime la BDD de GeoNature-atlas et la recréer entièrement. 
+
+Si vous voulez adapter le contenu des vues matérialisées, vous pouvez modifier le fichier ``data/atlas.sql`` puis relancer ce script global de la BDD. 
+
+Si vous souhaitez uniquement recréer la vue ``atlas.vm_observations`` et les 6 autres vues qui en dépendent vous pouvez utiliser le script ``data/update_vm_observations.sql``.
 
 
 Configuration de l'application
@@ -237,7 +243,7 @@ Mise à jour de l'application
     sudo apachectl restart
     
 
-Attention à bien lire les notes de chaque version, qui peuvent indiquer des opérations spécifiques à faire, notamment des nouveaux paramètres à ajouter dans votre configuration et/ou des modifications à appliquer dans la BDD
+Attention à bien lire les notes de chaque version, qui peuvent indiquer des opérations spécifiques à faire, notamment des nouveaux paramètres à ajouter dans votre configuration et/ou des modifications à appliquer dans la BDD.
 
 
 Mise à jour des couches de référence
