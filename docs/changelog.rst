@@ -19,7 +19,7 @@ CHANGELOG
 * Exécutez le script ``data/update1.2.3to1.2.4.sql``
 ATTENTION : vous ne devez exécuter ce script que si vous avez mis à jour la base de GeoNature en version 1.9.0.
 Si vous utilisez l'atlas sans GeoNature, cette mise à jour n'est pas nécessaire.
-* Si vous souhaitez adapter la vue matérialisée ``atlas.vm_observations`` contenant toutes les observations, vous pouvez l'adapter puis utiliser le script ``data/update_vm_observations.sql``.
+* Si vous souhaitez adapter la vue matérialisée ``atlas.vm_observations`` contenant toutes les observations, vous pouvez l'adapter dans le script ``data/update_vm_observations.sql`` puis exécuter celui-ci.
 
 
 1.2.3 (2017-02-23)
