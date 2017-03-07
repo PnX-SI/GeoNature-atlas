@@ -2,8 +2,25 @@
 CHANGELOG
 =========
 
-1.2.4.dev0 (unreleased)
+1.2.5.dev0 (unreleased)
 -----------------------
+
+
+1.2.4 (2017-03-07)
+------------------
+
+**Nouveautés**
+
+* Compatibilité avec GeoNature 1.9.0 (multiprojection)
+* Ajout d'un script sql permettant de faciliter la mise à jour de la vue ``atlas.vm_observations`` 
+
+**Notes de version**
+
+* Excécutez le script ``update1.2.3to1.2.4.sql``
+ATTENTION : vous ne devez exécuter ce script que si vous avez mis à jour la base de GeoNature en version 1.9.0.
+Si vous utilisez l'atlas sans GeoNAture, cette mise à jour n'est pas nécessaire.
+* Si vous souhaiter adapter la vue matérialisée contenant toutes les données d'observation : ``atlas.vm_observations``, vous pouvez adapter puis utiliser le script ``data/update_vm_observations``
+
 
 1.2.3 (2017-02-23)
 ------------------
