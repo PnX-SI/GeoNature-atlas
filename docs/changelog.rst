@@ -2,8 +2,25 @@
 CHANGELOG
 =========
 
-1.2.4.dev0 (unreleased)
+1.2.5.dev0 (unreleased)
 -----------------------
+
+
+1.2.4 (2017-03-07)
+------------------
+
+**Nouveautés**
+
+* Compatibilité avec GeoNature 1.9.0 (multiprojection)
+* Ajout du script SQL ``data/update_vm_observations.sql``, permettant de faciliter la mise à jour de la vue ``atlas.vm_observations`` 
+
+**Notes de version**
+
+* Exécutez le script ``data/update1.2.3to1.2.4.sql``
+ATTENTION : vous ne devez exécuter ce script que si vous avez mis à jour la base de GeoNature en version 1.9.0.
+Si vous utilisez l'atlas sans GeoNature, cette mise à jour n'est pas nécessaire.
+* Si vous souhaitez adapter la vue matérialisée ``atlas.vm_observations`` contenant toutes les observations, vous pouvez l'adapter puis utiliser le script ``data/update_vm_observations.sql``.
+
 
 1.2.3 (2017-02-23)
 ------------------
@@ -15,7 +32,9 @@ CHANGELOG
 
 **Notes de version**
 
-* Selon votre contexte, reportez l'ajout du champs ``diffusable`` dans ``atlas.vm_observations`` (https://github.com/PnEcrins/GeoNature-atlas/blob/84e9f5bc1b709afcea955bef1fc212abe74e3625/data/atlas.sql#L34) et ``synthese.syntheseff`` (https://github.com/PnEcrins/GeoNature-atlas/blob/84e9f5bc1b709afcea955bef1fc212abe74e3625/data/atlas_geonature.sql#L31)
+* Exécutez le script ``data/update1.2.2to1.2.3.sql`` pour ajouter la colonne ``diffusable`` à la table ``synthese.syntheseff``.
+Si vous utilisez l'atlas sans GeoNature, cette mise à jour n'est pas nécessaire.
+* Supprimez puis relancez la création de la vue ``atlas.vm_observations`` et les vues qui en dépendent en utilisant le script ``data/update_vm_observations.sql``.
 
 1.2.2 (2016-12-14)
 ------------------
