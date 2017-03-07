@@ -31,7 +31,7 @@ Ou vous pouvez simplement décider de l'adapter à votre GeoNature, par exemple 
 Liste des vues matérialisées
 ============================  
 
-Seule ``atlas.vm_observations`` doit éventuellements être adaptée, les autres vues sont calculées à partir du contenu de cette vue et de la vue qui renvoie tout TAXREF.
+Seule ``atlas.vm_observations`` doit éventuellement être adaptée, les autres vues sont calculées à partir du contenu de cette vue et de la vue qui renvoie tout TAXREF.
 
 Voir ``data/atlas.sql`` pour plus de précisions.
 
@@ -42,7 +42,7 @@ Les champs de cette table sont ``cd_nom``, ``id_statut``, ``id_habitat``, ``id_r
 
 - ``atlas.vm_taxons`` qui renvoie la liste des taxons observés au moins une fois sur le territoire (présents dans vm_observations).
 
-- ``atlas.vm_search_taxon`` qui renvoie l'ensemble de tous les taxons + tous leurs synonymes pour le module de recherche d'une espèce
+- ``atlas.vm_search_taxon`` qui renvoie l'ensemble de tous les taxons + tous leurs synonymes pour le module de recherche d'une espèce.
 
 - ``atlas.vm_altitudes`` qui renvoie le nombre d'observations pour chaque classe d'altitude et chaque taxon. Cette vue peut être personnalisée pour adapter les classes d'altitude (Voir ci-dessous : "Personnalisation de l'application").
     
