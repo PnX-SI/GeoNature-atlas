@@ -1,15 +1,15 @@
 --------------
 -- IMPORTANT--
 --------------
--- Ce script vous permet de mettre à jour la vue atlas.vm_observations en l'adaptant à vos besoins
--- Pour cela toutes les vues qui dépendent d'elle doivent être supprimées puis recréées.
--- Si votre utilisateur PostgreSQL en lecture seule sur ces vues n'est pas "geonatatlas" (celui utilisé par l'application web de l'atlas), 
--- vous devez mettre à jour ce script avec le nom de votre utilisateur avant de l'excécuter
--- GRANT SELECT ON TABLE atlas.vm_taxons TO MY_READER_USER;
+-- A exécuter avec l'utilisateur propriétaire de la BDD (owner_atlas dans main/configuration/settings.ini).
+-- Ce script vous permet de recréer la vue atlas.vm_observations en l'adaptant à vos besoins.
+-- Pour cela toutes les vues qui en dépendent doivent être supprimées puis recréées.
+-- Si votre utilisateur PostgreSQL en lecture seule sur ces vues n'est pas "geonatatlas" (celui utilisé par l'application web de l'atlas, user_pg dans main/configuration/settings.ini), 
+-- vous devez modifier les GRANT à la fin de ce script avec le nom de votre utilisateur avant de l'exécuter. 
 
--------------------------------------------------------------
--- SUPPRESSION DES VUES DEPENDANT DE LA VUE VM_OBSERVATIONS--
--------------------------------------------------------------
+--------------------------------------------------------------
+-- SUPPRESSION DES VUES DEPENDANT DE LA VUE VM_OBSERVATIONS --
+--------------------------------------------------------------
 DROP MATERIALIZED VIEW atlas.vm_taxons_plus_observes;
 DROP MATERIALIZED VIEW atlas.vm_search_taxon;
 DROP MATERIALIZED VIEW atlas.vm_taxons;
@@ -19,10 +19,10 @@ DROP MATERIALIZED VIEW atlas.vm_observations_mailles;
 DROP MATERIALIZED VIEW atlas.vm_observations;
 
 
---------------------------------------------
--- MODIFIER VOUS MEME CI-DESSOUS LE SCRIPT--
--- DE CREATION DE LA VUE VM_OBSERVATIONS ---
---------------------------------------------
+---------------------------------------------
+-- MODIFIER VOUS-MEME LE SCRIPT CI-DESSOUS --
+-- DE CREATION DE LA VUE VM_OBSERVATIONS ----
+---------------------------------------------
 -- Materialized View: atlas.vm_observations
 CREATE MATERIALIZED VIEW atlas.vm_observations AS 
  SELECT s.id_synthese AS id_observation,
@@ -40,7 +40,6 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
   WHERE s.supprime = false AND s.id_organisme = 2 AND s.diffusable = true
 WITH DATA;
 
-GRANT SELECT ON TABLE atlas.vm_observations TO geonatatlas;
 create unique index on atlas.vm_observations (id_observation);
 create index on atlas.vm_observations (cd_ref);
 create index on atlas.vm_observations (insee);
@@ -116,14 +115,13 @@ CREATE MATERIALIZED VIEW atlas.vm_taxons AS
      LEFT JOIN my_taxons t ON t.cd_ref = tx.cd_ref
 WITH DATA;
 
-GRANT SELECT ON TABLE atlas.vm_taxons TO geonatatlas;
 CREATE UNIQUE INDEX ON atlas.vm_taxons (cd_ref);
 
 
 -- Materialized View: atlas.vm_search_taxon
 CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS 
 SELECT tx.cd_nom, tx.cd_ref, COALESCE(tx.lb_nom || ' | ' || tx.nom_vern, tx.lb_nom) AS nom_search FROM atlas.vm_taxref tx JOIN atlas.vm_taxons t ON t.cd_ref = tx.cd_ref;
-GRANT SELECT ON TABLE atlas.vm_search_taxon TO geonatatlas;
+
 CREATE UNIQUE index on atlas.vm_search_taxon(cd_nom);
 CREATE index on atlas.vm_search_taxon(cd_ref);
 CREATE index on atlas.vm_search_taxon(nom_search); 
@@ -234,7 +232,6 @@ CREATE MATERIALIZED VIEW atlas.vm_mois AS
   ORDER BY o.cd_ref
 WITH DATA;
 
-GRANT SELECT ON TABLE atlas.vm_mois TO geonatatlas;
 CREATE UNIQUE INDEX ON atlas.vm_mois (cd_ref);
 
 
@@ -257,7 +254,6 @@ CREATE MATERIALIZED VIEW atlas.vm_taxons_plus_observes AS
  LIMIT 12
 WITH DATA;
 
-GRANT SELECT ON TABLE atlas.vm_taxons_plus_observes TO geonatatlas;
 CREATE UNIQUE INDEX ON atlas.vm_taxons_plus_observes (cd_ref);
 
 
@@ -272,7 +268,6 @@ CREATE MATERIALIZED VIEW atlas.vm_observations_mailles AS
      JOIN atlas.t_mailles_territoire m ON st_intersects(obs.the_geom_point, st_transform(m.the_geom, 3857))
 WITH DATA;
 
-GRANT SELECT ON TABLE atlas.vm_observations_mailles TO geonatatlas;
 CREATE INDEX index_gist_atlas_vm_observations_mailles_geom ON atlas.vm_observations_mailles USING gist (the_geom);
 CREATE INDEX ON atlas.vm_observations_mailles (cd_ref);
 CREATE INDEX ON atlas.vm_observations_mailles USING btree (geojson_maille COLLATE pg_catalog."default");
@@ -280,6 +275,16 @@ CREATE INDEX ON atlas.vm_observations_mailles (id_maille);
 CREATE UNIQUE INDEX ON atlas.vm_observations_mailles (id_observation);
 
 
--- Materialized View: atlas.vm_altitudes 
+-- Materialized View: atlas.vm_altitudes (créé par une fonction dans la BDD)
 SELECT atlas.create_vm_altitudes();
+
+
+-- Rétablir les droits SELECT à l'utilisateur de l'application GeoNature-atlas (user_pg dans main/configuration/settings.ini).
+-- Remplacer geonatatlas par votre utilisateur de BDD si vous l'avez modifié.
+GRANT SELECT ON TABLE atlas.vm_observations TO geonatatlas;
+GRANT SELECT ON TABLE atlas.vm_taxons_plus_observes TO geonatatlas;
+GRANT SELECT ON TABLE atlas.vm_search_taxon TO geonatatlas;
+GRANT SELECT ON TABLE atlas.vm_taxons TO geonatatlas;
+GRANT SELECT ON TABLE atlas.vm_mois TO geonatatlas;
 GRANT SELECT ON TABLE atlas.vm_altitudes TO geonatatlas;
+GRANT SELECT ON TABLE atlas.vm_observations_mailles TO geonatatlas;
