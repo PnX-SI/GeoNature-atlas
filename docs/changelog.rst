@@ -2,9 +2,16 @@
 CHANGELOG
 =========
 
-1.2.5.dev0 (unreleased)
+1.2.6.dev0 (unreleased)
 -----------------------
 
+1.2.5 (2017-04-07)
+------------------
+
+**Nouveautés**
+
+* Par défaut, ne plus limiter les observations à celles de l'organisme 2
+* Correction mineure de CSS (Bloc "A voir en ce moment" de la page d'accueil)
 
 1.2.4 (2017-03-07)
 ------------------
