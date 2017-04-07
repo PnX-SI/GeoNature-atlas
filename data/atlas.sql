@@ -30,7 +30,6 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
     LEFT JOIN atlas.vm_taxref tx ON tx.cd_nom = s.cd_nom
     JOIN atlas.t_layer_territoire m ON ST_Intersects(m.the_geom, s.the_geom_point)
     WHERE s.supprime = FALSE
-    AND s.id_organisme = 2
     AND s.diffusable = TRUE;
 
 create unique index on atlas.vm_observations (id_observation);
