@@ -5,6 +5,14 @@ CHANGELOG
 1.2.6.dev0 (unreleased)
 -----------------------
 
+**Nouveautés**
+
+* Ajout du paramètre `BORDERS_COLOR` pour modifier la couleur des limites du territoire.
+
+**Notes de version**
+
+* Ajoutez le paramètre `BORDERS_COLOR` dans votre fichier `main/configuration/config.py` comme indiqué dans le fichier d'exemple (https://github.com/PnEcrins/GeoNature-atlas/blob/9272b14aeaf781f5311194411bee719579fb8b11/main/configuration/config.py.sample#L56-L57)
+
 1.2.5 (2017-04-07)
 ------------------
 
