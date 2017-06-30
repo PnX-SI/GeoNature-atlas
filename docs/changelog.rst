@@ -9,6 +9,11 @@ CHANGELOG
 
 * Ajout des paramètres `BORDERS_COLOR` et `BORDERS_WEIGHT` pour modifier la couleur et l'épaisseur des limites du territoire.
 
+**Corrections**
+
+* Utiliser aussi ces paramètres pour la légende des cartes
+* Correction de la légende de la carte de la Home en mode point (qui affichait la légende des Mailles)
+
 **Notes de version**
 
 * Ajoutez les paramètres `BORDERS_COLOR` et `BORDERS_WEIGHT` dans votre fichier `main/configuration/config.py` comme indiqué dans le fichier d'exemple (https://github.com/PnEcrins/GeoNature-atlas/blob/master/main/configuration/config.py.sample)
