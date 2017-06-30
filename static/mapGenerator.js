@@ -23,7 +23,7 @@ baseMap[configuration.MAP.FIRST_MAP.tileName]=firstMapTile;
     territoryStyle = {
         fill: false,
         color: configuration.MAP.BORDERS_COLOR,
-		weight: configuration.MAP.BORDERS_WEIGHT
+        weight: configuration.MAP.BORDERS_WEIGHT
     }
 
 /*    L.control.layers(baseMap).addTo(map);
