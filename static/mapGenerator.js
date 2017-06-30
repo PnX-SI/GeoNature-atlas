@@ -19,15 +19,15 @@ baseMap[configuration.MAP.FIRST_MAP.tileName]=firstMapTile;
         fullscreenControl: true,
         });
 
-	// Style of territory on map
+    // Style of territory on map
     myStyle = {
-    	fill: false,
-		color: configuration.MAP.BORDERS_COLOR
+        fill: false,
+        color: configuration.MAP.BORDERS_COLOR
     }
 
 /*    L.control.layers(baseMap).addTo(map);
 */
-     // Add the limit of the territory to the map
+     // Add limits of the territory to the map
      $(document).ready(function()
           {
               $.getJSON(url_limit_territory, function(json) {
