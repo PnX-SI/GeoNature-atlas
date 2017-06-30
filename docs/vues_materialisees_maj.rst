@@ -132,7 +132,7 @@ Redémarrer Apache pour Python reconnaisse le nouveau modèle de BDD :
 Mise à jour des vues matérialisées
 ==================================  
 
-Dans un soucis de performance, les données contenues dans les vues matérialisées n'intègrent pas en temps réel les mises à jour faites dans GeoNature. Pour cela ces vues doivent être actualisées grace à la fonction ``REFRESH MATERIALIZED VIEW`` de PostgreSQL.
+Dans un soucis de performance, les données contenues dans les vues matérialisées n'intègrent pas en temps réel les mises à jour faites dans GeoNature. Pour cela ces vues doivent être actualisées grace à la fonction ``REFRESH MATERIALIZED VIEW`` ajouté dans le schéma ``public`` de PostgreSQL.
 
 Une fonction, générée lors de la création de la BDD de GeoNature-atlas permet de mettre à jour toutes les vues matérialisées du schéma ``atlas``.
 
@@ -142,6 +142,8 @@ Une fonction, générée lors de la création de la BDD de GeoNature-atlas perme
   
         SELECT RefreshAllMaterializedViews('atlas');
 
+* Si vous utilisez une version de PostgreSQL inférieure à 9.4, le rafraichissement concurrent des vues matérialisées (https://www.postgresql.org/docs/9.4/static/sql-refreshmaterializedview.html). Dans ce cas, modifiez la fonction comme indiqué dans ses commentaires. 
+		
 * Pour automatiser l'éxecution de cette fonction (toutes les heures dans cet exemple), ajoutez la dans le crontab de l'utilisateur ``postgres`` :
     
   ::  

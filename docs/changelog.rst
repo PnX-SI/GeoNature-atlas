@@ -2,12 +2,16 @@
 CHANGELOG
 =========
 
-1.2.6.dev0 (unreleased)
+1.2.7.dev0 (unreleased)
 -----------------------
+
+1.2.6 (2017-06-30)
+------------------
 
 **Nouveautés**
 
 * Ajout des paramètres `BORDERS_COLOR` et `BORDERS_WEIGHT` pour modifier la couleur et l'épaisseur des limites du territoire.
+* Passer la fonction PostgreSQL `RefreshAllMaterializedViews` en mode concurrent par défaut https://www.postgresql.org/docs/9.4/static/sql-refreshmaterializedview.html
 
 **Corrections**
 
@@ -17,6 +21,7 @@ CHANGELOG
 **Notes de version**
 
 * Ajoutez les paramètres `BORDERS_COLOR` et `BORDERS_WEIGHT` dans votre fichier `main/configuration/config.py` comme indiqué dans le fichier d'exemple (https://github.com/PnEcrins/GeoNature-atlas/blob/master/main/configuration/config.py.sample)
+* Si vous utilisez une version supérieure à 9.3, il est conseillé de rafraichir les vues matérialisées de manière concurrente pour ne pas bloquer l'accès à la BDD pendant un rafraichissement. Si ce n'est pas le cas pour votre vue, il est conseillé de la modifier (schéma `public`) comme proposé désormais : https://github.com/PnEcrins/GeoNature-atlas/blob/master/data/atlas.sql#L406-L423
 
 1.2.5 (2017-04-07)
 ------------------
