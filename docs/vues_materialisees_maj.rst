@@ -1,7 +1,7 @@
 ============================================
 VUES MATERIALISEES et MISE A JOUR DU CONTENU
 ============================================
-.. image:: http://pnecrins.github.io/GeoNature/img/logo-pne.jpg
+.. image:: http://geonature.fr/img/logo-pne.jpg
     :target: http://www.ecrins-parcnational.fr
 
 Introduction
@@ -31,7 +31,7 @@ Ou vous pouvez simplement décider de l'adapter à votre GeoNature, par exemple 
 Liste des vues matérialisées
 ============================  
 
-Seule ``atlas.vm_observations`` doit éventuellements être adaptée, les autres vues sont calculées à partir du contenu de cette vue et de la vue qui renvoie tout TAXREF.
+Seule ``atlas.vm_observations`` doit éventuellement être adaptée, les autres vues sont calculées à partir du contenu de cette vue et de la vue qui renvoie tout TAXREF.
 
 Voir ``data/atlas.sql`` pour plus de précisions.
 
@@ -42,7 +42,7 @@ Les champs de cette table sont ``cd_nom``, ``id_statut``, ``id_habitat``, ``id_r
 
 - ``atlas.vm_taxons`` qui renvoie la liste des taxons observés au moins une fois sur le territoire (présents dans vm_observations).
 
-- ``atlas.vm_search_taxon`` qui renvoie l'ensemble de tous les taxons + tous leurs synonymes pour le module de recherche d'une espèce
+- ``atlas.vm_search_taxon`` qui renvoie l'ensemble de tous les taxons + tous leurs synonymes pour le module de recherche d'une espèce.
 
 - ``atlas.vm_altitudes`` qui renvoie le nombre d'observations pour chaque classe d'altitude et chaque taxon. Cette vue peut être personnalisée pour adapter les classes d'altitude (Voir ci-dessous : "Personnalisation de l'application").
     
@@ -104,17 +104,29 @@ Pour modifier la vue ``vm_altitudes`` et l'adapter aux altitudes de votre territ
     
 * L'amplitude des tranches altitudinales peut être personnalisée, ainsi que le nombre de tranches.
     
-* Le champ ``label_altitude`` ne doit pas commencer par un chiffre. La méthode la plus générique consiste à générer automatiquement le contenu de ce champ grace à la commande SQL suivante :
+* Le champ ``label_altitude`` ne doit pas commencer par un chiffre. La méthode la plus générique consiste à générer automatiquement le contenu de ce champ :
  
   ::  
   
         UPDATE atlas.bib_altitudes set label_altitude = '_' || altitude_min || '_' || altitude_max+1;
         
-Dès que votre table ``atlas.bib_altitudes`` est complétée, vous pouvez mettre à jour la vue ``atlas.vm_altitudes`` grace à la commande SQL suivante :
+Dès que votre table ``atlas.bib_altitudes`` est complétée, vous pouvez mettre à jour la vue ``atlas.vm_altitudes`` :
  
 ::
 
     select atlas.create_vm_altitudes();
+    
+Redonnez les droits de lecture à votre utilisateur de BDD lecteur applicatif ``user_pg`` (``geonatatlas`` par défaut, à modifier éventuellement si vous l'avez nommé différemment) :
+ 
+::
+
+    GRANT SELECT ON TABLE atlas.vm_altitudes TO geonatatlas;
+
+Redémarrer Apache pour Python reconnaisse le nouveau modèle de BDD :
+
+::
+
+    sudo apachectl restart
 
 
 Mise à jour des vues matérialisées
@@ -134,7 +146,8 @@ Une fonction, générée lors de la création de la BDD de GeoNature-atlas perme
     
   ::  
   
-        sudo crontab -e
+        sudo su postgres
+        crontab -e
 
 
 Ajouter la ligne suivante en prenant soin de mettre à jour les paramètres de connexion à la base de GeoNature-atlas :

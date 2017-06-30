@@ -78,7 +78,7 @@ metropole=true
 # Choisissez alors la taille de vos mailles à utiliser (en km) / Valeurs possibles 1, 5 ou 10
 taillemaille=5
 
-# Si 'metropole=true
+# Si 'metropole=false', rajoutez dans le dossier /data/ref un SHP des mailles de votre territoire et renseignez son chemin
 chemin_custom_maille=/home/MYUSERLINUX/atlas/data/ref/custom_maille.shp
 
 #### ID DES TYPES DES ATTRIBUTS DESCRIVANT LES TAXONS DANS atlas.vm_cor_taxon_attribut --  

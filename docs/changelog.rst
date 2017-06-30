@@ -2,19 +2,74 @@
 CHANGELOG
 =========
 
-1.2.2.dev0 (unreleased)
+1.2.6.dev0 (unreleased)
 -----------------------
 
+1.2.5 (2017-04-07)
+------------------
+
+**Nouveautés**
+
+* Par défaut, ne plus limiter les observations à celles de l'organisme 2
+* Correction mineure de CSS (Bloc "A voir en ce moment" de la page d'accueil)
+
+1.2.4 (2017-03-07)
+------------------
+
+**Nouveautés**
+
+* Compatibilité avec GeoNature 1.9.0 (multiprojection)
+* Ajout du script SQL ``data/update_vm_observations.sql``, permettant de faciliter la mise à jour de la vue ``atlas.vm_observations`` 
+
+**Notes de version**
+
+* Exécutez le script ``data/update1.2.3to1.2.4.sql``
+ATTENTION : vous ne devez exécuter ce script que si vous avez mis à jour la base de GeoNature en version 1.9.0.
+Si vous utilisez l'atlas sans GeoNature, cette mise à jour n'est pas nécessaire.
+* Si vous souhaitez adapter la vue matérialisée ``atlas.vm_observations`` contenant toutes les observations, vous pouvez l'adapter dans le script ``data/update_vm_observations.sql`` puis exécuter celui-ci.
+
+
+1.2.3 (2017-02-23)
+------------------
+
+**Nouveautés**
+
+* Améliorations de la documentation
+* Ajout d'un champs ``diffusable`` (oui/non) dans la synthese de GeoNature, utilisable pour ne pas afficher les données sensibles dans l'atlas au moment de la création de la VM des observations. 
+
+**Notes de version**
+
+* Exécutez le script ``data/update1.2.2to1.2.3.sql`` pour ajouter la colonne ``diffusable`` à la table ``synthese.syntheseff``.
+Si vous utilisez l'atlas sans GeoNature, cette mise à jour n'est pas nécessaire.
+* Supprimez puis relancez la création de la vue ``atlas.vm_observations`` et les vues qui en dépendent en utilisant le script ``data/update_vm_observations.sql``.
+
+1.2.2 (2016-12-14)
+------------------
+
+**Améliorations**
+
+* Simplification des utilisateurs PostgreSQL et suppression du besoin d'un utilisateur super utilisateur. 
+* Correction des tooltips qui ne fonctionnaient plus sur les pages suivantes dans les listes paginées
+* Amélioration de la gestion des médias et possibilité de cacher l'URL hébergeant les médias.
+* Correction de la création de ``atlas.vm_altitudes``
+
+**Notes de version**
+
+Si vous mettez à jour l'application, réalisez ces opérations en plus des opérations classiques (https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/installation.rst#mise-à-jour-de-lapplication) :
+
+* Ajouter un paramètre ``modeDebug`` dans le fichier ``main/configuration/config.py`` : https://github.com/PnEcrins/GeoNature-atlas/blob/b055c834d0f5a030f5180fa46097931e4bbd1d93/main/configuration/config.py.sample#L4-L5
+* Ajouter un paramètre ``REMOTE_MEDIAS_PATH`` et renommer le parametre ``URL_MEDIAS`` en ``REMOTE_MEDIAS_URL`` dans le fichier ``main/configuration/config.py`` : https://github.com/PnEcrins/GeoNature-atlas/blob/develop/main/configuration/config.py.sample#L124-L129
+
 1.2.1 (2016-11-28)
------------------------
+------------------
 
 **Améliorations**
 
 * Prise en charge des contenus HTML dans les descriptions des articles
-* Ajout du nom de la structure dans les `<title>` des pages
-* Compléments sur les templates par défaut `footer.html`, `introduction.html` et `présentation.html`
-* Ajout de templates par défaut `credits.html` et `mentions-legales.html` accessibles dans une modale depuis le footer
-* Amélioration de l'installation et séparation de l'installation de l'environnement (`install_env.sh`) et de l'application (`install_app.sh`)
+* Ajout du nom de la structure dans les ``<title>`` des pages
+* Compléments sur les templates par défaut ``footer.html``, ``introduction.html`` et ``présentation.html``
+* Ajout de templates par défaut ``credits.html`` et ``mentions-legales.html`` accessibles dans une modale depuis le footer
+* Amélioration de l'installation et séparation de l'installation de l'environnement (``install_env.sh``) et de l'application (``install_app.sh``)
 * Amélioration de l'affichage des milieux dans les fiches espèces
 * Mise à jour mineure de l'installation automatique de la BDD
 * Mise à jour de la documentation d'installation
@@ -34,7 +89,7 @@ CHANGELOG
 * Autres corrections mineures
 
 1.2.0 (2016-11-15)
------------------------
+------------------
 
 **Evolutions**
 
@@ -43,11 +98,11 @@ CHANGELOG
 **Corrections**
 
 * Correction du bug d'affichage de la protection et patrimonialité sur les fiches espèces. Fix #63
-* Correction de l'installation automatique de la BDD ($admin_pg désormais créé en superuser)
+* Correction de l'installation automatique de la BDD (``$admin_pg`` désormais créé en superuser)
 * Corrections et précisions dans la documentation
 
 1.1.3 (2016-10-12)
------------------------
+------------------
 
 **Améliorations**
 
