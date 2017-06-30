@@ -7,11 +7,11 @@ CHANGELOG
 
 **Nouveautés**
 
-* Ajout du paramètre `BORDERS_COLOR` pour modifier la couleur des limites du territoire.
+* Ajout des paramètres `BORDERS_COLOR` et `BORDERS_WEIGHT` pour modifier la couleur et l'épaisseur des limites du territoire.
 
 **Notes de version**
 
-* Ajoutez le paramètre `BORDERS_COLOR` dans votre fichier `main/configuration/config.py` comme indiqué dans le fichier d'exemple (https://github.com/PnEcrins/GeoNature-atlas/blob/9272b14aeaf781f5311194411bee719579fb8b11/main/configuration/config.py.sample#L56-L57)
+* Ajoutez les paramètres `BORDERS_COLOR` et `BORDERS_WEIGHT` dans votre fichier `main/configuration/config.py` comme indiqué dans le fichier d'exemple (https://github.com/PnEcrins/GeoNature-atlas/blob/master/main/configuration/config.py.sample)
 
 1.2.5 (2017-04-07)
 ------------------

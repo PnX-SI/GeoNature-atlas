@@ -20,9 +20,10 @@ baseMap[configuration.MAP.FIRST_MAP.tileName]=firstMapTile;
         });
 
     // Style of territory on map
-    myStyle = {
+    territoryStyle = {
         fill: false,
-        color: configuration.MAP.BORDERS_COLOR
+        color: configuration.MAP.BORDERS_COLOR,
+		weight: configuration.MAP.BORDERS_WEIGHT
     }
 
 /*    L.control.layers(baseMap).addTo(map);
@@ -32,7 +33,7 @@ baseMap[configuration.MAP.FIRST_MAP.tileName]=firstMapTile;
           {
               $.getJSON(url_limit_territory, function(json) {
                   L.geoJson(json, {
-                  	style: myStyle
+                  	style: territoryStyle
                   }).addTo(map);
               });
           });
