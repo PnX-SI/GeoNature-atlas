@@ -6,7 +6,7 @@ generateSliderOnMap();
 
 /*GLOBAL VARIABLE*/
 
-    // Current observation Layer: leaflet layer type
+// Current observation Layer: leaflet layer type
 var currentLayer; 
 
 // Current observation geoJson:  type object
@@ -118,7 +118,7 @@ $.ajax({
 
 // Legende
 
-htmlLegend = "<i style='border: solid 1px blue;'> &nbsp; &nbsp; &nbsp;</i> Limite du "+ configuration.STRUCTURE;
+htmlLegend = "<i style='border: solid "+configuration.MAP.BORDERS_WEIGHT+"px "+configuration.MAP.BORDERS_COLOR+";'> &nbsp; &nbsp; &nbsp;</i> Limite du "+ configuration.STRUCTURE;
 
 generateLegende(htmlLegend);
 

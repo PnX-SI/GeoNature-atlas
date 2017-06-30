@@ -3,12 +3,11 @@ generateSliderOnMap();
 
 // Legende
 
-htmlLegend = "<i style='border: solid 2px blue;'> &nbsp; &nbsp; &nbsp;</i> Limite du "+ configuration.STRUCTURE;
+htmlLegend = "<i style='border: solid "+configuration.MAP.BORDERS_WEIGHT+"px "+configuration.MAP.BORDERS_COLOR+";'> &nbsp; &nbsp; &nbsp;</i> Limite du "+ configuration.STRUCTURE;
 generateLegende(htmlLegend);
 
 
-
-    // Current observation Layer: leaflet layer type
+// Current observation Layer: leaflet layer type
 var currentLayer; 
 
 // Current observation geoJson:  type object
@@ -20,7 +19,7 @@ $.ajax({
   url: configuration.URL_APPLICATION+'/api/observationsMaille/'+cd_ref, 
   dataType: "json",
   beforeSend: function(){
-    $('#loadingGif').attr("src", configuration.URL_APPLICATION+'/static/images/loading.svg')
+    $('#loadingGif').attr('src', configuration.URL_APPLICATION+'/static/images/loading.svg')
   }
   }).done(function(observations) {
     $('#loadingGif').hide();

@@ -39,21 +39,20 @@ var compteurLegend = 0; // compteur pour ne pas rajouter la légende à chaque f
 
 	}
 
-	// Diplay legend
+// Generate legends and check configuration to choose which to display (Maille ou Point)
 
 	htmlLegendMaille = "<i style='border: solid 1px red;'> &nbsp; &nbsp; &nbsp;</i> Maille comportant au moins une observation <br> <br>" +
 						"<i style='border-style: dotted;'> &nbsp; &nbsp; &nbsp;</i> Limite de la commune <br> <br>"+
-						"<i style='border: solid 2px blue;'> &nbsp; &nbsp; &nbsp;</i> Limite du "+configuration.STRUCTURE;
+						"<i style='border: solid "+configuration.MAP.BORDERS_WEIGHT+"px "+configuration.MAP.BORDERS_COLOR+";'> &nbsp; &nbsp; &nbsp;</i> Limite du "+configuration.STRUCTURE;
 
 	htmlLegendPoint = "<i style='border-style: dotted;'> &nbsp; &nbsp; &nbsp;</i> Limite de la commune <br> <br>"+
-						"<i style='border: solid 2px blue;'> &nbsp; &nbsp; &nbsp;</i> Limite du "+configuration.STRUCTURE
+						"<i style='border: solid "+configuration.MAP.BORDERS_WEIGHT+"px "+configuration.MAP.BORDERS_COLOR+";'> &nbsp; &nbsp; &nbsp;</i> Limite du "+configuration.STRUCTURE
 
 	htmlLegend = configuration.AFFICHAGE_MAILLE ? htmlLegendMaille : htmlLegendPoint;
+
 // General Legend
+	
 	generateLegende(htmlLegend);
-
-
-
 
 
 // display observation on click
