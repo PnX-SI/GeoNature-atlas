@@ -52,7 +52,7 @@ MAP = {
     },
     'ZOOM' : 10,
     # Pas du slider sur les annees d'observations: 1 = pas de 1 an sur le slider
-    'STEP': 1
+    'STEP': 1,
     # Couleur et épaisseur des limites du territoire
     'BORDERS_COLOR': '#000000',
     'BORDERS_WEIGHT': 3
