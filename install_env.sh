@@ -15,7 +15,6 @@ cd "$(dirname "$0")"
 
 sudo apt-get install -y unzip
 sudo apt-get install -y apache2
-sudo apt-get install -y libapache2-mod-wsgi
 sudo apachectl restart
 
 sudo apt-get install -y postgresql postgis
@@ -28,6 +27,4 @@ sudo apt-get install -y python-gdal
 sudo apt-get install -y gdal-bin
 
 sudo apt-get install -y python-virtualenv
-
-
-
+sudo apt-get install -y supervisor

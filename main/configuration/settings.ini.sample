@@ -1,3 +1,18 @@
+app_name=atlas
+
+####################################
+###config Gunicorn
+####################################
+gun_num_workers=4
+gun_host=0.0.0.0
+gun_port=8080
+
+
+####################
+### Python settings
+####################
+venv_dir=venv
+
 #
 #  GeoNature-atlas
 #  Configuration PostgreSQL et BDD
@@ -36,7 +51,7 @@ geonature_source=true
 ################################################
 ##### CONNEXION A LA BDD GEONATURE SOURCE ######
 ################################################
-# Necessaire uniquement si on veut se connecter à la BDD source GeoNature en foreign data wrapper 
+# Necessaire uniquement si on veut se connecter à la BDD source GeoNature en foreign data wrapper
 # Si vous n'utilisez pas GeoNature, vous pouvez vous inspirer du fichier data/atlas_geonature.sql pour vous connecter à une autre BDD mère
 
 # Host de la BDD GeoNature source
@@ -56,7 +71,7 @@ atlas_source_pass=monpassachanger
 
 ### COMMUNES ####
 
-# Creer la table des communes à partir d'un shapefile ? 
+# Creer la table des communes à partir d'un shapefile ?
 # Si false, modifiez la creation de 'atlas.vm_communes' dans data/atlas.sql
 import_commune_shp=true
 
@@ -67,7 +82,7 @@ colonne_nom_commune=nom_com
 
 ### TERRITOIRE ####
 
-# Chemin vers le SHP de l'emprise du territoire 
+# Chemin vers le SHP de l'emprise du territoire
 limit_shp=/home/MYUSERLINUX/atlas/data/ref/territoire.shp
 
 ##### MAILLES #####
@@ -81,7 +96,7 @@ taillemaille=5
 # Si 'metropole=false', rajoutez dans le dossier /data/ref un SHP des mailles de votre territoire et renseignez son chemin
 chemin_custom_maille=/home/MYUSERLINUX/atlas/data/ref/custom_maille.shp
 
-#### ID DES TYPES DES ATTRIBUTS DESCRIVANT LES TAXONS DANS atlas.vm_cor_taxon_attribut --  
+#### ID DES TYPES DES ATTRIBUTS DESCRIVANT LES TAXONS DANS atlas.vm_cor_taxon_attribut --
 ## !! si changement: modifier également dans main/configuration/config.py
 attr_desc=100
 attr_commentaire=101
@@ -92,4 +107,3 @@ attr_chorologie=103
 # Especes les plus observées sur la periode 'moins X jour, plus X jours par rapport à la date du jour, toutes années confondues'
 # 15 jours par défaut
 time=15
-
