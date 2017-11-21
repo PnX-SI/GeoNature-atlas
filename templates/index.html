@@ -8,7 +8,7 @@
         <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
 		<script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
-		
+
 		<!-- Bootstrap -->
         <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}"></link>
         <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
@@ -24,7 +24,7 @@
         <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='css/index.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='custom/custom.css') }}" />
-        	
+
     </head>
 
     <body>
@@ -64,13 +64,13 @@
 						                <input id="searchTaxonsStat" type="text" class="form-control" placeholder="Rechercher une espèce &nbsp; &nbsp; &nbsp;" loading="true" style="background-image: url('{{url_for('static', filename='images/loading3.gif') }}');" disabled>
 						                <i class="glyphicon glyphicon-search form-control-feedback"></i>
 						                <input id="hiddenInputTaxonStat" type="hidden" name="cd_ref">
-						            </div>       
+						            </div>
                                 </form>
 							</div>
 						</div>
 						<div class ="col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
 							<div class="thumbnail stat-thumbnail">
-								<img id="picto" src="{{url_for('static', filename='images/commune-icone.png')}}"> 
+								<img id="picto" src="{{url_for('static', filename='images/commune-icone.png')}}">
 								<h1>{{stat.town}}</h1>
 								<h4> communes</h4>
 								<form method="POST" onsubmit="completeAction('#searchFormCommunesStat', hiddenInputCommunesStat)" id='searchFormCommunesStat' action=""  class="navbar-form" role="search">
@@ -78,7 +78,7 @@
 						                <input id="searchCommunesStat" type="text" class="form-control" placeholder="Rechercher une commune" >
 						                <i class="glyphicon glyphicon-search form-control-feedback"></i>
 						             	<input id="hiddenInputCommunesStat" type="hidden" name="insee">
-						            </div>          
+						            </div>
 					           	</form>
 							</div>
 						</div>
@@ -90,12 +90,12 @@
 								<p><a href="{{url_for('main.photos')}}" class="btn btn-default" role="button">Galerie photos</a></p>
 							</div>
 						</div>
-						
+
 					</div>
 				</div>
 			</div>
-			{% endif %}	
-			
+			{% endif %}
+
 			{% if customStatMedias != None and configuration.AFFICHAGE_RANG_STAT %}
 			<!-- Statistiques par rang taxonomique -->
 			<div class="col-sm-12">
@@ -107,7 +107,7 @@
 					<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 stat-medias-wrapper">
 					{% elif configuration.COLONNES_RANG_STAT == 4 %}
 					<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 stat-medias-wrapper">
-					{% endif %}	
+					{% endif %}
 							<div class="panel panel-default statMedias">
 								<div class="panel-heading">
 									<h3>{{configuration.RANG_STAT_FR[i]}} </h3>
@@ -122,7 +122,7 @@
 											<a href="{{url_for('main.ficheEspece',cd_ref=customStatMedias[i][j].cd_ref)}}" >
 										    	<div class="img-custom-medias" style="background-image: url({{customStatMedias[i][j].path}})"></div>
 										    	<div class="stat-medias-hovereffet">
-										    		<img src="{{url_for('static', filename='images/eye.png') }}"> 
+										    		<img src="{{url_for('static', filename='images/eye.png') }}">
 										    		<h2 class="overlay-obs">{{customStatMedias[i][j].nb_obs}} observations</h2>
 										    	</div>
 											</a>
@@ -132,8 +132,8 @@
 									        <p><a href="{{url_for('main.ficheEspece',cd_ref=customStatMedias[i][j].cd_ref)}}" class="btn btn-default" role="button">Fiche espèce</a></p>
 									    </div>
 									</div>
-								</div>	
-						{% endif %}				
+								</div>
+						{% endif %}
 				{% endfor %}
 							</div>
 					</div>
@@ -145,7 +145,7 @@
 
 			{% if configuration.AFFICHAGE_DERNIERES_OBS %}
 			<!-- Dernières espèces observées (Carte et liste) -->
-			<div class="col-sm-12" id="DernieresObservations"> 
+			<div class="col-sm-12" id="DernieresObservations">
 					<div class="panel panel-default" >
 					  	<div class="panel-heading"><h3> {{configuration.TEXT_LAST_OBS}} {{observations | length}} observations</h3></div>
 					  	<div class="row" id="mapRow">
@@ -154,15 +154,15 @@
 								<div id="map"></div>
 							</div>
 							<!-- LISTE des dernières observations -->
-							<div id="listMap" class="col-lg-4 col-md-4 col-sm-12 col-xs-12"> 
+							<div id="listMap" class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 								<table id='tableEspece' class="table">
-									
+
 									<tbody>
 										{% for obs in observations %}
 										<tr class='tabEspece' idSynthese = "{{obs.id_observation}}">
 											{% if obs.pathImg == None %}
 											<td class="singleTaxon img">
-                                                <img class="singleTaxon" width="80%" src="{{url_for('static', filename='images/picto_' + obs.group2_inpn +'.png')}}" data-toggle="tooltip" data-original-title="{{obs.group2_inpn}}" data-placement="left">
+                                                <img class="singleTaxon" width="80%" src="{{url_for('static', filename='images/picto_' + obs.group2_inpn | replace(" ", "_") +'.png')}}" data-toggle="tooltip" data-original-title="{{obs.group2_inpn}}" data-placement="left">
                                             </td>
 											{% else %}
 											<td class="singleTaxon img">
@@ -173,14 +173,14 @@
 											<td class="singleTaxon date"> {{obs.dateobs}} </td>
 											<td class="singleTaxon detail">
                                                 <a href = "{{url_for('main.ficheEspece',cd_ref=obs.cd_ref)}}">
-                                                    <span class="glyphicon glyphicon-list" data-toggle="tooltip" data-original-title="Consulter la fiche espèce" data-placement="left"> </span> 
+                                                    <span class="glyphicon glyphicon-list" data-toggle="tooltip" data-original-title="Consulter la fiche espèce" data-placement="left"> </span>
                                                 </a>
-                                            </td> 
+                                            </td>
 											<td class="hiddenTd" hidden="true">{{obs.cd_ref}}</td>
 										</tr>
 										{% endfor %}
 									</tbody>
-								</table>	
+								</table>
 							 </div>
 						</div>
 					</div>
@@ -189,7 +189,7 @@
 
 			{% if configuration.AFFICHAGE_EN_CE_MOMENT %}
 			<!-- ESPECES PERIODE -->
-			<div class="col-sm-12" id="mostViewNow"> 
+			<div class="col-sm-12" id="mostViewNow">
 				<div class="panel panel-default">
 					<div class="panel-heading"><h3>A voir en ce moment <span class="glyphicon glyphicon-question-sign helpTip" data-toggle="tooltip" data-original-title="Espèces les plus observées dans les 15 jours précédents et suivants aujourd'hui, toutes années confondues" data-placement="right"></span></h3></div>
 					<div class="row thumbnail-row">
@@ -197,12 +197,12 @@
 						<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col">
 						    <div class="hovereffect">
 						        {% if tax.path == None %}
-						        <img class="default-logo " src="{{url_for('static', filename='images/picto_' + tax.group2_inpn +'.png') }}" alt="">
+						        <img class="default-logo " src="{{url_for('static', filename='images/picto_' + tax.group2_inpn | replace(" ", "_") +'.png') }}" alt="">
 						        {% else %}
 						        <div class="img-responsive-logo" style="background-image:url({{tax.path}})"> </div>
 						        {% endif %}
 						        <div class="overlay">
-						           <h2>{{tax.taxonName}}</h2>	
+						           <h2>{{tax.taxonName}}</h2>
 						           <a class="info" href="{{url_for('main.ficheEspece',cd_ref=tax.cd_ref)}}">Fiche espèce</a>
 						        </div>
 						    </div>
@@ -212,13 +212,13 @@
 				</div>
 			</div>
 			{% endif %}
-			
+
 		</div>
 
         {% if configuration.AFFICHAGE_FOOTER %}
 			{% include 'static/custom/templates/footer.html' %}
 		{% endif %}
-        
+
     	<script type="text/javascript">
 			var observations = {{observations|tojson}}
 			,communesSearch = {{communesSearch|tojson}}
@@ -226,7 +226,7 @@
 			url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
         </script>
 		<script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
-		<script src="{{url_for('static', filename='mapHome.js') }}"></script>	
+		<script src="{{url_for('static', filename='mapHome.js') }}"></script>
 	    <script src="{{url_for('static', filename='main.js') }}"></script>
 
     </body>

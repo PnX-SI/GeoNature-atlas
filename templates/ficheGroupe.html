@@ -12,7 +12,7 @@
         <!-- DataTable -->
         <link rel="stylesheet" href="{{url_for('static', filename='lib/datatables/datatables.min.css') }}"/>
         <script type="text/javascript" src="{{url_for('static', filename='lib/datatables/datatables.min.js') }}"></script>
-		
+
         <!-- Bootstrap -->
         <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}"></link>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap-switch/css/bootstrap-switch.min.css') }}"></link>
@@ -22,7 +22,7 @@
 
         <!-- CSS Application -->
         <link rel="shortcut icon" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
-        <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />       
+        <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='css/listEspeces.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='css/icones.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='custom/custom.css') }}" />
@@ -41,7 +41,7 @@
                 <div class="panel panel-default" id="parent">
                     <div class="row rowMargin">
                         <h1> Les {{ referenciel }} </h1>
-                        
+
                         <div class="panel panel-default" id="parent">
                             <div class="row rowMargin">
                                  <ul id="statHierarchy">
@@ -51,12 +51,12 @@
                                 </ul>
                             </div>
                         </div>
-                        
+
                         <div id="allGroups">
                         {% for group in groups %}
-                            <li class="floatLeft"> 
+                            <li class="floatLeft">
                                 <a href="{{url_for('main.ficheGroupe', groupe=group.groupAccent ) }}">
-                                    <img class="INPNgroup" src="{{url_for('static', filename='images/picto_' + group.group +'.png')}}" alt="{{group.groupAccent}}" data-toggle="tooltip" data-original- title="{{group.groupAccent}}" data-placement="top">
+                                    <img class="INPNgroup" src="{{url_for('static', filename='images/picto_' + group.group | replace(" ", "_") +'.png')}}" alt="{{group.groupAccent}}" data-toggle="tooltip" data-original- title="{{group.groupAccent}}" data-placement="top">
                                 </a>
                             </li>
                         {% endfor %}
@@ -64,16 +64,16 @@
                     </div>
                 </div>
 
-                
+
                 <div class="panel panel-default">
                     <div class="row rowMargin" id="clear">
                         {% include 'templates/tabTaxons.html' %}
                     </div>
                 </div>
             </div>
-            
+
         </div>
-    
+
     {% if configuration.AFFICHAGE_FOOTER %}
         {% include 'static/custom/templates/footer.html' %}
     {% endif %}
