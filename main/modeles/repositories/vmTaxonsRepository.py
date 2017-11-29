@@ -14,8 +14,8 @@ from .. import utils
 
 
 
-def deleteAccent(string): 
-    return unicodedata.normalize('NFD', string).encode('ascii', 'ignore')  
+def deleteAccent(string):
+    return unicodedata.normalize('NFD', string).encode('ascii', 'ignore')
 
 
 # With distinct the result in a array not an object, 0: lb_nom, 1: nom_vern
@@ -41,21 +41,33 @@ def getTaxonsCommunes(connection, insee):
 
 def getTaxonsChildsList(connection, cd_ref):
     rank = config.LIMIT_FICHE_LISTE_HIERARCHY
-    sql = """SELECT *, tax.cd_ref
-    FROM atlas.vm_taxons tax 
-    JOIN atlas.bib_taxref_rangs bib_rang on tax.id_rang= bib_rang.id_rang
-    LEFT JOIN atlas.vm_medias m ON m.cd_ref = tax.cd_ref AND m.id_type="""+ str(config.ATTR_MAIN_PHOTO) +""" 
-    WHERE tax.cd_ref in ( select * from atlas.find_all_taxons_childs(:thiscdref) 
-    ) """.encode('UTF-8')
-    req = connection.execute(text(sql), thiscdref = cd_ref)
+    sql = """SELECT DISTINCT nom_complet_html, nb_obs, nom_vern, tax.cd_ref,
+            yearmax, group2_inpn, patrimonial, protection_stricte, chemin, url
+        FROM atlas.vm_taxons tax
+        JOIN atlas.bib_taxref_rangs bib_rang on tax.id_rang= bib_rang.id_rang
+        LEFT JOIN atlas.vm_medias m
+        ON m.cd_ref = tax.cd_ref AND m.id_type={}
+        WHERE tax.cd_ref IN (
+            SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
+        ) """.format(str(config.ATTR_MAIN_PHOTO)).encode('UTF-8')
+    req = connection.execute(text(sql), thiscdref=cd_ref)
     taxonRankList = list()
     nbObsTotal = 0
     for r in req:
-        temp = {'nom_complet_html': r.nom_complet_html, 'nb_obs' : r.nb_obs, 'nom_vern': r.nom_vern, 'cd_ref': r.cd_ref,\
-         'last_obs' : r.yearmax, 'group2_inpn': deleteAccent(r.group2_inpn), 'patrimonial' : r.patrimonial, 'protection_stricte' : r.protection_stricte, 'path': utils.findPath(r)}
+        temp = {
+            'nom_complet_html': r.nom_complet_html,
+            'nb_obs': r.nb_obs,
+            'nom_vern': r.nom_vern,
+            'cd_ref': r.cd_ref,
+            'last_obs': r.yearmax,
+            'group2_inpn': deleteAccent(r.group2_inpn),
+            'patrimonial': r.patrimonial,
+            'protection_stricte': r.protection_stricte,
+            'path': utils.findPath(r)
+        }
         taxonRankList.append(temp)
-        nbObsTotal = nbObsTotal+ r.nb_obs
-    return {'taxons': taxonRankList, 'nbObsTotal' : nbObsTotal}
+        nbObsTotal = nbObsTotal + r.nb_obs
+    return {'taxons': taxonRankList, 'nbObsTotal': nbObsTotal}
 
 # Get list of INPN groups with at least one photo
 def getINPNgroupPhotos(connection):
@@ -74,7 +86,7 @@ def getINPNgroupPhotos(connection):
 def getTaxonsGroup(connection, groupe):
     sql=""" SELECT t.cd_ref, t.nom_complet_html, t.nom_vern, t.nb_obs, t.group2_inpn, t.protection_stricte, t.patrimonial, t.yearmax, m.chemin, m.url, t.nb_obs
             FROM atlas.vm_taxons t
-            LEFT JOIN atlas.vm_medias m ON m.cd_ref = t.cd_ref AND m.id_type="""+ str(config.ATTR_MAIN_PHOTO) +""" 
+            LEFT JOIN atlas.vm_medias m ON m.cd_ref = t.cd_ref AND m.id_type="""+ str(config.ATTR_MAIN_PHOTO) +"""
             WHERE t.group2_inpn = :thisGroupe
             GROUP BY t.cd_ref, t.nom_complet_html, t.nom_vern, t.nb_obs, t.group2_inpn, t.protection_stricte, t.patrimonial, t.yearmax, m.chemin, m.url """
     req = connection.execute(text(sql), thisGroupe = groupe)

@@ -52,7 +52,7 @@ MAP = {
     },
     'ZOOM' : 10,
     # Pas du slider sur les annees d'observations: 1 = pas de 1 an sur le slider
-    'STEP': 1
+    'STEP': 1,
     # Couleur et épaisseur des limites du territoire
     'BORDERS_COLOR': '#000000',
     'BORDERS_WEIGHT': 3
@@ -71,7 +71,7 @@ LIMIT_CLUSTER_POINT = 1000
 # Carte de la page d'accueil: observations des 'x' derniers jours. Bien mettre en anglais et non accordé
 NB_DAY_LAST_OBS = '7 day'
 # Texte à afficher pour décrire la cartographie des 'dernières observations'
-TEXT_LAST_OBS = u'Les observations des agents ces 7 derniers jours'
+TEXT_LAST_OBS = u'Les observations des agents ces 7 derniers jours |'
 
 # Carte de la fiche commune: nombre des 'x' dernières observations affichées
 NB_LAST_OBS=100

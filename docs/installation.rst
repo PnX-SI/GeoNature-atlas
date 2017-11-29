@@ -177,18 +177,26 @@ Créez un virtualhost pour l'atlas :
 
     sudo nano /etc/apache2/sites-available/atlas.conf
 
-Copier/collez-y ces lignes en renseignant votre nom d'utilisateur à la place de MONUSER (deux premières lignes) : 
-
+Copier/collez-y ces lignes en renseignant le bon port : 
 ::
 
-    WSGIScriptAlias / /home/MONUSER/atlas/atlas.wsgi
-     <Directory "/home/MONUSER/atlas">
-       WSGIApplicationGroup %{GLOBAL}
-       WSGIScriptReloading On
-       Order deny,allow
-       Allow from all
-       Require all granted
-     </Directory>
+    # Configuration Geonature-atlas
+    RewriteEngine  on
+    RewriteRule    "atlas$"  "atlas/"  [R]
+    <Location /atlas>
+        ProxyPass  http://127.0.0.1:8080/
+        ProxyPassReverse  http://127.0.0.1:8080/
+    </Location>
+    #FIN Configuration Geonature-atlas
+
+
+* Activer les modules et redémarrer Apache
+ 
+  ::  
+  
+        sudo a2enmod proxy
+        sudo a2enmod proxy_http
+        sudo apache2ctl restart
 
 :notes:
 
