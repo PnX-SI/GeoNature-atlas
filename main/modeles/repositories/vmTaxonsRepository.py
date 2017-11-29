@@ -44,7 +44,7 @@ def getTaxonsChildsList(connection, cd_ref):
     sql = """SELECT DISTINCT nom_complet_html, nb_obs, nom_vern, tax.cd_ref,
             yearmax, group2_inpn, patrimonial, protection_stricte, chemin, url
         FROM atlas.vm_taxons tax
-        JOIN atlas.bib_taxref_rangs bib_rang on tax.id_rang= bib_rang.id_rang
+        JOIN atlas.bib_taxref_rangs bib_rang on trim(tax.id_rang)= trim(bib_rang.id_rang)
         LEFT JOIN atlas.vm_medias m
         ON m.cd_ref = tax.cd_ref AND m.id_type={}
         WHERE tax.cd_ref IN (
