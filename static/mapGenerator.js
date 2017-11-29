@@ -590,11 +590,7 @@ function generateSliderOnMap(){
         $(sliderContainer).css("text-align", "center");
         $(sliderContainer).append("<p> <span id='yearMin'> </span> <input id='sliderControl' type='text'/> <span id='yearMax'>  </span>  </p>"
                             +"<p id='nbObs'> Nombre d'observation(s): "+nb_obs+" </p>");
-
-
-
-
-
+        L.DomEvent.disableClickPropagation(sliderContainer);
         return sliderContainer;
       }
 
