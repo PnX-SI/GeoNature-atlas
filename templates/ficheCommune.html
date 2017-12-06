@@ -52,7 +52,7 @@
 					<div class="row">
                         <h4><b>Commune de {{referenciel.communeName}}</b></h4>
                         <ul id="stat">
-                            <li><span data-icon="&#xe037;" style="font-size: 30px;"></span><br/><b>{{listTaxons.nbObsTotal}}</b><br/>{{ 'observations' if listTaxons|length > 1 else 'observation' }}</li>
+                            <li><span data-icon="&#xe037;" style="font-size: 30px;"></span><br/><b>{{listTaxons.nbObsTotal}}</b><br/>{{ 'observations' if listTaxons.nbObsTotal > 1 else 'observation' }}</li>
                             <li><span data-icon="&#xe03b;" style="font-size: 30px;"></span></br><b>{{listTaxons.taxons|length}}</b><br/>{{ 'espèces' if listTaxons.taxons|length > 1 else 'espèce' }}</li>
                             <li><span data-icon="&#xe040;" style="font-size: 30px;"></span></br><b>{{observers | length}}</b><br/>{{ 'observateurs' if observers|length > 1 else 'observateur' }}</li>
                         </ul>
