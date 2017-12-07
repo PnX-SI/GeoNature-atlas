@@ -5,13 +5,61 @@ CHANGELOG
 1.2.7.dev0 (unreleased)
 -----------------------
 
+**Nouveautés**
+
+* Passage de WSGI à Gunicorn pour simplifier et homogénéiser 
+* Télécharger TaxRef sur geonature.fr et non plus sur le dépôt de TaxHub
+* Amélioration du message par défaut sur la HOME pour les dernieres observations
+* Optimisation de certaines requêtes
+* Prise en compte du HTML dans le champs AUTEUR
+* Ajout de picto pour les groupes Hépatiques et Anthocérotes
+* Prise en compte des groupes INPN contenant des espaces
+
+**Corrections**
+
+* Suppression d'un double appel à un fichier JS dans le template des fiches espèces (merci @sig-pnrnm)
+* Correction d'un bug du slider et de la carte Leaflet dans Chrome (#109)
+* Correction des jointures pour prévenir les caractères invisibles (#121, merci @mathieubossaert)
+* Correction de l'affichage des singulers et pluriels en ajoutant des conditions (merci @Splendens)
+
+
+**Notes de version**
+
+* Passage de WSGI à Gunicorn....
+Compléter le fichier ``main/configuration/settings.ini``
+
+```
+  sudo apt-get install -y supervisor
+
+  sudo -s supervisorctl stop atlas
+
+  virtualenv $venv_dir
+
+  . $venv_dir/bin/activate
+ 
+  #Lancement de l'application
+  DIR=$(readlink -e "${0%/*}")
+  sudo -s cp  atlas-service.conf /etc/supervisor/conf.d/
+  sudo -s sed -i "s%APP_PATH%${DIR}%" /etc/supervisor/conf.d/atlas-service.conf
+
+  sudo -s supervisorctl reread
+  sudo -s supervisorctl reload
+```
+
+Supprimer le fichier ``atlas.wsgi``
+
+MAJ conf Apache
+
+Attention documentation d'installation mentionne encore WSGI dans une note. Il faut aussi vérifier la doc d'update. 
+
+
 1.2.6 (2017-06-30)
 ------------------
 
 **Nouveautés**
 
-* Ajout des paramètres `BORDERS_COLOR` et `BORDERS_WEIGHT` pour modifier la couleur et l'épaisseur des limites du territoire.
-* Passer la fonction PostgreSQL `RefreshAllMaterializedViews` en mode concurrent par défaut https://www.postgresql.org/docs/9.4/static/sql-refreshmaterializedview.html
+* Ajout des paramètres ``BORDERS_COLOR`` et ``BORDERS_WEIGHT`` pour modifier la couleur et l'épaisseur des limites du territoire.
+* Passer la fonction PostgreSQL ``RefreshAllMaterializedViews`` en mode concurrent par défaut https://www.postgresql.org/docs/9.4/static/sql-refreshmaterializedview.html
 
 **Corrections**
 
@@ -20,8 +68,8 @@ CHANGELOG
 
 **Notes de version**
 
-* Ajoutez les paramètres `BORDERS_COLOR` et `BORDERS_WEIGHT` dans votre fichier `main/configuration/config.py` comme indiqué dans le fichier d'exemple (https://github.com/PnEcrins/GeoNature-atlas/blob/master/main/configuration/config.py.sample)
-* Si vous utilisez une version supérieure à 9.3, il est conseillé de rafraichir les vues matérialisées de manière concurrente pour ne pas bloquer l'accès à la BDD pendant un rafraichissement. Si ce n'est pas le cas pour votre vue, il est conseillé de la modifier (schéma `public`) comme proposé désormais : https://github.com/PnEcrins/GeoNature-atlas/blob/master/data/atlas.sql#L406-L423
+* Ajoutez les paramètres ``BORDERS_COLOR`` et ``BORDERS_WEIGHT`` dans votre fichier ``main/configuration/config.py`` comme indiqué dans le fichier d'exemple (https://github.com/PnEcrins/GeoNature-atlas/blob/master/main/configuration/config.py.sample)
+* Si vous utilisez une version supérieure à 9.3, il est conseillé de rafraichir les vues matérialisées de manière concurrente pour ne pas bloquer l'accès à la BDD pendant un rafraichissement. Si ce n'est pas le cas pour votre vue, il est conseillé de la modifier (schéma ``public``) comme proposé désormais : https://github.com/PnEcrins/GeoNature-atlas/blob/master/data/atlas.sql#L406-L423
 
 1.2.5 (2017-04-07)
 ------------------
