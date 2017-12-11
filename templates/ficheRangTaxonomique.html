@@ -6,13 +6,13 @@
 
         <!-- Jquery -->
         <script type="text/javascript" src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
-		<script type="text/javascript" src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
-		<link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
+		    <script type="text/javascript" src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+		    <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
 
         <!-- DataTable -->
         <link rel="stylesheet" href="{{url_for('static', filename='lib/datatables/datatables.min.css') }}"/>
         <script type="text/javascript" src="{{url_for('static', filename='lib/datatables/datatables.min.js') }}"></script>
-		
+
         <!-- Bootstrap -->
         <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}"></link>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap-switch/css/bootstrap-switch.min.css') }}"></link>
@@ -22,7 +22,7 @@
 
         <!-- CSS Application -->
         <link rel="shortcut icon" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
-        <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />       
+        <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='css/listEspeces.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='css/icones.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='custom/custom.css') }}" />
@@ -41,22 +41,22 @@
             <div class="panel panel-default" id="parent">
 				<div class="row rowMargin">
                     <h4> <b> Espèces observées pour le taxon <i>{{referenciel.lb_nom}}</i> ({{referenciel.nom_rang}}) </b> </h4>
-    
+
                     <div id="hierarchy">
                     {% for taxon in taxonomyHierarchy %}
                         {{taxon.nom_rang}} :
                         <i>
                         {% if ( taxon.tri_rang >= configuration.LIMIT_FICHE_LISTE_HIERARCHY) %}
-                             <a href = "{{url_for('main.ficheEspece', cd_ref = taxon.cd_ref) }}">{{taxon.lb_nom}}</a> 
+                             <a href = "{{url_for('main.ficheEspece', cd_ref = taxon.cd_ref) }}">{{taxon.lb_nom}}</a>
                         {% else %}
-                             <a href = "{{url_for('main.ficheRangTaxonomie', cd_ref = taxon.cd_ref) }}">{{taxon.lb_nom}}</a> 
-                            
+                             <a href = "{{url_for('main.ficheRangTaxonomie', cd_ref = taxon.cd_ref) }}">{{taxon.lb_nom}}</a>
+
                         {% endif %}
                         </i>
                         {% if not loop.last %}
                              <span class="glyphicon glyphicon-chevron-right"> </span>
                         {% endif %}
-                                        
+
                     {% endfor %}
                     </div>
                      <ul id="statHierarchy">
@@ -67,16 +67,16 @@
                 </div>
             </div>
 
-            
+
             <div class="panel panel-default">
 				<div class="row rowMargin" id="clear">
                     {% include 'templates/tabTaxons.html' %}
                 </div>
             </div>
         </div>
-            
+
     </div>
-    
+
     {% if configuration.AFFICHAGE_FOOTER %}
         {% include 'static/custom/templates/footer.html' %}
     {% endif %}

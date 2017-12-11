@@ -6,7 +6,7 @@
 
         <!-- Jquery -->
         <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
-		<script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+		    <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
 
 		<!-- Bootstrap -->
@@ -220,13 +220,13 @@
 		{% endif %}
 
     	<script type="text/javascript">
-			var observations = {{observations|tojson}}
-			,communesSearch = {{communesSearch|tojson}}
-			, configuration = {{configuration|tojson}},
-			url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
-        </script>
-		<script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
-		<script src="{{url_for('static', filename='mapHome.js') }}"></script>
+  			var observations = {{observations|tojson}}
+  			,communesSearch = {{communesSearch|tojson}}
+  			, configuration = {{configuration|tojson}},
+  			url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
+      </script>
+		  <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
+		  <script src="{{url_for('static', filename='mapHome.js') }}"></script>
 	    <script src="{{url_for('static', filename='main.js') }}"></script>
 
     </body>

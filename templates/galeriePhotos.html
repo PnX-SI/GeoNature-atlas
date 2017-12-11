@@ -6,7 +6,7 @@
 
         <!-- Jquery -->
         <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
-		<script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+		    <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
 
         <!-- Bootstrap -->
@@ -15,8 +15,6 @@
 
         <!-- LightBox -->
         <link rel="stylesheet" href="{{url_for('static', filename='lib/lightbox2/css/lightbox.css') }}" />
-
-
 
         <!-- Atlas -->
         <link rel="shortcut icon" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
@@ -74,9 +72,6 @@
             {% include 'static/custom/templates/footer.html' %}
         {% endif %}
 
-
-
-
         <script type="text/javascript">
             var communesSearch = {{communesSearch|tojson}},
                  configuration = {{configuration|tojson}};
@@ -86,7 +81,6 @@
         <div id="hide">
             <script src="{{url_for('static', filename='lib/lightbox2/js/lightbox.js') }}"></script>
             <script src="{{url_for('static', filename='galleryPhoto.js') }}"></script>
-
             <script src="{{url_for('static', filename='main.js') }}"></script>
         </div>
 

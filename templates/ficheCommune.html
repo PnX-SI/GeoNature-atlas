@@ -16,23 +16,19 @@
         <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.css') }}" />
         <script src="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.css') }}" />
-		<link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.Default.css') }}" />
+		    <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.Default.css') }}" />
 
         <!-- DataTable -->
-        <!--<script type="text/javascript" src="{{url_for('static', filename='lib/dataTable/datatables.min.js') }}"></script>
-		<script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
-		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" />
-          <link rel="stylesheet" href="{{url_for('static', filename='lib/dataTable/jquery.dataTables.min.css') }}" />  -->
-		<link rel="stylesheet" href="{{url_for('static', filename='lib/datatables/datatables.min.css') }}"/>
+		    <link rel="stylesheet" href="{{url_for('static', filename='lib/datatables/datatables.min.css') }}"/>
         <script type="text/javascript" src="{{url_for('static', filename='lib/datatables/datatables.min.js') }}"></script>
-        
+
         <!-- Bootstrap -->
         <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}"></link>
         <script type="text/javascript" src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
 
        <!-- Atlas -->
         <link rel="shortcut icon" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
-        <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}"/>       
+        <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}"/>
         <link rel="stylesheet" href="{{url_for('static', filename='css/listEspeces.css') }}"/>
         <link rel="stylesheet" href="{{url_for('static', filename='css/icones.css') }}"/>
         <link rel="stylesheet" href="{{url_for('static', filename='custom/custom.css') }}"/>
@@ -46,10 +42,10 @@
 			{% include 'templates/sideBar.html' %}
 		</div>
 		<div class="container-fluid" id="page">
-            
+
             <div class="col-sm-7">
                  <div class="panel panel-default" id="parent">
-					<div class="row">
+					          <div class="row">
                         <h4><b>Commune de {{referenciel.communeName}}</b></h4>
                         <ul id="stat">
                             <li><span data-icon="&#xe037;" style="font-size: 30px;"></span><br/><b>{{listTaxons.nbObsTotal}}</b><br/>{{ 'observations' if listTaxons.nbObsTotal > 1 else 'observation' }}</li>
@@ -58,14 +54,14 @@
                         </ul>
                     </div>
                 </div>
-   
+
                 <div class="row rowMargin" id="clear">
                         <div class="panel panel-default">
                             {% include 'templates/tabTaxons.html' %}
                         </div>
                 </div>
             </div>
-                    
+
             <div class="col-sm-5" id="mapWrapper">
 				<div  class="panel panel-default" id="mapContainer">
 					<div class="row ">
@@ -78,14 +74,14 @@
 						</div>
 					</div>
 				</div>
-            </div> 
-            
+            </div>
+
         </div>
-        
+
         {% if configuration.AFFICHAGE_FOOTER %}
             {% include 'static/custom/templates/footer.html' %}
         {% endif %}
-        
+
         <script type="text/javascript">
             var communesSearch = {{communesSearch|tojson}};
             var configuration = {{configuration|tojson}};
@@ -100,9 +96,9 @@
             var defaultSortedColumn=nbColumn-4; //var for dataTables js lib
         </script>
         <script src="{{url_for('static', filename='listeEspeces.js') }}"></script>
-		<script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
+		    <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
         <script src="{{url_for('static', filename='mapCommune.js') }}"></script>
         <script src="{{url_for('static', filename='main.js') }}"></script>
 
-   </body> 
+   </body>
 </html>
