@@ -49,6 +49,7 @@ def index():
         observations = vmObservationsMaillesRepository.lastObservationsMailles(connection, config.NB_DAY_LAST_OBS, config.ATTR_MAIN_PHOTO)
     else:
         observations = vmObservationsRepository.lastObservations(connection, config.NB_DAY_LAST_OBS, config.ATTR_MAIN_PHOTO)
+
     communesSearch = vmCommunesRepository.getAllCommunes(session)
     mostViewTaxon = vmTaxonsMostView.mostViewTaxon(connection)
     stat = vmObservationsRepository.statIndex(connection)
@@ -219,7 +220,7 @@ def ficheRangTaxonomie(cd_ref):
     }
 
     return render_template(
-        'templates/ficheRangTaxonomique.html'
+        'templates/ficheRangTaxonomique.html',
         listTaxons=listTaxons,
         referenciel=referenciel,
         communesSearch=communesSearch,
