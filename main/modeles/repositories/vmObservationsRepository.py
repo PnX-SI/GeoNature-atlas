@@ -58,36 +58,37 @@ def firstObservationChild(connection, cd_ref):
     for r in req:
       return r.yearmin
 
-    
+
 def lastObservations(connection, mylimit, idPhoto):
-    sql = """SELECT obs.*, 
-    tax.lb_nom, tax.nom_vern, tax.group2_inpn, 
-    medias.url, medias.chemin 
-    FROM atlas.vm_observations obs 
-    JOIN atlas.vm_taxons tax ON tax.cd_ref = obs.cd_ref 
+    sql = """SELECT obs.*,
+    tax.lb_nom, tax.nom_vern, tax.group2_inpn,
+    medias.url, medias.chemin, medias.id_media
+    FROM atlas.vm_observations obs
+    JOIN atlas.vm_taxons tax ON tax.cd_ref = obs.cd_ref
     LEFT JOIN atlas.vm_medias medias ON medias.cd_ref = obs.cd_ref AND medias.id_type = :thisidphoto
     WHERE  obs.dateobs >= (CURRENT_TIMESTAMP - INTERVAL :thislimit)
     ORDER BY obs.dateobs DESC """
-    
 
-    observations = connection.execute(text(sql), thislimit = mylimit, thisidphoto=idPhoto)
-    obsList=list()
+    observations = connection.execute(text(sql), thislimit=mylimit, thisidphoto=idPhoto)
+    obsList = list()
     for o in observations:
         if o.nom_vern:
             inter = o.nom_vern.split(',')
-            taxon = inter[0] +' | '+ o.lb_nom
+            taxon = inter[0] + ' | ' + o.lb_nom
         else:
             taxon = o.lb_nom
-        temp = {'id_observation' : o.id_observation,
-                'cd_ref': o.cd_ref,
-                'dateobs': str(o.dateobs),
-                'altitude_retenue' : o.altitude_retenue,
-                'effectif_total' : o.effectif_total,
-                'taxon': taxon,
-                'geojson_point':ast.literal_eval(o.geojson_point),
-                'group2_inpn': utils.deleteAccent(o.group2_inpn),
-                'pathImg' : utils.findPath(o)
-                }
+        temp = {
+            'id_observation': o.id_observation,
+            'cd_ref': o.cd_ref,
+            'dateobs': str(o.dateobs),
+            'altitude_retenue': o.altitude_retenue,
+            'effectif_total': o.effectif_total,
+            'taxon': taxon,
+            'geojson_point': ast.literal_eval(o.geojson_point),
+            'group2_inpn': utils.deleteAccent(o.group2_inpn),
+            'pathImg': utils.findPath(o),
+            'id_media': o.id_media
+        }
         obsList.append(temp)
     return obsList
 
@@ -162,7 +163,7 @@ def observersParser(req):
                 fullName += tabInter[i].capitalize()
             else:
                 fullName += tabInter[i].capitalize() + " "
-            i=i+1              
+            i=i+1
         finalList.append(fullName)
     return sorted(finalList)
 
