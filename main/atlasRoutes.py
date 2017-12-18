@@ -11,35 +11,37 @@ from . import utils
 from flask import Blueprint
 main = Blueprint('main', __name__)
 
-@main.route('/espece/'+config.REMOTE_MEDIAS_PATH+'<image>' , methods=['GET', 'POST'])
+
+@main.route('/espece/'+config.REMOTE_MEDIAS_PATH+'<image>', methods=['GET', 'POST'])
 def especeMedias(image):
     return redirect(config.REMOTE_MEDIAS_URL+config.REMOTE_MEDIAS_PATH+image)
 
-@main.route('/commune/'+config.REMOTE_MEDIAS_PATH+'<image>' , methods=['GET', 'POST'])
+
+@main.route('/commune/'+config.REMOTE_MEDIAS_PATH+'<image>', methods=['GET', 'POST'])
 def communeMedias(image):
     return redirect(config.REMOTE_MEDIAS_URL+config.REMOTE_MEDIAS_PATH+image)
 
-@main.route('/liste/'+config.REMOTE_MEDIAS_PATH+'<image>' , methods=['GET', 'POST'])
+
+@main.route('/liste/'+config.REMOTE_MEDIAS_PATH+'<image>', methods=['GET', 'POST'])
 def listeMedias(image):
     return redirect(config.REMOTE_MEDIAS_URL+config.REMOTE_MEDIAS_PATH+image)
-    
-@main.route('/groupe/'+config.REMOTE_MEDIAS_PATH+'<image>' , methods=['GET', 'POST'])
+
+
+@main.route('/groupe/'+config.REMOTE_MEDIAS_PATH+'<image>', methods=['GET', 'POST'])
 def groupeMedias(image):
     return redirect(config.REMOTE_MEDIAS_URL+config.REMOTE_MEDIAS_PATH+image)
-    
-@main.route('/'+config.REMOTE_MEDIAS_PATH+'<image>' , methods=['GET', 'POST'])
+
+
+@main.route('/'+config.REMOTE_MEDIAS_PATH+'<image>', methods=['GET', 'POST'])
 def indexMedias(image):
     return redirect(config.REMOTE_MEDIAS_URL+config.REMOTE_MEDIAS_PATH+image)
-    
-# @main.route('/<regex("[a-cA-Z0-9]")>/'+config.REMOTE_MEDIAS_PATH+'<image>' , methods=['GET', 'POST'])
-# def myrouteMedias(image):
-    # return redirect(config.REMOTE_MEDIAS_URL+config.REMOTE_MEDIAS_PATH+image)
-    
+
+
 @main.route('/' , methods=['GET', 'POST'])
 def index():
     session = utils.loadSession()
     connection = utils.engine.connect()
-    
+
     if config.AFFICHAGE_MAILLE:
         observations = vmObservationsMaillesRepository.lastObservationsMailles(connection, config.NB_DAY_LAST_OBS, config.ATTR_MAIN_PHOTO)
     else:
@@ -49,11 +51,25 @@ def index():
     stat = vmObservationsRepository.statIndex(connection)
     customStat = vmObservationsRepository.genericStat(connection, config.RANG_STAT)
     customStatMedias = vmObservationsRepository.genericStatMedias(connection, config.RANG_STAT)
-    configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'HOMEMAP': True, 'TEXT_LAST_OBS': config.TEXT_LAST_OBS, 'AFFICHAGE_MAILLE': config.AFFICHAGE_MAILLE, \
-    'AFFICHAGE_DERNIERES_OBS': config.AFFICHAGE_DERNIERES_OBS, 'AFFICHAGE_EN_CE_MOMENT': config.AFFICHAGE_EN_CE_MOMENT, 'AFFICHAGE_STAT_GLOBALES': config.AFFICHAGE_STAT_GLOBALES, 'AFFICHAGE_RANG_STAT': config.AFFICHAGE_RANG_STAT, 'COLONNES_RANG_STAT': config.COLONNES_RANG_STAT, 'RANG_STAT_FR': config.RANG_STAT_FR, \
-	'MAP': config.MAP, 'URL_APPLICATION': config.URL_APPLICATION, 'AFFICHAGE_INTRODUCTION': config.AFFICHAGE_INTRODUCTION, \
-    'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER, 'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS}
-    
+    configuration = {
+        'STRUCTURE': config.STRUCTURE,
+        'NOM_APPLICATION': config.NOM_APPLICATION,
+        'HOMEMAP': True,
+        'TEXT_LAST_OBS': config.TEXT_LAST_OBS,
+        'AFFICHAGE_MAILLE': config.AFFICHAGE_MAILLE,
+        'AFFICHAGE_DERNIERES_OBS': config.AFFICHAGE_DERNIERES_OBS,
+        'AFFICHAGE_EN_CE_MOMENT': config.AFFICHAGE_EN_CE_MOMENT,
+        'AFFICHAGE_STAT_GLOBALES': config.AFFICHAGE_STAT_GLOBALES,
+        'AFFICHAGE_RANG_STAT': config.AFFICHAGE_RANG_STAT,
+        'COLONNES_RANG_STAT': config.COLONNES_RANG_STAT,
+        'RANG_STAT_FR': config.RANG_STAT_FR,
+        'MAP': config.MAP,
+        'URL_APPLICATION': config.URL_APPLICATION,
+        'AFFICHAGE_INTRODUCTION': config.AFFICHAGE_INTRODUCTION,
+        'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER,
+        'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS
+        }
+
     connection.close()
     session.close()
 
@@ -81,10 +97,23 @@ def ficheEspece(cd_ref):
     taxonDescription = vmCorTaxonAttribut.getAttributesTaxon(connection, cd_ref, config.ATTR_DESC, config.ATTR_COMMENTAIRE, config.ATTR_MILIEU, config.ATTR_CHOROLOGIE)
     observers = vmObservationsRepository.getObservers(connection, cd_ref)
 
-    configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY, 'PATRIMONIALITE':config.PATRIMONIALITE, \
-    'PROTECTION': config.PROTECTION, 'GLOSSAIRE': config.GLOSSAIRE, 'AFFICHAGE_MAILLE' : config.AFFICHAGE_MAILLE, 'ZOOM_LEVEL_POINT': config.ZOOM_LEVEL_POINT, 'LIMIT_CLUSTER_POINT': config.LIMIT_CLUSTER_POINT, 'FICHE_ESPECE': True, \
-    'MAP': config.MAP, 'URL_APPLICATION': config.URL_APPLICATION, 'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER, 'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS}
-    
+    configuration = {
+        'STRUCTURE': config.STRUCTURE,
+        'NOM_APPLICATION': config.NOM_APPLICATION,
+        'LIMIT_FICHE_LISTE_HIERARCHY': config.LIMIT_FICHE_LISTE_HIERARCHY,
+        'PATRIMONIALITE': config.PATRIMONIALITE,
+        'PROTECTION': config.PROTECTION,
+        'GLOSSAIRE': config.GLOSSAIRE,
+        'AFFICHAGE_MAILLE': config.AFFICHAGE_MAILLE,
+        'ZOOM_LEVEL_POINT': config.ZOOM_LEVEL_POINT,
+        'LIMIT_CLUSTER_POINT': config.LIMIT_CLUSTER_POINT,
+        'FICHE_ESPECE': True,
+        'MAP': config.MAP,
+        'URL_APPLICATION': config.URL_APPLICATION,
+        'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER,
+        'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS
+    }
+
     connection.close()
     session.close()
 
@@ -108,9 +137,19 @@ def ficheCommune(insee):
         observations = vmObservationsRepository.lastObservationsCommune(connection, config.NB_LAST_OBS, insee)
 
     observers = vmObservationsRepository.getObserversCommunes(connection, insee)
-    configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'NB_LAST_OBS': config.NB_LAST_OBS, 'AFFICHAGE_MAILLE': config.AFFICHAGE_MAILLE, 'MAP': config.MAP, \
-    'URL_APPLICATION': config.URL_APPLICATION, 'MYTYPE' : 1, 'PATRIMONIALITE': config.PATRIMONIALITE, 'PROTECTION': config.PROTECTION, 'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER, 'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS}
-    
+    configuration = {
+        'STRUCTURE': config.STRUCTURE,
+        'NOM_APPLICATION': config.NOM_APPLICATION,
+        'NB_LAST_OBS': config.NB_LAST_OBS,
+        'AFFICHAGE_MAILLE': config.AFFICHAGE_MAILLE,
+        'MAP': config.MAP,
+        'URL_APPLICATION': config.URL_APPLICATION,
+        'MYTYPE': 1,
+        'PATRIMONIALITE': config.PATRIMONIALITE,
+        'PROTECTION': config.PROTECTION,
+        'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER,
+        'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS
+    }
 
     session.close()
     connection.close()
@@ -129,12 +168,22 @@ def ficheRangTaxonomie(cd_ref):
     communesSearch = vmCommunesRepository.getAllCommunes(session)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
     observers = vmObservationsRepository.getObservers(connection, cd_ref)
-    
+
     connection.close()
     session.close()
 
-    configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY,\
-     'URL_APPLICATION': config.URL_APPLICATION, 'MYTYPE' : 0, 'PATRIMONIALITE': config.PATRIMONIALITE, 'PROTECTION': config.PROTECTION, 'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER, 'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS}
+    configuration = {
+        'STRUCTURE': config.STRUCTURE,
+        'NOM_APPLICATION': config.NOM_APPLICATION,
+        'LIMIT_FICHE_LISTE_HIERARCHY': config.LIMIT_FICHE_LISTE_HIERARCHY,
+        'URL_APPLICATION': config.URL_APPLICATION,
+        'MYTYPE': 0,
+        'PATRIMONIALITE': config.PATRIMONIALITE,
+        'PROTECTION': config.PROTECTION,
+        'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER,
+        'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS
+    }
+
     return render_template('templates/ficheRangTaxonomique.html', listTaxons = listTaxons, referenciel = referenciel, communesSearch = communesSearch,\
         taxonomyHierarchy=taxonomyHierarchy, observers=observers, configuration=configuration)
 
@@ -142,7 +191,7 @@ def ficheRangTaxonomie(cd_ref):
 def ficheGroupe(groupe):
     session = utils.loadSession()
     connection = utils.engine.connect()
-    
+
     groups=vmTaxonsRepository.getAllINPNgroup(connection)
     listTaxons = vmTaxonsRepository.getTaxonsGroup(connection, groupe)
     communesSearch = vmCommunesRepository.getAllCommunes(session)
@@ -151,30 +200,50 @@ def ficheGroupe(groupe):
     session.close()
     connection.close()
 
-    configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'LIMIT_FICHE_LISTE_HIERARCHY' : config.LIMIT_FICHE_LISTE_HIERARCHY,\
-     'URL_APPLICATION': config.URL_APPLICATION, 'MYTYPE' : 0, 'PATRIMONIALITE': config.PATRIMONIALITE, 'PROTECTION': config.PROTECTION, 'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER, 'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS}
+    configuration = {
+        'STRUCTURE': config.STRUCTURE,
+        'NOM_APPLICATION': config.NOM_APPLICATION,
+        'LIMIT_FICHE_LISTE_HIERARCHY': config.LIMIT_FICHE_LISTE_HIERARCHY,
+        'URL_APPLICATION': config.URL_APPLICATION,
+        'MYTYPE': 0,
+        'PATRIMONIALITE': config.PATRIMONIALITE,
+        'PROTECTION': config.PROTECTION,
+        'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER,
+        'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS
+    }
     return render_template('templates/ficheGroupe.html', listTaxons = listTaxons,  communesSearch = communesSearch, referenciel= groupe, groups=groups, observers=observers,configuration=configuration)
 
 
 @main.route('/presentation', methods=['GET', 'POST'])
 def presentation():
     session = utils.loadSession()
-    
-    communesSearch = vmCommunesRepository.getAllCommunes(session)
-    configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'URL_APPLICATION': config.URL_APPLICATION, 'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER, 'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS}
 
+    communesSearch = vmCommunesRepository.getAllCommunes(session)
+    configuration = {
+        'STRUCTURE': config.STRUCTURE,
+        'NOM_APPLICATION': config.NOM_APPLICATION,
+        'URL_APPLICATION': config.URL_APPLICATION,
+        'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER,
+        'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS
+    }
     session.close()
     return render_template('static/custom/templates/presentation.html', communesSearch = communesSearch, configuration=configuration)
-	
+
+
 @main.route('/photos', methods=['GET', 'POST'])
 def photos():
     session = utils.loadSession()
     connection = utils.engine.connect()
-    
+
     groups = vmTaxonsRepository.getINPNgroupPhotos(connection)
     communesSearch = vmCommunesRepository.getAllCommunes(session)
-    configuration = {'STRUCTURE' : config.STRUCTURE, 'NOM_APPLICATION' : config.NOM_APPLICATION, 'URL_APPLICATION': config.URL_APPLICATION, 'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER, 'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS}
-
+    configuration = {
+        'STRUCTURE': config.STRUCTURE,
+        'NOM_APPLICATION': config.NOM_APPLICATION,
+        'URL_APPLICATION': config.URL_APPLICATION,
+        'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER,
+        'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS
+    }
     session.close()
     connection.close()
     return render_template('templates/galeriePhotos.html', communesSearch = communesSearch, groups=groups, configuration=configuration)
