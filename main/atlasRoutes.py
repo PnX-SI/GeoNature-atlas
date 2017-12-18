@@ -2,9 +2,12 @@
 # -*- coding:utf-8 -*-
 from flask import Flask, request, render_template, jsonify, redirect
 from configuration import config
-from modeles.repositories import vmTaxonsRepository, vmObservationsRepository, vmAltitudesRepository, \
- vmSearchTaxonRepository, vmMoisRepository, vmTaxrefRepository, vmCommunesRepository, vmObservationsMaillesRepository, vmMedias, vmCorTaxonAttribut, \
- vmTaxonsMostView
+from modeles.repositories import (
+    vmTaxonsRepository, vmObservationsRepository, vmAltitudesRepository,
+    vmSearchTaxonRepository, vmMoisRepository, vmTaxrefRepository,
+    vmCommunesRepository, vmObservationsMaillesRepository, vmMedias,
+    vmCorTaxonAttribut, vmTaxonsMostView
+)
 import json
 from . import utils
 
@@ -73,8 +76,16 @@ def index():
     connection.close()
     session.close()
 
-    return render_template('templates/index.html', observations=observations, communesSearch=communesSearch, \
-     mostViewTaxon=mostViewTaxon, stat=stat, customStat = customStat, customStatMedias=customStatMedias, configuration = configuration)
+    return render_template(
+        'templates/index.html',
+        observations=observations,
+        communesSearch=communesSearch,
+        mostViewTaxon=mostViewTaxon,
+        stat=stat,
+        customStat=customStat,
+        customStatMedias=customStatMedias,
+        configuration=configuration
+    )
 
 
 @main.route('/espece/<int:cd_ref>', methods=['GET', 'POST'])
@@ -117,10 +128,26 @@ def ficheEspece(cd_ref):
     connection.close()
     session.close()
 
-    return render_template('templates/ficheEspece.html', taxon=taxon, listeTaxonsSearch=[], observations=[],\
-     cd_ref=cd_ref, altitudes=altitudes, months=months, synonyme=synonyme, communes=communes, communesSearch=communesSearch, taxonomyHierarchy = taxonomyHierarchy,\
-      firstPhoto= firstPhoto, photoCarousel=photoCarousel, videoAudio=videoAudio, articles=articles, taxonDescription=taxonDescription, observers=observers, \
-      configuration=configuration)
+    return render_template(
+        'templates/ficheEspece.html',
+        taxon=taxon,
+        listeTaxonsSearch=[],
+        observations=[],
+        cd_ref=cd_ref,
+        altitudes=altitudes,
+        months=months,
+        synonyme=synonyme,
+        communes=communes,
+        communesSearch=communesSearch,
+        taxonomyHierarchy=taxonomyHierarchy,
+        firstPhoto=firstPhoto,
+        photoCarousel=photoCarousel,
+        videoAudio=videoAudio,
+        articles=articles,
+        taxonDescription=taxonDescription,
+        observers=observers,
+        configuration=configuration
+    )
 
 
 @main.route('/commune/<insee>', methods=['GET', 'POST'])
@@ -154,8 +181,15 @@ def ficheCommune(insee):
     session.close()
     connection.close()
 
-    return render_template('templates/ficheCommune.html', listTaxons = listTaxons, referenciel = commune, communesSearch = communesSearch, observations = observations, \
-    observers=observers, configuration = configuration)
+    return render_template(
+        'templates/ficheCommune.html',
+        listTaxons=listTaxons,
+        referenciel=commune,
+        communesSearch=communesSearch,
+        observations=observations,
+        observers=observers,
+        configuration=configuration
+    )
 
 
 @main.route('/liste/<cd_ref>', methods=['GET', 'POST'])
@@ -184,15 +218,23 @@ def ficheRangTaxonomie(cd_ref):
         'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS
     }
 
-    return render_template('templates/ficheRangTaxonomique.html', listTaxons = listTaxons, referenciel = referenciel, communesSearch = communesSearch,\
-        taxonomyHierarchy=taxonomyHierarchy, observers=observers, configuration=configuration)
+    return render_template(
+        'templates/ficheRangTaxonomique.html'
+        listTaxons=listTaxons,
+        referenciel=referenciel,
+        communesSearch=communesSearch,
+        taxonomyHierarchy=taxonomyHierarchy,
+        observers=observers,
+        configuration=configuration
+    )
+
 
 @main.route('/groupe/<groupe>', methods=['GET', 'POST'])
 def ficheGroupe(groupe):
     session = utils.loadSession()
     connection = utils.engine.connect()
 
-    groups=vmTaxonsRepository.getAllINPNgroup(connection)
+    groups = vmTaxonsRepository.getAllINPNgroup(connection)
     listTaxons = vmTaxonsRepository.getTaxonsGroup(connection, groupe)
     communesSearch = vmCommunesRepository.getAllCommunes(session)
     observers = vmObservationsRepository.getGroupeObservers(connection, groupe)
@@ -211,7 +253,15 @@ def ficheGroupe(groupe):
         'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER,
         'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS
     }
-    return render_template('templates/ficheGroupe.html', listTaxons = listTaxons,  communesSearch = communesSearch, referenciel= groupe, groups=groups, observers=observers,configuration=configuration)
+    return render_template(
+        'templates/ficheGroupe.html',
+        listTaxons=listTaxons,
+        communesSearch=communesSearch,
+        referenciel=groupe,
+        groups=groups,
+        observers=observers,
+        configuration=configuration
+    )
 
 
 @main.route('/presentation', methods=['GET', 'POST'])
@@ -227,7 +277,11 @@ def presentation():
         'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS
     }
     session.close()
-    return render_template('static/custom/templates/presentation.html', communesSearch = communesSearch, configuration=configuration)
+    return render_template(
+        'static/custom/templates/presentation.html',
+        communesSearch=communesSearch,
+        configuration=configuration
+    )
 
 
 @main.route('/photos', methods=['GET', 'POST'])
@@ -246,4 +300,9 @@ def photos():
     }
     session.close()
     connection.close()
-    return render_template('templates/galeriePhotos.html', communesSearch = communesSearch, groups=groups, configuration=configuration)
+    return render_template(
+        'templates/galeriePhotos.html',
+        communesSearch=communesSearch,
+        groups=groups,
+        configuration=configuration
+    )
