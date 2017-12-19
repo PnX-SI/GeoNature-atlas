@@ -37,36 +37,34 @@
         						<ul class="floatParent">
         						    {% for group in groups %}
         							    <li class="floatLeft">
-                                            <img class="INPNgroup" src="{{url_for('static', filename='images/picto_' + group.group | replace(" ", "_") +'.png')}}" alt="{{group.groupAccent}}" data-toggle="tooltip" data-original- title="{{group.groupAccent}}" data-placement="top">
-                                        </li>
+                            <img class="INPNgroup" src="{{url_for('static', filename='images/picto_' + group.group | replace(" ", "_") +'.png')}}" alt="{{group.groupAccent}}" data-toggle="tooltip" data-original- title="{{group.groupAccent}}" data-placement="top">
+                          </li>
         						    {% endfor %}
 
         						    <li class="floatLeft bottom">
-                                        <a id="allGroups" class="btn btn-default" role="button" data-toggle="tooltip" data-original-title="Afficher les photos de tous les groupes" data-placement="top">Tous les groupes</a>
-                                    </li>
-                                     <li class="floatLeft bottom">
-                                        <span id="orderPhotos" class="sortedButton">
-                                            <span id="sort" class="glyphicon glyphicon-sort" data-toggle="tooltip" data-original-title="Trier les photos par nombre d'observations" data-placement="top"></span>
-                                        </span>
-                                    </li>
+                            <a id="allGroups" class="btn btn-default" role="button" data-toggle="tooltip" data-original-title="Afficher les photos de tous les groupes" data-placement="top">Tous les groupes</a>
+                        </li>
+                        <li class="floatLeft bottom">
+                            <span id="orderPhotos" class="sortedButton">
+                                <span id="sort" class="glyphicon glyphicon-sort" data-toggle="tooltip" data-original-title="Trier les photos par nombre d'observations" data-placement="top"></span>
+                            </span>
+                        </li>
         						    <li class="floatLeft bottom">
-                                        <input type="text" class="form-control" id="searchPhotos" placeholder="Rechercher une espèce" value="">
-                                    </li>
-                                 </ul>
-                            </div>
-                        <h3 id="nbPhotos"></h4>
+                          <input type="text" class="form-control" id="searchPhotos" placeholder="Rechercher une espèce" value="">
+                        </li>
+                    </ul>
+              </div>
+              <h3 id="nbPhotos"></h4>
 					</div>
 
 				</div>
 			</div>
 
-            <div class="col-sm-12">
+      <div class="col-sm-12">
+        <div class="col-sm-12 panel panel-default" id="insertPhotos"></div>
+      </div>
 
-		          <div class="col-sm-12 panel panel-default" id="insertPhotos"></div>
-
-            </div>
-
-        </div>
+    </div>
 
         {% if configuration.AFFICHAGE_FOOTER %}
             {% include 'static/custom/templates/footer.html' %}

@@ -69,16 +69,26 @@ def getTaxonsChildsList(connection, cd_ref):
         nbObsTotal = nbObsTotal + r.nb_obs
     return {'taxons': taxonRankList, 'nbObsTotal': nbObsTotal}
 
-# Get list of INPN groups with at least one photo
+
 def getINPNgroupPhotos(connection):
-    sql=""" SELECT DISTINCT count(*) AS nb_photos, group2_inpn FROM atlas.vm_taxons T
-    JOIN atlas.vm_medias M on M.cd_ref = T.cd_ref
-    GROUP BY group2_inpn
-    ORDER BY nb_photos DESC """
+    """
+        Get list of INPN groups with at least one photo
+    """
+
+    sql = """
+        SELECT DISTINCT count(*) AS nb_photos, group2_inpn
+        FROM atlas.vm_taxons T
+        JOIN atlas.vm_medias M on M.cd_ref = T.cd_ref
+        GROUP BY group2_inpn
+        ORDER BY nb_photos DESC
+    """
     req = connection.execute(text(sql))
     groupList = list()
     for r in req:
-        temp={'group':utils.deleteAccent(r.group2_inpn), 'groupAccent': r.group2_inpn}
+        temp = {
+            'group': utils.deleteAccent(r.group2_inpn),
+            'groupAccent': r.group2_inpn
+        }
         groupList.append(temp)
     return groupList
 

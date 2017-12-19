@@ -23,13 +23,13 @@ def getObservationsMailleAndPointAPI(cd_ref):
     return Response(json.dumps(observations), mimetype='application/json')
 
 
-    
+
 @api.route('/observationsMaille/<int:cd_ref>', methods=['GET'])
 def getObservationsMailleAPI(cd_ref):
     connection = utils.engine.connect()
     observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(connection, cd_ref)
     connection.close()
-    return Response(json.dumps(observations), mimetype='application/json')  
+    return Response(json.dumps(observations), mimetype='application/json')
 
 @api.route('/observationsPoint/<int:cd_ref>', methods=['GET'])
 def getObservationsPointAPI(cd_ref):
@@ -56,14 +56,14 @@ def getObservationsCommuneTaxonMailleAPI(insee, cd_ref):
 @api.route('/photoGroup/<group>', methods=['GET'])
 def getPhotosGroup(group):
     connection = utils.engine.connect()
-    photos = vmMedias.getPhotosGalleryByGroup(connection,config.ATTR_MAIN_PHOTO, config.ATTR_OTHER_PHOTO, group)
+    photos = vmMedias.getPhotosGalleryByGroup(connection, config.ATTR_MAIN_PHOTO, config.ATTR_OTHER_PHOTO, group)
     connection.close()
     return Response(json.dumps(photos), mimetype='application/json')
+
 
 @api.route('/photosGallery', methods=['GET'])
 def getPhotosGallery():
     connection = utils.engine.connect()
-    photos=vmMedias.getPhotosGallery(connection, config.ATTR_MAIN_PHOTO, config.ATTR_OTHER_PHOTO)
+    photos = vmMedias.getPhotosGallery(connection, config.ATTR_MAIN_PHOTO, config.ATTR_OTHER_PHOTO)
     connection.close()
     return Response(json.dumps(photos), mimetype='application/json')
-

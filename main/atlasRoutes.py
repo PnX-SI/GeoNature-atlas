@@ -298,7 +298,8 @@ def photos():
         'NOM_APPLICATION': config.NOM_APPLICATION,
         'URL_APPLICATION': config.URL_APPLICATION,
         'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER,
-        'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS
+        'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS,
+        'TAXHUB_URL': config.TAXHUB_URL if hasattr(config, 'TAXHUB_URL') else None
     }
     session.close()
     connection.close()

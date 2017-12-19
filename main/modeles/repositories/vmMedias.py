@@ -19,7 +19,7 @@ def getFirstPhoto(connection, cd_ref, id):
     FROM atlas.vm_medias \
     WHERE (cd_ref IN ( SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)) OR cd_ref = :thiscdref) AND id_type=:thisid"
     req = connection.execute(text(sql), thiscdref = cd_ref, thisid=id)
-    
+
     for r in req:
         return {'path': utils.findPath(r), 'title': deleteNone(r.titre), 'author': deleteNone(r.auteur)}
 
@@ -41,7 +41,7 @@ def switchMedia(row):
         goodPath = row.chemin
     else:
         goodPath = row.url
-        
+
     if goodPath == '' or goodPath == None:
         return None
 
@@ -59,7 +59,7 @@ def getVideo_and_audio(connection, cd_ref, id5, id6, id7, id8, id9):
     ORDER BY date_media DESC "
 
     req = connection.execute(text(sql), thiscdref = cd_ref, id5=id5, id6=id6, id7=id7, id8=id8, id9=id9)
-    tabMedias = {'audio' :list(), 'video': list()} 
+    tabMedias = {'audio' :list(), 'video': list()}
     for r in req:
         if switchMedia(r) != None:
             path = switchMedia(r)
@@ -84,12 +84,15 @@ def getLinks_and_articles(connection, cd_ref, id3, id4):
 
 
 def getPhotosGallery(connection, id1, id2):
-    sql= """ SELECT m.url, m.chemin, t.nom_vern, t.lb_nom, t.nb_obs, m.cd_ref, m.auteur, m.titre
-         FROM atlas.vm_medias m
+    sql = """
+        SELECT m.url, m.chemin, t.nom_vern, t.lb_nom, t.nb_obs,
+            m.cd_ref, m.auteur, m.titre, m.id_media
+        FROM atlas.vm_medias m
         JOIN atlas.vm_taxons t ON t.cd_ref = m.cd_ref
         WHERE m.id_type IN (:thisID1, :thisID2)
-        ORDER BY RANDOM()"""
-    req = connection.execute(text(sql), thisID1 = id1, thisID2 = id2)
+        ORDER BY RANDOM()
+    """
+    req = connection.execute(text(sql), thisID1=id1, thisID2=id2)
     tabPhotos = list()
     for r in req:
         if r.nom_vern != None:
@@ -97,14 +100,24 @@ def getPhotosGallery(connection, id1, id2):
             taxonName = nom_verna[0]+' | ' + r.lb_nom
         else:
             taxonName = r.lb_nom
-        temp={'path':utils.findPath(r), 'name':taxonName, 'cd_ref':r.cd_ref,'author': r.auteur, 'title':r.titre, 'nb_obs': r.nb_obs}
+        temp = {
+            'path': utils.findPath(r),
+            'name': taxonName,
+            'cd_ref': r.cd_ref,
+            'author': r.auteur,
+            'title': r.titre,
+            'nb_obs': r.nb_obs,
+            'id_media': r.id_media
+        }
         tabPhotos.append(temp)
     return tabPhotos
 
 
 def getPhotosGalleryByGroup(connection, id1, id2, INPNgroup):
-    sql= """ SELECT m.url, m.chemin, t.nom_vern, t.lb_nom, m.cd_ref, m.auteur, m.titre, t.nb_obs
-         FROM atlas.vm_medias m
+    sql = """
+        SELECT m.url, m.chemin, t.nom_vern, t.lb_nom, m.cd_ref,
+            m.auteur, m.titre, t.nb_obs, m.id_media
+        FROM atlas.vm_medias m
         JOIN atlas.vm_taxons t ON t.cd_ref = m.cd_ref
         WHERE m.id_type IN  (:thisID1, :thisID2) AND t.group2_inpn = :thisGroup
         ORDER BY RANDOM()"""
@@ -116,10 +129,14 @@ def getPhotosGalleryByGroup(connection, id1, id2, INPNgroup):
             taxonName = nom_verna[0]+' | ' + r.lb_nom
         else:
             taxonName = r.lb_nom
-        temp={'path':utils.findPath(r), 'name':taxonName, 'cd_ref':r.cd_ref, 'author': r.auteur, 'title':r.titre, 'nb_obs': r.nb_obs}
+        temp = {
+            'path': utils.findPath(r),
+            'name': taxonName,
+            'cd_ref': r.cd_ref,
+            'author': r.auteur,
+            'title': r.titre,
+            'nb_obs': r.nb_obs,
+            'id_media': r.id_media
+        }
         tabPhotos.append(temp)
     return tabPhotos
-
-
-
-
