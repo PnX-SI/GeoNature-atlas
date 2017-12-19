@@ -159,3 +159,12 @@ ATTR_VIMEO = 9
 # La table des taxons contient-elle les informations suivantes ?
 PATRIMONIALITE = True
 PROTECTION = True
+
+############################################
+#### Pages statistiques                #####
+############################################
+# Pour l'instant les pictos se limitent au glyphicon proposés par bootstrap
+# https://getbootstrap.com/docs/3.3/components/
+STATIC_PAGES = {
+    'presentation': {'title': u"Présentation de l'atlas", 'picto': 'glyphicon-question-sign', 'order': 0, 'template': 'static/custom/templates/presentation.html'}
+}

@@ -1,6 +1,6 @@
 #! /usr/bin/python
 # -*- coding:utf-8 -*-
-from flask import Flask, request, render_template, jsonify, redirect
+from flask import Flask, request, render_template, jsonify, redirect, abort
 from configuration import config
 from modeles.repositories import (
     vmTaxonsRepository, vmObservationsRepository, vmAltitudesRepository,
@@ -13,6 +13,16 @@ from . import utils
 
 from flask import Blueprint
 main = Blueprint('main', __name__)
+
+base_configuration = {
+    'STRUCTURE': config.STRUCTURE,
+    'NOM_APPLICATION': config.NOM_APPLICATION,
+    'URL_APPLICATION': config.URL_APPLICATION,
+    'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER,
+    'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS,
+    'STATIC_PAGES': config.STATIC_PAGES,
+    'TAXHUB_URL': config.TAXHUB_URL if hasattr(config, 'TAXHUB_URL') else None
+}
 
 
 @main.route('/espece/'+config.REMOTE_MEDIAS_PATH+'<image>', methods=['GET', 'POST'])
@@ -40,7 +50,7 @@ def indexMedias(image):
     return redirect(config.REMOTE_MEDIAS_URL+config.REMOTE_MEDIAS_PATH+image)
 
 
-@main.route('/' , methods=['GET', 'POST'])
+@main.route('/', methods=['GET', 'POST'])
 def index():
     session = utils.loadSession()
     connection = utils.engine.connect()
@@ -55,9 +65,9 @@ def index():
     stat = vmObservationsRepository.statIndex(connection)
     customStat = vmObservationsRepository.genericStat(connection, config.RANG_STAT)
     customStatMedias = vmObservationsRepository.genericStatMedias(connection, config.RANG_STAT)
-    configuration = {
-        'STRUCTURE': config.STRUCTURE,
-        'NOM_APPLICATION': config.NOM_APPLICATION,
+
+    configuration = base_configuration.copy()
+    configuration.update({
         'HOMEMAP': True,
         'TEXT_LAST_OBS': config.TEXT_LAST_OBS,
         'AFFICHAGE_MAILLE': config.AFFICHAGE_MAILLE,
@@ -68,12 +78,8 @@ def index():
         'COLONNES_RANG_STAT': config.COLONNES_RANG_STAT,
         'RANG_STAT_FR': config.RANG_STAT_FR,
         'MAP': config.MAP,
-        'URL_APPLICATION': config.URL_APPLICATION,
-        'AFFICHAGE_INTRODUCTION': config.AFFICHAGE_INTRODUCTION,
-        'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER,
-        'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS,
-        'TAXHUB_URL': config.TAXHUB_URL if hasattr(config, 'TAXHUB_URL') else None
-    }
+        'AFFICHAGE_INTRODUCTION': config.AFFICHAGE_INTRODUCTION
+    })
 
     connection.close()
     session.close()
@@ -110,9 +116,8 @@ def ficheEspece(cd_ref):
     taxonDescription = vmCorTaxonAttribut.getAttributesTaxon(connection, cd_ref, config.ATTR_DESC, config.ATTR_COMMENTAIRE, config.ATTR_MILIEU, config.ATTR_CHOROLOGIE)
     observers = vmObservationsRepository.getObservers(connection, cd_ref)
 
-    configuration = {
-        'STRUCTURE': config.STRUCTURE,
-        'NOM_APPLICATION': config.NOM_APPLICATION,
+    configuration = base_configuration.copy()
+    configuration.update({
         'LIMIT_FICHE_LISTE_HIERARCHY': config.LIMIT_FICHE_LISTE_HIERARCHY,
         'PATRIMONIALITE': config.PATRIMONIALITE,
         'PROTECTION': config.PROTECTION,
@@ -121,12 +126,8 @@ def ficheEspece(cd_ref):
         'ZOOM_LEVEL_POINT': config.ZOOM_LEVEL_POINT,
         'LIMIT_CLUSTER_POINT': config.LIMIT_CLUSTER_POINT,
         'FICHE_ESPECE': True,
-        'MAP': config.MAP,
-        'URL_APPLICATION': config.URL_APPLICATION,
-        'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER,
-        'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS,
-        'TAXHUB_URL': config.TAXHUB_URL if hasattr(config, 'TAXHUB_URL') else None
-    }
+        'MAP': config.MAP
+    })
 
     connection.close()
     session.close()
@@ -167,20 +168,16 @@ def ficheCommune(insee):
         observations = vmObservationsRepository.lastObservationsCommune(connection, config.NB_LAST_OBS, insee)
 
     observers = vmObservationsRepository.getObserversCommunes(connection, insee)
-    configuration = {
-        'STRUCTURE': config.STRUCTURE,
-        'NOM_APPLICATION': config.NOM_APPLICATION,
+
+    configuration = base_configuration.copy()
+    configuration.update({
         'NB_LAST_OBS': config.NB_LAST_OBS,
         'AFFICHAGE_MAILLE': config.AFFICHAGE_MAILLE,
         'MAP': config.MAP,
-        'URL_APPLICATION': config.URL_APPLICATION,
         'MYTYPE': 1,
         'PATRIMONIALITE': config.PATRIMONIALITE,
-        'PROTECTION': config.PROTECTION,
-        'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER,
-        'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS,
-        'TAXHUB_URL': config.TAXHUB_URL if hasattr(config, 'TAXHUB_URL') else None
-    }
+        'PROTECTION': config.PROTECTION
+    })
 
     session.close()
     connection.close()
@@ -210,18 +207,13 @@ def ficheRangTaxonomie(cd_ref):
     connection.close()
     session.close()
 
-    configuration = {
-        'STRUCTURE': config.STRUCTURE,
-        'NOM_APPLICATION': config.NOM_APPLICATION,
+    configuration = base_configuration.copy()
+    configuration.update({
         'LIMIT_FICHE_LISTE_HIERARCHY': config.LIMIT_FICHE_LISTE_HIERARCHY,
-        'URL_APPLICATION': config.URL_APPLICATION,
         'MYTYPE': 0,
         'PATRIMONIALITE': config.PATRIMONIALITE,
         'PROTECTION': config.PROTECTION,
-        'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER,
-        'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS,
-        'TAXHUB_URL': config.TAXHUB_URL if hasattr(config, 'TAXHUB_URL') else None
-    }
+    })
 
     return render_template(
         'templates/ficheRangTaxonomique.html',
@@ -247,17 +239,14 @@ def ficheGroupe(groupe):
     session.close()
     connection.close()
 
-    configuration = {
-        'STRUCTURE': config.STRUCTURE,
-        'NOM_APPLICATION': config.NOM_APPLICATION,
+    configuration = base_configuration.copy()
+    configuration.update({
         'LIMIT_FICHE_LISTE_HIERARCHY': config.LIMIT_FICHE_LISTE_HIERARCHY,
-        'URL_APPLICATION': config.URL_APPLICATION,
         'MYTYPE': 0,
         'PATRIMONIALITE': config.PATRIMONIALITE,
-        'PROTECTION': config.PROTECTION,
-        'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER,
-        'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS
-    }
+        'PROTECTION': config.PROTECTION
+    })
+
     return render_template(
         'templates/ficheGroupe.html',
         listTaxons=listTaxons,
@@ -269,25 +258,20 @@ def ficheGroupe(groupe):
     )
 
 
-@main.route('/presentation', methods=['GET', 'POST'])
-def presentation():
+@main.route('/static_page/<page>', methods=['GET', 'POST'])
+def get_staticpages(page):
     session = utils.loadSession()
-
+    if (page not in config.STATIC_PAGES):
+        abort(404)
+    static_page = config.STATIC_PAGES[page]
     communesSearch = vmCommunesRepository.getAllCommunes(session)
-    configuration = {
-        'STRUCTURE': config.STRUCTURE,
-        'NOM_APPLICATION': config.NOM_APPLICATION,
-        'URL_APPLICATION': config.URL_APPLICATION,
-        'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER,
-        'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS
-    }
+    configuration = base_configuration
     session.close()
     return render_template(
-        'static/custom/templates/presentation.html',
+        static_page['template'],
         communesSearch=communesSearch,
         configuration=configuration
     )
-
 
 @main.route('/photos', methods=['GET', 'POST'])
 def photos():
@@ -296,14 +280,8 @@ def photos():
 
     groups = vmTaxonsRepository.getINPNgroupPhotos(connection)
     communesSearch = vmCommunesRepository.getAllCommunes(session)
-    configuration = {
-        'STRUCTURE': config.STRUCTURE,
-        'NOM_APPLICATION': config.NOM_APPLICATION,
-        'URL_APPLICATION': config.URL_APPLICATION,
-        'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER,
-        'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS,
-        'TAXHUB_URL': config.TAXHUB_URL if hasattr(config, 'TAXHUB_URL') else None
-    }
+    configuration = base_configuration
+
     session.close()
     connection.close()
     return render_template(
