@@ -60,12 +60,12 @@
 								<h1>{{stat.nbTotalTaxons}}</h1>
 								<h4> {{ 'espèces' if stat.nbTotalTaxons > 1 else 'espèce' }}</h4>
 								<form method="POST" id="searchFormTaxonsStat" class="navbar-form" role="search">
-                                    <div class="form-group has-feedback">
-						                <input id="searchTaxonsStat" type="text" class="form-control" placeholder="Rechercher une espèce &nbsp; &nbsp; &nbsp;" loading="true" style="background-image: url('{{url_for('static', filename='images/loading3.gif') }}');" disabled>
-						                <i class="glyphicon glyphicon-search form-control-feedback"></i>
-						                <input id="hiddenInputTaxonStat" type="hidden" name="cd_ref">
-						            </div>
-                                </form>
+                  <div class="form-group has-feedback">
+		                <input id="searchTaxonsStat" type="text" class="form-control" placeholder="Rechercher une espèce &nbsp; &nbsp; &nbsp;" loading="true" style="background-image: url('{{url_for('static', filename='images/loading3.gif') }}');" disabled>
+		                <i class="glyphicon glyphicon-search form-control-feedback"></i>
+		                <input id="hiddenInputTaxonStat" type="hidden" name="cd_ref">
+						      </div>
+                </form>
 							</div>
 						</div>
 						<div class ="col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
@@ -74,12 +74,12 @@
 								<h1>{{stat.town}}</h1>
 								<h4> {{ 'communes' if stat.town > 1 else 'commune' }}</h4>
 								<form method="POST" onsubmit="completeAction('#searchFormCommunesStat', hiddenInputCommunesStat)" id='searchFormCommunesStat' action=""  class="navbar-form" role="search">
-						            <div class="form-group has-feedback">
-						                <input id="searchCommunesStat" type="text" class="form-control" placeholder="Rechercher une commune" >
-						                <i class="glyphicon glyphicon-search form-control-feedback"></i>
-						             	<input id="hiddenInputCommunesStat" type="hidden" name="insee">
-						            </div>
-					           	</form>
+			            <div class="form-group has-feedback">
+			                <input id="searchCommunesStat" type="text" class="form-control" placeholder="Rechercher une commune" >
+			                <i class="glyphicon glyphicon-search form-control-feedback"></i>
+			             	<input id="hiddenInputCommunesStat" type="hidden" name="insee">
+			            </div>
+		           	</form>
 							</div>
 						</div>
 						<div class ="col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
@@ -108,19 +108,23 @@
 					{% elif configuration.COLONNES_RANG_STAT == 4 %}
 					<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 stat-medias-wrapper">
 					{% endif %}
-							<div class="panel panel-default statMedias">
-								<div class="panel-heading">
-									<h3>{{configuration.RANG_STAT_FR[i]}} </h3>
-									<span class="higlight">{{customStat[i].nb_obs}}</span> observations | <span class="higlight">{{customStat[i].nb_taxons}}</span> espèces
-								</div>
-								<h5><span class="glyphicon glyphicon-eye-open"></span> Espèces à découvrir</h5>
+					<div class="panel panel-default statMedias">
+						<div class="panel-heading">
+							<h3>{{configuration.RANG_STAT_FR[i]}} </h3>
+							<span class="higlight">{{customStat[i].nb_obs}}</span> observations | <span class="higlight">{{customStat[i].nb_taxons}}</span> espèces
+						</div>
+						<h5><span class="glyphicon glyphicon-eye-open"></span> Espèces à découvrir</h5>
 					{% for j in range(2) %}
 						{% if loop.index <= customStatMedias[i] | length %}
 								<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-stat-medias">
 									<div class ="thumbnail-stat-medias">
 										<div class="zoom-wrapper">
 											<a href="{{url_for('main.ficheEspece',cd_ref=customStatMedias[i][j].cd_ref)}}" >
-										    	<div class="img-custom-medias" style="background-image: url({{customStatMedias[i][j].path}})"></div>
+                          {% if configuration.TAXHUB_URL != None %}
+										    	  <div class="img-custom-medias" style="background-image: url({{configuration.TAXHUB_URL}}/api/tmedias/thumbnail/{{customStatMedias[i][j].id_media}}?h=250&w=250)"></div>
+                          {% else %}
+										    	  <div class="img-custom-medias" style="background-image: url({{customStatMedias[i][j].path}})"></div>
+                          {% endif %}
 										    	<div class="stat-medias-hovereffet">
 										    		<img src="{{url_for('static', filename='images/eye.png') }}">
 										    		<h2 class="overlay-obs">{{customStatMedias[i][j].nb_obs}} observations</h2>
@@ -168,9 +172,9 @@
                           <img class="singleTaxon" width="80%" src="{{url_for('static', filename='images/picto_' + obs.group2_inpn | replace(" ", "_") +'.png')}}" data-toggle="tooltip" data-original-title="{{obs.group2_inpn}}" data-placement="left">
 											{% else %}
                         {% if configuration.TAXHUB_URL != None %}
-                          <div class ="pictoImg" style="background-image:url({{configuration.TAXHUB_URL}}/api/tmedias/thumbnail/{{obs.id_media}}?h=60&w=60);" data-toggle="tooltip" data-original-title="{{obs.group2_inpn}}" data-placement="left"></div>
+                          <div class ="pictoImg pictoImgSmall" style="background-image:url({{configuration.TAXHUB_URL}}/api/tmedias/thumbnail/{{obs.id_media}}?h=60&w=60);" data-toggle="tooltip" data-original-title="{{obs.group2_inpn}}" data-placement="left"></div>
                         {% else %}
-                          <div class ="pictoImg" style="background-image:url({{obs.pathImg}});" data-toggle="tooltip" data-original-title="{{obs.group2_inpn}}" data-placement="left"></div>
+                          <div class ="pictoImg pictoImgSmall" style="background-image:url({{obs.pathImg}});" data-toggle="tooltip" data-original-title="{{obs.group2_inpn}}" data-placement="left"></div>
                         {% endif %}
 											{% endif %}
                       </td>
@@ -202,9 +206,13 @@
 						<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col">
 						    <div class="hovereffect">
 						        {% if tax.path == None %}
-						        <img class="default-logo " src="{{url_for('static', filename='images/picto_' + tax.group2_inpn | replace(" ", "_") +'.png') }}" alt="">
+                      <img class="default-logo " src="{{url_for('static', filename='images/picto_' + tax.group2_inpn | replace(" ", "_") +'.png') }}" alt="">
 						        {% else %}
-						        <div class="img-responsive-logo" style="background-image:url({{tax.path}})"> </div>
+                      {% if configuration.TAXHUB_URL != None %}
+                        <div class ="pictoImg pictoImgMedium" style="background-image:url({{configuration.TAXHUB_URL}}/api/tmedias/thumbnail/{{tax.id_media}}?h=250&w=250);" data-toggle="tooltip" data-original-title="{{tax.group2_inpn}}" data-placement="left"></div>
+                      {% else %}
+						            <div class="img-responsive-logo" style="background-image:url({{tax.path}})"> </div>
+                      {% endif %}
 						        {% endif %}
 						        <div class="overlay">
 						           <h2>{{tax.taxonName}}</h2>

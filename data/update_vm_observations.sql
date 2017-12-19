@@ -4,8 +4,8 @@
 -- A exécuter avec l'utilisateur propriétaire de la BDD (owner_atlas dans main/configuration/settings.ini).
 -- Ce script vous permet de recréer la vue atlas.vm_observations en l'adaptant à vos besoins.
 -- Pour cela toutes les vues qui en dépendent doivent être supprimées puis recréées.
--- Si votre utilisateur PostgreSQL en lecture seule sur ces vues n'est pas "geonatatlas" (celui utilisé par l'application web de l'atlas, user_pg dans main/configuration/settings.ini), 
--- vous devez modifier les GRANT à la fin de ce script avec le nom de votre utilisateur avant de l'exécuter. 
+-- Si votre utilisateur PostgreSQL en lecture seule sur ces vues n'est pas "geonatatlas" (celui utilisé par l'application web de l'atlas, user_pg dans main/configuration/settings.ini),
+-- vous devez modifier les GRANT à la fin de ce script avec le nom de votre utilisateur avant de l'exécuter.
 
 --------------------------------------------------------------
 -- SUPPRESSION DES VUES DEPENDANT DE LA VUE VM_OBSERVATIONS --
@@ -24,7 +24,7 @@ DROP MATERIALIZED VIEW atlas.vm_observations;
 -- DE CREATION DE LA VUE VM_OBSERVATIONS ----
 ---------------------------------------------
 -- Materialized View: atlas.vm_observations
-CREATE MATERIALIZED VIEW atlas.vm_observations AS 
+CREATE MATERIALIZED VIEW atlas.vm_observations AS
  SELECT s.id_synthese AS id_observation,
     s.insee,
     s.dateobs,
@@ -49,7 +49,7 @@ CREATE INDEX index_gist_vm_observations_the_geom_point ON atlas.vm_observations 
 
 
 -- Materialized View: atlas.vm_taxons
-CREATE MATERIALIZED VIEW atlas.vm_taxons AS 
+CREATE MATERIALIZED VIEW atlas.vm_taxons AS
  WITH obs_min_taxons AS (
          SELECT vm_observations.cd_ref,
             min(date_part('year'::text, vm_observations.dateobs)) AS yearmin,
@@ -119,16 +119,16 @@ CREATE UNIQUE INDEX ON atlas.vm_taxons (cd_ref);
 
 
 -- Materialized View: atlas.vm_search_taxon
-CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS 
+CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS
 SELECT tx.cd_nom, tx.cd_ref, COALESCE(tx.lb_nom || ' | ' || tx.nom_vern, tx.lb_nom) AS nom_search FROM atlas.vm_taxref tx JOIN atlas.vm_taxons t ON t.cd_ref = tx.cd_ref;
 
 CREATE UNIQUE index on atlas.vm_search_taxon(cd_nom);
 CREATE index on atlas.vm_search_taxon(cd_ref);
-CREATE index on atlas.vm_search_taxon(nom_search); 
+CREATE index on atlas.vm_search_taxon(nom_search);
 
 
 -- Materialized View: atlas.vm_mois
-CREATE MATERIALIZED VIEW atlas.vm_mois AS 
+CREATE MATERIALIZED VIEW atlas.vm_mois AS
  WITH _01 AS (
          SELECT vm_observations.cd_ref,
             count(*) AS nb
@@ -236,29 +236,30 @@ CREATE UNIQUE INDEX ON atlas.vm_mois (cd_ref);
 
 
 -- Materialized View: atlas.vm_taxons_plus_observes
-CREATE MATERIALIZED VIEW atlas.vm_taxons_plus_observes AS 
- SELECT count(*) AS nb_obs,
-    obs.cd_ref,
-    tax.lb_nom,
-    tax.group2_inpn,
-    tax.nom_vern,
-    m.url,
-    m.chemin,
-    m.id_type
-   FROM atlas.vm_observations obs
-     JOIN atlas.vm_taxons tax ON tax.cd_ref = obs.cd_ref
-     LEFT JOIN atlas.vm_medias m ON m.cd_ref = obs.cd_ref AND m.id_type = 1
-  WHERE date_part('day'::text, obs.dateobs) >= date_part('day'::text, 'now'::text::date - 15) AND date_part('month'::text, obs.dateobs) = date_part('month'::text, 'now'::text::date - 15) OR date_part('day'::text, obs.dateobs) <= date_part('day'::text, 'now'::text::date + 15) AND date_part('month'::text, obs.dateobs) = date_part('day'::text, 'now'::text::date + 15)
-  GROUP BY obs.cd_ref, tax.lb_nom, tax.nom_vern, m.url, m.chemin, tax.group2_inpn, m.id_type
-  ORDER BY (count(*)) DESC
- LIMIT 12
+CREATE MATERIALIZED VIEW atlas.vm_taxons_plus_observes AS
+SELECT count(*) AS nb_obs,
+   obs.cd_ref,
+   tax.lb_nom,
+   tax.group2_inpn,
+   tax.nom_vern,
+   m.id_media,
+   m.url,
+   m.chemin,
+   m.id_type
+  FROM atlas.vm_observations obs
+    JOIN atlas.vm_taxons tax ON tax.cd_ref = obs.cd_ref
+    LEFT JOIN atlas.vm_medias m ON m.cd_ref = obs.cd_ref AND m.id_type = 1
+ WHERE date_part('day'::text, obs.dateobs) >= date_part('day'::text, 'now'::text::date - 15) AND date_part('month'::text, obs.dateobs) = date_part('month'::text, 'now'::text::date - 15) OR date_part('day'::text, obs.dateobs) <= date_part('day'::text, 'now'::text::date + 15) AND date_part('month'::text, obs.dateobs) = date_part('day'::text, 'now'::text::date + 15)
+ GROUP BY obs.cd_ref, tax.lb_nom, tax.nom_vern, m.url, m.chemin, tax.group2_inpn, m.id_type, m.id_media
+ ORDER BY (count(*)) DESC
+LIMIT 12
 WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_taxons_plus_observes (cd_ref);
 
 
 -- Materialized View: atlas.vm_observations_mailles
-CREATE MATERIALIZED VIEW atlas.vm_observations_mailles AS 
+CREATE MATERIALIZED VIEW atlas.vm_observations_mailles AS
  SELECT obs.cd_ref,
     obs.id_observation,
     m.id_maille,

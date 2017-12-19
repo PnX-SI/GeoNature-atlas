@@ -241,16 +241,20 @@ def genericStat (connection, tab):
             tabStat.append(temp)
     return tabStat
 
+
 def genericStatMedias(connection, tab):
     tabStat = list()
     for i in range(len(tab)):
         rang, nomTaxon = tab[i].items()[0]
-        sql= "SELECT t.nb_obs, t.cd_ref, t.lb_nom, t.nom_vern, t.group2_inpn, m.url, m.chemin, m.auteur \
-                FROM atlas.vm_taxons t \
-                JOIN atlas.vm_medias m ON m.cd_ref = t.cd_ref AND m.id_type = 1 \
-                WHERE t."+rang+" IN :nomTaxon \
-                ORDER BY RANDOM() \
-                LIMIT 10 "
+        sql = """
+            SELECT t.nb_obs, t.cd_ref, t.lb_nom, t.nom_vern, t.group2_inpn,
+                m.url, m.chemin, m.auteur, m.id_media
+            FROM atlas.vm_taxons t
+            JOIN atlas.vm_medias m ON m.cd_ref = t.cd_ref AND m.id_type = 1
+            WHERE t.{} IN :nomTaxon
+            ORDER BY RANDOM()
+            LIMIT 10
+        """.format(rang)
         req = connection.execute(text(sql), nomTaxon=tuple(nomTaxon))
         tabStat.insert(i, list())
         for r in req:
@@ -258,9 +262,18 @@ def genericStatMedias(connection, tab):
             if r.nom_vern != None:
                 shorterName = r.nom_vern.split(",")
                 shorterName = shorterName[0]
-            temp = {'cd_ref': r.cd_ref, 'lb_nom' : r.lb_nom, 'nom_vern': shorterName, 'path': utils.findPath(r), 'author': r.auteur, 'group2_inpn':utils.deleteAccent(r.group2_inpn), 'nb_obs': r.nb_obs}
+            temp = {
+                'cd_ref': r.cd_ref,
+                'lb_nom': r.lb_nom,
+                'nom_vern': shorterName,
+                'path': utils.findPath(r),
+                'author': r.auteur,
+                'group2_inpn': utils.deleteAccent(r.group2_inpn),
+                'nb_obs': r.nb_obs,
+                'id_media': r.id_media
+            }
             tabStat[i].append(temp)
     if len(tabStat[0]) == 0:
         return None
-    else :
+    else:
         return tabStat

@@ -15,6 +15,12 @@ def mostViewTaxon(connection):
             taxonName = nom_verna[0]+' | ' + r.lb_nom
         else:
             taxonName = r.lb_nom
-        temp ={'cd_ref': r.cd_ref, 'taxonName':taxonName, 'path': utils.findPath(r), 'group2_inpn': utils.deleteAccent(r.group2_inpn)}
+        temp ={
+            'cd_ref': r.cd_ref,
+            'taxonName': taxonName,
+            'path': utils.findPath(r),
+            'group2_inpn': utils.deleteAccent(r.group2_inpn),
+            'id_media': r.id_media
+        }
         tabTax.append(temp)
     return tabTax
