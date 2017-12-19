@@ -258,21 +258,6 @@ def ficheGroupe(groupe):
     )
 
 
-@main.route('/static_page/<page>', methods=['GET', 'POST'])
-def get_staticpages(page):
-    session = utils.loadSession()
-    if (page not in config.STATIC_PAGES):
-        abort(404)
-    static_page = config.STATIC_PAGES[page]
-    communesSearch = vmCommunesRepository.getAllCommunes(session)
-    configuration = base_configuration
-    session.close()
-    return render_template(
-        static_page['template'],
-        communesSearch=communesSearch,
-        configuration=configuration
-    )
-
 @main.route('/photos', methods=['GET', 'POST'])
 def photos():
     session = utils.loadSession()
@@ -288,5 +273,21 @@ def photos():
         'templates/galeriePhotos.html',
         communesSearch=communesSearch,
         groups=groups,
+        configuration=configuration
+    )
+
+
+@main.route('/<page>', methods=['GET', 'POST'])
+def get_staticpages(page):
+    session = utils.loadSession()
+    if (page not in config.STATIC_PAGES):
+        abort(404)
+    static_page = config.STATIC_PAGES[page]
+    communesSearch = vmCommunesRepository.getAllCommunes(session)
+    configuration = base_configuration
+    session.close()
+    return render_template(
+        static_page['template'],
+        communesSearch=communesSearch,
         configuration=configuration
     )
