@@ -25,7 +25,12 @@
                     {% if taxon.path == None %}
                         <img src="{{url_for('static', filename='images/picto_'+ taxon.group2_inpn| replace(" ", "_") |urlencode+'.png') }}" data-toggle="tooltip" data-original-title="{{taxon.group2_inpn}}" data-placement="right">
                     {% else %}
-                        <div class="pictoImgList" style="background-image:url({{taxon.path}});" data-toggle="tooltip" data-original-title="{{taxon.group2_inpn}}" data-placement="right"></div>
+                      {% if configuration.TAXHUB_URL != None %}
+                        {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+taxon.id_media|string+'?h=250&w=250' %}
+                      {% else %}
+                        {% set img_path = taxon.path %}
+                      {% endif %}
+                        <div class="pictoImgList" style="background-image:url({{img_path}});" data-toggle="tooltip" data-original-title="{{taxon.group2_inpn}}" data-placement="right"></div>
                     {% endif %}
                     <span class="hiddenSpan">{{taxon.group2_inpn}}</span>
                 </td>

@@ -178,7 +178,8 @@ def ficheCommune(insee):
         'PATRIMONIALITE': config.PATRIMONIALITE,
         'PROTECTION': config.PROTECTION,
         'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER,
-        'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS
+        'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS,
+        'TAXHUB_URL': config.TAXHUB_URL if hasattr(config, 'TAXHUB_URL') else None
     }
 
     session.close()
@@ -218,7 +219,8 @@ def ficheRangTaxonomie(cd_ref):
         'PATRIMONIALITE': config.PATRIMONIALITE,
         'PROTECTION': config.PROTECTION,
         'AFFICHAGE_FOOTER': config.AFFICHAGE_FOOTER,
-        'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS
+        'ID_GOOGLE_ANALYTICS': config.ID_GOOGLE_ANALYTICS,
+        'TAXHUB_URL': config.TAXHUB_URL if hasattr(config, 'TAXHUB_URL') else None
     }
 
     return render_template(
