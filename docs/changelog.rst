@@ -46,7 +46,8 @@ Activer les modules et redémarrer Apache
 
 Supprimer le fichier ``atlas.wsgi``
 
-MAJ conf Apache (modifier le port en fonction)
+Mettre à jour la configuration Apache de votre GeoNature-atlas (``/etc/apache2/sites-available/atlas.conf``) en remplacant son contenu (modifier le port en fonction) :
+
 ::
 
     # Configuration Geonature-atlas
