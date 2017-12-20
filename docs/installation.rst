@@ -200,7 +200,7 @@ Copier/collez-y ces lignes en renseignant le bon port :
 
 :notes:
 
-    Ici l'application sera consultable à la racine de l'URL du serveur. Si vous souhaitez qu'elle soit accessible dans un sous répertoire (http://monURL/atlas par exemple), modifier la premiere ligne en ``WSGIScriptAlias /atlas /home/MONUSER/atlas/atlas.wsgi``
+    Ici l'application sera consultable comme un sous répertoire du serveur  (http://monURL/atlas par exemple).
 	
 	
 Si l'atlas est associé à un domaine, ajoutez ces 2 premières lignes au début du fichier :
