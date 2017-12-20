@@ -1,12 +1,11 @@
 app_name=atlas
 
-####################################
-###config Gunicorn
-####################################
+#####################
+### Gunicorn settings
+#####################
 gun_num_workers=4
 gun_host=0.0.0.0
 gun_port=8080
-
 
 ####################
 ### Python settings
@@ -15,7 +14,7 @@ venv_dir=venv
 
 #
 #  GeoNature-atlas
-#  Configuration PostgreSQL et BDD
+#  PostgreSQL database settings
 #.................................
 
 # Effacer la base de données existante lors de l'installation
