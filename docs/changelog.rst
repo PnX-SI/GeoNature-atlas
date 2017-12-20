@@ -31,29 +31,33 @@ CHANGELOG
 * Passage de WSGI à Gunicorn....
 Compléter le fichier ``main/configuration/settings.ini`` avec les parties ``Gunicorn settings`` et ``Python settings``, en se basant sur le fichier d'exemple ``main/configuration/settings.ini.sample``
 
-```
+::
+
   sudo apt-get install -y supervisor
+  ./install_app.sh
 
-  sudo -s supervisorctl stop atlas
+Activer les modules et redémarrer Apache
 
-  virtualenv $venv_dir
+::
 
-  . $venv_dir/bin/activate
- 
-  #Lancement de l'application
-  DIR=$(readlink -e "${0%/*}")
-  sudo -s cp  atlas-service.conf /etc/supervisor/conf.d/
-  sudo -s sed -i "s%APP_PATH%${DIR}%" /etc/supervisor/conf.d/atlas-service.conf
-
-  sudo -s supervisorctl reread
-  sudo -s supervisorctl reload
-```
+    sudo a2enmod proxy
+    sudo a2enmod proxy_http
+    sudo apache2ctl restart
 
 Supprimer le fichier ``atlas.wsgi``
 
-MAJ conf Apache
+MAJ conf Apache (modifier le port en fonction)
+::
 
-Attention documentation d'installation mentionne encore WSGI dans une note. Il faut aussi vérifier la doc d'update. 
+    # Configuration Geonature-atlas
+    RewriteEngine  on
+    RewriteRule    "atlas$"  "atlas/"  [R]
+    <Location /atlas>
+        ProxyPass  http://127.0.0.1:8080/
+        ProxyPassReverse  http://127.0.0.1:8080/
+    </Location>
+    #FIN Configuration Geonature-atlas
+
 
 
 1.2.6 (2017-06-30)
