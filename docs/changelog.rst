@@ -7,7 +7,7 @@ CHANGELOG
 
 **Nouveautés**
 
-* Passage de WSGI à Gunicorn pour simplifier et homogénéiser 
+* Passage de WSGI à Gunicorn pour simplifier et homogénéiser les serveurs Web des différentes applications (TaxHub, GeoNature...)
 * Télécharger TAXREF sur geonature.fr et non plus sur le dépôt de TaxHub
 * Amélioration du message par défaut sur la HOME pour les dernieres observations
 * Optimisation de certaines requêtes
@@ -27,6 +27,7 @@ CHANGELOG
 
 **Notes de version**
 
+* Suivre la procédure standard de mise à jour
 * Compléter le fichier de configuration en ajoutant les nouveaux paramètres ``TAXHUB_URL`` et ``STATIC_PAGES``, en se basant sur le fichier d'exemple ``main/configuration/config.py.sample``
 * Passage de WSGI à Gunicorn....
 Compléter le fichier ``main/configuration/settings.ini`` avec les parties ``Gunicorn settings`` et ``Python settings``, en se basant sur le fichier d'exemple ``main/configuration/settings.ini.sample``
@@ -58,8 +59,6 @@ Mettre à jour la configuration Apache de votre GeoNature-atlas (``/etc/apache2/
         ProxyPassReverse  http://127.0.0.1:8080/
     </Location>
     #FIN Configuration Geonature-atlas
-
-
 
 1.2.6 (2017-06-30)
 ------------------
