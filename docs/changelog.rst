@@ -8,12 +8,14 @@ CHANGELOG
 **Nouveautés**
 
 * Passage de WSGI à Gunicorn pour simplifier et homogénéiser 
-* Télécharger TaxRef sur geonature.fr et non plus sur le dépôt de TaxHub
+* Télécharger TAXREF sur geonature.fr et non plus sur le dépôt de TaxHub
 * Amélioration du message par défaut sur la HOME pour les dernieres observations
 * Optimisation de certaines requêtes
 * Prise en compte du HTML dans le champs AUTEUR
 * Ajout de picto pour les groupes Hépatiques et Anthocérotes
 * Prise en compte des groupes INPN contenant des espaces
+* TaxHub 1.3.2 permet de générer à la volée des vignettes des images. Ces vignettes sont désormais utilisables dans GeoNature-atlas pour éviter de charger des grandes images dans les listes de taxons. Pour cela un paramètre ``TAXHUB_URL`` a été ajouté (#129)
+* Dans les versions précédentes seules une page statique PRESENTATION était disponible. Seul son contenu était modifiable. Les pages statiques sont désormais paramétrables (template, nom, picto et ordre) et il est possible d'en créer autant qu'on le souhaite en les listant dans le paramètre ``STATIC_PAGES`` (#131)
 
 **Corrections**
 
@@ -21,12 +23,13 @@ CHANGELOG
 * Correction d'un bug du slider et de la carte Leaflet dans Chrome (#109)
 * Correction des jointures pour prévenir les caractères invisibles (#121, merci @mathieubossaert)
 * Correction de l'affichage des singulers et pluriels en ajoutant des conditions (merci @Splendens)
-
+* Amélioration, formatage et simplification de la gestion des paramètres dans le fichier de routes ``main/atlasRoutes.py``
 
 **Notes de version**
 
+* Compléter le fichier de configuration en ajoutant les nouveaux paramètres ``TAXHUB_URL`` et ``STATIC_PAGES``, en se basant sur le fichier d'exemple ``main/configuration/config.py.sample``
 * Passage de WSGI à Gunicorn....
-Compléter le fichier ``main/configuration/settings.ini``
+Compléter le fichier ``main/configuration/settings.ini`` avec les parties ``Gunicorn settings`` et ``Python settings``, en se basant sur le fichier d'exemple ``main/configuration/settings.ini.sample``
 
 ```
   sudo apt-get install -y supervisor
