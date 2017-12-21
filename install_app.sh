@@ -35,9 +35,6 @@ echo "Creating configuration files if they dont already exist"
 if [ ! -f ./main/configuration/config.py ]; then
   cp ./main/configuration/config.py.sample ./main/configuration/config.py
 fi
-if [ ! -f ./main/configuration/settings.ini ]; then
-  cp ./main/configuration/settings.ini.sample ./main/configuration/settings.ini
-fi
 
 echo "Creating customisation files if they dont already exist"
 if [ ! -f ./static/custom/templates/footer.html ]; then
