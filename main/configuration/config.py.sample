@@ -131,7 +131,8 @@ REMOTE_MEDIAS_URL = "http://mondomaine.fr/taxhub/"
 # Seule cette partie de l'url sera visible pour les utilisateurs de l'atlas
 REMOTE_MEDIAS_PATH = "static/medias/"
 
-# Url de taxhub. Si le service Taxhub n'est pas utilisé, commenter la variable
+# URL de TaxHub (pour génération des vignettes). 
+# Si le service Taxhub n'est pas utilisé, commenter la variable
 TAXHUB_URL = "http://mondomaine.fr/taxhub/"
 
 #### ID DES ATTRIBUTS DESCRIPTIFS DES TAXONS DE LA TABLE vm_cor_taxon_attribut
@@ -160,9 +161,10 @@ ATTR_VIMEO = 9
 PATRIMONIALITE = True
 PROTECTION = True
 
-############################################
-#### Pages statistiques                #####
-############################################
+#############################
+#### Pages statistiques #####
+#############################
+
 # Pour l'instant les pictos se limitent au glyphicon proposés par bootstrap
 # https://getbootstrap.com/docs/3.3/components/
 STATIC_PAGES = {
