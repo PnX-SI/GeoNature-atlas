@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [ ! -f ./main/configuration/settings.ini ]; then
+  cp ./main/configuration/settings.ini.sample ./main/configuration/settings.ini
+fi
+
 . main/configuration/settings.ini
 
 if [ "$(id -u)" == "0" ]; then
