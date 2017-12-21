@@ -18,7 +18,7 @@ virtualenv $venv_dir
 echo "Installing requirements..."
 pip install -r requirements.txt
 
-#Launching application
+echo "Launching application..."
 DIR=$(readlink -e "${0%/*}")
 sudo -s cp  atlas-service.conf /etc/supervisor/conf.d/
 sudo -s sed -i "s%APP_PATH%${DIR}%" /etc/supervisor/conf.d/atlas-service.conf
