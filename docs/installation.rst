@@ -189,6 +189,16 @@ Copier/collez-y ces lignes en renseignant le bon port :
     </Location>
     #FIN Configuration Geonature-atlas
 
+:notes:
+
+    Ici l'application sera consultable comme un sous répertoire du serveur  (http://monURL/atlas par exemple). Si votre application doit être disponible à la racine de votre URL, remplacez ``<Location /atlas>`` par ``<Location />``
+	
+	
+Si l'atlas est associé à un domaine, ajoutez cette ligne au début du fichier :
+	 
+::
+
+    ServerName mondomaine.fr
 
 * Activer les modules et redémarrer Apache
  
@@ -197,18 +207,6 @@ Copier/collez-y ces lignes en renseignant le bon port :
         sudo a2enmod proxy
         sudo a2enmod proxy_http
         sudo apache2ctl restart
-
-:notes:
-
-    Ici l'application sera consultable comme un sous répertoire du serveur  (http://monURL/atlas par exemple).
-	
-	
-Si l'atlas est associé à un domaine, ajoutez ces 2 premières lignes au début du fichier :
-	 
-::
-
-    ServerName mondomaine.fr
-    DocumentRoot /home/MONUSER/atlas/
  
 
 Activez le virtualhost puis redémarrez Apache :
