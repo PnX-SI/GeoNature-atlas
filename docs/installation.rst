@@ -165,7 +165,9 @@ Editer le fichier de configuration ``main/configuration/config.py``.
 Customisation de l'application
 ==============================   
 	
-En plus de la configuration, vous pouvez customiser l'application en modifiant et ajoutant des fichiers dans le répertoire ``static/custom/`` (css, templates, images)
+En plus de la configuration, vous pouvez customiser l'application en modifiant et ajoutant des fichiers dans le répertoire ``static/custom/`` (css, templates, images).
+
+Vous pouvez aussi modifier ou ajouter des pages statiques de présentation, en plus de la page Présentation fournie par défaut. Pour cela, voir le paramètre ``STATIC_PAGES`` du fichier ``main/configuration/config.py``
 	
     
 Configuration d'Apache
@@ -200,7 +202,7 @@ Si l'atlas est associé à un domaine, ajoutez cette ligne au début du fichier 
 
     ServerName mondomaine.fr
 
-* Activer les modules et redémarrer Apache
+* Activer les modules et redémarrer Apache :
  
   ::  
   
@@ -228,7 +230,7 @@ Mise à jour de l'application
 
     A la racine de l'application, un fichier ``VERSION`` permet de savoir quelle version est installée. 
 
-- Copier ``main/configuration/settings.ini`` et ``main/configuration/config.py`` depuis l'ancienne version vers la nouvelle pour récupérer vos paramètres de configuration
+- Copier ``main/configuration/settings.ini`` et ``main/configuration/config.py`` depuis l'ancienne version vers la nouvelle pour récupérer vos paramètres de configuration :
 
 ::
 
@@ -236,13 +238,13 @@ Mise à jour de l'application
     cp ../VERSION-PRECEDENTE/main/configuration/settings.ini main/configuration/settings.ini
     cp ../VERSION-PRECEDENTE/main/configuration/config.py main/configuration/config.py
 
-- Copier ``static/custom/`` depuis l'ancienne version vers la nouvelle pour récupérer toute votre customisation (CSS, templates, images...)
+- Copier le contenu du répertoire ``static/custom/`` depuis l'ancienne version vers la nouvelle pour récupérer toute votre customisation (CSS, templates, images...) :
 
 ::
 
     cp -aR ../VERSION-PRECEDENTE/static/custom/ ./static
     
-- Redémarrez Apache
+- Redémarrez Apache :
 
 ::
 
