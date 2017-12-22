@@ -115,7 +115,7 @@ def getTaxonsGroup(connection, groupe):
     sql = """
         SELECT t.cd_ref, t.nom_complet_html, t.nom_vern, t.nb_obs,
             t.group2_inpn, t.protection_stricte, t.patrimonial, t.yearmax,
-            m.chemin, m.url, m.id_media
+            m.chemin, m.url, m.id_media,
             t.nb_obs
         FROM atlas.vm_taxons t
         LEFT JOIN atlas.vm_medias m
