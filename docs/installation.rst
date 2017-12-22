@@ -218,6 +218,10 @@ Activez le virtualhost puis redémarrez Apache :
     sudo a2ensite atlas
     sudo apachectl restart
 
+:notes:
+
+    En cas d'erreur, les logs serveurs ne sont pas au niveau d'Apache (serveur proxy) mais de Gunicorn (serveur HTTP) dans ``/tmp/errors_atlas.log``
+
 
 Mise à jour de l'application
 ============================
@@ -243,15 +247,15 @@ Mise à jour de l'application
 ::
 
     cp -aR ../VERSION-PRECEDENTE/static/custom/ ./static
-    
-- Redémarrez Apache :
-
-::
-
-    sudo apachectl restart
-    
+       
 
 Attention à bien lire les notes de chaque version, qui peuvent indiquer des opérations spécifiques à faire, notamment des nouveaux paramètres à ajouter dans votre configuration et/ou des modifications à appliquer dans la BDD.
+
+- Relancez l'installation automatique de l'application :
+	
+::
+
+    ./install_app.sh
 
 
 Mise à jour des couches de référence
