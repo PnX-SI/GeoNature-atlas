@@ -255,7 +255,12 @@ SELECT count(*) AS nb_obs,
 LIMIT 12
 WITH DATA;
 
-CREATE UNIQUE INDEX ON atlas.vm_taxons_plus_observes (cd_ref);
+-- DROP INDEX atlas.vm_taxons_plus_observes_cd_ref_idx;
+
+CREATE UNIQUE INDEX vm_taxons_plus_observes_cd_ref_idx
+  ON atlas.vm_taxons_plus_observes
+  USING btree
+  (cd_ref);
 
 
 -- Materialized View: atlas.vm_observations_mailles
