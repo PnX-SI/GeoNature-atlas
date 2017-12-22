@@ -159,7 +159,7 @@ Editer le fichier de configuration ``main/configuration/config.py``.
 - Renseignez la variable 'database_connection'
 - Renseignez l'URL de l'application à partir de la racine du serveur WEB ('/atlas' ou '' par exemple)
 - Renseignez les autres paramètres selon votre contexte
-- Redémarrez Apache pour que les modifications soient prises en compte (``sudo apachectl restart``)
+- Rechargez le serveur Web Gunicorn pour que les modifications soient prises en compte (``sudo supervisorctl reload``)
 
 
 Customisation de l'application
