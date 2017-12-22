@@ -368,7 +368,12 @@ WHERE date_part('day'::text, obs.dateobs) >= date_part('day'::text, 'now'::text:
 GROUP BY obs.cd_ref, tax.lb_nom, tax.nom_vern, m.url, m.chemin, tax.group2_inpn, m.id_type, m.id_media
 ORDER BY (count(*)) DESC
 LIMIT 12;
- CREATE UNIQUE INDEX ON atlas.vm_taxons_plus_observes (cd_ref);
+-- DROP INDEX atlas.vm_taxons_plus_observes_cd_ref_idx;
+
+CREATE UNIQUE INDEX vm_taxons_plus_observes_cd_ref_idx
+  ON atlas.vm_taxons_plus_observes
+  USING btree
+  (cd_ref);
 
 
 --Fonction qui permet de lister tous les taxons enfants d'un taxon

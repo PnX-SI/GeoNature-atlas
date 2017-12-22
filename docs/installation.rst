@@ -165,7 +165,9 @@ Editer le fichier de configuration ``main/configuration/config.py``.
 Customisation de l'application
 ==============================   
 	
-En plus de la configuration, vous pouvez customiser l'application en modifiant et ajoutant des fichiers dans le répertoire ``static/custom/`` (css, templates, images)
+En plus de la configuration, vous pouvez customiser l'application en modifiant et ajoutant des fichiers dans le répertoire ``static/custom/`` (css, templates, images).
+
+Vous pouvez aussi modifier ou ajouter des pages statiques de présentation, en plus de la page Présentation fournie par défaut. Pour cela, voir le paramètre ``STATIC_PAGES`` du fichier ``main/configuration/config.py``
 	
     
 Configuration d'Apache
@@ -189,26 +191,24 @@ Copier/collez-y ces lignes en renseignant le bon port :
     </Location>
     #FIN Configuration Geonature-atlas
 
+:notes:
 
-* Activer les modules et redémarrer Apache
+    Ici l'application sera consultable comme un sous répertoire du serveur  (http://monURL/atlas par exemple). Si votre application doit être disponible à la racine de votre URL, remplacez ``<Location /atlas>`` par ``<Location />``
+	
+	
+Si l'atlas est associé à un domaine, ajoutez cette ligne au début du fichier :
+	 
+::
+
+    ServerName mondomaine.fr
+
+* Activer les modules et redémarrer Apache :
  
   ::  
   
         sudo a2enmod proxy
         sudo a2enmod proxy_http
         sudo apache2ctl restart
-
-:notes:
-
-    Ici l'application sera consultable comme un sous répertoire du serveur  (http://monURL/atlas par exemple).
-	
-	
-Si l'atlas est associé à un domaine, ajoutez ces 2 premières lignes au début du fichier :
-	 
-::
-
-    ServerName mondomaine.fr
-    DocumentRoot /home/MONUSER/atlas/
  
 
 Activez le virtualhost puis redémarrez Apache :
@@ -217,6 +217,10 @@ Activez le virtualhost puis redémarrez Apache :
 
     sudo a2ensite atlas
     sudo apachectl restart
+
+:notes:
+
+    En cas d'erreur, les logs serveurs ne sont pas au niveau d'Apache (serveur proxy) mais de Gunicorn (serveur HTTP) dans ``/tmp/errors_atlas.log``
 
 
 Mise à jour de l'application
@@ -230,7 +234,7 @@ Mise à jour de l'application
 
     A la racine de l'application, un fichier ``VERSION`` permet de savoir quelle version est installée. 
 
-- Copier ``main/configuration/settings.ini`` et ``main/configuration/config.py`` depuis l'ancienne version vers la nouvelle pour récupérer vos paramètres de configuration
+- Copier ``main/configuration/settings.ini`` et ``main/configuration/config.py`` depuis l'ancienne version vers la nouvelle pour récupérer vos paramètres de configuration :
 
 ::
 
@@ -238,20 +242,20 @@ Mise à jour de l'application
     cp ../VERSION-PRECEDENTE/main/configuration/settings.ini main/configuration/settings.ini
     cp ../VERSION-PRECEDENTE/main/configuration/config.py main/configuration/config.py
 
-- Copier ``static/custom/`` depuis l'ancienne version vers la nouvelle pour récupérer toute votre customisation (CSS, templates, images...)
+- Copier le contenu du répertoire ``static/custom/`` depuis l'ancienne version vers la nouvelle pour récupérer toute votre customisation (CSS, templates, images...) :
 
 ::
 
     cp -aR ../VERSION-PRECEDENTE/static/custom/ ./static
-    
-- Redémarrez Apache
-
-::
-
-    sudo apachectl restart
-    
+       
 
 Attention à bien lire les notes de chaque version, qui peuvent indiquer des opérations spécifiques à faire, notamment des nouveaux paramètres à ajouter dans votre configuration et/ou des modifications à appliquer dans la BDD.
+
+- Relancez l'installation automatique de l'application :
+	
+::
+
+    ./install_app.sh
 
 
 Mise à jour des couches de référence

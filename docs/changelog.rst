@@ -2,7 +2,7 @@
 CHANGELOG
 =========
 
-1.2.7.dev0 (unreleased)
+1.3.0.dev0 (unreleased)
 -----------------------
 
 **Nouveautés**
@@ -29,6 +29,7 @@ CHANGELOG
 
 * Suivre la procédure standard de mise à jour
 * Compléter le fichier de configuration en ajoutant les nouveaux paramètres ``TAXHUB_URL`` et ``STATIC_PAGES``, en se basant sur le fichier d'exemple ``main/configuration/config.py.sample``
+* Exécutez le script de mise à jour de la BDD ``data/update_1.2.6to1.3.0.sql``
 * Passage de WSGI à Gunicorn....
 Compléter le fichier ``main/configuration/settings.ini`` avec les parties ``Gunicorn settings`` et ``Python settings``, en se basant sur le fichier d'exemple ``main/configuration/settings.ini.sample``
 
@@ -45,7 +46,7 @@ Activer les modules et redémarrer Apache
     sudo a2enmod proxy_http
     sudo apache2ctl restart
 
-Supprimer le fichier ``atlas.wsgi``
+Supprimer le fichier ``atlas.wsgi`` si il est présent à la racine de l'application
 
 Mettre à jour la configuration Apache de votre GeoNature-atlas (``/etc/apache2/sites-available/atlas.conf``) en remplacant son contenu (modifier le port en fonction) :
 
@@ -59,6 +60,10 @@ Mettre à jour la configuration Apache de votre GeoNature-atlas (``/etc/apache2/
         ProxyPassReverse  http://127.0.0.1:8080/
     </Location>
     #FIN Configuration Geonature-atlas
+    
+* Reportez les modifications du template ``static/custom/templates/introduction.html`` en répercutant la nouvelle méthode d'obtention des templates des pages statiques : https://github.com/PnEcrins/GeoNature-atlas/blob/6d8781204ac291f11305cf462fb0c9e247f3ba59/static/custom/templates/introduction.html.sample#L15
+
+* Modifier votre template ``static/custom/templates/presentation.html`` en répercutant la modification du nom du fichier CSS des pages statiques : https://github.com/PnEcrins/GeoNature-atlas/blob/6d8781204ac291f11305cf462fb0c9e247f3ba59/static/custom/templates/presentation.html.sample#L20
 
 1.2.6 (2017-06-30)
 ------------------
