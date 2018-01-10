@@ -28,7 +28,7 @@ CHANGELOG
 **Notes de version**
 
 * Suivre la procédure standard de mise à jour
-* Compléter le fichier de configuration en ajoutant les nouveaux paramètres ``TAXHUB_URL`` et ``STATIC_PAGES``, en se basant sur le fichier d'exemple ``main/configuration/config.py.sample``
+* Compléter le fichier de configuration en ajoutant les nouveaux paramètres ``TAXHUB_URL`` et ``STATIC_PAGES``, en se basant sur le fichier d'exemple ``main/configuration/config.py.sample``. Pour que les modifications du fichier de configuration soient prises en compte, il faut désormais lancer ``sudo supervisorctl reload``.
 * Exécutez le script de mise à jour de la BDD ``data/update_1.2.6to1.3.0.sql``
 * Passage de WSGI à Gunicorn....
 Compléter le fichier ``main/configuration/settings.ini`` avec les parties ``Gunicorn settings`` et ``Python settings``, en se basant sur le fichier d'exemple ``main/configuration/settings.ini.sample``
