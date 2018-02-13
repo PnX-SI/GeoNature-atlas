@@ -14,6 +14,7 @@ def searchTaxonAPI():
     session.close()
     return Response(json.dumps(listeTaxonsSearch), mimetype='application/json')
 
+
 @api.route('/observationsMailleAndPoint/<int:cd_ref>', methods=['GET'])
 def getObservationsMailleAndPointAPI(cd_ref):
     connection = utils.engine.connect()
@@ -25,13 +26,13 @@ def getObservationsMailleAndPointAPI(cd_ref):
     return Response(json.dumps(observations), mimetype='application/json')
 
 
-
 @api.route('/observationsMaille/<int:cd_ref>', methods=['GET'])
 def getObservationsMailleAPI(cd_ref):
     connection = utils.engine.connect()
     observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(connection, cd_ref)
     connection.close()
     return Response(json.dumps(observations), mimetype='application/json')
+
 
 @api.route('/observationsPoint/<int:cd_ref>', methods=['GET'])
 def getObservationsPointAPI(cd_ref):
@@ -48,12 +49,14 @@ def getObservationsCommuneTaxonAPI(insee, cd_ref):
     connection.close()
     return Response(json.dumps(observations), mimetype='application/json')
 
+
 @api.route('/observationsMaille/<insee>/<int:cd_ref>', methods=['GET'])
 def getObservationsCommuneTaxonMailleAPI(insee, cd_ref):
     connection = utils.engine.connect()
     observations = vmObservationsMaillesRepository.getObservationsTaxonCommuneMaille(connection, insee, cd_ref)
     connection.close()
     return Response(json.dumps(observations), mimetype='application/json')
+
 
 @api.route('/photoGroup/<group>', methods=['GET'])
 def getPhotosGroup(group):

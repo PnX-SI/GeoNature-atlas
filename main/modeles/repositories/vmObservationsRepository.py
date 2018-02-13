@@ -41,8 +41,11 @@ def firstObservationChild(connection, cd_ref):
 
 
 def lastObservations(connection, mylimit, idPhoto):
-    sql = """SELECT obs.*,
-        tax.lb_nom, tax.nom_vern, tax.group2_inpn,
+    sql = """
+    SELECT obs.*,
+        COALESCE(split_part(tax.nom_vern, ',', 1) || ' | ', '')
+            || tax.lb_nom as taxon,
+        tax.group2_inpn,
         medias.url, medias.chemin, medias.id_media
     FROM atlas.vm_observations obs
     JOIN atlas.vm_taxons tax
@@ -60,76 +63,65 @@ def lastObservations(connection, mylimit, idPhoto):
 
     obsList = list()
     for o in observations:
-        if o.nom_vern:
-            inter = o.nom_vern.split(',')
-            taxon = inter[0] + ' | ' + o.lb_nom
-        else:
-            taxon = o.lb_nom
-        temp = {
-            'id_observation': o.id_observation,
-            'cd_ref': o.cd_ref,
-            'dateobs': str(o.dateobs),
-            'altitude_retenue': o.altitude_retenue,
-            'effectif_total': o.effectif_total,
-            'taxon': taxon,
-            'geojson_point': ast.literal_eval(o.geojson_point),
-            'group2_inpn': utils.deleteAccent(o.group2_inpn),
-            'pathImg': utils.findPath(o),
-            'id_media': o.id_media
-        }
+        temp = dict(o)
+        temp.pop('the_geom_point', None)
+        temp['geojson_point'] = ast.literal_eval(o.geojson_point)
+        temp['dateobs'] = str(o.dateobs)
+        temp['group2_inpn'] = utils.deleteAccent(o.group2_inpn)
+        temp['pathImg'] = utils.findPath(o)
         obsList.append(temp)
     return obsList
 
 
 def lastObservationsCommune(connection, mylimit, insee):
-    sql = """SELECT o.id_observation, o.cd_ref, o.dateobs, o.altitude_retenue,
-        o.geojson_point, o.effectif_total, t.lb_nom, t.nom_vern
+    sql = """SELECT o.*,
+            COALESCE(split_part(tax.nom_vern, ',', 1) || ' | ', '')
+                || tax.lb_nom as taxon
     FROM atlas.vm_observations o
     JOIN atlas.vm_communes c ON ST_Intersects(o.the_geom_point, c.the_geom)
-    JOIN atlas.vm_taxons t ON  o.cd_ref=t.cd_ref
+    JOIN atlas.vm_taxons tax ON  o.cd_ref = tax.cd_ref
     WHERE c.insee = :thisInsee
     ORDER BY o.dateobs DESC
     LIMIT 100"""
     observations = connection.execute(text(sql), thisInsee=insee)
     obsList = list()
     for o in observations:
-        if o.nom_vern:
-            taxon = o.nom_vern + ' | ' + o.lb_nom
-        else:
-            taxon = o.lb_nom
-        temp = {'id_observation': o.id_observation,
-                'cd_ref': o.cd_ref,
-                'dateobs': str(o.dateobs),
-                'altitude_retenue': o.altitude_retenue,
-                'effectif_total': o.effectif_total,
-                'taxon': taxon,
-                'geojson_point': ast.literal_eval(o.geojson_point),
-                }
+        temp = dict(o)
+        temp.pop('the_geom_point', None)
+        temp['geojson_point'] = ast.literal_eval(o.geojson_point)
+        temp['dateobs'] = str(o.dateobs)
         obsList.append(temp)
     return obsList
 
 
 def getObservationTaxonCommune(connection, insee, cd_ref):
-    sql = "SELECT o.id_observation, o.cd_ref, o.dateobs, o.altitude_retenue, o.geojson_point, o.effectif_total, t.lb_nom, t.nom_vern, o.observateurs \
-    FROM atlas.vm_observations o\
-    JOIN atlas.vm_taxons t ON t.cd_ref = o.cd_ref \
-    WHERE o.cd_ref = :thiscdref AND o.insee = :thisInsee"
-    observations = connection.execute(text(sql), thiscdref=cd_ref, thisInsee = insee)
-    obsList=list()
+    sql = """
+        SELECT o.*,
+            COALESCE(split_part(tax.nom_vern, ',', 1) || ' | ', '')
+                || tax.lb_nom as taxon,
+        o.observateurs
+        FROM (
+            SELECT * FROM atlas.vm_observations o
+            WHERE o.insee = :thisInsee AND o.cd_ref = :thiscdref
+        )  o
+        JOIN (
+            SELECT nom_vern, lb_nom, cd_ref
+            FROM atlas.vm_taxons
+            WHERE cd_ref = :thiscdref
+        ) tax ON tax.cd_ref = tax.cd_ref
+    """
+    
+    observations = connection.execute(
+        text(sql),
+        thiscdref=cd_ref,
+        thisInsee=insee
+    )
+    obsList = list()
     for o in observations:
-        if o.nom_vern:
-            taxon = o.nom_vern + ' | ' + o.lb_nom
-        else:
-            taxon = o.lb_nom
-        temp = {'id_observation' : o.id_observation,
-                'observateurs': o.observateurs,
-                'cd_ref': o.cd_ref,
-                'dateobs': str(o.dateobs),
-                'altitude_retenue' : o.altitude_retenue,
-                'effectif_total' : o.effectif_total,
-                'taxon': taxon,
-                'geojson_point':ast.literal_eval(o.geojson_point),
-                }
+        temp = dict(o)
+        temp.pop('the_geom_point', None)
+        temp['geojson_point'] = ast.literal_eval(o.geojson_point)
+        temp['dateobs'] = str(o.dateobs)
         obsList.append(temp)
     return obsList
 
@@ -177,11 +169,14 @@ def getGroupeObservers(connection, groupe):
 
 
 def getObserversCommunes(connection, insee):
-    sql= "SELECT distinct observateurs \
-    FROM atlas.vm_observations \
-    WHERE insee = :thisInsee"
+    sql = """
+        SELECT distinct observateurs
+        FROM atlas.vm_observations
+        WHERE insee = :thisInsee
+    """
     req = connection.execute(text(sql), thisInsee=insee)
     return observersParser(req)
+
 
 def statIndex(connection):
     result = {'nbTotalObs': None, 'nbTotalTaxons': None, 'town': None, 'photo': None}
@@ -215,8 +210,7 @@ def statIndex(connection):
     return result
 
 
-
-def genericStat (connection, tab):
+def genericStat(connection, tab):
     tabStat = list()
     for pair in tab:
         rang, nomTaxon = pair.items()[0]

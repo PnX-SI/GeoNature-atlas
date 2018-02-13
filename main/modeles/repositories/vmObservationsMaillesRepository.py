@@ -7,20 +7,28 @@ import ast
 
 
 def getObservationsMaillesChilds(connection, cd_ref):
-    sql = "SELECT \
-    obs.id_maille, \
-    obs.geojson_maille, \
-    o.dateobs, \
-    extract(YEAR FROM o.dateobs) as annee \
-    FROM atlas.vm_observations_mailles obs \
-    JOIN atlas.vm_observations o ON o.id_observation = obs.id_observation \
-    WHERE obs.cd_ref in (SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)) \
-    OR obs.cd_ref = :thiscdref \
-    ORDER BY id_maille"
-    observations = connection.execute(text(sql), thiscdref = cd_ref)
+    sql = """SELECT
+            obs.id_maille,
+            obs.geojson_maille,
+            o.dateobs,
+            extract(YEAR FROM o.dateobs) as annee
+        FROM atlas.vm_observations_mailles obs
+        JOIN atlas.vm_observations o ON o.id_observation = obs.id_observation
+        WHERE obs.cd_ref in (
+                SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
+            )
+            OR obs.cd_ref = :thiscdref
+        ORDER BY id_maille"""
+    observations = connection.execute(text(sql), thiscdref=cd_ref)
     tabObs = list()
     for o in observations:
-        temp = {'id_maille': o.id_maille, 'nb_observations': 1, 'annee': o.annee, 'dateobs': str(o.dateobs), 'geojson_maille':ast.literal_eval(o.geojson_maille)}
+        temp = {
+            'id_maille': o.id_maille,
+            'nb_observations': 1,
+            'annee': o.annee,
+            'dateobs': str(o.dateobs),
+            'geojson_maille': ast.literal_eval(o.geojson_maille)
+        }
         tabObs.append(temp)
     return tabObs
 
@@ -35,12 +43,17 @@ def lastObservationsMailles(connection, mylimit, idPhoto):
         FROM atlas.vm_observations_mailles obs
         JOIN atlas.vm_taxons tax ON tax.cd_ref = obs.cd_ref
         JOIN atlas.vm_observations o ON o.id_observation=obs.id_observation
-        LEFT JOIN atlas.vm_medias medias ON medias.cd_ref = obs.cd_ref AND medias.id_type = :thisID
+        LEFT JOIN atlas.vm_medias medias 
+            ON medias.cd_ref = obs.cd_ref AND medias.id_type = :thisID
         WHERE  o.dateobs >= (CURRENT_TIMESTAMP - INTERVAL :thislimit)
         ORDER BY o.dateobs DESC
     """
 
-    observations = connection.execute(text(sql), thislimit=mylimit, thisID=idPhoto)
+    observations = connection.execute(
+        text(sql),
+        thislimit=mylimit,
+        thisID=idPhoto
+    )
     obsList = list()
     for o in observations:
         if o.nom_vern:
