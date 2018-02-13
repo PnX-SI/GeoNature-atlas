@@ -1,75 +1,63 @@
-#! /usr/bin/python
-# -*- coding:utf-8 -*-
-
 from .. import utils
 from ...configuration import config
-from ..entities.vmObservations import VmObservations
-from ..entities.tCommunes import LCommune
-from ..entities.vmTaxref import VmTaxref
-from ..entities.vmTaxons import VmTaxons
-import tCommunesRepository
-from sqlalchemy import distinct, func, extract, desc
+
 from sqlalchemy.sql import text
-from sqlalchemy.orm import sessionmaker
 import ast
 from datetime import datetime
-import random
-
 
 currentYear = datetime.now().year
 
 
-
-def searchObservation(cd_ref):
-    observations = session.query(VmObservations).filter(VmObservations.cd_ref == cd_ref).all()
-    return  toGeoJsonTaxon(observations)
-
-
 def searchObservationsChilds(connection, cd_ref):
-    sql = "select obs.id_observation, \
-    obs.geojson_point, \
-    obs.cd_ref, \
-    obs.dateobs, \
-    obs.observateurs, \
-    obs.altitude_retenue, \
-    obs.effectif_total \
-    from atlas.vm_observations obs \
-    where obs.cd_ref in ( \
-    select * from atlas.find_all_taxons_childs(:thiscdref) \
-    )OR obs.cd_ref = :thiscdref".encode('UTF-8')
-    observations = connection.execute(text(sql), thiscdref = cd_ref)
+    sql = """SELECT obs.*
+            FROM atlas.vm_observations obs
+            WHERE obs.cd_ref in (
+                SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
+                )
+                OR obs.cd_ref = :thiscdref""".encode('UTF-8')
+
+    observations = connection.execute(text(sql), thiscdref=cd_ref)
     obsList = list()
     for o in observations:
-        temp = {'id_observation':o.id_observation,'geojson_point':ast.literal_eval(o.geojson_point),'cd_ref':o.cd_ref,'dateobs':str(o.dateobs),\
-                'observateurs':o.observateurs,'altitude_retenue':o.altitude_retenue,
-                'effectif_total':o.effectif_total,'year':o.dateobs.year}
+        temp = dict(o)
+        temp.pop('the_geom_point', None)
+        temp['geojson_point'] = ast.literal_eval(o.geojson_point)
+        temp['dateobs'] = str(o.dateobs)
+        temp['year'] = o.dateobs.year
         obsList.append(temp)
     return obsList
 
 
 def firstObservationChild(connection, cd_ref):
-    sql = "select min(taxons.yearmin) as yearmin \
-    from atlas.vm_taxons taxons \
-    join atlas.vm_taxref taxref ON taxref.cd_ref=taxons.cd_ref \
-    where taxons.cd_ref in ( \
-    select * from atlas.find_all_taxons_childs(:thiscdref) \
+    sql = "SELECT min(taxons.yearmin) as yearmin \
+    FROM atlas.vm_taxons taxons \
+    JOIN atlas.vm_taxref taxref ON taxref.cd_ref=taxons.cd_ref \
+    WHERE taxons.cd_ref in ( \
+    SELECT * FROM atlas.find_all_taxons_childs(:thiscdref) \
     )OR taxons.cd_ref = :thiscdref".encode('UTF-8')
-    req = connection.execute(text(sql), thiscdref = cd_ref)
+    req = connection.execute(text(sql), thiscdref=cd_ref)
     for r in req:
-      return r.yearmin
+        return r.yearmin
 
 
 def lastObservations(connection, mylimit, idPhoto):
     sql = """SELECT obs.*,
-    tax.lb_nom, tax.nom_vern, tax.group2_inpn,
-    medias.url, medias.chemin, medias.id_media
+        tax.lb_nom, tax.nom_vern, tax.group2_inpn,
+        medias.url, medias.chemin, medias.id_media
     FROM atlas.vm_observations obs
-    JOIN atlas.vm_taxons tax ON tax.cd_ref = obs.cd_ref
-    LEFT JOIN atlas.vm_medias medias ON medias.cd_ref = obs.cd_ref AND medias.id_type = :thisidphoto
+    JOIN atlas.vm_taxons tax
+        ON tax.cd_ref = obs.cd_ref
+    LEFT JOIN atlas.vm_medias medias
+        ON medias.cd_ref = obs.cd_ref AND medias.id_type = :thisidphoto
     WHERE  obs.dateobs >= (CURRENT_TIMESTAMP - INTERVAL :thislimit)
     ORDER BY obs.dateobs DESC """
 
-    observations = connection.execute(text(sql), thislimit=mylimit, thisidphoto=idPhoto)
+    observations = connection.execute(
+        text(sql),
+        thislimit=mylimit,
+        thisidphoto=idPhoto
+    )
+
     obsList = list()
     for o in observations:
         if o.nom_vern:
@@ -94,30 +82,32 @@ def lastObservations(connection, mylimit, idPhoto):
 
 
 def lastObservationsCommune(connection, mylimit, insee):
-    sql = "SELECT o.id_observation, o.cd_ref, o.dateobs, o.altitude_retenue,o.geojson_point, o.effectif_total, t.lb_nom, t.nom_vern \
-    FROM atlas.vm_observations o \
-    JOIN atlas.vm_communes c ON ST_Intersects(o.the_geom_point, c.the_geom) \
-    JOIN atlas.vm_taxons t ON  o.cd_ref=t.cd_ref \
-    WHERE c.insee = :thisInsee \
-    ORDER BY o.dateobs DESC \
-    LIMIT 100"
-    observations = connection.execute(text(sql), thisInsee = insee)
-    obsList=list()
+    sql = """SELECT o.id_observation, o.cd_ref, o.dateobs, o.altitude_retenue,
+        o.geojson_point, o.effectif_total, t.lb_nom, t.nom_vern
+    FROM atlas.vm_observations o
+    JOIN atlas.vm_communes c ON ST_Intersects(o.the_geom_point, c.the_geom)
+    JOIN atlas.vm_taxons t ON  o.cd_ref=t.cd_ref
+    WHERE c.insee = :thisInsee
+    ORDER BY o.dateobs DESC
+    LIMIT 100"""
+    observations = connection.execute(text(sql), thisInsee=insee)
+    obsList = list()
     for o in observations:
         if o.nom_vern:
             taxon = o.nom_vern + ' | ' + o.lb_nom
         else:
             taxon = o.lb_nom
-        temp = {'id_observation' : o.id_observation,
+        temp = {'id_observation': o.id_observation,
                 'cd_ref': o.cd_ref,
                 'dateobs': str(o.dateobs),
-                'altitude_retenue' : o.altitude_retenue,
-                'effectif_total' : o.effectif_total,
+                'altitude_retenue': o.altitude_retenue,
+                'effectif_total': o.effectif_total,
                 'taxon': taxon,
-                'geojson_point':ast.literal_eval(o.geojson_point),
+                'geojson_point': ast.literal_eval(o.geojson_point),
                 }
         obsList.append(temp)
     return obsList
+
 
 def getObservationTaxonCommune(connection, insee, cd_ref):
     sql = "SELECT o.id_observation, o.cd_ref, o.dateobs, o.altitude_retenue, o.geojson_point, o.effectif_total, t.lb_nom, t.nom_vern, o.observateurs \
@@ -172,7 +162,7 @@ def getObservers(connection, cd_ref):
     sql = "SELECT distinct observateurs \
     FROM atlas.vm_observations \
     WHERE cd_ref in ( \
-    SELECT * from atlas.find_all_taxons_childs(:thiscdref) \
+    SELECT * FROM atlas.find_all_taxons_childs(:thiscdref) \
     )OR cd_ref = :thiscdref"
     req = connection.execute(text(sql), thiscdref = cd_ref)
     return observersParser(req)

@@ -17,8 +17,10 @@ def searchTaxonAPI():
 @api.route('/observationsMailleAndPoint/<int:cd_ref>', methods=['GET'])
 def getObservationsMailleAndPointAPI(cd_ref):
     connection = utils.engine.connect()
-    observations = {'point': vmObservationsRepository.searchObservationsChilds(connection, cd_ref),\
-    'maille' : vmObservationsMaillesRepository.getObservationsMaillesChilds(connection, cd_ref)}
+    observations = {
+        'point': vmObservationsRepository.searchObservationsChilds(connection, cd_ref),
+        'maille': vmObservationsMaillesRepository.getObservationsMaillesChilds(connection, cd_ref)
+    }
     connection.close()
     return Response(json.dumps(observations), mimetype='application/json')
 
