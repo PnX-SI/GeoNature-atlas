@@ -331,11 +331,7 @@
                         </div>
                 </div>
             </div>
-
-
         </div>
-
-
 
         <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
             {% if photoCarousel | length >= 1 %}
@@ -527,18 +523,17 @@
 
 
     <script>
-             var dataset = {{altitudes|tojson}},
-                 months = {{months|tojson}}
-
-                 var observationsPoint = [];
-                 var observationsMaille = [];
-                 listeTaxonsSearch = {{listeTaxonsSearch|tojson}},
-                 communesSearch = {{communesSearch|tojson}},
-                 configuration = {{configuration|tojson}},
-                 url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}",
-                 taxonYearMin = {{taxon.taxonSearch.yearmin}},
-                 cd_ref = {{taxon.taxonSearch.cd_ref}},
-                 nb_obs = {{taxon.taxonSearch.nb_obs}}
+            var dataset = {{altitudes|tojson}};
+            var months = {{months|tojson}};
+            var observationsPoint = [];
+            var observationsMaille = [];
+            var listeTaxonsSearch = {{listeTaxonsSearch|tojson}};
+            var communesSearch = {{communesSearch|tojson}};
+            var configuration = {{configuration|tojson}};
+            var url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
+            var taxonYearMin = {{taxon.taxonSearch.yearmin}};
+            var cd_ref = {{taxon.taxonSearch.cd_ref}};
+            var nb_obs = {{taxon.taxonSearch.nb_obs}};
     </script>
 
     <script src="{{url_for('static', filename='custom/maps.js') }}"></script>
