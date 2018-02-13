@@ -308,11 +308,16 @@ function displayMarkerLayerFicheEspece(observationsPoint, yearMin, yearMax){
 
   myGeojson = generateGeojsonPointFicheEspece(observationsPoint, yearMin, yearMax);
 
+  if (typeof pointDisplayOptionsFicheEspece == 'undefined') {
+    pointDisplayOptionsFicheEspece = function(feature) {
+      return {};
+    }
+  }
   currentLayer = L.geoJson(myGeojson, {
           onEachFeature : onEachFeaturePoint,
           
           pointToLayer: function (feature, latlng) {
-            return L.circleMarker(latlng);
+            return L.circleMarker(latlng, pointDisplayOptionsFicheEspece(feature));
           }
   });
   if (myGeojson.features.length > configuration.LIMIT_CLUSTER_POINT) {
@@ -323,8 +328,20 @@ function displayMarkerLayerFicheEspece(observationsPoint, yearMin, yearMax){
 
   } else {
     currentLayer.addTo(map);
-
   }
+  
+  if (typeof divLegendeFicheEspece !== 'undefined') {
+    var legend = L.control({position: 'bottomright'});
+
+    legend.onAdd = function (map) {
+        var div =  L.DomUtil.create('div', 'info legend');
+        div.innerHTML = divLegendeFicheEspece;
+        return div;
+    };
+    legend.addTo(map);
+    compteurLegend=compteurLegend+1;
+  }
+
 }
 
 

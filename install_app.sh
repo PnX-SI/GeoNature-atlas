@@ -74,6 +74,9 @@ fi
 if [ ! -f ./static/custom/images/logo_patrimonial.png ]; then
   cp ./static/images/sample.logo_patrimonial.png ./static/custom/images/logo_patrimonial.png
 fi
+if [ ! -f ./static/custom/maps.js ]; then
+  cp ./static/custom/maps.js.sample ./static/custom/maps.js
+fi
 
 echo "Creating GIS files if they dont already exist"
 if [ ! -f ./data/ref/communes.dbf ]; then
