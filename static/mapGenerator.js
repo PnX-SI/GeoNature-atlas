@@ -286,39 +286,34 @@ function displayMailleLayerCommune(observations){
 
 // GeoJson Point
 function generateGeojsonPointFicheEspece(observationsPoint, yearMin, yearMax){
-   myGeoJson = {'type': 'FeatureCollection','features' : []}
-      observationsPoint.forEach(function(obs){
-          if(obs.year >= yearMin && obs.year <= yearMax ) {
-              geometry = obs.geojson_point;
-              properties = {'id_observation' : obs.id_observation,
-                            'cd_ref': obs.cd_ref,
-                            'dateobsCompare': new Date(obs.dateobs),
-                            'dateobsPopup': obs.dateobs,
-                            'observateurs' : obs.observateurs,
-                            'altitude_retenue' : obs.altitude_retenue,
-                            'effectif_total' : obs.effectif_total,
-                            'year': obs.dateobs.year,
-                            'nb_observations': 1
-                            }
-              myGeoJson.features.push({
-                'type' : 'Feature',
-                'properties' : properties,
-                'geometry' : geometry   
-              })
-         } 
-      });
-  return myGeoJson
+    myGeoJson = {'type': 'FeatureCollection','features' : []}
+    observationsPoint.forEach(function(obs){
+        if(obs.year >= yearMin && obs.year <= yearMax ) {
+            properties = obs;
+            properties['dateobsCompare'] = new Date(obs.dateobs);
+            properties['dateobsPopup'] = obs.dateobs;
+            properties['nb_observations'] =1;
+            myGeoJson.features.push({
+              'type' : 'Feature',
+              'properties' : properties,
+              'geometry' : obs.geojson_point   
+            });
+        } 
+    });
+    return myGeoJson
 }
 
 // Display marker Layer (cluster or not)
 function displayMarkerLayerFicheEspece(observationsPoint, yearMin, yearMax){
 
-  myGeojson = generateGeojsonPointFicheEspece(observationsPoint, yearMin, yearMax)
+  myGeojson = generateGeojsonPointFicheEspece(observationsPoint, yearMin, yearMax);
+
   currentLayer = L.geoJson(myGeojson, {
           onEachFeature : onEachFeaturePoint,
+          
           pointToLayer: function (feature, latlng) {
-                           return L.circleMarker(latlng);
-                           }
+            return L.circleMarker(latlng);
+          }
   });
   if (myGeojson.features.length > configuration.LIMIT_CLUSTER_POINT) {
       newLayer = currentLayer;
