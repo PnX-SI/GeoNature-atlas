@@ -133,7 +133,7 @@ REMOTE_MEDIAS_PATH = "static/medias/"
 
 # URL de TaxHub (pour génération des vignettes). 
 # Si le service Taxhub n'est pas utilisé, commenter la variable
-TAXHUB_URL = "http://mondomaine.fr/taxhub/"
+TAXHUB_URL = "http://mondomaine.fr/taxhub"
 
 #### ID DES ATTRIBUTS DESCRIPTIFS DES TAXONS DE LA TABLE vm_cor_taxon_attribut
 ATTR_DESC = 100
