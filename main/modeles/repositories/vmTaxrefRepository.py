@@ -1,4 +1,4 @@
-#! /usr/bin/python
+
 # -*- coding:utf-8 -*-
 
 from .. import utils
@@ -29,16 +29,16 @@ def searchEspece(connection, cd_ref):
         taxonSearch = {'cd_ref': r.cd_ref, 'lb_nom': r.lb_nom, 'nom_vern': r.nom_vern, 'lb_nom': r.lb_nom, 'lb_auteur':r.lb_auteur, 'nom_complet_html': r.nom_complet_html, 'group2_inpn': utils.deleteAccent(r.group2_inpn), 'groupAccent': r.group2_inpn,\
         'yearmin': r.yearmin, 'yearmax':r.yearmax, 'nb_obs': r.nb_obs, 'patrimonial': r.patrimonial, 'protection': r.protection_stricte }
 
-    sql="""SELECT tax.lb_nom, 
-    tax.nom_vern, 
-    tax.cd_ref, 
-    br.tri_rang, 
-    tax.group2_inpn, 
-    tax.patrimonial, 
+    sql="""SELECT tax.lb_nom,
+    tax.nom_vern,
+    tax.cd_ref,
+    br.tri_rang,
+    tax.group2_inpn,
+    tax.patrimonial,
     tax.protection_stricte,
     tax.nb_obs
-    FROM atlas.vm_taxons tax 
-    JOIN atlas.bib_taxref_rangs br ON br.id_rang = tax.id_rang 
+    FROM atlas.vm_taxons tax
+    JOIN atlas.bib_taxref_rangs br ON br.id_rang = tax.id_rang
     where tax.cd_ref IN ( SELECT * FROM atlas.find_all_taxons_childs(:thiscdref))"""
     req = connection.execute(text(sql), thiscdref = cd_ref)
     listTaxonsChild = list()
@@ -87,10 +87,9 @@ def getAllTaxonomy(session, cd_ref):
     taxonSup = getCd_sup(session, cd_ref) #cd_taxsup
     taxon = getTaxon(session, taxonSup)
     tabTaxon = list()
-    while taxon.tri_rang >= config.LIMIT_RANG_TAXONOMIQUE_HIERARCHIE : 
+    while taxon.tri_rang >= config.LIMIT_RANG_TAXONOMIQUE_HIERARCHIE :
         temp = {'rang' : taxon.id_rang, 'lb_nom' : taxon.lb_nom, 'cd_ref': taxon.cd_ref, 'nom_rang' : taxon.nom_rang, 'tri_rang': taxon.tri_rang }
         tabTaxon.insert(0, temp)
         taxon = getTaxon(session, taxon.cd_taxsup) #on avance
     return tabTaxon
 
-    

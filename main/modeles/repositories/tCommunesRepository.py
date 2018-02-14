@@ -1,4 +1,4 @@
-#! /usr/bin/python
+
 # -*- coding:utf-8 -*-
 import ast
 from sqlalchemy.sql import text
