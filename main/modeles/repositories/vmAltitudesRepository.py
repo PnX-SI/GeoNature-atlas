@@ -1,40 +1,37 @@
 
 # -*- coding:utf-8 -*-
 
-from .. import utils
 from sqlalchemy.sql import text
-
-
-tableAltitudes = utils.GenericTable('atlas.vm_altitudes', 'atlas')
-dfCdRef = tableAltitudes.tableDef.columns['cd_ref']
-keyList = tableAltitudes.tableDef.columns.keys()
 
 
 def getAltitudesChilds(connection, cd_ref):
     # construction du select  de la requete a partir des cles de la table
-    sumSelect = str()
-    for i in range(len(keyList)):
-        if keyList[i] != 'cd_ref':
-            if i < len(keyList) -1:
-                sumSelect = sumSelect + "SUM(" + keyList[i]+ ") AS " + keyList[i]+ ", "
-            else:
-                sumSelect = sumSelect + "SUM(" + keyList[i]+ ") AS " + keyList[i]
+    sql = """
+        SELECT label_altitude
+        FROM atlas.bib_altitudes
+        ORDER BY altitude_min
+    """
+    qalt = connection.execute(text(sql))
+    alt = [k[0] for k in qalt]
 
-    sql =  "select " + sumSelect + " \
-    from atlas.vm_altitudes alt \
-    where alt.cd_ref in ( \
-    select * from atlas.find_all_taxons_childs(:thiscdref) \
-    )OR alt.cd_ref = :thiscdref".encode('UTF-8')
+    sumSelect = ', '.join(
+        "SUM({}) AS {}".format(k, k) for k in alt
+    )
+
+    sql = """
+        SELECT {sumSelect}
+        FROM atlas.vm_altitudes alt
+        WHERE
+            alt.cd_ref IN (
+                SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
+            ) OR alt.cd_ref = :thiscdref
+    """.format(sumSelect=sumSelect)
     mesAltitudes = connection.execute(text(sql), thiscdref=cd_ref)
 
     altiList = list()
     for a in mesAltitudes:
-        for i in range(len(keyList)):
-            newKey = str(keyList[i])
-            newKey = newKey[1:]
-            newKey = newKey.replace('_', '-')
-            if keyList[i] != 'cd_ref':
-                temp = {"altitude": newKey, "value": getattr(a, keyList[i])}
-                altiList.insert(i, temp)
+        for k in alt:
+            temp = {"altitude": k.replace('_', '-')[1:], "value": getattr(a, k)}
+            altiList.append(temp)
 
     return altiList
