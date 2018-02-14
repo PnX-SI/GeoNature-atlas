@@ -32,7 +32,7 @@ function generateHtmlPhoto(photos, taxhub_url){
 			}
 			photo_url = photo.path;
 			if (taxhub_url) {
-				photo_url = taxhub_url+'/api/tmedias/thumbnail/'+photo.id_media+'?h=250&w=250';
+				photo_url = taxhub_url+'/api/tmedias/thumbnail/'+photo.id_media+'?h=500&w=500';
 			}
 			onePhoto = "\
 				<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece '> \

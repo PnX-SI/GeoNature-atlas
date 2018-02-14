@@ -121,7 +121,7 @@
 										<div class="zoom-wrapper">
 											<a href="{{url_for('main.ficheEspece',cd_ref=customStatMedias[i][j].cd_ref)}}" >
                           						{% if configuration.TAXHUB_URL != None %}
-										    	  <div class="img-custom-medias" style="background-image: url({{configuration.TAXHUB_URL}}/api/tmedias/thumbnail/{{customStatMedias[i][j].id_media}}?h=250&w=250)"></div>
+										    	  <div class="img-custom-medias" style="background-image: url({{configuration.TAXHUB_URL}}/api/tmedias/thumbnail/{{customStatMedias[i][j].id_media}}?h=500&w=500)"></div>
                           						{% else %}
 										    	  <div class="img-custom-medias" style="background-image: url({{customStatMedias[i][j].path}})"></div>
                           						{% endif %}
@@ -209,7 +209,7 @@
                       <img class="default-logo " src="{{url_for('static', filename='images/picto_' + tax.group2_inpn | replace(" ", "_") +'.png') }}" alt="">
 						        {% else %}
                       {% if configuration.TAXHUB_URL != None %}
-                        <div class ="pictoImg pictoImgMedium" style="background-image:url({{configuration.TAXHUB_URL}}/api/tmedias/thumbnail/{{tax.id_media}}?h=250&w=250);" data-toggle="tooltip" data-original-title="{{tax.group2_inpn}}" data-placement="left"></div>
+                        <div class ="pictoImg pictoImgMedium" style="background-image:url({{configuration.TAXHUB_URL}}/api/tmedias/thumbnail/{{tax.id_media}}?h=500&w=500);" data-toggle="tooltip" data-original-title="{{tax.group2_inpn}}" data-placement="left"></div>
                       {% else %}
 						            <div class="img-responsive-logo" style="background-image:url({{tax.path}})"> </div>
                       {% endif %}
@@ -238,7 +238,7 @@
   			, configuration = {{configuration|tojson}},
   			url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
 	  	</script>
-	  
+
 	  	<script src="{{url_for('static', filename='custom/maps.js') }}"></script>
 		<script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
 		<script src="{{url_for('static', filename='mapHome.js') }}"></script>
