@@ -22,7 +22,7 @@ data/ref/communes.prj
 static/custom/territoire.json
 static/custom/glossaire.json
 static/custom/custom.css
-static/custom/maps.js
+static/custom/maps-custom.js
 static/custom/images/*
 static/custom/templates/presentation.html
 static/custom/templates/footer.html
