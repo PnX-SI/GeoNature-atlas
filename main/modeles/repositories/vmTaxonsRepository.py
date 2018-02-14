@@ -134,6 +134,7 @@ def getTaxonsGroup(connection, groupe):
             'group2_inpn': deleteAccent(r.group2_inpn),
             'patrimonial': r.patrimonial,
             'protection_stricte': r.protection_stricte,
+            'id_media': r.id_media,
             'path': utils.findPath(r)
         }
         tabTaxons.append(temp)
