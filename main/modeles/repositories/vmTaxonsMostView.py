@@ -1,8 +1,8 @@
 #! /usr/bin/python
 # -*- coding:utf-8 -*-
+
 from .. import utils
 from sqlalchemy.sql import text
-from ...configuration import config
 
 
 def mostViewTaxon(connection):

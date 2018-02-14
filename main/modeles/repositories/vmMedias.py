@@ -1,3 +1,4 @@
+#! /usr/bin/python
 # -*- coding:utf-8 -*-
 
 from .. import utils
@@ -18,8 +19,13 @@ def getFirstPhoto(connection, cd_ref, id):
     sql = """
         SELECT *
         FROM atlas.vm_medias
-        WHERE (cd_ref IN ( SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)) OR cd_ref = :thiscdref)
-            AND id_type=:thisid
+        WHERE (
+                cd_ref IN (
+                    SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
+                )
+                OR cd_ref = :thiscdref
+            )
+                AND id_type=:thisid
     """
     req = connection.execute(text(sql), thiscdref=cd_ref, thisid=id)
 
@@ -34,9 +40,14 @@ def getFirstPhoto(connection, cd_ref, id):
 
 def getPhotoCarousel(connection, cd_ref, id):
     sql = """
-        SELECT * \
-        FROM atlas.vm_medias \
-        WHERE (cd_ref IN ( SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)) OR cd_ref = :thiscdref)
+        SELECT *
+        FROM atlas.vm_medias
+        WHERE (
+                cd_ref IN (
+                    SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
+                )
+                OR cd_ref = :thiscdref
+            )
             AND id_type= :thisid
     """
     req = connection.execute(text(sql), thiscdref=cd_ref, thisid=id)
@@ -162,7 +173,9 @@ def getPhotosGalleryByGroup(connection, id1, id2, INPNgroup):
         JOIN atlas.vm_taxons t ON t.cd_ref = m.cd_ref
         WHERE m.id_type IN  (:thisID1, :thisID2) AND t.group2_inpn = :thisGroup
         ORDER BY RANDOM()"""
-    req = connection.execute(text(sql), thisID1=id1, thisID2=id2, thisGroup=INPNgroup)
+    req = connection.execute(
+        text(sql), thisID1=id1, thisID2=id2, thisGroup=INPNgroup
+    )
     tabPhotos = list()
     for r in req:
         if r.nom_vern != None:

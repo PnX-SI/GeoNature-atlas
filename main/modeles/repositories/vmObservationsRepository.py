@@ -1,3 +1,6 @@
+#! /usr/bin/python
+# -*- coding:utf-8 -*-
+
 from .. import utils
 from ...configuration import config
 
@@ -110,7 +113,7 @@ def getObservationTaxonCommune(connection, insee, cd_ref):
             WHERE cd_ref = :thiscdref
         ) tax ON tax.cd_ref = tax.cd_ref
     """
-    
+
     observations = connection.execute(
         text(sql),
         thiscdref=cd_ref,
@@ -137,34 +140,41 @@ def observersParser(req):
             setObs.add(o)
     finalList = list()
     for s in setObs:
-        tabInter= s.split(' ')
-        fullName= str()
-        i=0
-        while i<len(tabInter):
+        tabInter = s.split(' ')
+        fullName = str()
+        i = 0
+        while i < len(tabInter):
             if i == len(tabInter)-1:
                 fullName += tabInter[i].capitalize()
             else:
                 fullName += tabInter[i].capitalize() + " "
-            i=i+1
+            i = i+1
         finalList.append(fullName)
     return sorted(finalList)
 
 
 def getObservers(connection, cd_ref):
-    sql = "SELECT distinct observateurs \
-    FROM atlas.vm_observations \
-    WHERE cd_ref in ( \
-    SELECT * FROM atlas.find_all_taxons_childs(:thiscdref) \
-    )OR cd_ref = :thiscdref"
-    req = connection.execute(text(sql), thiscdref = cd_ref)
+    sql = """
+    SELECT distinct observateurs
+    FROM atlas.vm_observations
+    WHERE cd_ref in (
+            SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
+        )
+        OR cd_ref = :thiscdref
+    """
+    req = connection.execute(text(sql), thiscdref=cd_ref)
     return observersParser(req)
 
 
 def getGroupeObservers(connection, groupe):
-    sql = "SELECT distinct observateurs \
-    FROM atlas.vm_observations \
-    WHERE cd_ref in (SELECT cd_ref from atlas.vm_taxons WHERE group2_inpn = :thisgroupe)"
-    req = connection.execute(text(sql), thisgroupe = groupe)
+    sql = """
+        SELECT distinct observateurs
+        FROM atlas.vm_observations
+        WHERE cd_ref in (
+            SELECT cd_ref from atlas.vm_taxons WHERE group2_inpn = :thisgroupe
+        )
+    """
+    req = connection.execute(text(sql), thisgroupe=groupe)
     return observersParser(req)
 
 
@@ -189,24 +199,28 @@ def statIndex(connection):
 
     sql = "SELECT COUNT(*) AS count\
     FROM atlas.vm_communes"
-    req=connection.execute(text(sql))
+    req = connection.execute(text(sql))
     for r in req:
         result['town'] = r.count
 
     sql = "SELECT COUNT(DISTINCT cd_ref) AS count \
     FROM atlas.vm_taxons"
     connection.execute(text(sql))
-    req=connection.execute(text(sql))
+    req = connection.execute(text(sql))
     for r in req:
         result['nbTotalTaxons'] = r.count
 
-    sql= "SELECT COUNT (DISTINCT id_media) AS count \
+    sql = "SELECT COUNT (DISTINCT id_media) AS count \
     FROM atlas.vm_medias m \
     JOIN atlas.vm_taxons t ON t.cd_ref = m.cd_ref \
     WHERE id_type IN (:idType1, :id_type2)"
-    req = connection.execute(text(sql), idType1 = config.ATTR_MAIN_PHOTO, id_type2=config.ATTR_OTHER_PHOTO)
+    req = connection.execute(
+        text(sql),
+        idType1=config.ATTR_MAIN_PHOTO,
+        id_type2=config.ATTR_OTHER_PHOTO
+    )
     for r in req:
-        result['photo']= r.count
+        result['photo'] = r.count
     return result
 
 
@@ -214,11 +228,13 @@ def genericStat(connection, tab):
     tabStat = list()
     for pair in tab:
         rang, nomTaxon = pair.items()[0]
-        sql= "SELECT COUNT (o.id_observation) AS nb_obs, \
-            COUNT (DISTINCT t.cd_ref) AS nb_taxons \
-            FROM atlas.vm_taxons t \
-            JOIN atlas.vm_observations o ON o.cd_ref = t.cd_ref \
-            WHERE t."+rang+" IN :nomTaxon"
+        sql = """
+            SELECT COUNT (o.id_observation) AS nb_obs,
+            COUNT (DISTINCT t.cd_ref) AS nb_taxons
+            FROM atlas.vm_taxons t
+            JOIN atlas.vm_observations o ON o.cd_ref = t.cd_ref
+            WHERE t.{rang} IN :nomTaxon
+        """.format(rang=rang)
         req = connection.execute(text(sql), nomTaxon=tuple(nomTaxon))
         for r in req:
             temp = {'nb_obs': r.nb_obs, 'nb_taxons': r.nb_taxons}

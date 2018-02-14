@@ -1,3 +1,6 @@
+#! /usr/bin/python
+# -*- coding:utf-8 -*-
+
 from flask import json, Blueprint
 from werkzeug.wrappers import Response
 from . import utils

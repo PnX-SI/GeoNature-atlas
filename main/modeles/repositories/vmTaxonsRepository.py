@@ -1,14 +1,10 @@
+#! /usr/bin/python
 # -*- coding:utf-8 -*-
-import sys
+
 import unicodedata
 
 from ...configuration import config
-from ..entities.vmTaxons import VmTaxons
-from ..entities.vmObservations import VmObservations
-from sqlalchemy import distinct, func
 from sqlalchemy.sql import text
-from sqlalchemy.orm import sessionmaker
-from datetime import date
 from .. import utils
 
 
@@ -54,7 +50,6 @@ def getTaxonsCommunes(connection, insee):
 
 
 def getTaxonsChildsList(connection, cd_ref):
-    rank = config.LIMIT_FICHE_LISTE_HIERARCHY
     sql = """
         SELECT DISTINCT nom_complet_html, nb_obs, nom_vern, tax.cd_ref,
             yearmax, group2_inpn, patrimonial, protection_stricte,
