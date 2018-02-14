@@ -93,9 +93,9 @@
                     <div class="col-sm-12" id="taxonIdentity">
                     {% endif %}
 						<div id="groupLogoCol" >
-                <a href="{{url_for('main.ficheGroupe', groupe=taxon.taxonSearch.groupAccent ) }}">
-	                       <img src="{{url_for('static', filename='images/picto_'+ taxon.taxonSearch.group2_inpn| replace(" ", "_")|urlencode+'.png') }}" alt="{{taxon.taxonSearch.group2_inpn}}" data-toggle="tooltip" data-original-title="{{taxon.taxonSearch.group2_inpn}}" data-placement="right">
-                 </a>
+                            <a href="{{url_for('main.ficheGroupe', groupe=taxon.taxonSearch.groupAccent ) }}">
+	                            <img src="{{url_for('static', filename='images/picto_'+ taxon.taxonSearch.group2_inpn| replace(" ", "_")|urlencode+'.png') }}" alt="{{taxon.taxonSearch.group2_inpn}}" data-toggle="tooltip" data-original-title="{{taxon.taxonSearch.group2_inpn}}" data-placement="right">
+                            </a>
 						</div>
 						<div id="taxonName">
                             {% if taxon.taxonSearch.nom_vern != None %}
@@ -107,8 +107,13 @@
                                 <a href="https://inpn.mnhn.fr/espece/cd_nom/{{taxon.taxonSearch.cd_ref}}/tab/statut" target="_blank">
                                     <img class="caractEspece" width="130px" src="{{url_for('static', filename='images/logo_protection.png') }}"  data-toggle="tooltip" data-original-title="Ce taxon bénéficie d'un statut de protection" data-placement="right"></a>
                             {% endif %}
-                            {% if taxon.taxonSearch.patrimonial == 'oui' %}
-                                <img class="caractEspece" width="130px" src="{{url_for('static', filename='custom/images/logo_patrimonial.png') }}"  data-toggle="tooltip" data-original-title="Ce taxon est patrimonial pour le {{configuration.STRUCTURE}}" data-placement="right">
+                            {% if taxon.taxonSearch.patrimonial in configuration.PATRIMONIALITE.config %}
+                                <img
+                                    class="caractEspece"
+                                    width="130px"
+                                    src="{{url_for('static', filename=configuration.PATRIMONIALITE.config[taxon.taxonSearch.patrimonial].icon) }}"
+                                    data-toggle="tooltip"
+                                    data-original-title="{{configuration.PATRIMONIALITE.config[taxon.taxonSearch.patrimonial].text}}" data-placement="right">
                             {% endif %}
                             </h3>
 
@@ -158,7 +163,7 @@
                                                         <th>Protection</th>
                                                         {% endif %}
                                                         {% if configuration.PATRIMONIALITE %}
-                                                        <th>Patrimonial</th>
+                                                        <th>{{configuration.PATRIMONIALITE.label}}</th>
                                                         {% endif %}
                                                         <th>Observations </th>
                                                         <th> Fiche </th>
@@ -183,8 +188,13 @@
                                                             {% endif %}
                                                             </td>
                                                             <td>
-                                                            {% if child.patrimonial != None %}
-                                                                <img class="caractEspece" width="130px" src="{{url_for('static', filename='custom/images/logo_patrimonial.png') }}"  data-toggle="tooltip" data-original-title="Ce taxon est patrimonial pour le {{configuration.STRUCTURE}}" data-placement="right">
+                                                            {% if child.patrimonial in configuration.PATRIMONIALITE.config %}
+                                                                <img
+                                                                    class="caractEspece" width="130px"
+                                                                    src="{{url_for('static', filename=configuration.PATRIMONIALITE.config[child.patrimonial].icon) }}"
+                                                                    data-toggle="tooltip"
+                                                                    data-original-title="{{configuration.PATRIMONIALITE.config[child.patrimonial].text}}" data-placement="right"
+                                                                >
                                                             {% endif %}
                                                             </td>
                                                             <td> {{child.nb_obs}} </td>

@@ -8,7 +8,7 @@
                 <th data-priority="7">Protection</th>
             {% endif %}
             {% if configuration.PATRIMONIALITE %}
-                <th data-priority="8">Patrimonial</th>
+                <th data-priority="8">{{configuration.PATRIMONIALITE.label}}</th>
             {% endif %}
             <th id="sorted" data-priority="4"> Nombre d'observation(s)</th>
                 <th data-priority="9">Dernière observation</th>
@@ -55,8 +55,12 @@
                 {% endif %}
                 {% if configuration.PATRIMONIALITE %}
                     <td>
-                        {% if taxon.patrimonial == 'oui' %}
-                        <img src="{{url_for('static', filename='custom/images/logo_patrimonial.png') }}" style="width : 30px; height: 30px" data-placement="left" data-toggle="tooltip" data-original-title="Ce taxon est patrimonial pour le {{configuration.STRUCTURE}}">
+                        {% if taxon.patrimonial in configuration.PATRIMONIALITE.config %}
+                            <img
+                                src="{{url_for('static', filename=configuration.PATRIMONIALITE.config[taxon.patrimonial].icon) }}"
+                                style="width : 30px; height: 30px" data-placement="left" data-toggle="tooltip"
+                                data-original-title="{{configuration.PATRIMONIALITE.config[taxon.patrimonial].text}}" data-placement="right"
+                            >
                         {% endif %}
                     </td>
                 {% endif %}

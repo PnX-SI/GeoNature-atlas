@@ -131,7 +131,7 @@ REMOTE_MEDIAS_URL = "http://mondomaine.fr/taxhub/"
 # Seule cette partie de l'url sera visible pour les utilisateurs de l'atlas
 REMOTE_MEDIAS_PATH = "static/medias/"
 
-# URL de TaxHub (pour génération des vignettes). 
+# URL de TaxHub (pour génération des vignettes).
 # Si le service Taxhub n'est pas utilisé, commenter la variable
 TAXHUB_URL = "http://mondomaine.fr/taxhub"
 
@@ -158,9 +158,19 @@ ATTR_VIMEO = 9
 ############################################
 
 # La table des taxons contient-elle les informations suivantes ?
-PATRIMONIALITE = True
+
 PROTECTION = True
 
+# PATRIMONIALITE = False
+PATRIMONIALITE = {
+    'label': "Patrimonial",
+    'config': {
+        'oui': {
+            'icon': 'custom/images/logo_patrimonial.png',
+            'text': u"Ce taxon est patrimonial"
+        }
+    }
+}
 #############################
 #### Pages statistiques #####
 #############################
