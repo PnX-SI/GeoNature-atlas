@@ -100,7 +100,7 @@ AFFICHAGE_EN_CE_MOMENT = True
 # Mettre dans RANG_STAT le couple 'rang taxonomique' - 'nom du taxon correspondant au rang' pour avoir des statistique sur ce rang -
 # Fonctionne à tous les niveaux de rang présents dans la table taxref -
 
-# exemple RANG_STAT = [{'ordre': ['Lepidoptera']}, {'classe': ['Insecta', 'Arachnida']}]
+# Exemple RANG_STAT = [{'ordre': ['Lepidoptera']}, {'classe': ['Insecta', 'Arachnida']}]
 #         RANG_STAT_FR ['Papillon', 'Insecte et Araignées']
 
 AFFICHAGE_RANG_STAT = True
@@ -131,7 +131,7 @@ REMOTE_MEDIAS_URL = "http://mondomaine.fr/taxhub/"
 # Seule cette partie de l'url sera visible pour les utilisateurs de l'atlas
 REMOTE_MEDIAS_PATH = "static/medias/"
 
-# URL de TaxHub (pour génération des vignettes).
+# URL de TaxHub (pour génération à la volée des vignettes des images).
 # Si le service Taxhub n'est pas utilisé, commenter la variable
 TAXHUB_URL = "http://mondomaine.fr/taxhub"
 
@@ -152,16 +152,20 @@ ATTR_YOUTUBE = 7
 ATTR_DAILYMOTION = 8
 ATTR_VIMEO = 9
 
-
 ############################################
 #### FICHE COMMUNE ET RANG TAXONOMIQUE #####
 ############################################
 
-# La table des taxons contient-elle les informations suivantes ?
+# Permet d'afficher ou non les colonnes Protection et/ou Patrimonialité/Enjeux dans les listes de taxons
+# Se basent sur les champs "atlas.vm_taxons.protection_stricte"` (oui/non) et "atlas.vm_taxons.patrimonial"
 
+# Afficher ou non la colonne Protection dans les listes de taxons (basé sur le champs "protection_stricte")
 PROTECTION = True
 
+# Afficher ou non la colonne Patrimonialité dans les listes de taxons (basé sur le champs "patrimonial") et la customiser
+# Pour masquer cette colonne, passer uniquement le paramètre à "False"
 # PATRIMONIALITE = False
+# Pour customiser l'affichage de cette colonne (label affiché, valeurs du champs et leur affichage) :
 PATRIMONIALITE = {
     'label': "Patrimonial",
     'config': {
@@ -171,12 +175,13 @@ PATRIMONIALITE = {
         }
     }
 }
+
 #############################
 #### Pages statistiques #####
 #############################
 
-# Pour l'instant les pictos se limitent au glyphicon proposés par bootstrap
-# https://getbootstrap.com/docs/3.3/components/
+# Permet de lister les pages statiques souhaitées et de les afficher dynamiquement dans le menu sidebar
+# Les pictos se limitent au Glyphicon proposés par Bootstrap (https://getbootstrap.com/docs/3.3/components/)
 STATIC_PAGES = {
     'presentation': {'title': u"Présentation de l'atlas", 'picto': 'glyphicon-question-sign', 'order': 0, 'template': 'static/custom/templates/presentation.html'}
 }
