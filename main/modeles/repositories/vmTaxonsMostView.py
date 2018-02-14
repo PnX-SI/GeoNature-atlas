@@ -15,7 +15,7 @@ def mostViewTaxon(connection):
             taxonName = nom_verna[0]+' | ' + r.lb_nom
         else:
             taxonName = r.lb_nom
-        temp ={
+        temp = {
             'cd_ref': r.cd_ref,
             'taxonName': taxonName,
             'path': utils.findPath(r),

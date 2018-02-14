@@ -10,24 +10,6 @@ dfCdRef = tableAltitudes.tableDef.columns['cd_ref']
 keyList = tableAltitudes.tableDef.columns.keys()
 
 
-# la keylist contient un champs cd_ref, donc on boucle dessus en enlevant ce champs
-def getAltitudes(cd_ref):
-    mesAltitudes = session.query(tableAltitudes.tableDef).filter(dfCdRef == cd_ref).all()
-    mesAltitudes = mesAltitudes[0]
-    altiList = list()
-    for i in range(len(keyList)):
-        key = str(keyList[i])
-        key  = key[1:]
-        key = key.replace('_', '-')
-        if keyList[i] != 'cd_ref':
-            temp = {
-                "altitude": key,
-                "value": getattr(mesAltitudes, keyList[i])
-            }
-            altiList.insert(i, temp)
-    return altiList
-
-
 def getAltitudesChilds(connection, cd_ref):
     # construction du select  de la requete a partir des cles de la table
     sumSelect = str()
