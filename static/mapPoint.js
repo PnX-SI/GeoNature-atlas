@@ -1,6 +1,7 @@
 
 var map = generateMap();
 generateSliderOnMap();
+var legend = L.control({position: 'bottomright'});
 
 // Layer display on window ready
 

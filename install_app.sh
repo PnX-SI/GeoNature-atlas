@@ -1,37 +1,105 @@
 #!/bin/bash
 
+if [ ! -f ./main/configuration/settings.ini ]; then
+  cp ./main/configuration/settings.ini.sample ./main/configuration/settings.ini
+fi
+
+. main/configuration/settings.ini
+
 if [ "$(id -u)" == "0" ]; then
-   echo -e "\e[91m\e[1mThis script should NOT be run as root\e[0m" >&2
+   echo -e "\e[91m\e[1mThis script should NOT be run as root but your user needs sudo rights\e[0m" >&2
    exit 1
 fi
 
-virtualenv ./venv
+echo "Stopping application..."
+sudo -s supervisorctl stop atlas
 
-. ./venv/bin/activate
+echo "Creating and activating Virtual env..."
+virtualenv $venv_dir
+
+. $venv_dir/bin/activate
+
+echo "Installing requirements..."
 pip install -r requirements.txt
 
-mkdir ./static/custom/images/
+echo "Launching application..."
+DIR=$(readlink -e "${0%/*}")
+sudo -s cp  atlas-service.conf /etc/supervisor/conf.d/
+sudo -s sed -i "s%APP_PATH%${DIR}%" /etc/supervisor/conf.d/atlas-service.conf
 
-cp ./main/configuration/config.py.sample ./main/configuration/config.py
-cp ./main/configuration/settings.ini.sample ./main/configuration/settings.ini
-cp ./static/custom/templates/footer.html.sample ./static/custom/templates/footer.html
-cp ./static/custom/templates/introduction.html.sample ./static/custom/templates/introduction.html
-cp ./static/custom/templates/presentation.html.sample ./static/custom/templates/presentation.html
-cp ./static/custom/templates/credits.html.sample ./static/custom/templates/credits.html
-cp ./static/custom/templates/mentions-legales.html.sample ./static/custom/templates/mentions-legales.html
-cp ./static/custom/custom.css.sample ./static/custom/custom.css
-cp ./static/custom/glossaire.json.sample ./static/custom/glossaire.json
-cp ./static/images/sample.favicon.ico ./static/custom/images/favicon.ico
-cp ./static/images/sample.accueil-intro.jpg ./static/custom/images/accueil-intro.jpg
-cp ./static/images/sample.logo-structure.png ./static/custom/images/logo-structure.png
-cp ./static/images/sample.logo_patrimonial.png ./static/custom/images/logo_patrimonial.png
+sudo -s supervisorctl reread
+sudo -s supervisorctl reload
 
-cp ./data/ref/communes.dbf.sample ./data/ref/communes.dbf
-cp ./data/ref/communes.prj.sample ./data/ref/communes.prj
-cp ./data/ref/communes.shp.sample ./data/ref/communes.shp
-cp ./data/ref/communes.shx.sample ./data/ref/communes.shx
+echo "Creating custom images folder if it doesnt already exist"
+if [ ! -d ./static/custom/images/ ]; then
+  mkdir -p ./static/custom/images/
+fi
 
-cp ./data/ref/territoire.dbf.sample ./data/ref/territoire.dbf
-cp ./data/ref/territoire.prj.sample ./data/ref/territoire.prj
-cp ./data/ref/territoire.shp.sample ./data/ref/territoire.shp
-cp ./data/ref/territoire.shx.sample ./data/ref/territoire.shx
+echo "Creating configuration files if they dont already exist"
+if [ ! -f ./main/configuration/config.py ]; then
+  cp ./main/configuration/config.py.sample ./main/configuration/config.py
+fi
+
+echo "Creating customisation files if they dont already exist"
+if [ ! -f ./static/custom/templates/footer.html ]; then
+  cp ./static/custom/templates/footer.html.sample ./static/custom/templates/footer.html
+fi
+if [ ! -f ./static/custom/templates/introduction.html ]; then
+  cp ./static/custom/templates/introduction.html.sample ./static/custom/templates/introduction.html
+fi
+if [ ! -f ./static/custom/templates/presentation.html ]; then
+  cp ./static/custom/templates/presentation.html.sample ./static/custom/templates/presentation.html
+fi
+if [ ! -f ./static/custom/templates/credits.html ]; then
+  cp ./static/custom/templates/credits.html.sample ./static/custom/templates/credits.html
+fi
+if [ ! -f ./static/custom/templates/mentions-legales.html ]; then
+  cp ./static/custom/templates/mentions-legales.html.sample ./static/custom/templates/mentions-legales.html
+fi
+if [ ! -f ./static/custom/custom.css ]; then
+  cp ./static/custom/custom.css.sample ./static/custom/custom.css
+fi
+if [ ! -f ./static/custom/glossaire.json ]; then
+  cp ./static/custom/glossaire.json.sample ./static/custom/glossaire.json
+fi
+if [ ! -f ./static/custom/images/favicon.ico ]; then
+  cp ./static/images/sample.favicon.ico ./static/custom/images/favicon.ico
+fi
+if [ ! -f ./static/custom/images/accueil-intro.jpg ]; then
+  cp ./static/images/sample.accueil-intro.jpg ./static/custom/images/accueil-intro.jpg
+fi
+if [ ! -f ./static/custom/images/logo-structure.png ]; then
+  cp ./static/images/sample.logo-structure.png ./static/custom/images/logo-structure.png
+fi
+if [ ! -f ./static/custom/images/logo_patrimonial.png ]; then
+  cp ./static/images/sample.logo_patrimonial.png ./static/custom/images/logo_patrimonial.png
+fi
+if [ ! -f ./static/custom/maps-custom.js ]; then
+  cp ./static/custom/maps-custom.js.sample ./static/custom/maps-custom.js
+fi
+
+echo "Creating GIS files if they dont already exist"
+if [ ! -f ./data/ref/communes.dbf ]; then
+  cp ./data/ref/communes.dbf.sample ./data/ref/communes.dbf
+fi
+if [ ! -f ./data/ref/communes.prj ]; then
+  cp ./data/ref/communes.prj.sample ./data/ref/communes.prj
+fi
+if [ ! -f ./data/ref/communes.shp ]; then
+  cp ./data/ref/communes.shp.sample ./data/ref/communes.shp
+fi
+if [ ! -f ./data/ref/communes.shx ]; then
+  cp ./data/ref/communes.shx.sample ./data/ref/communes.shx
+fi
+if [ ! -f ./data/ref/territoire.dbf ]; then
+  cp ./data/ref/territoire.dbf.sample ./data/ref/territoire.dbf
+fi
+if [ ! -f ./data/ref/territoire.prj ]; then
+  cp ./data/ref/territoire.prj.sample ./data/ref/territoire.prj
+fi
+if [ ! -f ./data/ref/territoire.shp ]; then
+  cp ./data/ref/territoire.shp.sample ./data/ref/territoire.shp
+fi
+if [ ! -f ./data/ref/territoire.shx ]; then
+  cp ./data/ref/territoire.shx.sample ./data/ref/territoire.shx
+fi

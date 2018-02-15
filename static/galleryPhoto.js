@@ -6,40 +6,47 @@ var clearHtml = false;
 
 
 // populate HTML with the selected photos
-function generateHtmlPhoto(photos){
+function generateHtmlPhoto(photos, taxhub_url){
 	window.lightbox.enable();
 
-	
-	if (clearHtml){ 
+
+	if (clearHtml){
 		if(photos.length == 0){
 			htmlPhoto = "<h3> <span style='padding:10px;'> Aucun résultat pour cette recherche </span> </h3>";
-		}else{
-		htmlPhoto = "";
 		}
-	} else{
+		else {
+			htmlPhoto = "";
+		}
+	}
+	else {
 		htmlPhoto = $('#insertPhotos').html()
 	}
 
-		if (compteurJson <= photos.length){
-	  	 slicePhoto = photos.slice(compteurJson, compteurJson+22);
-	  	 compteurJson = compteurJson + 22;
-	  		slicePhoto.forEach(function(photo){
+	if (compteurJson <= photos.length){
+  	 	slicePhoto = photos.slice(compteurJson, compteurJson+22);
+  	 	compteurJson = compteurJson + 22;
+  		slicePhoto.forEach(function(photo){
 
-	  		if (photo.title.indexOf("'") != -1){
-	  			photo.title = photo.title.split("'").join("&#39;");
+  		if (photo.title.indexOf("'") != -1){
+	  		photo.title = photo.title.split("'").join("&#39;");
 			}
-
-			onePhoto = "<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece '> \
-						  <div class='zoom-wrapper' > \
-					 		<a href='"+photo.path+"' data-lightbox='imageSet' data-title='"+photo.title +" &copy; "+photo.author+"' cdRef='"+photo.cd_ref+"'>\
-								<div class='img-custom-medias' style='background-image:url("+photo.path+")' alt='"+photo.name+"'> </div> \
-								<div class='stat-medias-hovereffet'> \
-						    		 <h2 class='overlay-obs'>"+photo.name+" </br> </br>"+photo.nb_obs+" observations </h2>  <img src='"+configuration.URL_APPLICATION+"/static/images/eye.png'></div> </a> </div> </div> </div>"
-
-
+			photo_url = photo.path;
+			if (taxhub_url) {
+				photo_url = taxhub_url+'/api/tmedias/thumbnail/'+photo.id_media+'?h=500&w=500';
+			}
+			onePhoto = "\
+				<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece '> \
+				  <div class='zoom-wrapper' > \
+				 		<a href='"+photo.path+"' data-lightbox='imageSet' data-title='"+photo.title +" &copy; "+photo.author+"' cdRef='"+photo.cd_ref+"'>\
+						<div class='img-custom-medias' style='background-image:url("+photo_url+")' alt='"+photo.name+"'> </div> \
+						<div class='stat-medias-hovereffet'> \
+					  <h2 class='overlay-obs'>"+photo.name+" </br> </br>"+photo.nb_obs+" observations </h2>  \
+						<img src='"+configuration.URL_APPLICATION+"/static/images/eye.png'></div> </a> </div> \
+					</div> \
+				</div>\
+			"
 
 			htmlPhoto += onePhoto;
-			
 		})
 	 }
 	$('#insertPhotos').html(htmlPhoto);
@@ -47,13 +54,11 @@ function generateHtmlPhoto(photos){
 }
 
 
-
-
 function scrollEvent(photos){
 	 $(window).scroll(function(){
 	 	clearHtml = false;
 	  	if($(window).scrollTop() + $(window).height() >= $(document).height()*0.80){
-	  		generateHtmlPhoto(photos)
+	  		generateHtmlPhoto(photos, configuration.TAXHUB_URL)
 	 	}
 	});
 }
@@ -64,7 +69,7 @@ function scrollEvent(photos){
 function orderPhotosEvent(photos) {
 
   		$('body').on('click', "#sort", function() {
-  		$('#searchPhotos').val('');	
+  		$('#searchPhotos').val('');
 
   		span = $('#orderPhotos').find('span');
   		$(span).toggleClass('glyphicon glyphicon-sort').toggleClass('glyphicon glyphicon-random');
@@ -78,8 +83,8 @@ function orderPhotosEvent(photos) {
 			return 0
   		})
 			clearHtml = true; compteurJson=0;
-			
-		generateHtmlPhoto(sortedPhotos);
+
+		generateHtmlPhoto(sortedPhotos, configuration.TAXHUB_URL);
 		$(window).off("scroll");
 		scrollEvent(sortedPhotos);
 
@@ -89,14 +94,14 @@ function orderPhotosEvent(photos) {
 
 function sufflePhotosEvent(photos){
 		$('body').on('click', "#random", function() {
-		$('#searchPhotos').val('');	
-	  	
+		$('#searchPhotos').val('');
+
 	  	span = $('#orderPhotos').find('span');
   		$(span).toggleClass('glyphicon glyphicon-sort').toggleClass('glyphicon glyphicon-random');
   		$(span).attr("id", "sort");
   		$(span).attr("data-original-title", "Trier les photos par nombre d'observations");
   		clearHtml = true; compteurJson=0;
-  		generateHtmlPhoto(photos)
+  		generateHtmlPhoto(photos, configuration.TAXHUB_URL)
   		$(window).off("scroll");
 		scrollEvent(photos);
 	})
@@ -110,61 +115,55 @@ $(document).ready(function(){
 		  beforeSend: function(){
 		    // $('#loadingGif').attr("src", configuration.URL_APPLICATION+'/static/images/loading.svg')
 		  }
-
-          // Count and display number of photos
-		  }).done(function(photos) {
-		  	 generateHtmlPhoto(photos);
-		  	 $('#nbPhotos').html(photos.length + " photos");
-		  	 scrollEvent(photos);
-
-		  	 	orderPhotosEvent(photos);	
-
-		  	 	sufflePhotosEvent(photos);
-
-
-		  	$('#allGroups').click(function(){
-		  		$('#searchPhotos').val('');	
-		  		$("body").off("click");
-		  		orderPhotosEvent(photos);		  	 
-		  		sufflePhotosEvent(photos);
-				clearHtml = true;
-				compteurJson = 0;
-				$(window).off("scroll");
-				generateHtmlPhoto(photos);
-				$('#group').html("");
+		}).done(function(photos) {
+				generateHtmlPhoto(photos, configuration.TAXHUB_URL);
 				$('#nbPhotos').html(photos.length + " photos");
 				scrollEvent(photos);
-			})
+				orderPhotosEvent(photos);
+				sufflePhotosEvent(photos);
 
-		  	// search a photo by the name of the species
-			$('#searchPhotos').on('keyup', function() {
-				$(window).off("scroll");
-				$("body").off("click");
-				$('#group').html("");
-				keyString = this.value;
-				filterJsonPhoto = photos.filter(function(obj){
-					if(obj.name){name = obj.name.toLowerCase();} else {name = 'Nom non renseigné';}
-					if(obj.title){title = obj.title.toLowerCase();} else {title = 'Titre non renseigné';}
-					if(obj.author){author = obj.author.toLowerCase();} else {author = 'Auteur non renseigné';}
-					return (name.includes(keyString.toLowerCase()) || title.includes(keyString.toLowerCase()) || author.includes(keyString.toLowerCase()))
+		  	$('#allGroups').click(function(){
+		  		$('#searchPhotos').val('');
+		  		$("body").off("click");
+		  		orderPhotosEvent(photos);
+		  		sufflePhotosEvent(photos);
+					clearHtml = true;
+					compteurJson = 0;
+					$(window).off("scroll");
+					generateHtmlPhoto(photos, configuration.TAXHUB_URL);
+					$('#group').html("");
+					$('#nbPhotos').html(photos.length + " photos");
+					scrollEvent(photos);
 				})
 
-				clearHtml = true; compteurJson=0;
-				generateHtmlPhoto(filterJsonPhoto);
-				$('#nbPhotos').html(filterJsonPhoto.length + " photos");
-				scrollEvent(filterJsonPhoto);
-		  	 	orderPhotosEvent(photos);	
-		  	 	sufflePhotosEvent(photos);
+		  	// search a photo by the name of the species
+				$('#searchPhotos').on('keyup', function() {
+					$(window).off("scroll");
+					$("body").off("click");
+					$('#group').html("");
+					keyString = this.value;
+					filterJsonPhoto = photos.filter(function(obj){
+						if(obj.name){name = obj.name.toLowerCase();} else {name = 'Nom non renseigné';}
+						if(obj.title){title = obj.title.toLowerCase();} else {title = 'Titre non renseigné';}
+						if(obj.author){author = obj.author.toLowerCase();} else {author = 'Auteur non renseigné';}
+						return (name.includes(keyString.toLowerCase()) || title.includes(keyString.toLowerCase()) || author.includes(keyString.toLowerCase()))
+					})
 
-			});
+					clearHtml = true; compteurJson=0;
+					generateHtmlPhoto(filterJsonPhoto, configuration.TAXHUB_URL);
+					$('#nbPhotos').html(filterJsonPhoto.length + " photos");
+					scrollEvent(filterJsonPhoto);
+			  	 	orderPhotosEvent(photos);
+			  	 	sufflePhotosEvent(photos);
 
+				});
 		});
 
 })
 
 
 $('.INPNgroup').click(function(){
-	$('#searchPhotos').val('');	
+	$('#searchPhotos').val('');
 	compteurJson = 0;
 	clearHtml = true;
 	group = $(this).attr('alt');
@@ -181,15 +180,15 @@ $('.INPNgroup').click(function(){
 		  beforeSend: function(){
 		    // $('#loadingGif').attr("src", configuration.URL_APPLICATION+'/static/images/loading.svg')
 		    }
-            
+
 		  // Count and display number of photos in 1 group
 		  }).done(function(photos) {
-				generateHtmlPhoto(photos);
+				generateHtmlPhoto(photos, configuration.TAXHUB_URL);
 				$('#group').html("("+group+")");
 				$('#nbPhotos').html(photos.length + " photos");
 				clearHtml = false;
 				scrollEvent(photos);
-		  	 	orderPhotosEvent(photos);	
+		  	 	orderPhotosEvent(photos);
 		  	 	sufflePhotosEvent();
 
 		 })
@@ -200,5 +199,3 @@ $('.lb-link').click(function(){
 	// console.log("click");
 	location.href= $(this).attr("href");
 })
-
-

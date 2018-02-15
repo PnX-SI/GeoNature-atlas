@@ -135,10 +135,10 @@ then
 		cd taxonomie
         wget https://raw.githubusercontent.com/PnX-SI/TaxHub/master/data/taxhubdb.sql
         sudo -n -u postgres -s psql -d $db_name -f taxhubdb.sql  &>> ../../log/install_db.log
-        wget https://github.com/PnX-SI/TaxHub/raw/master/data/inpn/TAXREF_INPN_v9.0.zip
+        wget http://geonature.fr/data/inpn/taxonomie/TAXREF_INPN_v9.0.zip
         unzip TAXREF_INPN_v9.0.zip -d /tmp
-		wget https://github.com/PnX-SI/TaxHub/raw/master/data/inpn/ESPECES_REGLEMENTEES.zip
-		unzip ESPECES_REGLEMENTEES.zip -d /tmp
+	wget http://geonature.fr/data/inpn/taxonomie/ESPECES_REGLEMENTEES_20161103.zip
+	unzip ESPECES_REGLEMENTEES.zip -d /tmp
         wget https://raw.githubusercontent.com/PnX-SI/TaxHub/master/data/inpn/data_inpn_v9_taxhub.sql
         sudo -n -u postgres -s psql -d $db_name  -f data_inpn_v9_taxhub.sql &>> ../../log/install_db.log
         wget https://raw.githubusercontent.com/PnX-SI/TaxHub/master/data/vm_hierarchie_taxo.sql

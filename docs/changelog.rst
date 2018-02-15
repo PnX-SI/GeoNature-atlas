@@ -2,16 +2,81 @@
 CHANGELOG
 =========
 
-1.2.7.dev0 (unreleased)
------------------------
+1.3.0 (2018-02-15)
+------------------
+
+**Nouveautés**
+
+* Passage de WSGI à Gunicorn pour simplifier et homogénéiser les serveurs Web des différentes applications (TaxHub, GeoNature...)
+* Télécharger TAXREF sur geonature.fr et non plus sur le dépôt de TaxHub
+* Amélioration du message par défaut sur la HOME pour les dernieres observations
+* Optimisation de certaines requêtes
+* Prise en compte du HTML dans le champs AUTEUR
+* Ajout de picto pour les groupes Hépatiques et Anthocérotes
+* Prise en compte des groupes INPN contenant des espaces
+* TaxHub 1.3.2 permet de générer à la volée des vignettes des images. Ces vignettes sont désormais utilisables dans GeoNature-atlas pour éviter de charger des grandes images dans les listes de taxons. Pour cela un paramètre ``TAXHUB_URL`` a été ajouté (#129)
+* Dans les versions précédentes seule une page statique PRESENTATION était disponible. Seul son contenu était modifiable. Les pages statiques sont désormais paramétrables (template, nom, picto et ordre) et il est possible d'en créer autant qu'on le souhaite en les listant dans le paramètre ``STATIC_PAGES`` (#131)
+* Possibilité de customiser l'affichage des points et leur style en fonction des valeurs du champs voulu dans ``atlas.vm_observations``. Pour cela, il faut renseigner le fichier de surcouche javascript ``static/custom/maps-custom.js`` (#133)
+* Possibilité de customiser l'affichage et les valeur de la colonne Patrimonialité dans les listes de taxons, à l'aide du paramètre ``PATRIMONIALITE`` dans ``main/configuration/custom.py`` (#134)
+
+**Corrections**
+
+* Suppression d'un double appel à un fichier JS dans le template des fiches espèces (merci @sig-pnrnm)
+* Correction d'un bug du slider et de la carte Leaflet dans Chrome (#109)
+* Correction des jointures pour prévenir les caractères invisibles (#121, merci @mathieubossaert)
+* Correction de l'affichage des singulers et pluriels en ajoutant des conditions (merci @Splendens)
+* Amélioration, formatage et simplification de la gestion des paramètres dans le fichier de routes ``main/atlasRoutes.py``
+* Important nettoyage du code, factorisation et style
+
+**Notes de version**
+
+* Suivre la procédure standard de mise à jour
+* Compléter le fichier de configuration (``main/configuration/config.py``) en ajoutant les nouveaux paramètres ``TAXHUB_URL`` et ``STATIC_PAGES``, en se basant sur le fichier d'exemple ``main/configuration/config.py.sample``.
+* Compléter ce même fichier de configuration en adaptant le paramètre ``PATRIMONIALITE`` au nouveau fonctionnement. Pour un fonctionnement par défaut, vous pouvez copier le paramétrage par défaut (https://github.com/PnEcrins/GeoNature-atlas/blob/c27f15af3879d6f2664d0e3220dd32c52e5145df/main/configuration/config.py.sample#L165-L177)
+* Pour que les modifications du fichier de configuration soient prises en compte, il faut désormais lancer ``sudo supervisorctl reload``.
+* Exécutez le script de mise à jour de la BDD ``data/update_1.2.6to1.3.0.sql`` après l'avoir analysé et lu ses commentaires
+* Passage de WSGI à Gunicorn....
+Compléter le fichier ``main/configuration/settings.ini`` avec les parties ``Gunicorn settings`` et ``Python settings``, en se basant sur le fichier d'exemple ``main/configuration/settings.ini.sample``
+
+::
+
+  sudo apt-get install -y supervisor
+  ./install_app.sh
+
+Activer les modules et redémarrer Apache
+
+::
+
+    sudo a2enmod proxy
+    sudo a2enmod proxy_http
+    sudo apache2ctl restart
+
+Supprimer le fichier ``atlas.wsgi`` si il est présent à la racine de l'application
+
+Mettre à jour la configuration Apache de votre GeoNature-atlas (``/etc/apache2/sites-available/atlas.conf``) en remplacant son contenu (modifier le port en fonction) :
+
+::
+
+    # Configuration Geonature-atlas
+    RewriteEngine  on
+    RewriteRule    "atlas$"  "atlas/"  [R]
+    <Location /atlas>
+        ProxyPass  http://127.0.0.1:8080/
+        ProxyPassReverse  http://127.0.0.1:8080/
+    </Location>
+    #FIN Configuration Geonature-atlas
+    
+* Reportez les modifications du template ``static/custom/templates/introduction.html`` en répercutant la nouvelle méthode d'obtention des templates des pages statiques : https://github.com/PnEcrins/GeoNature-atlas/blob/6d8781204ac291f11305cf462fb0c9e247f3ba59/static/custom/templates/introduction.html.sample#L15
+
+* Modifier votre template ``static/custom/templates/presentation.html`` en répercutant la modification du nom du fichier CSS des pages statiques : https://github.com/PnEcrins/GeoNature-atlas/blob/6d8781204ac291f11305cf462fb0c9e247f3ba59/static/custom/templates/presentation.html.sample#L20
 
 1.2.6 (2017-06-30)
 ------------------
 
 **Nouveautés**
 
-* Ajout des paramètres `BORDERS_COLOR` et `BORDERS_WEIGHT` pour modifier la couleur et l'épaisseur des limites du territoire.
-* Passer la fonction PostgreSQL `RefreshAllMaterializedViews` en mode concurrent par défaut https://www.postgresql.org/docs/9.4/static/sql-refreshmaterializedview.html
+* Ajout des paramètres ``BORDERS_COLOR`` et ``BORDERS_WEIGHT`` pour modifier la couleur et l'épaisseur des limites du territoire.
+* Passer la fonction PostgreSQL ``RefreshAllMaterializedViews`` en mode concurrent par défaut https://www.postgresql.org/docs/9.4/static/sql-refreshmaterializedview.html
 
 **Corrections**
 
@@ -20,8 +85,8 @@ CHANGELOG
 
 **Notes de version**
 
-* Ajoutez les paramètres `BORDERS_COLOR` et `BORDERS_WEIGHT` dans votre fichier `main/configuration/config.py` comme indiqué dans le fichier d'exemple (https://github.com/PnEcrins/GeoNature-atlas/blob/master/main/configuration/config.py.sample)
-* Si vous utilisez une version supérieure à 9.3, il est conseillé de rafraichir les vues matérialisées de manière concurrente pour ne pas bloquer l'accès à la BDD pendant un rafraichissement. Si ce n'est pas le cas pour votre vue, il est conseillé de la modifier (schéma `public`) comme proposé désormais : https://github.com/PnEcrins/GeoNature-atlas/blob/master/data/atlas.sql#L406-L423
+* Ajoutez les paramètres ``BORDERS_COLOR`` et ``BORDERS_WEIGHT`` dans votre fichier ``main/configuration/config.py`` comme indiqué dans le fichier d'exemple (https://github.com/PnEcrins/GeoNature-atlas/blob/master/main/configuration/config.py.sample)
+* Si vous utilisez une version supérieure à 9.3, il est conseillé de rafraichir les vues matérialisées de manière concurrente pour ne pas bloquer l'accès à la BDD pendant un rafraichissement. Si ce n'est pas le cas pour votre vue, il est conseillé de la modifier (schéma ``public``) comme proposé désormais : https://github.com/PnEcrins/GeoNature-atlas/blob/master/data/atlas.sql#L406-L423
 
 1.2.5 (2017-04-07)
 ------------------

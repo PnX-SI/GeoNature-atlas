@@ -1,5 +1,6 @@
-#! /usr/bin/python
+
 # -*- coding:utf-8 -*-
+
 from ..utils import engine
 from sqlalchemy import MetaData, Table
 import unicodedata
@@ -24,7 +25,7 @@ def serializeQuery( data, columnDef):
     return rows
 
 
-def deleteAccent(string): 
+def deleteAccent(string):
     return unicodedata.normalize('NFD', string).encode('ascii', 'ignore')
 
 def findPath(row):

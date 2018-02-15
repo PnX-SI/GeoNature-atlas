@@ -1,5 +1,7 @@
 var map = generateMap();
 
+var legend = L.control({position: 'bottomright'});
+
 map.scrollWheelZoom.disable();
 $('#map').click(function(){
   map.scrollWheelZoom.enable();

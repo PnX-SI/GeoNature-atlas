@@ -6,7 +6,7 @@
 
         <!-- Jquery -->
         <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
-		<script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+		    <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
 
         <!-- Bootstrap -->
@@ -15,8 +15,6 @@
 
         <!-- LightBox -->
         <link rel="stylesheet" href="{{url_for('static', filename='lib/lightbox2/css/lightbox.css') }}" />
-
-
 
         <!-- Atlas -->
         <link rel="shortcut icon" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
@@ -38,58 +36,52 @@
                             <div id="filtresPhotos">
         						<ul class="floatParent">
         						    {% for group in groups %}
-        							    <li class="floatLeft"> 
-                                            <img class="INPNgroup" src="{{url_for('static', filename='images/picto_' + group.group +'.png')}}" alt="{{group.groupAccent}}" data-toggle="tooltip" data-original- title="{{group.groupAccent}}" data-placement="top">
-                                        </li>
+        							    <li class="floatLeft">
+                            <img class="INPNgroup" src="{{url_for('static', filename='images/picto_' + group.group | replace(" ", "_") +'.png')}}" alt="{{group.groupAccent}}" data-toggle="tooltip" data-original- title="{{group.groupAccent}}" data-placement="top">
+                          </li>
         						    {% endfor %}
-                               
-        						    <li class="floatLeft bottom"> 
-                                        <a id="allGroups" class="btn btn-default" role="button" data-toggle="tooltip" data-original-title="Afficher les photos de tous les groupes" data-placement="top">Tous les groupes</a>
-                                    </li>
-                                     <li class="floatLeft bottom"> 
-                                        <span id="orderPhotos" class="sortedButton">
-                                            <span id="sort" class="glyphicon glyphicon-sort" data-toggle="tooltip" data-original-title="Trier les photos par nombre d'observations" data-placement="top"></span>
-                                        </span>
-                                    </li>
+
         						    <li class="floatLeft bottom">
-                                        <input type="text" class="form-control" id="searchPhotos" placeholder="Rechercher une espèce" value="">
-                                    </li>
-                                 </ul>
-                            </div>
-                        <h3 id="nbPhotos"></h4> 
+                            <a id="allGroups" class="btn btn-default" role="button" data-toggle="tooltip" data-original-title="Afficher les photos de tous les groupes" data-placement="top">Tous les groupes</a>
+                        </li>
+                        <li class="floatLeft bottom">
+                            <span id="orderPhotos" class="sortedButton">
+                                <span id="sort" class="glyphicon glyphicon-sort" data-toggle="tooltip" data-original-title="Trier les photos par nombre d'observations" data-placement="top"></span>
+                            </span>
+                        </li>
+        						    <li class="floatLeft bottom">
+                          <input type="text" class="form-control" id="searchPhotos" placeholder="Rechercher une espèce" value="">
+                        </li>
+                    </ul>
+              </div>
+              <h3 id="nbPhotos"></h4>
 					</div>
 
 				</div>
 			</div>
-			
-            <div class="col-sm-12">
-                
-		          <div class="col-sm-12 panel panel-default" id="insertPhotos"></div>
-                
-            </div>
-			
-        </div>
-        
+
+      <div class="col-sm-12">
+        <div class="col-sm-12 panel panel-default" id="insertPhotos"></div>
+      </div>
+
+    </div>
+
         {% if configuration.AFFICHAGE_FOOTER %}
             {% include 'static/custom/templates/footer.html' %}
         {% endif %}
-        
-
-        
 
         <script type="text/javascript">
             var communesSearch = {{communesSearch|tojson}},
                  configuration = {{configuration|tojson}};
         </script>
-        
+
 
         <div id="hide">
-            <script src="{{url_for('static', filename='lib/lightbox2/js/lightbox.js') }}"></script> 
+            <script src="{{url_for('static', filename='lib/lightbox2/js/lightbox.js') }}"></script>
             <script src="{{url_for('static', filename='galleryPhoto.js') }}"></script>
-
             <script src="{{url_for('static', filename='main.js') }}"></script>
         </div>
 
-   </body> 
+   </body>
 
 </html>
