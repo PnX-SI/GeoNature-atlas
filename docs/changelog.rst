@@ -15,7 +15,9 @@ CHANGELOG
 * Ajout de picto pour les groupes Hépatiques et Anthocérotes
 * Prise en compte des groupes INPN contenant des espaces
 * TaxHub 1.3.2 permet de générer à la volée des vignettes des images. Ces vignettes sont désormais utilisables dans GeoNature-atlas pour éviter de charger des grandes images dans les listes de taxons. Pour cela un paramètre ``TAXHUB_URL`` a été ajouté (#129)
-* Dans les versions précédentes seules une page statique PRESENTATION était disponible. Seul son contenu était modifiable. Les pages statiques sont désormais paramétrables (template, nom, picto et ordre) et il est possible d'en créer autant qu'on le souhaite en les listant dans le paramètre ``STATIC_PAGES`` (#131)
+* Dans les versions précédentes seule une page statique PRESENTATION était disponible. Seul son contenu était modifiable. Les pages statiques sont désormais paramétrables (template, nom, picto et ordre) et il est possible d'en créer autant qu'on le souhaite en les listant dans le paramètre ``STATIC_PAGES`` (#131)
+* Possibilité de customiser l'affichage des points et leur style en fonction des valeurs du champs voulu dans ``atlas.vm_observations``. Pour cela, il faut renseigner le fichier de surcouche javascript ``static/custom/maps-custom.js`` (#133)
+* Possibilité de customiser l'affichage et les valeur de la colonne Patrimonialité dans les listes de taxons, à l'aide du paramètre ``PATRIMONIALITE`` dans ``main/configuration/custom.py`` (#134)
 
 **Corrections**
 
@@ -24,11 +26,14 @@ CHANGELOG
 * Correction des jointures pour prévenir les caractères invisibles (#121, merci @mathieubossaert)
 * Correction de l'affichage des singulers et pluriels en ajoutant des conditions (merci @Splendens)
 * Amélioration, formatage et simplification de la gestion des paramètres dans le fichier de routes ``main/atlasRoutes.py``
+* Important nettoyage du code, factorisation et style
 
 **Notes de version**
 
 * Suivre la procédure standard de mise à jour
-* Compléter le fichier de configuration en ajoutant les nouveaux paramètres ``TAXHUB_URL`` et ``STATIC_PAGES``, en se basant sur le fichier d'exemple ``main/configuration/config.py.sample``. Pour que les modifications du fichier de configuration soient prises en compte, il faut désormais lancer ``sudo supervisorctl reload``.
+* Compléter le fichier de configuration (``main/configuration/config.py``) en ajoutant les nouveaux paramètres ``TAXHUB_URL`` et ``STATIC_PAGES``, en se basant sur le fichier d'exemple ``main/configuration/config.py.sample``.
+* Compléter ce même fichier de configuration en adaptant le paramètre ``PATRIMONIALITE`` au nouveau fonctionnement. Pour un fonctionnement par défaut, vous pouvez copier le paramétrage par défaut (https://github.com/PnEcrins/GeoNature-atlas/blob/c27f15af3879d6f2664d0e3220dd32c52e5145df/main/configuration/config.py.sample#L165-L177)
+* Pour que les modifications du fichier de configuration soient prises en compte, il faut désormais lancer ``sudo supervisorctl reload``.
 * Exécutez le script de mise à jour de la BDD ``data/update_1.2.6to1.3.0.sql``
 * Passage de WSGI à Gunicorn....
 Compléter le fichier ``main/configuration/settings.ini`` avec les parties ``Gunicorn settings`` et ``Python settings``, en se basant sur le fichier d'exemple ``main/configuration/settings.ini.sample``
