@@ -19,6 +19,7 @@ CREATE MATERIALIZED VIEW atlas.vm_taxons_plus_observes AS
   ORDER BY (count(*)) DESC
  LIMIT 12
 WITH DATA;
+
 -- Index: atlas.vm_taxons_plus_observes_cd_ref_idx
 
 -- DROP INDEX atlas.vm_taxons_plus_observes_cd_ref_idx;
@@ -27,3 +28,10 @@ CREATE UNIQUE INDEX vm_taxons_plus_observes_cd_ref_idx
   ON atlas.vm_taxons_plus_observes
   USING btree
   (cd_ref);
+  
+-- Add GRAND SELECT to 
+-- Si votre utilisateur PostgreSQL en lecture seule sur ces vues n'est pas "geonatatlas" 
+-- (celui utilisé par l'application web de l'atlas, user_pg dans main/configuration/settings.ini),
+-- vous devez modifier l'utilisateur avant d'exécuter ce script.
+
+GRANT SELECT ON TABLE atlas.bib_altitudes TO geonatatlas;
