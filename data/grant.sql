@@ -33,6 +33,7 @@ GRANT SELECT ON TABLE atlas.vm_taxons_plus_observes TO my_reader_user;
 GRANT SELECT ON TABLE atlas.vm_taxref TO my_reader_user;
 GRANT SELECT ON TABLE atlas.vm_mois TO my_reader_user;
 GRANT SELECT ON TABLE atlas.vm_altitudes TO my_reader_user;
+GRANT SELECT ON TABLE atlas.bib_altitudes TO TO my_reader_user;
 GRANT EXECUTE ON FUNCTION atlas.find_all_taxons_childs(integer) TO my_reader_user;
 GRANT SELECT ON TABLE atlas.bib_taxref_rangs TO my_reader_user;
 GRANT SELECT ON TABLE atlas.t_mailles_territoire TO my_reader_user;
