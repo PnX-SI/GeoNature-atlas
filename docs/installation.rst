@@ -179,22 +179,25 @@ Créez un virtualhost pour l'atlas :
 
     sudo nano /etc/apache2/sites-available/atlas.conf
 
-Copier/collez-y ces lignes en renseignant le bon port : 
+Pour rendre l'application consultable comme un sous répertoire du serveur  (http://monURL/atlas par exemple).
+Copiez/collez-y ces lignes en renseignant le bon port : 
 ::
 
     # Configuration Geonature-atlas
     RewriteEngine  on
-    RewriteRule    "atlas$"  "atlas/"  [R]
     <Location /atlas>
-        ProxyPass  http://127.0.0.1:8080/
-        ProxyPassReverse  http://127.0.0.1:8080/
+        ProxyPass  http://127.0.0.1:8080
+        ProxyPassReverse  http://127.0.0.1:8080
     </Location>
     #FIN Configuration Geonature-atlas
+    
+Si l'atlas doit se trouver à la racine du serveur copiez/coller ces lignes (NB les '/' à la fin des ProxyPass et ProxPassReverse)
+::
+	<Location />
+   	    ProxyPass http://127.0.0.1:8080/
+	    ProxyPassReverse http://127.0.0.1:8080/
+ 	 </Location>
 
-:notes:
-
-    Ici l'application sera consultable comme un sous répertoire du serveur  (http://monURL/atlas par exemple). Si votre application doit être disponible à la racine de votre URL, remplacez ``<Location /atlas>`` par ``<Location />``
-	
 	
 Si l'atlas est associé à un domaine, ajoutez cette ligne au début du fichier :
 	 
