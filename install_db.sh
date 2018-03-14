@@ -141,7 +141,9 @@ then
         wget http://geonature.fr/data/inpn/taxonomie/TAXREF_INPN_v9.0.zip
         unzip TAXREF_INPN_v9.0.zip -d /tmp
 	    wget http://geonature.fr/data/inpn/taxonomie/ESPECES_REGLEMENTEES_20161103.zip
-	    unzip ESPECES_REGLEMENTEES.zip -d /tmp
+	    unzip ESPECES_REGLEMENTEES_20161103.zip -d /tmp
+        wget  http://geonature.fr/data/inpn/taxonomie/LR_FRANCE_20160000.zip
+        unzip LR_FRANCE_20160000.zip -d /tmp
         
         wget https://raw.githubusercontent.com/PnX-SI/TaxHub/1.3.2/data/inpn/data_inpn_v9_taxhub.sql
         # export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f  data_inpn_v9_taxhub.sql &>> ../../log/install_db.log
@@ -160,11 +162,10 @@ then
 
         rm /tmp/*.txt
         rm /tmp/*.csv
+        rm /tmp/*.sql
         cd ../..
 		rm -R data/taxonomie
-        # GRANT on schema taxonomie
-        
-        # sudo -n -u postgres -s psql -d $db_name -c "ALTER SCHEMA taxonomie OWNER TO $owner_atlas;"
+
     fi
     
     # Creation des Vues Matérialisées (et remplacement éventuel des valeurs en dur par les paramètres)
