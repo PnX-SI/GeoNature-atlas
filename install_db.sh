@@ -134,7 +134,7 @@ then
 		cd data
 		mkdir taxonomie
 		cd taxonomie
-        wget https://raw.githubusercontent.com/PnX-SI/TaxHub/1.3.2/data/taxhubdb.sql
+        wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/taxhubdb.sql
         #sudo -n -u postgres -s psql -d $db_name -f taxhubdb.sql  &>> ../../log/install_db.log
         export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f  taxhubdb.sql  &>> ../../log/install_db.log
         
@@ -145,17 +145,17 @@ then
         wget  http://geonature.fr/data/inpn/taxonomie/LR_FRANCE_20160000.zip
         unzip LR_FRANCE_20160000.zip -d /tmp
         
-        wget https://raw.githubusercontent.com/PnX-SI/TaxHub/1.3.2/data/inpn/data_inpn_v9_taxhub.sql
+        wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/inpn/data_inpn_v9_taxhub.sql
         # export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f  data_inpn_v9_taxhub.sql &>> ../../log/install_db.log
         sudo -n -u postgres -s psql -d $db_name  -f data_inpn_v9_taxhub.sql &>> ../../log/install_db.log
 
 
-        wget https://raw.githubusercontent.com/PnX-SI/TaxHub/1.3.2/data/materialized_views.sql
+        wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/materialized_views.sql
         #sudo -n -u postgres -s psql -d $db_name -f vm_hierarchie_taxo.sql  &>> ../../log/install_db.log
         export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f  materialized_views.sql  &>> ../../log/install_db.log
         
 
-        wget https://raw.githubusercontent.com/PnX-SI/TaxHub/1.3.2/data/taxhubdata.sql
+        wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/taxhubdata.sql
         #sudo -n -u postgres -s psql -d $db_name -f taxhubdata.sql  &>> ../../log/install_db.log
         export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f  taxhubdata.sql  &>> ../../log/install_db.log
         
