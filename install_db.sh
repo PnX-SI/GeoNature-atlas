@@ -106,7 +106,7 @@ then
 		echo "Création de la table exemple syntheseff"
 		sudo -n -u postgres -s psql -d $db_name -c "CREATE TABLE synthese.syntheseff
 			(
-			  id_synthese serial NOT NULL,
+			  id_synthese serial PRIMARY KEY,
 			  id_organisme integer DEFAULT 2,
 			  cd_nom integer,
 			  insee character(5),
@@ -115,14 +115,15 @@ then
 			  altitude_retenue integer,
 			  supprime boolean DEFAULT false,
 			  the_geom_point geometry('POINT',3857),
-			  effectif_total integer
+			  effectif_total integer,
+              diffusable boolean 
 			);
 			INSERT INTO synthese.syntheseff 
-			  (cd_nom, insee, observateurs, altitude_retenue, the_geom_point, effectif_total)
-			  VALUES (67111, 05122, 'Mon observateur', 1254, '0101000020110F0000B19F3DEA8636264124CB9EB2D66A5541', 3);
+			  (cd_nom, insee, observateurs, altitude_retenue, the_geom_point, effectif_total, diffusable)
+			  VALUES (67111, 05122, 'Mon observateur', 1254, '0101000020110F0000B19F3DEA8636264124CB9EB2D66A5541', 3, true);
 			INSERT INTO synthese.syntheseff 
-			  (cd_nom, insee, observateurs, altitude_retenue, the_geom_point, effectif_total)
-			  VALUES (67111, 05122, 'Mon observateur 3', 940, '0101000020110F00001F548906D05E25413391E5EE2B795541', 2);" &>> log/install_db.log
+			  (cd_nom, insee, observateurs, altitude_retenue, the_geom_point, effectif_total, diffusable)
+			  VALUES (67111, 05122, 'Mon observateur 3', 940, '0101000020110F00001F548906D05E25413391E5EE2B795541', 2, true);" &>> log/install_db.log
         sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE synthese.syntheseff OWNER TO "$owner_atlas";"
 	fi
     
@@ -133,22 +134,38 @@ then
 		cd data
 		mkdir taxonomie
 		cd taxonomie
-        wget https://raw.githubusercontent.com/PnX-SI/TaxHub/master/data/taxhubdb.sql
-        sudo -n -u postgres -s psql -d $db_name -f taxhubdb.sql  &>> ../../log/install_db.log
+        wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/taxhubdb.sql
+        #sudo -n -u postgres -s psql -d $db_name -f taxhubdb.sql  &>> ../../log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f  taxhubdb.sql  &>> ../../log/install_db.log
+        
         wget http://geonature.fr/data/inpn/taxonomie/TAXREF_INPN_v9.0.zip
         unzip TAXREF_INPN_v9.0.zip -d /tmp
-	wget http://geonature.fr/data/inpn/taxonomie/ESPECES_REGLEMENTEES_20161103.zip
-	unzip ESPECES_REGLEMENTEES.zip -d /tmp
-        wget https://raw.githubusercontent.com/PnX-SI/TaxHub/master/data/inpn/data_inpn_v9_taxhub.sql
+	    wget http://geonature.fr/data/inpn/taxonomie/ESPECES_REGLEMENTEES_20161103.zip
+	    unzip ESPECES_REGLEMENTEES_20161103.zip -d /tmp
+        wget  http://geonature.fr/data/inpn/taxonomie/LR_FRANCE_20160000.zip
+        unzip LR_FRANCE_20160000.zip -d /tmp
+        
+        wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/inpn/data_inpn_v9_taxhub.sql
+        # export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f  data_inpn_v9_taxhub.sql &>> ../../log/install_db.log
         sudo -n -u postgres -s psql -d $db_name  -f data_inpn_v9_taxhub.sql &>> ../../log/install_db.log
-        wget https://raw.githubusercontent.com/PnX-SI/TaxHub/master/data/vm_hierarchie_taxo.sql
-        sudo -n -u postgres -s psql -d $db_name -f vm_hierarchie_taxo.sql  &>> ../../log/install_db.log
-        wget https://raw.githubusercontent.com/PnX-SI/TaxHub/master/data/taxhubdata.sql
-        sudo -n -u postgres -s psql -d $db_name -f taxhubdata.sql  &>> ../../log/install_db.log
+
+
+        wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/materialized_views.sql
+        #sudo -n -u postgres -s psql -d $db_name -f vm_hierarchie_taxo.sql  &>> ../../log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f  materialized_views.sql  &>> ../../log/install_db.log
+        
+
+        wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/taxhubdata.sql
+        #sudo -n -u postgres -s psql -d $db_name -f taxhubdata.sql  &>> ../../log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f  taxhubdata.sql  &>> ../../log/install_db.log
+        
+
         rm /tmp/*.txt
         rm /tmp/*.csv
+        rm /tmp/*.sql
         cd ../..
 		rm -R data/taxonomie
+
     fi
     
     # Creation des Vues Matérialisées (et remplacement éventuel des valeurs en dur par les paramètres)

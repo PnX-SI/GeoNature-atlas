@@ -26,8 +26,8 @@ Ce serveur doit aussi disposer de :
     GeoNature-atlas est susceptible de fonctionner sur d'autres OS (comme Ubuntu par exemple) mais cela n'a pas été testé.
 
 
-Installation de l'environnement et de l'application
-===================================================
+Installation de l'environnement logiciel
+========================================
 
 Le script ``install_env.sh`` va automatiquement installer les outils nécessaires à l'application si ils ne sont pas déjà sur le serveur : 
 
@@ -88,11 +88,6 @@ Cela installera les logiciels nécessaires au fonctionnement de l'application
     cd /home/monuser/atlas
     ./install_env.sh
 
-**4.  Lancez l'installation automatique de l'application :**
-	
-::
-
-    ./install_app.sh
 
 
 Installation de la base de données
@@ -151,12 +146,21 @@ Si vous voulez adapter le contenu des vues matérialisées, vous pouvez modifier
 Si vous souhaitez uniquement recréer la vue ``atlas.vm_observations`` et les 6 autres vues qui en dépendent vous pouvez utiliser le script ``data/update_vm_observations.sql``.
 
 
+Installtion de l'application
+============================
+
+**Lancez l'installation automatique de l'application :**
+	
+::
+
+    ./install_app.sh
+
 Configuration de l'application
 ==============================   
 
 Editer le fichier de configuration ``main/configuration/config.py``.
 
-- Renseignez la variable 'database_connection'
+- Vérifier que la variable 'database_connection' contient les bonnes informations de connexion à la base
 - Renseignez l'URL de l'application à partir de la racine du serveur WEB ('/atlas' ou '' par exemple)
 - Renseignez les autres paramètres selon votre contexte
 - Rechargez le serveur Web Gunicorn pour que les modifications soient prises en compte (``sudo supervisorctl reload``)

@@ -2,6 +2,15 @@
 CHANGELOG
 =========
 
+1.3.1 (2018-03-15)
+------------------
+
+**Corrections**
+
+* Correction de l'installation autonome (sans GeoNature)
+* Correction et documentation si l'atlas est accessible dans un sous-répertoire du domaine
+* Correction d'une coquille dans le SQL. Merci @lpofredc
+
 1.3.0 (2018-02-15)
 ------------------
 

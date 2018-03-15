@@ -22,6 +22,14 @@ virtualenv $venv_dir
 echo "Installing requirements..."
 pip install -r requirements.txt
 
+echo "Creating configuration files if they dont already exist"
+if [ ! -f ./main/configuration/config.py ]; then
+  cp ./main/configuration/config.py.sample ./main/configuration/config.py
+fi
+
+sudo sed -i "s/database_connection = .*$/database_connection = \"postgresql:\/\/$user_pg:$user_pg_pass@$db_host:$db_port\/$db_name\"/" ./main/configuration/config.py
+
+
 echo "Launching application..."
 DIR=$(readlink -e "${0%/*}")
 sudo -s cp  atlas-service.conf /etc/supervisor/conf.d/
@@ -35,10 +43,7 @@ if [ ! -d ./static/custom/images/ ]; then
   mkdir -p ./static/custom/images/
 fi
 
-echo "Creating configuration files if they dont already exist"
-if [ ! -f ./main/configuration/config.py ]; then
-  cp ./main/configuration/config.py.sample ./main/configuration/config.py
-fi
+
 
 echo "Creating customisation files if they dont already exist"
 if [ ! -f ./static/custom/templates/footer.html ]; then

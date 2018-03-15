@@ -44,6 +44,11 @@ owner_atlas_pass=monpassachanger
 # Installer le schéma taxonomie de TaxHub dans la BDD de GeoNature-atlas ?
 install_taxonomie=false
 
+# Version de TaxHub à utiliser pour installer le schéma taxonomie
+# GeoNature-atlas 1.3.0 est compatible avec les versions de Taxhub inférieure ou égale à 1.3.2
+# Numéro de version conseillée et testée : 1.3.2
+taxhub_release=1.3.2
+
 # GeoNature-atlas est-il connecté à une BDD GeoNature ?
 geonature_source=true
 

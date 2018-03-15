@@ -24,6 +24,7 @@ NOM_APPLICATION = "Nom de l application"
 NOM_APPLICATION = unicode(NOM_APPLICATION, 'utf-8') # Fonction permettant d'encoder ce nom en utf-8, à ne pas modifier
 
 # URL de l'application depuis la racine du domaine
+# ex "/atlas" pour une URL: http://mon-domaine/atlas OU "" si l'application est accessible à la racine du domaine
 URL_APPLICATION = ""
 
 # Code de suivi des statistiques Google Analytics (si AFFICHAGE_FOOTER = True)
