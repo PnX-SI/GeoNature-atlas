@@ -2,10 +2,16 @@
 CHANGELOG
 =========
 
-1.3.2 (unreleased)
+1.3.2 (2018-05-17)
 ------------------
 
 **Corrections**
+
+* Correction erreur d'import inutilisé dans ``initAtlas.py``
+
+**Notes de version**
+
+* Version corrective, aucune nouveauté
 
 1.3.1 (2018-03-15)
 ------------------
