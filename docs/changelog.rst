@@ -9,10 +9,6 @@ CHANGELOG
 
 * Correction erreur d'import inutilisé dans ``initAtlas.py``
 
-**Notes de version**
-
-* Version corrective, aucune nouveauté
-
 1.3.1 (2018-03-15)
 ------------------
 
