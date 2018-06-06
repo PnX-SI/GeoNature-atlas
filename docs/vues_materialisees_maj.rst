@@ -142,7 +142,7 @@ Une fonction, générée lors de la création de la BDD de GeoNature-atlas perme
   
         SELECT RefreshAllMaterializedViews('atlas');
 
-* Si vous utilisez une version de PostgreSQL inférieure à 9.4, le rafraichissement concurrent des vues matérialisées (https://www.postgresql.org/docs/9.4/static/sql-refreshmaterializedview.html). Dans ce cas, modifiez la fonction comme indiqué dans ses commentaires. 
+* Si vous utilisez une version de PostgreSQL inférieure à 9.4, le rafraichissement concurrent des vues matérialisées (https://www.postgresql.org/docs/9.4/static/sql-refreshmaterializedview.html) n'est pas possible. Dans ce cas, modifiez la fonction comme indiqué dans ses commentaires (https://github.com/PnEcrins/GeoNature-atlas/blob/master/data/atlas.sql#L424). 
 		
 * Pour automatiser l'éxecution de cette fonction (toutes les heures dans cet exemple), ajoutez la dans le crontab de l'utilisateur ``postgres`` :
     
