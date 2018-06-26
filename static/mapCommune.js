@@ -1,58 +1,57 @@
 var map = generateMap();
 
-    // Current observation Layer: leaflet layer type
+var legend = L.control({position: 'bottomright'});
+// Current observation Layer: leaflet layer type
 var currentLayer; 
 
 // Current observation geoJson:  type object
 var myGeoJson;
 
-var compteurLegend = 0; // compteur pour ne pas rajouter la légende à chaque fois
 
-
-	// Diplay limit of the territory
-	var communeLayer = L.geoJson(communeGeoJson, {
-		style : function(){
-			return {
-				fillColor: 'blue',
-				opacity: 1,
-				weight: 2,
-				color: 'black',
-				dashArray: '3',
-				fillOpacity: 0
-			}
+// Diplay limit of the territory
+var communeLayer = L.geoJson(communeGeoJson, {
+	style : function(){
+		return {
+			fillColor: 'blue',
+			opacity: 1,
+			weight: 2,
+			color: 'black',
+			dashArray: '3',
+			fillOpacity: 0
 		}
-	}).addTo(map);
-
-	var bounds = L.latLngBounds([]);
-	var layerBounds = communeLayer.getBounds();
-	bounds.extend(layerBounds);
-	map.fitBounds(bounds);
-
-	// Display the 'x' last observations
-		// MAILLE
-	if (configuration.AFFICHAGE_MAILLE){
-		displayMailleLayerLastObs(observations)
 	}
-		// POINT
-	else{
-        displayMarkerLayerPointLastObs(observations);
+}).addTo(map);
 
-	}
+var bounds = L.latLngBounds([]);
+var layerBounds = communeLayer.getBounds();
+bounds.extend(layerBounds);
+map.fitBounds(bounds);
+
+// Display the 'x' last observations
+	// MAILLE
+if (configuration.AFFICHAGE_MAILLE){
+	displayMailleLayerLastObs(observations)
+}
+	// POINT
+else{
+	displayMarkerLayerPointLastObs(observations);
+
+}
 
 // Generate legends and check configuration to choose which to display (Maille ou Point)
 
-	htmlLegendMaille = "<i style='border: solid 1px red;'> &nbsp; &nbsp; &nbsp;</i> Maille comportant au moins une observation <br> <br>" +
-						"<i style='border-style: dotted;'> &nbsp; &nbsp; &nbsp;</i> Limite de la commune <br> <br>"+
-						"<i style='border: solid "+configuration.MAP.BORDERS_WEIGHT+"px "+configuration.MAP.BORDERS_COLOR+";'> &nbsp; &nbsp; &nbsp;</i> Limite du "+configuration.STRUCTURE;
+htmlLegendMaille = "<i style='border: solid 1px red;'> &nbsp; &nbsp; &nbsp;</i> Maille comportant au moins une observation <br> <br>" +
+					"<i style='border-style: dotted;'> &nbsp; &nbsp; &nbsp;</i> Limite de la commune <br> <br>"+
+					"<i style='border: solid "+configuration.MAP.BORDERS_WEIGHT+"px "+configuration.MAP.BORDERS_COLOR+";'> &nbsp; &nbsp; &nbsp;</i> Limite du "+configuration.STRUCTURE;
 
-	htmlLegendPoint = "<i style='border-style: dotted;'> &nbsp; &nbsp; &nbsp;</i> Limite de la commune <br> <br>"+
-						"<i style='border: solid "+configuration.MAP.BORDERS_WEIGHT+"px "+configuration.MAP.BORDERS_COLOR+";'> &nbsp; &nbsp; &nbsp;</i> Limite du "+configuration.STRUCTURE
+htmlLegendPoint = "<i style='border-style: dotted;'> &nbsp; &nbsp; &nbsp;</i> Limite de la commune <br> <br>"+
+					"<i style='border: solid "+configuration.MAP.BORDERS_WEIGHT+"px "+configuration.MAP.BORDERS_COLOR+";'> &nbsp; &nbsp; &nbsp;</i> Limite du "+configuration.STRUCTURE
 
-	htmlLegend = configuration.AFFICHAGE_MAILLE ? htmlLegendMaille : htmlLegendPoint;
+htmlLegend = configuration.AFFICHAGE_MAILLE ? htmlLegendMaille : htmlLegendPoint;
 
 // General Legend
-	
-	generateLegende(htmlLegend);
+
+generateLegende(htmlLegend);
 
 
 // display observation on click

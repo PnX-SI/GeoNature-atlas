@@ -26,8 +26,8 @@ Ce serveur doit aussi disposer de :
     GeoNature-atlas est susceptible de fonctionner sur d'autres OS (comme Ubuntu par exemple) mais cela n'a pas été testé.
 
 
-Installation de l'environnement et de l'application
-===================================================
+Installation de l'environnement logiciel
+========================================
 
 Le script ``install_env.sh`` va automatiquement installer les outils nécessaires à l'application si ils ne sont pas déjà sur le serveur : 
 
@@ -88,11 +88,6 @@ Cela installera les logiciels nécessaires au fonctionnement de l'application
     cd /home/monuser/atlas
     ./install_env.sh
 
-**4.  Lancez l'installation automatique de l'application :**
-	
-::
-
-    ./install_app.sh
 
 
 Installation de la base de données
@@ -151,21 +146,32 @@ Si vous voulez adapter le contenu des vues matérialisées, vous pouvez modifier
 Si vous souhaitez uniquement recréer la vue ``atlas.vm_observations`` et les 6 autres vues qui en dépendent vous pouvez utiliser le script ``data/update_vm_observations.sql``.
 
 
+Installtion de l'application
+============================
+
+**Lancez l'installation automatique de l'application :**
+	
+::
+
+    ./install_app.sh
+
 Configuration de l'application
 ==============================   
 
 Editer le fichier de configuration ``main/configuration/config.py``.
 
-- Renseignez la variable 'database_connection'
+- Vérifier que la variable 'database_connection' contient les bonnes informations de connexion à la base
 - Renseignez l'URL de l'application à partir de la racine du serveur WEB ('/atlas' ou '' par exemple)
 - Renseignez les autres paramètres selon votre contexte
-- Redémarrez Apache pour que les modifications soient prises en compte (``sudo apachectl restart``)
+- Rechargez le serveur Web Gunicorn pour que les modifications soient prises en compte (``sudo supervisorctl reload``)
 
 
 Customisation de l'application
 ==============================   
 	
-En plus de la configuration, vous pouvez customiser l'application en modifiant et ajoutant des fichiers dans le répertoire ``static/custom/`` (css, templates, images)
+En plus de la configuration, vous pouvez customiser l'application en modifiant et ajoutant des fichiers dans le répertoire ``static/custom/`` (css, templates, images).
+
+Vous pouvez aussi modifier ou ajouter des pages statiques de présentation, en plus de la page Présentation fournie par défaut. Pour cela, voir le paramètre ``STATIC_PAGES`` du fichier ``main/configuration/config.py``
 	
     
 Configuration d'Apache
@@ -177,30 +183,40 @@ Créez un virtualhost pour l'atlas :
 
     sudo nano /etc/apache2/sites-available/atlas.conf
 
-Copier/collez-y ces lignes en renseignant votre nom d'utilisateur à la place de MONUSER (deux premières lignes) : 
-
+Pour rendre l'application consultable comme un sous répertoire du serveur  (http://monURL/atlas par exemple).
+Copiez/collez-y ces lignes en renseignant le bon port : 
 ::
 
-    WSGIScriptAlias / /home/MONUSER/atlas/atlas.wsgi
-     <Directory "/home/MONUSER/atlas">
-       WSGIApplicationGroup %{GLOBAL}
-       WSGIScriptReloading On
-       Order deny,allow
-       Allow from all
-       Require all granted
-     </Directory>
+    # Configuration Geonature-atlas
+    RewriteEngine  on
+    <Location /atlas>
+        ProxyPass  http://127.0.0.1:8080
+        ProxyPassReverse  http://127.0.0.1:8080
+    </Location>
+    #FIN Configuration Geonature-atlas
+    
+Si l'atlas doit se trouver à la racine du serveur copiez/coller ces lignes (NB les '/' à la fin des ProxyPass et ProxPassReverse)
+::
+	<Location />
+   	    ProxyPass http://127.0.0.1:8080/
+	    ProxyPassReverse http://127.0.0.1:8080/
+ 	 </Location>
 
-:notes:
-
-    Ici l'application sera consultable à la racine de l'URL du serveur. Si vous souhaitez qu'elle soit accessible dans un sous répertoire (http://monURL/atlas par exemple), modifier la premiere ligne en ``WSGIScriptAlias /atlas /home/MONUSER/atlas/atlas.wsgi``
 	
-	
-Si l'atlas est associé à un domaine, ajoutez ces 2 premières lignes au début du fichier :
+Si l'atlas est associé à un domaine, ajoutez cette ligne au début du fichier :
 	 
 ::
 
     ServerName mondomaine.fr
-    DocumentRoot /home/MONUSER/atlas/
+
+* Activer les modules et redémarrer Apache :
+ 
+  ::  
+  
+        sudo a2enmod proxy
+        sudo a2enmod proxy_http
+	sudo a2enmod rewrite
+        sudo apache2ctl restart
  
 
 Activez le virtualhost puis redémarrez Apache :
@@ -209,6 +225,10 @@ Activez le virtualhost puis redémarrez Apache :
 
     sudo a2ensite atlas
     sudo apachectl restart
+
+:notes:
+
+    En cas d'erreur, les logs serveurs ne sont pas au niveau d'Apache (serveur proxy) mais de Gunicorn (serveur HTTP) dans ``/tmp/errors_atlas.log``
 
 
 Mise à jour de l'application
@@ -222,7 +242,7 @@ Mise à jour de l'application
 
     A la racine de l'application, un fichier ``VERSION`` permet de savoir quelle version est installée. 
 
-- Copier ``main/configuration/settings.ini`` et ``main/configuration/config.py`` depuis l'ancienne version vers la nouvelle pour récupérer vos paramètres de configuration
+- Copier ``main/configuration/settings.ini`` et ``main/configuration/config.py`` depuis l'ancienne version vers la nouvelle pour récupérer vos paramètres de configuration :
 
 ::
 
@@ -230,20 +250,20 @@ Mise à jour de l'application
     cp ../VERSION-PRECEDENTE/main/configuration/settings.ini main/configuration/settings.ini
     cp ../VERSION-PRECEDENTE/main/configuration/config.py main/configuration/config.py
 
-- Copier ``static/custom/`` depuis l'ancienne version vers la nouvelle pour récupérer toute votre customisation (CSS, templates, images...)
+- Copier le contenu du répertoire ``static/custom/`` depuis l'ancienne version vers la nouvelle pour récupérer toute votre customisation (CSS, templates, images...) :
 
 ::
 
     cp -aR ../VERSION-PRECEDENTE/static/custom/ ./static
-    
-- Redémarrez Apache
-
-::
-
-    sudo apachectl restart
-    
+       
 
 Attention à bien lire les notes de chaque version, qui peuvent indiquer des opérations spécifiques à faire, notamment des nouveaux paramètres à ajouter dans votre configuration et/ou des modifications à appliquer dans la BDD.
+
+- Relancez l'installation automatique de l'application :
+	
+::
+
+    ./install_app.sh
 
 
 Mise à jour des couches de référence

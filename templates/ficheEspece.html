@@ -9,13 +9,13 @@
         <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
         <script type="text/javascript" src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
         <script type="text/javascript" src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
-		{% if configuration.GLOSSAIRE %}
-		<!-- Jquery Glossarizer -->
-		<script src="{{url_for('static', filename='lib/glossarizer/tooltip/tooltip.js') }}"></script>
-		<script src="{{url_for('static', filename='lib/glossarizer/jquery.glossarize.js') }}"></script>
-		<link rel="stylesheet" href="{{url_for('static', filename='lib/glossarizer/tooltip/tooltip.css') }}">
-		{% endif %}
-		
+    		{% if configuration.GLOSSAIRE %}
+      		<!-- Jquery Glossarizer -->
+      		<script src="{{url_for('static', filename='lib/glossarizer/tooltip/tooltip.js') }}"></script>
+      		<script src="{{url_for('static', filename='lib/glossarizer/jquery.glossarize.js') }}"></script>
+      		<link rel="stylesheet" href="{{url_for('static', filename='lib/glossarizer/tooltip/tooltip.css') }}">
+    		{% endif %}
+
         <!-- Bootstrap -->
         <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}"></link>
         <script type="text/javascript" src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
@@ -31,10 +31,10 @@
         <script src="{{url_for('static', filename='lib/leaflet/leaflet.js') }}"></script>
         <script src="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.css') }}" />
-		<link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.Default.css') }}" />
+		    <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.Default.css') }}" />
         <script src="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.css') }}" />
-		
+
         <!-- D3 -->
         <script src="{{url_for('static', filename='lib/d3/d3.min.js') }}"></script>
         <!-- MorrisJs -->
@@ -55,64 +55,76 @@
 
     </head>
 
-    <body>
+<body>
     {% include 'templates/navbar.html' %}
 
 	<div id="sideBar">
         {% include 'templates/sideBar.html' %}
-    </div>
-	
+  </div>
+
     <div class="container-fluid" id="page">
 
         <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
             <div class="panel panel-default" id="identityPanel">
                 <div class="row" id="rowIdentity">
-                    {% if firstPhoto != None %} 
-					<!-- Si il y a une photo principale -->
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="imgCol" > 
+                    {% if firstPhoto != None %}
+	                  <!-- Si il y a une photo principale -->
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="imgCol" >
                         <div class="imgWrapper">
                             <span class="glyphicon glyphicon-search" id="zoomPhotos"> </span>
-                            <a href="{{firstPhoto.path}}" data-lightbox="imageSet" data-title="{{firstPhoto.title}} &copy; {{firstPhoto.author}}">
-                                <img id="mainImg" src="{{firstPhoto.path}}" style="width:100%;" alt="{{firstPhoto.title}} &copy; {{firstPhoto.author}}">
-                                <p class="imgDescription main">{{firstPhoto.title}} &copy; {{firstPhoto.author}}</p>
+                            <a href="{{firstPhoto.path}}" data-lightbox="imageSet"
+                              data-title="{{firstPhoto.title}} &copy; {{firstPhoto.author}}"
+                            >
+                            {% if configuration.TAXHUB_URL != None %}
+                              {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+firstPhoto.id_media|string+'?h=500' %}
+                            {% else %}
+                              {% set img_path = firstPhoto.path %}
+                            {% endif %}
+                              <img id="mainImg" src="{{img_path}}"
+                                style="width:100%;" alt="{{firstPhoto.title}} &copy; {{firstPhoto.author|striptags}}">
+                                <p class="imgDescription main">{{firstPhoto.title}} &copy; {{firstPhoto.author|striptags}}</p>
                             </a>
                         </div>
 
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="taxonIdentity">
-                    {% else %} 
-					<!-- Si pas de photo, alors le premier bloc occupe toute la largeur -->
+                    {% else %}
+					          <!-- Si pas de photo, alors le premier bloc occupe toute la largeur -->
                     <div class="col-sm-12" id="taxonIdentity">
                     {% endif %}
 						<div id="groupLogoCol" >
                             <a href="{{url_for('main.ficheGroupe', groupe=taxon.taxonSearch.groupAccent ) }}">
-							     <img src="{{url_for('static', filename='images/picto_'+ taxon.taxonSearch.group2_inpn|urlencode+'.png') }}" alt="{{taxon.taxonSearch.group2_inpn}}" data-toggle="tooltip" data-original-title="{{taxon.taxonSearch.group2_inpn}}" data-placement="right">
-                             </a>
+	                            <img src="{{url_for('static', filename='images/picto_'+ taxon.taxonSearch.group2_inpn| replace(" ", "_")|urlencode+'.png') }}" alt="{{taxon.taxonSearch.group2_inpn}}" data-toggle="tooltip" data-original-title="{{taxon.taxonSearch.group2_inpn}}" data-placement="right">
+                            </a>
 						</div>
 						<div id="taxonName">
-                        {% if taxon.taxonSearch.nom_vern != None %}
-                            <h3> {{taxon.taxonSearch.nom_vern}} </h3>
-                        
-                        {% endif %}
-                            <h3> {{taxon.taxonSearch.nom_complet_html|safe}} 
+                            {% if taxon.taxonSearch.nom_vern != None %}
+                                <h3> {{taxon.taxonSearch.nom_vern}} </h3>
+                            {% endif %}
+                            <h3> {{taxon.taxonSearch.nom_complet_html|safe}}
                             {% if taxon.taxonSearch.protection == 'oui' %}
                                 <br/>
                                 <a href="https://inpn.mnhn.fr/espece/cd_nom/{{taxon.taxonSearch.cd_ref}}/tab/statut" target="_blank">
                                     <img class="caractEspece" width="130px" src="{{url_for('static', filename='images/logo_protection.png') }}"  data-toggle="tooltip" data-original-title="Ce taxon bénéficie d'un statut de protection" data-placement="right"></a>
                             {% endif %}
-                            {% if taxon.taxonSearch.patrimonial == 'oui' %}
-                                <img class="caractEspece" width="130px" src="{{url_for('static', filename='custom/images/logo_patrimonial.png') }}"  data-toggle="tooltip" data-original-title="Ce taxon est patrimonial pour le {{configuration.STRUCTURE}}" data-placement="right">
+                            {% if taxon.taxonSearch.patrimonial in configuration.PATRIMONIALITE.config %}
+                                <img
+                                    class="caractEspece"
+                                    width="130px"
+                                    src="{{url_for('static', filename=configuration.PATRIMONIALITE.config[taxon.taxonSearch.patrimonial].icon) }}"
+                                    data-toggle="tooltip"
+                                    data-original-title="{{configuration.PATRIMONIALITE.config[taxon.taxonSearch.patrimonial].text}}" data-placement="right">
                             {% endif %}
                             </h3>
-                            
+
                         <div id="taxonomy">
                             {% for taxon in taxonomyHierarchy %}
                                 {{taxon.nom_rang}} :
                                 <i>
                                 {% if ( taxon.tri_rang >= configuration.LIMIT_FICHE_LISTE_HIERARCHY) %}
-                                     <a href = "{{url_for('main.ficheEspece', cd_ref = taxon.cd_ref) }}">{{taxon.lb_nom}}</a> 
+                                     <a href = "{{url_for('main.ficheEspece', cd_ref = taxon.cd_ref) }}">{{taxon.lb_nom}}</a>
                                 {% else %}
-                                     <a href = "{{url_for('main.ficheRangTaxonomie', cd_ref = taxon.cd_ref) }}">{{taxon.lb_nom}}</a> 
+                                     <a href = "{{url_for('main.ficheRangTaxonomie', cd_ref = taxon.cd_ref) }}">{{taxon.lb_nom}}</a>
 
                                 {% endif %}
                                 </i>
@@ -121,15 +133,13 @@
                                 {% endif %}
                             {% endfor %}
                         </div>
-						
+
                         <div id="inpnLink">
-                            <a href='https://inpn.mnhn.fr/espece/cd_nom/{{taxon.taxonSearch.cd_ref}}' target="_blank"> 
+                            <a href='https://inpn.mnhn.fr/espece/cd_nom/{{taxon.taxonSearch.cd_ref}}' target="_blank">
                                 <img width="130px" src="{{url_for('static', filename='images/logo_inpn.png') }}"  data-toggle="tooltip" data-original-title="Consultez la fiche espèce sur l'INPN" data-placement="right">
                              </a>
-
-
                         </div>
-						
+
                         {% if taxon.listTaxonsChild|length > 0 %}
                            <!-- Button trigger modal -->
                            <a id="btn-taxons-fils" class="btn btn-default" data-toggle="modal" data-target="#myModal"> <b> {{taxon.listTaxonsChild | length}} </b> taxon(s) inférieur(s) agrégé(s) sur cette fiche</a>
@@ -153,7 +163,7 @@
                                                         <th>Protection</th>
                                                         {% endif %}
                                                         {% if configuration.PATRIMONIALITE %}
-                                                        <th>Patrimonial</th>
+                                                        <th>{{configuration.PATRIMONIALITE.label}}</th>
                                                         {% endif %}
                                                         <th>Observations </th>
                                                         <th> Fiche </th>
@@ -161,13 +171,13 @@
                                                 </thead>
                                                 <tbody>
                                                     {% for child in taxon.listTaxonsChild %}
-                                                    <a href = "{{url_for('main.ficheEspece', cd_ref = child.cd_ref) }}"> 
+                                                    <a href = "{{url_for('main.ficheEspece', cd_ref = child.cd_ref) }}">
                                                         <tr>
                                                             <td>
                                                             {% if child.nom_vern != None %}
-                                                             {{child.nom_vern}} 
+                                                             {{child.nom_vern}}
                                                             {% else %}
-                                                             - 
+                                                             -
                                                             </td>
                                                             {% endif %}
                                                             <td> {{child.lb_nom}} </td>
@@ -178,21 +188,25 @@
                                                             {% endif %}
                                                             </td>
                                                             <td>
-                                                            {% if child.patrimonial != None %}
-                                                                <img class="caractEspece" width="130px" src="{{url_for('static', filename='custom/images/logo_patrimonial.png') }}"  data-toggle="tooltip" data-original-title="Ce taxon est patrimonial pour le {{configuration.STRUCTURE}}" data-placement="right">
+                                                            {% if child.patrimonial in configuration.PATRIMONIALITE.config %}
+                                                                <img
+                                                                    class="caractEspece" width="130px"
+                                                                    src="{{url_for('static', filename=configuration.PATRIMONIALITE.config[child.patrimonial].icon) }}"
+                                                                    data-toggle="tooltip"
+                                                                    data-original-title="{{configuration.PATRIMONIALITE.config[child.patrimonial].text}}" data-placement="right"
+                                                                >
                                                             {% endif %}
                                                             </td>
                                                             <td> {{child.nb_obs}} </td>
                                                             <td>
-                                                                <a href = "{{url_for('main.ficheEspece', cd_ref = child.cd_ref) }}"> 
-                                                                    <span id="ficheGlyficon"  data-toggle="tooltip" data-original-title="Consulter la fiche espèce" data-placement="right" class="glyphicon glyphicon-list"></span> 
+                                                                <a href = "{{url_for('main.ficheEspece', cd_ref = child.cd_ref) }}">
+                                                                    <span id="ficheGlyficon"  data-toggle="tooltip" data-original-title="Consulter la fiche espèce" data-placement="right" class="glyphicon glyphicon-list"></span>
                                                                 </a>
                                                             </td>
-                                                        
+
                                                         </tr>
                                                     </a>
                                                 {% endfor %}
-
                                                 </tbody>
                                             </table>
                                         </div>
@@ -201,16 +215,16 @@
                                   </div>
                               </div>
 
-<!-- 
-                            <h5 id="buttonChild"> <b>{{taxon.listTaxonsChild|length }}</b> taxon(s) agrégé(s) sur cette fiche: <span class="glyphicon glyphicon-chevron-right"></span> 
-    						</h5> 
+<!--
+                            <h5 id="buttonChild"> <b>{{taxon.listTaxonsChild|length }}</b> taxon(s) agrégé(s) sur cette fiche: <span class="glyphicon glyphicon-chevron-right"></span>
+    						</h5>
                             <div hidden="hidden" id="childList">
                                         {% for child in taxon.listTaxonsChild %}
                                          <i>
                                             {% if ( child.tri_rang >= configuration.LIMIT_FICHE_LISTE_HIERARCHY) %}
-                                                <a href = "{{url_for('main.ficheEspece', cd_ref = child.cd_ref) }}"> {{child.lb_nom}}</a> 
+                                                <a href = "{{url_for('main.ficheEspece', cd_ref = child.cd_ref) }}"> {{child.lb_nom}}</a>
                                             {% else %}
-                                                <a href = "{{url_for('main.ficheRangTaxonomie', cd_ref = child.cd_ref) }}">{{child.lb_nom}} </a> 
+                                                <a href = "{{url_for('main.ficheRangTaxonomie', cd_ref = child.cd_ref) }}">{{child.lb_nom}} </a>
                                             {% endif %}
                                             </i>
                                             {% if not loop.last %}
@@ -220,22 +234,22 @@
                             </div> -->
                         {% endif %}
 						</div>
-					</div>  
-                </div>  
+					</div>
+                </div>
             </div>
             <div class="panel panel-default" id="mapPanel">
                 <div class ="row">
                     <div class="col-sm-10" id="mapContainer">
-                        <div id="map"> 
+                        <div id="map">
                             <img id ="loadingGif" src="">
                         </div>
                     </div>
                     <div class="col-sm-2" id="mapStat">
                         <ul>
-                            <li> <span data-icon="&#xe037;" style="font-size: 30px;"></span> </br> 
-                                    <b>{{taxon.taxonSearch.nb_obs}}</b> </br> observations</li>
-                            <li> <img id="picto" src="{{url_for('static', filename='images/church.png')}}" style="width"><br/><b>{{communes|length}}</b><br/>communes</li>
-                            <li> <span data-icon="&#xe040;"  style="font-size: 30px;"></span><br/><b>{{observers|length}}</b><br/>observateurs</li>
+                            <li> <span data-icon="&#xe037;" style="font-size: 30px;"></span> </br>
+                                    <b>{{taxon.taxonSearch.nb_obs}}</b> </br> {{ 'observations' if taxon.taxonSearch.nb_obs > 1 else 'observation' }}</li>
+                            <li> <img id="picto" src="{{url_for('static', filename='images/church.png')}}" style="width"><br/><b>{{communes|length}}</b><br/>{{ 'communes' if communes|length > 1 else 'commune' }}</li>
+                            <li> <span data-icon="&#xe040;"  style="font-size: 30px;"></span><br/><b>{{observers|length}}</b><br/>{{ 'observateurs' if observers|length > 1 else 'observateur' }}</li>
                             <li id="firstObs" class="pointer"><span data-icon="&#xe037;" style="font-size: 25px; color: brown"></span><br/><b>Première observation</b><br/>{{taxon.taxonSearch.yearmin|int}}</li>
                             <li id="lastObs" class="pointer"><span data-icon="&#xe037;" style="font-size: 25px; color: blue"></span><br/><b>Dernière observation</b><br/>{{taxon.taxonSearch.yearmax|int}}</li>
 
@@ -248,12 +262,12 @@
                 <div class="row" id="otherInformations">
                           <ul class="nav nav-tabs">
                             {% if articles | length != 0 %}
-                            <li class="active"><a data-toggle="tab" href="#articles"><b>{{articles|length}}</b> articles</a></li>
-                            <li><a data-toggle="tab" href="#communes"> <b>{{communes|length}}</b> communes</a></li>
+                            <li class="active"><a data-toggle="tab" href="#articles"><b>{{articles|length}}</b> {{ 'articles' if articles|length > 1 else 'article' }}</a></li>
+                            <li><a data-toggle="tab" href="#communes"> <b>{{communes|length}}</b> {{ 'communes' if communes|length > 1 else 'commune' }}</a></li>
                             {% else %}
-                            <li class="active"><a data-toggle="tab" href="#communes"> <b>{{communes|length}}</b> communes</a></li>
+                            <li class="active"><a data-toggle="tab" href="#communes"> <b>{{communes|length}}</b> {{ 'communes' if communes|length > 1 else 'commune' }}</a></li>
                             {% endif %}
-                            <li><a data-toggle="tab" href="#observateurs"> <b>{{observers|length}} </b> observateurs</a></li>
+                            <li><a data-toggle="tab" href="#observateurs"> <b>{{observers|length}} </b> {{ 'observateurs' if observers|length > 1 else 'observateur' }}</a></li>
                           </ul>
 
                         <div class="tab-content" style="width:100%;">
@@ -266,37 +280,37 @@
                                         <th> Auteur </th>
                                     </thead>
                                     <tbody>
-                                        
+
                                             {% for i in range (articles | length) %}
                                                 <tr class="accordion-toggle" data-toggle="collapse" data-target=".moreInfo{{i}}">
                                                     <td> {% if articles[i].id_type == 3 %} <span class="glyphicon glyphicon-link"> </span>
                                                          {% else %} <span class="glyphicon glyphicon-paperclip"> </span>
                                                          {% endif %}
                                                     </td>
-                                                    
-                                                    <td> 
+
+                                                    <td>
                                                         <a href="{{articles[i].path}}" target="_blank"> {{articles[i].title}} </a>
                                                      </td>
-                                                    
-                                                    <td> 
-                                                        {{articles[i].author}}       
-                                                    </td> 
+
+                                                    <td>
+                                                        {{articles[i].author}}
+                                                    </td>
                                                     <td>
                                                        <i class="btn-more"> <span class="glyphicon glyphicon-chevron-down "> </span></i>
                                                     </td>
-                                                                       
+
                                                 </tr>
-                                                <tr> 
+                                                <tr>
                                                     <td colspan ="4" class="hiddenRow" style="padding:0px;">
                                                         <div  class="collapse moreInfo{{i}}">
                                                             <strong> Description : </strong> <br> {{articles[i].description | safe}} <br>
-                                                            <strong> Date : </strong> {{articles[i].date}} 
+                                                            <strong> Date : </strong> {{articles[i].date}}
                                                         </div>
                                                     </td>
                                                 </tr>
 
                                             {% endfor %}
-                                        
+
                                     </tbody>
                                 </table>
                             </div>
@@ -313,9 +327,9 @@
                                          -
                                         {% endif %}
                                     {% endfor %}
-                                </p>    
+                                </p>
                             </div>
-                           
+
                             <div id="observateurs" class="tab-pane fade">
                                 {% for o in observers %}
                                     {{o }}
@@ -327,11 +341,7 @@
                         </div>
                 </div>
             </div>
-
-
         </div>
-
-        
 
         <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
             {% if photoCarousel | length >= 1 %}
@@ -356,10 +366,16 @@
                             {% else %}
                             <div class="item">
                             {% endif %}
-                                <a href="{{photo.path}}" data-lightbox="imageSet" data-title="{{photo.title}}  &copy; {{photo.author}}" >
-                                  <div class="slider-size" style="background-image: url({{photo.path}})" alt="{{photo.title}} &copy; {{photo.author}}">
+
+                                {% if configuration.TAXHUB_URL != None %}
+                                  {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+photo.id_media|string+'?h=500' %}
+                                {% else %}
+                                  {% set img_path = photo.path %}
+                                {% endif %}
+                                <a href="{{photo.path}}" data-lightbox="imageSet" data-title="{{photo.title}} &copy; {{photo.author}}" >
+                                  <div class="slider-size" style="background-image: url({{img_path}})" alt="{{photo.title}} &copy; {{photo.author|striptags}}">
                                       <div class="carousel-caption">
-                                        {{photo.title}} &copy; {{photo.author}} 
+                                        {{photo.title}} &copy; {{photo.author|striptags}}
                                       </div>
                                   </div>
                                 </a>
@@ -378,7 +394,7 @@
             </div>
             {% endif %}
 
-            
+
             <div class="panel panel-default" id="blocInfos">
 
                 <h4>
@@ -393,7 +409,7 @@
                     <li><a data-toggle="tab" href="#chorologie">Répartition</a></li>
                     <li><a data-toggle="tab" href="#synonymes">Synonymes</a></li>
                 </ul>
-                    
+
                 <div class="tab-content">
                         <div id="description" class="tab-pane fade in active">
                                {% if taxonDescription.description == None %}
@@ -404,7 +420,7 @@
                         </div>
                         {% if taxonDescription.commentaire != None %}
                         <div id="commentaire" class="tab-pane fade">
-                                {{taxonDescription.commentaire  | safe}}     
+                                {{taxonDescription.commentaire  | safe}}
                         </div>
                         {% endif %}
                         <div id="milieu" class="tab-pane fade">
@@ -413,8 +429,8 @@
                                 {% else %}
                                 {{taxonDescription.milieu}}
                                 {% endif %}
-                        </div>  
-                        <div id="chorologie" class="tab-pane fade">                                
+                        </div>
+                        <div id="chorologie" class="tab-pane fade">
                                 {% if taxonDescription.chorologie == None %}
                                     Non renseignée pour le moment
                                 {% else %}
@@ -425,7 +441,7 @@
                             {% if synonyme | length == 1 %}
                                 Aucun synonyme pour ce taxon
                             {% else %}
-                                {% for syn in synonyme %} 
+                                {% for syn in synonyme %}
                                     {% if not syn.lb_nom == taxon.taxonSearch.lb_nom %}
                                     {{ syn.nom_complet_html | safe}}
                                     {% endif %}
@@ -437,7 +453,7 @@
                         </div>
                 </div>
             </div>
-			
+
             {% if (videoAudio.video | length > 0 ) or (videoAudio.audio | length > 0) %}
             <div class="panel panel-default" style="padding: 10px;">
 
@@ -447,7 +463,7 @@
 						<strong>Video</strong> ({{videoAudio.video | length}})
                         {% if videoAudio.video | length > 1 %}
                          <i class="btn-more" id="btn-more-video" data-toggle="collapse" data-target="#moreVideo" data-placement="left" rel="tooltip" title="Afficher plus de vidéos"><span class="glyphicon glyphicon-chevron-down"></span></i>
-                        {% endif %}  
+                        {% endif %}
                     </h4>
                     <hr class="small-hr">
                     <h4>{{videoAudio.video[0].title}}</h4>
@@ -458,7 +474,7 @@
                         {% else %}
                             {{videoAudio.video[0].path|safe}}
                         {% endif %}
-                    
+
                     <div id="moreVideo" class="collapse">
                         {% for i in range (1, videoAudio.video |length) %}
                             <h4> {{videoAudio.video[i].title}}</h4>
@@ -469,7 +485,7 @@
                                 {% else %}
                                     {{videoAudio.video[i].path|safe}}
                                 {% endif %}
-                            
+
                         {% endfor %}
                     </div>
                 {% endif %}
@@ -481,9 +497,9 @@
                         <i class ="btn-more" id="btn-more-audio" data-toggle="collapse" data-target="#moreAudio" rel="tooltip" title="Afficher plus d'enregistrements"> <span class="glyphicon glyphicon-chevron-down"> </span> </i>
                         {% endif %}
                     </h4>
-                    <hr class="small-hr"> 
+                    <hr class="small-hr">
 
-                    <h4>{{videoAudio.audio[0].title}}</h4>                     
+                    <h4>{{videoAudio.audio[0].title}}</h4>
                     <audio controls>
                             <source src="{{ videoAudio.audio[0].path }}" type="audio/mpeg">
                     </audio>
@@ -514,22 +530,23 @@
         {% endif %}
 
     <script  src="{{url_for('static', filename='lib/lightbox2/js/lightbox.min.js') }}" ></script>
-    
 
-    <script> 
-             var dataset = {{altitudes|tojson}},
-                 months = {{months|tojson}}
 
-                 var observationsPoint = [];
-                 var observationsMaille = [];
-                 listeTaxonsSearch = {{listeTaxonsSearch|tojson}},
-                 communesSearch = {{communesSearch|tojson}},
-                 configuration = {{configuration|tojson}},
-                 url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}",
-                 taxonYearMin = {{taxon.taxonSearch.yearmin}},
-                 cd_ref = {{taxon.taxonSearch.cd_ref}},
-                 nb_obs = {{taxon.taxonSearch.nb_obs}}
-    </script>  
+    <script>
+            var dataset = {{altitudes|tojson}};
+            var months = {{months|tojson}};
+            var observationsPoint = [];
+            var observationsMaille = [];
+            var listeTaxonsSearch = {{listeTaxonsSearch|tojson}};
+            var communesSearch = {{communesSearch|tojson}};
+            var configuration = {{configuration|tojson}};
+            var url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
+            var taxonYearMin = {{taxon.taxonSearch.yearmin}};
+            var cd_ref = {{taxon.taxonSearch.cd_ref}};
+            var nb_obs = {{taxon.taxonSearch.nb_obs}};
+    </script>
+
+    <script src="{{url_for('static', filename='custom/maps-custom.js') }}"></script>
     <script src="{{url_for('static', filename='ficheEspece.js') }}"></script>
     <script type="text/javascript" src="{{url_for('static', filename='chart.js') }}"></script>
 
@@ -540,7 +557,7 @@
     {% else %}
         <script src="{{url_for('static', filename='mapPoint.js') }}"></script>
     {% endif %}
-    <script src="{{url_for('static', filename='ficheEspece.js') }}"></script>
 
-    </body>
+
+</body>
 </html>

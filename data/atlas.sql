@@ -15,8 +15,8 @@ create index on atlas.vm_taxref (nom_valide);
 
 --Toutes les observations
 
---DROP materialized view atlas.vm_observations; 
-CREATE MATERIALIZED VIEW atlas.vm_observations AS 
+--DROP materialized view atlas.vm_observations;
+CREATE MATERIALIZED VIEW atlas.vm_observations AS
     SELECT s.id_synthese AS id_observation,
         s.insee,
         s.dateobs,
@@ -39,11 +39,11 @@ create index on atlas.vm_observations (altitude_retenue);
 create index on atlas.vm_observations (dateobs);
 CREATE INDEX index_gist_vm_observations_the_geom_point ON atlas.vm_observations USING gist (the_geom_point);
 
-  
+
 --Tous les taxons ayant au moins une observation
 
 --DROP MATERIALIZED VIEW atlas.vm_taxons;
-CREATE MATERIALIZED VIEW atlas.vm_taxons AS 
+CREATE MATERIALIZED VIEW atlas.vm_taxons AS
  WITH obs_min_taxons AS (
          SELECT vm_observations.cd_ref,
             min(date_part('year'::text, vm_observations.dateobs)) AS yearmin,
@@ -144,12 +144,12 @@ $BODY$
   DECLARE
     monsql text;
     mesaltitudes RECORD;
-    
+
   BEGIN
     DROP MATERIALIZED VIEW IF EXISTS atlas.vm_altitudes;
 
     monsql = 'CREATE materialized view atlas.vm_altitudes AS WITH ';
-    
+
     FOR mesaltitudes IN SELECT * FROM atlas.bib_altitudes ORDER BY id_altitude LOOP
       IF mesaltitudes.id_altitude = 1 THEN
         monsql = monsql || 'alt' || mesaltitudes.id_altitude ||' AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue <' || mesaltitudes.altitude_max || ' GROUP BY cd_ref) ';
@@ -157,28 +157,28 @@ $BODY$
         monsql = monsql || ',alt' || mesaltitudes.id_altitude ||' AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE altitude_retenue BETWEEN ' || mesaltitudes.altitude_min || ' AND ' || mesaltitudes.altitude_max || ' GROUP BY cd_ref)';
       END IF;
     END LOOP;
-    
+
     monsql = monsql || ' SELECT DISTINCT o.cd_ref';
-  
+
     FOR mesaltitudes IN SELECT * FROM atlas.bib_altitudes LOOP
       monsql = monsql || ',COALESCE(a' ||mesaltitudes.id_altitude || '.nb::integer, 0) as '|| mesaltitudes.label_altitude;
     END LOOP;
 
     monsql = monsql || ' FROM atlas.vm_observations o';
-  
+
     FOR mesaltitudes IN SELECT * FROM atlas.bib_altitudes LOOP
       monsql = monsql || ' LEFT JOIN alt' || mesaltitudes.id_altitude ||' a' || mesaltitudes.id_altitude || ' ON a' || mesaltitudes.id_altitude || '.cd_ref = o.cd_ref';
     END LOOP;
-    
+
     monsql = monsql || ' WHERE o.cd_ref is not null ORDER BY o.cd_ref;';
 
     EXECUTE monsql;
     create unique index on atlas.vm_altitudes (cd_ref);
 
     RETURN monsql;
-    
+
   END;
-  
+
 $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
@@ -188,17 +188,17 @@ select atlas.create_vm_altitudes();
 
 -- Taxons observés et de tous leurs synonymes (utilisés pour la recherche d'une espèce)
 
-CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS 
+CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS
 SELECT tx.cd_nom, tx.cd_ref, COALESCE(tx.lb_nom || ' | ' || tx.nom_vern, tx.lb_nom) AS nom_search FROM atlas.vm_taxref tx JOIN atlas.vm_taxons t ON t.cd_ref = tx.cd_ref;
 create UNIQUE index on atlas.vm_search_taxon(cd_nom);
 create index on atlas.vm_search_taxon(cd_ref);
-create index on atlas.vm_search_taxon(nom_search); 
+create index on atlas.vm_search_taxon(nom_search);
 
 
 -- Nombre d'observations mensuelles pour chaque taxon observé
 
 CREATE materialized view atlas.vm_mois AS
-WITH 
+WITH
 _01 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE date_part('month'::text, dateobs) = '01' GROUP BY cd_ref),
 _02 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE date_part('month'::text, dateobs) = '02' GROUP BY cd_ref),
 _03 AS (SELECT cd_ref, count(*) as nb FROM atlas.vm_observations WHERE date_part('month'::text, dateobs) = '03' GROUP BY cd_ref),
@@ -254,7 +254,7 @@ FROM atlas.l_communes c
 JOIN atlas.t_layer_territoire t ON ST_CONTAINS(ST_BUFFER(t.the_geom,200), c.the_geom);
 
 CREATE UNIQUE INDEX on atlas.vm_communes (insee);
-CREATE INDEX index_gist_vm_communes_the_geom ON atlas.vm_communes USING gist (the_geom); 
+CREATE INDEX index_gist_vm_communes_the_geom ON atlas.vm_communes USING gist (the_geom);
 
 
 -- Rangs de taxref ordonnés
@@ -334,7 +334,7 @@ CREATE MATERIALIZED VIEW atlas.vm_medias AS
            auteur,
            desc_media,
            date_media,
-           id_type 
+           id_type
    FROM taxonomie.t_medias;
 CREATE UNIQUE INDEX ON atlas.vm_medias (id_media);
 
@@ -351,25 +351,31 @@ CREATE UNIQUE INDEX ON atlas.vm_cor_taxon_attribut (cd_ref,id_attribut);
 
 -- 12 taxons les plus observés sur la période en cours (par défaut -15 jours +15 jours toutes années confondues)
 
-CREATE MATERIALIZED VIEW atlas.vm_taxons_plus_observes AS 
- SELECT count(*) AS nb_obs,
-    obs.cd_ref,
-    tax.lb_nom,
-    tax.group2_inpn,
-    tax.nom_vern,
-    m.url,
-    m.chemin,
-    m.id_type
-   FROM atlas.vm_observations obs
-     JOIN atlas.vm_taxons tax ON tax.cd_ref = obs.cd_ref
-     LEFT JOIN atlas.vm_medias m ON m.cd_ref = obs.cd_ref AND m.id_type = 1
-  WHERE date_part('day'::text, obs.dateobs) >= date_part('day'::text, 'now'::text::date - 15) AND date_part('month'::text, obs.dateobs) = date_part('month'::text, 'now'::text::date - 15) OR date_part('day'::text, obs.dateobs) <= date_part('day'::text, 'now'::text::date + 15) AND date_part('month'::text, obs.dateobs) = date_part('day'::text, 'now'::text::date + 15)
-  GROUP BY obs.cd_ref, tax.lb_nom, tax.nom_vern, m.url, m.chemin, tax.group2_inpn, m.id_type
-  ORDER BY count(*) DESC
- LIMIT 12;
- CREATE UNIQUE INDEX ON atlas.vm_taxons_plus_observes (cd_ref);
+CREATE MATERIALIZED VIEW atlas.vm_taxons_plus_observes AS
+SELECT count(*) AS nb_obs,
+  obs.cd_ref,
+  tax.lb_nom,
+  tax.group2_inpn,
+  tax.nom_vern,
+  m.id_media,
+  m.url,
+  m.chemin,
+  m.id_type
+ FROM atlas.vm_observations obs
+   JOIN atlas.vm_taxons tax ON tax.cd_ref = obs.cd_ref
+   LEFT JOIN atlas.vm_medias m ON m.cd_ref = obs.cd_ref AND m.id_type = 1
+WHERE date_part('day'::text, obs.dateobs) >= date_part('day'::text, 'now'::text::date - 15) AND date_part('month'::text, obs.dateobs) = date_part('month'::text, 'now'::text::date - 15) OR date_part('day'::text, obs.dateobs) <= date_part('day'::text, 'now'::text::date + 15) AND date_part('month'::text, obs.dateobs) = date_part('day'::text, 'now'::text::date + 15)
+GROUP BY obs.cd_ref, tax.lb_nom, tax.nom_vern, m.url, m.chemin, tax.group2_inpn, m.id_type, m.id_media
+ORDER BY (count(*)) DESC
+LIMIT 12;
+-- DROP INDEX atlas.vm_taxons_plus_observes_cd_ref_idx;
 
-    
+CREATE UNIQUE INDEX vm_taxons_plus_observes_cd_ref_idx
+  ON atlas.vm_taxons_plus_observes
+  USING btree
+  (cd_ref);
+
+
 --Fonction qui permet de lister tous les taxons enfants d'un taxon
 
 CREATE OR REPLACE FUNCTION atlas.find_all_taxons_childs(id integer)
@@ -377,21 +383,21 @@ CREATE OR REPLACE FUNCTION atlas.find_all_taxons_childs(id integer)
 $BODY$
  --Param : cd_nom ou cd_ref d'un taxon quelque soit son rang
  --Retourne le cd_nom de tous les taxons enfants sous forme d'un jeu de données utilisable comme une table
- --Usage SELECT atlas.find_all_taxons_childs(197047); 
+ --Usage SELECT atlas.find_all_taxons_childs(197047);
  --ou SELECT * FROM atlas.vm_taxons WHERE cd_ref IN(SELECT * FROM atlas.find_all_taxons_childs(197047))
-  DECLARE 
+  DECLARE
     inf RECORD;
     c integer;
   BEGIN
     SELECT INTO c count(*) FROM atlas.vm_taxref WHERE cd_taxsup = id;
     IF c > 0 THEN
-        FOR inf IN 
+        FOR inf IN
       WITH RECURSIVE descendants AS (
         SELECT tx1.cd_nom FROM atlas.vm_taxref tx1 WHERE tx1.cd_taxsup = id
       UNION ALL
       SELECT tx2.cd_nom FROM descendants d JOIN atlas.vm_taxref tx2 ON tx2.cd_taxsup = d.cd_nom
-      ) 
-      SELECT cd_nom FROM descendants 
+      )
+      SELECT cd_nom FROM descendants
   LOOP
       RETURN NEXT inf.cd_nom;
   END LOOP;
@@ -412,13 +418,13 @@ DECLARE
     r RECORD;
 BEGIN
     RAISE NOTICE 'Refreshing materialized view in schema %', schema_arg;
-    FOR r IN SELECT matviewname FROM pg_matviews WHERE schemaname = schema_arg 
+    FOR r IN SELECT matviewname FROM pg_matviews WHERE schemaname = schema_arg
     LOOP
         RAISE NOTICE 'Refreshing %.%', schema_arg, r.matviewname;
         --EXECUTE 'REFRESH MATERIALIZED VIEW ' || schema_arg || '.' || r.matviewname; --Si vous utilisez une version inférieure à PostgreSQL 9.4
-        EXECUTE 'REFRESH MATERIALIZED VIEW CONCURRENTLY ' || schema_arg || '.' || r.matviewname; 
+        EXECUTE 'REFRESH MATERIALIZED VIEW CONCURRENTLY ' || schema_arg || '.' || r.matviewname;
     END LOOP;
 
     RETURN 1;
-END 
+END
 $$ LANGUAGE plpgsql;
