@@ -178,6 +178,23 @@ def getGroupeObservers(connection, groupe):
     return observersParser(req)
 
 
+def getGroupeOrgas(connection, groupe):
+    sql = """
+        SELECT distinct a.nom_organisme AS orgaobs
+        FROM atlas.vm_observations o
+        LEFT JOIN atlas.vm_organismes a ON a.id_organisme = o.id_organisme
+        WHERE cd_ref in (
+            SELECT cd_ref from atlas.vm_taxons WHERE group2_inpn = :thisgroupe
+        )
+    """
+    req = connection.execute(text(sql), thisgroupe=groupe)
+    listOrgasGroupe = list()
+    for r in req:
+        temp = {'orgaobs': r.orgaobs}
+        listOrgasGroupe.append(temp)
+    return listOrgasGroupe
+
+
 def getObserversCommunes(connection, insee):
     sql = """
         SELECT distinct observateurs
@@ -277,3 +294,33 @@ def genericStatMedias(connection, tab):
         return None
     else:
         return tabStat
+
+
+def getOrgasObservations(connection, cd_ref):
+    sql = "select distinct(a.nom_organisme) AS orgaobs \
+    FROM  atlas.vm_observations o \
+    JOIN atlas.vm_organismes a ON a.id_organisme = o.id_organisme \
+    WHERE cd_ref in ( \
+    SELECT * from atlas.find_all_taxons_childs(:thiscdref) \
+    )OR cd_ref = :thiscdref \
+    GROUP BY nom_organisme".encode('UTF-8')
+    req = connection.execute(text(sql), thiscdref = cd_ref)
+    listOrgas = list()
+    for r in req:
+        temp = {'orgaobs': r.orgaobs}
+        listOrgas.append(temp)
+    return listOrgas
+
+
+def getOrgasCommunes(connection, insee):
+    sql = "select distinct(a.nom_organisme) AS orgaobs \
+    FROM  atlas.vm_observations o \
+    JOIN atlas.vm_organismes a ON a.id_organisme = o.id_organisme \
+    WHERE insee = :thisInsee  \
+    GROUP BY nom_organisme".encode('UTF-8')
+    req = connection.execute(text(sql), thisInsee = insee)
+    listOrgasCom = list()
+    for r in req:
+        temp = {'orgaobs': r.orgaobs}
+        listOrgasCom.append(temp)
+    return listOrgasCom

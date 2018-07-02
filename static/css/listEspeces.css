@@ -47,32 +47,35 @@ table.dataTable thead .sorting_desc {
 }
 
 #stat li {
-	float: left;
+	display: inline-block;
     width: 100px;
     text-align: center;
     border-right: 1px solid #e8e8e8;
     list-style-type: none; 
+}
+
+#stat li:last-child {
+    border-right: none;
 }
 
 ul#stat {
-	float: left;
 	padding: 5px;
-	margin-left: 32%;
 }
 
 #statHierarchy li {
-	float: left;
+	display:inline-block;
     width: 100px;
     text-align: center;
     border-right: 1px solid #e8e8e8;
     list-style-type: none; 
 }
 
+#statHierarchy li:last-child {
+    border-right: none;
+}
+
 ul#statHierarchy {
-    float: left;
     padding: 5px;
-    margin-left: 38%;
-    margin-top: 10px;
 }
 
 .leaflet-bar.leaflet-control.leaflet-control-custom img {

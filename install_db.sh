@@ -59,6 +59,17 @@ then
         sudo -n -u postgres -s psql -d $db_name -c "CREATE USER MAPPING FOR $owner_atlas SERVER geonaturedbserver OPTIONS (user '$atlas_source_user', password '$atlas_source_pass') ;"  &>> log/install_db.log
     fi
 
+    # Si j'utilise UsersHub ($usershub_source = True), alors je créé les connexions en FWD à la BDD UsersHub
+    if $usershub_source
+    then
+        echo "Ajout du FDW et connexion à la BDD mère UsersHub"
+        sudo -n -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgres_fdw;"  &>> log/install_db.log
+        sudo -n -u postgres -s psql -d $db_name -c "CREATE SERVER usershubdbserver FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$dbusers_source_host', dbname '$dbusers_source_name', port '$dbusers_source_port');"  &>> log/install_db.log
+        sudo -n -u postgres -s psql -d $db_name -c "ALTER SERVER usershubdbserver OWNER TO $owner_atlas;"  &>> log/install_db.log
+        sudo -n -u postgres -s psql -d $db_name -c "CREATE USER MAPPING FOR $owner_atlas SERVER usershubdbserver OPTIONS (user '$atlas_dbusers_source_user', password '$atlas_dbusers_source_pass') ;"  &>> log/install_db.log
+    fi
+
+
     # Création des schémas de la BDD
 
     sudo -n -u postgres -s psql -d $db_name -c "CREATE SCHEMA atlas AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
@@ -166,6 +177,40 @@ then
         cd ../..
 		rm -R data/taxonomie
 
+    fi
+
+    # Si j'utilise UsersHub ($usershub_source = True), alors je crée la table fille en FDW connectée à la BDD de UsersHub
+    if $usershub_source 
+    then
+        # Creation des tables filles en FWD
+        echo "Création de la connexion a GeoNature"
+        sudo cp data/atlas_usershub.sql /tmp/atlas_usershub.sql
+        sudo sed -i "s/myuser;$/$owner_atlas;/" /tmp/atlas_usershub.sql
+        sudo -n -u postgres -s psql -d $db_name -f /tmp/atlas_usershub.sql  &>> log/install_db.log
+    # Sinon je créé une table synthese.bib_organismes avec 3 organismes exemple
+    else
+        echo "Création de la table exemple bib_organismes"
+        sudo -n -u postgres -s psql -d $db_name -c "CREATE TABLE synthese.bib_organismes
+            (
+                id_organisme integer PRIMARY KEY,
+                nom_organisme character varying(100) NOT NULL,
+                adresse_organisme character varying(128) ,
+                cp_organisme character varying(5) ,
+                ville_organisme character varying(100) ,
+                tel_organisme character varying(14) ,
+                fax_organisme character varying(14) ,
+                email_organisme character varying(100) 
+            );
+            INSERT INTO synthese.bib_organismes
+              (id_organisme, nom_organisme, adresse_organisme, cp_organisme, ville_organisme, tel_organisme, fax_organisme, email_organisme)
+              VALUES (1, 'PNF', '', '', 'Montpellier', '', '', '');
+            INSERT INTO synthese.bib_organismes
+              (id_organisme, nom_organisme, adresse_organisme, cp_organisme, ville_organisme, tel_organisme, fax_organisme, email_organisme)
+              VALUES (2, 'Parc National des Ecrins', 'Domaine de Charance', '05000', 'GAP', '04 92 40 20 10', '', '');
+            INSERT INTO synthese.bib_organismes
+              (id_organisme, nom_organisme, adresse_organisme, cp_organisme, ville_organisme, tel_organisme, fax_organisme, email_organisme)
+              VALUES VALUES (99, 'Autre', '', '', '', '', '', '');" &>> log/install_db.log
+        sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE synthese.bib_organismes OWNER TO "$owner_atlas";"
     fi
     
     # Creation des Vues Matérialisées (et remplacement éventuel des valeurs en dur par les paramètres)

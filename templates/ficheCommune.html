@@ -45,12 +45,15 @@
 
             <div class="col-sm-7">
                  <div class="panel panel-default" id="parent">
-					          <div class="row">
+					<div class="row">
                         <h4><b>Commune de {{referenciel.communeName}}</b></h4>
                         <ul id="stat">
                             <li><span data-icon="&#xe037;" style="font-size: 30px;"></span><br/><b>{{listTaxons.nbObsTotal}}</b><br/>{{ 'observations' if listTaxons.nbObsTotal > 1 else 'observation' }}</li>
                             <li><span data-icon="&#xe03b;" style="font-size: 30px;"></span></br><b>{{listTaxons.taxons|length}}</b><br/>{{ 'espèces' if listTaxons.taxons|length > 1 else 'espèce' }}</li>
                             <li><span data-icon="&#xe040;" style="font-size: 30px;"></span></br><b>{{observers | length}}</b><br/>{{ 'observateurs' if observers|length > 1 else 'observateur' }}</li>
+                            {% if configuration.AFFICHAGE_ORGAS_OBS_FICHECOMM %}
+                                <li><img id="picto" src="{{url_for('static', filename='images/network.png')}}" style="font-size:30px;margin:5%;"></br><b>{{orgas|length}}</b><br/>{{ 'structures' if orgas|length > 1 else 'structure' }}</li>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>

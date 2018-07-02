@@ -154,6 +154,9 @@ ATTR_YOUTUBE = 7
 ATTR_DAILYMOTION = 8
 ATTR_VIMEO = 9
 
+# Afficher les organismes ayant fourni les données sur fiche espece. Affichage True/False
+AFFICHAGE_ORGAS_OBS_FICHEESP = True
+
 ############################################
 #### FICHE COMMUNE ET RANG TAXONOMIQUE #####
 ############################################
@@ -177,6 +180,20 @@ PATRIMONIALITE = {
         }
     }
 }
+
+
+# Afficher les organismes ayant fourni les données sur fiche commune. Affichage True/False
+AFFICHAGE_ORGAS_OBS_FICHECOMM = True
+
+# Afficher les organismes ayant fourni les données sur fiche rang taxonomique. Affichage True/False
+AFFICHAGE_ORGAS_OBS_FICHETAXO = True
+
+#######################
+#### FICHE GROUPE #####
+#######################
+
+# Afficher les organismes ayant fourni les données sur fiche groupe. Affichage True/False
+AFFICHAGE_ORGAS_OBS_FICHEGROUPE = True
 
 #############################
 #### Pages statistiques #####

@@ -13,6 +13,17 @@ create index on atlas.vm_taxref (nom_complet);
 create index on atlas.vm_taxref (nom_valide);
 
 
+--Tous les organismes
+
+--DROP MATERIALIZED VIEW atlas.vm_organismes;
+CREATE MATERIALIZED VIEW atlas.vm_organismes AS 
+ SELECT o.id_organisme,
+    o.nom_organisme
+   FROM synthese.bib_organismes o;
+create unique index on atlas.vm_organismes (id_organisme);
+
+
+
 --Toutes les observations
 
 --DROP materialized view atlas.vm_observations;
@@ -21,6 +32,7 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
         s.insee,
         s.dateobs,
         s.observateurs,
+        s.id_organisme,
         s.altitude_retenue,
         s.the_geom_point::geometry('POINT',3857),
         s.effectif_total,

@@ -10,10 +10,12 @@ def getObservationsMaillesChilds(connection, cd_ref):
     sql = """SELECT
             obs.id_maille,
             obs.geojson_maille,
+            a.nom_organisme AS orgaobs,
             o.dateobs,
             extract(YEAR FROM o.dateobs) as annee
         FROM atlas.vm_observations_mailles obs
         JOIN atlas.vm_observations o ON o.id_observation = obs.id_observation
+        LEFT JOIN atlas.vm_organismes a ON a.id_organisme = o.id_organisme
         WHERE obs.cd_ref in (
                 SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
             )
@@ -27,6 +29,7 @@ def getObservationsMaillesChilds(connection, cd_ref):
             'nb_observations': 1,
             'annee': o.annee,
             'dateobs': str(o.dateobs),
+            'orga_obs': o.orgaobs,
             'geojson_maille': ast.literal_eval(o.geojson_maille)
         }
         tabObs.append(temp)
