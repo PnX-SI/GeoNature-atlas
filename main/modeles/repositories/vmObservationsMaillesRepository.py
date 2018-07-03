@@ -125,12 +125,15 @@ def getObservationsTaxonCommuneMaille(connection, insee, cd_ref):
     sql = """
         SELECT
             o.cd_ref, t.id_maille, t.geojson_maille,
-            extract(YEAR FROM o.dateobs) as annee
+            extract(YEAR FROM o.dateobs) as annee,
+            a.nom_organisme AS orgaobs
         FROM atlas.vm_observations o
         JOIN atlas.vm_communes c
         ON ST_INTERSECTS(o.the_geom_point, c.the_geom)
         JOIN atlas.t_mailles_territoire t
         ON ST_INTERSECTS(t.the_geom, o.the_geom_point)
+        LEFT JOIN atlas.vm_organismes a 
+        ON a.id_organisme = o.id_organisme
         WHERE o.cd_ref = :thiscdref AND c.insee = :thisInsee
         ORDER BY id_maille
     """
@@ -143,6 +146,7 @@ def getObservationsTaxonCommuneMaille(connection, insee, cd_ref):
             'id_maille': o.id_maille,
             'nb_observations': 1,
             'annee': o.annee,
+            'orga_obs': o.orgaobs,
             'geojson_maille': ast.literal_eval(o.geojson_maille)
         }
         tabObs.append(temp)

@@ -95,27 +95,37 @@ function generateMap() {
 
 
 
-//****** Fonction fiche espècce ***********
-
-
-
+//****** Fonction fiche espèce ***********
 
 // Popup Point
 function onEachFeaturePoint(feature, layer){
     popupContent = "<b>Date: </b>"+ feature.properties.dateobsPopup+"</br><b>Altitude: </b>"+ feature.properties.altitude_retenue+
-                "</br><b>Observateurs: </b>"+ feature.properties.observateurs;
+                "</br><b>Observateur(s): </b>"+ feature.properties.observateurs;
 
-     // verifie si le champs effectif est rempli
-      if(feature.properties.effectif_total != undefined){
-        layer.bindPopup(popupContent+"</br><b>Effectif: </b>"+ feature.properties.effectif_total);
-      }else{
-        layer.bindPopup(popupContent)
-      }
+    // verifie si on doit afficher les organismes ou non
+    if(configuration.AFFICHAGE_ORGAS_OBS_FICHEESP){      
+      popupContent=popupContent+"</br> <b> Structure: </b>" + feature.properties.orga_obs + " ";
+    }
+
+   // verifie si le champs effectif est rempli
+    if(feature.properties.effectif_total != undefined){
+      popupContent=popupContent+"</br><b>Effectif: </b>"+ feature.properties.effectif_total;
+    }        
+
+    layer.bindPopup(popupContent)
 }
 
 // popup Maille
 function onEachFeatureMaille(feature, layer){
-    popupContent = "<b>Nombre d'observation(s): </b>"+ feature.properties.nb_observations+"</br> <b> Dernière observation: </b>"+ feature.properties.last_observation+ " " ;
+    popupContent = "<b>Nombre d'observation(s): </b>" + feature.properties.nb_observations;
+
+    // verifie si on doit afficher les organismes ou non
+    if(configuration.AFFICHAGE_ORGAS_OBS_FICHEESP){      
+      popupContent=popupContent+"</br> <b> Structure(s): </b>" + feature.properties.orga_obs + " ";
+    }
+
+    popupContent=popupContent+"</br> <b> Dernière observation: </b>" + feature.properties.last_observation + " ";
+
     layer.bindPopup(popupContent)
 }
 
@@ -179,7 +189,7 @@ function generateGeojsonMaille(observations, yearMin, yearMax) {
     if(observations[i].annee >= yearMin && observations[i].annee <= yearMax ) {
       geometry = observations[i].geojson_maille;
       idMaille = observations[i].id_maille;
-      properties = {id_maille : idMaille, nb_observations : 1, last_observation: observations[i].annee, tabDateobs: [new Date(observations[i].dateobs)]};
+      properties = {id_maille : idMaille, nb_observations : 1, orga_obs: observations[i].orga_obs, last_observation: observations[i].annee, tabDateobs: [new Date(observations[i].dateobs)]};
       var j = i+1;
       while (j<observations.length && observations[j].id_maille <= idMaille){
         if(observations[j].annee >= yearMin && observations[j].annee <= yearMax ){
@@ -188,6 +198,9 @@ function generateGeojsonMaille(observations, yearMin, yearMax) {
         }
         if (observations[j].annee >=  properties.last_observation){
           properties.last_observation = observations[j].annee
+        }
+        if (observations[j].orga_obs != properties.orga_obs) {
+          properties.orga_obs += (' <br/> ' + observations[j].orga_obs)
         }
         j = j+1
       }
@@ -334,9 +347,20 @@ function displayMarkerLayerFicheEspece(observationsPoint, yearMin, yearMax){
 
 function onEachFeaturePointLastObs(feature, layer){
     popupContent = "<b>Espèce: </b>"+ feature.properties.taxon+
-                "</br><b>Date: </b>"+ feature.properties.dateobs+"</br><b>Altitude: </b>"+ 
-                feature.properties.altitude_retenue;
+                "</br><b>Date: </b>"+ feature.properties.dateobs;
 
+    // verifie s'il y a une altitude renseignée
+    if(feature.properties.altitude_retenue != undefined){
+      popupContent=popupContent+"</br><b>Altitude: </b>"+ feature.properties.altitude_retenue;
+    }else{
+      popupContent=popupContent+"</br><b>Altitude: </b>non renseignée";
+    }        
+
+    // verifie si on doit afficher les organismes ou non
+    if(configuration.AFFICHAGE_ORGAS_OBS_FICHECOMM){      
+      popupContent = popupContent + "</br> <b> Structure(s): </b>" + feature.properties.orga_obs + " ";
+    }
+ 
     layer.bindPopup(popupContent + "</br> <a href='"+ configuration.URL_APPLICATION+"/espece/"+feature.properties.cd_ref+"'> Fiche espèce </a>")
 }
 
@@ -344,9 +368,9 @@ function onEachFeaturePointCommune(feature, layer){
     popupContent = "<b>Espèce: </b>"+ feature.properties.taxon+
                 "</br><b>Date: </b>"+ feature.properties.dateobs+"</br><b>Altitude: </b>"+ 
                 feature.properties.altitude_retenue+
-                "</br><b> Observateurs(s): </b>"+ feature.properties.observateurs
+                "</br><b> Observateurs(s): </b>"+ feature.properties.observateurs;
 
-                layer.bindPopup(popupContent + "</br> <a href='"+ configuration.URL_APPLICATION+"/espece/"+feature.properties.cd_ref+"'> Fiche espèce </a>")
+    layer.bindPopup(popupContent + "</br> <a href='"+ configuration.URL_APPLICATION+"/espece/"+feature.properties.cd_ref+"'> Fiche espèce </a>")
 }
 
 function generateGeojsonPointLastObs(observationsPoint){

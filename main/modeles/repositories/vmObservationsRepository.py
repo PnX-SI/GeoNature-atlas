@@ -12,8 +12,10 @@ currentYear = datetime.now().year
 
 
 def searchObservationsChilds(connection, cd_ref):
-    sql = """SELECT obs.*
+    sql = """SELECT obs.*,
+            a.nom_organisme AS orgaobs
             FROM atlas.vm_observations obs
+            LEFT JOIN atlas.vm_organismes a ON a.id_organisme = obs.id_organisme
             WHERE obs.cd_ref in (
                 SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
                 )
@@ -27,6 +29,7 @@ def searchObservationsChilds(connection, cd_ref):
         temp['geojson_point'] = ast.literal_eval(o.geojson_point)
         temp['dateobs'] = str(o.dateobs)
         temp['year'] = o.dateobs.year
+        temp ['orga_obs'] = o.orgaobs
         obsList.append(temp)
     return obsList
 
@@ -78,11 +81,13 @@ def lastObservations(connection, mylimit, idPhoto):
 
 def lastObservationsCommune(connection, mylimit, insee):
     sql = """SELECT o.*,
+            a.nom_organisme AS orgaobs,
             COALESCE(split_part(tax.nom_vern, ',', 1) || ' | ', '')
                 || tax.lb_nom as taxon
     FROM atlas.vm_observations o
     JOIN atlas.vm_communes c ON ST_Intersects(o.the_geom_point, c.the_geom)
     JOIN atlas.vm_taxons tax ON  o.cd_ref = tax.cd_ref
+    LEFT JOIN atlas.vm_organismes a ON a.id_organisme = o.id_organisme
     WHERE c.insee = :thisInsee
     ORDER BY o.dateobs DESC
     LIMIT 100"""
@@ -93,6 +98,7 @@ def lastObservationsCommune(connection, mylimit, insee):
         temp.pop('the_geom_point', None)
         temp['geojson_point'] = ast.literal_eval(o.geojson_point)
         temp['dateobs'] = str(o.dateobs)
+        temp ['orga_obs'] = o.orgaobs
         obsList.append(temp)
     return obsList
 
@@ -190,7 +196,7 @@ def getGroupeOrgas(connection, groupe):
     req = connection.execute(text(sql), thisgroupe=groupe)
     listOrgasGroupe = list()
     for r in req:
-        temp = {'orgaobs': r.orgaobs}
+        temp = {'orga_obs': r.orgaobs}
         listOrgasGroupe.append(temp)
     return listOrgasGroupe
 
@@ -307,7 +313,7 @@ def getOrgasObservations(connection, cd_ref):
     req = connection.execute(text(sql), thiscdref = cd_ref)
     listOrgas = list()
     for r in req:
-        temp = {'orgaobs': r.orgaobs}
+        temp = {'orga_obs': r.orgaobs}
         listOrgas.append(temp)
     return listOrgas
 
@@ -321,6 +327,6 @@ def getOrgasCommunes(connection, insee):
     req = connection.execute(text(sql), thisInsee = insee)
     listOrgasCom = list()
     for r in req:
-        temp = {'orgaobs': r.orgaobs}
+        temp = {'orga_obs': r.orgaobs}
         listOrgasCom.append(temp)
     return listOrgasCom
