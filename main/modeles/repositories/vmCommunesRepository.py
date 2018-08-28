@@ -16,6 +16,16 @@ def getAllCommunes(session):
     return communeList
 
 
+def getCommunesSearch(session, search, limit=50):
+    req = session.query(distinct(VmCommunes.commune_maj), VmCommunes.insee) \
+        .filter(VmCommunes.commune_maj.like('%' + search + '%')).limit(limit).all()
+    communeList = list()
+    for r in req:
+        temp = {'label': r[0], 'value': r[1]}
+        communeList.append(temp)
+    return communeList
+
+
 def getCommuneFromInsee(connection, insee):
     sql = "SELECT c.commune_maj, \
            c.insee, \
