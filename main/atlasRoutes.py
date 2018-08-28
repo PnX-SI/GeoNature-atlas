@@ -79,7 +79,6 @@ def index():
             connection, config.NB_DAY_LAST_OBS, config.ATTR_MAIN_PHOTO
         )
 
-    communesSearch = vmCommunesRepository.getAllCommunes(session)
     mostViewTaxon = vmTaxonsMostView.mostViewTaxon(connection)
     stat = vmObservationsRepository.statIndex(connection)
     customStat = vmObservationsRepository.genericStat(
@@ -110,7 +109,6 @@ def index():
     return render_template(
         'templates/index.html',
         observations=observations,
-        communesSearch=communesSearch,
         mostViewTaxon=mostViewTaxon,
         stat=stat,
         customStat=customStat,
@@ -132,7 +130,6 @@ def ficheEspece(cd_ref):
     communes = vmCommunesRepository.getCommunesObservationsChilds(
         connection, cd_ref
     )
-    communesSearch = vmCommunesRepository.getAllCommunes(session)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
     firstPhoto = vmMedias.getFirstPhoto(
         connection, cd_ref, config.ATTR_MAIN_PHOTO
@@ -179,7 +176,6 @@ def ficheEspece(cd_ref):
         months=months,
         synonyme=synonyme,
         communes=communes,
-        communesSearch=communesSearch,
         taxonomyHierarchy=taxonomyHierarchy,
         firstPhoto=firstPhoto,
         photoCarousel=photoCarousel,
@@ -198,7 +194,6 @@ def ficheCommune(insee):
 
     listTaxons = vmTaxonsRepository.getTaxonsCommunes(connection, insee)
     commune = vmCommunesRepository.getCommuneFromInsee(connection, insee)
-    communesSearch = vmCommunesRepository.getAllCommunes(session)
     if config.AFFICHAGE_MAILLE:
         observations = vmObservationsMaillesRepository.lastObservationsCommuneMaille(
             connection, config.NB_LAST_OBS, insee
@@ -229,7 +224,6 @@ def ficheCommune(insee):
         'templates/ficheCommune.html',
         listTaxons=listTaxons,
         referenciel=commune,
-        communesSearch=communesSearch,
         observations=observations,
         observers=observers,
         configuration=configuration
@@ -243,7 +237,6 @@ def ficheRangTaxonomie(cd_ref):
 
     listTaxons = vmTaxonsRepository.getTaxonsChildsList(connection, cd_ref)
     referenciel = vmTaxrefRepository.getInfoFromCd_ref(session, cd_ref)
-    communesSearch = vmCommunesRepository.getAllCommunes(session)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
     observers = vmObservationsRepository.getObservers(connection, cd_ref)
 
@@ -262,7 +255,6 @@ def ficheRangTaxonomie(cd_ref):
         'templates/ficheRangTaxonomique.html',
         listTaxons=listTaxons,
         referenciel=referenciel,
-        communesSearch=communesSearch,
         taxonomyHierarchy=taxonomyHierarchy,
         observers=observers,
         configuration=configuration
@@ -276,7 +268,6 @@ def ficheGroupe(groupe):
 
     groups = vmTaxonsRepository.getAllINPNgroup(connection)
     listTaxons = vmTaxonsRepository.getTaxonsGroup(connection, groupe)
-    communesSearch = vmCommunesRepository.getAllCommunes(session)
     observers = vmObservationsRepository.getGroupeObservers(connection, groupe)
 
     session.close()
@@ -293,7 +284,6 @@ def ficheGroupe(groupe):
     return render_template(
         'templates/ficheGroupe.html',
         listTaxons=listTaxons,
-        communesSearch=communesSearch,
         referenciel=groupe,
         groups=groups,
         observers=observers,
@@ -307,14 +297,12 @@ def photos():
     connection = utils.engine.connect()
 
     groups = vmTaxonsRepository.getINPNgroupPhotos(connection)
-    communesSearch = vmCommunesRepository.getAllCommunes(session)
     configuration = base_configuration
 
     session.close()
     connection.close()
     return render_template(
         'templates/galeriePhotos.html',
-        communesSearch=communesSearch,
         groups=groups,
         configuration=configuration
     )
@@ -326,11 +314,9 @@ def get_staticpages(page):
     if (page not in config.STATIC_PAGES):
         abort(404)
     static_page = config.STATIC_PAGES[page]
-    communesSearch = vmCommunesRepository.getAllCommunes(session)
     configuration = base_configuration
     session.close()
     return render_template(
         static_page['template'],
-        communesSearch=communesSearch,
         configuration=configuration
     )
