@@ -201,7 +201,7 @@
 
                   <p class="lead">
                     Plus de 2000 espèces de plantes sont présentées dans cet atlas.
-                    Si l'inventaire du monde végétal se poursuit dans les Écrins, le Parc national assure également le suivi d'espèces emblématiques (comme le chardon bleu et le sabot de Vénus) et participe à de nombreux programmes de recherche sur les milieux et espèces naturels de haute altitude. 
+                    Si l'inventaire du monde végétal se poursuit dans les Écrins, le Parc national assure également le suivi d'espèces emblématiques (comme le chardon bleu et le sabot de Vénus) et participe à de nombreux programmes de recherche sur les milieux et espèces naturels de haute altitude.
                   </p>
                   <p class="lead">
                     Certaines plantes présentent des histoires de vie remarquables, allant des héritières de pratiques agricoles anciennes (prairies de fauche, cultures extensives de céréales) aux exploratrices de la haute montagne.
@@ -431,8 +431,7 @@
 		{% endif %}
 
         <script type="text/javascript">
-        var communesSearch = {{communesSearch|tojson}},
-            configuration = {{configuration|tojson}};
+        var configuration = {{configuration|tojson}};
         </script>
 
         <script src="{{url_for('static', filename='main.js') }}"></script>
