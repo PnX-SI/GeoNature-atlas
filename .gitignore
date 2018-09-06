@@ -40,4 +40,7 @@ data/ref/territoire.prj
 data/ref/territoire.shp
 data/ref/territoire.shx
 
+# Pycharm
+.idea/
+
 .vscode
