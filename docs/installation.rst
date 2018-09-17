@@ -299,7 +299,7 @@ Si vous souhaitez définir des IP qui peuvent se connecter à la BDD, sous la li
 
 ::
 
-    host    all     all     MON_IP_A_REMPLACER/0        md5  #Pour donner accès depuis n'importe quelle IP
+    host    all     all     MON_IP_A_REMPLACER/0        md5  #Pour donner accès à une IP
     
 ou si vous souhaitez y donner accès depuis n'importe quelle IP, rajouter : 
 
