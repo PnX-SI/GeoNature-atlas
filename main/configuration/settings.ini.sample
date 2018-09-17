@@ -41,16 +41,13 @@ user_pg_pass=monpassachanger
 # Password du propriétaire de la BDD
 owner_atlas_pass=monpassachanger
 
-# Installer le schéma taxonomie de TaxHub dans la BDD de GeoNature-atlas ?
-install_taxonomie=false
-
-# Version de TaxHub à utiliser pour installer le schéma taxonomie
-# GeoNature-atlas 1.3.0 est compatible avec les versions de Taxhub inférieure ou égale à 1.3.2
-# Numéro de version conseillée et testée : 1.3.2
-taxhub_release=1.3.2
-
 # GeoNature-atlas est-il connecté à une BDD GeoNature ?
 geonature_source=true
+# Version de geonature utilisée 1 ou 2
+geonature_version=2
+# Est-ce que l'atlas est installé dans la même base de données que geonature ou non
+# true : base de données distante
+geonature_fdw=true
 
 ################################################
 ##### CONNEXION A LA BDD GEONATURE SOURCE ######
@@ -73,7 +70,22 @@ atlas_source_user=geonatuser
 # Pass de l'utilisateur atlas dans la BDD GeoNature source (lecture seule)
 atlas_source_pass=monpassachanger
 
-### COMMUNES ####
+
+
+#####################################################################
+### Données GEOGRAPHIQUE                                          ###
+#####################################################################
+
+# L'atlas est il en lien avec le référentiel géographique modèle géonature v2
+use_ref_geo_gn2=true
+
+########### Si ref_geo = true ############
+type_maille="M1"
+type_territoire="PEC"
+
+
+
+########### Si ref_geo = False ############### COMMUNES ####
 
 # Creer la table des communes à partir d'un shapefile ?
 # Si false, modifiez la creation de 'atlas.vm_communes' dans data/atlas.sql
@@ -99,6 +111,16 @@ taillemaille=5
 
 # Si 'metropole=false', rajoutez dans le dossier /data/ref un SHP des mailles de votre territoire et renseignez son chemin
 chemin_custom_maille=/home/MYUSERLINUX/atlas/data/ref/custom_maille.shp
+
+#####################################################################
+### Données TAXONOMIQUE                                           ###
+###################################################################### Installer le schéma taxonomie de TaxHub dans la BDD de GeoNature-atlas ?
+install_taxonomie=false
+
+# Version de TaxHub à utiliser pour installer le schéma taxonomie
+# GeoNature-atlas 1.3.0 est compatible avec les versions de Taxhub inférieure ou égale à 1.3.2
+# Numéro de version conseillée et testée : 1.3.2
+taxhub_release=1.3.2
 
 #### ID DES TYPES DES ATTRIBUTS DESCRIVANT LES TAXONS DANS atlas.vm_cor_taxon_attribut --
 ## !! si changement: modifier également dans main/configuration/config.py
