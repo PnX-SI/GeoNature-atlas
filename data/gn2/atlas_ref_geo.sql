@@ -1,34 +1,47 @@
 --################################
+--  Import FDW
+--################################
+DROP SCHEMA IF EXISTS ref_geo CASCADE;
+CREATE SCHEMA IF NOT EXISTS ref_geo;
+
+IMPORT FOREIGN SCHEMA ref_geo
+	LIMIT TO (ref_geo.l_areas, ref_geo.li_municipalities, ref_geo.bib_areas_types)
+    FROM SERVER geonaturedbserver INTO ref_geo ;
+
+--################################
 --###COMMUNES
 --################################
-DROP MATERIALIZED VIEW atlas.vm_communes;
 
-CREATE MATERIALIZED VIEW atlas.vm_communes AS
+DO $$
+BEGIN
+	DROP TABLE atlas.l_communes;
+EXCEPTION WHEN others THEN
+	RAISE NOTICE 'view atlas.l_communes does not exist';
+END$$;
+
+
+CREATE MATERIALIZED VIEW atlas.l_communes AS
  SELECT c.area_code as insee,
     c.area_name as commune_maj,
     st_transform(c.geom, 3857) as the_geom,
     st_asgeojson(st_transform(c.geom, 4326)) AS commune_geojson
    FROM ref_geo.l_areas c
-   JOIN  ref_geo.li_municipalities m ON c.id_area = m.id_area
-   WHERE id_type=101 and enable=true AND apa=true
+   JOIN ref_geo.li_municipalities m ON c.id_area = m.id_area
+   WHERE enable=true
 WITH DATA;
 
 
--- Index: atlas.index_gist_vm_communes_the_geom
-
--- DROP INDEX atlas.index_gist_vm_communes_the_geom;
-
-CREATE INDEX index_gist_vm_communes_the_geom
-  ON atlas.vm_communes
+CREATE INDEX index_gist_l_communes_the_geom
+  ON atlas.l_communes
   USING gist
   (the_geom);
 
--- Index: atlas.vm_communes_insee_idx
+-- Index: atlas.l_communes_insee_idx
 
--- DROP INDEX atlas.vm_communes_insee_idx;
+-- DROP INDEX atlas.l_communes_insee_idx;
 
-CREATE UNIQUE INDEX vm_communes_insee_idx
-  ON atlas.vm_communes
+CREATE UNIQUE INDEX l_communes_insee_idx
+  ON atlas.l_communes
   USING btree
   (insee COLLATE pg_catalog."default");
 
@@ -40,8 +53,12 @@ DROP TABLE atlas.l_communes;
 --################################
 --################################
 
-DROP TABLE atlas.t_mailles_territoire;
-DROP TABLE atlas.t_mailles_5;
+DO $$
+BEGIN
+	DROP TABLE atlas.t_mailles_territoire;
+EXCEPTION WHEN others THEN
+	RAISE NOTICE 'view atlas.t_mailles_territoire does not exist';
+END$$;
 
 
 CREATE MATERIALIZED VIEW atlas.t_mailles_territoire AS
@@ -61,15 +78,20 @@ WHERE t.type_code = :type_maille;
 --################################
 --################################
 
+DO $$
+BEGIN
+	DROP TABLE atlas.t_layer_territoire;
+EXCEPTION WHEN others THEN
+	RAISE NOTICE 'view atlas.t_mailles_territoire does not exist';
+END$$;
 
-DROP TABLE atlas.t_layer_territoire;
 
 CREATE MATERIALIZED VIEW atlas.t_layer_territoire AS
 WITH d AS (
 	SELECT st_union(geom) , b.type_name
 	FROM ref_geo.l_areas l
 	JOIN ref_geo.bib_areas_types b USING(id_type)
-	WHERE l.id_type =24
+	WHERE b.type_code = :type_territoire
 	GROUP BY b.type_name
 )
 SELECT
@@ -80,3 +102,13 @@ SELECT
  ST_Perimeter(st_union)/1000 as perim_km,
  st_transform(st_union, 3857) as  the_geom
 FROM d;
+
+
+
+CREATE MATERIALIZED VIEW atlas.vm_communes AS
+SELECT c.insee,
+c.commune_maj,
+c.the_geom,
+st_asgeojson(st_transform(c.the_geom, 4326)) as commune_geojson
+FROM atlas.l_communes c
+JOIN atlas.t_layer_territoire t ON st_intersects(t.the_geom, c.the_geom);

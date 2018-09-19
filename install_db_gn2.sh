@@ -60,7 +60,6 @@ then
     fi
 
     # Création des schémas de la BDD
-
     sudo -n -u postgres -s psql -d $db_name -c "CREATE SCHEMA atlas AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
 	if [ $install_taxonomie = "false" ]
 	then
@@ -68,42 +67,202 @@ then
     fi
 	sudo -n -u postgres -s psql -d $db_name -c "CREATE SCHEMA synthese AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
 
-    # Import du shape des limites du territoire ($limit_shp) dans la BDD / atlas.t_layer_territoire
 
-    ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 data/ref/emprise_territoire_3857.shp $limit_shp
-    rm data/ref/emprise_territoire_3857.*
-    sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_layer_territoire OWNER TO "$owner_atlas";"
-    sudo -n -u postgres -s shp2pgsql -W "LATIN1" -s 3857 -D -I ./data/ref/emprise_territoire_3857.shp atlas.t_layer_territoire | sudo -n -u postgres -s psql -d $db_name  &>> log/install_db.log
+    if $use_ref_geo_gn2
+    then
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port \
+            -v type_maille=$type_maille -v type_territoire=$type_territoire -f data/gn2/atlas_ref_geo.sql
+    else
+        # Import du shape des limites du territoire ($limit_shp) dans la BDD / atlas.t_layer_territoire
+        ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 data/ref/emprise_territoire_3857.shp $limit_shp
+        sudo -n -u postgres -s shp2pgsql -W "LATIN1" -s 3857 -D -I ./data/ref/emprise_territoire_3857.shp atlas.t_layer_territoire | sudo -n -u postgres -s psql -d $db_name  &>> log/install_db.log
+        rm data/ref/emprise_territoire_3857.*
+        sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_layer_territoire OWNER TO "$owner_atlas";"
+        # Creation de l'index GIST sur la couche territoire atlas.t_layer_territoire
+        sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_layer_territoire RENAME COLUMN geom TO the_geom; CREATE INDEX index_gist_t_layer_territoire ON atlas.t_layer_territoire USING gist(the_geom); "  &>> log/install_db.log
 
-    # Creation de l'index GIST sur la couche territoire atlas.t_layer_territoire
-    sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_layer_territoire RENAME COLUMN geom TO the_geom; CREATE INDEX index_gist_t_layer_territoire ON atlas.t_layer_territoire USING gist(the_geom); "  &>> log/install_db.log
+        # Import du shape des communes ($communes_shp) dans la BDD (si parametre import_commune_shp = TRUE) / atlas.l_communes
+        if $import_commune_shp
+        then
+            ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 ./data/ref/communes_3857.shp $communes_shp
+            sudo -n -u postgres -s shp2pgsql -W "LATIN1" -s 3857 -D -I ./data/ref/communes_3857.shp atlas.l_communes | sudo -n -u postgres -s psql -d $db_name  &>> log/install_db.log
+            sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes RENAME COLUMN "$colonne_nom_commune" TO commune_maj;"  &>> log/install_db.log
+            sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes RENAME COLUMN "$colonne_insee" TO insee;"  &>> log/install_db.log
+            sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes RENAME COLUMN geom TO the_geom;"  &>> log/install_db.log
+            sudo -n -u postgres -s psql -d $db_name -c "CREATE INDEX index_gist_t_layers_communes ON atlas.l_communes USING gist (the_geom);"  &>> log/install_db.log
+            sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes OWNER TO "$owner_atlas";"
+            rm ./data/ref/communes_3857.*
+        fi
+
+        # Mise en place des mailles
+        echo "Découpage des mailles et creation de la table des mailles"
+
+        cd data/ref
+        rm -f L93*.dbf L93*.prj L93*.sbn L93*.sbx L93*.shp L93*.shx
+
+        # Si je suis en métropole (metropole=true), alors j'utilise les mailles fournies par l'INPN
+        if $metropole
+        then
+            # Je dézippe mailles fournies par l'INPN aux 3 échelles
+            unzip L93_1K.zip
+            unzip L93_5K.zip
+            unzip L93_10K.zip
+            # Je les reprojete les SHP en 3857 et les renomme
+            ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 ./mailles_1.shp L93_1x1.shp
+            ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 ./mailles_5.shp L93_5K.shp
+            ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 ./mailles_10.shp L93_10K.shp
+            # J'importe dans la BDD le SHP des mailles à l'échelle définie en parametre ($taillemaille)
+            sudo -n -u postgres -s shp2pgsql -W "LATIN1" -s 3857 -D -I mailles_$taillemaille.shp atlas.t_mailles_$taillemaille | sudo -n -u postgres -s psql -d $db_name  &>> ../../log/install_db.log
+            sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_mailles_"$taillemaille" OWNER TO "$owner_atlas";"
+            rm mailles_1.* mailles_5.* mailles_10.*
+
+            cd ../../
+
+            # Creation de la table atlas.t_mailles_territoire avec la taille de maille passée en parametre ($taillemaille). Pour cela j'intersecte toutes les mailles avec mon territoire
+            sudo -n -u postgres -s psql -d $db_name -c "CREATE TABLE atlas.t_mailles_territoire as
+                                                        SELECT m.geom AS the_geom, ST_AsGeoJSON(st_transform(m.geom, 4326)) as geojson_maille
+                                                        FROM atlas.t_mailles_"$taillemaille" m, atlas.t_layer_territoire t
+                                                        WHERE ST_Intersects(m.geom, t.the_geom);
+                                                        CREATE INDEX index_gist_t_mailles_territoire
+                                                        ON atlas.t_mailles_territoire
+                                                        USING gist (the_geom);
+                                                        ALTER TABLE atlas.t_mailles_territoire
+                                                        ADD COLUMN id_maille serial;
+                                                        ALTER TABLE atlas.t_mailles_territoire
+                                                        ADD PRIMARY KEY (id_maille);"  &>> log/install_db.log
+        # Sinon j'utilise un SHP des mailles fournies par l'utilisateur
+        else
+            ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 custom_mailles_3857.shp $chemin_custom_maille
+            sudo -n -u postgres -s shp2pgsql -W "LATIN1" -s 3857 -D -I custom_mailles_3857.shp atlas.t_mailles_custom | sudo -n -u postgres -s psql -d $db_name  &>> log/install_db.log
+
+            sudo -n -u postgres -s psql -d $db_name -c "CREATE TABLE atlas.t_mailles_territoire as
+                                                SELECT m.geom AS the_geom, ST_AsGeoJSON(st_transform(m.geom, 4326)) as geojson_maille
+                                                FROM atlas.t_mailles_custom m, atlas.t_layer_territoire t
+                                                WHERE ST_Intersects(m.geom, t.the_geom);
+                                                CREATE INDEX index_gist_t_mailles_custom
+                                                ON atlas.t_mailles_territoire
+                                                USING gist (the_geom);
+                                                ALTER TABLE atlas.t_mailles_territoire
+                                                ADD COLUMN id_maille serial;
+                                                ALTER TABLE atlas.t_mailles_territoire
+                                                ADD PRIMARY KEY (id_maille);"  &>> log/install_db.log
+        fi
+        sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_mailles_territoire OWNER TO "$owner_atlas";"
+    fi
+
 
     # Conversion des limites du territoire en json
     rm  -f ./static/custom/territoire.json
-    ogr2ogr -f "GeoJSON" -t_srs "EPSG:4326" ./static/custom/territoire.json $limit_shp
+    ogr2ogr -f "GeoJSON" -t_srs "EPSG:4326" -s_srs "EPSG:3857" ./static/custom/territoire.json \
+        PG:"host=$db_host user=$owner_atlas dbname=$db_name port=$db_port password=$owner_atlas_pass" "atlas.t_layer_territoire"
 
-    # Import du shape des communes ($communes_shp) dans la BDD (si parametre import_commune_shp = TRUE) / atlas.l_communes
-    if $import_commune_shp
+
+    # Si j'installe le schéma taxonomie de TaxHub dans la BDD de GeoNature-atlas ($install_taxonomie = True),
+    #  alors je récupère les fichiers dans le dépôt de TaxHub et les éxécute
+    if $install_taxonomie
 	then
-        ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 ./data/ref/communes_3857.shp $communes_shp
-        sudo -n -u postgres -s shp2pgsql -W "LATIN1" -s 3857 -D -I ./data/ref/communes_3857.shp atlas.l_communes | sudo -n -u postgres -s psql -d $db_name  &>> log/install_db.log
-        sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes RENAME COLUMN "$colonne_nom_commune" TO commune_maj;"  &>> log/install_db.log
-        sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes RENAME COLUMN "$colonne_insee" TO insee;"  &>> log/install_db.log
-        sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes RENAME COLUMN geom TO the_geom;"  &>> log/install_db.log
-        sudo -n -u postgres -s psql -d $db_name -c "CREATE INDEX index_gist_t_layers_communes ON atlas.l_communes USING gist (the_geom);"  &>> log/install_db.log
-        sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes OWNER TO "$owner_atlas";"
-        rm ./data/ref/communes_3857.*
+
+        wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/inpn/data_inpn_taxhub.sql -P /tmp/taxhub
+
+        array=( TAXREF_INPN_v11.zip ESPECES_REGLEMENTEES_v11.zip LR_FRANCE_20160000.zip )
+        for i in "${array[@]}"
+        do
+        if [ ! -f '/tmp/taxhub/'$i ]
+        then
+            wget http://geonature.fr/data/inpn/taxonomie/$i -P /tmp/taxhub
+        else
+            echo $i exists
+        fi
+        unzip /tmp/taxhub/$i -d /tmp/taxhub
+        done
+
+        echo "Getting 'taxonomie' schema creation scripts..."
+        wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/taxhubdb.sql -P /tmp/taxhub
+        wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/taxhubdata.sql -P /tmp/taxhub
+        wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/taxhubdata_taxons_example.sql -P /tmp/taxhub
+        wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/taxhubdata_atlas.sql -P /tmp/taxhub
+        wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/materialized_views.sql -P /tmp/taxhub
+
+        echo "Creating 'taxonomie' schema..."
+        echo "" &>> log/install_db.log
+        echo "" &>> log/install_db.log
+        echo "--------------------" &>> log/install_db.log
+        echo "Creating 'taxonomie' schema" &>> log/install_db.log
+        echo "--------------------" &>> log/install_db.log
+        echo "" &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/taxhub/taxhubdb.sql  &>> log/install_db.log
+
+        echo "Inserting INPN taxonomic data... (This may take a few minutes)"
+        echo "" &>> log/install_db.log
+        echo "" &>> log/install_db.log
+        echo "--------------------" &>> log/install_db.log
+        echo "Inserting INPN taxonomic data" &>> log/install_db.log
+        echo "--------------------" &>> log/install_db.log
+        echo "" &>> log/install_db.log
+        sudo -n -u postgres -s psql -d $db_name -f /tmp/taxhub/data_inpn_taxhub.sql &>> log/install_db.log
+
+        echo "Creating dictionaries data for taxonomic schema..."
+        echo "" &>> log/install_db.log
+        echo "" &>> log/install_db.log
+        echo "--------------------" &>> log/install_db.log
+        echo "Creating dictionaries data for taxonomic schema" &>> log/install_db.log
+        echo "--------------------" &>> log/install_db.log
+        echo "" &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/taxhub/taxhubdata.sql  &>> log/install_db.log
+
+        echo "Inserting sample dataset of taxons for taxonomic schema..."
+        echo "" &>> log/install_db.log
+        echo "" &>> log/install_db.log
+        echo "--------------------" &>> log/install_db.log
+        echo "Inserting sample dataset of taxons for taxonomic schema" &>> log/install_db.log
+        echo "--------------------" &>> log/install_db.log
+        echo "" &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/taxhub/taxhubdata_taxons_example.sql  &>> log/install_db.log
+
+        echo "--------------------" &>> log/install_db.log
+        echo "Inserting sample dataset  - atlas attributes" &>> log/install_db.log
+        echo "--------------------" &>> log/install_db.log
+        echo "" &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/taxhub/taxhubdata_atlas.sql  &>> log/install_db.log
+
+        echo "Creating a view that represent the taxonomic hierarchy..."
+        echo "" &>> log/install_db.log
+        echo "" &>> log/install_db.log
+        echo "--------------------" &>> log/install_db.log
+        echo "Creating a view that represent the taxonomic hierarchy" &>> log/install_db.log
+        echo "--------------------" &>> log/install_db.log
+        echo "" &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/taxhub/materialized_views.sql  &>> log/install_db.log
+    elif $geonature_source
+    then
+        # Creation des tables filles en FWD
+        echo "Création de la connexion a GeoNature pour la taxonomie"
+		sudo cp data/gn2/atlas_ref_taxonomie.sql /tmp/atlas_ref_taxonomie.sql
+        sudo sed -i "s/myuser;$/$owner_atlas;/" /tmp/atlas_ref_taxonomie.sql
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas_ref_taxonomie.sql  &>> log/install_db.log
     fi
+
 
     echo "Création de la structure de la BDD..."
     # Si j'utilise GeoNature ($geonature_source = True), alors je créé les tables filles en FDW connectées à la BDD de GeoNature
     if $geonature_source
 	then
-        # Creation des tables filles en FWD
-        echo "Création de la connexion a GeoNature"
-		sudo cp data/atlas_geonature.sql /tmp/atlas_geonature.sql
-        sudo sed -i "s/myuser;$/$owner_atlas;/" /tmp/atlas_geonature.sql
-        sudo -n -u postgres -s psql -d $db_name -f /tmp/atlas_geonature.sql  &>> log/install_db.log
+        if test $geonature_version -eq 1
+        then
+            # Creation des tables filles en FWD
+            echo "Création de la connexion a GeoNature"
+            sudo cp data/atlas_geonature.sql /tmp/atlas_geonature.sql
+            sudo sed -i "s/myuser;$/$owner_atlas;/" /tmp/atlas_geonature.sql
+            export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas_geonature.sql  &>> log/install_db.log
+        elif test $geonature_version -eq 2
+        then
+            echo "Création de la connexion a GeoNature"
+            sudo cp data/gn2/atlas_synthese.sql /tmp/atlas_synthese.sql
+            sudo sed -i "s/myuser;$/$owner_atlas;/" /tmp/atlas_synthese.sql
+            export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas_synthese.sql  &>> log/install_db.log
+        else
+            echo "Version de geonature $geonature_version non supportée"
+        fi
     # Sinon je créé une table synthese.syntheseff avec 2 observations exemple
 	else
 		echo "Création de la table exemple syntheseff"
@@ -130,47 +289,6 @@ then
         sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE synthese.syntheseff OWNER TO "$owner_atlas";"
 	fi
 
-    # Si j'installe le schéma taxonomie de TaxHub dans la BDD de GeoNature-atlas ($install_taxonomie = True), alors je récupère les fichiers dans le dépôt de TaxHub et les éxécute
-    if $install_taxonomie
-	then
-        echo "Création et import du schema taxonomie"
-		cd data
-		mkdir taxonomie
-		cd taxonomie
-        wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/taxhubdb.sql
-        #sudo -n -u postgres -s psql -d $db_name -f taxhubdb.sql  &>> ../../log/install_db.log
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f  taxhubdb.sql  &>> ../../log/install_db.log
-
-        wget http://geonature.fr/data/inpn/taxonomie/TAXREF_INPN_v9.0.zip
-        unzip TAXREF_INPN_v9.0.zip -d /tmp
-	    wget http://geonature.fr/data/inpn/taxonomie/ESPECES_REGLEMENTEES_20161103.zip
-	    unzip ESPECES_REGLEMENTEES_20161103.zip -d /tmp
-        wget  http://geonature.fr/data/inpn/taxonomie/LR_FRANCE_20160000.zip
-        unzip LR_FRANCE_20160000.zip -d /tmp
-
-        wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/inpn/data_inpn_v9_taxhub.sql
-        # export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f  data_inpn_v9_taxhub.sql &>> ../../log/install_db.log
-        sudo -n -u postgres -s psql -d $db_name  -f data_inpn_v9_taxhub.sql &>> ../../log/install_db.log
-
-
-        wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/materialized_views.sql
-        #sudo -n -u postgres -s psql -d $db_name -f vm_hierarchie_taxo.sql  &>> ../../log/install_db.log
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f  materialized_views.sql  &>> ../../log/install_db.log
-
-
-        wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/taxhubdata.sql
-        #sudo -n -u postgres -s psql -d $db_name -f taxhubdata.sql  &>> ../../log/install_db.log
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f  taxhubdata.sql  &>> ../../log/install_db.log
-
-
-        rm /tmp/*.txt
-        rm /tmp/*.csv
-        rm /tmp/*.sql
-        cd ../..
-		rm -R data/taxonomie
-
-    fi
-
     # Creation des Vues Matérialisées (et remplacement éventuel des valeurs en dur par les paramètres)
     echo "Création des vues materialisées"
     sudo cp data/atlas.sql /tmp/atlas.sql
@@ -193,61 +311,6 @@ then
         sudo -n -u postgres -s psql -d $db_source_name -f /tmp/grant_geonature.sql  &>> log/install_db.log
     fi
 
-    # Mise en place des mailles
-    echo "Découpage des mailles et creation de la table des mailles"
-
-    cd data/ref
-    rm -f L93*.dbf L93*.prj L93*.sbn L93*.sbx L93*.shp L93*.shx
-
-    # Si je suis en métropole (metropole=true), alors j'utilise les mailles fournies par l'INPN
-    if $metropole
-	then
-        # Je dézippe mailles fournies par l'INPN aux 3 échelles
-        unzip L93_1K.zip
-        unzip L93_5K.zip
-        unzip L93_10K.zip
-        # Je les reprojete les SHP en 3857 et les renomme
-        ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 ./mailles_1.shp L93_1x1.shp
-        ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 ./mailles_5.shp L93_5K.shp
-        ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 ./mailles_10.shp L93_10K.shp
-        # J'importe dans la BDD le SHP des mailles à l'échelle définie en parametre ($taillemaille)
-        sudo -n -u postgres -s shp2pgsql -W "LATIN1" -s 3857 -D -I mailles_$taillemaille.shp atlas.t_mailles_$taillemaille | sudo -n -u postgres -s psql -d $db_name  &>> ../../log/install_db.log
-        sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_mailles_"$taillemaille" OWNER TO "$owner_atlas";"
-        rm mailles_1.* mailles_5.* mailles_10.*
-
-        cd ../../
-
-        # Creation de la table atlas.t_mailles_territoire avec la taille de maille passée en parametre ($taillemaille). Pour cela j'intersecte toutes les mailles avec mon territoire
-        sudo -n -u postgres -s psql -d $db_name -c "CREATE TABLE atlas.t_mailles_territoire as
-                                                    SELECT m.geom AS the_geom, ST_AsGeoJSON(st_transform(m.geom, 4326)) as geojson_maille
-                                                    FROM atlas.t_mailles_"$taillemaille" m, atlas.t_layer_territoire t
-                                                    WHERE ST_Intersects(m.geom, t.the_geom);
-                                                    CREATE INDEX index_gist_t_mailles_territoire
-                                                    ON atlas.t_mailles_territoire
-                                                    USING gist (the_geom);
-                                                    ALTER TABLE atlas.t_mailles_territoire
-                                                    ADD COLUMN id_maille serial;
-                                                    ALTER TABLE atlas.t_mailles_territoire
-                                                    ADD PRIMARY KEY (id_maille);"  &>> log/install_db.log
-    # Sinon j'utilise un SHP des mailles fournies par l'utilisateur
-    else
-        ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 custom_mailles_3857.shp $chemin_custom_maille
-        sudo -n -u postgres -s shp2pgsql -W "LATIN1" -s 3857 -D -I custom_mailles_3857.shp atlas.t_mailles_custom | sudo -n -u postgres -s psql -d $db_name  &>> log/install_db.log
-
-        sudo -n -u postgres -s psql -d $db_name -c "CREATE TABLE atlas.t_mailles_territoire as
-                                            SELECT m.geom AS the_geom, ST_AsGeoJSON(st_transform(m.geom, 4326)) as geojson_maille
-                                            FROM atlas.t_mailles_custom m, atlas.t_layer_territoire t
-                                            WHERE ST_Intersects(m.geom, t.the_geom);
-                                            CREATE INDEX index_gist_t_mailles_custom
-                                            ON atlas.t_mailles_territoire
-                                            USING gist (the_geom);
-                                            ALTER TABLE atlas.t_mailles_territoire
-                                            ADD COLUMN id_maille serial;
-                                            ALTER TABLE atlas.t_mailles_territoire
-                                            ADD PRIMARY KEY (id_maille);"  &>> log/install_db.log
-    fi
-    sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_mailles_territoire OWNER TO "$owner_atlas";"
-
     echo "Creation de la VM des observations de chaque taxon par mailles..."
     # Création de la vue matérialisée vm_mailles_observations (nombre d'observations par maille et par taxon)
     sudo -n -u postgres -s psql -d $db_name -f data/observations_mailles.sql  &>> log/install_db.log
@@ -259,7 +322,7 @@ then
     sudo sed -i "s/my_reader_user;$/$user_pg;/" /tmp/grant.sql
     sudo -n -u postgres -s psql -d $db_name -f /tmp/grant.sql &>> log/install_db.log
 
-    # Affectation de droits en lecture sur les VM à l'utilisateur de l'application ($user_pg)
+    # Clean file
     cd data/ref
     rm -f L*.shp L*.dbf L*.prj L*.sbn L*.sbx L*.shx output_clip.*
     cd ../..
