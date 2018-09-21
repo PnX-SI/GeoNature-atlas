@@ -80,8 +80,8 @@ atlas_source_pass=monpassachanger
 use_ref_geo_gn2=true
 
 ########### Si ref_geo = true ############
-type_maille="M1"
-type_territoire="PEC"
+type_maille="'M1'"
+type_territoire="'PEC'"
 
 
 
