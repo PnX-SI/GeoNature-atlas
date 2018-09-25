@@ -428,3 +428,23 @@ BEGIN
     RETURN 1;
 END
 $$ LANGUAGE plpgsql;
+
+-- Rafraichissement des vues contenant les données de l'atlas
+CREATE OR REPLACE FUNCTION atlas.refresh_materialized_view_data()
+RETURNS INT AS $$
+BEGIN
+      
+  REFRESH MATERIALIZED VIEW atlas.vm_observations;
+  REFRESH MATERIALIZED VIEW atlas.vm_observations_mailles;
+  REFRESH MATERIALIZED VIEW atlas.vm_mois;
+
+  REFRESH MATERIALIZED VIEW atlas.vm_altitudes;
+
+  REFRESH MATERIALIZED VIEW atlas.vm_taxons;
+  REFRESH MATERIALIZED VIEW atlas.vm_cor_taxon_attribut;
+  REFRESH MATERIALIZED VIEW atlas.vm_search_taxon;
+  REFRESH MATERIALIZED VIEW atlas.vm_medias;
+  REFRESH MATERIALIZED VIEW atlas.vm_taxons_plus_observes;
+
+END
+$$ LANGUAGE plpgsql;

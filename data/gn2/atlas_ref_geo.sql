@@ -112,3 +112,19 @@ c.the_geom,
 st_asgeojson(st_transform(c.the_geom, 4326)) as commune_geojson
 FROM atlas.l_communes c
 JOIN atlas.t_layer_territoire t ON st_intersects(t.the_geom, c.the_geom);
+
+
+
+
+-- Rafraichissement des vues contenant les données de l'atlas
+CREATE OR REPLACE FUNCTION atlas.refresh_materialized_view_ref_geo()
+RETURNS VOID AS $$
+BEGIN
+      
+  REFRESH MATERIALIZED VIEW atlas.t_layer_territoire;
+  REFRESH MATERIALIZED VIEW atlas.t_mailles_territoire;
+  REFRESH MATERIALIZED VIEW atlas.l_communes;
+  REFRESH MATERIALIZED VIEW atlas.vm_communes;
+
+END
+$$ LANGUAGE plpgsql;
