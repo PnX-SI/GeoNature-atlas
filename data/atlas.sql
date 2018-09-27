@@ -431,7 +431,7 @@ $$ LANGUAGE plpgsql;
 
 -- Rafraichissement des vues contenant les données de l'atlas
 CREATE OR REPLACE FUNCTION atlas.refresh_materialized_view_data()
-RETURNS INT AS $$
+RETURNS VOID AS $$
 BEGIN
       
   REFRESH MATERIALIZED VIEW atlas.vm_observations;
