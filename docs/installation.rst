@@ -187,13 +187,13 @@ Pour rendre l'application consultable comme un sous répertoire du serveur  (htt
 Copiez/collez-y ces lignes en renseignant le bon port : 
 ::
 
-    # Configuration Geonature-atlas
+    # Configuration GeoNature-atlas
     RewriteEngine  on
     <Location /atlas>
         ProxyPass  http://127.0.0.1:8080
         ProxyPassReverse  http://127.0.0.1:8080
     </Location>
-    #FIN Configuration Geonature-atlas
+    #FIN Configuration GeoNature-atlas
     
 Si l'atlas doit se trouver à la racine du serveur copiez/coller ces lignes (NB les '/' à la fin des ProxyPass et ProxPassReverse)
 ::
