@@ -13,6 +13,7 @@ main/configuration/settings.ini
 robots.txt
 .htaccess
 venv/*
+venv3/*
 
 data/ref/communes.shp
 data/ref/communes.shx

@@ -2,8 +2,8 @@
 # -*- coding:utf-8 -*-
 
 from flask import render_template, redirect, abort
-from configuration import config
-from modeles.repositories import (
+from .configuration import config
+from .modeles.repositories import (
     vmTaxonsRepository, vmObservationsRepository, vmAltitudesRepository,
     vmMoisRepository, vmTaxrefRepository,
     vmCommunesRepository, vmObservationsMaillesRepository, vmMedias,

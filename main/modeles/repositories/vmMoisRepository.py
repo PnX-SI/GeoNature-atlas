@@ -16,7 +16,7 @@ def getMonthlyObservationsChilds(connection, cd_ref):
             select * from atlas.find_all_taxons_childs(:thiscdref)
         )
         OR mois.cd_ref = :thiscdref
-    """.encode('UTF-8')
+    """
 
     mesMois = connection.execute(text(sql), thiscdref=cd_ref)
     for inter in mesMois:

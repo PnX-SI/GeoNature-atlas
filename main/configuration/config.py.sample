@@ -17,11 +17,9 @@ database_connection = "postgresql://user:monpassachanger@IPADRESSE:5432/database
 
 # Nom de la structure
 STRUCTURE = "Nom de la structure"
-STRUCTURE = unicode(STRUCTURE, 'utf-8') # Fonction permettant d'encoder ce nom en utf-8, à ne pas modifier
 
 # Nom de l'application
 NOM_APPLICATION = "Nom de l application"
-NOM_APPLICATION = unicode(NOM_APPLICATION, 'utf-8') # Fonction permettant d'encoder ce nom en utf-8, à ne pas modifier
 
 # URL de l'application depuis la racine du domaine
 # ex "/atlas" pour une URL: http://mon-domaine/atlas OU "" si l'application est accessible à la racine du domaine
@@ -73,7 +71,7 @@ LIMIT_CLUSTER_POINT = 1000
 # Carte de la page d'accueil: observations des 'x' derniers jours. Bien mettre en anglais et non accordé
 NB_DAY_LAST_OBS = '7 day'
 # Texte à afficher pour décrire la cartographie des 'dernières observations'
-TEXT_LAST_OBS = u'Les observations des agents ces 7 derniers jours |'
+TEXT_LAST_OBS = 'Les observations des agents ces 7 derniers jours |'
 
 # Carte de la fiche commune: nombre des 'x' dernières observations affichées
 NB_LAST_OBS=100
@@ -110,9 +108,6 @@ COLONNES_RANG_STAT = 3
 RANG_STAT = [{'phylum': ["Arthropoda", "Mollusca"]}, {'phylum': ["Chordata"]}, {'regne': ["Plantae"]}]
 RANG_STAT_FR = ['Faune invertébrée', 'Faune vertébrée', 'Flore']
 
-# Fonction à ne pas modifier
-for i in range(len(RANG_STAT_FR)):
-    RANG_STAT_FR[i]=unicode( RANG_STAT_FR[i], 'utf-8')
 
 ############################
 ####### FICHE ESPECE #######
@@ -173,7 +168,7 @@ PATRIMONIALITE = {
     'config': {
         'oui': {
             'icon': 'custom/images/logo_patrimonial.png',
-            'text': u"Ce taxon est patrimonial"
+            'text': "Ce taxon est patrimonial"
         }
     }
 }
@@ -185,5 +180,5 @@ PATRIMONIALITE = {
 # Permet de lister les pages statiques souhaitées et de les afficher dynamiquement dans le menu sidebar
 # Les pictos se limitent au Glyphicon proposés par Bootstrap (https://getbootstrap.com/docs/3.3/components/)
 STATIC_PAGES = {
-    'presentation': {'title': u"Présentation de l'atlas", 'picto': 'glyphicon-question-sign', 'order': 0, 'template': 'static/custom/templates/presentation.html'}
+    'presentation': {'title': "Présentation de l'atlas", 'picto': 'glyphicon-question-sign', 'order': 0, 'template': 'static/custom/templates/presentation.html'}
 }

@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 from werkzeug.serving import run_simple
 
-from main.configuration import config
+from .main.configuration import config
 from sqlalchemy import create_engine, MetaData, Table
 
 from flask_compress import Compress
@@ -44,11 +44,11 @@ def create_app():
 
     app.debug = config.modeDebug
 
-    from main.atlasRoutes import main as main_blueprint
+    from .main.atlasRoutes import main as main_blueprint
 
     app.register_blueprint(main_blueprint)
 
-    from main.atlasAPI import api
+    from .main.atlasAPI import api
     app.register_blueprint(api, url_prefix='/api')
 
     compress.init_app(app)

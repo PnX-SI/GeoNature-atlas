@@ -4,11 +4,11 @@
 from flask import json, Blueprint
 from werkzeug.wrappers import Response
 from . import utils
-from modeles.repositories import (
+from .modeles.repositories import (
     vmSearchTaxonRepository, vmObservationsRepository,
     vmObservationsMaillesRepository, vmMedias
 )
-from configuration import config
+from .configuration import config
 
 api = Blueprint('api', __name__)
 

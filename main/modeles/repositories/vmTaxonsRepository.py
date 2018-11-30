@@ -61,7 +61,7 @@ def getTaxonsChildsList(connection, cd_ref):
         ON m.cd_ref = tax.cd_ref AND m.id_type={}
         WHERE tax.cd_ref IN (
             SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
-        ) """.format(str(config.ATTR_MAIN_PHOTO)).encode('UTF-8')
+        ) """.format(str(config.ATTR_MAIN_PHOTO))
     req = connection.execute(text(sql), thiscdref=cd_ref)
     taxonRankList = list()
     nbObsTotal = 0
@@ -72,7 +72,7 @@ def getTaxonsChildsList(connection, cd_ref):
             'nom_vern': r.nom_vern,
             'cd_ref': r.cd_ref,
             'last_obs': r.yearmax,
-            'group2_inpn': deleteAccent(r.group2_inpn),
+            'group2_inpn': utils.deleteAccent(r.group2_inpn),
             'patrimonial': r.patrimonial,
             'protection_stricte': r.protection_stricte,
             'path': utils.findPath(r),
@@ -131,7 +131,7 @@ def getTaxonsGroup(connection, groupe):
             'nom_vern': r.nom_vern,
             'cd_ref': r.cd_ref,
             'last_obs': r.yearmax,
-            'group2_inpn': deleteAccent(r.group2_inpn),
+            'group2_inpn': utils.deleteAccent(r.group2_inpn),
             'patrimonial': r.patrimonial,
             'protection_stricte': r.protection_stricte,
             'id_media': r.id_media,

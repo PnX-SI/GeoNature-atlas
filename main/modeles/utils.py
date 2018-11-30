@@ -26,7 +26,9 @@ def serializeQuery( data, columnDef):
 
 
 def deleteAccent(string):
-    return unicodedata.normalize('NFD', string).encode('ascii', 'ignore')
+    if string is None:
+        return None
+    return unicodedata.normalize('NFD', string).encode('ascii', 'ignore').decode('utf-8')
 
 def findPath(row):
         if row.chemin == None  and row.url == None:

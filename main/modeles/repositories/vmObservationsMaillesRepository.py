@@ -3,7 +3,7 @@
 
 from .. import utils
 from sqlalchemy.sql import text
-import ast
+import json
 
 
 def getObservationsMaillesChilds(connection, cd_ref):
@@ -27,7 +27,7 @@ def getObservationsMaillesChilds(connection, cd_ref):
             'nb_observations': 1,
             'annee': o.annee,
             'dateobs': str(o.dateobs),
-            'geojson_maille': ast.literal_eval(o.geojson_maille)
+            'geojson_maille': json.loads(o.geojson_maille)
         }
         tabObs.append(temp)
     return tabObs
@@ -68,7 +68,7 @@ def lastObservationsMailles(connection, mylimit, idPhoto):
             'dateobs': str(o.dateobs),
             'altitude_retenue': o.altitude_retenue,
             'taxon': taxon,
-            'geojson_maille': ast.literal_eval(o.geojson_maille),
+            'geojson_maille': json.loads(o.geojson_maille),
             'group2_inpn': utils.deleteAccent(o.group2_inpn),
             'pathImg': utils.findPath(o),
             'id_media': o.id_media
@@ -110,7 +110,7 @@ def lastObservationsCommuneMaille(connection, mylimit, insee):
         temp = {
             'cd_ref': o.cd_ref,
             'taxon': taxon,
-            'geojson_maille': ast.literal_eval(o.geojson_maille),
+            'geojson_maille': json.loads(o.geojson_maille),
             'id_maille': o.id_maille
         }
         obsList.append(temp)
@@ -140,7 +140,7 @@ def getObservationsTaxonCommuneMaille(connection, insee, cd_ref):
             'id_maille': o.id_maille,
             'nb_observations': 1,
             'annee': o.annee,
-            'geojson_maille': ast.literal_eval(o.geojson_maille)
+            'geojson_maille': json.loads(o.geojson_maille)
         }
         tabObs.append(temp)
 
