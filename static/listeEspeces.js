@@ -28,6 +28,8 @@ $(document).ready(function(){
         ,"fnDrawCallback": function( oSettings ) {
             //restore tooltips when page change
             $('[data-toggle="tooltip"]').tooltip(); 
+            // Chargement "lazy" des photos
+            $('.lazy').lazy();
         }        
     });
     $('.dataTables_filter input').attr("placeholder", "Rechercher dans la liste ").attr("class", "form-control").css("font-weight", "normal");
