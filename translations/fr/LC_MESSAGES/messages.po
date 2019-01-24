@@ -1,0 +1,418 @@
+# French translations for PROJECT.
+# Copyright (C) 2019 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2019-01-15 15:05+0100\n"
+"PO-Revision-Date: 2019-01-15 15:07+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+#: templates/index.html:49
+msgid "home.titre"
+msgstr "En quelque chiffres"
+
+#: templates/index.html:56
+msgid "home.obs"
+msgstr "Voir les dernières observations"
+
+#: templates/index.html:66
+msgid "home.gallery"
+msgstr "galerie photos"
+
+#: templates/index.html:66
+msgid "home.lastobs"
+msgstr "observations |"
+
+#: templates/index.html:66
+msgid "home.lastespece"
+msgstr " espèces "
+
+#: templates/index.html:66
+msgid "home.especes"
+msgstr "Espèces à découvrir"
+
+#: templates/index.html:66
+msgid "home.nbobs"
+msgstr "observations"
+
+#: templates/index.html:66
+msgid "home.fiche_espece"
+msgstr "Fiche espèce "
+
+#: templates/galeriePhotos.html:66
+msgid "gallery.groups"
+msgstr "Tous les groupes "
+
+#: templates/ficheRangtaxonomique.html:66
+msgid "tax.obs"
+msgstr " Espèces observées pour le taxon"
+
+#: templates/ficheEspece.html:66
+msgid "espece.fiche"
+msgstr " taxon(s) inférieur(s) agrégé(s) sur cette fiche "
+
+#: templates/ficheEspece.html:66
+msgid "tax.inf"
+msgstr "Taxon(s) agrégé(s) sur cette fiche  "
+
+#: templates/ficheEspece.html:66
+msgid "nom.verna"
+msgstr "Nom Vernaculaire " 
+
+#: templates/ficheEspece.html:66
+msgid "nom.scien"
+msgstr "Nom scientifique  "
+
+#: templates/ficheEspece.html:66
+msgid "home.nbObs"
+msgstr "Observations "
+
+#: templates/ficheEspece.html:66
+msgid "fiche.taxons"
+msgstr "Fiche "
+
+#: templates/ficheEspece.html:66
+msgid "description.espece"
+msgstr "Description "
+
+#: templates/ficheEspece.html:66
+msgid "plus.espece"
+msgstr "En savoir plus "
+
+#: templates/ficheEspece.html:66
+msgid "milieu.espece"
+msgstr "Milieu "
+
+#: templates/ficheEspece.html:66
+msgid "repartition.espece"
+msgstr "Répartition  "
+
+#: templates/ficheEspece.html:66
+msgid "synonymes.espece"
+msgstr "Synonymes "
+
+#: templates/ficheEspece.html:66
+msgid "obs.altitude"
+msgstr "Observations par classes d'altitudes"
+
+#: templates/ficheEspece.html:66
+msgid "obs.mensuelle"
+msgstr ">Observations mensuelles"
+
+#: templates/ficheCommune.html:66
+msgid "commune.description"
+msgstr "Commune de "
+
+#: templates/ficheCommune.html:66
+msgid "commune.lastobs"
+msgstr "dernières observations sur la commune de"
+
+
+#: static/custom/templates/footer.html:66
+msgid "footer.accueil"
+msgstr "Accueil "
+
+#: static/custom/templates/footer.html:66
+msgid "footer.concept"
+msgstr "Conception et crédits "
+
+#: static/custom/templates/footer.html:66
+msgid "footer.mention"
+msgstr "Mentions légales "
+
+#: static/custom/templates/footer.html:66
+msgid "footer.atlas"
+msgstr "Atlas de la faune et de la flore du "
+
+#: static/custom/templates/footer.html:66
+msgid "footer.year"
+msgstr " 2016 "
+
+#: static/custom/templates/footer.html:66
+msgid "footer.real"
+msgstr "Réalisé avec "
+
+#: static/custom/templates/footer.html:66
+msgid "footer.dvlp"
+msgstr "développé par le "
+
+#: static/custom/templates/introduction.html:66
+msgid "intro.presentation"
+msgstr "Bienvenue sur l'atlas de la faune et de la flore du"
+
+#: static/custom/templates/introduction.html:66
+msgid "intro.ressource"
+msgstr "Le Parc national des Ecrins met à votre disposition l'ensemble des espèces sauvages observées par ses agents depuis sa création en 1973. Chaque nouvelle observation alimente en temps réel les fiches de chaque espèce que vous consultez, dans une volonté de partage et d'enrichissement des connaissances sur la biodiversité alpine."
+
+#: static/custom/templates/introduction.html:66
+msgid "intro.atlas"
+msgstr "Cet atlas vous présente des observations reéalisées dans le cadre de différents protocoles scientifiques. Il ne s'agit pas d'un inventaire exhaustif ni d'une répartition complète des espèces sur le territoire."
+
+#: static/custom/templates/introduction.html:66
+msgid "intro.plus"
+msgstr "En savoir plus"
+
+#: static/custom/templates/presentation.html:66
+msgid "present.title"
+msgstr "Présentation de l'atlas"
+
+#: static/templates/tabTaxons.html:66
+msgid "taxon.groupe"
+msgstr "Groupe"
+
+#: static/templates/tabTaxons.html:66
+msgid "taxon.prot"
+msgstr "Protection"
+
+#: static/templates/tabTaxons.html:66
+msgid "taxon.nb_obs"
+msgstr "Nombre d'observation(s)"
+
+#: static/templates/tabTaxons.html:66
+msgid "taxon.last_obs"
+msgstr "Dernière observation"
+
+#: static/templates/tabTaxons.html:66
+msgid "taxon.obs"
+msgstr "Observations"
+
+#: static/templates/sideBar.html:66
+msgid "home.back"
+msgstr "Retour à l'accueil"
+
+#: static/templates/navbar.html:66
+msgid "search.commune"
+msgstr "Rechercher une commune"
+
+#: static/templates/index.html:66
+msgid "home.last_obs"
+msgstr "Les observations des agents ces 7 derniers jours |"
+
+#: static/templates/index.html:66
+msgid "home.moment"
+msgstr "A voir en ce moment"
+
+#: static/templates/galeriePhotos.html:66
+msgid "gallery.title"
+msgstr "Galerie photo"
+
+#: static/templates/galeriePhotos.html:66
+msgid "gallery.sorting_groups"
+msgstr "Afficher les photos de tous les groupes"
+
+#: static/templates/galeriePhotos.html:66
+msgid "gallery.sorting_obs"
+msgstr "Trier les photos par nombre d'observations"
+
+#: static/templates/index.html:66
+msgid "search.species"
+msgstr "Rechercher une espèce"
+
+#: static/templates/ficheEspece.html:66
+msgid "tax.protection"
+msgstr "Ce taxon bénéficie d'un statut de protection"
+
+#: static/templates/ficheEspece.html:66
+msgid "tax.inpn"
+msgstr "Consultez la fiche espèce sur l'INPN"
+
+#: static/templates/ficheEspece.html:66
+msgid "tax.vids"
+msgstr "Afficher plus de vidéos"
+
+#: static/templates/ficheEspece.html:66
+msgid "tax.record"
+msgstr "Afficher plus d'enregistrements"
+
+#: static/templates/tabTaxons.html:66
+msgid "tax.municipality"
+msgstr "Afficher les observations sur la commune"
+
+#: static/templates/tabTaxons.html:66
+msgid "tax.sheets"
+msgstr "Consulter la fiche espèce"
+
+#: static/templates/index.html:66
+msgid "moment.more"
+msgstr "Espèces les plus observées dans les 15 jours précédents et suivants aujourd'hui, toutes années confondues"
+
+#: static/templates/tabTaxons.html:66
+msgid "404.title"
+msgstr "Page non trouvée !"
+
+#: static/templates/tabTaxons.html:66
+msgid "404.error"
+msgstr "La page que vous avez demandé n'a pas pu être trouvée."
+
+#: static/templates/tabTaxons.html:66
+msgid "404.not_found"
+msgstr "Nous n'avons pas trouvé la page que vous demandiez."
+
+#: static/templates/tabTaxons.html:66
+msgid "404.link"
+msgstr "Vous pouvez toujours vérifier l’orthographe du lien."
+
+#: static/templates/tabTaxons.html:66
+msgid "404.go_home"
+msgstr "N'hésitez pas à revenir en arrière au à revenir à l'accueil."
+
+#: venv/lib/python2.7/site-packages/flask_script/__init__.py:43
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1615
+msgid "show this help message and exit"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:313
+msgid "usage: "
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:821
+msgid ".__call__() not defined"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1105
+#, python-format
+msgid "unknown parser %r (choices: %s)"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1146
+#, python-format
+msgid "argument \"-\" with mode %r"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1349
+#, python-format
+msgid "cannot merge actions - two groups are named %r"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1387
+msgid "'required' is an invalid argument for positionals"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1407
+#, python-format
+msgid "invalid option string %r: must start with a character %r"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1428
+#, python-format
+msgid "dest= is required for options like %r"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1445
+#, python-format
+msgid "invalid conflict_resolution value: %r"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1463
+#, python-format
+msgid "conflicting option string(s): %s"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1526
+msgid "mutually exclusive arguments must be optional"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1596
+msgid "positional arguments"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1597
+msgid "optional arguments"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1621
+msgid "show program's version number and exit"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1653
+msgid "cannot have multiple subparser arguments"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1705
+#, python-format
+msgid "unrecognized arguments: %s"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1802
+#, python-format
+msgid "not allowed with argument %s"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1848
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1862
+#, python-format
+msgid "ignored explicit argument %r"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1952
+msgid "too few arguments"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1959
+#, python-format
+msgid "argument %s is required"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1973
+#, python-format
+msgid "one of the arguments %s is required"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2019
+msgid "expected one argument"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2020
+msgid "expected at most one argument"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2021
+msgid "expected at least one argument"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2023
+#, python-format
+msgid "expected %s argument(s)"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2080
+#, python-format
+msgid "ambiguous option: %s could match %s"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2142
+#, python-format
+msgid "unexpected option string: %s"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2243
+#, python-format
+msgid "%r is not callable"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2259
+#, python-format
+msgid "invalid %s value: %r"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2269
+#, python-format
+msgid "invalid choice: %r (choose from %s)"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2362
+#, python-format
+msgid "%s: error: %s\n"
+msgstr ""
+

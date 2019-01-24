@@ -1,7 +1,11 @@
 import os
 import sys
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from flask_babel import Babel, gettext, ngettext
+from flask_babel import Babel
+from main.configuration.config import LANGUAGES
+
 
 from werkzeug.serving import run_simple
 
@@ -41,6 +45,20 @@ class ReverseProxied(object):
 def create_app():
     # renvoie une instance de app l appli Flask
     app = Flask(__name__, template_folder=APP_DIR)
+    app.config['BABEL_DEFAULT_LOCALE'] = './translations/'+config.BABEL_DEFAULT_LOCALE+'/LC_MESSAGES/messages.po'
+
+    babel = Babel(app)
+
+    #Recuperation de la langue du navigateur
+    @babel.localeselector
+    def get_locale():
+        return request.accept_languages.best_match(LANGUAGES.keys())
+
+    @app.errorhandler(404)
+    def page_not_found(e):
+        # redirection vers la page d'erreur
+        return render_template('templates/404.html'), 404
+
 
     app.debug = config.modeDebug
 
@@ -49,6 +67,7 @@ def create_app():
     app.register_blueprint(main_blueprint)
 
     from main.atlasAPI import api
+
     app.register_blueprint(api, url_prefix='/api')
 
     compress.init_app(app)
@@ -57,12 +76,13 @@ def create_app():
 
 
     return app
-
+    
 
 app = create_app()
 
-
 if __name__ == '__main__':
-    from flask_script import Manager
-    # Manager(app).run()
-    run_simple('localhost', 8080, app, use_reloader=True)
+    #from flask_script import Manager
+    #Manager(app).run()
+    #run_simple('localhost', 8080, app, use_reloader=True)
+    app.run(port=8080, debug=True, threaded = True)
+    

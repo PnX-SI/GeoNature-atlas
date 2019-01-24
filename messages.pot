@@ -1,0 +1,608 @@
+# Translations template for PROJECT.
+# Copyright (C) 2019 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2019-01-16 11:42+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+#: static/custom/templates/credits.html:8
+msgid "credits.right"
+msgstr ""
+
+#: static/custom/templates/credits.html:11
+msgid "credits.opensource"
+msgstr ""
+
+#: static/custom/templates/credits.html:13
+msgid "credits.description"
+msgstr ""
+
+#: static/custom/templates/credits.html:15
+msgid "credits.redaction"
+msgstr ""
+
+#: static/custom/templates/credits.html:19
+msgid "credits.relecture"
+msgstr ""
+
+#: static/custom/templates/credits.html:23
+msgid "credits.biblio"
+msgstr ""
+
+#: static/custom/templates/credits.html:31
+msgid "credits.photos"
+msgstr ""
+
+#: static/custom/templates/credits.html:33
+msgid "credits.pne"
+msgstr ""
+
+#: static/custom/templates/footer.html:3
+msgid "footer.accueil"
+msgstr ""
+
+#: static/custom/templates/footer.html:5
+msgid "footer.concept"
+msgstr ""
+
+#: static/custom/templates/footer.html:6
+msgid "footer.mention"
+msgstr ""
+
+#: static/custom/templates/footer.html:11
+msgid "footer.atlas"
+msgstr ""
+
+#: static/custom/templates/footer.html:11
+msgid "footer.year"
+msgstr ""
+
+#: static/custom/templates/footer.html:13
+msgid "footer.real"
+msgstr ""
+
+#: static/custom/templates/footer.html:13
+msgid "footer.dvlp"
+msgstr ""
+
+#: static/custom/templates/introduction.html:6
+msgid "intro.presentation"
+msgstr ""
+
+#: static/custom/templates/introduction.html:9
+msgid "intro.ressource"
+msgstr ""
+
+#: static/custom/templates/introduction.html:12
+msgid "intro.atlas"
+msgstr ""
+
+#: static/custom/templates/introduction.html:15
+msgid "intro.plus"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:3
+msgid "mention.titre"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:8
+msgid "mention.presentation"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:11
+msgid "mention.adresse"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:12
+msgid "mention.tel"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:14
+msgid "mention.publication"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:16
+msgid "mention.direction"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:17
+msgid "mention.obj"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:19
+msgid "mention.site"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:21
+msgid "mention.contenu"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:22
+msgid "mention.coordination"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:25
+msgid "mention.conception"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:27
+msgid "mention.info"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:29
+msgid "mention.societe"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:30
+msgid "mention.adr_societe"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:32
+msgid "mention.protection"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:34
+msgid "mention.donnees_perso"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:35
+msgid "mention.adr_elec"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:36
+msgid "mention.loi_info1"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:37
+msgid "mention.loi_info2"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:38
+msgid "mention.loi_info3"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:40
+msgid "mention.liens"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:42
+msgid "mention.lien_pne"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:45
+msgid "mention.lien_tiers"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:47
+msgid "mention.diffusion"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:49
+msgid "mention.code_relations"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:52
+msgid "mention.modalite1"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:56
+msgid "mention.article1_presentation"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:60
+msgid "mention.article2_presentation"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:64
+msgid "mention.article3_presentation"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:68
+msgid "mention.article4_presentation"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:71
+msgid "mention.bdd"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:76
+msgid "mention.modalite2"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:79
+msgid "mention.cadre_juridique"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:82
+msgid "mention.article5"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:83
+msgid "mention.article5_presentation"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:86
+msgid "mention.article6"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:87
+msgid "mention.article6_presentation"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:90
+msgid "mention.environnement2"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:92
+msgid "mention.environnement3"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:98
+msgid "mention.article7_presentation"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:101
+msgid "mention.modalite3"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:105
+msgid "mention.article8_presentation1"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:107
+msgid "mention.article8_presentation2"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:111
+msgid "mention.article9_presentation"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:114
+msgid "mention.sanction"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:118
+msgid "mention.art1_presentation"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:120
+msgid "mention.art1_presentation1"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:122
+msgid "mention.art1_presentation2"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:124
+msgid "mention.art1_presentation3"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:126
+msgid "mention.art1_presentation4"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:128
+msgid "mention.art1_presentation5"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:130
+msgid "mention.art1_presentation6"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:132
+msgid "mention.dispo_legale"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:134
+msgid "mention.dispo_legale1"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:135
+msgid "mention.dispo_legale2"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:136
+msgid "mention.dispo_legale3"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:139
+msgid "mention.graph"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:142
+msgid "mention.responsibility"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:145
+msgid "mention.responsibility1"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:146
+msgid "mention.responsibility2"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:147
+msgid "mention.responsibility3"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:150
+msgid "mention.law"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:153
+msgid "mention.law1"
+msgstr ""
+
+#: static/custom/templates/mentions-legales.html:154
+msgid "mention.law2"
+msgstr ""
+
+#: templates/ficheCommune.html:49
+msgid "commune.description"
+msgstr ""
+
+#: templates/ficheCommune.html:70
+msgid "commune.lastobs"
+msgstr ""
+
+#: templates/ficheEspece.html:145
+msgid "espece.fiche"
+msgstr ""
+
+#: templates/ficheEspece.html:154
+msgid "tax.inf"
+msgstr ""
+
+#: templates/ficheEspece.html:160
+msgid "nom.verna"
+msgstr ""
+
+#: templates/ficheEspece.html:161
+msgid "nom.scien"
+msgstr ""
+
+#: templates/ficheEspece.html:168
+msgid "home.nbObs"
+msgstr ""
+
+#: templates/ficheEspece.html:169
+msgid "fiche.taxons"
+msgstr ""
+
+#: templates/ficheEspece.html:401
+msgid "info.espece"
+msgstr ""
+
+#: templates/ficheEspece.html:404
+msgid "description.espece"
+msgstr ""
+
+#: templates/ficheEspece.html:406
+msgid "plus.espece"
+msgstr ""
+
+#: templates/ficheEspece.html:408
+msgid "milieu.espece"
+msgstr ""
+
+#: templates/ficheEspece.html:409
+msgid "repartition.espece"
+msgstr ""
+
+#: templates/ficheEspece.html:410
+msgid "synonymes.espece"
+msgstr ""
+
+#: templates/ficheEspece.html:521
+msgid "obs.altitude"
+msgstr ""
+
+#: templates/ficheEspece.html:523
+msgid "obs.mensuelle"
+msgstr ""
+
+#: templates/ficheRangTaxonomique.html:43
+msgid "tax.obs"
+msgstr ""
+
+#: templates/galeriePhotos.html:35 templates/index.html:92
+msgid "home.gallery"
+msgstr ""
+
+#: templates/galeriePhotos.html:45
+msgid "gallery.groups"
+msgstr ""
+
+#: templates/index.html:49
+msgid "home.titre"
+msgstr ""
+
+#: templates/index.html:56
+msgid "home.obs"
+msgstr ""
+
+#: templates/index.html:66
+msgid "home.search.taxon"
+msgstr ""
+
+#: templates/index.html:116
+msgid "home.lastobs"
+msgstr ""
+
+#: templates/index.html:116
+msgid "home.lastespece"
+msgstr ""
+
+#: templates/index.html:118
+msgid "home.especes"
+msgstr ""
+
+#: templates/index.html:132
+msgid "home.nbobs"
+msgstr ""
+
+#: templates/index.html:138
+msgid "home.fiche_espece"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/flask_script/__init__.py:43
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1615
+msgid "show this help message and exit"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:313
+msgid "usage: "
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:821
+msgid ".__call__() not defined"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1105
+#, python-format
+msgid "unknown parser %r (choices: %s)"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1146
+#, python-format
+msgid "argument \"-\" with mode %r"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1349
+#, python-format
+msgid "cannot merge actions - two groups are named %r"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1387
+msgid "'required' is an invalid argument for positionals"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1407
+#, python-format
+msgid "invalid option string %r: must start with a character %r"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1428
+#, python-format
+msgid "dest= is required for options like %r"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1445
+#, python-format
+msgid "invalid conflict_resolution value: %r"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1463
+#, python-format
+msgid "conflicting option string(s): %s"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1526
+msgid "mutually exclusive arguments must be optional"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1596
+msgid "positional arguments"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1597
+msgid "optional arguments"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1621
+msgid "show program's version number and exit"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1653
+msgid "cannot have multiple subparser arguments"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1705
+#, python-format
+msgid "unrecognized arguments: %s"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1802
+#, python-format
+msgid "not allowed with argument %s"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1848
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1862
+#, python-format
+msgid "ignored explicit argument %r"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1952
+msgid "too few arguments"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1959
+#, python-format
+msgid "argument %s is required"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1973
+#, python-format
+msgid "one of the arguments %s is required"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2019
+msgid "expected one argument"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2020
+msgid "expected at most one argument"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2021
+msgid "expected at least one argument"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2023
+#, python-format
+msgid "expected %s argument(s)"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2080
+#, python-format
+msgid "ambiguous option: %s could match %s"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2142
+#, python-format
+msgid "unexpected option string: %s"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2243
+#, python-format
+msgid "%r is not callable"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2259
+#, python-format
+msgid "invalid %s value: %r"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2269
+#, python-format
+msgid "invalid choice: %r (choose from %s)"
+msgstr ""
+
+#: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:2362
+#, python-format
+msgid "%s: error: %s\n"
+msgstr ""
+

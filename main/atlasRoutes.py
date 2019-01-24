@@ -1,7 +1,11 @@
 
 # -*- coding:utf-8 -*-
 
-from flask import render_template, redirect, abort
+from flask import render_template, redirect, abort, request
+from flask_babel import gettext, ngettext
+
+from jinja2.exceptions import TemplateNotFound
+
 from configuration import config
 from modeles.repositories import (
     vmTaxonsRepository, vmObservationsRepository, vmAltitudesRepository,
@@ -23,7 +27,6 @@ base_configuration = {
     'STATIC_PAGES': config.STATIC_PAGES,
     'TAXHUB_URL': config.TAXHUB_URL if hasattr(config, 'TAXHUB_URL') else None
 }
-
 
 @main.route(
     '/espece/'+config.REMOTE_MEDIAS_PATH+'<image>',
@@ -69,7 +72,6 @@ def indexMedias(image):
 def index():
     session = utils.loadSession()
     connection = utils.engine.connect()
-
     if config.AFFICHAGE_MAILLE:
         observations = vmObservationsMaillesRepository.lastObservationsMailles(
             connection, config.NB_DAY_LAST_OBS, config.ATTR_MAIN_PHOTO
@@ -106,7 +108,6 @@ def index():
 
     connection.close()
     session.close()
-
     return render_template(
         'templates/index.html',
         observations=observations,
@@ -115,7 +116,8 @@ def index():
         stat=stat,
         customStat=customStat,
         customStatMedias=customStatMedias,
-        configuration=configuration
+        configuration=configuration,
+        
     )
 
 
@@ -305,7 +307,7 @@ def ficheGroupe(groupe):
 def photos():
     session = utils.loadSession()
     connection = utils.engine.connect()
-
+    local = request.accept_languages.best_match(config.LANGUAGES.keys())
     groups = vmTaxonsRepository.getINPNgroupPhotos(connection)
     communesSearch = vmCommunesRepository.getAllCommunes(session)
     configuration = base_configuration
@@ -316,21 +318,40 @@ def photos():
         'templates/galeriePhotos.html',
         communesSearch=communesSearch,
         groups=groups,
-        configuration=configuration
+        configuration=configuration,
+        local=local
     )
 
 
 @main.route('/<page>', methods=['GET', 'POST'])
 def get_staticpages(page):
     session = utils.loadSession()
+    #On récupère la langue du navigateur
+    local = request.accept_languages.best_match(config.LANGUAGES.keys())
     if (page not in config.STATIC_PAGES):
         abort(404)
     static_page = config.STATIC_PAGES[page]
     communesSearch = vmCommunesRepository.getAllCommunes(session)
     configuration = base_configuration
     session.close()
-    return render_template(
-        static_page['template'],
-        communesSearch=communesSearch,
-        configuration=configuration
-    )
+    
+    translate_template_location = static_page['template']+'_'+local+'.html'
+    # on essaye de renvoyer le template traduit
+
+    try:
+        return render_template(
+            translate_template_location,
+            communesSearch=communesSearch,
+            configuration=configuration
+        )
+    # On essaye de renvoyer l'ancienne template
+    except (TemplateNotFound):
+        try:
+            return render_template(
+                static_page['template']+'.html',
+                communesSearch=communesSearch,
+                configuration=configuration
+            )
+        # s'il existe pas on renvoie un 404
+        except TemplateNotFound:
+                abort(404)

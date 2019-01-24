@@ -46,7 +46,7 @@
             <div class="col-sm-7">
                  <div class="panel panel-default" id="parent">
 					          <div class="row">
-                        <h4><b>Commune de {{referenciel.communeName}}</b></h4>
+                        <h4><b>{{ _('commune.description') }}{{referenciel.communeName}}</b></h4>
                         <ul id="stat">
                             <li><span data-icon="&#xe037;" style="font-size: 30px;"></span><br/><b>{{listTaxons.nbObsTotal}}</b><br/>{{ 'observations' if listTaxons.nbObsTotal > 1 else 'observation' }}</li>
                             <li><span data-icon="&#xe03b;" style="font-size: 30px;"></span></br><b>{{listTaxons.taxons|length}}</b><br/>{{ 'espèces' if listTaxons.taxons|length > 1 else 'espèce' }}</li>
@@ -67,7 +67,7 @@
 					<div class="row ">
 						<img id ="loadingGif" src="">
 						<div class="panel-heading"><strong>
-							 <h4 id="titleMap"> {{configuration.NB_LAST_OBS}} dernières observations sur la commune de <i>{{referenciel.communeName}}</i></h4> </strong>
+							 <h4 id="titleMap"> {{configuration.NB_LAST_OBS}} {{ _('commune.lastobs') }} <i>{{referenciel.communeName}}</i></h4> </strong>
 						</div>
 						<div class="panel-body">
 							 <div id="map"> </div>

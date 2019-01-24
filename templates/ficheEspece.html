@@ -105,7 +105,7 @@
                             {% if taxon.taxonSearch.protection == 'oui' %}
                                 <br/>
                                 <a href="https://inpn.mnhn.fr/espece/cd_nom/{{taxon.taxonSearch.cd_ref}}/tab/statut" target="_blank">
-                                    <img class="caractEspece" width="130px" src="{{url_for('static', filename='images/logo_protection.png') }}"  data-toggle="tooltip" data-original-title="Ce taxon bénéficie d'un statut de protection" data-placement="right"></a>
+                                    <img class="caractEspece" width="130px" src="{{url_for('static', filename='images/logo_protection.png') }}"  data-toggle="tooltip" data-original-title="{{ _('tax.protection') }}" data-placement="right"></a>
                             {% endif %}
                             {% if taxon.taxonSearch.patrimonial in configuration.PATRIMONIALITE.config %}
                                 <img
@@ -136,13 +136,13 @@
 
                         <div id="inpnLink">
                             <a href='https://inpn.mnhn.fr/espece/cd_nom/{{taxon.taxonSearch.cd_ref}}' target="_blank">
-                                <img width="130px" src="{{url_for('static', filename='images/logo_inpn.png') }}"  data-toggle="tooltip" data-original-title="Consultez la fiche espèce sur l'INPN" data-placement="right">
+                                <img width="130px" src="{{url_for('static', filename='images/logo_inpn.png') }}"  data-toggle="tooltip" data-original-title="{{ _('tax.inpn') }}" data-placement="right">
                              </a>
                         </div>
 
                         {% if taxon.listTaxonsChild|length > 0 %}
                            <!-- Button trigger modal -->
-                           <a id="btn-taxons-fils" class="btn btn-default" data-toggle="modal" data-target="#myModal"> <b> {{taxon.listTaxonsChild | length}} </b> taxon(s) inférieur(s) agrégé(s) sur cette fiche</a>
+                           <a id="btn-taxons-fils" class="btn btn-default" data-toggle="modal" data-target="#myModal"> <b> {{taxon.listTaxonsChild | length}} </b> {{ _('espece.fiche') }}</a>
 
 
                                 <!-- Modal -->
@@ -151,22 +151,22 @@
                                     <div class="modal-content">
                                           <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            <h3 class="modal-title" id="myModalLabel">Taxon(s) agrégé(s) sur cette fiche</h3>
+                                            <h3 class="modal-title" id="myModalLabel">{{ _('tax.inf') }}</h3>
                                           </div>
                                           <div class="modal-body">
                                             <table class="table table-hover">
                                                 <thead>
                                                     <tr>
-                                                        <th> Nom Vernaculaire </th>
-                                                        <th> Nom scientifique </th>
+                                                        <th> {{ _('nom.verna') }}</th>
+                                                        <th> {{ _('nom.scien') }}</th>
                                                         {% if configuration.PROTECTION %}
                                                         <th>Protection</th>
                                                         {% endif %}
                                                         {% if configuration.PATRIMONIALITE %}
                                                         <th>{{configuration.PATRIMONIALITE.label}}</th>
                                                         {% endif %}
-                                                        <th>Observations </th>
-                                                        <th> Fiche </th>
+                                                        <th> {{ _('home.nbObs') }}</th>
+                                                        <th> {{ _('fiche.taxons') }}</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -184,7 +184,7 @@
                                                             <td>
                                                             {% if child.protection != None %}
                                                                 <a href="https://inpn.mnhn.fr/espece/cd_nom/{{taxon.taxonSearch.cd_ref}}/tab/statut" target="_blank">
-                                                                    <img class="caractEspece" width="130px" src="{{url_for('static', filename='images/logo_protection.png') }}"  data-toggle="tooltip" data-original-title="Ce taxon bénéficie d'un statut de protection" data-placement="right"></a>
+                                                                    <img class="caractEspece" width="130px" src="{{url_for('static', filename='images/logo_protection.png') }}"  data-toggle="tooltip" data-original-title="{{ _('tax.protection') }}" data-placement="right"></a>
                                                             {% endif %}
                                                             </td>
                                                             <td>
@@ -398,16 +398,16 @@
             <div class="panel panel-default" id="blocInfos">
 
                 <h4>
-					<strong>Informations sur l'espèce</strong>
+					<strong>Informations sur l'espèce {{ _('info.espece') }}</strong>
 				</h4>
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#description">Description</a></li>
+                    <li class="active"><a data-toggle="tab" href="#description">{{ _('description.espece') }}</a></li>
                     {% if taxonDescription.commentaire != None %}
-                    <li><a data-toggle="tab" href="#commentaire">En savoir plus</a></li>
+                    <li><a data-toggle="tab" href="#commentaire">{{ _('plus.espece') }}</a></li>
                     {% endif %}
-                    <li><a data-toggle="tab" href="#milieu">Milieu</a></li>
-                    <li><a data-toggle="tab" href="#chorologie">Répartition</a></li>
-                    <li><a data-toggle="tab" href="#synonymes">Synonymes</a></li>
+                    <li><a data-toggle="tab" href="#milieu"> {{ _('milieu.espece') }}</a></li>
+                    <li><a data-toggle="tab" href="#chorologie">{{ _('repartition.espece') }}</a></li>
+                    <li><a data-toggle="tab" href="#synonymes">{{ _('synonymes.espece') }}</a></li>
                 </ul>
 
                 <div class="tab-content">
@@ -462,7 +462,7 @@
 						<span class="glyphicon glyphicon-film"></span>
 						<strong>Video</strong> ({{videoAudio.video | length}})
                         {% if videoAudio.video | length > 1 %}
-                         <i class="btn-more" id="btn-more-video" data-toggle="collapse" data-target="#moreVideo" data-placement="left" rel="tooltip" title="Afficher plus de vidéos"><span class="glyphicon glyphicon-chevron-down"></span></i>
+                         <i class="btn-more" id="btn-more-video" data-toggle="collapse" data-target="#moreVideo" data-placement="left" rel="tooltip" title="{{ _('tax.vids') }}"><span class="glyphicon glyphicon-chevron-down"></span></i>
                         {% endif %}
                     </h4>
                     <hr class="small-hr">
@@ -494,7 +494,7 @@
 
                     <h4><span class="glyphicon glyphicon-volume-up"></span> <strong>Audio</strong> ({{videoAudio.audio | length}})
                         {% if videoAudio.audio | length > 1 %}
-                        <i class ="btn-more" id="btn-more-audio" data-toggle="collapse" data-target="#moreAudio" rel="tooltip" title="Afficher plus d'enregistrements"> <span class="glyphicon glyphicon-chevron-down"> </span> </i>
+                        <i class ="btn-more" id="btn-more-audio" data-toggle="collapse" data-target="#moreAudio" rel="tooltip" title="{{ _('tax.record') }}"> <span class="glyphicon glyphicon-chevron-down"> </span> </i>
                         {% endif %}
                     </h4>
                     <hr class="small-hr">
@@ -518,9 +518,9 @@
             {% endif %}
 
             <div class="panel panel-default" id="graphBloc">
-                <h3 class="text-center">Observations par classes d'altitudes</h3>
+                <h3 class="text-center">{{ _('obs.altitude') }}</h3>
                 <div id="altiChart"></div>
-                <h3 class="text-center">Observations mensuelles</h3>
+                <h3 class="text-center">{{ _('obs.mensuelle') }}</h3>
                 <div id="phenologyChart"></div>
             </div>
         </div>

@@ -1,0 +1,440 @@
+<!-- Réalisée à partir de https://startbootstrap.com/template-overviews/one-page-wonder/ et http://getbootstrap.com/examples/carousel/ -->
+<!DOCTYPE html>
+<html>
+   <head>
+        <meta charset="utf-8" />
+        <title>Presentation of the atlas | {{configuration.NOM_APPLICATION}} - {{configuration.STRUCTURE}}</title>
+
+        <!-- Jquery -->
+        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
+		<script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}"></link>
+        <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
+
+        <!-- Atlas -->
+        <link rel="shortcut icon" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />
+        <link rel="stylesheet" href="{{url_for('static', filename='css/static_pages.css') }}" />
+        <link rel="stylesheet" href="{{url_for('static', filename='custom/custom.css') }}" />
+
+   </head>
+   <body  data-spy="scroll" data-target="#sommaire">
+    {% include 'templates/navbar.html' %}
+
+		<div id="sideBar">
+			{% include 'templates/sideBar.html' %}
+		</div>
+		<div class="container-fluid" id="page">
+
+
+            <!-- Carousel
+            ================================================== -->
+            <div id="myCarousel" class="carousel slide" data-ride="carousel" style="margin-top: -15px; margin-bottom: 0px;">
+              <!-- Indicators -->
+              <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+                <li data-target="#myCarousel" data-slide-to="3"></li>
+              </ol>
+              <div class="carousel-inner" role="listbox">
+                <div class="item active" style="background-image: url(http://biodiversite.ecrins-parcnational.fr/medias/60686_364_Hermine_blanche_en_pelage_dhiver.jpg) ; background-size: cover; background-position: center center;">
+                  <div class="container">
+                    <div class="carousel-caption">
+                      <h1>Atlas of Vertebrate and Invertebrate Fauna</h1>
+                      <p>Discover over 300,000 observations of 2,000 species</p>
+					  <p><a class="btn btn-lg btn-default" href="#faune" role="button">Learn more</a></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="item" style="background-image: url(http://biodiversite.ecrins-parcnational.fr/medias/92486_712_Lis_de_Pompone.jpg) ; background-size: cover; background-position: center center;">
+                  <div class="container">
+                    <div class="carousel-caption">
+                      <h1>{{ _('present.atlas_flore') }}</h1>
+                      <p>Atlas of flora</p>
+                      <p><a class="btn btn-lg btn-default" href="#flore" role="button">Learn more</a></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="item" style="background-image: url({{url_for('static', filename='custom/images/01-observateurs.jpg') }}) ; background-size: cover; background-position: top center;">
+                  <div class="container">
+                    <div class="carousel-caption">
+                      <h1>40 years of scientific observations</h1>
+                      <p>Knowledge, monitoring, management and protection of biodiversity</p>
+                      <p><a class="btn btn-lg btn-default" href="#scientifique" role="button">Learn more</a></p>
+                    </div>
+                  </div>
+                </div>
+                 <div class="item" style="background-image: url({{url_for('static', filename='custom/images/02-photographes.jpg') }}) ; background-size: cover; background-position: bottom center;">
+                  <div class="container">
+                    <div class="carousel-caption">
+                      <h1>Hundreds of photos</h1>
+                      <p>Taken by the agents of the national park daily</p>
+                      <p><a class="btn btn-lg btn-default" href="{{url_for('main.photos')}}" role="button">Visit the gallery</a></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+              </a>
+              <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Following</span>
+              </a>
+            </div><!-- /.carousel -->
+
+
+            <nav class="navbar navbar-inverse" data-spy="affix" data-offset-top="500" id="sommaire">
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="#general">General</a></li>
+				<li><a href="#fonctionnalites">features</a></li>
+                <li><a href="#faune">Fauna</a></li>
+                <li><a href="#flore">Flora</a></li>
+                <li><a href="#scientifique">Scientist</a></li>
+                <li><a href="#opensource">Open source</a></li>
+                <li><a href="#reseaux">Networks</a></li>
+              </ul>
+            </nav>
+
+            <div class="container presentation">
+              <div class="col-lg-8">
+                  <!-- Texte de présentation général -->
+
+                  <h2 id="general">Biodiv'Ecrins, the atlas of flora and fauna of the Ecrins National Park</h2>
+                  <p class="lead">
+                    The National Park has been collecting fauna and flora data on its territory for more than 40 years, which are used to better understand biodiversity, to monitor the evolution of certain fragile or heritage species ... To act intelligently to safeguard this natural heritage. requires to know him and understand it.
+                  </p>
+                  <p class="lead">
+                    Biodiv'Ecrins puts at your disposal all the data collected by the Ecrins National Park since its creation in 1973.
+                  </p>
+                  <p class="lead">
+                    Everyday, its agents make observations in the framework of their missions with a real concern to enrich the knowledge on the alpine biodiversity.They are displayed in real time on this atlas.You can thus follow the state of the knowledge on this territory."
+                  </p>
+              </div>
+              <div class="col-lg-4" style="background:#f4f4f4; border-radius: 15px; margin-top:20px; padding: 20px; text-align:left;">
+                <p>
+                    <img src="http://www.mnhn.fr/sites/mnhn.fr/files/styles/bandeau/public/thumbnails/image/grande_galerie_principale.jpg?itok=CF-gmndZ" width="100%">
+                </p>
+                <p>
+                    Inauguration of Biodiv'Ecrins on November 29, 2016 during the press conference organized by the Ministry of the Environment, at the National Museum of Natural History (MNHN) in Paris.
+                </p>
+                <p>
+                    This meeting is associated with the publication of the first law enforcement decree for the recovery of biodiversity, nature and landscapes which, in its article 7, strengthens the national policy on the inventory of natural heritage and opening the data. 
+                </p>
+                <p>
+                    <a href="#" target="_bank"><span class="glyphicon glyphicon-eye-open"></span> Read the article on the website of the Ecrins National Park</a><br/>
+                    <a href="{{url_for('static', filename='custom/images/2016-11-CPRESSE-Biodiv-Ecrins-PNE.pdf') }}" target="_bank"><span class="glyphicon glyphicon-file"></span> Download the press release</a><br/>
+                    <a href="{{url_for('static', filename='custom/images/2016-11-CP-biodiv-ecrins-images.zip') }}" target="_bank"><span class="glyphicon glyphicon-camera"></span> Download the photos</a>
+				</p>
+              </div>
+              <div style="clear: both;"></div>
+
+              <hr class="featurette-divider">
+
+              <!-- Three columns of text below the carousel -->
+              <div class="row">
+                <div class="col-lg-4" id="fonctionnalites">
+                  <img class="img-circle" src="{{url_for('static', filename='custom/images/03-determination.jpg') }}" alt="Generic placeholder image" width="140" height="140">
+                  <h2>Species Sheets</h2>
+                  <p>Find the record of each species with their map of the observations, their altitudinal and monthly distribution, as well as descriptions, photos, videos, audios and complementary links</p>
+                  <p><a class="btn btn-default" href="/espece/61098" role="button">Example &raquo;</a></p>
+                </div><!-- /.col-lg-4 -->
+                <div class="col-lg-4">
+                  <img class="img-circle" src="{{url_for('static', filename='custom/images/04-loupe.jpg') }}" alt="Generic placeholder image" width="140" height="140">
+                  <h2>Municipality sheets</h2>
+                  <p>Discover the species observed in each commune of the national park and post their observations on the map of the town.</p>
+                  <p><a class="btn btn-default" href="/commune/05090" role="button">Example &raquo;</a></p>
+                </div><!-- /.col-lg-4 -->
+                <div class="col-lg-4">
+                  <img class="img-circle" src="{{url_for('static', filename='custom/images/06-photographe.jpg') }}" alt="Generic placeholder image" width="140" height="140">
+                  <h2>Pictures gallery</h2>
+                  <p>Discover the photographs of the various species, made mainly by the agents of the National Park during their missions in the field.</p>
+                  <p><a class="btn btn-default" href="{{url_for('main.photos')}}" role="button">Browse &raquo;</a></p>
+                </div><!-- /.col-lg-4 -->
+              </div><!-- /.row -->
+
+
+              <!-- START THE FEATURETTES -->
+
+              <hr class="featurette-divider">
+
+                <!-- First Featurette -->
+                <div class="featurette" id="faune">
+                    <img class="featurette-image img-circle img-responsive pull-right" src="{{url_for('static', filename='custom/images/09-faune.jpg') }}">
+                    <h2 class="featurette-heading">Wildlife.<br/><span class="text-muted">Big and small animals.</span>
+                    </h2>
+                  <p class="lead">
+                    With some surprises always possible, the vertebrate fauna is now well identified in the Ecrins National Park.
+                    These are mammals, birds, reptiles and amphibians.
+                  </p>
+                  <p class="lead">
+                    This is not the case for invertebrate fauna. These are the strange little beasts that are insects, snails, centipedes or even spiders, beetles and crayfish ... A quantity of species as impressive as full of scientific promise.
+                  </p>
+                  <p class="lead">
+                  <i>
+                    « The National Park database is not an inventory.
+                    It gathers information collected under different scientific protocols with different objectives.
+                    In fact, the large number of ibex sightings does not mean that it is the species most present in the massif but of a highly followed species, especially in the context of reintroductions ! »
+                    </i>
+                  </p>
+                  <p class="lead">
+                    -Ludovic Imberdis, 'Wildlife' project manager at the Écrins National Park
+                  </p>
+                  <p class="lead">
+                    To know more : <a href="http://www.ecrins-parcnational.fr/thematique/faune-sauvage" target="_blank">http://www.ecrins-parcnational.fr/thematique/faune-sauvage</a>.
+                  </p>
+                </div>
+
+
+              <hr class="featurette-divider">
+
+              <div class="featurette" id="flore">
+                  <img class="featurette-image img-circle img-responsive pull-left" src="{{url_for('static', filename='custom/images/08-flore.jpg') }}">
+                  <h2 class="featurette-heading">Wild flora.<br/><span class="text-muted">Species on all floors.</span>
+                  </h2>
+                  <p class="lead">
+
+                  <p class="lead">
+                    More than 2000 species of plants are presented in this atlas.
+                    If the inventory of the plant world continues in the Ecrins, the National Park also keeps track of emblematic species (such as the blue thistle and the Venus hoof) and participates in many research programs on the natural environments and species of high altitude. 
+                  </p>
+                  <p class="lead">
+                    Some plants present remarkable life stories, ranging from heirs to old farming practices (hay meadows, extensive grain crops) to high mountain explorers.
+                  </p>
+                  <p class="lead">
+                    <i>
+                    « The immense interest of an online atlas is to share and make live an exceptional knowledge of the wild world present in the Ecrins.<br/>
+                    Such a tool restores the sometimes hackneyed term of 'biodiversity', elegantly describing and illustrating the abundant diversity of species observed and studied.»
+                    </i>
+                  </p>
+                  <p class="lead">
+                    - Cédric Dentant, botanist, project manager flora and environment in the Ecrins National Park
+                  </p>
+                  <p class="lead">
+                    To know more : <a href="" target="_blank">http://www.ecrins-parcnational.fr/thematique/flore</a>.
+                  </p>
+
+              </div>
+
+				<!--
+              <hr class="featurette-divider">
+
+               <div class="featurette" id="fonctionnalites">
+                  <img class="featurette-image img-circle img-responsive pull-right" src="{{url_for('static', filename='custom/images/05-insecte.jpg') }}">
+                  <h2 class="featurette-heading">Fonctionnalités.<br/><span class="text-muted">Quelques détails.</span>
+                  </h2>
+                  <p class="lead">
+                    <b>Fiches espèces</b><br/>
+                    Chaque espèce possède sa propre fiche d'identité, avec :
+                    <ul>
+                      <li>de magnifiques photographies permettant d'identifier l'espèce</li>
+                      <li>la carte des observations sur le Parc national</li>
+                      <li>des éléments de reconnaissance de l'espèce, son milieu privilégier, sa répartition mondiale</li>
+                      <li>les périodes et altitudes d'observation</li>
+                      <li>des compléments vidéo, audio, des articles, rapports, extraits de livre pour approfondir sa connaissance de l'espèce</li>
+                    </ul><br/>
+                    Bref, un savoir dynamique à consulter sans modération !
+                  </p>
+                  <p class="lead">
+                    <b>Fiches par commune</b><br/>
+                    Pour chacune des 53 communes de l'aire d'adhésion du Parc national, découvrez les espèces observées et affichez leurs localisations, leurs statuts et toutes les informations contenues dans les fiches espèces.
+                  </p>
+                  <p class="lead">
+                    <b>Et aussi</b><br/>
+                    La possibilité de retrouver les espèces par leur nom français ou scientifique, de lister les espèces par groupe, par classe, par famille, d'en savoir plus sur le statut de chaque espèce graâce à des liens institutionnels comme ceux vers l'Inventaire National du Patrimoine Naturel (INPN) conduit par le Museum National d'Histoire Naturel (MNHN).
+                  </p>
+                  <p class="lead">
+                    <b>Galerie d'images</b>
+                    <br/>
+                    Découvrez les photographies des différentes espèces, réalisées principalement par les agents du Parc national lors de leurs missions sur le terrain.
+                  </p>
+                  <p class="lead">
+                    <i>
+                    « Les agents du Parc national des Ecrins sont des passionnés de leur métier, de ce territoire d'exception, de ses paysages, de ses vallées et de l'ensemble de ses richesses naturelles et culturelles.
+                    Pour certains, cette passion se traduit par la pratique de la photographie au cours de leur activité quotidienne, laquelle nourrit une photothèque déjà riche de plus de 70 000 images. »
+                    </i>
+                    <br/>
+                    - Pascal Saulay, chargé de mission images et multimedia au Parc national des Ecrins
+                  </p>
+                  <p class="lead">
+                    <b>En savoir plus</b><br/>
+                    Les images contribuent à faire découvrir, aimer et donc respecter ce territoire protégé et les espèces qu'il abrite...
+                    Plusieurs spécialistes interviennent pour le Parc national sur des programmes scientifiques pointus, notamment pour le projet d'inventaire généralisé des taxons (ATBI) de la réserve intégrale du Lauvitel. Ils apportent ainsi leur contribution à l'illustration de certaines espèces rares ou méconnues de la biodiversité dans les Écrins..
+                  </p>
+                </div>
+                -->
+
+              <hr class="featurette-divider">
+              <div class="featurette" id="scientifique">
+                  <img class="featurette-image img-circle img-responsive pull-right" src="{{url_for('static', filename='custom/images/07-pne-protocoles.jpg') }}">
+                  <h2 class="featurette-heading">A scientific strategy.<br/><span class="text-muted">For knowledge and protection.</span>
+                  </h2>
+                  <p class="lead">
+                    The preservation of species, habitats and natural resources is based on the collection of observations, the shaping of knowledge and the contribution to scientific research.
+                  </p>
+                  <p class="lead">
+                    <i>
+                    Which species frequent the massif, how do they interact, how do their populations evolve, or what are the consequences for these species of the territory's human activities?
+                    It is to answer such questions that different scientific protocols are implemented.
+                    Many of the raw observations related to these protocols are synthesized in this atlas.
+                    </i>
+                  </p>
+                  <p class="lead">
+                    The richness of the fauna and flora of the Ecrins is due to the diversity of climatic and geological influences, to the altitudinal amplitude - ranging from about 800 m to 4102 m - and to the different reliefs of the massif.
+                    So, the Provencal vole and the ocellated lizard, southern species, are present in the territory of the Ecrins in the same way as the snow vole and ptarmigan, relicts of the last glaciations.
+                    The diversity of ecological conditions is suitable for many plants, ranging from robust larch steep slopes to microscopic chlamydomonas of fir trees !
+                  </p>
+                  <p class="lead">
+                    To preserve this exceptional natural heritage, at the origin of the creation of the National Park, it is necessary to know it well. The various inventory, monitoring and study programs undertaken in the territory all pursue this objective.
+                  </p>
+                  <p class="lead">
+                    To learn more, see the action of the National Park in terms of fauna and flora :<br/>
+                    <a href="http://www.ecrins-parcnational.fr/thematique/faune-sauvage" target="_blank">http://www.ecrins-parcnational.fr/thematique/faune-sauvage</a><br/>
+                    <a href="http://www.ecrins-parcnational.fr/thematique/flore" target="_blank">http://www.ecrins-parcnational.fr/thematique/flore</a>
+                  </p>
+                </div>
+
+
+              <hr class="featurette-divider">
+
+              <div class="row featurette">
+                <div class="col-md-12" id="opensource">
+                  <h2 class="featurette-heading">GeoNature-atlas.<br/><span class="text-muted">In the constellation of the opensource.</span></h2>
+                  <p class="lead">
+                    Biodiv'Ecrins uses the tool <a href="https://github.com/PnEcrins/GeoNature-atlas" target="_blank">GeoNature-atlas</a> developed by the Ecrins National Park and published under a free license. It is thus freely transferable to other structures wishing to share their naturalistic observations based on the INPN's national standards.
+                  </p>
+				  <p class="lead">
+					<span class="glyphicon glyphicon-download"></span> <i>Download it <a href="https://github.com/PnEcrins/GeoNature-atlas/raw/master/docs/2016-09-GeoNature-atlas-PRESENTATION.pdf">presentation sheet of GeoNature-atlas</a> to know more.</a></i>
+				  </p>
+                  <p class="lead">
+                    It is part of a set of tools developed by the National Park and its partners, in order to capture, manage and process data from different protocols (<a href="http://geonature.fr" target="_blank">http://geonature.fr</a>).
+                  </p>
+                  <p class="lead">
+                    <img src="http://geonature.fr/img/schema-geonature-01.png" width="80%">
+                  </p>
+                  <p class="lead">
+                    <i>
+                        « Our tools are thought from the outset to be able to be deployed by other structures in different contexts.
+                        For this, the focus is on generic developments and on the publication of the freely licensed tool for ease of use by others. ».
+                    </i>
+                  </p>
+                  <p class="lead">
+                    - Camille Monchicourt, head of the information system at the Ecrins National Park
+                  </p>
+                  <p class="lead">
+                    Indeed the Ecrins National Park has undertaken for the past ten years, to migrate its information system to open source tools. <br/>
+                    Free software (whose source code is open, accessible and modifiable by whomever it wishes) allows greater modularity and interoperability of tools and data, in addition to facilitating pooling and reducing licensing costs.
+                  </p>
+                  <p class="lead">
+                    This is why the national park also wished that the tools that it develops for its own needs are also published under free license.<br/>
+                    In 2011, the Ecrins National Park designed and published under free license the application <a href="http://geotrek.fr" target="_blank">Geotrek</a> <br/>to manage and enhance the trails. Today, it is used by some forty structures in France that have made it evolve in turn, leading to significant pooling of public resources.
+                    To learn more, read <a href="http://www.ecrins-parcnational.fr/actualite/geotrek-avenement-communaute-utilisateurs" target="_blank">'Geotrek, the advent of a community of users'</a>.
+                  </p>
+                  <p class="lead">
+                    <i>* Opensource software is a computer program whose source code is distributed under a "free" license, allowing anyone to read, modify or redistribute this software.</i>
+                  </p>
+                </div>
+              </div>
+
+              <hr class="featurette-divider">
+
+
+              <div class="row featurette">
+                <div class="col-md-12" id="reseaux">
+                  <h2 class="featurette-heading">Observer networks.<br/><span class="text-muted">Bundles of knowledge.</span></h2>
+                  <p class="lead">
+                    The National Park is part of a naturalist data collection network.
+                    It contributes to the enrichment of thematic databases available to both specialists and the public.
+                  </p>
+                  <p class="lead">
+                    By multiplying the exchange conventions, the National Park values ​​and expands the use of the data acquired by its agents.
+                  </p>
+                  <p class="lead">
+                    According to the websites, it is possible to CONSULT information, DOWNLOAD syntheses or even to PARTICIPATE in the observations.
+                  </p>
+                  <p class="lead">
+                    <img src="http://geonature.fr/img/schema-chaine-travail.png" width="100%">
+                  </p>
+                  <p class="lead">
+                    <a href="https://inpn.mnhn.fr" target="_blank">National Inventory of Natural Heritage (MNHN)</a>
+                  </p>
+                  <p class="lead">
+                    On the site dedicated to the MNHN (National Museum of Natural History), we find more than 300 000 data on wildlife in the Ecrins National Park among 30 million collected throughout the national territory and agglomerated in this national inventory .
+                    <br/>
+                    The National Museum uses this information to synthesize at national and international levels.
+                    <br/>
+                    This approach makes it possible to include environmental issues in national and European policies.
+                  </p>
+                  <p class="lead">
+                    To learn more, read <a href="http://www.ecrins-parcnational.fr/actualite/les-observations-du-parc-national-sont-en-ligne" target="_blank">National Park observations are online</a>.
+                  </p>
+                  <p class="lead">
+                    <b>To download organized data</b>
+                  </p>
+                  <p class="lead">
+                    <a href="http://www.silene.eu" target="_blank">SILENE PACA</a>
+                  </p>
+                  <p class="lead">
+                    Silene, ISNL platform (Information System on Nature and Landscapes), is the data portal of the Provence-Alpes-Côte d'Azur region.} <br/>
+                    On this site which allows to enter and to consult a mass of very important data, syntheses of the inheritances flora and fauna of the region by commune and by mesh are available
+                  </p>
+                  <p class="lead">
+                    See also the counterpart for the Rhône-Alpes region : <a href="http://www.pifh.fr/" target="_blank">The Flora and Habitats Information Center (FHIC)</a>.
+                  </p>
+                  <p class="lead">
+                    <a href="http://www.cbn-alpin.fr" target="_blank">National Alpine Botanical Conservatory (NABC)</a>
+                  </p>
+                  <p class="lead">
+                    The site of the National Alpine Botanical Conservatory offers for its entire range of approval (Alps and Ain: 04-05-01) data relating to flora and habitats.
+                    The Park is an important contributor.
+                  </p>
+                  <p class="lead">
+                    See as well <a href="http://siflore.fcbn.fr" target="_blank">SI National Flora</a> et <a href="http://www.tela-botanica.org/site:botanique" target="_blank">Tela Botanica</a>.
+                  </p>
+                  <p class="lead">
+                    <b>To participate !</b>
+                  </p>
+                  <p class="lead">
+                    Anyone can, if he wishes, become a contributor by transmitting his observations of mammals, but also other species, on different naturalistic platforms and in particular, for the Ecrins, on the two participatory sites of the LPO.
+                    <br/>
+                    <a href="http://www.faune-paca.org" target="_blank">faune-paca.org</a> et <a href="http://www.faune-isere.org" target="_blank">faune-isere.org</a>
+                  </p>
+                  <p class="lead">
+                    It is also a way to supplement the knowledge of the National Park since there is a <a href="http://www.ecrins-parcnational.fr/actualite/donnees-partagees-entre-parc-national-lpo-paca" target="_blank">data exchange agreement with the LPO</a>.
+                    <br/>
+                    This is also the case with the <a href="http://www.gcprovence.org/" target="_blank">Group chiroptera of Provence</a>.
+                  </p>
+                  <p class="lead">
+                    For flora, an online atlas for the Hautes-Alpes department also welcomes contributions : <a href="http://www.bdflore05.org" target="_blank">bdflore05.org</a>.
+                    As for wildlife, a convention has been initiated and is actively involved in regularly exchanging observational data.
+                    <br/>Side Isère, the association Gentiana animates a permanent inventory of the flora of the department : <a href="http://www.gentiana.org/site:flore" target="_blank">gentiana.org</a>.
+                  </p>
+                </div>
+              </div>
+
+              <hr class="featurette-divider">
+
+              <!-- /END THE FEATURETTES -->
+
+            </div>
+
+            {% if configuration.AFFICHAGE_FOOTER %}
+			        {% include 'static/custom/templates/footer.html' %}
+	        	{% endif %}
+        </div>
+
+
+        <script type="text/javascript">
+        var communesSearch = {{communesSearch|tojson}},
+            configuration = {{configuration|tojson}};
+        </script>
+
+        <script src="{{url_for('static', filename='main.js') }}"></script>
+
+   </body>
+</html>

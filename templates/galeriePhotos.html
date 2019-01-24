@@ -2,7 +2,7 @@
 <html>
    <head>
         <meta charset="utf-8" />
-        <title>Galerie photo | {{configuration.NOM_APPLICATION}} - {{configuration.STRUCTURE}}</title>
+        <title>{{ _('home.gallery') }} | {{configuration.NOM_APPLICATION}} - {{configuration.STRUCTURE}}</title>
 
         <!-- Jquery -->
         <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
@@ -32,7 +32,7 @@
             <div class="col-sm-12">
 				<div class="row rowMargin">
 					<div class="panel panel-default">
-						<h1 class="title">Galerie photos <span id="group"></span></h1>
+						<h1 class="title">{{ _('gallery.title') }} <span id="group"></span></h1>
                             <div id="filtresPhotos">
         						<ul class="floatParent">
         						    {% for group in groups %}
@@ -42,15 +42,15 @@
         						    {% endfor %}
 
         						    <li class="floatLeft bottom">
-                            <a id="allGroups" class="btn btn-default" role="button" data-toggle="tooltip" data-original-title="Afficher les photos de tous les groupes" data-placement="top">Tous les groupes</a>
+                            <a id="allGroups" class="btn btn-default" role="button" data-toggle="tooltip" data-original-title="{{ _('gallery.sorting_groups') }} " data-placement="top">{{ _('gallery.groups') }}</a>
                         </li>
                         <li class="floatLeft bottom">
                             <span id="orderPhotos" class="sortedButton">
-                                <span id="sort" class="glyphicon glyphicon-sort" data-toggle="tooltip" data-original-title="Trier les photos par nombre d'observations" data-placement="top"></span>
+                                <span id="sort" class="glyphicon glyphicon-sort" data-toggle="tooltip" data-original-title="{{ _('gallery.sorting_obs') }}" data-placement="top"></span>
                             </span>
                         </li>
         						    <li class="floatLeft bottom">
-                          <input type="text" class="form-control" id="searchPhotos" placeholder="Rechercher une espèce" value="">
+                          <input type="text" class="form-control" id="searchPhotos" placeholder="{{ _('search.species') }}" value="">
                         </li>
                     </ul>
               </div>
@@ -66,9 +66,9 @@
 
     </div>
 
-        {% if configuration.AFFICHAGE_FOOTER %}
-            {% include 'static/custom/templates/footer.html' %}
-        {% endif %}
+	    {% if configuration.AFFICHAGE_FOOTER %}
+			{% include 'static/custom/templates/footer.html' %}
+		{% endif %}
 
         <script type="text/javascript">
             var communesSearch = {{communesSearch|tojson}},

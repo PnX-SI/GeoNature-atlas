@@ -40,7 +40,7 @@
         <div class="col-sm-12">
             <div class="panel panel-default" id="parent">
 				<div class="row rowMargin">
-                    <h4> <b> Espèces observées pour le taxon <i>{{referenciel.lb_nom}}</i> ({{referenciel.nom_rang}}) </b> </h4>
+                    <h4> <b> {{ _('tax.obs') }}<i>{{referenciel.lb_nom}}</i> ({{referenciel.nom_rang}}) </b> </h4>
 
                     <div id="hierarchy">
                     {% for taxon in taxonomyHierarchy %}

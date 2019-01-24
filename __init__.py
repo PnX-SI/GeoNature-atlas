@@ -4,6 +4,13 @@ from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 
+#import de babel pour traduction
+#from flask_babel import Babel, gettext, ngettext
+#from flask_babel import Babel
+
+#app = Flask(__name__)
+#babel = Babel(app)
+
 APP_DIR = os.path.abspath(os.path.dirname(__file__))
 BASE_DIR = os.path.abspath(os.path.join(APP_DIR, os.pardir))
 TEMPLATE_DIR = APP_DIR+'/templates'

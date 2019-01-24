@@ -21,7 +21,7 @@
 	  <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
 		  <form method="POST" action="" id='searchFormTaxons' class="navbar-form navbar-left" role="search">
 				<div class="form-group has-feedback">
-					   <input id="searchTaxons" type="text" class="form-control" placeholder="Rechercher une espèce &nbsp; &nbsp; &nbsp;" loading="true" style="background-image: url('{{url_for('static', filename='images/loading3.gif') }}');" disabled>
+					   <input id="searchTaxons" type="text" class="form-control" placeholder="{{ _('search.species') }} &nbsp; &nbsp; &nbsp;">
 					   <span class="glyphicon glyphicon-search form-control-feedback"></span>
 				</div>
 				<input id="hiddenInputTaxons" type="hidden" name="cd_ref">
@@ -29,7 +29,7 @@
 
       <form method="POST" onsubmit="completeAction('#searchFormCommunes', hiddenInputCommunes)" id='searchFormCommunes' action=""  class="navbar-form navbar-left" role="search">
 				<div class="form-group has-feedback">
-					<input id="searchCommunes" type="text" class="form-control" placeholder="Rechercher une commune" >
+					<input id="searchCommunes" type="text" class="form-control" placeholder="{{ _('search.commune') }}" >
 					<span class="glyphicon glyphicon-search form-control-feedback"></span>
 				</div>
 			  <input id="hiddenInputCommunes" type="hidden" name="insee">

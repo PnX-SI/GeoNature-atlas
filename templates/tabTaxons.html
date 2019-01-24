@@ -1,21 +1,21 @@
 <table class="table table-hover" id="myTable" style="display:none;"> <!-- Ne s'affiche que lorsque le JS est chargé -->
     <thead>
         <tr>
-            <th data-priority="1">Groupe</th>
-            <th data-priority="2">Nom Scientifique</th>
-            <th data-priority="6">Nom Vernaculaire</th>
+            <th data-priority="1">{{ _('taxon.groupe') }}</th>
+            <th data-priority="2">{{ _('nom.scien') }}</th>
+            <th data-priority="6">{{ _('nom.verna') }}</th>
             {% if configuration.PROTECTION %}
-                <th data-priority="7">Protection</th>
+                <th data-priority="7">{{ _('taxon.prot') }}</th>
             {% endif %}
             {% if configuration.PATRIMONIALITE %}
                 <th data-priority="8">{{configuration.PATRIMONIALITE.label}}</th>
             {% endif %}
-            <th id="sorted" data-priority="4"> Nombre d'observation(s)</th>
-                <th data-priority="9">Dernière observation</th>
+            <th id="sorted" data-priority="4"> {{ _('taxon.nb_obs') }}</th>
+                <th data-priority="9">{{ _('taxon.last_obs') }}</th>
             {% if configuration.MYTYPE == 1 %}
-                <th data-priority="5">Observations </th>
+                <th data-priority="5">{{ _('taxon.obs') }} </th>
             {% endif %}
-            <th data-priority="3">Fiche</th>
+            <th data-priority="3">{{ _('fiche.taxons') }}</th>
         </tr>
     </thead>
     <tbody>
@@ -48,7 +48,7 @@
                     <td>
                         {% if taxon.protection_stricte == 'oui' %}
                             <a href="https://inpn.mnhn.fr/espece/cd_nom/{{taxon.cd_ref}}/tab/statut" target="_blank">
-                                <img src="{{url_for('static', filename='images/logo_protection.png') }}" style="width : 40px; height: 40px" data-placement="left" data-toggle="tooltip" data-original-title="Ce taxon béneficie d'un statut de protection">
+                                <img src="{{url_for('static', filename='images/logo_protection.png') }}" style="width : 40px; height: 40px" data-placement="left" data-toggle="tooltip" data-original-title="{{ _('tax.protection') }}">
                             </a>
                         {% endif %}
                     </td>
@@ -68,12 +68,12 @@
                 <td>{{taxon.last_obs | int}}</td>
                 {% if configuration.MYTYPE == 1 %}
                     <td>
-                        <span class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-original-title="Afficher les observations sur la commune" data-placement="right"> </span>
+                        <span class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-original-title="{{ _('tax.municipality') }}" data-placement="right"> </span>
                     </td>
                 {% endif %}
                 <td>
                     <a href="{{url_for('main.ficheEspece',cd_ref=taxon.cd_ref)}}">
-                        <span class="glyphicon glyphicon-list" data-toggle="tooltip" data-original-title="Consulter la fiche espèce" data-placement="left"> </span>
+                        <span class="glyphicon glyphicon-list" data-toggle="tooltip" data-original-title="{{ _('tax.sheets') }}" data-placement="left"> </span>
                     </a>
                 </td>
             </tr>

@@ -1,15 +1,16 @@
 <ul id="sidebar_menu" class="sidebar-nav">
-  <a href="{{url_for('main.index')}}" id="menu-toggle" data-toggle="tooltip" data-original-title="Retour à l'accueil" data-placement="right">
+  <a href="{{url_for('main.index')}}" id="menu-toggle" data-toggle="tooltip" data-original-title="{{ _('home.back') }}" data-placement="right">
     <li class="sidebar-brand"><span id="main_icon" class="glyphicon glyphicon-home"></span></li>
   </a>
-  {% for page_key, page_values in configuration.STATIC_PAGES.items()|sort(attribute='1.order') %}
-    <a href="{{url_for('main.get_staticpages', page=page_key)}}" data-toggle="tooltip"
-      data-original-title="{{page_values.title}}" data-placement="right">
-      <li class="sidebar-brand"><span class="glyphicon {{page_values.picto}}"></span></li>
-    </a>
-  {% endfor %}
 
-  <a href="{{url_for('main.photos')}}" data-toggle="tooltip" data-original-title="Galerief photos" data-placement="right">
+{% for page_key, page_values in configuration.STATIC_PAGES.items()|sort(attribute='1.order') %}
+  <a href="{{url_for('main.get_staticpages', page=page_key)}}" data-toggle="tooltip"
+    data-original-title="{{_('present.title') }}" data-placement="right">
+    <li class="sidebar-brand"><span class="glyphicon {{page_values.picto}}"></span></li>
+  </a>
+{% endfor %}
+
+  <a href="{{url_for('main.photos')}}" data-toggle="tooltip" data-original-title="{{ _('home.gallery') }}" data-placement="right">
     <li class="sidebar-brand"><span class="glyphicon glyphicon-camera"></span></li>
   </a>
 </ul>

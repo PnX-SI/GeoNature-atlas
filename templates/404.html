@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title> {{ _('404.title') }}</title>
+
+        <!-- Jquery -->
+        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
+		    <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
+
+		<!-- Bootstrap -->
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}"></link>
+        <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
+
+        <!-- Leaflet -->
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet.css') }}" />
+        <script src="{{url_for('static', filename='lib/leaflet/leaflet.js') }}"></script>
+        <script src="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.css') }}" />
+
+        <!-- CSS Application -->
+        <link rel="shortcut icon" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />
+        <link rel="stylesheet" href="{{url_for('static', filename='css/index.css') }}" />
+        <link rel="stylesheet" href="{{url_for('static', filename='custom/custom.css') }}" />
+
+    </head>
+    <body>
+
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                    
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                 </button>
+    <a class="navbar-brand" href="{{url_for('main.index') }}">
+            <img class="logoStructure" src="{{url_for('static', filename='custom/images/logo-structure.png') }}" />
+        </a>
+        <a class="navbar-brand titreAppli" href="{{url_for('main.index') }}"></a>
+	  </div>
+
+	  <!-- Collect the nav links, forms, and other content for toggling -->
+	  <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
+		<form method="POST" action="" id='searchFormTaxons' class="navbar-form navbar-left" role="search">
+				<div class="form-group has-feedback">
+					<input id="searchTaxons" type="text" class="form-control" placeholder="{{ _('search.species') }} &nbsp; &nbsp; &nbsp;">
+					<span class="glyphicon glyphicon-search form-control-feedback"></span>
+				</div>
+			<input id="hiddenInputTaxons" type="hidden" name="cd_ref">
+        </form>
+
+      <form method="POST" onsubmit="completeAction('#searchFormCommunes', hiddenInputCommunes)" id='searchFormCommunes' action=""  class="navbar-form navbar-left" role="search">
+				<div class="form-group has-feedback">
+					<input id="searchCommunes" type="text" class="form-control" placeholder="{{ _('search.commune') }}" >
+					<span class="glyphicon glyphicon-search form-control-feedback"></span>
+				</div>
+			  <input id="hiddenInputCommunes" type="hidden" name="insee">
+      </form>
+	  </div>
+      <div class="row">
+        <section class="col-sm-12">
+            <a id="main-content"></a>
+                <center>
+                    <h2 class="page-header">{{ _('404.title') }} </h2>
+                        <div class="col-c">
+                            <section id="block-system-main" class="block block-system clearfix">
+                                <h3>{{ _('404.error') }}</h3>
+                                </br>
+                                <h4>
+                                    <p>{{ _('404.not_found') }}</p>
+                                    <p>{{ _('404.link') }}</p>
+                                    <p>{{ _('404.go_home') }}</p>
+                                </h4>
+                            </br>
+                            </center>
+                        </section> 
+                    </div>
+        </section>
+    </div>
+<!-- custom region pre_footer -->
+<div style="width:100%;height:100px;background:#333;">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <center>
+                <a href="{{url_for('main.index')}}" id="menu-toggle" data-toggle="tooltip" data-original-title="{{ _('home.back') }}">
+                    <li class="app-footer"><span style="color: #fff" class="glyphicon glyphicon-home"></span></li>
+                    <h4><font color="#fff">{{ _('home.back') }}</font></h4>
+                </a>
+            </center>
+            
+            
+            
+          </div>
+        </div>
+    </br>
+<footer class="footer">
+    <p>
+        <a href="/">Accueil</a> | 
+        <a href="http://www.ecrins-parcnational.fr" target="_blank">Site du Parc national des Écrins</a> | 
+        <a data-toggle="modal" href="/static/custom/templates/credits.html" data-target="#modalCredits">Conception et crédits</a> |  
+        <a data-toggle="modal" href="/static/custom/templates/mentions-legales.html" data-target="#modalMentions">Mentions légales</a> 
+    <p>
+        <div id="clear"> 
+            <p class="text-muted">
+                Biodiv&#39;Écrins - Atlas de la faune et de la flore du Parc national des Écrins, 2016 - 2018
+                <br/>
+                Réalisé avec <a href="https://github.com/PnEcrins/GeoNature-atlas" target="_blank">GeoNature-atlas</a>, développé par le <a href="http://www.ecrins-parcnational.fr" target="_blank">Parc national des Ecrins</a>
+            </p>
+        </div>
+</footer>
+    <div class="modal fade text-center" id="modalCredits">
+        <div class="modal-dialog">
+            <div class="modal-content"></div>
+        </div>
+    </div>     
+    <div class="modal fade text-center" id="modalMentions">
+        <div class="modal-dialog">
+            <div class="modal-content"></div>   
+        </div>
+    </div>
+
+    </body>
+</html>
