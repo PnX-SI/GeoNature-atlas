@@ -96,7 +96,7 @@ def lastObservationsCommuneMaille(connection, mylimit, insee):
     FROM atlas.t_mailles_territoire m
     JOIN last_obs  l
     ON st_intersects(l.l_geom, m.the_geom)
-    GROUP BY l.lb_nom, l.cd_ref, m.id_maille, l.nom_vern
+    GROUP BY l.lb_nom, l.cd_ref, m.id_maille, l.nom_vern, m.geojson_maille
     """
     observations = connection.execute(
         text(sql), thisInsee=insee, thislimit=mylimit
