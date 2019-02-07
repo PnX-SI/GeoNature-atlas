@@ -115,11 +115,11 @@ function onEachFeaturePoint(feature, layer){
 
 // popup Maille
 function onEachFeatureMaille(feature, layer){
-    popupContent = "<b>Nombre d'observation(s): </b>"+ feature.properties.nb_observations+"</br> <b> Dernière observation: </b>"+ feature.properties.last_observation+ " " ;
+    popupContent = "<b>" +feature.properties.nb_observations+ "<b> observation(s) </b> </br> <b> Dernière observation: </b>"+ feature.properties.last_observation+ " " ;
     layer.bindPopup(popupContent)
 }
 
-
+nbObs + "observation(s)"
 // Style maille
 function getColor(d) {
     return d > 100 ? '#800026' :
@@ -147,7 +147,7 @@ function generateLegendMaille(){
 
         var div = L.DomUtil.create('div', 'info legend'),
             grades = [0, 1, 2, 5, 10, 20, 50, 100],
-            labels = ["<strong> Nombre <br> d'observations </strong> <br>"];
+            labels = ["<strong> Observation(s) </strong> <br>"];
 
         // loop through our density intervals and generate a label with a colored square for each interval
         for (var i = 0; i < grades.length; i++) {
@@ -604,7 +604,7 @@ function generateSliderOnMap(){
         $(sliderContainer).css("margin-left", "200px");
         $(sliderContainer).css("text-align", "center");
         $(sliderContainer).append("<p> <span id='yearMin'> </span> <input id='sliderControl' type='text'/> <span id='yearMax'>  </span>  </p>"
-                            +"<p id='nbObs'> Nombre d'observation(s): "+nb_obs+" </p>");
+                            +"<p id='nbObs'>  "+nb_obs+" observation(s) </p>"); 
         L.DomEvent.disableClickPropagation(sliderContainer);
         return sliderContainer;
       }

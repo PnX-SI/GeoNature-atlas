@@ -108,7 +108,7 @@ msgstr "Observations par classes d'altitudes"
 
 #: templates/ficheEspece.html:66
 msgid "obs.mensuelle"
-msgstr ">Observations mensuelles"
+msgstr "Observations mensuelles"
 
 #: templates/ficheCommune.html:66
 msgid "commune.description"
@@ -225,7 +225,7 @@ msgstr "Ce taxon bénéficie d'un statut de protection"
 
 #: static/templates/ficheEspece.html:66
 msgid "tax.inpn"
-msgstr "Consultez la fiche espèce sur l'INPN"
+msgstr "Consultez la fiche espèce"
 
 #: static/templates/ficheEspece.html:66
 msgid "tax.vids"
@@ -266,6 +266,84 @@ msgstr "Vous pouvez toujours vérifier l’orthographe du lien."
 #: static/templates/tabTaxons.html:66
 msgid "404.go_home"
 msgstr "N'hésitez pas à revenir en arrière au à revenir à l'accueil."
+
+#: static/templates/tabTaxons.html:66
+msgid "none.espece"
+msgstr "Non renseignée pour le moment"
+
+#: static/templates/tabTaxons.html:66
+msgid "synonym.espece"
+msgstr "Aucun synonyme pour ce taxon"
+
+#: static/templates/tabTaxons.html:66
+msgid "first.espece"
+msgstr "Première observation"
+
+#: static/templates/tabTaxons.html:66
+msgid "last.espece"
+msgstr "Dernière observation"
+
+#: static/templates/tabTaxons.html:66
+msgid "info.espece"
+msgstr "Informations sur l'espèce"
+
+#: static/templates/tabTaxons.html:66
+msgid "species.title"
+msgstr "Titre"
+
+#: static/templates/tabTaxons.html:66
+msgid "species.author"
+msgstr "Auteur"
+
+#: static/templates/tabTaxons.html:66
+msgid "graph.janv"
+msgstr "Janvier"
+
+#: static/templates/tabTaxons.html:66
+msgid "graph.fev"
+msgstr "Février"
+
+#: static/templates/tabTaxons.html:66
+msgid "graph.mar"
+msgstr "Mars"
+
+#: static/templates/tabTaxons.html:66
+msgid "graph.avr"
+msgstr "Avril"
+
+#: static/templates/tabTaxons.html:66
+msgid "graph.mai"
+msgstr "Mai"
+
+#: static/templates/tabTaxons.html:66
+msgid "graph.jui"
+msgstr "Juin"
+
+#: static/templates/tabTaxons.html:66
+msgid "graph.juil"
+msgstr "Juillet"
+
+#: static/templates/tabTaxons.html:66
+msgid "graph.aou"
+msgstr "Août"
+
+#: static/templates/tabTaxons.html:66
+msgid "graph.sep"
+msgstr "Septembre"
+
+#: static/templates/tabTaxons.html:66
+msgid "graph.oct"
+msgstr "Octobre"
+
+#: static/templates/tabTaxons.html:66
+msgid "graph.nov"
+msgstr "Novembre"
+
+#: static/templates/tabTaxons.html:66
+msgid "graph.dec"
+msgstr "Décembre"
+
+
 
 #: venv/lib/python2.7/site-packages/flask_script/__init__.py:43
 #: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1615

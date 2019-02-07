@@ -90,6 +90,7 @@ def index():
     customStatMedias = vmObservationsRepository.genericStatMedias(
         connection, config.RANG_STAT
     )
+    
 
     configuration = base_configuration.copy()
     configuration.update({
@@ -105,6 +106,9 @@ def index():
         'MAP': config.MAP,
         'AFFICHAGE_INTRODUCTION': config.AFFICHAGE_INTRODUCTION
     })
+
+
+
 
     connection.close()
     session.close()
@@ -165,7 +169,8 @@ def ficheEspece(cd_ref):
         'ZOOM_LEVEL_POINT': config.ZOOM_LEVEL_POINT,
         'LIMIT_CLUSTER_POINT': config.LIMIT_CLUSTER_POINT,
         'FICHE_ESPECE': True,
-        'MAP': config.MAP
+        'MAP': config.MAP,
+        'URL_REFERENTIEL_SPECIES_SHEET' : config.URL_REFERENTIEL_SPECIES_SHEET.format(cd_ref)
     })
 
     connection.close()
@@ -190,6 +195,7 @@ def ficheEspece(cd_ref):
         taxonDescription=taxonDescription,
         observers=observers,
         configuration=configuration
+
     )
 
 

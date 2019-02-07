@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 
 from sqlalchemy.sql import text
+from flask.ext.babel import gettext
 
 
 def getMonthlyObservationsChilds(connection, cd_ref):
@@ -21,16 +22,16 @@ def getMonthlyObservationsChilds(connection, cd_ref):
     mesMois = connection.execute(text(sql), thiscdref=cd_ref)
     for inter in mesMois:
         return [
-            {'mois': "Janvier", 'value': inter._01},
-            {'mois': "Fevrier", 'value': inter._02},
-            {'mois': "Mars", 'value': inter._03},
-            {'mois': "Avril", 'value': inter._04},
-            {'mois': "Mai", 'value': inter._05},
-            {'mois': "Juin", 'value': inter._06},
-            {'mois': "Juillet", 'value': inter._07},
-            {'mois': "Aout", 'value': inter._08},
-            {'mois': "Septembre", 'value': inter._09},
-            {'mois': "Octobre", 'value': inter._10},
-            {'mois': "Novembre", 'value': inter._11},
-            {'mois': "Decembre", 'value': inter._12}
+            {'mois': gettext('graph.janv'), 'value': inter._01},
+            {'mois': gettext('graph.fev'), 'value': inter._02},
+            {'mois': gettext('graph.mar'), 'value': inter._03},
+            {'mois': gettext('graph.avr'), 'value': inter._04},
+            {'mois': gettext('graph.mai'), 'value': inter._05},
+            {'mois': gettext('graph.jui'), 'value': inter._06},
+            {'mois': gettext('graph.juil'), 'value': inter._07},
+            {'mois': gettext('graph.aou'), 'value': inter._08},
+            {'mois': gettext('graph.sep'), 'value': inter._09},
+            {'mois': gettext('graph.oct'), 'value': inter._10},
+            {'mois': gettext('graph.nov'), 'value': inter._11},
+            {'mois': gettext('graph.dec'), 'value': inter._12}
         ]

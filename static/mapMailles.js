@@ -40,7 +40,7 @@ $.ajax({
         myGeoJson.features.forEach(function(l){
           nbObs += l.properties.nb_observations
           })
-        $("#nbObs").html("Nombre d'observation(s): "+ nbObs);
+        $("#nbObs").html( nbObs + " observation(s)");
    
 
 
@@ -58,7 +58,7 @@ $.ajax({
           nbObs += l.properties.nb_observations
         })
 
-        $("#nbObs").html("Nombre d'observation(s): "+ nbObs);
+        $("#nbObs").html( nbObs + " observation(s)");
 
        });
 

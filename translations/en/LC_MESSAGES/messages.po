@@ -225,7 +225,7 @@ msgstr "This taxon enjoys a protection status"
 
 #: static/templates/ficheEspece.html:66
 msgid "tax.inpn"
-msgstr "Consult the species sheet on the INPN"
+msgstr "Consult the species sheet"
 
 #: static/templates/ficheEspece.html:66
 msgid "tax.vids"
@@ -266,6 +266,82 @@ msgstr "You can always check the spelling of the link."
 #: static/templates/tabTaxons.html:66
 msgid "404.go_home"
 msgstr "Feel free to go back to home."
+
+#: static/templates/tabTaxons.html:66
+msgid "none.espece"
+msgstr "Not informed at the moment"
+
+#: static/templates/tabTaxons.html:66
+msgid "synonym.espece"
+msgstr "No synonym for this taxon"
+
+#: static/templates/tabTaxons.html:66
+msgid "first.espece"
+msgstr "First observation"
+
+#: static/templates/tabTaxons.html:66
+msgid "last.espece"
+msgstr "Last observation"
+
+#: static/templates/tabTaxons.html:66
+msgid "info.espece"
+msgstr "Information on the species"
+
+#: static/templates/tabTaxons.html:66
+msgid "species.title"
+msgstr "Title"
+
+#: static/templates/tabTaxons.html:66
+msgid "species.author"
+msgstr "Author"
+
+#: static/templates/tabTaxons.html:66
+msgid "graph.janv"
+msgstr "January"
+
+#: static/templates/tabTaxons.html:66
+msgid "graph.fev"
+msgstr "February"
+
+#: static/templates/tabTaxons.html:66
+msgid "graph.mar"
+msgstr "March"
+
+#: static/templates/tabTaxons.html:66
+msgid "graph.avr"
+msgstr "April"
+
+#: static/templates/tabTaxons.html:66
+msgid "graph.mai"
+msgstr "May"
+
+#: static/templates/tabTaxons.html:66
+msgid "graph.jui"
+msgstr "June"
+
+#: static/templates/tabTaxons.html:66
+msgid "graph.juil"
+msgstr "July"
+
+#: static/templates/tabTaxons.html:66
+msgid "graph.aou"
+msgstr "August"
+
+#: static/templates/tabTaxons.html:66
+msgid "graph.sep"
+msgstr "September"
+
+#: static/templates/tabTaxons.html:66
+msgid "graph.oct"
+msgstr "October"
+
+#: static/templates/tabTaxons.html:66
+msgid "graph.nov"
+msgstr "November"
+
+#: static/templates/tabTaxons.html:66
+msgid "graph.dec"
+msgstr "Décember"
 
 #: venv/lib/python2.7/site-packages/flask_script/__init__.py:43
 #: venv/lib/python2.7/site-packages/gunicorn/argparse_compat.py:1615

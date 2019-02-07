@@ -34,6 +34,19 @@ ID_GOOGLE_ANALYTICS = "UA-xxxxxxx-xx"
 GLOSSAIRE = False
 
 ###########################
+###### Multilingue #######
+###########################
+
+#Langues disponibles
+LANGUAGES = {
+    'en': 'English',
+    'fr': 'French'
+}
+
+#Langage par défaut si le langage du navigateur du client n'est pas dans la liste des langages disponibles
+BABEL_DEFAULT_LOCALE= 'fr'
+
+###########################
 ###### Cartographie #######
 ###########################
 
@@ -153,6 +166,13 @@ ATTR_VIDEO_HEBERGEE = 6
 ATTR_YOUTUBE = 7
 ATTR_DAILYMOTION = 8
 ATTR_VIMEO = 9
+
+#Lien vers fiche espèces INPN. Possibilité de le changer pour rentrer l'adresse d'un autre référentiel.
+#Changer uniquement si vous n'utilisez pas les codes Taxref.
+URL_REFERENTIEL_SPECIES_SHEET = "https://inpn.mnhn.fr/espece/cd_nom/{}"
+
+#Exemple pour le GBIF
+#URL_REFERENTIEL_SPECIES_SHEET = "https://www.gbif.org/species/{}"
 
 ############################################
 #### FICHE COMMUNE ET RANG TAXONOMIQUE #####
