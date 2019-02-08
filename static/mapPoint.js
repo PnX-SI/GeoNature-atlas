@@ -57,7 +57,7 @@ $.ajax({
                 nbObs += l.properties.nb_observations
               })
 
-              $("#nbObs").html(nbObs + "observations");
+              $("#nbObs").html(nbObs + " observation(s)");
 
              });
 
@@ -109,7 +109,7 @@ $.ajax({
                   nbObs += l.properties.nb_observations
                 })
 
-                $("#nbObs").html(nbObs + "observations");
+                $("#nbObs").html(nbObs + " observation(s)");
                });
 
     }
