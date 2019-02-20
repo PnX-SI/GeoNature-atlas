@@ -1,135 +1,149 @@
 app_name=atlas
 
-#####################
-### Gunicorn settings
-#####################
+
+#########################
+### Gunicorn settings ###
+#########################
 gun_num_workers=4
 gun_host=0.0.0.0
 gun_port=8080
 
-####################
-### Python settings
-####################
+
+#######################
+### Python settings ###
+#######################
 venv_dir=venv
 
-#
-#  GeoNature-atlas
-#  PostgreSQL database settings
-#.................................
 
-# Effacer la base de données existante lors de l'installation
+####################################
+### PostgreSQL database settings ###
+####################################
+
+# Drop eventual existing database during installation
 drop_apps_db=false
 
-# Host de la base de données de l'application
+# Database host (leave localhost if the database is installed on the same server as the application)
+# If the database is installed on another host, the automatic installation script install_db.sh will not work as it has not enough permissions
 db_host=localhost
 
-# Port pour base de données de l'application
+# Database host
 db_port=5432
 
-# Nom de la base de données de l'application
+# Database name
 db_name=geonatureatlas
 
-# Nom de l'utilisateur BDD, utilisé par l'application, lecteur des vues matérialisées uniquement
+# Database reader username, used by web application, with read only on material views
 user_pg=geonatatlas
 
-# Nom du propriétaire de la BDD, utilisé pour créer et mettre à jour la BDD
+# Database owner username, used to create and update database
 owner_atlas=geonatuser
 
-# Password de l'utilisateur de l'application
-user_pg_pass=monpassachanger
+# Database reader user password
+user_pg_pass=mypasswordtochange
 
-# Password du propriétaire de la BDD
-owner_atlas_pass=monpassachanger
+# Database owner user password
+owner_atlas_pass=mypasswordtochange
 
-# GeoNature-atlas est-il connecté à une BDD GeoNature ?
+# Is GeoNature-atlas connected to a GeoNature database
 geonature_source=true
-# Version de geonature utilisée 1 ou 2
+
+# If YES :
+
+# GeoNature version (1 or 2)
 geonature_version=2
-# Est-ce que l'atlas est installé dans la même base de données que geonature ou non
-# true : base de données distante
+
+# Is GeoNature-atlas database in the same database as GeoNature ?
+# If true : remote database that will be accessed with Foreign Data Wrapper (FDW)
 geonature_fdw=true
 
-################################################
-##### CONNEXION A LA BDD GEONATURE SOURCE ######
-################################################
-# Necessaire uniquement si on veut se connecter à la BDD source GeoNature en foreign data wrapper
-# Si vous n'utilisez pas GeoNature, vous pouvez vous inspirer du fichier data/atlas_geonature.sql pour vous connecter à une autre BDD mère
 
-# Host de la BDD GeoNature source
+################################################
+##### GEONATURE database connexion SOURCE ######
+################################################
+
+# Required only if you want to connected to a GeoNature database with Foreign Data Wrapper
+# If you have a remote database with your observations which is not GeoNature, 
+# and want to connect GeoNature-atlas to it, you can inspire yourself from data/atlas_geonature.sql to connect to another mother database
+
+# GeoNature source database host
 db_source_host=localhost
 
-# Port de la BDD GeoNature source
+# GeoNature source database port
 db_source_port=5432
 
-# Nom de la BDD GeoNature source
+# GeoNature source database name
 db_source_name=geonaturedb
 
-# Nom de l'utilisateur atlas dans la BDD GeoNature source (lecture seule)
+# GeoNature source database username (read only)
 atlas_source_user=geonatuser
 
-# Pass de l'utilisateur atlas dans la BDD GeoNature source (lecture seule)
+# GeoNature source database username password (read only)
 atlas_source_pass=monpassachanger
 
 
 
-#####################################################################
-### Données GEOGRAPHIQUE                                          ###
-#####################################################################
+#######################
+### GEOGRAPHIC data ###
+#######################
 
-# L'atlas est il en lien avec le référentiel géographique modèle géonature v2
+# GeoNature-atlas is it connected to GeoNature 2 geographical referentiel (ref_geo) ?
 use_ref_geo_gn2=true
 
-########### Si ref_geo = true ############
+##### If use_ref_geo = true #####
 type_maille="'M1'"
 type_territoire="'PEC'"
 
+##### If use_ref_geo = False ######
 
+## MUNICIPALITIES ##
 
-########### Si ref_geo = False ############### COMMUNES ####
-
-# Creer la table des communes à partir d'un shapefile ?
-# Si false, modifiez la creation de 'atlas.vm_communes' dans data/atlas.sql
+# Create municipalities table from a shapefile ?
+# If false, change the content of 'atlas.vm_communes' in data/atlas.sql
 import_commune_shp=true
 
-# Chemin et nom des colonnes du SHP des communes du territoire. Laisser tel quel (en modifiant uniquement MYUSERLINUX) pour utiliser les communes du PnEcrins par défaut
+# Path and column name of the municipalities SHP file
+# Leave it so Laisser tel quel (just changing MYUSERLINUX) if you want to use Ecrins national park municipalities dataset
 communes_shp=/home/MYUSERLINUX/atlas/data/ref/communes.shp
 colonne_insee=insee
 colonne_nom_commune=nom_com
 
-### TERRITOIRE ####
+### TERRITORY ####
 
-# Chemin vers le SHP de l'emprise du territoire
+# Path to territory SHP file
 limit_shp=/home/MYUSERLINUX/atlas/data/ref/territoire.shp
 
-##### MAILLES #####
+##### GRIDS #####
 
-# Mon territoire se situe en métropole ? Dans ce cas, on utilise les mailles fournies par l'INPN
+# Is my territory in French metropolis ? 
+# In this case, it will automatically use grids provided by INPN (French national museum)
 metropole=true
 
-# Choisissez alors la taille de vos mailles à utiliser (en km) / Valeurs possibles 1, 5 ou 10
+# If metropole=true, choose the size of the grids you want to use (in km) / Values available : 1, 5 or 10
 taillemaille=5
 
-# Si 'metropole=false', rajoutez dans le dossier /data/ref un SHP des mailles de votre territoire et renseignez son chemin
+# If 'metropole=false', upload a SHP file in /data/ref folder with grids you want to use and fill its path
 chemin_custom_maille=/home/MYUSERLINUX/atlas/data/ref/custom_maille.shp
 
-#####################################################################
-### Données TAXONOMIQUE                                           ###
-###################################################################### Installer le schéma taxonomie de TaxHub dans la BDD de GeoNature-atlas ?
+######################
+### TAXONOMIC data ###
+######################
+
+# Install "taxonomie" database schema from TaxHub into GeoNature-atlas database ?
 install_taxonomie=false
 
-# Version de TaxHub à utiliser pour installer le schéma taxonomie
-# GeoNature-atlas 1.3.0 est compatible avec les versions de Taxhub inférieure ou égale à 1.3.2
-# Numéro de version conseillée et testée : 1.3.2
+# TaxHub version to use to install "taxonomie" schema
+# GeoNature-atlas 1.3.0 is compatible with TaxHub version lower or equal to 1.3.2
+# Recommanded and tested version : 1.3.2
 taxhub_release=1.3.2
 
-#### ID DES TYPES DES ATTRIBUTS DESCRIVANT LES TAXONS DANS atlas.vm_cor_taxon_attribut --
-## !! si changement: modifier également dans main/configuration/config.py
+#### Types ID of attributes describing taxons in atlas.vm_cor_taxon_attribut
+## If you change these id, change also in main/configuration/config.py file
 attr_desc=100
 attr_commentaire=101
 attr_milieu=102
 attr_chorologie=103
 
-# Paramètre pour la vue atlas.vm_taxons_plus_observes
-# Especes les plus observées sur la periode 'moins X jour, plus X jours par rapport à la date du jour, toutes années confondues'
-# 15 jours par défaut
+# atlas.vm_taxons_plus_observes view settings
+# Most observed species in period 'minus X days, plus X days compared to today, all years'
+# 15 days by default
 time=15
