@@ -1,59 +1,59 @@
 
 # -*- coding:utf-8 -*-
 
-# Mettre l'application en mode debug ou pas
+# Developpers only - Use debug mode
 modeDebug = False
 
-# Connexion de l'application à la BDD
-# Remplacer user, monpassachanger, IPADRESSE (localhost si la BDD est sur le même serveur que l'application), 
-# eventuellement le port de la BDD et le nom de la BDD avec l'utilisateur qui a des droits de lecture sur les vues de l'atlas (user_pg dans settings.ini)
-database_connection = "postgresql://user:monpassachanger@IPADRESSE:5432/databaseName"
+# Application database connection
+# Replace user, mypasswordtochange, host (localhost if the database is on the same host as the application), 
+# eventually the database port and database name with reader user (user_pg in settings.ini)
+database_connection = "postgresql://user:mypasswordtochange@host:5432/databaseName"
 
 #################################
 #################################
-### Customisation application ###
+### Application customisation ###
 #################################
 #################################
 
-# Nom de la structure
-STRUCTURE = "Nom de la structure"
-STRUCTURE = unicode(STRUCTURE, 'utf-8') # Fonction permettant d'encoder ce nom en utf-8, à ne pas modifier
+# Organisation name
+STRUCTURE = "Organisation name"
+STRUCTURE = unicode(STRUCTURE, 'utf-8') # Function used to encode the name in UTF-8, not to be changed
 
-# Nom de l'application
-NOM_APPLICATION = "Nom de l application"
-NOM_APPLICATION = unicode(NOM_APPLICATION, 'utf-8') # Fonction permettant d'encoder ce nom en utf-8, à ne pas modifier
+# Application name
+NOM_APPLICATION = "Application name"
+NOM_APPLICATION = unicode(NOM_APPLICATION, 'utf-8') # Function used to encode the name in UTF-8, not to be changed
 
-# URL de l'application depuis la racine du domaine
-# ex "/atlas" pour une URL: http://mon-domaine/atlas OU "" si l'application est accessible à la racine du domaine
+# Application URL from domaine root
+# Example : "/atlas" if your URL is http://my-domain/atlas OR "" if the application is accessible on root of domain
 URL_APPLICATION = ""
 
-# Code de suivi des statistiques Google Analytics (si AFFICHAGE_FOOTER = True)
+# Google Analytics tracking code (only if AFFICHAGE_FOOTER = True and if you want Google Analytics statistics)
 ID_GOOGLE_ANALYTICS = "UA-xxxxxxx-xx"
 
-# Utiliser et afficher le glossaire (static/custom/glossaire.json.sample)
+# Use and display glossary (static/custom/glossaire.json.sample)
 GLOSSAIRE = False
 
 ###########################
-###### Multilingue #######
+###### Multilingual #######
 ###########################
 
-#Langues disponibles
+# Available languages
 LANGUAGES = {
     'en': 'English',
     'fr': 'French'
 }
 
-#Langage par défaut si le langage du navigateur du client n'est pas dans la liste des langages disponibles
+# Default language to use if browser language is not available
 BABEL_DEFAULT_LOCALE= 'fr'
 
-###########################
-###### Cartographie #######
-###########################
+##########################
+###### Cartography #######
+##########################
 
-# Clé IGN si vous utilisez l'API Geoportail pour afficher les fonds cartographiques
+# IGN key if you use French Geoportail API to display basemaps
 IGNAPIKEY = 'myIGNkey';
 
-# Configuration des cartes (centre du territoire, couches CARTE et ORTHO, échelle par défaut...)
+# Maps configuration (territory center, CARTE (map) and ORTHO (photo) layers, default scale...)
 MAP = {
     'LAT_LONG': [44.7952, 6.2287],
     'FIRST_MAP': {
@@ -66,56 +66,57 @@ MAP = {
             'tileName' : 'Ortho IGN'
     },
     'ZOOM' : 10,
-    # Pas du slider sur les annees d'observations: 1 = pas de 1 an sur le slider
+    # Slider steps for observations years (1 = 1 year step on slider)
     'STEP': 1,
-    # Couleur et épaisseur des limites du territoire
+    # Color and thickness of territory border
     'BORDERS_COLOR': '#000000',
     'BORDERS_WEIGHT': 3
 }
 
-# Affichage des observations par maille ou point
-# True = maille / False = point
+# Observations display by grids or points
+# True = grids / False = points
 AFFICHAGE_MAILLE = False
 
-# Niveau de zoom à partir duquel on passe à l'affichage en point (si AFFICHAGE_MAILLE = False)
+# Zoom level from which it switches to point display (only if AFFICHAGE_MAILLE = False)
 ZOOM_LEVEL_POINT = 11
 
-# Limite du  nombre d'observations à partir duquel on passe à l'affichage en cluster
+# Observations numbers limit from which it uses clusters
 LIMIT_CLUSTER_POINT = 1000
 
-# Carte de la page d'accueil: observations des 'x' derniers jours. Bien mettre en anglais et non accordé
+# Homepage map : observations from 'x' latest days. 
+# To fill in English and without plurial, to define how long you want to display latest observations on homepage map
 NB_DAY_LAST_OBS = '7 day'
-# Texte à afficher pour décrire la cartographie des 'dernières observations'
+# Text to display as title of this block. NO MORE USED ? In translations files now ???
 TEXT_LAST_OBS = u'Les observations des agents ces 7 derniers jours |'
 
-# Carte de la fiche commune: nombre des 'x' dernières observations affichées
+# Municipalties pages map : Number of 'x' latest observations displayed on default map
 NB_LAST_OBS=100
 
-###########################
-###### PAGE ACCUEIL #######
-###########################
+########################
+###### HOME PAGE #######
+########################
 
-# Bloc d'introduction presentant l'atlas. Affichage True/False
+# Introduction block presenting the atlas(static/custom/templates/introduction.html). Display block ? True or False
 AFFICHAGE_INTRODUCTION = False
 
-# Afficher le Footer sur toutes les pages (static/custom/templates/footer.html)
+# Display Footer on all pages (static/custom/templates/footer.html). Display footer ? True or False
 AFFICHAGE_FOOTER = False
 
-# Bloc de statistiques globales. Affichage True/False
+# Global statistic block. Display block ? True or False
 AFFICHAGE_STAT_GLOBALES = True
 
-# Bloc avec carte et liste des dernières observations. Affichage True/False
+# Latest observations map and list block. Display block ? True or False
 AFFICHAGE_DERNIERES_OBS = True
 
-# Bloc avec espèces à voir en ce moment. Affichage True/False
+# Species to see currently block. Display block ? True or False
 AFFICHAGE_EN_CE_MOMENT = True
 
-## BLOC STAT PAR RANG : Parametre pour le bloc statistique 2 de la page d'accueil (statistiques par rang remontant 2 espèces aléatoirement ayant au moins une photo)
-# Ce bloc peut être affiché ou non et peut être affiché sur 2, 3 ou 4 colonnes. Il est ainsi possible de mettre autant de blocs que souhaité (2, 3, 4, 6, 8...)
-# Mettre dans RANG_STAT le couple 'rang taxonomique' - 'nom du taxon correspondant au rang' pour avoir des statistique sur ce rang -
-# Fonctionne à tous les niveaux de rang présents dans la table taxref -
+## Statistics by taxonomic rank block : Setting for the second statistic block on homepage (statistics by rank displaying 2 random species that has at least one photo)
+# This block can be displayed or not. And can be displayed on 2, 3 or 4 columns. It is possible to display as many blocks as wanted(2, 3, 4, 6, 8...)
+# Fill in RANG_STAT the duo 'taxonomic rank' - 'taxon name of the rank rang' to have statistics about this rank
+# Works at any level of ranks available in taxref taxonomie.table
 
-# Exemple RANG_STAT = [{'ordre': ['Lepidoptera']}, {'classe': ['Insecta', 'Arachnida']}]
+# Example RANG_STAT = [{'ordre': ['Lepidoptera']}, {'classe': ['Insecta', 'Arachnida']}]
 #         RANG_STAT_FR ['Papillon', 'Insecte et Araignées']
 
 AFFICHAGE_RANG_STAT = True
@@ -123,40 +124,40 @@ COLONNES_RANG_STAT = 3
 RANG_STAT = [{'phylum': ["Arthropoda", "Mollusca"]}, {'phylum': ["Chordata"]}, {'regne': ["Plantae"]}]
 RANG_STAT_FR = ['Faune invertébrée', 'Faune vertébrée', 'Flore']
 
-# Fonction à ne pas modifier
+# Function that shouldnt be changed
 for i in range(len(RANG_STAT_FR)):
     RANG_STAT_FR[i]=unicode( RANG_STAT_FR[i], 'utf-8')
 
 ############################
-####### FICHE ESPECE #######
+####### SPECIES PAGE #######
 ############################
 
-# Rang taxonomique qui fixe jusqu'à quel taxon remonte la filiation taxonomique (hierarchie dans la fiche d'identite : Famille, Ordre etc... )
+# Taxonomic rank that set until which rank is displayed the taxonomic filitation (hierarchy in species identity block : Family, Order etc... )
 LIMIT_RANG_TAXONOMIQUE_HIERARCHIE = 13
 
-# Rang taxonomique qui fixe la limite de l'affichage de la fiche espece ou de la liste
-# 35 = ESPECE
-# On prend alors tout ce qui est inferieur ou egal a l'espece pour faire des fiches et ce qui est superieur pour les listes
+# Taxonomic rank that set the switch from species pages display to species list page display
+# 35 = SPECIES (see atlas.bib_taxref_rangs table)
+# If 35, all rank below or equal will be displayed as a detailled species page. All ranks above will be displayed as species list page
 LIMIT_FICHE_LISTE_HIERARCHY = 28
 
-# URL d'accès aux photos et autres médias (URL racine). Par exemple l'url d'accès à Taxhub
-# Cette url sera cachée aux utilisateurs de l'atlas
+# URL to access to photos and other medias (Roots URL). As an example the TaxHub URL
+# This URL will be hidden to web browsers by a rewriting rule
 REMOTE_MEDIAS_URL = "http://mondomaine.fr/taxhub/"
-# Racine du chemin des fichiers médias stockés dans le champ "chemin" de "atlas.vm_medias"
-# Seule cette partie de l'url sera visible pour les utilisateurs de l'atlas
+# Root of path of media files savec in "chemin" column of "atlas.vm_medias"
+# Only this part of the URL will be displayed to web browers
 REMOTE_MEDIAS_PATH = "static/medias/"
 
-# URL de TaxHub (pour génération à la volée des vignettes des images).
-# Si le service Taxhub n'est pas utilisé, commenter la variable
-TAXHUB_URL = "http://mondomaine.fr/taxhub"
+# TaxHub URL (If TaxHub is used to generate dynamic images thumbnails).
+# If this TaxHub service is not used, comment this setting
+TAXHUB_URL = "http://mydomain.com/taxhub"
 
-#### ID DES ATTRIBUTS DESCRIPTIFS DES TAXONS DE LA TABLE vm_cor_taxon_attribut
+#### Types ID of attributes describing taxons in atlas.vm_cor_taxon_attribut
 ATTR_DESC = 100
 ATTR_COMMENTAIRE = 101
 ATTR_MILIEU = 102
 ATTR_CHOROLOGIE = 103
 
-#### ID DES TYPES DE MEDIAS DE LA TABLE vm_medias
+#### Types ID of medias from atlas.vm_medias
 ATTR_MAIN_PHOTO = 1
 ATTR_OTHER_PHOTO = 2
 ATTR_LIEN = 3
@@ -167,27 +168,27 @@ ATTR_YOUTUBE = 7
 ATTR_DAILYMOTION = 8
 ATTR_VIMEO = 9
 
-#Lien vers fiche espèces INPN. Possibilité de le changer pour rentrer l'adresse d'un autre référentiel.
-#Changer uniquement si vous n'utilisez pas les codes Taxref.
+# Links to INPN species pages. Can be changed to link to another Species website (such as GBIF)
+# The URL is automatically generated with taxon ID (cd_nom column)
+# To be changed only if you don't use French taxonomic referential (taxref)
 URL_REFERENTIEL_SPECIES_SHEET = "https://inpn.mnhn.fr/espece/cd_nom/{}"
+# Example for GBIF
+# URL_REFERENTIEL_SPECIES_SHEET = "https://www.gbif.org/species/{}"
 
-#Exemple pour le GBIF
-#URL_REFERENTIEL_SPECIES_SHEET = "https://www.gbif.org/species/{}"
+###################################################
+#### MUNICIPALITIES and TAXONOMIC RANKS PAGES #####
+###################################################
 
-############################################
-#### FICHE COMMUNE ET RANG TAXONOMIQUE #####
-############################################
+# Allows to display or not the columns Protection and/or Patrimoniality/Stakes in taxons lists
+# Based on fields "atlas.vm_taxons.protection_stricte" (oui/non) and "atlas.vm_taxons.patrimonial"
 
-# Permet d'afficher ou non les colonnes Protection et/ou Patrimonialité/Enjeux dans les listes de taxons
-# Se basent sur les champs "atlas.vm_taxons.protection_stricte"` (oui/non) et "atlas.vm_taxons.patrimonial"
-
-# Afficher ou non la colonne Protection dans les listes de taxons (basé sur le champs "protection_stricte")
+# Display column Protection in taxons lists (based on field "protection_stricte")
 PROTECTION = True
 
-# Afficher ou non la colonne Patrimonialité dans les listes de taxons (basé sur le champs "patrimonial") et la customiser
-# Pour masquer cette colonne, passer uniquement le paramètre à "False"
+# Display column Patrimonialité in taxons lists (based on field "patrimonial") and to customize it
+# To hide this column, set this parameter to "False"
 # PATRIMONIALITE = False
-# Pour customiser l'affichage de cette colonne (label affiché, valeurs du champs et leur affichage) :
+# To customize the display of this column (displayed label, field values and their display) :
 PATRIMONIALITE = {
     'label': "Patrimonial",
     'config': {
@@ -198,12 +199,12 @@ PATRIMONIALITE = {
     }
 }
 
-#############################
-#### Pages statistiques #####
-#############################
+#######################
+#### Static pages #####
+#######################
 
-# Permet de lister les pages statiques souhaitées et de les afficher dynamiquement dans le menu sidebar
-# Les pictos se limitent au Glyphicon proposés par Bootstrap (https://getbootstrap.com/docs/3.3/components/)
+# Allow to list static pages wanted and to display them dynamically in the sidebar menu
+# Pictograms are using Glyphicon (https://www.glyphicons.com/)
 STATIC_PAGES = {
     'presentation': {'title': u"Présentation de l'atlas", 'picto': 'glyphicon-question-sign', 'order': 0, 'template': 'static/custom/templates/presentation.html'}
 }
