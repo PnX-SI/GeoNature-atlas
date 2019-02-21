@@ -70,8 +70,8 @@ fi
 if [ ! -f ./static/custom/images/favicon.ico ]; then
   cp ./static/images/sample.favicon.ico ./static/custom/images/favicon.ico
 fi
-if [ ! -f ./static/custom/images/accueil-intro.jpg ]; then
-  cp ./static/images/sample.accueil-intro.jpg ./static/custom/images/accueil-intro.jpg
+if [ ! -f ./static/custom/images/home-intro.jpg ]; then
+  cp ./static/images/sample.home-intro.jpg ./static/custom/images/home-intro.jpg
 fi
 if [ ! -f ./static/custom/images/logo-structure.png ]; then
   cp ./static/images/sample.logo-structure.png ./static/custom/images/logo-structure.png

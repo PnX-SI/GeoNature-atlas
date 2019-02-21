@@ -16,7 +16,7 @@
 							</p>
 						</div>
 						<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-							<img src="{{url_for('static', filename='custom/images/accueil-intro.jpg') }}" width="100%" alt="{{configuration.NOM_APPLICATION}}">
+							<img src="{{url_for('static', filename='custom/images/home-intro.jpg') }}" width="100%" alt="{{configuration.NOM_APPLICATION}}">
 						</div>
 					</div>
 				</div>
