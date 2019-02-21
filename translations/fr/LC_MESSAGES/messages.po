@@ -19,11 +19,11 @@ msgstr ""
 "Generated-By: Babel 2.6.0\n"
 
 #: templates/index.html:49
-msgid "home.titre"
-msgstr "En quelque chiffres"
+msgid "home.insomefigures"
+msgstr "En quelques chiffres"
 
 #: templates/index.html:56
-msgid "home.obs"
+msgid "home.seelatestobs"
 msgstr "Voir les dernières observations"
 
 #: templates/index.html:66
@@ -31,32 +31,60 @@ msgid "home.gallery"
 msgstr "galerie photos"
 
 #: templates/index.html:66
-msgid "home.lastobs"
-msgstr "observations |"
-
-#: templates/index.html:66
-msgid "home.lastespece"
-msgstr " espèces "
-
-#: templates/index.html:66
-msgid "home.especes"
-msgstr "Espèces à découvrir"
-
-#: templates/index.html:66
-msgid "home.nbobs"
+msgid "home.observations"
 msgstr "observations"
 
 #: templates/index.html:66
-msgid "home.fiche_espece"
-msgstr "Fiche espèce "
+msgid "home.observation"
+msgstr "observation"
+
+#: templates/index.html:66
+msgid "home.species"
+msgstr "espèces"
+
+#: templates/index.html:66
+msgid "home.1species"
+msgstr "espèce"
+
+#: templates/index.html:66
+msgid "home.municipalities"
+msgstr "communes"
+
+#: templates/index.html:66
+msgid "home.municipality"
+msgstr "commune"
+
+#: templates/index.html:66
+msgid "home.photos"
+msgstr "photos"
+
+#: templates/index.html:66
+msgid "home.photo"
+msgstr "photo"
+
+#: templates/index.html:66
+msgid "home.speciestodiscover"
+msgstr "Espèces à découvrir"
+
+#: templates/index.html:66
+msgid "home.speciessheet"
+msgstr "Fiche espèce"
+
+#: static/templates/index.html:66
+msgid "home.latestobs"
+msgstr "Les observations des agents ces 7 derniers jours |"
+
+#: static/templates/index.html:66
+msgid "home.moment"
+msgstr "A voir en ce moment"
 
 #: templates/galeriePhotos.html:66
 msgid "gallery.groups"
-msgstr "Tous les groupes "
+msgstr "Tous les groupes"
 
 #: templates/ficheRangtaxonomique.html:66
 msgid "tax.obs"
-msgstr " Espèces observées pour le taxon"
+msgstr "Espèces observées pour le taxon"
 
 #: templates/ficheEspece.html:66
 msgid "espece.fiche"
@@ -194,14 +222,6 @@ msgstr "Retour à l'accueil"
 #: static/templates/navbar.html:66
 msgid "search.commune"
 msgstr "Rechercher une commune"
-
-#: static/templates/index.html:66
-msgid "home.last_obs"
-msgstr "Les observations des agents ces 7 derniers jours |"
-
-#: static/templates/index.html:66
-msgid "home.moment"
-msgstr "A voir en ce moment"
 
 #: static/templates/galeriePhotos.html:66
 msgid "gallery.title"
