@@ -32,6 +32,32 @@ def getObservationsMaillesChilds(connection, cd_ref):
         tabObs.append(temp)
     return tabObs
 
+def getObservationsMaillesLastObsChilds(connection, cd_ref):
+    sql = """
+        SELECT
+            obs.id_maille,
+            obs.geojson_maille,
+            max(date_part('year', o.dateobs)) as lastyear
+        FROM atlas.vm_observations_mailles obs
+        JOIN atlas.vm_observations o ON o.id_observation = obs.id_observation
+        WHERE obs.cd_ref in (
+                SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
+            )
+            OR obs.cd_ref = :thiscdref
+	GROUP BY obs.id_maille, obs.geojson_maille
+        ORDER BY id_maille"""
+    observations = connection.execute(text(sql), thiscdref=cd_ref)
+    tabObs = list()
+    for o in observations:
+        temp = {
+            'id_maille': o.id_maille,
+            'nb_observations': 1,
+            'lasyear': o.lastyear,
+            'geojson_maille': ast.literal_eval(o.geojson_maille)
+        }
+        tabObs.append(temp)
+    return tabObs
+
 
 # last observation for index.html
 def lastObservationsMailles(connection, mylimit, idPhoto):
