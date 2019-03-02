@@ -160,6 +160,7 @@ def ficheEspece(cd_ref):
         'PROTECTION': config.PROTECTION,
         'GLOSSAIRE': config.GLOSSAIRE,
         'AFFICHAGE_MAILLE': config.AFFICHAGE_MAILLE,
+        'TYPE_MAILLE': config.TYPE_MAILLE,
         'ZOOM_LEVEL_POINT': config.ZOOM_LEVEL_POINT,
         'LIMIT_CLUSTER_POINT': config.LIMIT_CLUSTER_POINT,
         'FICHE_ESPECE': True,
