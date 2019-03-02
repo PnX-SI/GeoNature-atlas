@@ -32,6 +32,7 @@ def getObservationsMaillesChilds(connection, cd_ref):
         tabObs.append(temp)
     return tabObs
 
+#Maille avec date de derniere obs seulement
 def getObservationsMaillesLastObsChilds(connection, cd_ref):
     sql = """
         SELECT
@@ -50,13 +51,16 @@ def getObservationsMaillesLastObsChilds(connection, cd_ref):
     tabObs = list()
     for o in observations:
         temp = {
+            'properties':{
             'id_maille': o.id_maille,
             'nb_observations': 1,
-            'lasyear': o.lastyear,
-            'geojson_maille': ast.literal_eval(o.geojson_maille)
+            'lastyear': o.lastyear},
+            'geometry': ast.literal_eval(o.geojson_maille),
+            'type' : "Feature"
         }
         tabObs.append(temp)
-    return tabObs
+    outGeoJson={'type':"FeatureCollection", 'features':tabObs}
+    return outGeoJson
 
 
 # last observation for index.html
