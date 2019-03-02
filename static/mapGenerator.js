@@ -593,7 +593,7 @@ function generateSliderOnMap(){
       },
 
     onAdd: function (map) {
-        var sliderContainer = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-slider-control');
+        sliderContainer = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-slider-control');
      
         sliderContainer.style.backgroundColor = 'white';
         sliderContainer.style.width = '300px';
