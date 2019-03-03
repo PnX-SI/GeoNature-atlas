@@ -30,8 +30,8 @@ function styleMailleAtlas(feature) {
 
     return {
         fillColor: fillColor,
-        weight: 2,
-        color: 'black',
+        weight: 0.5,
+        color: 'white',
         fillOpacity: 0.8
     };
 }
