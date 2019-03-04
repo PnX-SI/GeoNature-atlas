@@ -39,6 +39,12 @@ def getObservationsMailleAPI(cd_ref):
     connection.close()
     return Response(json.dumps(observations), mimetype='application/json')
 
+@api.route('/observationsMailleLastObs/<int:cd_ref>',methods=['GET'])
+def getObservationsMailleLastObsAPI(cd_ref):
+    connection = utils.engine.connect()
+    observations = vmObservationsMaillesRepository.getObservationsMaillesLastObsChilds(connection, cd_ref)
+    connection.close()
+    return Response(json.dumps(observations), mimetype='application/json')
 
 @api.route('/observationsPoint/<int:cd_ref>', methods=['GET'])
 def getObservationsPointAPI(cd_ref):

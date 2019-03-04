@@ -64,6 +64,9 @@ MAP = {
 # True = maille / False = point
 AFFICHAGE_MAILLE = False
 
+#Couleur selon la dernière obs (<5 ans, 5 à 10 ans, +10 ans) "last obs" ou le nombre d'obs "nb obs"
+TYPE_MAILLE = 'nb obs'
+
 # Niveau de zoom à partir duquel on passe à l'affichage en point (si AFFICHAGE_MAILLE = False)
 ZOOM_LEVEL_POINT = 11
 

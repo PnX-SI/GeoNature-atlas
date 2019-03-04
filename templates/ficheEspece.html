@@ -553,7 +553,11 @@
     <script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
     <script src="{{url_for('static', filename='main.js') }}"></script>
     {% if configuration.AFFICHAGE_MAILLE %}
+        {% if configuration.TYPE_MAILLE == "last obs" %}
+        <script src="{{url_for('static', filename='mapMaillesLastObs.js') }}"></script>
+        {% else %}
         <script src="{{url_for('static', filename='mapMailles.js') }}"></script>
+        {% endif %}
     {% else %}
         <script src="{{url_for('static', filename='mapPoint.js') }}"></script>
     {% endif %}
