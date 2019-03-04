@@ -47,10 +47,11 @@ $.ajax({
   }).done(function(observations) {
     $('#loadingGif').hide();
 
-   L.geoJson(observations, {
+  currentLayer = L.geoJson(observations, {
       //onEachFeature : onEachFeatureMaille,
       style: styleMailleAtlas,
   }).addTo(map);
+  currentLayer.bringToFront();
     /*    
     // affichage des mailles
     displayMailleLayerFicheEspece(observations, taxonYearMin, YEARMAX);
