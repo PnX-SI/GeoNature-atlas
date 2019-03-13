@@ -48,7 +48,11 @@ $.ajax({
     $('#loadingGif').hide();
 
   currentLayer = L.geoJson(observations, {
-      //onEachFeature : onEachFeatureMaille,
+      onEachFeature : function (feature, layer){
+                    popupContent = "<b>Nombre d'observations </b> "+feature.properties.nb_observations+"<br><b>Dernière d'observations </b>"+feature.properties.lastyear ;
+
+                layer.bindPopup(popupContent)
+      },
       style: styleMailleAtlas,
   }).addTo(map);
   currentLayer.bringToFront();

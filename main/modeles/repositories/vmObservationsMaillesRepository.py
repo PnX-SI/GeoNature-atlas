@@ -38,7 +38,8 @@ def getObservationsMaillesLastObsChilds(connection, cd_ref):
         SELECT
             obs.id_maille,
             obs.geojson_maille,
-            max(date_part('year', o.dateobs)) as lastyear
+            max(date_part('year', o.dateobs)) as lastyear,
+            count(*) as nb_obs
         FROM atlas.vm_observations_mailles obs
         JOIN atlas.vm_observations o ON o.id_observation = obs.id_observation
         WHERE obs.cd_ref in (
@@ -51,10 +52,11 @@ def getObservationsMaillesLastObsChilds(connection, cd_ref):
     tabObs = list()
     for o in observations:
         temp = {
-            'properties':{
-            'id_maille': o.id_maille,
-            'nb_observations': 1,
-            'lastyear': o.lastyear},
+                'properties':{
+                'id_maille': o.id_maille,
+                'nb_observations': o.nb_obs,
+                'lastyear': o.lastyear
+            },
             'geometry': ast.literal_eval(o.geojson_maille),
             'type' : "Feature"
         }
