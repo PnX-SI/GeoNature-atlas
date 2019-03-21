@@ -66,5 +66,7 @@ app = create_app()
 if __name__ == "__main__":
     from flask_script import Manager
 
+    app.debug = True
+    app.run(port=8080, debug=True)
     # Manager(app).run()
-    run_simple("localhost", 8080, app, use_reloader=True)
+    # run_simple("localhost", 8080, app, use_reloader=True)
