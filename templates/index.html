@@ -61,7 +61,7 @@
 								<h4> {{ 'espèces' if stat.nbTotalTaxons > 1 else 'espèce' }}</h4>
 								<form method="POST" id="searchFormTaxonsStat" class="navbar-form" role="search">
 									<div class="form-group has-feedback">
-										<input id="searchTaxonsStat" type="text" class="form-control" placeholder="Rechercher une espèce &nbsp; &nbsp; &nbsp;" loading="true" style="background-image: url('{{url_for('static', filename='images/loading3.gif') }}');" disabled>
+										<input id="searchTaxonsStat" type="text" class="form-control" placeholder="Rechercher une espèce &nbsp; &nbsp; &nbsp;" loading="false" />
 										<i class="glyphicon glyphicon-search form-control-feedback"></i>
 										<input id="hiddenInputTaxonStat" type="hidden" name="cd_ref">
 									</div>
@@ -75,7 +75,7 @@
 								<h4> {{ 'communes' if stat.town > 1 else 'commune' }}</h4>
 								<form method="POST" onsubmit="completeAction('#searchFormCommunesStat', hiddenInputCommunesStat)" id='searchFormCommunesStat' action=""  class="navbar-form" role="search">
 									<div class="form-group has-feedback">
-										<input id="searchCommunesStat" type="text" class="form-control" placeholder="Rechercher une commune" >
+										<input id="searchCommunesStat" type="text" class="form-control" placeholder="Rechercher une commune" />
 										<i class="glyphicon glyphicon-search form-control-feedback"></i>
 										<input id="hiddenInputCommunesStat" type="hidden" name="insee">
 									</div>
@@ -234,7 +234,6 @@
 
     	<script type="text/javascript">
   			var observations = {{observations|tojson}}
-  			,communesSearch = {{communesSearch|tojson}}
   			, configuration = {{configuration|tojson}},
   			url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
 	  	</script>

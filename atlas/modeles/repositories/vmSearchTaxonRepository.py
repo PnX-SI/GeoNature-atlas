@@ -15,3 +15,12 @@ def listeTaxons(session):
         temp = {'label': r[0], 'value': r[1]}
         taxonList.append(temp)
     return taxonList
+
+def listeTaxonsSearch(session, search, limit=50):
+    req = session.query(VmSearchTaxon.nom_search, VmSearchTaxon.cd_ref,) \
+        .filter(VmSearchTaxon.nom_search.ilike('%' + search + '%')).limit(limit).all()
+    taxonList = []
+    for r in req:
+        temp = {'label': r[0], 'value': r[1]}
+        taxonList.append(temp)
+    return taxonList
