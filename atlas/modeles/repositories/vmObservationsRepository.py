@@ -5,7 +5,7 @@ from .. import utils
 from ...configuration import config
 
 from sqlalchemy.sql import text
-import ast
+import json
 from datetime import datetime
 
 currentYear = datetime.now().year
@@ -17,27 +17,30 @@ def searchObservationsChilds(connection, cd_ref):
             WHERE obs.cd_ref in (
                 SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
                 )
-                OR obs.cd_ref = :thiscdref""".encode('UTF-8')
+                OR obs.cd_ref = :thiscdref"""
 
     observations = connection.execute(text(sql), thiscdref=cd_ref)
     obsList = list()
     for o in observations:
         temp = dict(o)
         temp.pop('the_geom_point', None)
-        temp['geojson_point'] = ast.literal_eval(o.geojson_point)
+        temp['geojson_point'] = json.loads(o.geojson_point or '{}')
         temp['dateobs'] = str(o.dateobs)
-        temp['year'] = o.dateobs.year
+        if o.dateobs is not None:
+            temp['year'] = o.dateobs.year
+        else:
+            temp['year'] = None
         obsList.append(temp)
     return obsList
 
 
 def firstObservationChild(connection, cd_ref):
-    sql = "SELECT min(taxons.yearmin) as yearmin \
-    FROM atlas.vm_taxons taxons \
-    JOIN atlas.vm_taxref taxref ON taxref.cd_ref=taxons.cd_ref \
-    WHERE taxons.cd_ref in ( \
-    SELECT * FROM atlas.find_all_taxons_childs(:thiscdref) \
-    )OR taxons.cd_ref = :thiscdref".encode('UTF-8')
+    sql = """SELECT min(taxons.yearmin) as yearmin 
+    FROM atlas.vm_taxons taxons 
+    JOIN atlas.vm_taxref taxref ON taxref.cd_ref=taxons.cd_ref 
+    WHERE taxons.cd_ref in ( 
+    SELECT * FROM atlas.find_all_taxons_childs(:thiscdref) 
+    )OR taxons.cd_ref = :thiscdref"""
     req = connection.execute(text(sql), thiscdref=cd_ref)
     for r in req:
         return r.yearmin
@@ -68,7 +71,7 @@ def lastObservations(connection, mylimit, idPhoto):
     for o in observations:
         temp = dict(o)
         temp.pop('the_geom_point', None)
-        temp['geojson_point'] = ast.literal_eval(o.geojson_point)
+        temp['geojson_point'] = json.loads(o.geojson_point or '{}')
         temp['dateobs'] = str(o.dateobs)
         temp['group2_inpn'] = utils.deleteAccent(o.group2_inpn)
         temp['pathImg'] = utils.findPath(o)
@@ -91,7 +94,7 @@ def lastObservationsCommune(connection, mylimit, insee):
     for o in observations:
         temp = dict(o)
         temp.pop('the_geom_point', None)
-        temp['geojson_point'] = ast.literal_eval(o.geojson_point)
+        temp['geojson_point'] = json.loads(o.geojson_point or '{}')
         temp['dateobs'] = str(o.dateobs)
         obsList.append(temp)
     return obsList
@@ -123,7 +126,7 @@ def getObservationTaxonCommune(connection, insee, cd_ref):
     for o in observations:
         temp = dict(o)
         temp.pop('the_geom_point', None)
-        temp['geojson_point'] = ast.literal_eval(o.geojson_point)
+        temp['geojson_point'] = json.loads(o.geojson_point or '{}')
         temp['dateobs'] = str(o.dateobs)
         obsList.append(temp)
     return obsList
@@ -227,7 +230,7 @@ def statIndex(connection):
 def genericStat(connection, tab):
     tabStat = list()
     for pair in tab:
-        rang, nomTaxon = pair.items()[0]
+        rang, nomTaxon = list(pair.items())[0]
         sql = """
             SELECT COUNT (o.id_observation) AS nb_obs,
             COUNT (DISTINCT t.cd_ref) AS nb_taxons
@@ -245,7 +248,7 @@ def genericStat(connection, tab):
 def genericStatMedias(connection, tab):
     tabStat = list()
     for i in range(len(tab)):
-        rang, nomTaxon = tab[i].items()[0]
+        rang, nomTaxon = list(tab[i].items())[0]
         sql = """
             SELECT t.nb_obs, t.cd_ref, t.lb_nom, t.nom_vern, t.group2_inpn,
                 m.url, m.chemin, m.auteur, m.id_media

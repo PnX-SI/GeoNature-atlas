@@ -1,17 +1,5 @@
 app_name=atlas
 
-#####################
-### Gunicorn settings
-#####################
-gun_num_workers=4
-gun_host=0.0.0.0
-gun_port=8080
-
-####################
-### Python settings
-####################
-venv_dir=venv
-
 #
 #  GeoNature-atlas
 #  PostgreSQL database settings
@@ -133,3 +121,23 @@ attr_chorologie=103
 # Especes les plus observées sur la periode 'moins X jour, plus X jours par rapport à la date du jour, toutes années confondues'
 # 15 jours par défaut
 time=15
+
+
+
+##################################################
+########## Paramatre administrateur avancé #######
+# ne modifier que si vous savez ce que vous faites
+##################################################
+
+#####################
+### Gunicorn settings
+#####################
+gun_num_workers=4
+gun_host=0.0.0.0
+gun_port=8080
+
+####################
+### Python settings
+####################
+venv_dir=venv
+python_executable=/usr/bin/python3

@@ -46,7 +46,7 @@ def getCommunesObservationsChilds(connection, cd_ref):
         )
         OR obs.cd_ref = :thiscdref
     ORDER BY com.commune_maj ASC
-    """.encode('UTF-8')
+    """
     req = connection.execute(text(sql), thiscdref=cd_ref)
     listCommunes = list()
     for r in req:

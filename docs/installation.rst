@@ -93,7 +93,7 @@ Cela installera les logiciels nécessaires au fonctionnement de l'application
 Installation de la base de données
 ==================================
 
-Modifiez le fichier de configuration de la BDD et de son installation automatique ``main/configuration/settings.ini``. 
+Modifiez le fichier de configuration de la BDD et de son installation automatique ``atlas/configuration/settings.ini``. 
 
 
 :notes:
@@ -158,7 +158,7 @@ Installtion de l'application
 Configuration de l'application
 ==============================   
 
-Editer le fichier de configuration ``main/configuration/config.py``.
+Editer le fichier de configuration ``atlas/configuration/config.py``.
 
 - Vérifier que la variable 'database_connection' contient les bonnes informations de connexion à la base
 - Renseignez l'URL de l'application à partir de la racine du serveur WEB ('/atlas' ou '' par exemple)
@@ -242,13 +242,13 @@ Mise à jour de l'application
 
     A la racine de l'application, un fichier ``VERSION`` permet de savoir quelle version est installée. 
 
-- Copier ``main/configuration/settings.ini`` et ``main/configuration/config.py`` depuis l'ancienne version vers la nouvelle pour récupérer vos paramètres de configuration :
+- Copier ``atlas/configuration/settings.ini`` et ``atlas/configuration/config.py`` depuis l'ancienne version vers la nouvelle pour récupérer vos paramètres de configuration :
 
 ::
 
     cd atlas-nouvelle-version
-    cp ../VERSION-PRECEDENTE/main/configuration/settings.ini main/configuration/settings.ini
-    cp ../VERSION-PRECEDENTE/main/configuration/config.py main/configuration/config.py
+    cp ../VERSION-PRECEDENTE/atlas/configuration/settings.ini atlas/configuration/settings.ini
+    cp ../VERSION-PRECEDENTE/atlas/configuration/config.py atlas/configuration/config.py
 
 - Copier le contenu du répertoire ``static/custom/`` depuis l'ancienne version vers la nouvelle pour récupérer toute votre customisation (CSS, templates, images...) :
 
