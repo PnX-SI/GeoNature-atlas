@@ -5,7 +5,15 @@ CHANGELOG
 1.3.2 (2018-05-17)
 ------------------
 
+** Nouveautés **
+
+* Passage à python3
+* Amélioration du module de recherche de taxons (AJAX + trigrams)
+* Amélioration du module de recherche de commune (AJAX)
+
 **Corrections**
+
+* Renommage du répertoire 'main' en 'atlas'
 
 * Correction erreur d'import inutilisé dans ``initAtlas.py``
 

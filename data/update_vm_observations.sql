@@ -119,13 +119,35 @@ CREATE UNIQUE INDEX ON atlas.vm_taxons (cd_ref);
 
 
 -- Materialized View: atlas.vm_search_taxon
-CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS
-SELECT tx.cd_nom, tx.cd_ref, COALESCE(tx.lb_nom || ' | ' || tx.nom_vern, tx.lb_nom) AS nom_search FROM atlas.vm_taxref tx JOIN atlas.vm_taxons t ON t.cd_ref = tx.cd_ref;
+CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS 
+SELECT t.cd_nom,
+  t.cd_ref,
+  t.search_name,
+  t.nom_valide,
+  t.lb_nom
+FROM (
+  SELECT t_1.cd_nom,
+        t_1.cd_ref,
+        concat(t_1.lb_nom, ' =  <i> ', t_1.nom_valide, '</i>') AS search_name,
+        t_1.nom_valide,
+        t_1.lb_nom
+  FROM atlas.vm_taxref t_1
 
-CREATE UNIQUE index on atlas.vm_search_taxon(cd_nom);
-CREATE index on atlas.vm_search_taxon(cd_ref);
-CREATE index on atlas.vm_search_taxon(nom_search);
+  UNION
+  SELECT t_1.cd_nom,
+        t_1.cd_ref,
+        concat(t_1.nom_vern, ' =  <i> ', t_1.nom_valide, '</i>' ) AS search_name,
+        t_1.nom_valide,
+        t_1.lb_nom
+  FROM atlas.vm_taxref t_1
+  WHERE t_1.nom_vern IS NOT NULL AND t_1.cd_nom = t_1.cd_ref
+) t
+JOIN atlas.vm_taxons taxons ON taxons.cd_ref = t.cd_ref
 
+
+create UNIQUE index on atlas.vm_search_taxon(cd_nom);
+create index on atlas.vm_search_taxon(cd_ref);
+CREATE INDEX trgm_idx ON atlas.vm_search_taxon USING GIST (search_name gist_trgm_ops);
 
 -- Materialized View: atlas.vm_mois
 CREATE MATERIALIZED VIEW atlas.vm_mois AS
