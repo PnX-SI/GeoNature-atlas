@@ -1,4 +1,3 @@
-
 # -*- coding:utf-8 -*-
 
 from .. import utils
@@ -23,16 +22,17 @@ def getObservationsMaillesChilds(connection, cd_ref):
     tabObs = list()
     for o in observations:
         temp = {
-            'id_maille': o.id_maille,
-            'nb_observations': 1,
-            'annee': o.annee,
-            'dateobs': str(o.dateobs),
-            'geojson_maille': json.loads(o.geojson_maille)
+            "id_maille": o.id_maille,
+            "nb_observations": 1,
+            "annee": o.annee,
+            "dateobs": str(o.dateobs),
+            "geojson_maille": json.loads(o.geojson_maille),
         }
         tabObs.append(temp)
     return tabObs
 
-#Maille avec date de derniere obs seulement
+
+# Maille avec date de derniere obs seulement
 def getObservationsMaillesLastObsChilds(connection, cd_ref):
     sql = """
         SELECT
@@ -52,16 +52,16 @@ def getObservationsMaillesLastObsChilds(connection, cd_ref):
     tabObs = list()
     for o in observations:
         temp = {
-                'properties':{
-                'id_maille': o.id_maille,
-                'nb_observations': o.nb_obs,
-                'lastyear': o.lastyear
+            "properties": {
+                "id_maille": o.id_maille,
+                "nb_observations": o.nb_obs,
+                "lastyear": o.lastyear,
             },
-            'geometry': ast.literal_eval(o.geojson_maille),
-            'type' : "Feature"
+            "geometry": json.loads(o.geojson_maille),
+            "type": "Feature",
         }
         tabObs.append(temp)
-    outGeoJson={'type':"FeatureCollection", 'features':tabObs}
+    outGeoJson = {"type": "FeatureCollection", "features": tabObs}
     return outGeoJson
 
 
@@ -81,29 +81,25 @@ def lastObservationsMailles(connection, mylimit, idPhoto):
         ORDER BY o.dateobs DESC
     """
 
-    observations = connection.execute(
-        text(sql),
-        thislimit=mylimit,
-        thisID=idPhoto
-    )
+    observations = connection.execute(text(sql), thislimit=mylimit, thisID=idPhoto)
     obsList = list()
     for o in observations:
         if o.nom_vern:
-            inter = o.nom_vern.split(',')
-            taxon = inter[0] + ' | ' + o.lb_nom
+            inter = o.nom_vern.split(",")
+            taxon = inter[0] + " | " + o.lb_nom
         else:
             taxon = o.lb_nom
         temp = {
-            'id_observation': o.id_observation,
-            'id_maille': o.id_maille,
-            'cd_ref': o.cd_ref,
-            'dateobs': str(o.dateobs),
-            'altitude_retenue': o.altitude_retenue,
-            'taxon': taxon,
-            'geojson_maille': json.loads(o.geojson_maille),
-            'group2_inpn': utils.deleteAccent(o.group2_inpn),
-            'pathImg': utils.findPath(o),
-            'id_media': o.id_media
+            "id_observation": o.id_observation,
+            "id_maille": o.id_maille,
+            "cd_ref": o.cd_ref,
+            "dateobs": str(o.dateobs),
+            "altitude_retenue": o.altitude_retenue,
+            "taxon": taxon,
+            "geojson_maille": json.loads(o.geojson_maille),
+            "group2_inpn": utils.deleteAccent(o.group2_inpn),
+            "pathImg": utils.findPath(o),
+            "id_media": o.id_media,
         }
         obsList.append(temp)
     return obsList
@@ -130,20 +126,18 @@ def lastObservationsCommuneMaille(connection, mylimit, insee):
     ON st_intersects(l.l_geom, m.the_geom)
     GROUP BY l.lb_nom, l.cd_ref, m.id_maille, l.nom_vern
     """
-    observations = connection.execute(
-        text(sql), thisInsee=insee, thislimit=mylimit
-    )
+    observations = connection.execute(text(sql), thisInsee=insee, thislimit=mylimit)
     obsList = list()
     for o in observations:
         if o.nom_vern:
-            taxon = o.nom_vern + ' | ' + o.lb_nom
+            taxon = o.nom_vern + " | " + o.lb_nom
         else:
             taxon = o.lb_nom
         temp = {
-            'cd_ref': o.cd_ref,
-            'taxon': taxon,
-            'geojson_maille': json.loads(o.geojson_maille),
-            'id_maille': o.id_maille
+            "cd_ref": o.cd_ref,
+            "taxon": taxon,
+            "geojson_maille": json.loads(o.geojson_maille),
+            "id_maille": o.id_maille,
         }
         obsList.append(temp)
     return obsList
@@ -163,16 +157,14 @@ def getObservationsTaxonCommuneMaille(connection, insee, cd_ref):
         WHERE o.cd_ref = :thiscdref AND c.insee = :thisInsee
         ORDER BY id_maille
     """
-    observations = connection.execute(
-        text(sql), thisInsee=insee, thiscdref=cd_ref
-    )
+    observations = connection.execute(text(sql), thisInsee=insee, thiscdref=cd_ref)
     tabObs = list()
     for o in observations:
         temp = {
-            'id_maille': o.id_maille,
-            'nb_observations': 1,
-            'annee': o.annee,
-            'geojson_maille': json.loads(o.geojson_maille)
+            "id_maille": o.id_maille,
+            "nb_observations": 1,
+            "annee": o.annee,
+            "geojson_maille": json.loads(o.geojson_maille),
         }
         tabObs.append(temp)
 
