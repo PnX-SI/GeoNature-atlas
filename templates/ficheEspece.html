@@ -75,15 +75,26 @@
                             <a href="{{firstPhoto.path}}" data-lightbox="imageSet"
                               data-title="{{firstPhoto.title}} &copy; {{firstPhoto.author}}"
                             >
-                            {% if configuration.REDIMENTIONNEMENT_IMAGE %}
+                            {% if configuration.REDIMENSIONNEMENT_IMAGE %}
                               {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+firstPhoto.id_media|string+'?h=500' %}
                             {% else %}
                               {% set img_path = firstPhoto.path %}
                             {% endif %}
                               <img id="mainImg" src="{{img_path}}"
                                 style="width:100%;" alt="{{firstPhoto.title}} &copy; {{firstPhoto.author|striptags}}">
-                                <p class="imgDescription main">{{firstPhoto.title}} &copy; {{firstPhoto.author|striptags}}</p>
-                            </a>
+                                <p class="imgDescription main">{{firstPhoto.title}}
+                                {% if firstPhoto.description %}
+                                - {{firstPhoto.description}}
+                                {% endif %}  
+                                &copy; {{firstPhoto.author|striptags}} 
+                                {% if firstPhoto.licence %}
+                                - {{firstPhoto.licence}}
+                                {% endif %}
+                                {% if photo.source %}
+                                - {{photo.source}}
+                                {% endif %}
+                                    
+                                </p>
                         </div>
 
                     </div>
@@ -367,15 +378,29 @@
                             <div class="item">
                             {% endif %}
 
-                                {% if configuration.REDIMENTIONNEMENT_IMAGE %}
+                                {% if configuration.REDIMENSIONNEMENT_IMAGE %}
                                   {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+photo.id_media|string+'?h=500' %}
                                 {% else %}
                                   {% set img_path = photo.path %}
                                 {% endif %}
-                                <a href="{{photo.path}}" data-lightbox="imageSet" data-title="{{photo.title}} &copy; {{photo.author}}" >
+                                <a href="{{photo.path}}" data-lightbox="imageSet" data-title="{{photo.title}}
+                                {% if photo.description %}
+                                - {{photo.description}}
+                                {% endif %}
+                                &copy; {{photo.author}}
+                                {% if photo.licence %}
+                                - {{photo.licence}}
+                                {% endif %}
+                                {% if photo.source %}
+                                - {{photo.source}}
+                                {% endif %}
+                                ">
                                   <div class="slider-size" style="background-image: url({{img_path}})" alt="{{photo.title}} &copy; {{photo.author|striptags}}">
                                       <div class="carousel-caption">
-                                        {{photo.title}} &copy; {{photo.author|striptags}}
+                                        {{photo.title}} &copy; {{photo.author|striptags}}  
+                                        {% if photo.licence %}
+                                        - {{photo.licence}}
+                                        {% endif %}
                                       </div>
                                   </div>
                                 </a>
