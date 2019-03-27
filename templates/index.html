@@ -6,7 +6,8 @@
 
         <!-- Jquery -->
         <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
-		    <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+				<script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+				<script type="text/javascript" src="{{url_for('static', filename='lib/jquery.lazy/jquery.lazy.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
 
 		<!-- Bootstrap -->
@@ -120,7 +121,7 @@
 									<div class ="thumbnail-stat-medias">
 										<div class="zoom-wrapper">
 											<a href="{{url_for('main.ficheEspece',cd_ref=customStatMedias[i][j].cd_ref)}}" >
-                          						{% if configuration.TAXHUB_URL != None %}
+                          						{% if configuration.REDIMENTIONNEMENT_IMAGE %}
 										    	  <div class="img-custom-medias" style="background-image: url({{configuration.TAXHUB_URL}}/api/tmedias/thumbnail/{{customStatMedias[i][j].id_media}}?h=500&w=500)"></div>
                           						{% else %}
 										    	  <div class="img-custom-medias" style="background-image: url({{customStatMedias[i][j].path}})"></div>
@@ -171,11 +172,12 @@
 											{% if obs.pathImg == None %}
 											<img class="singleTaxon" width="80%" src="{{url_for('static', filename='images/picto_' + obs.group2_inpn | replace(" ", "_") +'.png')}}" data-toggle="tooltip" data-original-title="{{obs.group2_inpn}}" data-placement="left">
 											{% else %}
-												{% if configuration.TAXHUB_URL != None %}
-												<div class ="pictoImg pictoImgSmall" style="background-image:url({{configuration.TAXHUB_URL}}/api/tmedias/thumbnail/{{obs.id_media}}?h=60&w=60);" data-toggle="tooltip" data-original-title="{{obs.group2_inpn}}" data-placement="left"></div>
+												{% if configuration.REDIMENTIONNEMENT_IMAGE %}
+													{% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+obs.id_media|string+'?h=500&w=500' %}
 												{% else %}
-												<div class ="pictoImg pictoImgSmall" style="background-image:url({{obs.pathImg}});" data-toggle="tooltip" data-original-title="{{obs.group2_inpn}}" data-placement="left"></div>
+													{% set img_path = obs.pathImg %}
 												{% endif %}
+												<div class ="pictoImg pictoImgSmall lazy" data-src="{{img_path}}" ></div>
 											{% endif %}
 										</td>
 										<td class="singleTaxon name" cdref="{{obs.cd_ref}}" > {{obs.taxon}}</td>
@@ -208,7 +210,7 @@
 						        {% if tax.path == None %}
                       <img class="default-logo " src="{{url_for('static', filename='images/picto_' + tax.group2_inpn | replace(" ", "_") +'.png') }}" alt="">
 						        {% else %}
-                      {% if configuration.TAXHUB_URL != None %}
+                      {% if configuration.REDIMENTIONNEMENT_IMAGE %}
                         <div class ="pictoImg pictoImgMedium" style="background-image:url({{configuration.TAXHUB_URL}}/api/tmedias/thumbnail/{{tax.id_media}}?h=500&w=500);" data-toggle="tooltip" data-original-title="{{tax.group2_inpn}}" data-placement="left"></div>
                       {% else %}
 						            <div class="img-responsive-logo" style="background-image:url({{tax.path}})"> </div>

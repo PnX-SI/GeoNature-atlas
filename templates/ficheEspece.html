@@ -75,7 +75,7 @@
                             <a href="{{firstPhoto.path}}" data-lightbox="imageSet"
                               data-title="{{firstPhoto.title}} &copy; {{firstPhoto.author}}"
                             >
-                            {% if configuration.TAXHUB_URL != None %}
+                            {% if configuration.REDIMENTIONNEMENT_IMAGE %}
                               {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+firstPhoto.id_media|string+'?h=500' %}
                             {% else %}
                               {% set img_path = firstPhoto.path %}
@@ -367,7 +367,7 @@
                             <div class="item">
                             {% endif %}
 
-                                {% if configuration.TAXHUB_URL != None %}
+                                {% if configuration.REDIMENTIONNEMENT_IMAGE %}
                                   {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+photo.id_media|string+'?h=500' %}
                                 {% else %}
                                   {% set img_path = photo.path %}
