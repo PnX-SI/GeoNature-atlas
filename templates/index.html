@@ -101,11 +101,11 @@
 			<div class="col-sm-12">
 				<div class="row row-medias">
 				{% for i in range(customStatMedias | length) %}
-					{% if configuration.COLONNES_RANG_STAT == 2 %}
+					{% if configuration.RANG_STAT | length == 2 %}
 					<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 stat-medias-wrapper">
-					{% elif configuration.COLONNES_RANG_STAT == 3 %}
+					{% elif configuration.RANG_STAT | length == 3 %}
 					<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 stat-medias-wrapper">
-					{% elif configuration.COLONNES_RANG_STAT == 4 %}
+					{% elif configuration.RANG_STAT | length == 4 %}
 					<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 stat-medias-wrapper">
 					{% endif %}
 					<div class="panel panel-default statMedias">

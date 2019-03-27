@@ -12,7 +12,7 @@
             {% endif %}
             <th id="sorted" data-priority="4"> Nombre d'observation(s)</th>
                 <th data-priority="9">Dernière observation</th>
-            {% if configuration.MYTYPE == 1 %}
+            {% if DISPLAY_EYE_ON_LIST %}
                 <th data-priority="5">Observations </th>
             {% endif %}
             <th data-priority="3">Fiche</th>
@@ -66,7 +66,7 @@
                 {% endif %}
                 <td>{{taxon.nb_obs}}</td>
                 <td>{{taxon.last_obs | int}}</td>
-                {% if configuration.MYTYPE == 1 %}
+                {% if DISPLAY_EYE_ON_LIST %}
                     <td>
                         <span class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-original-title="Afficher les observations sur la commune" data-placement="right"> </span>
                     </td>

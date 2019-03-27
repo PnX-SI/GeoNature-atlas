@@ -10,10 +10,13 @@ CHANGELOG
 * Passage à python3
 * Amélioration du module de recherche de taxons (AJAX + trigrams)
 * Amélioration du module de recherche de commune (AJAX)
+* Vérification des paramètres de configuration grâce à Marshmallow et passage de paramètres par défaut si paramètres absents
+* Simplification du passage de la configuration aux routes
 
 **Corrections**
 
 * Renommage du répertoire 'main' en 'atlas'
+* Suppression du paramètre COLONNES_RANG_STAT (calculé)
 
 * Correction erreur d'import inutilisé dans ``initAtlas.py``
 

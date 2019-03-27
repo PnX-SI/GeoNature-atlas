@@ -41,21 +41,34 @@ class ReverseProxied(object):
 
 def create_app():
     # renvoie une instance de app l appli Flask
+    from atlas.configuration import config
+    from atlas.configuration.config_parser import read_and_validate_conf
+    from atlas.configuration.config_schema import AtlasConfig
+
+    config = read_and_validate_conf(config, AtlasConfig)
     app = Flask(__name__, template_folder=APP_DIR)
+    # push the config in app config at 'PUBLIC' key
+    app.config.update({"PUBLIC": config})
 
-    app.debug = config.modeDebug
+    app.debug = config["modeDebug"]
+    with app.app_context() as context:
+        from atlas.atlasRoutes import main as main_blueprint
 
-    from atlas.atlasRoutes import main as main_blueprint
+        app.register_blueprint(main_blueprint)
 
-    app.register_blueprint(main_blueprint)
+        from atlas.atlasAPI import api
 
-    from atlas.atlasAPI import api
+        app.register_blueprint(api, url_prefix="/api")
 
-    app.register_blueprint(api, url_prefix="/api")
+        compress.init_app(app)
 
-    compress.init_app(app)
+        app.wsgi_app = ReverseProxied(
+            app.wsgi_app, script_name=config["URL_APPLICATION"]
+        )
 
-    app.wsgi_app = ReverseProxied(app.wsgi_app, script_name=config.URL_APPLICATION)
+        @app.context_processor
+        def inject_config():
+            return dict(configuration=app.config["PUBLIC"])
 
     return app
 
