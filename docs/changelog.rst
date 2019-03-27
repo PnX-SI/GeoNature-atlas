@@ -19,12 +19,13 @@ CHANGELOG
 * Suppression du paramètre COLONNES_RANG_STAT (calculé)
 * Suppression du paramètre IGNAPIKEY (le passer directement dans les variables ``MAP.FIRST_MAP`` et ``MAP.SECOND_MAP``)
 * Correction erreur d'import inutilisé dans ``initAtlas.py``
+* Ajout du paramètre ``REDIMENTIONNEMENT_IMAGE`` qui active ou non le redimmentionnement par TaxHub
 
 
 
 **Note de version**
 
-Replacer la clé IGN dans les variables FIRST_MAP et SECOND_MAP de la manière suivante:
+* Replacer la clé IGN dans les variables FIRST_MAP et SECOND_MAP de la manière suivante:
 
 ::
 
@@ -39,6 +40,8 @@ Replacer la clé IGN dans les variables FIRST_MAP et SECOND_MAP de la manière s
                 'attribution' : '&copy; <a href="http://www.ign.fr/">IGN</a>',
                 'tileName' : 'Ortho IGN'
         },
+
+* Si le redimmentionnement d'image était activé, passer la variable ``REDIMENTIONNEMENT_IMAGE`` à ``True`` dans le fichier de configuration
 
 
 1.3.1 (2018-03-15)

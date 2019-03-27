@@ -130,6 +130,8 @@ REMOTE_MEDIAS_PATH = "static/medias/"
 
 # URL de TaxHub (pour génération à la volée des vignettes des images).
 # Si le service Taxhub n'est pas utilisé, commenter la variable
+REDIMENTIONNEMENT_IMAGE = False
+# si redimmentionnement image = True, indiquer l'URL de taxhub
 TAXHUB_URL = "http://mondomaine.fr/taxhub"
 
 #### ID DES ATTRIBUTS DESCRIPTIFS DES TAXONS DE LA TABLE vm_cor_taxon_attribut

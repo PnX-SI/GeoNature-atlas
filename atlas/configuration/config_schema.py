@@ -1,4 +1,10 @@
-from marshmallow import Schema, fields, validates_schema, ValidationError
+from marshmallow import (
+    Schema,
+    fields,
+    validates_schema,
+    ValidationError,
+    validates_schema,
+)
 from marshmallow.validate import OneOf, Regexp
 
 
@@ -38,7 +44,6 @@ class MapConfig(Schema):
 
 
 class AtlasConfig(Schema):
-
     modeDebug = fields.Boolean(missing=False)
     STRUCTURE = fields.String(missing="Nom de la structure")
     NOM_APPLICATION = fields.String(missing="Nom de l'application")
@@ -67,6 +72,7 @@ class AtlasConfig(Schema):
     LIMIT_FICHE_LISTE_HIERARCHY = fields.Integer(missing=28)
     REMOTE_MEDIAS_URL = fields.String(missing="http://mondomaine.fr/taxhub/")
     REMOTE_MEDIAS_PATH = fields.String(missing="static/medias/")
+    REDIMENTIONNEMENT_IMAGE = fields.Boolean(missing=False)
     TAXHUB_URL = fields.String(required=False, missing=None)
     ATTR_DESC = fields.Integer(missing=100)
     ATTR_COMMENTAIRE = fields.Integer(missing=101)
@@ -117,4 +123,16 @@ class AtlasConfig(Schema):
     )
 
     MAP = fields.Nested(MapConfig, missing=dict())
+
+    @validates_schema
+    def validate_url_taxhub(self, data):
+        """
+            TAXHHUB_URL doit être rempli si REDIMENTIONNEMENT_IMAGE = True
+        """
+        if data["REDIMENTIONNEMENT_IMAGE"] and data["TAXHUB_URL"] is None:
+            raise ValidationError(
+                {
+                    "Le champ TAXHUB_URL doit être rempli si REDIMENTIONNEMENT_IMAGE = True"
+                }
+            )
 
