@@ -20,9 +20,11 @@ function generateHtmlPhoto(photos, redimentionnement, taxhub_url) {
     slicePhoto = photos.slice(compteurJson, compteurJson + 22);
     compteurJson = compteurJson + 22;
     slicePhoto.forEach(function(photo) {
-      if (photo.title.indexOf("'") != -1) {
-        photo.title = photo.title.split("'").join("&#39;");
-      }
+      photo.title = photo.title.split("'").join("&#39;");
+      photo.description = photo.description.split("'").join("&#39;");
+      photo.author = photo.author.split("'").join("&#39;");
+      photo.licence = photo.licence.split("'").join("&#39;");
+      photo.source = photo.source.split("'").join("&#39;");
       photo_url = photo.path;
       if (redimentionnement) {
         photo_url =
@@ -39,8 +41,14 @@ function generateHtmlPhoto(photos, redimentionnement, taxhub_url) {
         photo.path +
         "' data-lightbox='imageSet' data-title='" +
         photo.title +
+        " - " +
+        photo.description +
         " &copy; " +
         photo.author +
+        " - " +
+        photo.licence +
+        " " +
+        photo.source +
         "' cdRef='" +
         photo.cd_ref +
         "'>\
