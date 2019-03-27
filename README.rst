@@ -15,17 +15,17 @@ L'outil a été développé de manière générique pour pouvoir être déployé
 
 .. image :: docs/images/geonature-atlas-schema-01.jpg
 
-**Ou déployez l'ensemble complet d'applications de gestion de données naturalistes** (`UsersHub <https://github.com/PnEcrins/UsersHub>`_, `TaxHub <https://github.com/PnX-SI/TaxHub>`_, `GeoNature <https://github.com/PnEcrins/GeoNature>`_)
+**Ou déployez l'ensemble complet d'applications de gestion de données naturalistes** (`UsersHub <https://github.com/PnX-SI/UsersHub>`_, `TaxHub <https://github.com/PnX-SI/TaxHub>`_, `GeoNature <https://github.com/PnX-SI/GeoNature>`_)
 
 .. image :: docs/images/geonature-atlas-schema-02.jpg
 
-Documentation d'installation : https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/installation.rst
+Documentation d'installation : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/installation.rst
 
-Présentation générale : https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/2016-09-GeoNature-atlas-PRESENTATION.pdf
+Présentation générale : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/2016-09-GeoNature-atlas-PRESENTATION.pdf
 
-Rapport de stage (Théo Lechemia) : https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/2016-09-30-rapport_stage_Theo-Lechemia.pdf
+Rapport de stage (Théo Lechemia) : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/2016-09-30-rapport_stage_Theo-Lechemia.pdf
 
-Soutenance de stage (Théo Lechemia) : https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/2016-09-soutenance-Theo-Lechemia.pdf
+Soutenance de stage (Théo Lechemia) : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/2016-09-soutenance-Theo-Lechemia.pdf
 
 Technologies
 ------------
@@ -46,20 +46,19 @@ L'API de GeoNature-atlas se sert directement dans des vues. Ainsi chacun peut pe
 
 L'ensemble des vues sont regroupées dans un schéma spécifique « atlas », ce qui laisse la possibilité de les remplir avec autre chose que GeoNature.
 
-
-
 Auteurs
 -------
 
 - Théo Lechemia
 - Gil Deluermoz
 - Camille Monchicourt
+- Amandine Sahl
 
 Licence
 -------
 
 * OpenSource - GPL V3
-* Copyright (c) 2016 - Parc National des Écrins
+* Copyright (c) 2016-2019 - Parc National des Écrins
 
 
 .. image:: http://geonature.fr/img/logo-pne.jpg
