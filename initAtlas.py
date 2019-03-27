@@ -5,10 +5,12 @@ from flask_sqlalchemy import SQLAlchemy
 
 from werkzeug.serving import run_simple
 
-from atlas.configuration import config
 from sqlalchemy import create_engine, MetaData, Table
-
 from flask_compress import Compress
+
+from atlas.configuration.config_parser import read_and_validate_conf
+from atlas.configuration.config_schema import AtlasConfig, SecretSchemaConf
+from atlas.configuration import config
 
 db = SQLAlchemy()
 compress = Compress()
@@ -40,17 +42,20 @@ class ReverseProxied(object):
 
 
 def create_app():
-    # renvoie une instance de app l appli Flask
-    from atlas.configuration import config
-    from atlas.configuration.config_parser import read_and_validate_conf
-    from atlas.configuration.config_schema import AtlasConfig
+    """ 
+        renvoie une instance de l'app Flask
+    """
 
-    config = read_and_validate_conf(config, AtlasConfig)
+    # validation de la configuration
+    # configuration publique
+    valid_config = read_and_validate_conf(config, AtlasConfig)
+    # validation de la configuration secrète
+    read_and_validate_conf(config, SecretSchemaConf)
     app = Flask(__name__, template_folder=APP_DIR)
     # push the config in app config at 'PUBLIC' key
-    app.config.update({"PUBLIC": config})
+    app.config.update({"PUBLIC": valid_config})
 
-    app.debug = config["modeDebug"]
+    app.debug = valid_config["modeDebug"]
     with app.app_context() as context:
         from atlas.atlasRoutes import main as main_blueprint
 
@@ -63,7 +68,7 @@ def create_app():
         compress.init_app(app)
 
         app.wsgi_app = ReverseProxied(
-            app.wsgi_app, script_name=config["URL_APPLICATION"]
+            app.wsgi_app, script_name=valid_config["URL_APPLICATION"]
         )
 
         @app.context_processor
