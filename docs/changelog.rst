@@ -12,6 +12,7 @@ CHANGELOG
 * Amélioration du module de recherche de commune (AJAX)
 * Vérification des paramètres de configuration grâce à Marshmallow et passage de paramètres par défaut si paramètres absents
 * Simplification du passage de la configuration aux routes
+* Ajout de la description, de la licence et de la source sur les médias
 
 **Corrections**
 
@@ -19,7 +20,7 @@ CHANGELOG
 * Suppression du paramètre COLONNES_RANG_STAT (calculé)
 * Suppression du paramètre IGNAPIKEY (le passer directement dans les variables ``MAP.FIRST_MAP`` et ``MAP.SECOND_MAP``)
 * Correction erreur d'import inutilisé dans ``initAtlas.py``
-* Ajout du paramètre ``REDIMENTIONNEMENT_IMAGE`` qui active ou non le redimmentionnement par TaxHub
+* Ajout du paramètre ``REDIMENSIONNEMENT_IMAGE`` qui active ou non le redimmentionnement par TaxHub
 
 
 
@@ -41,7 +42,7 @@ CHANGELOG
                 'tileName' : 'Ortho IGN'
         },
 
-* Si le redimmentionnement d'image était activé, passer la variable ``REDIMENTIONNEMENT_IMAGE`` à ``True`` dans le fichier de configuration
+* Si le redimmentionnement d'image était activé, passer la variable ``REDIMENSIONNEMENT_IMAGE`` à ``True`` dans le fichier de configuration
 
 
 1.3.1 (2018-03-15)

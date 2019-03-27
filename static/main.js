@@ -54,16 +54,6 @@ autocompleteSearch = function(inputID, urlDestination, nbProposal) {
   });
 };
 
-// $(".lazy").lazy();
-
-// load lazy the images
-$(".lazy").lazy();
-
-// load lazy on scroll
-$("#tableEspece").scroll(function() {
-  $(".lazy").lazy();
-});
-
 // Generate the autocompletion with the list of item, the input id and the form id
 $("#searchTaxons").focus(function() {
   autocompleteSearch("#searchTaxons", "espece", 20);
