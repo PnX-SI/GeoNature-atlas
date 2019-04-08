@@ -6,7 +6,7 @@ if [ "$(id -u)" != "0" ]; then
    exit 1
 fi
 
-. main/configuration/settings.ini
+. atlas/configuration/settings.ini
 
 function database_exists () {
     # /!\ Will return false if psql can't list database. Edit your pg_hba.conf as appropriate.
@@ -71,8 +71,12 @@ then
 
     if $use_ref_geo_gn2
     then
+        echo "Creation des table géographiques à partir du schéma ref_geo de la base geonature"
+        echo "--------------------" &>> log/install_db.log
+        echo "Creation of layers table from ref_geo of geonaturedb" &>> log/install_db.log
+        echo "--------------------" &>> log/install_db.log
         export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port \
-            -v type_maille=$type_maille -v type_territoire=$type_territoire -f data/gn2/atlas_ref_geo.sql
+            -v type_maille=$type_maille -v type_territoire=$type_territoire -f data/gn2/atlas_ref_geo.sql &>> log/install_db.log
     else
         # Import du shape des limites du territoire ($limit_shp) dans la BDD / atlas.t_layer_territoire
         ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 data/ref/emprise_territoire_3857.shp $limit_shp
@@ -238,8 +242,8 @@ then
     then
         # Creation des tables filles en FWD
         echo "Création de la connexion a GeoNature pour la taxonomie"
-		sudo cp data/gn2/atlas_ref_taxonomie.sql /tmp/atlas_ref_taxonomie.sql
-        sudo sed -i "s/myuser;$/$owner_atlas;/" /tmp/atlas_ref_taxonomie.sql
+		sudo cp data/gn2/atlas_ref_taxonomie.sql /tmp/atlas_ref_taxonomie.sql &>> log/install_db.log
+        sudo sed -i "s/myuser;$/$owner_atlas;/" /tmp/atlas_ref_taxonomie.sql &>> log/install_db.log
         export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas_ref_taxonomie.sql  &>> log/install_db.log
     fi
 
@@ -309,7 +313,7 @@ then
         echo "Affectation des droits de lecture sur la BDD source GeoNature..."
         sudo cp data/grant_geonature.sql /tmp/grant_geonature.sql
         sudo sed -i "s/myuser;$/$user_pg;/" /tmp/grant_geonature.sql
-        sudo -n -u postgres -s psql -d $db_source_name -f /tmp/grant_geonature.sql  &>> log/install_db.log
+        #sudo -n -u postgres -s psql -d $db_source_name -f /tmp/grant_geonature.sql  &>> log/install_db.log
     fi
 
     echo "Creation de la VM des observations de chaque taxon par mailles..."

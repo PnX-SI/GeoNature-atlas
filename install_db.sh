@@ -6,7 +6,7 @@ if [ "$(id -u)" != "0" ]; then
    exit 1
 fi
 
-. main/configuration/settings.ini
+. atlas/configuration/settings.ini
 
 function database_exists () {
     # /!\ Will return false if psql can't list database. Edit your pg_hba.conf as appropriate.

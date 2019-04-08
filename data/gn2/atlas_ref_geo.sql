@@ -1,6 +1,7 @@
 --################################
 --  Import FDW
 --################################
+
 DROP SCHEMA IF EXISTS ref_geo CASCADE;
 CREATE SCHEMA IF NOT EXISTS ref_geo;
 
@@ -12,14 +13,16 @@ IMPORT FOREIGN SCHEMA ref_geo
 --###COMMUNES
 --################################
 
+
+-- Suppression si temporaire des communes la table existe
 DO $$
 BEGIN
-	DROP TABLE atlas.l_communes;
+	DROP MATERIALIZED VIEW atlas.l_communes;
 EXCEPTION WHEN others THEN
 	RAISE NOTICE 'view atlas.l_communes does not exist';
 END$$;
 
-
+-- création de la vm l_communes à partir des communes du ref_geo
 CREATE MATERIALIZED VIEW atlas.l_communes AS
  SELECT c.area_code as insee,
     c.area_name as commune_maj,
@@ -45,7 +48,6 @@ CREATE UNIQUE INDEX l_communes_insee_idx
   USING btree
   (insee COLLATE pg_catalog."default");
 
-DROP TABLE atlas.l_communes;
 
 --################################
 --################################
@@ -102,17 +104,6 @@ SELECT
  ST_Perimeter(st_union)/1000 as perim_km,
  st_transform(st_union, 3857) as  the_geom
 FROM d;
-
-
-
-CREATE MATERIALIZED VIEW atlas.vm_communes AS
-SELECT c.insee,
-c.commune_maj,
-c.the_geom,
-st_asgeojson(st_transform(c.the_geom, 4326)) as commune_geojson
-FROM atlas.l_communes c
-JOIN atlas.t_layer_territoire t ON st_intersects(t.the_geom, c.the_geom);
-
 
 
 

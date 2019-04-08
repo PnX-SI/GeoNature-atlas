@@ -211,10 +211,9 @@ FROM (
   FROM atlas.vm_taxref t_1
   WHERE t_1.nom_vern IS NOT NULL AND t_1.cd_nom = t_1.cd_ref
 ) t
-JOIN atlas.vm_taxons taxons ON taxons.cd_ref = t.cd_ref
+JOIN atlas.vm_taxons taxons ON taxons.cd_ref = t.cd_ref;
 
 
-create UNIQUE index on atlas.vm_search_taxon(cd_nom);
 create index on atlas.vm_search_taxon(cd_ref);
 CREATE INDEX trgm_idx ON atlas.vm_search_taxon USING GIST (search_name gist_trgm_ops);
 
@@ -348,16 +347,18 @@ INSERT INTO atlas.bib_taxref_rangs  (id_rang, nom_rang) VALUES ('SSCO', '?');
 
 -- Médias de chaque taxon
 
-CREATE MATERIALIZED VIEW atlas.vm_medias AS
-    SELECT id_media,
-           cd_ref,
-           titre,
-           url,
-           chemin,
-           auteur,
-           desc_media,
-           date_media,
-           id_type
+CREATE MATERIALIZED VIEW atlas.vm_medias AS 
+ SELECT t_medias.id_media,
+    t_medias.cd_ref,
+    t_medias.titre,
+    t_medias.url,
+    t_medias.chemin,
+    t_medias.auteur,
+    t_medias.desc_media,
+    t_medias.date_media,
+    t_medias.id_type,
+    t_medias.licence,
+    t_medias.source
    FROM taxonomie.t_medias;
 CREATE UNIQUE INDEX ON atlas.vm_medias (id_media);
 

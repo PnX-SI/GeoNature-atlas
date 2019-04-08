@@ -26,7 +26,6 @@ FROM (
 JOIN atlas.vm_taxons taxons ON taxons.cd_ref = t.cd_ref
 
 
-create UNIQUE index on atlas.vm_search_taxon(cd_nom);
 CREATE INDEX on atlas.vm_search_taxon(cd_ref);
 CREATE INDEX trgm_idx ON atlas.vm_search_taxon USING GIST (search_name gist_trgm_ops);
 
@@ -50,9 +49,9 @@ CREATE MATERIALIZED VIEW atlas.vm_medias AS
     t_medias.id_type,
     t_medias.licence,
     t_medias.source
-   FROM taxonomie.t_medias
-WITH DATA;
+   FROM taxonomie.t_medias;
 
+CREATE UNIQUE INDEX ON atlas.vm_medias (id_media);
 
 
 CREATE MATERIALIZED VIEW atlas.vm_taxons_plus_observes AS 
@@ -71,5 +70,9 @@ CREATE MATERIALIZED VIEW atlas.vm_taxons_plus_observes AS
   WHERE date_part('day'::text, obs.dateobs) >= date_part('day'::text, 'now'::text::date - 15) AND date_part('month'::text, obs.dateobs) = date_part('month'::text, 'now'::text::date - 15) OR date_part('day'::text, obs.dateobs) <= date_part('day'::text, 'now'::text::date + 15) AND date_part('month'::text, obs.dateobs) = date_part('day'::text, 'now'::text::date + 15)
   GROUP BY obs.cd_ref, tax.lb_nom, tax.nom_vern, m.url, m.chemin, tax.group2_inpn, m.id_type, m.id_media
   ORDER BY (count(*)) DESC
- LIMIT 12
-WITH DATA;
+ LIMIT 12;
+
+ CREATE UNIQUE INDEX vm_taxons_plus_observes_cd_ref_idx
+  ON atlas.vm_taxons_plus_observes
+  USING btree
+  (cd_ref);
