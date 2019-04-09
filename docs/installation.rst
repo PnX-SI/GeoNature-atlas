@@ -9,13 +9,13 @@ INSTALLATION
 Prérequis
 =========
 
-Application développée et installée sur un serveur Debian 7 ou 8.
+Application développée et installée sur un serveur Debian 7, 8 ou 9.
 
 Ce serveur doit aussi disposer de : 
 
 - unzip (apt-get install unzip)
 - sudo (apt-get install sudo)
-- un utilisateur (``monuser`` dans cette documentation) appartenant au groupe ``sudo`` (pour pouvoire bénéficier des droits d'administrateur)
+- un utilisateur (``whoami`` dans cette documentation) appartenant au groupe ``sudo`` (pour pouvoire bénéficier des droits d'administrateur)
 
 :notes:
 
@@ -31,36 +31,38 @@ Installation de l'environnement logiciel
 
 Le script ``install_env.sh`` va automatiquement installer les outils nécessaires à l'application si ils ne sont pas déjà sur le serveur : 
 
-- PostgreSQL 9.3+
+- PostgreSQL 9.6+
 - PostGIS 2
 - Apache 2
-- Python 2.7
+- Python 3
 
 Le script ``install_app.sh`` va préparer l'application et installer les dépendances listées dans le fichier `requirements.txt <https://github.com/PnEcrins/GeoNature-atlas/blob/master/requirements.txt>`_.
 
 **1. Mettre à jour les sources list**
 
-Ces opérations doivent être faites en tant qu'administrateur (en sudo ou avec l'utilisateur ``root``) :
+Ces opérations doivent être faites en tant qu'administrateur (en sudo ou avec l'utilisateur ``root``).
+Adapter à votre version d'OS (ici Debian 9 Stretch) :
 
 ::
 
-    sudo echo "#" >> /etc/apt/sources.list
-    sudo echo "#Ajout pour GeoNature-atlas" >> /etc/apt/sources.list
-    sudo echo "deb http://httpredir.debian.org/debian jessie main" >> /etc/apt/sources.list
+    sudo echo "#" | sudo tee -a /etc/apt/sources.list
+    sudo echo "#Ajout pour GeoNature-atlas" | sudo tee -a /etc/apt/sources.list
+    sudo echo "deb http://httpredir.debian.org/debian stretch main" | sudo tee -a /etc/apt/sources.list
     sudo apt-get update
+
 
 :notes:
 
-    Cet exemple est basé sur une Debian 8. A adapter selon votre OS.
+    Cet exemple est basé sur une Debian 9. A adapter selon votre OS.
     
-**2. Récupérez la dernière version (X.Y.Z à remplacer par le numéro de version) de GeoNature-atlas sur le dépot (https://github.com/PnEcrins/GeoNature-atlas/releases)**
+**2. Récupérez la dernière version (X.Y.Z à remplacer par le numéro de version) de GeoNature-atlas sur le dépot (https://github.com/PnX-SI/GeoNature-atlas/releases)**
 	
-Ces opérations doivent être faites avec l'utilisateur courant (autre que ``root``), ``monuser`` dans l'exemple :
+Ces opérations doivent être faites avec l'utilisateur courant (autre que ``root``), ``whoami`` dans l'exemple :
 
 ::
 
-    cd /home/monuser
-    wget https://github.com/PnEcrins/GeoNature-atlas/archive/X.Y.Z.zip
+    cd /home/`whoami`
+    wget https://github.com/PnX-SI/GeoNature-atlas/archive/X.Y.Z.zip
 
     
 :notes:
@@ -73,7 +75,7 @@ Dézippez l'archive :
 
     unzip X.Y.Z.zip
 	
-Vous pouvez renommer le dossier qui contient l'application (dans un dossier ``/home/monuser/atlas/`` par exemple) :
+Vous pouvez renommer le dossier qui contient l'application (dans un dossier ``/home/`whoami`/atlas/`` par exemple) :
 	
 ::
 
@@ -85,15 +87,19 @@ Cela installera les logiciels nécessaires au fonctionnement de l'application
 
 ::
 
-    cd /home/monuser/atlas
+    cd /home/`whoami`/atlas
     ./install_env.sh
-
 
 
 Installation de la base de données
 ==================================
 
-Modifiez le fichier de configuration de la BDD et de son installation automatique ``atlas/configuration/settings.ini``. 
+Faites une copie du modèle de fichier de configuration de la BDD et de son installation automatique ``atlas/configuration/settings.ini.sample`` puis éditez-le. 
+
+::
+
+    cd /home/`whoami`/atlas/atlas/configuration
+    cp settings.ini.sample settings.ini
 
 
 :notes:
@@ -107,8 +113,21 @@ Modifiez le fichier de configuration de la BDD et de son installation automatiqu
 :notes:
 
     Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci en localhost car la création d'une BDD recquiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adaptez les commandes du fichier `install_db.sh` en les executant une par une.
+  
+:notes:
 
-	
+    Dans le cas où vous vous souhaitez connecter l'atlas à une BDD distante de GeoNature v2, il faut au préalable créer un utilisateur spécifique pour l'atlas dans cette dernière (lecture seule). Se connecter en SSH au serveur hébergeant la BDD mère de GeoNature v2 et lancez les commandes suivante en adaptant. Faire ensuite correspondre avec les paramètres concernés dans le fichier ``settings.ini`` (``atlas_source_user`` et ``atlas_source_pass``) :
+
+    ::
+
+        sudo su - postgres
+        psql
+        CREATE USER geonatatlas WITH ENCRYPTED PASSWORD 'monpassachanger';
+        GRANT USAGE ON SCHEMA gn_synthese, ref_geo, ref_nomenclatures, taxonomie TO geonatatlas;
+        GRANT SELECT ON ALL TABLES IN SCHEMA gn_synthese, ref_geo, ref_nomenclatures, taxonomie TO geonatatlas;
+        \q
+        exit
+
 L'application se base entièrement sur des vues matérialisées. Par défaut, celles-ci sont proposées pour requêter les données dans une BDD GeoNature.
 
 .. image :: images/geonature-atlas-schema-02.jpg
@@ -129,10 +148,22 @@ A noter aussi que si vous ne connectez pas l'atlas à une BDD GeoNature(``geonat
 
 Lancez le fichier fichier d'installation de la base de données en sudo :
 
+Pour installation connectée à GeoNature v2 :
+
 ::
 
+    cd /home/`whoami`/atlas
+    sudo ./install_db_gn2.sh
+    
+
+Sinon :
+
+::
+
+    cd /home/`whoami`/atlas
     sudo ./install_db.sh
     
+
 :notes:
 
     Vous pouvez consulter le log de cette installation de la base dans ``log/install_db.log`` et vérifier qu'aucune erreur n'est intervenue. 
@@ -146,7 +177,7 @@ Si vous voulez adapter le contenu des vues matérialisées, vous pouvez modifier
 Si vous souhaitez uniquement recréer la vue ``atlas.vm_observations`` et les 6 autres vues qui en dépendent vous pouvez utiliser le script ``data/update_vm_observations.sql``.
 
 
-Installtion de l'application
+Installation de l'application
 ============================
 
 **Lancez l'installation automatique de l'application :**
@@ -188,7 +219,6 @@ Copiez/collez-y ces lignes en renseignant le bon port :
 ::
 
     # Configuration GeoNature-atlas
-    RewriteEngine  on
     <Location /atlas>
         ProxyPass  http://127.0.0.1:8080
         ProxyPassReverse  http://127.0.0.1:8080
@@ -197,6 +227,7 @@ Copiez/collez-y ces lignes en renseignant le bon port :
     
 Si l'atlas doit se trouver à la racine du serveur copiez/coller ces lignes (NB les '/' à la fin des ProxyPass et ProxPassReverse)
 ::
+
 	<Location />
    	    ProxyPass http://127.0.0.1:8080/
 	    ProxyPassReverse http://127.0.0.1:8080/
@@ -211,15 +242,14 @@ Si l'atlas est associé à un domaine, ajoutez cette ligne au début du fichier 
 
 * Activer les modules et redémarrer Apache :
  
-  ::  
-  
-        sudo a2enmod proxy
-        sudo a2enmod proxy_http
-	sudo a2enmod rewrite
-        sudo apache2ctl restart
- 
+::
 
-Activez le virtualhost puis redémarrez Apache :
+    sudo a2enmod proxy
+    sudo a2enmod proxy_http
+    sudo a2enmod rewrite
+    sudo apache2ctl restart
+
+* Activez le virtualhost puis redémarrez Apache :
 
 ::
 
@@ -234,9 +264,9 @@ Activez le virtualhost puis redémarrez Apache :
 Mise à jour de l'application
 ============================
 
-- Télécharger puis dézipper la nouvelle version de l'atlas à installer dans ``/home/monuser``.
+- Télécharger puis dézipper la nouvelle version de l'atlas à installer dans ``/home/`whoami`/``.
 - Renommer l'ancienne version de l'atlas puis la nouvelle version, en lui donnant le nom du répertoire précédemment utilisé si vous voulez éviter de devoir modifier votre configuration Apache.
-- Vous pouvez aussi créer un nouveau répertoire pour l'application dans ``home/monuser/`` et cloner la version souhaitée depuis le dépot Github (``git clone``).
+- Vous pouvez aussi créer un nouveau répertoire pour l'application dans ``home/`whoami`/`` et cloner la version souhaitée depuis le dépot Github (``git clone``).
 
 :notes:
 
@@ -285,7 +315,7 @@ Pour écouter toutes les IP, éditez le fichier ``postgresql.conf`` :
 
 ::
 
-    sudo nano /etc/postgresql/9.4/main/postgresql.conf
+    sudo nano /etc/postgresql/9.6/main/postgresql.conf
 
 Remplacez ``listen_adress = 'localhost'`` par  ``listen_adress = '*'``. Ne pas oublier de décommenter la ligne (enlever le ``#``).
 
@@ -293,7 +323,7 @@ Pour définir les IP qui peuvent se connecter au serveur PostgreSQL, éditez le 
 
 ::
 
-    sudo nano /etc/postgresql/9.4/main/pg_hba.conf
+    sudo nano /etc/postgresql/9.6/main/pg_hba.conf
 
 Si vous souhaitez définir des IP qui peuvent se connecter à la BDD, sous la ligne ``# IPv4 local connections:``, rajouter : 
 
@@ -319,7 +349,7 @@ Connectez-vous en SSH sur le serveur hébergeant la BDD source, puis éditez la 
 
 ::
 
-    sudo nano /etc/postgresql/9.4/main/pg_hba.conf
+    sudo nano /etc/postgresql/9.6/main/pg_hba.conf
 
 Rajouter cette ligne à la fin du fichier (en remplacant IP_DE_LA_BDD_ATLAS par son adresse IP) :
     
