@@ -17,14 +17,14 @@ sudo apt-get install -y unzip
 sudo apt-get install -y apache2
 sudo apachectl restart
 
-sudo apt-get install -y postgresql-9.6 postgis-2.3 postgresql-server-dev-9.6 postgresql-contrib-9.6
+sudo apt-get install -y postgresql-9.6-postgis-2.3 postgresql-server-dev-9.6 postgresql-contrib-9.6
 
-sudo apt-get install -y python-setuptools
-sudo apt-get install -y libpq-dev python-dev
+sudo apt-get install -y python3-setuptools
+sudo apt-get install -y libpq-dev python3-dev
 
-sudo apt-get install -y python python-pip
-sudo apt-get install -y python-gdal
+sudo apt-get install -y python3 python3-pip
+sudo apt-get install -y python3-gdal
 sudo apt-get install -y gdal-bin
 
-sudo apt-get install -y python-virtualenv
+sudo apt-get install -y python3-virtualenv
 sudo apt-get install -y supervisor

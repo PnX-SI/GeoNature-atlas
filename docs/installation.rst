@@ -9,7 +9,7 @@ INSTALLATION
 Prérequis
 =========
 
-Application développée et installée sur un serveur Debian 7, 8 ou 9.
+Application développée et installée sur un serveur Debian 8 ou 9.
 
 Ce serveur doit aussi disposer de : 
 
@@ -32,7 +32,7 @@ Installation de l'environnement logiciel
 Le script ``install_env.sh`` va automatiquement installer les outils nécessaires à l'application si ils ne sont pas déjà sur le serveur : 
 
 - PostgreSQL 9.6+
-- PostGIS 2
+- PostGIS 2.3+
 - Apache 2
 - Python 3
 
@@ -51,6 +51,24 @@ Adapter à votre version d'OS (ici Debian 9 Stretch) :
     sudo apt-get update
 
 
+On ajoute un fichier ``sources.list`` pour permettre d'installer la version de postgresql sans être dépendant de celle liée au ``sources.list`` de sa version d'OS :
+
+::
+
+    sudo touch /etc/apt/sources.list.d/pgdg.list
+    sudo echo "#Ajout des sources pour les differentes versions de PostGreSQL" | sudo tee -a /etc/apt/sources.list.d/pgdg.list
+    sudo echo "deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main" | sudo tee -a /etc/apt/sources.list.d/pgdg.list
+
+
+On ajoute les signatures du dépôt puis on remet à jour la liste des paquets :
+
+::
+
+    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | \
+        sudo apt-key add -
+    sudo apt-get update
+
+
 :notes:
 
     Cet exemple est basé sur une Debian 9. A adapter selon votre OS.
@@ -64,7 +82,7 @@ Ces opérations doivent être faites avec l'utilisateur courant (autre que ``roo
     cd /home/`whoami`
     wget https://github.com/PnX-SI/GeoNature-atlas/archive/X.Y.Z.zip
 
-    
+
 :notes:
 
     Si la commande ``wget`` renvoie une erreur liée au certificat, installez le paquet ``ca-certificates`` (``sudo apt-get install ca-certificates``) puis relancer la commande ``wget`` ci-dessus.
@@ -74,7 +92,7 @@ Dézippez l'archive :
 ::
 
     unzip X.Y.Z.zip
-	
+
 Vous pouvez renommer le dossier qui contient l'application (dans un dossier ``/home/`whoami`/atlas/`` par exemple) :
 	
 ::
