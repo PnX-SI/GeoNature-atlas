@@ -53,7 +53,7 @@ def create_app():
     read_and_validate_conf(config, SecretSchemaConf)
     app = Flask(__name__, template_folder=APP_DIR)
     # push the config in app config at 'PUBLIC' key
-    app.config.update({"PUBLIC": valid_config})
+    app.config.update(valid_config)
 
     app.debug = valid_config["modeDebug"]
     with app.app_context() as context:
@@ -73,7 +73,7 @@ def create_app():
 
         @app.context_processor
         def inject_config():
-            return dict(configuration=app.config["PUBLIC"])
+            return dict(configuration=valid_config)
 
     return app
 

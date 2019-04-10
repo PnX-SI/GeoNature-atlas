@@ -22,61 +22,61 @@ main = Blueprint("main", __name__)
 
 
 @main.route(
-    "/espece/" + current_app.config["PUBLIC"]["REMOTE_MEDIAS_PATH"] + "<image>",
+    "/espece/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>",
     methods=["GET", "POST"],
 )
 def especeMedias(image):
     return redirect(
-        current_app.config["PUBLIC"]["REMOTE_MEDIAS_URL"]
-        + current_app.config["PUBLIC"]["REMOTE_MEDIAS_PATH"]
+        current_app.config["REMOTE_MEDIAS_URL"]
+        + current_app.config["REMOTE_MEDIAS_PATH"]
         + image
     )
 
 
 @main.route(
-    "/commune/" + current_app.config["PUBLIC"]["REMOTE_MEDIAS_PATH"] + "<image>",
+    "/commune/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>",
     methods=["GET", "POST"],
 )
 def communeMedias(image):
     return redirect(
-        current_app.config["PUBLIC"]["REMOTE_MEDIAS_URL"]
-        + current_app.config["PUBLIC"]["REMOTE_MEDIAS_PATH"]
+        current_app.config["REMOTE_MEDIAS_URL"]
+        + current_app.config["REMOTE_MEDIAS_PATH"]
         + image
     )
 
 
 @main.route(
-    "/liste/" + current_app.config["PUBLIC"]["REMOTE_MEDIAS_PATH"] + "<image>",
+    "/liste/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>",
     methods=["GET", "POST"],
 )
 def listeMedias(image):
     return redirect(
-        current_app.config["PUBLIC"]["REMOTE_MEDIAS_URL"]
-        + current_app.config["PUBLIC"]["REMOTE_MEDIAS_PATH"]
+        current_app.config["REMOTE_MEDIAS_URL"]
+        + current_app.config["REMOTE_MEDIAS_PATH"]
         + image
     )
 
 
 @main.route(
-    "/groupe/" + current_app.config["PUBLIC"]["REMOTE_MEDIAS_PATH"] + "<image>",
+    "/groupe/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>",
     methods=["GET", "POST"],
 )
 def groupeMedias(image):
     return redirect(
-        current_app.config["PUBLIC"]["REMOTE_MEDIAS_URL"]
-        + current_app.config["PUBLIC"]["REMOTE_MEDIAS_PATH"]
+        current_app.config["REMOTE_MEDIAS_URL"]
+        + current_app.config["REMOTE_MEDIAS_PATH"]
         + image
     )
 
 
 @main.route(
-    "/" + current_app.config["PUBLIC"]["REMOTE_MEDIAS_PATH"] + "<image>",
+    "/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>",
     methods=["GET", "POST"],
 )
 def indexMedias(image):
     return redirect(
-        current_app.config["PUBLIC"]["REMOTE_MEDIAS_URL"]
-        + current_app.config["PUBLIC"]["REMOTE_MEDIAS_PATH"]
+        current_app.config["REMOTE_MEDIAS_URL"]
+        + current_app.config["REMOTE_MEDIAS_PATH"]
         + image
     )
 
@@ -86,26 +86,26 @@ def index():
     session = utils.loadSession()
     connection = utils.engine.connect()
 
-    if current_app.config["PUBLIC"]["AFFICHAGE_MAILLE"]:
+    if current_app.config["AFFICHAGE_MAILLE"]:
         observations = vmObservationsMaillesRepository.lastObservationsMailles(
             connection,
-            current_app.config["PUBLIC"]["NB_DAY_LAST_OBS"],
-            current_app.config["PUBLIC"]["ATTR_MAIN_PHOTO"],
+            current_app.config["NB_DAY_LAST_OBS"],
+            current_app.config["ATTR_MAIN_PHOTO"],
         )
     else:
         observations = vmObservationsRepository.lastObservations(
             connection,
-            current_app.config["PUBLIC"]["NB_DAY_LAST_OBS"],
-            current_app.config["PUBLIC"]["ATTR_MAIN_PHOTO"],
+            current_app.config["NB_DAY_LAST_OBS"],
+            current_app.config["ATTR_MAIN_PHOTO"],
         )
 
     mostViewTaxon = vmTaxonsMostView.mostViewTaxon(connection)
     stat = vmObservationsRepository.statIndex(connection)
     customStat = vmObservationsRepository.genericStat(
-        connection, current_app.config["PUBLIC"]["RANG_STAT"]
+        connection, current_app.config["RANG_STAT"]
     )
     customStatMedias = vmObservationsRepository.genericStatMedias(
-        connection, current_app.config["PUBLIC"]["RANG_STAT"]
+        connection, current_app.config["RANG_STAT"]
     )
 
     connection.close()
@@ -134,33 +134,33 @@ def ficheEspece(cd_ref):
     communes = vmCommunesRepository.getCommunesObservationsChilds(connection, cd_ref)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
     firstPhoto = vmMedias.getFirstPhoto(
-        connection, cd_ref, current_app.config["PUBLIC"]["ATTR_MAIN_PHOTO"]
+        connection, cd_ref, current_app.config["ATTR_MAIN_PHOTO"]
     )
     photoCarousel = vmMedias.getPhotoCarousel(
-        connection, cd_ref, current_app.config["PUBLIC"]["ATTR_OTHER_PHOTO"]
+        connection, cd_ref, current_app.config["ATTR_OTHER_PHOTO"]
     )
     videoAudio = vmMedias.getVideo_and_audio(
         connection,
         cd_ref,
-        current_app.config["PUBLIC"]["ATTR_AUDIO"],
-        current_app.config["PUBLIC"]["ATTR_VIDEO_HEBERGEE"],
-        current_app.config["PUBLIC"]["ATTR_YOUTUBE"],
-        current_app.config["PUBLIC"]["ATTR_DAILYMOTION"],
-        current_app.config["PUBLIC"]["ATTR_VIMEO"],
+        current_app.config["ATTR_AUDIO"],
+        current_app.config["ATTR_VIDEO_HEBERGEE"],
+        current_app.config["ATTR_YOUTUBE"],
+        current_app.config["ATTR_DAILYMOTION"],
+        current_app.config["ATTR_VIMEO"],
     )
     articles = vmMedias.getLinks_and_articles(
         connection,
         cd_ref,
-        current_app.config["PUBLIC"]["ATTR_LIEN"],
-        current_app.config["PUBLIC"]["ATTR_PDF"],
+        current_app.config["ATTR_LIEN"],
+        current_app.config["ATTR_PDF"],
     )
     taxonDescription = vmCorTaxonAttribut.getAttributesTaxon(
         connection,
         cd_ref,
-        current_app.config["PUBLIC"]["ATTR_DESC"],
-        current_app.config["PUBLIC"]["ATTR_COMMENTAIRE"],
-        current_app.config["PUBLIC"]["ATTR_MILIEU"],
-        current_app.config["PUBLIC"]["ATTR_CHOROLOGIE"],
+        current_app.config["ATTR_DESC"],
+        current_app.config["ATTR_COMMENTAIRE"],
+        current_app.config["ATTR_MILIEU"],
+        current_app.config["ATTR_CHOROLOGIE"],
     )
     observers = vmObservationsRepository.getObservers(connection, cd_ref)
 
@@ -194,13 +194,13 @@ def ficheCommune(insee):
 
     listTaxons = vmTaxonsRepository.getTaxonsCommunes(connection, insee)
     commune = vmCommunesRepository.getCommuneFromInsee(connection, insee)
-    if current_app.config["PUBLIC"]["AFFICHAGE_MAILLE"]:
+    if current_app.config["AFFICHAGE_MAILLE"]:
         observations = vmObservationsMaillesRepository.lastObservationsCommuneMaille(
-            connection, current_app.config["PUBLIC"]["NB_LAST_OBS"], insee
+            connection, current_app.config["NB_LAST_OBS"], insee
         )
     else:
         observations = vmObservationsRepository.lastObservationsCommune(
-            connection, current_app.config["PUBLIC"]["NB_LAST_OBS"], insee
+            connection, current_app.config["NB_LAST_OBS"], insee
         )
 
     observers = vmObservationsRepository.getObserversCommunes(connection, insee)
@@ -278,9 +278,9 @@ def photos():
 @main.route("/<page>", methods=["GET", "POST"])
 def get_staticpages(page):
     session = utils.loadSession()
-    if page not in current_app.config["PUBLIC"]["STATIC_PAGES"]:
+    if page not in current_app.config["STATIC_PAGES"]:
         abort(404)
-    static_page = current_app.config["PUBLIC"]["STATIC_PAGES"][page]
+    static_page = current_app.config["STATIC_PAGES"][page]
     session.close()
     return render_template(static_page["template"])
 

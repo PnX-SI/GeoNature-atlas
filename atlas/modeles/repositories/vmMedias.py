@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 
 from .. import utils
-from ...configuration import config
 
 
 from sqlalchemy.sql import text
@@ -80,15 +79,15 @@ def switchMedia(row):
         return None
 
     return {
-        config.ATTR_AUDIO: goodPath,
-        config.ATTR_VIDEO_HEBERGEE: goodPath,
-        config.ATTR_YOUTUBE: "<iframe width='100%' height='315' src='https://www.youtube.com/embed/"
+        current_app.config['PUBLIC']['ATTR_AUDIO']: goodPath,
+        current_app.config['PUBLIC']['ATTR_VIDEO_HEBERGEE']: goodPath,
+        current_app.config['PUBLIC']['ATTR_YOUTUBE']: "<iframe width='100%' height='315' src='https://www.youtube.com/embed/"
         + row.url
         + "' frameborder='0' allowfullscreen></iframe>",
-        config.ATTR_DAILYMOTION: "<iframe frameborder='0' width='100%' height='315' src='//www.dailymotion.com/embed/video/"
+        current_app.config['PUBLIC']['ATTR_DAILYMOTION']: "<iframe frameborder='0' width='100%' height='315' src='//www.dailymotion.com/embed/video/"
         + row.url
         + "' allowfullscreen></iframe>",
-        config.ATTR_VIMEO: "<iframe src='https://player.vimeo.com/video/"
+        current_app.config['PUBLIC']['ATTR_VIMEO']: "<iframe src='https://player.vimeo.com/video/"
         + row.url
         + "?color=ffffff&title=0&byline=0&portrait=0' width='640' height='360'\
         frameborder='0' webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>",
@@ -118,7 +117,7 @@ def getVideo_and_audio(connection, cd_ref, id5, id6, id7, id8, id9):
                 "description": deleteNone(r.desc_media),
                 "id_media": r.id_media,
             }
-            if r.id_type == config.ATTR_AUDIO:
+            if r.id_type == current_app.config['PUBLIC']['ATTR_AUDIO']:
                 tabMedias["audio"].append(temp)
             else:
                 tabMedias["video"].append(temp)

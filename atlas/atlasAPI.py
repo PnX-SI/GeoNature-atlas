@@ -1,7 +1,7 @@
 
 # -*- coding:utf-8 -*-
 
-from flask import jsonify, Blueprint, request
+from flask import jsonify, Blueprint, request, current_app
 from werkzeug.wrappers import Response
 from . import utils
 from .modeles.repositories import (
@@ -78,7 +78,12 @@ def getObservationsCommuneTaxonMailleAPI(insee, cd_ref):
 @api.route('/photoGroup/<group>', methods=['GET'])
 def getPhotosGroup(group):
     connection = utils.engine.connect()
-    photos = vmMedias.getPhotosGalleryByGroup(connection, config.ATTR_MAIN_PHOTO, config.ATTR_OTHER_PHOTO, group)
+    photos = vmMedias.getPhotosGalleryByGroup(
+        connection, 
+        current_app.config['ATTR_MAIN_PHOTO'], 
+        current_app.config['ATTR_OTHER_PHOTO'], 
+        group
+    )
     connection.close()
     return jsonify(photos)
 
@@ -86,6 +91,10 @@ def getPhotosGroup(group):
 @api.route('/photosGallery', methods=['GET'])
 def getPhotosGallery():
     connection = utils.engine.connect()
-    photos = vmMedias.getPhotosGallery(connection, config.ATTR_MAIN_PHOTO, config.ATTR_OTHER_PHOTO)
+    photos = vmMedias.getPhotosGallery(
+        connection, 
+        current_app.config['ATTR_MAIN_PHOTO'], 
+        current_app.config['ATTR_OTHER_PHOTO']
+    )
     connection.close()
     return jsonify(photos)

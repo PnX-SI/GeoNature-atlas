@@ -1,8 +1,7 @@
 
 # -*- coding:utf-8 -*-
-
+from flask import current_app
 from .. import utils
-from ...configuration import config
 
 from sqlalchemy.sql import text
 import json
@@ -219,8 +218,8 @@ def statIndex(connection):
     WHERE id_type IN (:idType1, :id_type2)"
     req = connection.execute(
         text(sql),
-        idType1=config.ATTR_MAIN_PHOTO,
-        id_type2=config.ATTR_OTHER_PHOTO
+        idType1=current_app.config['ATTR_MAIN_PHOTO'],
+        id_type2=current_app.config['ATTR_OTHER_PHOTO']
     )
     for r in req:
         result['photo'] = r.count

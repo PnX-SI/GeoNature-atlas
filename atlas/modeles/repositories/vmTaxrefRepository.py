@@ -1,8 +1,7 @@
 
 # -*- coding:utf-8 -*-
-
+from flask import current_app
 from .. import utils
-from ...configuration import config
 from ..entities.vmTaxref import VmTaxref
 from ..entities.tBibTaxrefRang import TBibTaxrefRang
 from sqlalchemy.sql import text
@@ -130,7 +129,7 @@ def getAllTaxonomy(session, cd_ref):
     taxonSup = getCd_sup(session, cd_ref)  # cd_taxsup
     taxon = getTaxon(session, taxonSup)
     tabTaxon = list()
-    while taxon.tri_rang >= config.LIMIT_RANG_TAXONOMIQUE_HIERARCHIE:
+    while taxon.tri_rang >= current_app.config['LIMIT_RANG_TAXONOMIQUE_HIERARCHIE']:
         temp = {
             'rang': taxon.id_rang,
             'lb_nom': taxon.lb_nom,
