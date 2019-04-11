@@ -3,7 +3,7 @@
 FLASKDIR=$(readlink -e "${0%/*}")
 
 
-. "$FLASKDIR"/main/configuration/settings.ini
+. "$FLASKDIR"/atlas/configuration/settings.ini
 
 echo "Starting $app_name"
 echo "$FLASKDIR"
