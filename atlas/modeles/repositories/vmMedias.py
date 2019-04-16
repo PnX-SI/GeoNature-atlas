@@ -176,6 +176,6 @@ def getPhotosGalleryByGroup(connection, id1, id2, INPNgroup):
         else:
             taxon_name = r.lb_nom
         photo["name"] = taxon_name
-        tabPhotos.append(photo)
+        tab_photos.append(photo)
     return tab_photos
 
