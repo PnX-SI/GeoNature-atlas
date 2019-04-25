@@ -13,7 +13,7 @@ from .configuration import config
 api = Blueprint('api', __name__)
 
 
-@api.route('/searchTaxon/', methods=['GET'])
+@api.route('/searchTaxon', methods=['GET'])
 def searchTaxonAPI():
     session = utils.loadSession()
     search = request.args.get('search', '')
@@ -23,7 +23,7 @@ def searchTaxonAPI():
     return jsonify(results)
 
 
-@api.route('/searchCommune/', methods=['GET'])
+@api.route('/searchCommune', methods=['GET'])
 def searchCommuneAPI():
     session = utils.loadSession()
     search = request.args.get('search', '')

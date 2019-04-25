@@ -151,6 +151,6 @@ gun_port=8080
 ####################
 ### Python settings
 ####################
-venv_dir=venv_atlas
+venv_dir=venv
 # L'atlas est compatible avec Python 3, préferez donc l'utilisation de Python 3.X
 python_executable=/usr/bin/python3
