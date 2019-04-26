@@ -9,9 +9,6 @@ from sqlalchemy.sql import text
 from .. import utils
 
 
-def deleteAccent(string):
-    return unicodedata.normalize('NFD', string).encode('ascii', 'ignore')
-
 
 # With distinct the result in a array not an object, 0: lb_nom, 1: nom_vern
 def getTaxonsCommunes(connection, insee):
@@ -39,7 +36,7 @@ def getTaxonsCommunes(connection, insee):
             'nom_vern': r.nom_vern,
             'cd_ref': r.cd_ref,
             'last_obs': r.last_obs,
-            'group2_inpn': deleteAccent(r.group2_inpn),
+            'group2_inpn': utils.deleteAccent(r.group2_inpn),
             'patrimonial': r.patrimonial,
             'protection_stricte': r.protection_stricte,
             'path': utils.findPath(r),
