@@ -197,7 +197,7 @@
                                                                 >
                                                             {% endif %}
                                                             </td>
-                                                            <td> {{child.nb_obs}} </td>
+                                                            <td> {{child.nb_obs | pretty}} </td>
                                                             <td>
                                                                 <a href = "{{url_for('main.ficheEspece', cd_ref = child.cd_ref) }}">
                                                                     <span id="ficheGlyficon"  data-toggle="tooltip" data-original-title="Consulter la fiche espèce" data-placement="right" class="glyphicon glyphicon-list"></span>
@@ -247,9 +247,9 @@
                     <div class="col-sm-2" id="mapStat">
                         <ul>
                             <li> <span data-icon="&#xe037;" style="font-size: 30px;"></span> </br>
-                                    <b>{{taxon.taxonSearch.nb_obs}}</b> </br> {{ 'observations' if taxon.taxonSearch.nb_obs > 1 else 'observation' }}</li>
-                            <li> <img id="picto" src="{{url_for('static', filename='images/church.png')}}" style="width"><br/><b>{{communes|length}}</b><br/>{{ 'communes' if communes|length > 1 else 'commune' }}</li>
-                            <li> <span data-icon="&#xe040;"  style="font-size: 30px;"></span><br/><b>{{observers|length}}</b><br/>{{ 'observateurs' if observers|length > 1 else 'observateur' }}</li>
+                                    <b>{{taxon.taxonSearch.nb_obs | pretty}}</b> </br> {{ 'observations' if taxon.taxonSearch.nb_obs > 1 else 'observation' }}</li>
+                            <li> <img id="picto" src="{{url_for('static', filename='images/church.png')}}" style="width"><br/><b>{{communes|length|pretty}}</b><br/>{{ 'communes' if communes|length > 1 else 'commune' }}</li>
+                            <li> <span data-icon="&#xe040;"  style="font-size: 30px;"></span><br/><b>{{observers|length}}</b><br/>{{ 'observateurs' if observers|length|pretty > 1 else 'observateur' }}</li>
                             <li id="firstObs" class="pointer"><span data-icon="&#xe037;" style="font-size: 25px; color: brown"></span><br/><b>Première observation</b><br/>{{taxon.taxonSearch.yearmin|int}}</li>
                             <li id="lastObs" class="pointer"><span data-icon="&#xe037;" style="font-size: 25px; color: blue"></span><br/><b>Dernière observation</b><br/>{{taxon.taxonSearch.yearmax|int}}</li>
 

@@ -49,15 +49,15 @@
 						<div class ="col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
 							<div class="thumbnail stat-thumbnail">
 								<span class="glyphicon glyphicon-search"></span>
-								<h1>{{stat.nbTotalObs}}</h1>
-								<h4> {{ 'observations' if stat.nbTotalObs > 1 else 'observation' }}</h4>
+								<h1>{{stat.nbTotalObs | pretty}}</h1>
+								<h4> {{ 'observations' if stat.nbTotalObs > 1 else 'observation'}}</h4>
 								<p><a id="localScroll" href="#DernieresObservations" class="btn btn-default" role="button">Voir les dernières observations</a></p>
 							</div>
 						</div>
 						<div class = "col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
 							<div class="thumbnail stat-thumbnail">
 								<span class="glyphicon glyphicon-leaf"></span>
-								<h1>{{stat.nbTotalTaxons}}</h1>
+								<h1>{{stat.nbTotalTaxons | pretty}}</h1>
 								<h4> {{ 'espèces' if stat.nbTotalTaxons > 1 else 'espèce' }}</h4>
 								<form method="POST" id="searchFormTaxonsStat" class="navbar-form" role="search">
 									<div class="form-group has-feedback">
@@ -71,7 +71,7 @@
 						<div class ="col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
 							<div class="thumbnail stat-thumbnail">
 								<img id="picto" src="{{url_for('static', filename='images/commune-icone.png')}}">
-								<h1>{{stat.town}}</h1>
+								<h1>{{stat.town | pretty}}</h1>
 								<h4> {{ 'communes' if stat.town > 1 else 'commune' }}</h4>
 								<form method="POST" onsubmit="completeAction('#searchFormCommunesStat', hiddenInputCommunesStat)" id='searchFormCommunesStat' action=""  class="navbar-form" role="search">
 									<div class="form-group has-feedback">
@@ -85,7 +85,7 @@
 						<div class ="col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
 							<div class="thumbnail stat-thumbnail">
 								<span class="glyphicon glyphicon-camera"></span>
-								<h1>{{stat.photo}}</h1>
+								<h1>{{stat.photo | pretty}}</h1>
 								<h4> {{ 'photos' if stat.photo > 1 else 'photo' }}</h4>
 								<p><a href="{{url_for('main.photos')}}" class="btn btn-default" role="button">Galerie photos</a></p>
 							</div>
@@ -111,7 +111,7 @@
 					<div class="panel panel-default statMedias">
 						<div class="panel-heading">
 							<h3>{{configuration.RANG_STAT_FR[i]}} </h3>
-							<span class="higlight">{{customStat[i].nb_obs}}</span> observations | <span class="higlight">{{customStat[i].nb_taxons}}</span> espèces
+							<span class="higlight">{{customStat[i].nb_obs | pretty}}</span> observations | <span class="higlight">{{customStat[i].nb_taxons| pretty}}</span> espèces
 						</div>
 						<h5><span class="glyphicon glyphicon-eye-open"></span> Espèces à découvrir</h5>
 					{% for j in range(2) %}
@@ -127,7 +127,7 @@
                           						{% endif %}
 										    	<div class="stat-medias-hovereffet">
 										    		<img src="{{url_for('static', filename='images/eye.png') }}">
-										    		<h2 class="overlay-obs">{{customStatMedias[i][j].nb_obs}} observations</h2>
+										    		<h2 class="overlay-obs">{{customStatMedias[i][j].nb_obs | pretty}} observations</h2>
 										    	</div>
 											</a>
 										</div>
