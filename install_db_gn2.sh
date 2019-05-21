@@ -300,6 +300,28 @@ then
     sudo sed -i "s/WHERE id_attribut IN (100, 101, 102, 103);$/WHERE id_attribut  IN ($attr_desc, $attr_commentaire, $attr_milieu, $attr_chorologie);/" /tmp/atlas.sql
     sudo sed -i "s/date - 15$/date - $time/" /tmp/atlas.sql
     sudo sed -i "s/date + 15$/date - $time/" /tmp/atlas.sql
+
+
+    #customisation de l'altitude
+    if [ -z ${altitudes+x} ];
+    then
+        altitudes=(0 500 1000 1500 2000 2500 3000 3500 4000)
+    fi
+
+    insert=""
+    for i in "${!altitudes[@]}"
+    do
+        if [ $i -gt 0 ];
+        then
+            let max=${altitudes[$i]}-1
+            sql="INSERT INTO atlas.bib_altitudes VALUES ($i,${altitudes[$i-1]},$max);"
+            insert="${insert}\n${sql}"
+        fi
+    done
+
+    sudo sed -i "s/INSERT_ALTITUDE/${insert}/" /tmp/atlas.sql
+
+
     export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas.sql  &>> log/install_db.log
     sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.bib_altitudes OWNER TO "$owner_atlas";"
     sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.bib_taxref_rangs OWNER TO "$owner_atlas";"
