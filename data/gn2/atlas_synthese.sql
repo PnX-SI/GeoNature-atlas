@@ -11,7 +11,7 @@ IMPORT FOREIGN SCHEMA ref_nomenclatures
     FROM SERVER geonaturedbserver INTO synthese;
 
 
-CREATE MATERIALIZED VIEW synthese.syntheseff AS
+CREATE VIEW synthese.syntheseff AS
 WITH areas AS (
 	SELECT DISTINCT ON (sa.id_synthese,  t.type_code)
         sa.id_synthese, sa.id_area, a.centroid, st_transform(centroid, 3857) as centroid_3857, t.type_code
@@ -21,7 +21,6 @@ WITH areas AS (
 	JOIN ref_geo.bib_areas_types t
 	ON a.id_type = t.id_type
 	WHERE type_code IN ('M10', 'COM', 'DEP')
-       AND id_synthese = 4
  ),  obs_data AS (
 	SELECT s.id_synthese,
 	    s.cd_nom,
@@ -46,7 +45,6 @@ WITH areas AS (
 	   FROM synthese.synthese s
 	   LEFT OUTER JOIN synthese.t_nomenclatures dl ON s.id_nomenclature_diffusion_level = dl.id_nomenclature
 	  WHERE (NOT dl.cd_nomenclature = '4'::text OR id_nomenclature_diffusion_level IS NULL)   -- Filtre données non diffusable code "4" ou pas de diffusion spécifiée
-	  AND NOT s.last_action = 'D'
 )
  SELECT d.id_synthese,
     d.cd_nom,
