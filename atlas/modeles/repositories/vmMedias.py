@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
 
+
+from flask import current_app
 from .. import utils
 
 
@@ -25,7 +27,7 @@ def _format_media(r):
 
 
 def deleteNone(r):
-    if r == None:
+    if r is None:
         return ""
     else:
         return r
@@ -68,29 +70,29 @@ def getPhotoCarousel(connection, cd_ref, id):
 
 def switchMedia(row):
     goodPath = str()
-    if row.chemin == None and row.url == None:
+    if row.chemin is None and row.url is None:
         return None
-    elif row.chemin != None and row.chemin != "":
+    elif row.chemin is not None and row.chemin != "":
         goodPath = row.chemin
     else:
         goodPath = row.url
 
-    if goodPath == "" or goodPath == None:
+    if goodPath == "" or goodPath is None:
         return None
 
     return {
-        current_app.config['PUBLIC']['ATTR_AUDIO']: goodPath,
-        current_app.config['PUBLIC']['ATTR_VIDEO_HEBERGEE']: goodPath,
-        current_app.config['PUBLIC']['ATTR_YOUTUBE']: "<iframe width='100%' height='315' src='https://www.youtube.com/embed/"
+        current_app.config['ATTR_AUDIO']: goodPath,
+        current_app.config['ATTR_VIDEO_HEBERGEE']: goodPath,
+        current_app.config['ATTR_YOUTUBE']: "<iframe width='100%' height='315' src='https://www.youtube.com/embed/"  # noqa
         + row.url
         + "' frameborder='0' allowfullscreen></iframe>",
-        current_app.config['PUBLIC']['ATTR_DAILYMOTION']: "<iframe frameborder='0' width='100%' height='315' src='//www.dailymotion.com/embed/video/"
+        current_app.config['ATTR_DAILYMOTION']: "<iframe frameborder='0' width='100%' height='315' src='//www.dailymotion.com/embed/video/"  # noqa
         + row.url
         + "' allowfullscreen></iframe>",
-        current_app.config['PUBLIC']['ATTR_VIMEO']: "<iframe src='https://player.vimeo.com/video/"
+        current_app.config['ATTR_VIMEO']: "<iframe src='https://player.vimeo.com/video/"  # noqa
         + row.url
         + "?color=ffffff&title=0&byline=0&portrait=0' width='640' height='360'\
-        frameborder='0' webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>",
+        frameborder='0' webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>", # noqa
     }
 
 
@@ -101,13 +103,15 @@ def getVideo_and_audio(connection, cd_ref, id5, id6, id7, id8, id9):
         WHERE id_type in (:id5, :id6, :id7, :id8, :id9) AND cd_ref = :thiscdref
         ORDER BY date_media DESC
     """
-
+    print(sql, id5, id6, id7, id8, id9)
     req = connection.execute(
-        text(sql), thiscdref=cd_ref, id5=id5, id6=id6, id7=id7, id8=id8, id9=id9
+        text(sql),
+        thiscdref=cd_ref,
+        id5=id5, id6=id6, id7=id7, id8=id8, id9=id9
     )
     tabMedias = {"audio": list(), "video": list()}
     for r in req:
-        if switchMedia(r) != None:
+        if switchMedia(r) is not None:
             path = switchMedia(r)
             temp = {
                 "id_type": r.id_type,
@@ -117,7 +121,7 @@ def getVideo_and_audio(connection, cd_ref, id5, id6, id7, id8, id9):
                 "description": deleteNone(r.desc_media),
                 "id_media": r.id_media,
             }
-            if r.id_type == current_app.config['PUBLIC']['ATTR_AUDIO']:
+            if r.id_type == current_app.config['ATTR_AUDIO']:
                 tabMedias["audio"].append(temp)
             else:
                 tabMedias["video"].append(temp)
@@ -146,7 +150,7 @@ def getPhotosGallery(connection, id1, id2):
     req = connection.execute(text(sql), thisID1=id1, thisID2=id2)
     tab_photos = []
     for r in req:
-        if r.nom_vern != None:
+        if r.nom_vern is not None:
             nom_verna = r.nom_vern.split(",")
             taxonName = nom_verna[0] + " | " + r.lb_nom
         else:
@@ -166,16 +170,18 @@ def getPhotosGalleryByGroup(connection, id1, id2, INPNgroup):
         JOIN atlas.vm_taxons t ON t.cd_ref = m.cd_ref
         WHERE m.id_type IN  (:thisID1, :thisID2) AND t.group2_inpn = :thisGroup
         ORDER BY RANDOM()"""
-    req = connection.execute(text(sql), thisID1=id1, thisID2=id2, thisGroup=INPNgroup)
+    req = connection.execute(
+        text(sql), thisID1=id1, thisID2=id2, thisGroup=INPNgroup
+    )
     tab_photos = []
     for r in req:
         photo = _format_media(r)
-        if r.nom_vern != None:
+        if r.nom_vern is not None:
             nom_verna = r.nom_vern.split(",")
             taxon_name = nom_verna[0] + " | " + r.lb_nom
         else:
             taxon_name = r.lb_nom
         photo["name"] = taxon_name
-        tabPhotos.append(photo)
+        tab_photos.append(photo)
     return tab_photos
 
