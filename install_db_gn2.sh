@@ -21,6 +21,21 @@ function database_exists () {
     fi
 }
 
+function test_settings() {
+    fields=('owner_atlas' 'user_pg' 'altitudes' 'time' 'attr_desc' 'attr_commentaire' 'attr_milieu' 'attr_chorologie')
+    echo "Vérification de la validité de settings.ini"
+    for i in "${!fields[@]}"
+    do
+        if [ -z ${!fields[$i]} ];
+        then
+            echo -e "\033\033[31m Error : \033[0m attribut ${fields[$i]} manquant dans settings.ini"
+            exit
+        fi
+    done
+}
+
+test_settings
+
 # Suppression du fichier de log d'installation si il existe déjà puis création de ce fichier vide.
 rm  -f ./log/install_db.log
 touch ./log/install_db.log
@@ -303,11 +318,6 @@ then
 
 
     #customisation de l'altitude
-    if [ -z ${altitudes+x} ];
-    then
-        altitudes=(0 500 1000 1500 2000 2500 3000 3500 4000)
-    fi
-
     insert=""
     for i in "${!altitudes[@]}"
     do

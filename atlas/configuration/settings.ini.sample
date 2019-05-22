@@ -109,7 +109,7 @@ chemin_custom_maille=/home/MYUSERLINUX/atlas/data/ref/custom_maille.shp
 # Altitudes
 # lister les valeurs des classes d'altitudes
 # si non spécifié les valeurs par défaut seront (0 500 1000 1500 2000 2500 3000 3500 4000)
-#altitudes=(0 500 1000 1500 2000 2500 3000 3500 4000)
+altitudes=(0 500 1000 1500 2000 2500 3000 3500 4000)
 
 ############################
 ### Données TAXONOMIQUES ###
