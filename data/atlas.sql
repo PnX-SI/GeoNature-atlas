@@ -26,6 +26,7 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
         s.effectif_total,
         tx.cd_ref,
         st_asgeojson(ST_Transform(ST_SetSrid(s.the_geom_point, 3857), 4326)) as geojson_point
+        --,diffusion_level
     FROM synthese.syntheseff s
     LEFT JOIN atlas.vm_taxref tx ON tx.cd_nom = s.cd_nom
     JOIN atlas.t_layer_territoire m ON ST_Intersects(m.the_geom, s.the_geom_point)
@@ -122,15 +123,7 @@ CREATE TABLE atlas.bib_altitudes
   CONSTRAINT bib_altitudes_pk PRIMARY KEY (id_altitude)
 );
 
-INSERT INTO atlas.bib_altitudes VALUES(1,0,499);
-INSERT INTO atlas.bib_altitudes VALUES(2,500,999);
-INSERT INTO atlas.bib_altitudes VALUES(3,1000,1499);
-INSERT INTO atlas.bib_altitudes VALUES(4,1500,1999);
-INSERT INTO atlas.bib_altitudes VALUES(5,2000,2499);
-INSERT INTO atlas.bib_altitudes VALUES(6,2500,2999);
-INSERT INTO atlas.bib_altitudes VALUES(7,3000,3499);
-INSERT INTO atlas.bib_altitudes VALUES(8,3500,3999);
-INSERT INTO atlas.bib_altitudes VALUES(9,4000,4102);
+INSERT_ALTITUDE
 UPDATE atlas.bib_altitudes set label_altitude = '_' || altitude_min || '_' || altitude_max+1;
 
 
@@ -188,7 +181,7 @@ select atlas.create_vm_altitudes();
 
 -- Taxons observés et de tous leurs synonymes (utilisés pour la recherche d'une espèce)
 
-CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS 
+CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS
 SELECT t.cd_nom,
   t.cd_ref,
   t.search_name,
@@ -347,7 +340,7 @@ INSERT INTO atlas.bib_taxref_rangs  (id_rang, nom_rang) VALUES ('SSCO', '?');
 
 -- Médias de chaque taxon
 
-CREATE MATERIALIZED VIEW atlas.vm_medias AS 
+CREATE MATERIALIZED VIEW atlas.vm_medias AS
  SELECT t_medias.id_media,
     t_medias.cd_ref,
     t_medias.titre,
@@ -457,7 +450,7 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION atlas.refresh_materialized_view_data()
 RETURNS VOID AS $$
 BEGIN
-      
+
   REFRESH MATERIALIZED VIEW atlas.vm_observations;
   REFRESH MATERIALIZED VIEW atlas.vm_observations_mailles;
   REFRESH MATERIALIZED VIEW atlas.vm_mois;

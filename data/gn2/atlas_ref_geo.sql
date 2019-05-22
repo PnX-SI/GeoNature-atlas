@@ -93,7 +93,7 @@ WITH d AS (
 	SELECT st_union(geom) , b.type_name
 	FROM ref_geo.l_areas l
 	JOIN ref_geo.bib_areas_types b USING(id_type)
-	WHERE b.type_code = :type_territoire
+	WHERE REPLACE(b.type_code, ' ', '_') = :type_territoire
 	GROUP BY b.type_name
 )
 SELECT
@@ -111,7 +111,7 @@ FROM d;
 CREATE OR REPLACE FUNCTION atlas.refresh_materialized_view_ref_geo()
 RETURNS VOID AS $$
 BEGIN
-      
+
   REFRESH MATERIALIZED VIEW atlas.t_layer_territoire;
   REFRESH MATERIALIZED VIEW atlas.t_mailles_territoire;
   REFRESH MATERIALIZED VIEW atlas.l_communes;
