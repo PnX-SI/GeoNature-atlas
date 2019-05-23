@@ -30,7 +30,6 @@ autocompleteSearch = function(inputID, urlDestination, nbProposal) {
         configuration.URL_APPLICATION + searchUrl,
         { search: request.term, limit: nbProposal },
         function(results) {
-          console.log(results);
           response(results.slice(0, nbProposal));
           $(inputID)
             .attr("loading", "false")

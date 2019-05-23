@@ -17,7 +17,7 @@ $(function(){
     // display maille layer
     displayMailleLayerLastObs(observations)
 
-    // interaction list - map 
+    // interaction list - map
       $('.tabEspece').click(function(){
          $(this).siblings().removeClass('current');
          $(this).addClass('current');
@@ -37,14 +37,14 @@ $(function(){
         map.fitBounds(bounds, {
           maxZoom : 12
         });
-      }); 
+      });
   }
 
   // Display point layer
   else{
     displayMarkerLayerPointLastObs(observations);
 
-      // interaction list - map 
+      // interaction list - map
       $('.tabEspece').click(function(){
          $(this).siblings().removeClass('current');
          $(this).addClass('current');
@@ -66,7 +66,6 @@ $(function(){
 // Zoom on the popup on observation click
 
   currentLayer.on('click', function(e){
-    console.log(map.getZoom());
     if (map.getZoom()<14) {
       map.setView(e.latlng, 14);
     }

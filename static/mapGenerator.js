@@ -550,7 +550,6 @@ function displayMailleLayerLastObs(observations) {
     onEachFeature: onEachFeatureMailleLastObs,
     style: styleMailleLastObs
   });
-  console.log(currentLayer);
   currentLayer.addTo(map);
 }
 
