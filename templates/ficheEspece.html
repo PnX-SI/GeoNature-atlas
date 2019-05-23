@@ -85,15 +85,15 @@
                                 <p class="imgDescription main">{{firstPhoto.title}}
                                 {% if firstPhoto.description %}
                                 - {{firstPhoto.description}}
-                                {% endif %}  
-                                &copy; {{firstPhoto.author|striptags}} 
+                                {% endif %}
+                                &copy; {{firstPhoto.author|striptags}}
                                 {% if firstPhoto.licence %}
                                 - {{firstPhoto.licence}}
                                 {% endif %}
                                 {% if firstPhoto.source %}
                                 - {{firstPhoto.source}}
                                 {% endif %}
-                                    
+
                                 </p>
                         </div>
 
@@ -397,7 +397,7 @@
                                 ">
                                   <div class="slider-size" style="background-image: url({{img_path}})" alt="{{photo.title}} &copy; {{photo.author|striptags}}">
                                       <div class="carousel-caption">
-                                        {{photo.title}} &copy; {{photo.author|striptags}}  
+                                        {{photo.title}} &copy; {{photo.author|striptags}}
                                         {% if photo.licence %}
                                         - {{photo.licence}}
                                         {% endif %}
@@ -492,6 +492,10 @@
                     </h4>
                     <hr class="small-hr">
                     <h4>{{videoAudio.video[0].title}}</h4>
+
+                    {% with media=videoAudio.video[0] %}
+                        {% include "templates/block-descriptionMedia.html" %}
+                    {% endwith %}
                     {% if videoAudio.video[0].id_type == 6 %}
                         <video controls>
                           <source src="{{video.path}}" type="video/mp4">
@@ -503,6 +507,10 @@
                     <div id="moreVideo" class="collapse">
                         {% for i in range (1, videoAudio.video |length) %}
                             <h4> {{videoAudio.video[i].title}}</h4>
+
+                            {% with media=videoAudio.video[i] %}
+                                {% include "templates/block-descriptionMedia.html" %}
+                            {% endwith %}
                             {% if videoAudio.video[i].id_type == 6 %}
                                     <video controls>
                                       <source src="{{videoAudio.video[i].path}}" type="video/mp4">
@@ -523,15 +531,20 @@
                         {% endif %}
                     </h4>
                     <hr class="small-hr">
-
                     <h4>{{videoAudio.audio[0].title}}</h4>
+                    {% with media=videoAudio.audio[0] %}
+                        {% include "templates/block-descriptionMedia.html" %}
+                    {% endwith %}
                     <audio controls>
-                            <source src="{{ videoAudio.audio[0].path }}" type="audio/mpeg">
+                        <source src="{{ videoAudio.audio[0].path }}" type="audio/mpeg">
                     </audio>
 
                     <div id="moreAudio" class="collapse">
                         {% for i in range (1, videoAudio.audio |length) %}
                             <h4> {{videoAudio.audio[i].title}} </h4>
+                            {% with media=videoAudio.audio[i] %}
+                                {% include "templates/block-descriptionMedia.html" %}
+                            {% endwith %}
                             <audio controls>
                                 <source src="{{ videoAudio.audio[i].path }}" type="audio/mpeg">
                             </audio>
