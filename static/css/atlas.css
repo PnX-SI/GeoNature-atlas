@@ -437,3 +437,11 @@ input.ajax-search {
 
 
 /* END Galerie photos */
+
+
+/* Search bar */
+.search-bar-item {
+	width: 100%;
+	display: inline-block;
+	text-decoration: none !important;
+}

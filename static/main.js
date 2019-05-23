@@ -30,6 +30,7 @@ autocompleteSearch = function(inputID, urlDestination, nbProposal) {
         configuration.URL_APPLICATION + searchUrl,
         { search: request.term, limit: nbProposal },
         function(results) {
+          console.log(results);
           response(results.slice(0, nbProposal));
           $(inputID)
             .attr("loading", "false")
@@ -50,8 +51,15 @@ autocompleteSearch = function(inputID, urlDestination, nbProposal) {
       }
 
       return false;
+    },
+    create: function (event,ui){
+       $(this).data('ui-autocomplete')._renderItem = function (ul, item) {
+        return $('<li>')
+            .append('<a  class="search-bar-item">' + item.label + '</a>')
+            .appendTo(ul);
+       }
     }
-  });
+  })
 };
 
 // Generate the autocompletion with the list of item, the input id and the form id
