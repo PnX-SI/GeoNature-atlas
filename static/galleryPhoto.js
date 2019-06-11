@@ -92,7 +92,7 @@ function scrollEvent(photos) {
     ) {
       generateHtmlPhoto(
         photos,
-        configuration.REDIMENTIONNEMENT_IMAGE,
+        configuration.REDIMENSIONNEMENT_IMAGE,
         configuration.TAXHUB_URL
       );
     }
@@ -120,7 +120,7 @@ function orderPhotosEvent(photos) {
 
     generateHtmlPhoto(
       sortedPhotos,
-      configuration.REDIMENTIONNEMENT_IMAGE,
+      configuration.REDIMENSIONNEMENT_IMAGE,
       configuration.TAXHUB_URL
     );
     $(window).off("scroll");
@@ -145,7 +145,7 @@ function sufflePhotosEvent(photos) {
     compteurJson = 0;
     generateHtmlPhoto(
       photos,
-      configuration.REDIMENTIONNEMENT_IMAGE,
+      configuration.REDIMENSIONNEMENT_IMAGE,
       configuration.TAXHUB_URL
     );
     $(window).off("scroll");
@@ -163,7 +163,7 @@ $(document).ready(function() {
   }).done(function(photos) {
     generateHtmlPhoto(
       photos,
-      configuration.REDIMENTIONNEMENT_IMAGE,
+      configuration.REDIMENSIONNEMENT_IMAGE,
       configuration.TAXHUB_URL
     );
     $("#nbPhotos").html(photos.length + " photos");
@@ -181,7 +181,7 @@ $(document).ready(function() {
       $(window).off("scroll");
       generateHtmlPhoto(
         photos,
-        configuration.REDIMENTIONNEMENT_IMAGE,
+        configuration.REDIMENSIONNEMENT_IMAGE,
         configuration.TAXHUB_URL
       );
       $("#group").html("");
@@ -222,7 +222,7 @@ $(document).ready(function() {
       compteurJson = 0;
       generateHtmlPhoto(
         filterJsonPhoto,
-        configuration.REDIMENTIONNEMENT_IMAGE,
+        configuration.REDIMENSIONNEMENT_IMAGE,
         configuration.TAXHUB_URL
       );
       $("#nbPhotos").html(filterJsonPhoto.length + " photos");
@@ -259,7 +259,7 @@ $(".INPNgroup").click(function() {
   }).done(function(photos) {
     generateHtmlPhoto(
       photos,
-      configuration.REDIMENTIONNEMENT_IMAGE,
+      configuration.REDIMENSIONNEMENT_IMAGE,
       configuration.TAXHUB_URL
     );
     $("#group").html("(" + group + ")");
