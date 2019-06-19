@@ -27,6 +27,16 @@ Rapport de stage (Théo Lechemia) : https://github.com/PnEcrins/GeoNature-atlas/
 
 Soutenance de stage (Théo Lechemia) : https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/2016-09-soutenance-Theo-Lechemia.pdf
 
+Atlas en ligne utilisant GeoNature-atlas :
+
+- `PN du Mercantour <http://biodiversite.mercantour-parcnational.fr/>`_
+- `PN de la Vanoise <http://biodiversite.vanoise-parcnational.fr/>`_
+- `PN des Ecrins <http://biodiversite.ecrins-parcnational.fr/>`_ 
+- `PNR Normandie Maine <http://observatoire.parc-naturel-normandie-maine.fr/atlas/>`_
+- `CEN des Pays de la Loire <http://www.biodiv-paysdelaloire.fr/>`_
+- `Atlas du Languedoc-Roussillon <https://atlas.libellules-et-papillons-lr.org>`_
+- `LPO Auvergne-Rhône-Alpes <https://carto.fauneauvergnerhonealpes.org/>`_
+
 Technologies
 ------------
 
@@ -46,8 +56,6 @@ L'API de GeoNature-atlas se sert directement dans des vues. Ainsi chacun peut pe
 
 L'ensemble des vues sont regroupées dans un schéma spécifique « atlas », ce qui laisse la possibilité de les remplir avec autre chose que GeoNature.
 
-
-
 Auteurs
 -------
 
@@ -59,9 +67,7 @@ Licence
 -------
 
 * OpenSource - GPL V3
-* Copyright (c) 2016 - Parc National des Écrins
-
+* Copyright (c) 2016-2019 - Parc National des Écrins
 
 .. image:: http://geonature.fr/img/logo-pne.jpg
     :target: http://www.ecrins-parcnational.fr
-
