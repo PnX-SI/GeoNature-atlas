@@ -11,6 +11,8 @@ Il permet de générer dynamiquement des fiches espèces avec des données calcu
 
 L'outil a été développé de manière générique pour pouvoir être déployé sur d'autres BDD que GeoNature (SERENA, SICEN, INPN, fichier CSV, etc).
 
+
+
 **Interrogez vos observations naturalistes, croisez-les avec TAXREF, publiez votre atlas en ligne dynamique**
 
 .. image :: docs/images/geonature-atlas-schema-01.jpg
@@ -26,6 +28,13 @@ Présentation générale : https://github.com/PnEcrins/GeoNature-atlas/blob/mast
 Rapport de stage (Théo Lechemia) : https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/2016-09-30-rapport_stage_Theo-Lechemia.pdf
 
 Soutenance de stage (Théo Lechemia) : https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/2016-09-soutenance-Theo-Lechemia.pdf
+
+Atlas publics en ligne utilisant GeoNature-atlas :
+ -  `PN du Mercantour <http://biodiversite.mercantour-parcnational.fr/>`_
+ -  `PN de la Vanoise <http://biodiversite.vanoise-parcnational.fr/>`_ 
+ - `PNR Normandie Maine <http://observatoire.parc-naturel-normandie-maine.fr/atlas/>`_
+ - `CEN des Pays de la Loire <http://www.biodiv-paysdelaloire.fr/>`_
+
 
 Technologies
 ------------
