@@ -397,7 +397,7 @@
                                 ">
                                   <div class="slider-size" style="background-image: url({{img_path}})" alt="{{photo.title}} &copy; {{photo.author|striptags}}">
                                       <div class="carousel-caption">
-                                        {{photo.title}} &copy; {{photo.author|striptags}}
+                                        {{photo.title|safe}} &copy; {{photo.author|striptags}}
                                         {% if photo.licence %}
                                         - {{photo.licence}}
                                         {% endif %}
