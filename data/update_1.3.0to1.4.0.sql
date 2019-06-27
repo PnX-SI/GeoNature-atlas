@@ -1,6 +1,6 @@
 CREATE EXTENSION pg_trgm IF NOT EXISTS;
 
-CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS 
+CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS
 SELECT t.cd_nom,
   t.cd_ref,
   t.search_name,
@@ -26,9 +26,10 @@ FROM (
 JOIN atlas.vm_taxons taxons ON taxons.cd_ref = t.cd_ref
 
 
-CREATE INDEX on atlas.vm_search_taxon(cd_ref);
-CREATE INDEX trgm_idx ON atlas.vm_search_taxon USING GIST (search_name gist_trgm_ops);
 
+CREATE UNIQUE INDEX ON atlas.vm_search_taxon (cd_nom, search_name);
+CREATE INDEX ON atlas.vm_search_taxon(cd_ref);
+CREATE INDEX trgm_idx ON atlas.vm_search_taxon USING GIST (search_name gist_trgm_ops);
 
 
 
@@ -37,7 +38,7 @@ CREATE INDEX trgm_idx ON atlas.vm_search_taxon USING GIST (search_name gist_trgm
 DROP MATERIALIZED VIEW atlas.vm_taxons_plus_observes;
 DROP MATERIALIZED VIEW atlas.vm_medias;
 
-CREATE MATERIALIZED VIEW atlas.vm_medias AS 
+CREATE MATERIALIZED VIEW atlas.vm_medias AS
  SELECT t_medias.id_media,
     t_medias.cd_ref,
     t_medias.titre,
@@ -54,7 +55,7 @@ CREATE MATERIALIZED VIEW atlas.vm_medias AS
 CREATE UNIQUE INDEX ON atlas.vm_medias (id_media);
 
 
-CREATE MATERIALIZED VIEW atlas.vm_taxons_plus_observes AS 
+CREATE MATERIALIZED VIEW atlas.vm_taxons_plus_observes AS
  SELECT count(*) AS nb_obs,
     obs.cd_ref,
     tax.lb_nom,

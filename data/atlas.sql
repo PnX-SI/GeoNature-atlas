@@ -26,7 +26,7 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
         s.effectif_total,
         tx.cd_ref,
         st_asgeojson(ST_Transform(ST_SetSrid(s.the_geom_point, 3857), 4326)) as geojson_point
-        --,diffusion_level
+        ,diffusion_level
     FROM synthese.syntheseff s
     LEFT JOIN atlas.vm_taxref tx ON tx.cd_nom = s.cd_nom
     JOIN atlas.t_layer_territoire m ON ST_Intersects(m.the_geom, s.the_geom_point)
@@ -207,8 +207,9 @@ FROM (
 JOIN atlas.vm_taxons taxons ON taxons.cd_ref = t.cd_ref;
 
 
-create index on atlas.vm_search_taxon(cd_ref);
+CREATE INDEX ON atlas.vm_search_taxon(cd_ref);
 CREATE INDEX trgm_idx ON atlas.vm_search_taxon USING GIST (search_name gist_trgm_ops);
+CREATE UNIQUE INDEX ON atlas.vm_search_taxon (cd_nom, search_name);
 
 -- Nombre d'observations mensuelles pour chaque taxon observé
 
@@ -451,17 +452,17 @@ CREATE OR REPLACE FUNCTION atlas.refresh_materialized_view_data()
 RETURNS VOID AS $$
 BEGIN
 
-  REFRESH MATERIALIZED VIEW atlas.vm_observations;
-  REFRESH MATERIALIZED VIEW atlas.vm_observations_mailles;
-  REFRESH MATERIALIZED VIEW atlas.vm_mois;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_observations;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_observations_mailles;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_mois;
 
-  REFRESH MATERIALIZED VIEW atlas.vm_altitudes;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_altitudes;
 
-  REFRESH MATERIALIZED VIEW atlas.vm_taxons;
-  REFRESH MATERIALIZED VIEW atlas.vm_cor_taxon_attribut;
-  REFRESH MATERIALIZED VIEW atlas.vm_search_taxon;
-  REFRESH MATERIALIZED VIEW atlas.vm_medias;
-  REFRESH MATERIALIZED VIEW atlas.vm_taxons_plus_observes;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_taxons;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_cor_taxon_attribut;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_search_taxon;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_medias;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_taxons_plus_observes;
 
 END
 $$ LANGUAGE plpgsql;

@@ -119,7 +119,7 @@ CREATE UNIQUE INDEX ON atlas.vm_taxons (cd_ref);
 
 
 -- Materialized View: atlas.vm_search_taxon
-CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS 
+CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS
 SELECT t.cd_nom,
   t.cd_ref,
   t.search_name,
@@ -145,8 +145,8 @@ FROM (
 JOIN atlas.vm_taxons taxons ON taxons.cd_ref = t.cd_ref
 
 
-create UNIQUE index on atlas.vm_search_taxon(cd_nom);
-create index on atlas.vm_search_taxon(cd_ref);
+CREATE UNIQUE INDEX ON atlas.vm_search_taxon (cd_nom, search_name);
+CREATE INDEX ON atlas.vm_search_taxon(cd_ref);
 CREATE INDEX trgm_idx ON atlas.vm_search_taxon USING GIST (search_name gist_trgm_ops);
 
 -- Materialized View: atlas.vm_mois
