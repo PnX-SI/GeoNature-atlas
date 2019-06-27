@@ -3,7 +3,8 @@ from sqlalchemy import (
     Column,
     Integer,
     MetaData,
-    String
+    String,
+    Table
 )
 from sqlalchemy.ext.declarative import declarative_base
 from ...utils import engine
