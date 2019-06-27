@@ -103,7 +103,6 @@ def getVideo_and_audio(connection, cd_ref, id5, id6, id7, id8, id9):
         WHERE id_type in (:id5, :id6, :id7, :id8, :id9) AND cd_ref = :thiscdref
         ORDER BY date_media DESC
     """
-    print(sql, id5, id6, id7, id8, id9)
     req = connection.execute(
         text(sql),
         thiscdref=cd_ref,
