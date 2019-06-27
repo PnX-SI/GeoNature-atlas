@@ -1,18 +1,10 @@
 # coding: utf-8
 from sqlalchemy import (
-    BigInteger,
     Column,
-    Date,
-    DateTime,
     Integer,
     MetaData,
-    String,
-    Table,
-    Text,
+    String
 )
-from geoalchemy2.types import Geometry
-from sqlalchemy.sql.sqltypes import NullType
-from sqlalchemy.orm import mapper
 from sqlalchemy.ext.declarative import declarative_base
 from ...utils import engine
 
