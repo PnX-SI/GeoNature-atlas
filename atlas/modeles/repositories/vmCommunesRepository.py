@@ -16,9 +16,9 @@ def getAllCommunes(session):
     return communeList
 
 
-def getCommunesSearch(session, search, limit=50):
-    req = session.query(distinct(VmCommunes.commune_maj), VmCommunes.insee) \
-        .filter(VmCommunes.commune_maj.ilike('%' + search + '%')).limit(limit).all()
+def getCommunesSearch(connection, search, limit=50):
+    sql = "SELECT commune_maj, insee  FROM atlas.vm_communes WHERE commune_maj ILIKE :thisSearch ORDER BY char_length(commune_maj) LIMIT :thisLimit"
+    req = connection.execute(text(sql), thisSearch='%{}%'.format(search), thisLimit=limit)
     communeList = list()
     for r in req:
         temp = {'label': r[0], 'value': r[1]}
