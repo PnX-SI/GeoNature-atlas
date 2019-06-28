@@ -35,6 +35,8 @@ class SecretSchemaConf(Schema):
 
 class MapConfig(Schema):
     LAT_LONG = fields.List(fields.Float(), missing=[44.7952, 6.2287])
+    MIN_ZOOM = fields.Integer(missing=6)
+    MAX_BOUNDS= fields.List(fields.List(fields.Float()),missing=[[41.463,-1.876],[51.62,8.6]])
     FIRST_MAP = fields.Dict(missing=MAP_1)
     SECOND_MAP = fields.Dict(missing=MAP_2)
     ZOOM = fields.Integer(missing=10)
