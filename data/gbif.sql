@@ -1,36 +1,39 @@
+-- SQL to update atlas database with GBIF data and backbone
+
+----------------------
+-- Remove default data
+----------------------
+
+-- Drop materialized in order to recreate it later
 drop materialized view atlas.vm_altitudes;
 drop materialized view atlas.vm_mois;
 drop materialized view atlas.vm_taxons_plus_observes;
 drop materialized view atlas.vm_observations_mailles;
-
 drop materialized view atlas.vm_search_taxon;
 drop materialized view  atlas.vm_taxons;
 drop materialized view atlas.vm_observations;
 drop materialized view atlas.vm_taxref;
 
-
+-- Delete a constraint dependancy
 ALTER TABLE taxonomie.taxref_protection_especes DROP CONSTRAINT taxref_protection_especes_cd_nom_fkey;
 
--- Vider taxref
+-- Truncate taxref table content (with default French taxonomic data to replace it later with GBIF backbone taxonomy)
 DELETE FROM taxonomie.taxref;
 
+-- Drop some views to recreate them later
 DROP view taxonomie.v_taxref_all_listes;
 DROP view taxonomie.v_taxref_hierarchie_bibtaxons;
 
-
--- Changement lb_nom(100) vers lb_nom(255)
+-- Update lb_auteur and lb_nom field length to 255 characters
 ALTER TABLE taxonomie.taxref ALTER COLUMN lb_auteur TYPE character varying (255);
 ALTER TABLE taxonomie.taxref ALTER COLUMN lb_nom TYPE character varying (255);
 
-
-
-
+-- Create a function to convert GBIF rank names to codes
 CREATE OR REPLACE FUNCTION gbif.convert_rank(my_rank text)
   RETURNS text AS
 $BODY$
   DECLARE
     the_rank text;
-
   BEGIN
     IF my_rank = 'KINGDOM' THEN
     the_rank = 'KD';
@@ -56,9 +59,11 @@ $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
 
+-----------------
+-- Taxonomic data
+-----------------
 
-
--- Remplissage de la table taxref avec les données issues du GBIF (présent dans la table backbone)
+-- Fill taxref table with GBIF backbone taxonomy data (more than 5 millions, can be long)
 INSERT INTO taxonomie.taxref(
             cd_nom, 
             id_statut, 
@@ -82,7 +87,6 @@ INSERT INTO taxonomie.taxref(
             group1_inpn, 
             group2_inpn
         )
-
 WITH sup_species AS
      (SELECT id, parent_key FROM gbif.backbone WHERE is_synonym = true LIMIT 100),
 k AS
@@ -135,37 +139,29 @@ LEFT JOIN c ON c.id = b.class_key
 LEFT JOIN o ON o.id = b.order_key
 LEFT JOIN f ON f.id = b.family_key;
 
-
-
---ajout d'une clé primaire sur gbif.gbifjam sur "taxonKey"
+-- Add primary key index on taxonKey field from gbif.gbifjam table
 create index on gbif.gbifjam ("taxonKey");
 
--- insertion des données de la table taxref dans bib_noms (seulement les données ayant des obs)
+-- Insert taxons (that have at least 1 observation data) in bib_noms table, in order to be able to associate them some medias later
 INSERT INTO taxonomie.bib_noms (cd_nom, cd_ref, nom_francais)
 SELECT DISTINCT cd_nom, cd_ref, nom_vern
 FROM taxonomie.taxref t
 JOIN gbif.gbifjam j ON j."taxonKey" = t.cd_nom
 ;
 
+--------------------
+-- Observations data
+--------------------
 
----------------------------------------------------------------------
----------------------------------------------------------------------
---------------------------- SYNTHESEFF ------------------------------
----------------------------------------------------------------------
----------------------------------------------------------------------
-
---fonction remplacement de la date de la table gbif.gbifjam (car pas au type date à la base)
+-- Function to change date type from gbif.gbifjam table
 CREATE OR REPLACE FUNCTION synthese.change_date(my_date character varying(254))
   RETURNS date AS
 $BODY$
   DECLARE
     the_date date;
-
   BEGIN
-
     the_date = to_date(my_date, 'YYYY-MM-DD');
     return the_date;
-    
   EXCEPTION 
     WHEN others 
     THEN
@@ -176,33 +172,36 @@ $BODY$
 LANGUAGE plpgsql VOLATILE
 COST 100;
 
--- Vider la table syntheff
+-- Truncate default content from syntheff table
 DELETE FROM synthese.syntheseff
 
-
--- Changement observateurs(255) vers observateur text
+-- Change observateurs field type from character varying(255) to text
 ALTER TABLE synthese.syntheseff ALTER COLUMN observateurs TYPE text;
 
--- Changement id_synthese serial vers id_synthese bigint pour créer un lien entre gbif.gbifjam.gbifid et id_synthese
+-- Change id_synthese field type from serial to bigint to fill it with gbif.gbifjam.gbifid
 ALTER TABLE synthese.syntheseff ALTER COLUMN id_synthese TYPE bigint;
 
--- insertion des données dans la synthese
-
+-- Insert GBIF observations data into syntheseff table
 INSERT INTO synthese.syntheseff (id_synthese, cd_nom, dateobs, observateurs, the_geom_point, effectif_total, diffusable)
-SELECT "gbifID", "taxonKey", synthese.change_date("eventDate"), ' ', ST_transform(ST_SETSRID(ST_MakePoint("decimalLongitude", "decimalLatitude"),4326),3857), 1, 
-'True'
+SELECT 
+  "gbifID", 
+  "taxonKey",
+  synthese.change_date("eventDate"), 
+  ' ', 
+  ST_transform(ST_SETSRID(ST_MakePoint("decimalLongitude", "decimalLatitude"),4326),3857), 
+  1, 
+  'True'
 FROM gbif.gbifjam
 WHERE synthese.change_date("eventDate") IS NOT NULL;
 
-
-
+-- Create a function to get all parent taxons from a taxon with its unique ID (cd_nom)
 CREATE OR REPLACE FUNCTION atlas.get_all_cd_sup(the_cd_nom integer)
   RETURNS SETOF integer AS
 $BODY$
 DECLARE rec record;
 BEGIN 
 for rec in 
-   WITH RECURSIVE taxon_sup(cd_nom, lb_nom,  cd_taxsup) AS (
+   WITH RECURSIVE taxon_sup(cd_nom, lb_nom, cd_taxsup) AS (
      SELECT cd_nom, lb_nom, cd_taxsup
       FROM taxonomie.taxref WHERE cd_nom = the_cd_nom
      UNION ALL
@@ -219,14 +218,13 @@ $BODY$
 LANGUAGE plpgsql IMMUTABLE
 COST 100;
 
-
-
+-- Delete a materialized view
 DROP materialized view atlas.vm_taxref;
--- recréation de la vm_taxref a partir de tous les cd_nom observés + tous les synonymes et leurs parent 
--- pour des questions de perf on ne remet pas tout taxref
+-- Recreate vm_taxref with all taxons observed at least once + their synonyms and parents
+-- Better for performances, rather than including the whole GBIF backbone that has more than 5 millions records
 CREATE materialized view atlas.vm_taxref AS
 WITH observed_taxons AS (
-    SELECT DISTINCT atlas.get_all_cd_sup(cd_nom) AS cd_nom FROM synthese.syntheseff) -- 13612 results
+    SELECT DISTINCT atlas.get_all_cd_sup(cd_nom) AS cd_nom FROM synthese.syntheseff)
 SELECT 
     tx.cd_nom,
     tx.id_statut,
@@ -252,57 +250,43 @@ SELECT
 FROM taxonomie.taxref tx
    RIGHT JOIN observed_taxons ot ON ot.cd_nom = tx.cd_ref;
 
+-- Add an index on cd_nom field from atlas.vm_taxref materialized view
 CREATE UNIQUE INDEX vm_taxref_cd_nom_idx
   ON atlas.vm_taxref
-
   USING btree
   (cd_nom);
 
-
-
+-- Add another index
 CREATE INDEX vm_taxref_cd_ref_idx
   ON atlas.vm_taxref
   USING btree
   (cd_ref);
 
--- Index: atlas.vm_taxref_cd_taxsup_idx
-
--- DROP INDEX atlas.vm_taxref_cd_taxsup_idx;
-
+-- Add another index
 CREATE INDEX vm_taxref_cd_taxsup_idx
   ON atlas.vm_taxref
   USING btree
   (cd_taxsup);
 
--- Index: atlas.vm_taxref_lb_nom_idx
-
--- DROP INDEX atlas.vm_taxref_lb_nom_idx;
-
+-- Add another index
 CREATE INDEX vm_taxref_lb_nom_idx
   ON atlas.vm_taxref
   USING btree
   (lb_nom COLLATE pg_catalog."default");
 
--- Index: atlas.vm_taxref_nom_complet_idx
-
--- DROP INDEX atlas.vm_taxref_nom_complet_idx;
-
+-- Add another index
 CREATE INDEX vm_taxref_nom_complet_idx
   ON atlas.vm_taxref
   USING btree
   (nom_complet COLLATE pg_catalog."default");
 
--- Index: atlas.vm_taxref_nom_valide_idx
-
--- DROP INDEX atlas.vm_taxref_nom_valide_idx;
-
+-- Add another index
 CREATE INDEX vm_taxref_nom_valide_idx
   ON atlas.vm_taxref
   USING btree
   (nom_valide COLLATE pg_catalog."default");
 
-
-
+-- Now that we have inserted GBIF data, we can recreate all materialized views used by GeoNature-atlas
 
 CREATE MATERIALIZED VIEW atlas.vm_observations AS 
  SELECT s.id_synthese AS id_observation,
@@ -320,7 +304,6 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
   WHERE s.supprime = false AND s.diffusable = true
 WITH DATA;
 
-
 CREATE MATERIALIZED VIEW atlas.vm_observations_mailles AS 
  SELECT obs.cd_ref,
     obs.id_observation,
@@ -331,18 +314,16 @@ CREATE MATERIALIZED VIEW atlas.vm_observations_mailles AS
      JOIN atlas.t_mailles_territoire m ON st_intersects(obs.the_geom_point, st_transform(m.the_geom, 3857))
 WITH DATA;
 
-
-
 REINDEX INDEX atlas.vm_observations_mailles_cd_ref_idx;
 REINDEX INDEX atlas.index_gist_atlas_vm_observations_mailles_geom;
 REINDEX INDEX atlas.vm_observations_mailles_geojson_maille_idx;
 REINDEX INDEX atlas.vm_observations_mailles_id_maille_idx;
 REINDEX INDEX atlas.vm_observations_mailles_id_observation_idx;
 
-
 DROP MATERIALIZED VIEW atlas.vm_search_taxon;
 DROP MATERIALIZED VIEW atlas.vm_taxons_plus_observes;
 DROP MATERIALIZED VIEW atlas.vm_taxons;
+
 CREATE MATERIALIZED VIEW atlas.vm_taxons AS 
  WITH obs_min_taxons AS (
          SELECT vm_observations.cd_ref,
@@ -414,8 +395,6 @@ CREATE UNIQUE INDEX vm_taxons_cd_ref_idx
   USING btree
   (cd_ref);
 
-
-
 CREATE MATERIALIZED VIEW atlas.vm_taxons_plus_observes AS 
  SELECT count(*) AS nb_obs,
     obs.cd_ref,
@@ -435,13 +414,10 @@ CREATE MATERIALIZED VIEW atlas.vm_taxons_plus_observes AS
  LIMIT 12
 WITH DATA;
 
-
 CREATE UNIQUE INDEX vm_taxons_plus_observes_cd_ref_idx
   ON atlas.vm_taxons_plus_observes
   USING btree
   (cd_ref);
-
-
 
 CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS 
  SELECT tx.cd_nom,
@@ -451,31 +427,21 @@ CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS
      JOIN atlas.vm_taxons t ON t.cd_ref = tx.cd_ref
 WITH DATA;
 
-
 CREATE UNIQUE INDEX vm_search_taxon_cd_nom_idx
   ON atlas.vm_search_taxon
   USING btree
   (cd_nom);
-
 
 CREATE INDEX vm_search_taxon_cd_ref_idx
   ON atlas.vm_search_taxon
   USING btree
   (cd_ref);
 
--- Index: atlas.vm_search_taxon_nom_search_idx
-
--- DROP INDEX atlas.vm_search_taxon_nom_search_idx;
-
 CREATE INDEX vm_search_taxon_nom_search_idx
   ON atlas.vm_search_taxon
   USING btree
   (nom_search COLLATE pg_catalog."default");
 
-
-
-
-DROP MATERIALIZED VIEW atlas.vm_mois;
 CREATE MATERIALIZED VIEW atlas.vm_mois AS 
  WITH _01 AS (
          SELECT vm_observations.cd_ref,
@@ -580,14 +546,12 @@ CREATE MATERIALIZED VIEW atlas.vm_mois AS
   ORDER BY o.cd_ref
 WITH DATA;
 
-
 CREATE UNIQUE INDEX vm_mois_cd_ref_idx
   ON atlas.vm_mois
   USING btree
   (cd_ref);
 
-
--- TO CAHNGE WITH CUSTOM ALTITUDE OF THE TERRITORY
+-- Altitude classes - Should be updated with altitudes for your territory
 
 CREATE MATERIALIZED VIEW atlas.vm_altitudes AS 
  WITH alt1 AS (
@@ -671,19 +635,15 @@ WITH DATA;
 
 REINDEX INDEX atlas.vm_altitudes_cd_ref_idx;
 
-
-
+-- Create a function to cast taxonkey
 CREATE OR REPLACE FUNCTION atlas.cast_taxonkey(my_taxonkey character varying(254))
   RETURNS integer AS
 $BODY$
   DECLARE
     the_taxonkey integer;
-
   BEGIN
-
     the_taxonkey = my_taxonkey::integer;
     return the_taxonkey;
-    
   EXCEPTION 
     WHEN others 
     THEN
@@ -694,7 +654,7 @@ $BODY$
 LANGUAGE plpgsql VOLATILE
 COST 100;
 
--- cast insee column to integer (was float)
+-- Cast insee column (municipality ID) to integer (instead of float)
 DROP MATERIALIZED VIEW atlas.vm_communes;
 
 CREATE MATERIALIZED VIEW atlas.vm_communes AS 
@@ -706,10 +666,8 @@ CREATE MATERIALIZED VIEW atlas.vm_communes AS
      JOIN atlas.t_layer_territoire t ON st_contains(st_buffer(t.the_geom, 200::double precision), c.the_geom)
 WITH DATA;
 
-
-
--- GRANT ALL TABLE
--- replace <MY_PG_READER_USER> with the user you fill in the file settings.ini (variable 'user_pg')
+-- GRANT SELECT to your database reader user on ALL TABLES
+-- Replace <MY_PG_READER_USER> with the user you fill in the file settings.ini ('user_pg' setting)
 
 GRANT USAGE ON SCHEMA atlas TO <MY_PG_READER_USER>;
 
