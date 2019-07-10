@@ -25,7 +25,10 @@ def main(dbconnexion, cd_refs, refreshAtlas=True, simulate=True):
       ?item wdt:P18 ?image.
       ?item wdt:P846 '%s'
     } LIMIT 200"""
-    sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
+    sparql = SPARQLWrapper("https://query.wikidata.org/sparql", 
+        agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
+    )
+
 
     sqlI = """INSERT INTO taxonomie.t_medias
         (cd_ref, titre, url,is_public, id_type, auteur, source, licence)
@@ -35,11 +38,9 @@ def main(dbconnexion, cd_refs, refreshAtlas=True, simulate=True):
     # VALUES (%s, '%s', '%s', true, 2, '%s', 'Wikimedia Commons', '%s')
     for cd_ref in cd_refs:
         try:
-            print("Taxon %s" % cd_ref[0])
             sparql.setQuery(query % cd_ref[0])
             sparql.setReturnFormat(JSON)
             results = sparql.query().convert()
-
             for result in results["results"]["bindings"]:
                 if (result['image']['value']):
                     print(' -- INSERT IMAGE')
@@ -73,8 +74,8 @@ def main(dbconnexion, cd_refs, refreshAtlas=True, simulate=True):
                         dbconnexion.rollback()
                         pass
         except Exception as e:
+            print(e)
             pass
-
     if simulate is False:
         cur.execute("""
             UPDATE taxonomie.t_medias SET id_type = 1
@@ -107,17 +108,20 @@ try:
     #     LEFT OUTER JOIN taxonomie.t_medias USING(cd_ref)
     #     WHERE id_media IS NULL
     # """
-    sql = """
-    SELECT DISTINCT tax.cd_ref
-    FROM synthese.syntheseff s
-    JOIN taxonomie.taxref tax ON tax.cd_nom = s.cd_nom
-    LEFT JOIN taxonomie.t_medias medias ON medias.cd_ref = tax.cd_ref
-    WHERE medias.url IS NULL
-     """
+    # sql = """
+    # SELECT DISTINCT tax.cd_ref
+    # FROM synthese.syntheseff s
+    # JOIN taxonomie.taxref tax ON tax.cd_nom = s.cd_nom
+    # LEFT JOIN taxonomie.t_medias medias ON medias.cd_ref = tax.cd_ref
+    # WHERE medias.url IS NULL
+    # LIMIT 100
+    #  """
     # sql = """SELECT cd_ref from atlas.vm_taxons_plus_observes LIMIT 100"""
-    cur.execute(sql)
+    cur.execute(config.QUERY_SELECT_CDREF)
     rows = cur.fetchall()
 except Exception as e:
     print("Problème lors de la récupération de la liste des cd_ref")
     raise
+
+
 main(conn, rows, False, False)
