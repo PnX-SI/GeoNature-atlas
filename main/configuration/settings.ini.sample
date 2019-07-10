@@ -1,6 +1,5 @@
 app_name=atlas
 
-
 #########################
 ### Gunicorn settings ###
 #########################
@@ -8,12 +7,10 @@ gun_num_workers=4
 gun_host=0.0.0.0
 gun_port=8080
 
-
 #######################
 ### Python settings ###
 #######################
 venv_dir=venv
-
 
 ####################################
 ### PostgreSQL database settings ###
@@ -45,9 +42,9 @@ user_pg_pass=mypasswordtochange
 owner_atlas_pass=mypasswordtochange
 
 # Is GeoNature-atlas connected to a GeoNature database
-geonature_source=true
+geonature_source=false
 
-# If YES :
+# If TRUE :
 
 # GeoNature version (1 or 2)
 geonature_version=2
@@ -56,12 +53,12 @@ geonature_version=2
 # If true : remote database that will be accessed with Foreign Data Wrapper (FDW)
 geonature_fdw=true
 
+#################################################
+##### GEONATURE database connection SOURCE ######
+#################################################
 
-################################################
-##### GEONATURE database connexion SOURCE ######
-################################################
-
-# Required only if you want to connected to a GeoNature database with Foreign Data Wrapper
+# Only if geonature_source=true
+# Only required if you want to connected to a GeoNature database with Foreign Data Wrapper
 # If you have a remote database with your observations which is not GeoNature, 
 # and want to connect GeoNature-atlas to it, you can inspire yourself from data/atlas_geonature.sql to connect to another mother database
 
@@ -79,8 +76,6 @@ atlas_source_user=geonatuser
 
 # GeoNature source database username password (read only)
 atlas_source_pass=monpassachanger
-
-
 
 #######################
 ### GEOGRAPHIC data ###
@@ -104,7 +99,9 @@ import_commune_shp=true
 # Path and column name of the municipalities SHP file
 # Leave it so Laisser tel quel (just changing MYUSERLINUX) if you want to use Ecrins national park municipalities dataset
 communes_shp=/home/MYUSERLINUX/atlas/data/ref/communes.shp
+# Municipalities ID column name
 colonne_insee=insee
+# Municipalities name column name
 colonne_nom_commune=nom_com
 
 ### TERRITORY ####
@@ -116,7 +113,7 @@ limit_shp=/home/MYUSERLINUX/atlas/data/ref/territoire.shp
 
 # Is my territory in French metropolis ? 
 # In this case, it will automatically use grids provided by INPN (French national museum)
-metropole=true
+metropole=false
 
 # If metropole=true, choose the size of the grids you want to use (in km) / Values available : 1, 5 or 10
 taillemaille=5
@@ -129,7 +126,7 @@ chemin_custom_maille=/home/MYUSERLINUX/atlas/data/ref/custom_maille.shp
 ######################
 
 # Install "taxonomie" database schema from TaxHub into GeoNature-atlas database ?
-install_taxonomie=false
+install_taxonomie=true
 
 # TaxHub version to use to install "taxonomie" schema
 # GeoNature-atlas 1.3.0 is compatible with TaxHub version lower or equal to 1.3.2
