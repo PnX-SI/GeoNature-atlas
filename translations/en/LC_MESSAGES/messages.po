@@ -31,6 +31,10 @@ msgid "home.gallery"
 msgstr "Pictures gallery"
 
 #: templates/index.html:66
+msgid "home.learnmore"
+msgstr "Learn more"
+
+#: templates/index.html:66
 msgid "home.observations"
 msgstr "observations"
 
@@ -55,6 +59,14 @@ msgid "home.municipality"
 msgstr "municipality"
 
 #: templates/index.html:66
+msgid "observers"
+msgstr "observers"
+
+#: templates/index.html:66
+msgid "observer"
+msgstr "observer"
+
+#: templates/index.html:66
 msgid "home.photos"
 msgstr "photos"
 
@@ -72,7 +84,7 @@ msgstr "Species sheet"
 
 #: static/templates/index.html:66
 msgid "home.latestobs"
-msgstr "Observations of agents during the latest 7 days"
+msgstr "Latest observations"
 
 #: static/templates/index.html:66
 msgid "home.moment"
@@ -301,7 +313,7 @@ msgstr "First observation"
 
 #: static/templates/tabTaxons.html:66
 msgid "last.espece"
-msgstr "Last observation"
+msgstr "Latest observation"
 
 #: static/templates/tabTaxons.html:66
 msgid "info.espece"
