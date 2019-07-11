@@ -111,7 +111,7 @@
 					<div class="panel panel-default statMedias">
 						<div class="panel-heading">
 							<h3>{{configuration.RANG_STAT_FR[i]}} </h3>
-							<span class="higlight">{{customStat[i].nb_obs}}</span> {{ _('home.observations') }} | <span class="higlight">{{customStat[i].nb_taxons}}</span>{{ _('home.species') }}
+							<span class="higlight">{{customStat[i].nb_obs}}</span> {{ _('home.observations') }} | <span class="higlight">{{customStat[i].nb_taxons}}</span> {{ _('home.species') }}
 						</div>
 						<h5><span class="glyphicon glyphicon-eye-open"></span> {{ _('home.speciestodiscover') }}</h5>
 					{% for j in range(2) %}
@@ -151,7 +151,7 @@
 			<!-- Dernières espèces observées (Carte et liste) -->
 			<div class="col-sm-12" id="DernieresObservations">
 					<div class="panel panel-default" >
-					  	<div class="panel-heading"><h3> {{ _('home.latestobs') }} {{observations | length}} {{ 'observations' if observations | length > 1 else 'observation' }}</h3></div>
+					  	<div class="panel-heading"><h3> {{ _('home.latestobs') }} | {{observations | length}} {{ _('home.observations') if observations | length > 1 else _('home.observation') }}</h3></div>
 					  	<div class="row" id="mapRow">
 							<!-- CARTE des dernières observations -->
 							<div id="blocMap" class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
@@ -182,7 +182,7 @@
 										<td class="singleTaxon date"> {{obs.dateobs}} </td>
 										<td class="singleTaxon detail">
 											<a href = "{{url_for('main.ficheEspece',cd_ref=obs.cd_ref)}}">
-												<span class="glyphicon glyphicon-list" data-toggle="tooltip" data-original-title="Consulter la fiche espèce" data-placement="left"> </span>
+												<span class="glyphicon glyphicon-list" data-toggle="tooltip" data-original-title="{{ _('home.speciessheet') }}" data-placement="left"> </span>
 											</a>
                       					</td>
 										<td class="hiddenTd" hidden="true">{{obs.cd_ref}}</td>
