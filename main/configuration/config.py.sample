@@ -57,15 +57,15 @@ IGNAPIKEY = 'myIGNkey';
 MAP = {
     'LAT_LONG': [44.7952, 6.2287],
     'FIRST_MAP': {
-            'url' : 'http://gpp3-wxs.ign.fr/'+IGNAPIKEY+'/wmts?LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD&EXCEPTIONS=text/xml&FORMAT=image/jpeg&SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&STYLE=normal&TILEMATRIXSET=PM&&TILEMATRIX={z}&TILECOL={x}&TILEROW={y}',
-            'attribution' : '&copy; <a href="http://www.ign.fr/">IGN</a>',
-            'tileName' : 'IGN'
+            'url' : '//{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
+            'attribution' : '&copy OpenStreetMap',
+            'tileName' : 'OSM'
     },
     'SECOND_MAP' : {'url' :'https://gpp3-wxs.ign.fr/'+IGNAPIKEY+'/geoportail/wmts?LAYER=ORTHOIMAGERY.ORTHOPHOTOS&EXCEPTIONS=text/xml&FORMAT=image/jpeg&SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&STYLE=normal&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}',
             'attribution' : '&copy; <a href="http://www.ign.fr/">IGN</a>',
             'tileName' : 'Ortho IGN'
     },
-    'ZOOM' : 10,
+    'ZOOM' : 9,
     # Slider steps for observations years (1 = 1 year step on slider)
     'STEP': 1,
     # Color and thickness of territory border
@@ -85,9 +85,9 @@ LIMIT_CLUSTER_POINT = 1000
 
 # Homepage map : observations from 'x' latest days. 
 # To fill in English and without plurial, to define how long you want to display latest observations on homepage map
-NB_DAY_LAST_OBS = '7 day'
+NB_DAY_LAST_OBS = '20 day'
 # Text to display as title of this block. NO MORE USED ? In translations files now ???
-TEXT_LAST_OBS = u'Les observations des agents ces 7 derniers jours |'
+TEXT_LAST_OBS = u'Observations during the latest 20 days |'
 
 # Municipalties pages map : Number of 'x' latest observations displayed on default map
 NB_LAST_OBS=100
@@ -117,12 +117,12 @@ AFFICHAGE_EN_CE_MOMENT = True
 # Works at any level of ranks available in taxref taxonomie.table
 
 # Example RANG_STAT = [{'ordre': ['Lepidoptera']}, {'classe': ['Insecta', 'Arachnida']}]
-#         RANG_STAT_FR ['Papillon', 'Insecte et Araignées']
+#         RANG_STAT_FR ['Butterfly', 'Insects and Spiders']
 
 AFFICHAGE_RANG_STAT = True
 COLONNES_RANG_STAT = 3
 RANG_STAT = [{'phylum': ["Arthropoda", "Mollusca"]}, {'phylum': ["Chordata"]}, {'regne': ["Plantae"]}]
-RANG_STAT_FR = ['Faune invertébrée', 'Faune vertébrée', 'Flore']
+RANG_STAT_FR = ['Invertebrate fauna', 'Vertebrate fauna', 'Flora']
 
 # Function that shouldnt be changed
 for i in range(len(RANG_STAT_FR)):
