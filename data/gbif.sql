@@ -666,6 +666,14 @@ CREATE MATERIALIZED VIEW atlas.vm_communes AS
      JOIN atlas.t_layer_territoire t ON st_contains(st_buffer(t.the_geom, 200::double precision), c.the_geom)
 WITH DATA;
 
+-- Intersect observations with municipalities polygons
+UPDATE synthese.syntheseff s SET insee = c.insee 
+FROM atlas.vm_communes c 
+WHERE ST_Intersects(s.the_geom_point, c.the_geom);
+
+-- And include municipalities ID in observations materialized view
+REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_observations;
+
 -- GRANT SELECT to your database reader user on ALL TABLES
 -- Replace <MY_PG_READER_USER> with the user you fill in the file settings.ini ('user_pg' setting)
 
