@@ -533,22 +533,22 @@
                     </h4>
                     <hr class="small-hr">
                     <h4>{{videoAudio.audio[0].title}}</h4>
-                    {% with media=videoAudio.audio[0] %}
-                        {% include "templates/block-descriptionMedia.html" %}
-                    {% endwith %}
                     <audio controls>
                         <source src="{{ videoAudio.audio[0].path }}" type="audio/mpeg">
                     </audio>
+                    {% with media=videoAudio.audio[0] %}
+                        {% include "templates/block-descriptionMedia.html" %}
+                    {% endwith %}
 
                     <div id="moreAudio" class="collapse">
                         {% for i in range (1, videoAudio.audio |length) %}
                             <h4> {{videoAudio.audio[i].title}} </h4>
-                            {% with media=videoAudio.audio[i] %}
-                                {% include "templates/block-descriptionMedia.html" %}
-                            {% endwith %}
                             <audio controls>
                                 <source src="{{ videoAudio.audio[i].path }}" type="audio/mpeg">
                             </audio>
+                            {% with media=videoAudio.audio[i] %}
+                                {% include "templates/block-descriptionMedia.html" %}
+                            {% endwith %}
                         {% endfor %}
                     </div>
                 {% endif %}
