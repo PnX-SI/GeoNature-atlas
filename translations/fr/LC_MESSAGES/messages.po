@@ -31,6 +31,10 @@ msgid "home.gallery"
 msgstr "galerie photos"
 
 #: templates/index.html:66
+msgid "home.learnmore"
+msgstr "En savoir plus"
+
+#: templates/index.html:66
 msgid "home.observations"
 msgstr "observations"
 
@@ -55,6 +59,14 @@ msgid "home.municipality"
 msgstr "commune"
 
 #: templates/index.html:66
+msgid "observers"
+msgstr "observateurs"
+
+#: templates/index.html:66
+msgid "observer"
+msgstr "observateur"
+
+#: templates/index.html:66
 msgid "home.photos"
 msgstr "photos"
 
@@ -72,7 +84,7 @@ msgstr "Fiche espèce"
 
 #: static/templates/index.html:66
 msgid "home.latestobs"
-msgstr "Les observations des agents ces 7 derniers jours |"
+msgstr "Les dernières observations"
 
 #: static/templates/index.html:66
 msgid "home.moment"
