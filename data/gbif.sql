@@ -673,6 +673,30 @@ WHERE ST_Intersects(s.the_geom_point, c.the_geom);
 
 -- And include municipalities ID in observations materialized view
 REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_observations;
+                              
+-- Translate main ranks into English
+UPDATE atlas.bib_taxref_rangs SET nom_rang = 'Domain'
+WHERE id_rang = 'Dumm';
+UPDATE atlas.bib_taxref_rangs SET nom_rang = 'Kingdom'
+WHERE id_rang = 'KD';
+UPDATE atlas.bib_taxref_rangs SET nom_rang = 'Family'
+WHERE id_rang = 'FM';
+UPDATE atlas.bib_taxref_rangs SET nom_rang = 'Subfamily'
+WHERE id_rang = 'SBFM';
+UPDATE atlas.bib_taxref_rangs SET nom_rang = 'Order'
+WHERE id_rang = 'OR';
+UPDATE atlas.bib_taxref_rangs SET nom_rang = 'Suborder'
+WHERE id_rang = 'SBOR';
+UPDATE atlas.bib_taxref_rangs SET nom_rang = 'Class'
+WHERE id_rang = 'CL';
+UPDATE atlas.bib_taxref_rangs SET nom_rang = 'Genus'
+WHERE id_rang = 'GN';
+UPDATE atlas.bib_taxref_rangs SET nom_rang = 'Subgenus'
+WHERE id_rang = 'SSGN';
+UPDATE atlas.bib_taxref_rangs SET nom_rang = 'Species'
+WHERE id_rang = 'ES';
+UPDATE atlas.bib_taxref_rangs SET nom_rang = 'Subspecies'
+WHERE id_rang = 'SSES';
 
 -- GRANT SELECT to your database reader user on ALL TABLES
 -- Replace <MY_PG_READER_USER> with the user you fill in the file settings.ini ('user_pg' setting)
