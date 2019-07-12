@@ -5,6 +5,8 @@ from flask_sqlalchemy import SQLAlchemy
 
 from werkzeug.serving import run_simple
 
+from main.configuration import config
+from main.utils import format_number
 from sqlalchemy import create_engine, MetaData, Table
 from flask_compress import Compress
 
@@ -42,7 +44,7 @@ class ReverseProxied(object):
 
 
 def create_app():
-    """ 
+    """
         renvoie une instance de l'app Flask
     """
 
@@ -79,7 +81,9 @@ def create_app():
 
 
 app = create_app()
-
+@app.template_filter('pretty')
+def pretty(val):
+    return format_number(val)
 
 if __name__ == "__main__":
     from flask_script import Manager
