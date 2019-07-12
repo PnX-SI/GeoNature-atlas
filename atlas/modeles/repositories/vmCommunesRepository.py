@@ -20,7 +20,6 @@ def getAllCommunes(session):
         communeList.append(temp)
     return communeList
 
-
 def getCommunesSearch(session, search, limit=50):
     req = session.query(
         distinct(VmCommunes.commune_maj),
@@ -34,6 +33,7 @@ def getCommunesSearch(session, search, limit=50):
         req = req.order_by(VmCommunes.commune_maj)
 
     req = req.limit(limit).all()
+    
     communeList = list()
     for r in req:
         temp = {'label': r[0], 'value': r[1]}
