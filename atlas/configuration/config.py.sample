@@ -1,0 +1,55 @@
+
+# -*- coding:utf-8 -*-
+
+
+# Connexion de l'application à la BDD
+# Remplacer user, monpassachanger, IPADRESSE (localhost si la BDD est sur le même serveur que l'application), 
+# eventuellement le port de la BDD et le nom de la BDD avec l'utilisateur qui a des droits de lecture sur les vues de l'atlas (user_pg dans settings.ini)
+
+database_connection = "postgresql://user:monpassachanger@IPADRESSE:5432/databaseName"
+
+#################################
+#################################
+### Customisation application ###
+#################################
+#################################
+
+# Nom de la structure
+STRUCTURE = "Nom de la structure"
+
+# Nom de l'application
+NOM_APPLICATION = "Nom de l application"
+
+# URL de l'application depuis la racine du domaine
+# ex "/atlas" pour une URL: http://mon-domaine/atlas OU "" si l'application est accessible à la racine du domaine
+URL_APPLICATION = ""
+
+
+###########################
+###### Cartographie #######
+###########################
+
+# Clé IGN si vous utilisez l'API Geoportail pour afficher les fonds cartographiques
+
+# Configuration des cartes (centre du territoire, couches CARTE et ORTHO, échelle par défaut...)
+MAP = {
+    'LAT_LONG': [44.7952, 6.2287],
+    'FIRST_MAP': {
+            'url' : '//{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
+            'attribution' : '&copy OpenStreetMap',
+            'tileName' : 'OSM'
+    },
+    'SECOND_MAP' : {'url' :'//{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+            'attribution' : '\u00a9 GoogleMap',
+            'subdomains': ['mt0', 'mt1', 'mt2', 'mt3'],
+            'tileName' : 'Sattelite'
+    },
+    'ZOOM' : 10,
+    # Pas du slider sur les annees d'observations: 1 = pas de 1 an sur le slider
+    'STEP': 1,
+    # Couleur et épaisseur des limites du territoire
+    'BORDERS_COLOR': '#000000',
+    'BORDERS_WEIGHT': 3
+}
+
+

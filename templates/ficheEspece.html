@@ -75,14 +75,26 @@
                             <a href="{{firstPhoto.path}}" data-lightbox="imageSet"
                               data-title="{{firstPhoto.title}} &copy; {{firstPhoto.author}}"
                             >
-                            {% if configuration.TAXHUB_URL != None %}
+                            {% if configuration.REDIMENSIONNEMENT_IMAGE %}
                               {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+firstPhoto.id_media|string+'?h=500' %}
                             {% else %}
                               {% set img_path = firstPhoto.path %}
                             {% endif %}
                               <img id="mainImg" src="{{img_path}}"
                                 style="width:100%;" alt="{{firstPhoto.title}} &copy; {{firstPhoto.author|striptags}}">
-                                <p class="imgDescription main">{{firstPhoto.title}} &copy; {{firstPhoto.author|striptags}}</p>
+                                <p class="imgDescription main">{{firstPhoto.title}}
+                                {% if firstPhoto.description %}
+                                - {{firstPhoto.description}}
+                                {% endif %}
+                                &copy; {{firstPhoto.author|striptags}}
+                                {% if firstPhoto.licence %}
+                                - {{firstPhoto.licence}}
+                                {% endif %}
+                                {% if firstPhoto.source %}
+                                - {{firstPhoto.source}}
+                                {% endif %}
+
+                                </p>
                             </a>
                         </div>
 
@@ -197,7 +209,7 @@
                                                                 >
                                                             {% endif %}
                                                             </td>
-                                                            <td> {{child.nb_obs}} </td>
+                                                            <td> {{child.nb_obs | pretty}} </td>
                                                             <td>
                                                                 <a href = "{{url_for('main.ficheEspece', cd_ref = child.cd_ref) }}">
                                                                     <span id="ficheGlyficon"  data-toggle="tooltip" data-original-title="Consulter la fiche espèce" data-placement="right" class="glyphicon glyphicon-list"></span>
@@ -246,13 +258,35 @@
                     </div>
                     <div class="col-sm-2" id="mapStat">
                         <ul>
-                            <li> <span data-icon="&#xe037;" style="font-size: 30px;"></span> </br>
-                                    <b>{{taxon.taxonSearch.nb_obs}}</b> </br> {{ 'observations' if taxon.taxonSearch.nb_obs > 1 else 'observation' }}</li>
-                            <li> <img id="picto" src="{{url_for('static', filename='images/church.png')}}" style="width"><br/><b>{{communes|length}}</b><br/>{{ 'communes' if communes|length > 1 else 'commune' }}</li>
-                            <li> <span data-icon="&#xe040;"  style="font-size: 30px;"></span><br/><b>{{observers|length}}</b><br/>{{ 'observateurs' if observers|length > 1 else 'observateur' }}</li>
-                            <li id="firstObs" class="pointer"><span data-icon="&#xe037;" style="font-size: 25px; color: brown"></span><br/><b>Première observation</b><br/>{{taxon.taxonSearch.yearmin|int}}</li>
-                            <li id="lastObs" class="pointer"><span data-icon="&#xe037;" style="font-size: 25px; color: blue"></span><br/><b>Dernière observation</b><br/>{{taxon.taxonSearch.yearmax|int}}</li>
-
+                            <li>
+                                <span data-icon="&#xe037;" style="font-size: 30px;"></span> </br>
+                                <b>{{taxon.taxonSearch.nb_obs | pretty}}</b>
+                                </br>
+                                {{ 'observations' if taxon.taxonSearch.nb_obs > 1 else 'observation' }}
+                            </li>
+                            <li>
+                                <img id="picto" src="{{url_for('static', filename='images/church.png')}}" style="width">
+                                <br/>
+                                <b>{{communes|length|pretty}}</b><br/>
+                                {{ 'communes' if communes|length > 1 else 'commune' }}
+                            </li>
+                            <li>
+                                <span data-icon="&#xe040;"  style="font-size: 30px;"></span>
+                                <br/>
+                                <b>{{observers|length|pretty}}</b>
+                                <br/>
+                                {{ 'observateurs' if observers|length > 1 else 'observateur' }}
+                            </li>
+                            <li id="firstObs" class="pointer">
+                                <span data-icon="&#xe037;" style="font-size: 25px; color: brown"></span>
+                                <br/>
+                                <b>Première observation</b><br/>{{taxon.taxonSearch.yearmin|int}}
+                            </li>
+                            <li id="lastObs" class="pointer">
+                                <span data-icon="&#xe037;" style="font-size: 25px; color: blue"></span>
+                                <br/>
+                                <b>Dernière observation</b><br/>{{taxon.taxonSearch.yearmax|int}}
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -367,15 +401,29 @@
                             <div class="item">
                             {% endif %}
 
-                                {% if configuration.TAXHUB_URL != None %}
+                                {% if configuration.REDIMENSIONNEMENT_IMAGE %}
                                   {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+photo.id_media|string+'?h=500' %}
                                 {% else %}
                                   {% set img_path = photo.path %}
                                 {% endif %}
-                                <a href="{{photo.path}}" data-lightbox="imageSet" data-title="{{photo.title}} &copy; {{photo.author}}" >
+                                <a href="{{photo.path}}" data-lightbox="imageSet" data-title="{{photo.title}}
+                                {% if photo.description %}
+                                - {{photo.description}}
+                                {% endif %}
+                                &copy; {{photo.author}}
+                                {% if photo.licence %}
+                                - {{photo.licence}}
+                                {% endif %}
+                                {% if photo.source %}
+                                - {{photo.source}}
+                                {% endif %}
+                                ">
                                   <div class="slider-size" style="background-image: url({{img_path}})" alt="{{photo.title}} &copy; {{photo.author|striptags}}">
                                       <div class="carousel-caption">
-                                        {{photo.title}} &copy; {{photo.author|striptags}}
+                                        {{photo.title|safe}} &copy; {{photo.author|striptags}}
+                                        {% if photo.licence %}
+                                        - {{photo.licence}}
+                                        {% endif %}
                                       </div>
                                   </div>
                                 </a>
@@ -467,6 +515,10 @@
                     </h4>
                     <hr class="small-hr">
                     <h4>{{videoAudio.video[0].title}}</h4>
+
+                    {% with media=videoAudio.video[0] %}
+                        {% include "templates/block-descriptionMedia.html" %}
+                    {% endwith %}
                     {% if videoAudio.video[0].id_type == 6 %}
                         <video controls>
                           <source src="{{video.path}}" type="video/mp4">
@@ -478,6 +530,10 @@
                     <div id="moreVideo" class="collapse">
                         {% for i in range (1, videoAudio.video |length) %}
                             <h4> {{videoAudio.video[i].title}}</h4>
+
+                            {% with media=videoAudio.video[i] %}
+                                {% include "templates/block-descriptionMedia.html" %}
+                            {% endwith %}
                             {% if videoAudio.video[i].id_type == 6 %}
                                     <video controls>
                                       <source src="{{videoAudio.video[i].path}}" type="video/mp4">
@@ -498,11 +554,13 @@
                         {% endif %}
                     </h4>
                     <hr class="small-hr">
-
                     <h4>{{videoAudio.audio[0].title}}</h4>
                     <audio controls>
-                            <source src="{{ videoAudio.audio[0].path }}" type="audio/mpeg">
+                        <source src="{{ videoAudio.audio[0].path }}" type="audio/mpeg">
                     </audio>
+                    {% with media=videoAudio.audio[0] %}
+                        {% include "templates/block-descriptionMedia.html" %}
+                    {% endwith %}
 
                     <div id="moreAudio" class="collapse">
                         {% for i in range (1, videoAudio.audio |length) %}
@@ -510,6 +568,9 @@
                             <audio controls>
                                 <source src="{{ videoAudio.audio[i].path }}" type="audio/mpeg">
                             </audio>
+                            {% with media=videoAudio.audio[i] %}
+                                {% include "templates/block-descriptionMedia.html" %}
+                            {% endwith %}
                         {% endfor %}
                     </div>
                 {% endif %}
@@ -538,7 +599,6 @@
             var observationsPoint = [];
             var observationsMaille = [];
             var listeTaxonsSearch = {{listeTaxonsSearch|tojson}};
-            var communesSearch = {{communesSearch|tojson}};
             var configuration = {{configuration|tojson}};
             var url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
             var taxonYearMin = {{taxon.taxonSearch.yearmin}};

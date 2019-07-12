@@ -12,7 +12,7 @@
             {% endif %}
             <th id="sorted" data-priority="4"> Nombre d'observation(s)</th>
                 <th data-priority="9">Dernière observation</th>
-            {% if configuration.MYTYPE == 1 %}
+            {% if DISPLAY_EYE_ON_LIST %}
                 <th data-priority="5">Observations </th>
             {% endif %}
             <th data-priority="3">Fiche</th>
@@ -25,12 +25,12 @@
                     {% if taxon.path == None %}
                         <img src="{{url_for('static', filename='images/picto_'+ taxon.group2_inpn| replace(" ", "_") |urlencode+'.png') }}" data-toggle="tooltip" data-original-title="{{taxon.group2_inpn}}" data-placement="right">
                     {% else %}
-                      {% if configuration.TAXHUB_URL != None %}
+                      {% if configuration.REDIMENSIONNEMENT_IMAGE %}
                         {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+taxon.id_media|string+'?h=500&w=500' %}
                       {% else %}
                         {% set img_path = taxon.path %}
                       {% endif %}
-                        <div class="pictoImgList" style="background-image:url({{img_path}});" data-toggle="tooltip" data-original-title="{{taxon.group2_inpn}}" data-placement="right"></div>
+                        <div class="pictoImgList lazy" data-src="{{img_path}}" data-toggle="tooltip" data-original-title="{{taxon.group2_inpn}}" data-placement="right"></div>
                     {% endif %}
                     <span class="hiddenSpan">{{taxon.group2_inpn}}</span>
                 </td>
@@ -65,8 +65,8 @@
                     </td>
                 {% endif %}
                 <td>{{taxon.nb_obs}}</td>
-                <td>{{taxon.last_obs | int}}</td>
-                {% if configuration.MYTYPE == 1 %}
+                <td>{{taxon.last_obs|int}}</td>
+                {% if DISPLAY_EYE_ON_LIST %}
                     <td>
                         <span class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-original-title="Afficher les observations sur la commune" data-placement="right"> </span>
                     </td>

@@ -1,34 +1,34 @@
     <footer class="footer">
         <p>
-            <a href="{{url_for('main.index')}}">Accueil</a> | 
-            <a href="http://www.ecrins-parcnational.fr" target="_blank">Site du {{configuration.STRUCTURE}}</a> | 
-            <a data-toggle="modal" href="{{url_for('static', filename='custom/templates/credits.html') }}" data-target="#modalCredits">Conception et crédits</a> |  
-            <a data-toggle="modal" href="{{url_for('static', filename='custom/templates/mentions-legales.html') }}" data-target="#modalMentions">Mentions légales</a> 
+            <a href="{{url_for('main.index')}}">Accueil</a> |
+            <a href="http://www.ecrins-parcnational.fr" target="_blank">Site du {{configuration.STRUCTURE}}</a> |
+            <a data-toggle="modal" href="{{url_for('static', filename='custom/templates/credits.html') }}" data-target="#modalCredits">Conception et crédits</a> |
+            <a data-toggle="modal" href="{{url_for('static', filename='custom/templates/mentions-legales.html') }}" data-target="#modalMentions">Mentions légales</a>
         <p>
 
-        <div id="clear"> 
+        <div id="clear">
             <p class="text-muted">
                 {{configuration.NOM_APPLICATION}} - Atlas de la faune et de la flore du {{configuration.STRUCTURE}}, 2016
                 <br/>
-                Réalisé avec <a href="https://github.com/PnEcrins/GeoNature-atlas" target="_blank">GeoNature-atlas</a>, développé par le <a href="http://www.ecrins-parcnational.fr" target="_blank">Parc national des Ecrins</a>
+                Réalisé avec <a href="https://github.com/PnX-SI/GeoNature-atlas" target="_blank">GeoNature-atlas</a>, développé par le <a href="http://www.ecrins-parcnational.fr" target="_blank">Parc national des Ecrins</a>
             </p>
         </div>
     </footer>
-    
+
     <div class="modal fade text-center" id="modalCredits">
       <div class="modal-dialog">
         <div class="modal-content">
         </div>
       </div>
     </div>
-    
+
     <div class="modal fade text-center" id="modalMentions">
       <div class="modal-dialog">
         <div class="modal-content">
         </div>
       </div>
     </div>
-    
+
     {% if configuration.ID_GOOGLE_ANALYTICS != "UA-xxxxxxx-xx" %}
     <!-- Script Google Analytics -->
     <script>
@@ -41,4 +41,3 @@
       ga('send', 'pageview');
     </script>
     {% endif %}
-    

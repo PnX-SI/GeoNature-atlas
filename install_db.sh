@@ -6,7 +6,7 @@ if [ "$(id -u)" != "0" ]; then
    exit 1
 fi
 
-. main/configuration/settings.ini
+. atlas/configuration/settings.ini
 
 function database_exists () {
     # /!\ Will return false if psql can't list database. Edit your pg_hba.conf as appropriate.
@@ -20,6 +20,21 @@ function database_exists () {
         return $?
     fi
 }
+
+function test_settings() {
+    fields=('owner_atlas' 'user_pg' 'altitudes' 'time' 'attr_desc' 'attr_commentaire' 'attr_milieu' 'attr_chorologie')
+    echo "Vérification de la validité de settings.ini"
+    for i in "${!fields[@]}"
+    do
+        if [ -z ${!fields[$i]} ];
+        then
+            echo -e "\033\033[31m Error : \033[0m attribut ${fields[$i]} manquant dans settings.ini"
+            exit
+        fi
+    done
+}
+
+test_settings
 
 # Suppression du fichier de log d'installation si il existe déjà puis création de ce fichier vide.
 rm  -f ./log/install_db.log
@@ -35,12 +50,12 @@ then
         else
             echo "La base de données existe et le fichier de settings indique de ne pas la supprimer."
         fi
-fi 
+fi
 
 # Sinon je créé la BDD
-if ! database_exists $db_name 
+if ! database_exists $db_name
 then
-	
+
 	echo "Création de la BDD..."
 
     sudo -u postgres psql -c "CREATE USER $owner_atlas WITH PASSWORD '$owner_atlas_pass' "  &>> log/install_db.log
@@ -67,7 +82,7 @@ then
         sudo -n -u postgres -s psql -d $db_name -c "CREATE SCHEMA taxonomie AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
     fi
 	sudo -n -u postgres -s psql -d $db_name -c "CREATE SCHEMA synthese AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
-    
+
     # Import du shape des limites du territoire ($limit_shp) dans la BDD / atlas.t_layer_territoire
     ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 data/ref/emprise_territoire_3857.shp $limit_shp
     sudo -n -u postgres -s shp2pgsql -W "LATIN1" -s 3857 -D -I ./data/ref/emprise_territoire_3857.shp atlas.t_layer_territoire | sudo -n -u postgres -s psql -d $db_name  &>> log/install_db.log
@@ -80,7 +95,7 @@ then
     ogr2ogr -f "GeoJSON" -t_srs "EPSG:4326" ./static/custom/territoire.json $limit_shp
 
     # Import du shape des communes ($communes_shp) dans la BDD (si parametre import_commune_shp = TRUE) / atlas.l_communes
-    if $import_commune_shp 
+    if $import_commune_shp
 	then
         ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 ./data/ref/communes_3857.shp $communes_shp
         sudo -n -u postgres -s shp2pgsql -W "LATIN1" -s 3857 -D -I ./data/ref/communes_3857.shp atlas.l_communes | sudo -n -u postgres -s psql -d $db_name  &>> log/install_db.log
@@ -91,10 +106,10 @@ then
         sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes OWNER TO "$owner_atlas";"
         rm ./data/ref/communes_3857.*
     fi
-    
+
     echo "Création de la structure de la BDD..."
     # Si j'utilise GeoNature ($geonature_source = True), alors je créé les tables filles en FDW connectées à la BDD de GeoNature
-    if $geonature_source 
+    if $geonature_source
 	then
         # Creation des tables filles en FWD
         echo "Création de la connexion a GeoNature"
@@ -116,19 +131,19 @@ then
 			  supprime boolean DEFAULT false,
 			  the_geom_point geometry('POINT',3857),
 			  effectif_total integer,
-              diffusable boolean 
+              diffusable boolean
 			);
-			INSERT INTO synthese.syntheseff 
+			INSERT INTO synthese.syntheseff
 			  (cd_nom, insee, observateurs, altitude_retenue, the_geom_point, effectif_total, diffusable)
 			  VALUES (67111, 05122, 'Mon observateur', 1254, '0101000020110F0000B19F3DEA8636264124CB9EB2D66A5541', 3, true);
-			INSERT INTO synthese.syntheseff 
+			INSERT INTO synthese.syntheseff
 			  (cd_nom, insee, observateurs, altitude_retenue, the_geom_point, effectif_total, diffusable)
 			  VALUES (67111, 05122, 'Mon observateur 3', 940, '0101000020110F00001F548906D05E25413391E5EE2B795541', 2, true);" &>> log/install_db.log
         sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE synthese.syntheseff OWNER TO "$owner_atlas";"
 	fi
-    
+
     # Si j'installe le schéma taxonomie de TaxHub dans la BDD de GeoNature-atlas ($install_taxonomie = True), alors je récupère les fichiers dans le dépôt de TaxHub et les éxécute
-    if $install_taxonomie 
+    if $install_taxonomie
 	then
         echo "Création et import du schema taxonomie"
 		cd data
@@ -137,14 +152,14 @@ then
         wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/taxhubdb.sql
         #sudo -n -u postgres -s psql -d $db_name -f taxhubdb.sql  &>> ../../log/install_db.log
         export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f  taxhubdb.sql  &>> ../../log/install_db.log
-        
+
         wget http://geonature.fr/data/inpn/taxonomie/TAXREF_INPN_v9.0.zip
         unzip TAXREF_INPN_v9.0.zip -d /tmp
 	    wget http://geonature.fr/data/inpn/taxonomie/ESPECES_REGLEMENTEES_20161103.zip
 	    unzip ESPECES_REGLEMENTEES_20161103.zip -d /tmp
         wget  http://geonature.fr/data/inpn/taxonomie/LR_FRANCE_20160000.zip
         unzip LR_FRANCE_20160000.zip -d /tmp
-        
+
         wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/inpn/data_inpn_v9_taxhub.sql
         # export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f  data_inpn_v9_taxhub.sql &>> ../../log/install_db.log
         sudo -n -u postgres -s psql -d $db_name  -f data_inpn_v9_taxhub.sql &>> ../../log/install_db.log
@@ -153,12 +168,12 @@ then
         wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/materialized_views.sql
         #sudo -n -u postgres -s psql -d $db_name -f vm_hierarchie_taxo.sql  &>> ../../log/install_db.log
         export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f  materialized_views.sql  &>> ../../log/install_db.log
-        
+
 
         wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/taxhubdata.sql
         #sudo -n -u postgres -s psql -d $db_name -f taxhubdata.sql  &>> ../../log/install_db.log
         export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f  taxhubdata.sql  &>> ../../log/install_db.log
-        
+
 
         rm /tmp/*.txt
         rm /tmp/*.csv
@@ -167,41 +182,56 @@ then
 		rm -R data/taxonomie
 
     fi
-    
+
     # Creation des Vues Matérialisées (et remplacement éventuel des valeurs en dur par les paramètres)
     echo "Création des vues materialisées"
     sudo cp data/atlas.sql /tmp/atlas.sql
     sudo sed -i "s/WHERE id_attribut IN (100, 101, 102, 103);$/WHERE id_attribut  IN ($attr_desc, $attr_commentaire, $attr_milieu, $attr_chorologie);/" /tmp/atlas.sql
     sudo sed -i "s/date - 15$/date - $time/" /tmp/atlas.sql
     sudo sed -i "s/date + 15$/date - $time/" /tmp/atlas.sql
+
+    #customisation de l'altitude
+    insert=""
+    for i in "${!altitudes[@]}"
+    do
+        if [ $i -gt 0 ];
+        then
+            let max=${altitudes[$i]}-1
+            sql="INSERT INTO atlas.bib_altitudes VALUES ($i,${altitudes[$i-1]},$max);"
+            insert="${insert}\n${sql}"
+        fi
+    done
+
+    sudo sed -i "s/INSERT_ALTITUDE/${insert}/" /tmp/atlas.sql
+
     export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas.sql  &>> log/install_db.log
     sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.bib_altitudes OWNER TO "$owner_atlas";"
     sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.bib_taxref_rangs OWNER TO "$owner_atlas";"
     sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.bib_taxref_rangs OWNER TO "$owner_atlas";"
     sudo -n -u postgres -s psql -d $db_name -c "ALTER FUNCTION atlas.create_vm_altitudes() OWNER TO "$owner_atlas";"
     sudo -n -u postgres -s psql -d $db_name -c "ALTER FUNCTION atlas.find_all_taxons_childs(integer) OWNER TO "$owner_atlas";"
-    
+
     # Si j'utilise GeoNature ($geonature_source = True), alors je vais ajouter des droits en lecture à l'utilisateur Admin de l'atlas
-    if $geonature_source 
+    if $geonature_source
 	then
         echo "Affectation des droits de lecture sur la BDD source GeoNature..."
         sudo cp data/grant_geonature.sql /tmp/grant_geonature.sql
         sudo sed -i "s/myuser;$/$user_pg;/" /tmp/grant_geonature.sql
         sudo -n -u postgres -s psql -d $db_source_name -f /tmp/grant_geonature.sql  &>> log/install_db.log
     fi
-    
+
     # Mise en place des mailles
     echo "Découpage des mailles et creation de la table des mailles"
-    
+
     cd data/ref
     rm -f L93*.dbf L93*.prj L93*.sbn L93*.sbx L93*.shp L93*.shx
-    
+
     # Si je suis en métropole (metropole=true), alors j'utilise les mailles fournies par l'INPN
-    if $metropole 
+    if $metropole
 	then
         # Je dézippe mailles fournies par l'INPN aux 3 échelles
-        unzip L93_1K.zip 
-        unzip L93_5K.zip 
+        unzip L93_1K.zip
+        unzip L93_5K.zip
         unzip L93_10K.zip
         # Je les reprojete les SHP en 3857 et les renomme
         ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 ./mailles_1.shp L93_1x1.shp
@@ -213,7 +243,7 @@ then
         rm mailles_1.* mailles_5.* mailles_10.*
 
         cd ../../
-        
+
         # Creation de la table atlas.t_mailles_territoire avec la taille de maille passée en parametre ($taillemaille). Pour cela j'intersecte toutes les mailles avec mon territoire
         sudo -n -u postgres -s psql -d $db_name -c "CREATE TABLE atlas.t_mailles_territoire as
                                                     SELECT m.geom AS the_geom, ST_AsGeoJSON(st_transform(m.geom, 4326)) as geojson_maille
@@ -221,14 +251,14 @@ then
                                                     WHERE ST_Intersects(m.geom, t.the_geom);
                                                     CREATE INDEX index_gist_t_mailles_territoire
                                                     ON atlas.t_mailles_territoire
-                                                    USING gist (the_geom); 
+                                                    USING gist (the_geom);
                                                     ALTER TABLE atlas.t_mailles_territoire
                                                     ADD COLUMN id_maille serial;
                                                     ALTER TABLE atlas.t_mailles_territoire
                                                     ADD PRIMARY KEY (id_maille);"  &>> log/install_db.log
     # Sinon j'utilise un SHP des mailles fournies par l'utilisateur
-    else 
-        ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 custom_mailles_3857.shp $chemin_custom_maille 
+    else
+        ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 custom_mailles_3857.shp $chemin_custom_maille
         sudo -n -u postgres -s shp2pgsql -W "LATIN1" -s 3857 -D -I custom_mailles_3857.shp atlas.t_mailles_custom | sudo -n -u postgres -s psql -d $db_name  &>> log/install_db.log
 
         sudo -n -u postgres -s psql -d $db_name -c "CREATE TABLE atlas.t_mailles_territoire as
@@ -237,7 +267,7 @@ then
                                             WHERE ST_Intersects(m.geom, t.the_geom);
                                             CREATE INDEX index_gist_t_mailles_custom
                                             ON atlas.t_mailles_territoire
-                                            USING gist (the_geom); 
+                                            USING gist (the_geom);
                                             ALTER TABLE atlas.t_mailles_territoire
                                             ADD COLUMN id_maille serial;
                                             ALTER TABLE atlas.t_mailles_territoire
@@ -255,7 +285,7 @@ then
     sudo cp data/grant.sql /tmp/grant.sql
     sudo sed -i "s/my_reader_user;$/$user_pg;/" /tmp/grant.sql
     sudo -n -u postgres -s psql -d $db_name -f /tmp/grant.sql &>> log/install_db.log
-    
+
     # Affectation de droits en lecture sur les VM à l'utilisateur de l'application ($user_pg)
     cd data/ref
     rm -f L*.shp L*.dbf L*.prj L*.sbn L*.sbx L*.shx output_clip.*

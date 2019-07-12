@@ -201,7 +201,7 @@
 
                   <p class="lead">
                     Plus de 2000 espèces de plantes sont présentées dans cet atlas.
-                    Si l'inventaire du monde végétal se poursuit dans les Écrins, le Parc national assure également le suivi d'espèces emblématiques (comme le chardon bleu et le sabot de Vénus) et participe à de nombreux programmes de recherche sur les milieux et espèces naturels de haute altitude. 
+                    Si l'inventaire du monde végétal se poursuit dans les Écrins, le Parc national assure également le suivi d'espèces emblématiques (comme le chardon bleu et le sabot de Vénus) et participe à de nombreux programmes de recherche sur les milieux et espèces naturels de haute altitude.
                   </p>
                   <p class="lead">
                     Certaines plantes présentent des histoires de vie remarquables, allant des héritières de pratiques agricoles anciennes (prairies de fauche, cultures extensives de céréales) aux exploratrices de la haute montagne.
@@ -306,10 +306,10 @@
                 <div class="col-md-12" id="opensource">
                   <h2 class="featurette-heading">GeoNature-atlas.<br/><span class="text-muted">Dans la constellation de l'opensource.</span></h2>
                   <p class="lead">
-                    Biodiv'Ecrins utilise l'outil <a href="https://github.com/PnEcrins/GeoNature-atlas" target="_blank">GeoNature-atlas</a> développé par le Parc national des Écrins et publié sous licence libre. Il est ainsi transférable librement à d'autres structures qui souhaitent partager leurs observations naturalistes en se basant sur les référentiels nationaux de l'INPN.
+                    Biodiv'Ecrins utilise l'outil <a href="https://github.com/PnX-SI/GeoNature-atlas" target="_blank">GeoNature-atlas</a> développé par le Parc national des Écrins et publié sous licence libre. Il est ainsi transférable librement à d'autres structures qui souhaitent partager leurs observations naturalistes en se basant sur les référentiels nationaux de l'INPN.
                   </p>
 				  <p class="lead">
-					<span class="glyphicon glyphicon-download"></span> <i>Téléchargez la <a href="https://github.com/PnEcrins/GeoNature-atlas/raw/master/docs/2016-09-GeoNature-atlas-PRESENTATION.pdf">fiche de présentation de GeoNature-atlas</a> pour en savoir plus.</a></i>
+					<span class="glyphicon glyphicon-download"></span> <i>Téléchargez la <a href="https://github.com/PnX-SI/GeoNature-atlas/raw/master/docs/2016-09-GeoNature-atlas-PRESENTATION.pdf">fiche de présentation de GeoNature-atlas</a> pour en savoir plus.</a></i>
 				  </p>
                   <p class="lead">
                     Il fait partie d'un ensemble d'outils développé par le Parc national et ses partenaires, pour pouvoir saisir, gérer et traiter les données des différents protocoles (<a href="http://geonature.fr" target="_blank">http://geonature.fr</a>).
@@ -431,8 +431,7 @@
 		{% endif %}
 
         <script type="text/javascript">
-        var communesSearch = {{communesSearch|tojson}},
-            configuration = {{configuration|tojson}};
+        var configuration = {{configuration|tojson}};
         </script>
 
         <script src="{{url_for('static', filename='main.js') }}"></script>

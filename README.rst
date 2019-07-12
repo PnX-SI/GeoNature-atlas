@@ -15,17 +15,17 @@ L'outil a été développé de manière générique pour pouvoir être déployé
 
 .. image :: docs/images/geonature-atlas-schema-01.jpg
 
-**Ou déployez l'ensemble complet d'applications de gestion de données naturalistes** (`UsersHub <https://github.com/PnEcrins/UsersHub>`_, `TaxHub <https://github.com/PnX-SI/TaxHub>`_, `GeoNature <https://github.com/PnEcrins/GeoNature>`_)
+**Ou déployez l'ensemble complet d'applications de gestion de données naturalistes** (`UsersHub <https://github.com/PnX-SI/UsersHub>`_, `TaxHub <https://github.com/PnX-SI/TaxHub>`_, `GeoNature <https://github.com/PnX-SI/GeoNature>`_)
 
 .. image :: docs/images/geonature-atlas-schema-02.jpg
 
-Documentation d'installation : https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/installation.rst
+Documentation d'installation : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/installation.rst
 
-Présentation générale : https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/2016-09-GeoNature-atlas-PRESENTATION.pdf
+Présentation générale : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/2016-09-GeoNature-atlas-PRESENTATION.pdf
 
-Rapport de stage (Théo Lechemia) : https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/2016-09-30-rapport_stage_Theo-Lechemia.pdf
+Rapport de stage (Théo Lechemia) : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/2016-09-30-rapport_stage_Theo-Lechemia.pdf
 
-Soutenance de stage (Théo Lechemia) : https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/2016-09-soutenance-Theo-Lechemia.pdf
+Soutenance de stage (Théo Lechemia) : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/2016-09-soutenance-Theo-Lechemia.pdf
 
 Atlas en ligne utilisant GeoNature-atlas :
 
@@ -62,6 +62,7 @@ Auteurs
 - Théo Lechemia
 - Gil Deluermoz
 - Camille Monchicourt
+- Amandine Sahl
 
 Licence
 -------

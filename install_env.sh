@@ -26,5 +26,5 @@ sudo apt-get install -y python python-pip
 sudo apt-get install -y python-gdal
 sudo apt-get install -y gdal-bin
 
-sudo apt-get install -y python-virtualenv
+sudo apt-get install -y python3-virtualenv virtualenv
 sudo apt-get install -y supervisor

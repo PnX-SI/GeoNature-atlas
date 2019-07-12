@@ -1,10 +1,10 @@
 #!/bin/bash
 
-if [ ! -f ./main/configuration/settings.ini ]; then
-  cp ./main/configuration/settings.ini.sample ./main/configuration/settings.ini
+if [ ! -f ./atlas/configuration/settings.ini ]; then
+  cp ./atlas/configuration/settings.ini.sample ./atlas/configuration/settings.ini
 fi
 
-. main/configuration/settings.ini
+. atlas/configuration/settings.ini
 
 if [ "$(id -u)" == "0" ]; then
    echo -e "\e[91m\e[1mThis script should NOT be run as root but your user needs sudo rights\e[0m" >&2
@@ -15,19 +15,27 @@ echo "Stopping application..."
 sudo -s supervisorctl stop atlas
 
 echo "Creating and activating Virtual env..."
-virtualenv $venv_dir
+
+if [ -d $venv_dir/ ]
+then
+  echo "Suppression du virtual env existant..."
+  sudo rm -rf $venv_dir
+fi
+
+virtualenv -p $python_executable $venv_dir
 
 . $venv_dir/bin/activate
 
 echo "Installing requirements..."
 pip install -r requirements.txt
+deactivate
 
 echo "Creating configuration files if they dont already exist"
-if [ ! -f ./main/configuration/config.py ]; then
-  cp ./main/configuration/config.py.sample ./main/configuration/config.py
+if [ ! -f ./atlas/configuration/config.py ]; then
+  cp ./atlas/configuration/config.py.sample ./atlas/configuration/config.py
 fi
 
-sudo sed -i "s/database_connection = .*$/database_connection = \"postgresql:\/\/$user_pg:$user_pg_pass@$db_host:$db_port\/$db_name\"/" ./main/configuration/config.py
+sudo sed -i "s/database_connection = .*$/database_connection = \"postgresql:\/\/$user_pg:$user_pg_pass@$db_host:$db_port\/$db_name\"/" ./atlas/configuration/config.py
 
 
 echo "Launching application..."

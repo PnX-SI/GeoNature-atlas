@@ -26,6 +26,7 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
         s.effectif_total,
         tx.cd_ref,
         st_asgeojson(ST_Transform(ST_SetSrid(s.the_geom_point, 3857), 4326)) as geojson_point
+        ,diffusion_level
     FROM synthese.syntheseff s
     LEFT JOIN atlas.vm_taxref tx ON tx.cd_nom = s.cd_nom
     JOIN atlas.t_layer_territoire m ON ST_Intersects(m.the_geom, s.the_geom_point)
@@ -122,15 +123,7 @@ CREATE TABLE atlas.bib_altitudes
   CONSTRAINT bib_altitudes_pk PRIMARY KEY (id_altitude)
 );
 
-INSERT INTO atlas.bib_altitudes VALUES(1,0,499);
-INSERT INTO atlas.bib_altitudes VALUES(2,500,999);
-INSERT INTO atlas.bib_altitudes VALUES(3,1000,1499);
-INSERT INTO atlas.bib_altitudes VALUES(4,1500,1999);
-INSERT INTO atlas.bib_altitudes VALUES(5,2000,2499);
-INSERT INTO atlas.bib_altitudes VALUES(6,2500,2999);
-INSERT INTO atlas.bib_altitudes VALUES(7,3000,3499);
-INSERT INTO atlas.bib_altitudes VALUES(8,3500,3999);
-INSERT INTO atlas.bib_altitudes VALUES(9,4000,4102);
+INSERT_ALTITUDE
 UPDATE atlas.bib_altitudes set label_altitude = '_' || altitude_min || '_' || altitude_max+1;
 
 
@@ -189,11 +182,34 @@ select atlas.create_vm_altitudes();
 -- Taxons observés et de tous leurs synonymes (utilisés pour la recherche d'une espèce)
 
 CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS
-SELECT tx.cd_nom, tx.cd_ref, COALESCE(tx.lb_nom || ' | ' || tx.nom_vern, tx.lb_nom) AS nom_search FROM atlas.vm_taxref tx JOIN atlas.vm_taxons t ON t.cd_ref = tx.cd_ref;
-create UNIQUE index on atlas.vm_search_taxon(cd_nom);
-create index on atlas.vm_search_taxon(cd_ref);
-create index on atlas.vm_search_taxon(nom_search);
+SELECT t.cd_nom,
+  t.cd_ref,
+  t.search_name,
+  t.nom_valide,
+  t.lb_nom
+FROM (
+  SELECT t_1.cd_nom,
+        t_1.cd_ref,
+        concat(t_1.lb_nom, ' =  <i> ', t_1.nom_valide, '</i>') AS search_name,
+        t_1.nom_valide,
+        t_1.lb_nom
+  FROM atlas.vm_taxref t_1
 
+  UNION
+  SELECT t_1.cd_nom,
+        t_1.cd_ref,
+        concat(t_1.nom_vern, ' =  <i> ', t_1.nom_valide, '</i>' ) AS search_name,
+        t_1.nom_valide,
+        t_1.lb_nom
+  FROM atlas.vm_taxref t_1
+  WHERE t_1.nom_vern IS NOT NULL AND t_1.cd_nom = t_1.cd_ref
+) t
+JOIN atlas.vm_taxons taxons ON taxons.cd_ref = t.cd_ref;
+
+
+CREATE INDEX ON atlas.vm_search_taxon(cd_ref);
+CREATE INDEX trgm_idx ON atlas.vm_search_taxon USING GIST (search_name gist_trgm_ops);
+CREATE UNIQUE INDEX ON atlas.vm_search_taxon (cd_nom, search_name);
 
 -- Nombre d'observations mensuelles pour chaque taxon observé
 
@@ -326,15 +342,17 @@ INSERT INTO atlas.bib_taxref_rangs  (id_rang, nom_rang) VALUES ('SSCO', '?');
 -- Médias de chaque taxon
 
 CREATE MATERIALIZED VIEW atlas.vm_medias AS
-    SELECT id_media,
-           cd_ref,
-           titre,
-           url,
-           chemin,
-           auteur,
-           desc_media,
-           date_media,
-           id_type
+ SELECT t_medias.id_media,
+    t_medias.cd_ref,
+    t_medias.titre,
+    t_medias.url,
+    t_medias.chemin,
+    t_medias.auteur,
+    t_medias.desc_media,
+    t_medias.date_media,
+    t_medias.id_type,
+    t_medias.licence,
+    t_medias.source
    FROM taxonomie.t_medias;
 CREATE UNIQUE INDEX ON atlas.vm_medias (id_media);
 
@@ -426,5 +444,25 @@ BEGIN
     END LOOP;
 
     RETURN 1;
+END
+$$ LANGUAGE plpgsql;
+
+-- Rafraichissement des vues contenant les données de l'atlas
+CREATE OR REPLACE FUNCTION atlas.refresh_materialized_view_data()
+RETURNS VOID AS $$
+BEGIN
+
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_observations;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_observations_mailles;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_mois;
+
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_altitudes;
+
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_taxons;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_cor_taxon_attribut;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_search_taxon;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_medias;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_taxons_plus_observes;
+
 END
 $$ LANGUAGE plpgsql;

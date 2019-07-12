@@ -5,13 +5,45 @@ CHANGELOG
 1.3.2 (2018-05-17)
 ------------------
 
+** Nouveautés **
+
+* Passage à python3
+* Amélioration du module de recherche de taxons (AJAX + trigrams)
+* Amélioration du module de recherche de commune (AJAX)
+* Vérification des paramètres de configuration grâce à Marshmallow et passage de paramètres par défaut si paramètres absents
+* Simplification du passage de la configuration aux routes
+* Ajout de la description, de la licence et de la source sur les médias
+
 **Corrections**
 
+* Renommage du répertoire 'main' en 'atlas'
+* Suppression du paramètre COLONNES_RANG_STAT (calculé)
+* Suppression du paramètre IGNAPIKEY (le passer directement dans les variables ``MAP.FIRST_MAP`` et ``MAP.SECOND_MAP``)
 * Correction erreur d'import inutilisé dans ``initAtlas.py``
+* Ajout du paramètre ``REDIMENSIONNEMENT_IMAGE`` qui active ou non le redimmentionnement par TaxHub
 
-**Notes de version**
 
-* Version corrective, aucune nouveauté
+
+**Note de version**
+
+* Replacer la clé IGN dans les variables FIRST_MAP et SECOND_MAP de la manière suivante:
+
+::
+
+    MAP = {
+        'LAT_LONG': [44.7952, 6.2287],
+        'FIRST_MAP': {
+                'url' : 'http://gpp3-wxs.ign.fr/MA_CLE_IGN/wmts?LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD&EXCEPTIONS=text/xml&FORMAT=image/jpeg&SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&STYLE=normal&TILEMATRIXSET=PM&&TILEMATRIX={z}&TILECOL={x}&TILEROW={y}',
+                'attribution' : '&copy; <a href="http://www.ign.fr/">IGN</a>',
+                'tileName' : 'IGN'
+        },
+        'SECOND_MAP' : {'url' :'https://gpp3-wxs.ign.fr/MA_CLE_IGN/geoportail/wmts?LAYER=ORTHOIMAGERY.ORTHOPHOTOS&EXCEPTIONS=text/xml&FORMAT=image/jpeg&SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&STYLE=normal&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}',
+                'attribution' : '&copy; <a href="http://www.ign.fr/">IGN</a>',
+                'tileName' : 'Ortho IGN'
+        },
+
+* Si le redimmentionnement d'image était activé, passer la variable ``REDIMENSIONNEMENT_IMAGE`` à ``True`` dans le fichier de configuration
+
 
 1.3.1 (2018-03-15)
 ------------------

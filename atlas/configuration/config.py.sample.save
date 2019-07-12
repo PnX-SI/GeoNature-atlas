@@ -1,0 +1,186 @@
+
+# -*- coding:utf-8 -*-
+
+# Mettre l'application en mode debug ou pas
+modeDebug = False
+
+# Connexion de l'application à la BDD
+# Remplacer user, monpassachanger, IPADRESSE (localhost si la BDD est sur le même serveur que l'application), 
+# eventuellement le port de la BDD et le nom de la BDD avec l'utilisateur qui a des droits de lecture sur les vues de l'atlas (user_pg dans settings.ini)
+database_connection = "postgresql://user:monpassachanger@IPADRESSE:5432/databaseName"
+
+#################################
+#################################
+### Customisation application ###
+#################################
+#################################
+
+# Nom de la structure
+STRUCTURE = "Nom de la structure"
+
+# Nom de l'application
+NOM_APPLICATION = "Nom de l application"
+
+# URL de l'application depuis la racine du domaine
+# ex "/atlas" pour une URL: http://mon-domaine/atlas OU "" si l'application est accessible à la racine du domaine
+URL_APPLICATION = ""
+
+# Code de suivi des statistiques Google Analytics (si AFFICHAGE_FOOTER = True)
+ID_GOOGLE_ANALYTICS = "UA-xxxxxxx-xx"
+
+# Utiliser et afficher le glossaire (static/custom/glossaire.json.sample)
+GLOSSAIRE = False
+
+###########################
+###### Cartographie #######
+###########################
+
+# Clé IGN si vous utilisez l'API Geoportail pour afficher les fonds cartographiques
+IGNAPIKEY = 'myIGNkey';
+
+# Configuration des cartes (centre du territoire, couches CARTE et ORTHO, échelle par défaut...)
+MAP = {
+    'LAT_LONG': [44.7952, 6.2287],
+    'FIRST_MAP': {
+            'url' : 'http://gpp3-wxs.ign.fr/'+IGNAPIKEY+'/wmts?LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD&EXCEPTIONS=text/xml&FORMAT=image/jpeg&SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&STYLE=normal&TILEMATRIXSET=PM&&TILEMATRIX={z}&TILECOL={x}&TILEROW={y}',
+            'attribution' : '&copy; <a href="http://www.ign.fr/">IGN</a>',
+            'tileName' : 'IGN'
+    },
+    'SECOND_MAP' : {'url' :'https://gpp3-wxs.ign.fr/'+IGNAPIKEY+'/geoportail/wmts?LAYER=ORTHOIMAGERY.ORTHOPHOTOS&EXCEPTIONS=text/xml&FORMAT=image/jpeg&SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&STYLE=normal&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}',
+            'attribution' : '&copy; <a href="http://www.ign.fr/">IGN</a>',
+            'tileName' : 'Ortho IGN'
+    },
+    'ZOOM' : 10,
+    # Pas du slider sur les annees d'observations: 1 = pas de 1 an sur le slider
+    'STEP': 1,
+    # Couleur et épaisseur des limites du territoire
+    'BORDERS_COLOR': '#000000',
+    'BORDERS_WEIGHT': 3
+}
+
+# Affichage des observations par maille ou point
+# True = maille / False = point
+AFFICHAGE_MAILLE = False
+
+# Niveau de zoom à partir duquel on passe à l'affichage en point (si AFFICHAGE_MAILLE = False)
+ZOOM_LEVEL_POINT = 11
+
+# Limite du  nombre d'observations à partir duquel on passe à l'affichage en cluster
+LIMIT_CLUSTER_POINT = 1000
+
+# Carte de la page d'accueil: observations des 'x' derniers jours. Bien mettre en anglais et non accordé
+NB_DAY_LAST_OBS = '7 day'
+# Texte à afficher pour décrire la cartographie des 'dernières observations'
+TEXT_LAST_OBS = 'Les observations des agents ces 7 derniers jours |'
+
+# Carte de la fiche commune: nombre des 'x' dernières observations affichées
+NB_LAST_OBS=100
+
+###########################
+###### PAGE ACCUEIL #######
+###########################
+
+# Bloc d'introduction presentant l'atlas. Affichage True/False
+AFFICHAGE_INTRODUCTION = False
+
+# Afficher le Footer sur toutes les pages (static/custom/templates/footer.html)
+AFFICHAGE_FOOTER = False
+
+# Bloc de statistiques globales. Affichage True/False
+AFFICHAGE_STAT_GLOBALES = True
+
+# Bloc avec carte et liste des dernières observations. Affichage True/False
+AFFICHAGE_DERNIERES_OBS = True
+
+# Bloc avec espèces à voir en ce moment. Affichage True/False
+AFFICHAGE_EN_CE_MOMENT = True
+
+## BLOC STAT PAR RANG : Parametre pour le bloc statistique 2 de la page d'accueil (statistiques par rang remontant 2 espèces aléatoirement ayant au moins une photo)
+# Ce bloc peut être affiché ou non et peut être affiché sur 2, 3 ou 4 colonnes. Il est ainsi possible de mettre autant de blocs que souhaité (2, 3, 4, 6, 8...)
+# Mettre dans RANG_STAT le couple 'rang taxonomique' - 'nom du taxon correspondant au rang' pour avoir des statistique sur ce rang -
+# Fonctionne à tous les niveaux de rang présents dans la table taxref -
+
+# Exemple RANG_STAT = [{'ordre': ['Lepidoptera']}, {'classe': ['Insecta', 'Arachnida']}]
+#         RANG_STAT_FR ['Papillon', 'Insecte et Araignées']
+
+AFFICHAGE_RANG_STAT = True
+COLONNES_RANG_STAT = 3
+RANG_STAT = [{'phylum': ["Arthropoda", "Mollusca"]}, {'phylum': ["Chordata"]}, {'regne': ["Plantae"]}]
+RANG_STAT_FR = ['Faune invertébrée', 'Faune vertébrée', 'Flore']
+
+
+############################
+####### FICHE ESPECE #######
+############################
+
+# Rang taxonomique qui fixe jusqu'à quel taxon remonte la filiation taxonomique (hierarchie dans la fiche d'identite : Famille, Ordre etc... )
+LIMIT_RANG_TAXONOMIQUE_HIERARCHIE = 13
+
+# Rang taxonomique qui fixe la limite de l'affichage de la fiche espece ou de la liste
+# 35 = ESPECE
+# On prend alors tout ce qui est inferieur ou egal a l'espece pour faire des fiches et ce qui est superieur pour les listes
+LIMIT_FICHE_LISTE_HIERARCHY = 28
+
+# URL d'accès aux photos et autres médias (URL racine). Par exemple l'url d'accès à Taxhub
+# Cette url sera cachée aux utilisateurs de l'atlas
+REMOTE_MEDIAS_URL = "http://mondomaine.fr/taxhub/"
+# Racine du chemin des fichiers médias stockés dans le champ "chemin" de "atlas.vm_medias"
+# Seule cette partie de l'url sera visible pour les utilisateurs de l'atlas
+REMOTE_MEDIAS_PATH = "static/medias/"
+
+# URL de TaxHub (pour génération à la volée des vignettes des images).
+# Si le service Taxhub n'est pas utilisé, commenter la variable
+REDIMENSIONNEMENT_IMAGE = False
+# si redimmentionnement image = True, indiquer l'URL de taxhub
+TAXHUB_URL = "http://mondomaine.fr/taxhub"
+
+#### ID DES ATTRIBUTS DESCRIPTIFS DES TAXONS DE LA TABLE vm_cor_taxon_attribut
+ATTR_DESC = 100
+ATTR_COMMENTAIRE = 101
+ATTR_MILIEU = 102
+ATTR_CHOROLOGIE = 103
+
+#### ID DES TYPES DE MEDIAS DE LA TABLE vm_medias
+ATTR_MAIN_PHOTO = 1
+ATTR_OTHER_PHOTO = 2
+ATTR_LIEN = 3
+ATTR_PDF = 4
+ATTR_AUDIO = 5
+ATTR_VIDEO_HEBERGEE = 6
+ATTR_YOUTUBE = 7
+ATTR_DAILYMOTION = 8
+ATTR_VIMEO = 9
+
+############################################
+#### FICHE COMMUNE ET RANG TAXONOMIQUE #####
+############################################
+
+# Permet d'afficher ou non les colonnes Protection et/ou Patrimonialité/Enjeux dans les listes de taxons
+# Se basent sur les champs "atlas.vm_taxons.protection_stricte"` (oui/non) et "atlas.vm_taxons.patrimonial"
+
+# Afficher ou non la colonne Protection dans les listes de taxons (basé sur le champs "protection_stricte")
+PROTECTION = True
+
+# Afficher ou non la colonne Patrimonialité dans les listes de taxons (basé sur le champs "patrimonial") et la customiser
+# Pour masquer cette colonne, passer uniquement le paramètre à "False"
+# PATRIMONIALITE = False
+# Pour customiser l'affichage de cette colonne (label affiché, valeurs du champs et leur affichage) :
+PATRIMONIALITE = {
+    'label': "Patrimonial",
+    'config': {
+        'oui': {
+            'icon': 'custom/images/logo_patrimonial.png',
+            'text': "Ce taxon est patrimonial"
+        }
+    }
+}
+
+#############################
+#### Pages statistiques #####
+#############################
+
+# Permet de lister les pages statiques souhaitées et de les afficher dynamiquement dans le menu sidebar
+# Les pictos se limitent au Glyphicon proposés par Bootstrap (https://getbootstrap.com/docs/3.3/components/)
+STATIC_PAGES = {
+    'presentation': {'title': "Présentation de l'atlas", 'picto': 'glyphicon-question-sign', 'order': 0, 'template': 'static/custom/templates/presentation.html'}
+}
