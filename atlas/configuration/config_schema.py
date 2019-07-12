@@ -128,7 +128,9 @@ class AtlasConfig(Schema):
     )
 
     MAP = fields.Nested(MapConfig, missing=dict())
-
+    # Specify how communes are ordered
+    #   if true by length else by name
+    ORDER_COMMUNES_BYLENGTH = fields.Boolean(missing=False)
     @validates_schema
     def validate_url_taxhub(self, data):
         """

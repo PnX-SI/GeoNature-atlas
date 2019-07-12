@@ -2,10 +2,12 @@
 # -*- coding:utf-8 -*-
 
 import ast
-from ..entities.vmCommunes import VmCommunes
+from flask import current_app
 from sqlalchemy import distinct
 from sqlalchemy.sql import text
+from sqlalchemy.sql.expression import func
 
+from ..entities.vmCommunes import VmCommunes
 
 def getAllCommunes(session):
     req = session.query(distinct(VmCommunes.commune_maj), VmCommunes.insee).all()
@@ -17,8 +19,18 @@ def getAllCommunes(session):
 
 
 def getCommunesSearch(session, search, limit=50):
-    req = session.query(distinct(VmCommunes.commune_maj), VmCommunes.insee) \
-        .filter(VmCommunes.commune_maj.ilike('%' + search + '%')).limit(limit).all()
+    req = session.query(
+        distinct(VmCommunes.commune_maj),
+        VmCommunes.insee,
+        func.length(VmCommunes.commune_maj)
+    ).filter(VmCommunes.commune_maj.ilike('%' + search + '%'))
+
+    if (current_app.config['ORDER_COMMUNES_BYLENGTH']):
+        req = req.order_by(func.length(VmCommunes.commune_maj))
+    else:
+        req = req.order_by(VmCommunes.commune_maj)
+
+    req = req.limit(limit).all()
     communeList = list()
     for r in req:
         temp = {'label': r[0], 'value': r[1]}
