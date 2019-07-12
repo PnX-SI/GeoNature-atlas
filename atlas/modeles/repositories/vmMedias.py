@@ -119,6 +119,8 @@ def getVideo_and_audio(connection, cd_ref, id5, id6, id7, id8, id9):
                 "author": deleteNone(r.auteur),
                 "description": deleteNone(r.desc_media),
                 "id_media": r.id_media,
+                "source":r.source,
+                "licence":r.licence
             }
             if r.id_type == current_app.config['ATTR_AUDIO']:
                 tabMedias["audio"].append(temp)

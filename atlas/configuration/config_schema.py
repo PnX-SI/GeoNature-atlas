@@ -35,6 +35,11 @@ class SecretSchemaConf(Schema):
 
 class MapConfig(Schema):
     LAT_LONG = fields.List(fields.Float(), missing=[44.7952, 6.2287])
+    MIN_ZOOM = fields.Integer(missing=1)
+    MAX_BOUNDS = fields.List(
+        fields.List(fields.Float()),
+        missing=[[-180, -90], [180, 90]]
+    )
     FIRST_MAP = fields.Dict(missing=MAP_1)
     SECOND_MAP = fields.Dict(missing=MAP_2)
     ZOOM = fields.Integer(missing=10)
@@ -123,7 +128,9 @@ class AtlasConfig(Schema):
     )
 
     MAP = fields.Nested(MapConfig, missing=dict())
-
+    # Specify how communes are ordered
+    #   if true by length else by name
+    ORDER_COMMUNES_BYLENGTH = fields.Boolean(missing=False)
     @validates_schema
     def validate_url_taxhub(self, data):
         """

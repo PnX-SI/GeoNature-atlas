@@ -13,6 +13,8 @@ function generateMap() {
   var map = L.map("map", {
     crs: L.CRS.EPSG3857,
     center: configuration.MAP.LAT_LONG,
+    maxBounds:configuration.MAP.MAX_BOUNDS,
+    minZoom:configuration.MAP.MIN_ZOOM,
     geosearch: true,
     zoom: configuration.MAP.ZOOM,
     layers: [firstMapTile],
@@ -480,7 +482,9 @@ function printEspece(tabEspece, tabCdRef) {
   i = 0;
   while (i < tabEspece.length) {
     stringEspece +=
-      "<li> <a href='./espece/" + tabCdRef[i] + "'>" + tabEspece[i] + "</li>";
+      "<li> <a href='" +
+      configuration.URL_APPLICATION +
+      "/espece/" + tabCdRef[i] + "'>" + tabEspece[i] + "</li>";
     i = i + 1;
   }
   return stringEspece;
