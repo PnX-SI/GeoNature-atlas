@@ -12,11 +12,9 @@ autocompleteSearch = function(inputID, urlDestination, nbProposal) {
     source: function(request, response) {
       var searchUrl;
       if (urlDestination == "espece") {
-        searchUrl = "/api/searchTaxon";
-      } else if (urlDestination == "enp") {
-        searchUrl = "/api/searchEnp";
-      } else {
-        searchUrl = "/api/searchCommune";
+        searchUrl = "/api/searchTaxon/";
+      } else if (urlDestination == "commune") {
+        searchUrl = "/api/searchCommune/";
       }
       $(inputID)
         .attr("loading", "true")
@@ -45,7 +43,7 @@ autocompleteSearch = function(inputID, urlDestination, nbProposal) {
       var url = ui.item.value;
       if (urlDestination == "espece") {
         location.href = configuration.URL_APPLICATION + "/espece/" + url;
-      } else {
+      } else if (urlDestination == "commune") {
         location.href = configuration.URL_APPLICATION + "/commune/" + url;
       }
 
