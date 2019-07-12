@@ -5,8 +5,8 @@ from flask_sqlalchemy import SQLAlchemy
 
 from werkzeug.serving import run_simple
 
-from main.configuration import config
-from main.utils import format_number
+from atlas.configuration import config
+from atlas.utils import format_number
 from sqlalchemy import create_engine, MetaData, Table
 from flask_compress import Compress
 
@@ -60,13 +60,10 @@ def create_app():
     app.debug = valid_config["modeDebug"]
     with app.app_context() as context:
         from atlas.atlasRoutes import main as main_blueprint
-
         app.register_blueprint(main_blueprint)
 
         from atlas.atlasAPI import api
-
         app.register_blueprint(api, url_prefix="/api")
-
         compress.init_app(app)
 
         app.wsgi_app = ReverseProxied(
