@@ -13,6 +13,8 @@ function generateMap() {
   var map = L.map("map", {
     crs: L.CRS.EPSG3857,
     center: configuration.MAP.LAT_LONG,
+    maxBounds:configuration.MAP.MAX_BOUNDS,
+    minZoom:configuration.MAP.MIN_ZOOM,
     geosearch: true,
     zoom: configuration.MAP.ZOOM,
     layers: [firstMapTile],
