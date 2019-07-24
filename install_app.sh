@@ -36,6 +36,7 @@ if [ ! -f ./atlas/configuration/config.py ]; then
 fi
 
 sudo sed -i "s/database_connection = .*$/database_connection = \"postgresql:\/\/$user_pg:$user_pg_pass@$db_host:$db_port\/$db_name\"/" ./atlas/configuration/config.py
+sed -i "s/GUNICORN_PORT = .*$/GUNICORN_PORT = '${gun_port}'/g" ./atlas/configuration/config.py
 
 
 echo "Launching application..."

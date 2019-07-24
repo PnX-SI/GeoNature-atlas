@@ -7,7 +7,8 @@
 # eventuellement le port de la BDD et le nom de la BDD avec l'utilisateur qui a des droits de lecture sur les vues de l'atlas (user_pg dans settings.ini)
 
 database_connection = "postgresql://user:monpassachanger@IPADRESSE:5432/databaseName"
-
+# Port sur lequel tourne le serveur gunicorn
+GUNICORN_PORT = 8080
 #################################
 #################################
 ### Customisation application ###
