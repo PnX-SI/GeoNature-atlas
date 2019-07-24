@@ -13,8 +13,8 @@ function generateMap() {
   var map = L.map("map", {
     crs: L.CRS.EPSG3857,
     center: configuration.MAP.LAT_LONG,
-    maxBounds:configuration.MAP.MAX_BOUNDS,
-    minZoom:configuration.MAP.MIN_ZOOM,
+    maxBounds: configuration.MAP.MAX_BOUNDS,
+    minZoom: configuration.MAP.MIN_ZOOM,
     geosearch: true,
     zoom: configuration.MAP.ZOOM,
     layers: [firstMapTile],
@@ -235,8 +235,8 @@ function generateGeojsonMaille(observations, yearMin, yearMax) {
 
 // Display Maille layer
 
-function displayMailleLayerFicheEspece(observationsMaille, yearMin, yearMax) {
-  myGeoJson = generateGeojsonMaille(observationsMaille, yearMin, yearMax);
+function displayMailleLayerFicheEspece(observationsMaille) {
+  myGeoJson = observationsMaille;
   currentLayer = L.geoJson(myGeoJson, {
     onEachFeature: onEachFeatureMaille,
     style: styleMaille
@@ -484,7 +484,11 @@ function printEspece(tabEspece, tabCdRef) {
     stringEspece +=
       "<li> <a href='" +
       configuration.URL_APPLICATION +
-      "/espece/" + tabCdRef[i] + "'>" + tabEspece[i] + "</li>";
+      "/espece/" +
+      tabCdRef[i] +
+      "'>" +
+      tabEspece[i] +
+      "</li>";
     i = i + 1;
   }
   return stringEspece;
