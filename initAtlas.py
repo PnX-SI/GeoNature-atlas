@@ -51,8 +51,7 @@ def create_app():
     # validation de la configuration
     # configuration publique
     valid_config = read_and_validate_conf(config, AtlasConfig)
-    # validation de la configuration secrète
-    read_and_validate_conf(config, SecretSchemaConf)
+
     app = Flask(__name__, template_folder=APP_DIR)
     # push the config in app config at 'PUBLIC' key
     app.config.update(valid_config)
@@ -60,9 +59,11 @@ def create_app():
     app.debug = valid_config["modeDebug"]
     with app.app_context() as context:
         from atlas.atlasRoutes import main as main_blueprint
+
         app.register_blueprint(main_blueprint)
 
         from atlas.atlasAPI import api
+
         app.register_blueprint(api, url_prefix="/api")
         compress.init_app(app)
 
@@ -74,18 +75,16 @@ def create_app():
         def inject_config():
             return dict(configuration=valid_config)
 
+        @app.template_filter("pretty")
+        def pretty(val):
+            return format_number(val)
+
     return app
 
 
-app = create_app()
-@app.template_filter('pretty')
-def pretty(val):
-    return format_number(val)
-
 if __name__ == "__main__":
-    from flask_script import Manager
+    app = create_app()
+    # validation de la configuration secrète
+    secret_conf = read_and_validate_conf(config, SecretSchemaConf)
+    app.run(port=secret_conf["GUNICORN_PORT"], debug=app.config["modeDebug"])
 
-    app.debug = True
-    app.run(port=8080, debug=True)
-    # Manager(app).run()
-    # run_simple("localhost", 8080, app, use_reloader=True)
