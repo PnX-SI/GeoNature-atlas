@@ -1,5 +1,4 @@
-
-# -*- coding:utf-8 -*-
+import geojson
 from flask import current_app
 from .. import utils
 
@@ -22,13 +21,13 @@ def searchObservationsChilds(connection, cd_ref):
     obsList = list()
     for o in observations:
         temp = dict(o)
-        temp.pop('the_geom_point', None)
-        temp['geojson_point'] = json.loads(o.geojson_point or '{}')
-        temp['dateobs'] = str(o.dateobs)
+        temp.pop("the_geom_point", None)
+        temp["geojson_point"] = json.loads(o.geojson_point or "{}")
+        temp["dateobs"] = str(o.dateobs)
         if o.dateobs is not None:
-            temp['year'] = o.dateobs.year
+            temp["year"] = o.dateobs.year
         else:
-            temp['year'] = None
+            temp["year"] = None
         obsList.append(temp)
     return obsList
 
@@ -60,20 +59,16 @@ def lastObservations(connection, mylimit, idPhoto):
     WHERE  obs.dateobs >= (CURRENT_TIMESTAMP - INTERVAL :thislimit)
     ORDER BY obs.dateobs DESC """
 
-    observations = connection.execute(
-        text(sql),
-        thislimit=mylimit,
-        thisidphoto=idPhoto
-    )
+    observations = connection.execute(text(sql), thislimit=mylimit, thisidphoto=idPhoto)
 
     obsList = list()
     for o in observations:
         temp = dict(o)
-        temp.pop('the_geom_point', None)
-        temp['geojson_point'] = json.loads(o.geojson_point or '{}')
-        temp['dateobs'] = str(o.dateobs)
-        temp['group2_inpn'] = utils.deleteAccent(o.group2_inpn)
-        temp['pathImg'] = utils.findPath(o)
+        temp.pop("the_geom_point", None)
+        temp["geojson_point"] = json.loads(o.geojson_point or "{}")
+        temp["dateobs"] = str(o.dateobs)
+        temp["group2_inpn"] = utils.deleteAccent(o.group2_inpn)
+        temp["pathImg"] = utils.findPath(o)
         obsList.append(temp)
     return obsList
 
@@ -92,9 +87,9 @@ def lastObservationsCommune(connection, mylimit, insee):
     obsList = list()
     for o in observations:
         temp = dict(o)
-        temp.pop('the_geom_point', None)
-        temp['geojson_point'] = json.loads(o.geojson_point or '{}')
-        temp['dateobs'] = str(o.dateobs)
+        temp.pop("the_geom_point", None)
+        temp["geojson_point"] = json.loads(o.geojson_point or "{}")
+        temp["dateobs"] = str(o.dateobs)
         obsList.append(temp)
     return obsList
 
@@ -116,17 +111,13 @@ def getObservationTaxonCommune(connection, insee, cd_ref):
         ) tax ON tax.cd_ref = tax.cd_ref
     """
 
-    observations = connection.execute(
-        text(sql),
-        thiscdref=cd_ref,
-        thisInsee=insee
-    )
+    observations = connection.execute(text(sql), thiscdref=cd_ref, thisInsee=insee)
     obsList = list()
     for o in observations:
         temp = dict(o)
-        temp.pop('the_geom_point', None)
-        temp['geojson_point'] = json.loads(o.geojson_point or '{}')
-        temp['dateobs'] = str(o.dateobs)
+        temp.pop("the_geom_point", None)
+        temp["geojson_point"] = json.loads(o.geojson_point or "{}")
+        temp["dateobs"] = str(o.dateobs)
         obsList.append(temp)
     return obsList
 
@@ -136,21 +127,21 @@ def observersParser(req):
     tabObs = list()
     for r in req:
         if r.observateurs != None:
-            tabObs = r.observateurs.replace(' & ',', ').split(', ')
+            tabObs = r.observateurs.replace(" & ", ", ").split(", ")
         for o in tabObs:
             o = o.lower()
             setObs.add(o)
     finalList = list()
     for s in setObs:
-        tabInter = s.split(' ')
+        tabInter = s.split(" ")
         fullName = str()
         i = 0
         while i < len(tabInter):
-            if i == len(tabInter)-1:
+            if i == len(tabInter) - 1:
                 fullName += tabInter[i].capitalize()
             else:
                 fullName += tabInter[i].capitalize() + " "
-            i = i+1
+            i = i + 1
         finalList.append(fullName)
     return sorted(finalList)
 
@@ -191,26 +182,26 @@ def getObserversCommunes(connection, insee):
 
 
 def statIndex(connection):
-    result = {'nbTotalObs': None, 'nbTotalTaxons': None, 'town': None, 'photo': None}
+    result = {"nbTotalObs": None, "nbTotalTaxons": None, "town": None, "photo": None}
 
     sql = "SELECT COUNT(*) AS count \
     FROM atlas.vm_observations "
     req = connection.execute(text(sql))
     for r in req:
-        result['nbTotalObs'] = r.count
+        result["nbTotalObs"] = r.count
 
     sql = "SELECT COUNT(*) AS count\
     FROM atlas.vm_communes"
     req = connection.execute(text(sql))
     for r in req:
-        result['town'] = r.count
+        result["town"] = r.count
 
     sql = "SELECT COUNT(DISTINCT cd_ref) AS count \
     FROM atlas.vm_taxons"
     connection.execute(text(sql))
     req = connection.execute(text(sql))
     for r in req:
-        result['nbTotalTaxons'] = r.count
+        result["nbTotalTaxons"] = r.count
 
     sql = "SELECT COUNT (DISTINCT id_media) AS count \
     FROM atlas.vm_medias m \
@@ -218,11 +209,11 @@ def statIndex(connection):
     WHERE id_type IN (:idType1, :id_type2)"
     req = connection.execute(
         text(sql),
-        idType1=current_app.config['ATTR_MAIN_PHOTO'],
-        id_type2=current_app.config['ATTR_OTHER_PHOTO']
+        idType1=current_app.config["ATTR_MAIN_PHOTO"],
+        id_type2=current_app.config["ATTR_OTHER_PHOTO"],
     )
     for r in req:
-        result['photo'] = r.count
+        result["photo"] = r.count
     return result
 
 
@@ -236,10 +227,12 @@ def genericStat(connection, tab):
             FROM atlas.vm_taxons t
             JOIN atlas.vm_observations o ON o.cd_ref = t.cd_ref
             WHERE t.{rang} IN :nomTaxon
-        """.format(rang=rang)
+        """.format(
+            rang=rang
+        )
         req = connection.execute(text(sql), nomTaxon=tuple(nomTaxon))
         for r in req:
-            temp = {'nb_obs': r.nb_obs, 'nb_taxons': r.nb_taxons}
+            temp = {"nb_obs": r.nb_obs, "nb_taxons": r.nb_taxons}
             tabStat.append(temp)
     return tabStat
 
@@ -256,7 +249,9 @@ def genericStatMedias(connection, tab):
             WHERE t.{} IN :nomTaxon
             ORDER BY RANDOM()
             LIMIT 10
-        """.format(rang)
+        """.format(
+            rang
+        )
         req = connection.execute(text(sql), nomTaxon=tuple(nomTaxon))
         tabStat.insert(i, list())
         for r in req:
@@ -265,14 +260,14 @@ def genericStatMedias(connection, tab):
                 shorterName = r.nom_vern.split(",")
                 shorterName = shorterName[0]
             temp = {
-                'cd_ref': r.cd_ref,
-                'lb_nom': r.lb_nom,
-                'nom_vern': shorterName,
-                'path': utils.findPath(r),
-                'author': r.auteur,
-                'group2_inpn': utils.deleteAccent(r.group2_inpn),
-                'nb_obs': r.nb_obs,
-                'id_media': r.id_media
+                "cd_ref": r.cd_ref,
+                "lb_nom": r.lb_nom,
+                "nom_vern": shorterName,
+                "path": utils.findPath(r),
+                "author": r.auteur,
+                "group2_inpn": utils.deleteAccent(r.group2_inpn),
+                "nb_obs": r.nb_obs,
+                "id_media": r.id_media,
             }
             tabStat[i].append(temp)
     if len(tabStat[0]) == 0:

@@ -13,8 +13,8 @@ function generateMap() {
   var map = L.map("map", {
     crs: L.CRS.EPSG3857,
     center: configuration.MAP.LAT_LONG,
-    maxBounds:configuration.MAP.MAX_BOUNDS,
-    minZoom:configuration.MAP.MIN_ZOOM,
+    maxBounds: configuration.MAP.MAX_BOUNDS,
+    minZoom: configuration.MAP.MIN_ZOOM,
     geosearch: true,
     zoom: configuration.MAP.ZOOM,
     layers: [firstMapTile],
@@ -296,11 +296,20 @@ function displayMailleLayerCommune(observations) {
 function generateGeojsonPointFicheEspece(observationsPoint, yearMin, yearMax) {
   myGeoJson = { type: "FeatureCollection", features: [] };
   observationsPoint.forEach(function(obs) {
-    if (obs.year >= yearMin && obs.year <= yearMax) {
-      properties = obs;
-      properties["dateobsCompare"] = new Date(obs.dateobs);
-      properties["dateobsPopup"] = obs.dateobs;
-      properties["nb_observations"] = 1;
+    properties = obs;
+    properties["dateobsCompare"] = new Date(obs.dateobs);
+    properties["dateobsPopup"] = obs.dateobs;
+    properties["nb_observations"] = 1;
+    // si yearMin et year Max on filtre les obs avec les données du slider
+    if (yearMin && yearMax) {
+      if (obs.year >= yearMin && obs.year <= yearMax) {
+        myGeoJson.features.push({
+          type: "Feature",
+          properties: properties,
+          geometry: obs.geojson_point
+        });
+      }
+    } else {
       myGeoJson.features.push({
         type: "Feature",
         properties: properties,
@@ -484,7 +493,11 @@ function printEspece(tabEspece, tabCdRef) {
     stringEspece +=
       "<li> <a href='" +
       configuration.URL_APPLICATION +
-      "/espece/" + tabCdRef[i] + "'>" + tabEspece[i] + "</li>";
+      "/espece/" +
+      tabCdRef[i] +
+      "'>" +
+      tabEspece[i] +
+      "</li>";
     i = i + 1;
   }
   return stringEspece;

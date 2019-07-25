@@ -41,26 +41,27 @@ $.ajax({
 
   if (mailleBoolean) {
     // Slider event
-    mySlider.on("change", function() {
-      years = mySlider.getValue();
-      yearMin = years[0];
-      yearMax = years[1];
+    if (configuration.ENABLE_SLIDER) {
+      mySlider.on("change", function() {
+        years = mySlider.getValue();
+        yearMin = years[0];
+        yearMax = years[1];
 
-      map.removeLayer(currentLayer);
-      if (map.getZoom() >= configuration.ZOOM_LEVEL_POINT) {
-        displayMarkerLayerFicheEspece(observations.point, yearMin, yearMax);
-      } else {
-        displayMailleLayerFicheEspece(observations.maille, yearMin, yearMax);
-      }
+        map.removeLayer(currentLayer);
+        if (map.getZoom() >= configuration.ZOOM_LEVEL_POINT) {
+          displayMarkerLayerFicheEspece(observations.point, yearMin, yearMax);
+        } else {
+          displayMailleLayerFicheEspece(observations.maille, yearMin, yearMax);
+        }
 
-      nbObs = 0;
-      myGeoJson.features.forEach(function(l) {
-        nbObs += l.properties.nb_observations;
+        nbObs = 0;
+        myGeoJson.features.forEach(function(l) {
+          nbObs += l.properties.nb_observations;
+        });
+
+        $("#nbObs").html("Nombre d'observation(s): " + nbObs);
       });
-
-      $("#nbObs").html("Nombre d'observation(s): " + nbObs);
-    });
-
+    }
     // ZoomEvent: change maille to point
     var legendblock = $("div.info");
     var activeMode = "Maille";
@@ -72,9 +73,13 @@ $.ajax({
         map.removeLayer(currentLayer);
         legendblock.attr("hidden", "true");
 
-        years = mySlider.getValue();
-        yearMin = years[0];
-        yearMax = years[1];
+        var yearMin = null;
+        var yearMax = null;
+        if (configuration.ENABLE_SLIDER) {
+          years = mySlider.getValue();
+          yearMin = years[0];
+          yearMax = years[1];
+        }
 
         displayMarkerLayerFicheEspece(observations.point, yearMin, yearMax);
         activeMode = "Point";
@@ -98,21 +103,23 @@ $.ajax({
 
     // if not display Maille
   } else {
-    // Slider event
-    mySlider.on("change", function() {
-      years = mySlider.getValue();
-      yearMin = years[0];
-      yearMax = years[1];
+    if (configuration.ENABLE_SLIDER) {
+      // Slider event
+      mySlider.on("change", function() {
+        years = mySlider.getValue();
+        yearMin = years[0];
+        yearMax = years[1];
 
-      map.removeLayer(currentLayer);
-      displayMarkerLayerFicheEspece(observations.point, yearMin, yearMax);
-      nbObs = 0;
-      myGeoJson.features.forEach(function(l) {
-        nbObs += l.properties.nb_observations;
+        map.removeLayer(currentLayer);
+        displayMarkerLayerFicheEspece(observations.point, yearMin, yearMax);
+        nbObs = 0;
+        myGeoJson.features.forEach(function(l) {
+          nbObs += l.properties.nb_observations;
+        });
+
+        $("#nbObs").html("Nombre d'observation(s): " + nbObs);
       });
-
-      $("#nbObs").html("Nombre d'observation(s): " + nbObs);
-    });
+    }
   }
 });
 
