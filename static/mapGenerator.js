@@ -235,8 +235,8 @@ function generateGeojsonMaille(observations, yearMin, yearMax) {
 
 // Display Maille layer
 
-function displayMailleLayerFicheEspece(observationsMaille, yearMin, yearMax) {
-  myGeoJson = generateGeojsonMaille(observationsMaille, yearMin, yearMax);
+function displayMailleLayerFicheEspece(observationsMaille) {
+  myGeoJson = observationsMaille;
   currentLayer = L.geoJson(myGeoJson, {
     onEachFeature: onEachFeatureMaille,
     style: styleMaille

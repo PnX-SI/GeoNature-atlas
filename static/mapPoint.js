@@ -16,6 +16,9 @@ var myGeoJson;
 
 var compteurLegend = 0; // counter to not put the legend each time
 
+// variable globale: observations récupérer en AJAX
+var observationsMaille;
+var observationsPoint;
 $.ajax({
   url:
     configuration.URL_APPLICATION + "/api/observationsMailleAndPoint/" + cd_ref,
@@ -29,77 +32,57 @@ $.ajax({
 }).done(function(observations) {
   $("#loadingGif").hide();
 
-  //display nb observations
-
-  var mailleBoolean = false;
-  if (observations.maille.length > 500) {
-    displayMailleLayerFicheEspece(observations.maille, taxonYearMin, YEARMAX);
-    mailleBoolean = true;
-  } else {
-    displayMarkerLayerFicheEspece(observations.point, taxonYearMin, YEARMAX);
-  }
-
   if (mailleBoolean) {
-    // Slider event
+    // zoom event
+    eventOnZoom(observationsMaille, observationsPoint);
+
     if (configuration.ENABLE_SLIDER) {
-      mySlider.on("change", function() {
+      // Slider event
+      mySlider.on("slideStop", function() {
         years = mySlider.getValue();
         yearMin = years[0];
         yearMax = years[1];
 
         map.removeLayer(currentLayer);
         if (map.getZoom() >= configuration.ZOOM_LEVEL_POINT) {
+          // on filtre en local
           displayMarkerLayerFicheEspece(observations.point, yearMin, yearMax);
         } else {
-          displayMailleLayerFicheEspece(observations.maille, yearMin, yearMax);
+          // on recharge que les mailles en AJAX - filtrée par années
+          $.ajax({
+            url:
+              configuration.URL_APPLICATION +
+              "/api/observationsMaille/" +
+              cd_ref,
+            dataType: "json",
+            type: "get",
+            data: {
+              year_min: yearMin,
+              year_max: yearMax
+            },
+            beforeSend: function() {
+              $("#loadingGif").show();
+            }
+          }).done(function(observations) {
+            $("#loadingGif").hide();
+            observationsMaille = observations;
+
+            // desactivation de l'event precedent
+            map.off("zoomend", function() {});
+            // reactivation de l'event du zoom avec les nouvelle valeurs
+            eventOnZoom(observationsMaille, observationsPoint);
+
+            displayMailleLayerFicheEspece(observationsMaille);
+            nbObs = 0;
+            observationsMaille.features.forEach(function(l) {
+              nbObs += l.properties.nb_observations;
+            });
+
+            $("#nbObs").html("Nombre d'observation(s): " + nbObs);
+          });
         }
-
-        nbObs = 0;
-        myGeoJson.features.forEach(function(l) {
-          nbObs += l.properties.nb_observations;
-        });
-
-        $("#nbObs").html("Nombre d'observation(s): " + nbObs);
       });
     }
-    // ZoomEvent: change maille to point
-    var legendblock = $("div.info");
-    var activeMode = "Maille";
-    map.on("zoomend", function() {
-      if (
-        activeMode != "Point" &&
-        map.getZoom() >= configuration.ZOOM_LEVEL_POINT
-      ) {
-        map.removeLayer(currentLayer);
-        legendblock.attr("hidden", "true");
-
-        var yearMin = null;
-        var yearMax = null;
-        if (configuration.ENABLE_SLIDER) {
-          years = mySlider.getValue();
-          yearMin = years[0];
-          yearMax = years[1];
-        }
-
-        displayMarkerLayerFicheEspece(observations.point, yearMin, yearMax);
-        activeMode = "Point";
-      }
-      if (
-        activeMode != "Maille" &&
-        map.getZoom() <= configuration.ZOOM_LEVEL_POINT - 1
-      ) {
-        // display legend
-        map.removeLayer(currentLayer);
-
-        legendblock.removeAttr("hidden");
-
-        years = mySlider.getValue();
-        yearMin = years[0];
-        yearMax = years[1];
-        displayMailleLayerFicheEspece(observations.maille, yearMin, yearMax);
-        activeMode = "Maille";
-      }
-    });
 
     // if not display Maille
   } else {
@@ -122,6 +105,43 @@ $.ajax({
     }
   }
 });
+
+function eventOnZoom(observationsMaille, observationsPoint) {
+  // ZoomEvent: change maille to point
+  var legendblock = $("div.info");
+  var activeMode = "Maille";
+  map.on("zoomend", function() {
+    if (
+      activeMode != "Point" &&
+      map.getZoom() >= configuration.ZOOM_LEVEL_POINT
+    ) {
+      map.removeLayer(currentLayer);
+      legendblock.attr("hidden", "true");
+
+      years = mySlider.getValue();
+      yearMin = years[0];
+      yearMax = years[1];
+
+      displayMarkerLayerFicheEspece(observationsPoint, yearMin, yearMax);
+      activeMode = "Point";
+    }
+    if (
+      activeMode != "Maille" &&
+      map.getZoom() <= configuration.ZOOM_LEVEL_POINT - 1
+    ) {
+      // display legend
+      map.removeLayer(currentLayer);
+
+      legendblock.removeAttr("hidden");
+
+      years = mySlider.getValue();
+      yearMin = years[0];
+      yearMax = years[1];
+      displayMailleLayerFicheEspece(observationsMaille);
+      activeMode = "Maille";
+    }
+  });
+}
 
 // Legende
 

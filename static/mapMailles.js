@@ -51,23 +51,22 @@ $.ajax({
     nbObs += l.properties.nb_observations;
   });
   $("#nbObs").html("Nombre d'observation(s): " + nbObs);
-  if (configuration.ENABLE_SLIDER) {
-    // Slider event
-    mySlider.on("change", function() {
-      years = mySlider.getValue();
-      yearMin = years[0];
-      yearMax = years[1];
-      map.removeLayer(currentLayer);
-      displayMailleLayerFicheEspece(observations, yearMin, yearMax);
 
-      nbObs = 0;
-      myGeoJson.features.forEach(function(l) {
-        nbObs += l.properties.nb_observations;
-      });
+  // Slider event
+  mySlider.on("change", function() {
+    years = mySlider.getValue();
+    yearMin = years[0];
+    yearMax = years[1];
+    map.removeLayer(currentLayer);
+    displayMailleLayerFicheEspece(observations, yearMin, yearMax);
 
-      $("#nbObs").html("Nombre d'observation(s): " + nbObs);
+    nbObs = 0;
+    myGeoJson.features.forEach(function(l) {
+      nbObs += l.properties.nb_observations;
     });
-  }
+
+    $("#nbObs").html("Nombre d'observation(s): " + nbObs);
+  });
 
   // Stat - map interaction
   $("#firstObs").click(function() {
