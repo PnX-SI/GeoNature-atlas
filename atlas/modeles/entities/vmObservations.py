@@ -53,6 +53,10 @@ class VmObservations(Base):
 
 
 class VmObservationsMailles(Base):
+    """
+    Table des observations par maille
+    """
+
     __table__ = Table(
         "vm_observations_mailles",
         metadata,

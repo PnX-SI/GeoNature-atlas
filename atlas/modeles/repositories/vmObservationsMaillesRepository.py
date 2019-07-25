@@ -7,6 +7,10 @@ import atlas.utils
 
 
 def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
+    """
+    Retourne les mailles et le nombre d'observation par maille pour un taxon et ses enfants
+    sous forme d'un geojson
+    """
     subquery = session.query(func.atlas.find_all_taxons_childs(cd_ref))
     query = (
         session.query(

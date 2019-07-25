@@ -36,6 +36,11 @@ def searchCommuneAPI():
 
 @api.route("/observationsMailleAndPoint/<int:cd_ref>", methods=["GET"])
 def getObservationsMailleAndPointAPI(cd_ref):
+    """
+        Retourne les observations d'un taxon en point et en maille
+
+        :returns: dict ({'point:<GeoJson>', 'maille': 'GeoJson})
+    """
     session = utils.loadSession()
     connection = utils.engine.connect()
     observations = {
@@ -51,6 +56,11 @@ def getObservationsMailleAndPointAPI(cd_ref):
 
 @api.route("/observationsMaille/<int:cd_ref>", methods=["GET"])
 def getObservationsMailleAPI(cd_ref, year_min=None, year_max=None):
+    """
+        Retourne les observations d'un taxon par maille (et le nombre d'observation par maille)
+
+        :returns: GeoJson
+    """
     session = utils.loadSession()
     observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(
         session,
@@ -105,6 +115,18 @@ def getPhotosGroup(group):
 
 @api.route("/photosGallery", methods=["GET"])
 def getPhotosGallery():
+    connection = utils.engine.connect()
+    photos = vmMedias.getPhotosGallery(
+        connection,
+        current_app.config["ATTR_MAIN_PHOTO"],
+        current_app.config["ATTR_OTHER_PHOTO"],
+    )
+    connection.close()
+    return jsonify(photos)
+
+
+@api.route("/tes", methods=["GET"])
+def test():
     connection = utils.engine.connect()
     photos = vmMedias.getPhotosGallery(
         connection,
