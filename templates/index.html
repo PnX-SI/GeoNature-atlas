@@ -20,7 +20,10 @@
         <script src="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.css') }}" />
 
-        <!-- CSS Application -->
+				<!-- fontawesome -->
+				<link rel="shortcut icon" href="{{ url_for('static', filename='node_modules/fontawesome.min.css') }}">
+
+				<!-- CSS Application -->
         <link rel="shortcut icon" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
         <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='css/index.css') }}" />
