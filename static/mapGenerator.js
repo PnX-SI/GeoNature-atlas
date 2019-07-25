@@ -108,7 +108,7 @@ function generateMap() {
 function onEachFeaturePoint(feature, layer) {
   popupContent =
     "<b>Date: </b>" +
-    feature.properties.dateobsPopup +
+    feature.properties.dateobs +
     "</br><b>Altitude: </b>" +
     feature.properties.altitude_retenue +
     "</br><b>Observateurs: </b>" +
@@ -293,36 +293,22 @@ function displayMailleLayerCommune(observations) {
 }
 
 // GeoJson Point
-function generateGeojsonPointFicheEspece(observationsPoint, yearMin, yearMax) {
-  myGeoJson = { type: "FeatureCollection", features: [] };
-  observationsPoint.forEach(function(obs) {
-    properties = obs;
-    properties["dateobsCompare"] = new Date(obs.dateobs);
-    properties["dateobsPopup"] = obs.dateobs;
-    properties["nb_observations"] = 1;
-    // si yearMin et year Max on filtre les obs avec les données du slider
-    if (yearMin && yearMax) {
-      if (obs.year >= yearMin && obs.year <= yearMax) {
-        myGeoJson.features.push({
-          type: "Feature",
-          properties: properties,
-          geometry: obs.geojson_point
-        });
-      }
-    } else {
-      myGeoJson.features.push({
-        type: "Feature",
-        properties: properties,
-        geometry: obs.geojson_point
-      });
-    }
-  });
-  return myGeoJson;
+function generateGeojsonPointFicheEspece(geojsonPoint, yearMin, yearMax) {
+  // si yearMin et year Max on filtre les obs avec les données du slider
+  // sinon on retourne directement le geojson
+  if (yearMin && yearMax) {
+    geojsonPoint.features = geojsonPoint.features.filter(function(obs) {
+      return obs.properties.year >= yearMin && obs.properties.year <= yearMax;
+    });
+    return geojsonPoint;
+  } else {
+    return geojsonPoint;
+  }
 }
 
 // Display marker Layer (cluster or not)
 function displayMarkerLayerFicheEspece(observationsPoint, yearMin, yearMax) {
-  myGeojson = generateGeojsonPointFicheEspece(
+  myGeoJson = generateGeojsonPointFicheEspece(
     observationsPoint,
     yearMin,
     yearMax
@@ -333,14 +319,14 @@ function displayMarkerLayerFicheEspece(observationsPoint, yearMin, yearMax) {
       return {};
     };
   }
-  currentLayer = L.geoJson(myGeojson, {
+  currentLayer = L.geoJson(myGeoJson, {
     onEachFeature: onEachFeaturePoint,
 
     pointToLayer: function(feature, latlng) {
       return L.circleMarker(latlng, pointDisplayOptionsFicheEspece(feature));
     }
   });
-  if (myGeojson.features.length > configuration.LIMIT_CLUSTER_POINT) {
+  if (myGeoJson.features.length > configuration.LIMIT_CLUSTER_POINT) {
     newLayer = currentLayer;
     currentLayer = L.markerClusterGroup();
     currentLayer.addLayer(newLayer);
@@ -409,7 +395,7 @@ function generateGeojsonPointLastObs(observationsPoint) {
   observationsPoint.forEach(function(obs) {
     properties = obs;
     properties["dateobsCompare"] = new Date(obs.dateobs);
-    properties["dateobsPopup"] = obs.dateobs;
+    properties["dateobs"] = obs.dateobs;
     properties["nb_observations"] = 1;
     myGeoJson.features.push({
       type: "Feature",
@@ -426,14 +412,14 @@ function generateGeojsonPointLastObs(observationsPoint) {
 }
 
 function displayMarkerLayerPointLastObs(observationsPoint) {
-  myGeojson = generateGeojsonPointLastObs(observationsPoint);
+  myGeoJson = generateGeojsonPointLastObs(observationsPoint);
   if (typeof pointDisplayOptionsFicheCommuneHome == "undefined") {
     pointDisplayOptionsFicheCommuneHome = function(feature) {
       return {};
     };
   }
 
-  currentLayer = L.geoJson(myGeojson, {
+  currentLayer = L.geoJson(myGeoJson, {
     onEachFeature: onEachFeaturePointLastObs,
     pointToLayer: function(feature, latlng) {
       return L.circleMarker(
@@ -455,14 +441,14 @@ function displayMarkerLayerPointLastObs(observationsPoint) {
 }
 
 function displayMarkerLayerPointCommune(observationsPoint) {
-  myGeojson = generateGeojsonPointLastObs(observationsPoint);
+  myGeoJson = generateGeojsonPointLastObs(observationsPoint);
   if (typeof pointDisplayOptionsFicheCommuneHome == "undefined") {
     pointDisplayOptionsFicheCommuneHome = function(feature) {
       return {};
     };
   }
 
-  currentLayer = L.geoJson(myGeojson, {
+  currentLayer = L.geoJson(myGeoJson, {
     onEachFeature: onEachFeaturePointCommune,
     pointToLayer: function(feature, latlng) {
       return L.circleMarker(

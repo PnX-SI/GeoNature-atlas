@@ -1,35 +1,37 @@
-import geojson
-from flask import current_app
-from .. import utils
-
-from sqlalchemy.sql import text
 import json
+
 from datetime import datetime
+from geojson import Feature, FeatureCollection
+from flask import current_app
+from sqlalchemy.sql import text, func, or_
+
+from atlas.modeles.entities.vmObservations import VmObservations
+from atlas.modeles import utils
+
 
 currentYear = datetime.now().year
 
 
-def searchObservationsChilds(connection, cd_ref):
-    sql = """SELECT obs.*
-            FROM atlas.vm_observations obs
-            WHERE obs.cd_ref in (
-                SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
-                )
-                OR obs.cd_ref = :thiscdref"""
+def searchObservationsChilds(session, cd_ref):
+    subquery = session.query(func.atlas.find_all_taxons_childs(cd_ref))
+    query = session.query(VmObservations).filter(
+        or_(VmObservations.cd_ref.in_(subquery), VmObservations.cd_ref == cd_ref)
+    )
 
-    observations = connection.execute(text(sql), thiscdref=cd_ref)
+    observations = query.all()
     obsList = list()
-    for o in observations:
-        temp = dict(o)
-        temp.pop("the_geom_point", None)
-        temp["geojson_point"] = json.loads(o.geojson_point or "{}")
-        temp["dateobs"] = str(o.dateobs)
-        if o.dateobs is not None:
-            temp["year"] = o.dateobs.year
-        else:
-            temp["year"] = None
-        obsList.append(temp)
-    return obsList
+    features = [
+        Feature(
+            id=o.id_observation,
+            geometry=json.loads(o.geojson_point or "{}"),
+            properties={
+                "dateobs": str(o.dateobs.year),
+                "year": o.dateobs.year if o.dateobs else None,
+            },
+        )
+        for o in observations
+    ]
+    return FeatureCollection(features)
 
 
 def firstObservationChild(connection, cd_ref):

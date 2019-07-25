@@ -42,15 +42,13 @@ def getObservationsMailleAndPointAPI(cd_ref):
         :returns: dict ({'point:<GeoJson>', 'maille': 'GeoJson})
     """
     session = utils.loadSession()
-    connection = utils.engine.connect()
     observations = {
-        "point": vmObservationsRepository.searchObservationsChilds(connection, cd_ref),
+        "point": vmObservationsRepository.searchObservationsChilds(session, cd_ref),
         "maille": vmObservationsMaillesRepository.getObservationsMaillesChilds(
             session, cd_ref
         ),
     }
     session.close()
-    connection.close()
     return jsonify(observations)
 
 

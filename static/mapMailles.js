@@ -1,5 +1,5 @@
 var map = generateMap();
-if (configuration.ENABLE_SLIDER) {
+if (configuration.MAP.ENABLE_SLIDER) {
   generateSliderOnMap();
 }
 var legend = L.control({ position: "bottomright" });
