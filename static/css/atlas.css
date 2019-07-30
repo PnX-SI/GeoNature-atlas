@@ -459,10 +459,13 @@ input.ajax-search {
   height: 250px;
   width: 100%;
   background-position: center center;
-  /* background-size: cover; */
+
   -webkit-transition: 0.3s ease-in-out;
   transition: 0.3s ease-in-out;
   -ms-transition: 0.3s ease-in-out;
+}
+.cover {
+  background-size: cover;
 }
 
 .zoom-wrapper:hover .img-custom-medias {
