@@ -127,7 +127,6 @@ def ficheEspece(cd_ref):
 
     cd_ref = int(cd_ref)
     taxon = vmTaxrefRepository.searchEspece(connection, cd_ref)
-    print(taxon)
     altitudes = vmAltitudesRepository.getAltitudesChilds(connection, cd_ref)
     months = vmMoisRepository.getMonthlyObservationsChilds(connection, cd_ref)
     synonyme = vmTaxrefRepository.getSynonymy(connection, cd_ref)

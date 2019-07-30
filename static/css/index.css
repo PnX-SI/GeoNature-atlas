@@ -60,13 +60,13 @@
 
 .btn-success {
   color: #fff;
-  background-color: #17c001;
-  border-color: #17c001;
+  background-color: var(--main-color);
+  border-color: var(--main-color);
 }
 
 .btn-success:hover {
-  background-color: #14af00;
-  border-color: #14af00;
+  background-color: var(--second-color);
+  border-color: var(--second-color);
 }
 
 .no-padding {
