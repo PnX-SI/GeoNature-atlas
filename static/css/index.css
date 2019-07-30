@@ -277,7 +277,7 @@ h3.title-spaced {
 .pictoImg {
   width: 100%;
   background-position: center center;
-  background-size: cover;
+  /* background-size: cover; */
   height: 60px;
   min-width: 60px;
 }
