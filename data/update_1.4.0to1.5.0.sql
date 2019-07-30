@@ -1,4 +1,4 @@
--- Creation de la VM des observations de chaque taxon par mailles...
+DROP MATERIALIZED VIEW atlas.vm_observations_mailles;
 
 CREATE MATERIALIZED VIEW atlas.vm_observations_mailles AS 
  SELECT obs.cd_ref,
@@ -9,6 +9,7 @@ CREATE MATERIALIZED VIEW atlas.vm_observations_mailles AS
    FROM atlas.vm_observations obs
      JOIN atlas.t_mailles_territoire m ON st_intersects(obs.the_geom_point, m.the_geom)
 WITH DATA;
+
 
 create unique index on atlas.vm_observations_mailles (id_observation);
 create index on atlas.vm_observations_mailles (id_maille);

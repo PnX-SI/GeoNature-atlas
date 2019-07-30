@@ -1,8 +1,6 @@
-
 # -*- coding:utf-8 -*-
-
+from flask import current_app
 from .. import utils
-from ...configuration import config
 from ..entities.vmTaxref import VmTaxref
 from ..entities.tBibTaxrefRang import TBibTaxrefRang
 from sqlalchemy.sql import text
@@ -22,7 +20,9 @@ def searchEspece(connection, cd_ref):
             cd_ref in (SELECT * FROM atlas.find_all_taxons_childs(:thiscdref))
             OR cd_ref = :thiscdref
     )
-    SELECT taxref.*, l.*, t2.patrimonial, t2.protection_stricte
+    SELECT taxref.*,
+        l.cd_ref, l.yearmin, l.yearmax, COALESCE(l.nb_obs, 0) as nb_obs,
+        t2.patrimonial, t2.protection_stricte
     FROM atlas.vm_taxref taxref
     JOIN limit_obs l
     ON l.cd_ref = taxref.cd_nom
@@ -33,19 +33,26 @@ def searchEspece(connection, cd_ref):
     req = connection.execute(text(sql), thiscdref=cd_ref)
     taxonSearch = dict()
     for r in req:
+        nom_vern = None
+        if r.nom_vern:
+            nom_vern = (
+                r.nom_vern.split(",")[0]
+                if current_app.config["SPLIT_NOM_VERN"]
+                else r.nom_vern
+            )
         taxonSearch = {
-            'cd_ref': r.cd_ref,
-            'lb_nom': r.lb_nom,
-            'nom_vern': r.nom_vern,
-            'lb_auteur': r.lb_auteur,
-            'nom_complet_html': r.nom_complet_html,
-            'group2_inpn': utils.deleteAccent(r.group2_inpn),
-            'groupAccent': r.group2_inpn,
-            'yearmin': r.yearmin,
-            'yearmax': r.yearmax,
-            'nb_obs': r.nb_obs,
-            'patrimonial': r.patrimonial,
-            'protection': r.protection_stricte
+            "cd_ref": r.cd_ref,
+            "lb_nom": r.lb_nom,
+            "nom_vern": nom_vern,
+            "lb_auteur": r.lb_auteur,
+            "nom_complet_html": r.nom_complet_html,
+            "group2_inpn": utils.deleteAccent(r.group2_inpn),
+            "groupAccent": r.group2_inpn,
+            "yearmin": r.yearmin,
+            "yearmax": r.yearmax,
+            "nb_obs": r.nb_obs,
+            "patrimonial": r.patrimonial,
+            "protection": r.protection_stricte,
         }
 
     sql = """
@@ -69,21 +76,18 @@ def searchEspece(connection, cd_ref):
     listTaxonsChild = list()
     for r in req:
         temp = {
-            'lb_nom': r.lb_nom,
-            'nom_vern': r.nom_vern,
-            'cd_ref': r.cd_ref,
-            'tri_rang': r.tri_rang,
-            'group2_inpn': utils.deleteAccent(r.group2_inpn),
-            'patrimonial': r.patrimonial,
-            'nb_obs': r.nb_obs,
-            'protection': r.protection_stricte
+            "lb_nom": r.lb_nom,
+            "nom_vern": r.nom_vern,
+            "cd_ref": r.cd_ref,
+            "tri_rang": r.tri_rang,
+            "group2_inpn": utils.deleteAccent(r.group2_inpn),
+            "patrimonial": r.patrimonial,
+            "nb_obs": r.nb_obs,
+            "protection": r.protection_stricte,
         }
         listTaxonsChild.append(temp)
 
-    return {
-        'taxonSearch': taxonSearch,
-        'listTaxonsChild': listTaxonsChild
-    }
+    return {"taxonSearch": taxonSearch, "listTaxonsChild": listTaxonsChild}
 
 
 def getSynonymy(connection, cd_ref):
@@ -96,18 +100,24 @@ def getSynonymy(connection, cd_ref):
     req = connection.execute(text(sql), thiscdref=cd_ref)
     tabSyn = list()
     for r in req:
-        temp = {'lb_nom': r.lb_nom, 'nom_complet_html': r.nom_complet_html}
+        temp = {"lb_nom": r.lb_nom, "nom_complet_html": r.nom_complet_html}
         tabSyn.append(temp)
     return tabSyn
 
 
 def getTaxon(session, cd_nom):
-    req = session.query(
-        VmTaxref.lb_nom, VmTaxref.id_rang, VmTaxref.cd_ref,
-        VmTaxref.cd_taxsup, TBibTaxrefRang.nom_rang, TBibTaxrefRang.tri_rang
-    ).join(
-        TBibTaxrefRang, TBibTaxrefRang.id_rang == VmTaxref.id_rang
-    ).filter(VmTaxref.cd_nom == cd_nom)
+    req = (
+        session.query(
+            VmTaxref.lb_nom,
+            VmTaxref.id_rang,
+            VmTaxref.cd_ref,
+            VmTaxref.cd_taxsup,
+            TBibTaxrefRang.nom_rang,
+            TBibTaxrefRang.tri_rang,
+        )
+        .join(TBibTaxrefRang, TBibTaxrefRang.id_rang == VmTaxref.id_rang)
+        .filter(VmTaxref.cd_nom == cd_nom)
+    )
     return req[0]
 
 
@@ -117,26 +127,26 @@ def getCd_sup(session, cd_ref):
 
 
 def getInfoFromCd_ref(session, cd_ref):
-    req = session.query(
-        VmTaxref.lb_nom, TBibTaxrefRang.nom_rang
-    ).join(
-        TBibTaxrefRang, TBibTaxrefRang.id_rang == VmTaxref.id_rang
-    ).filter(VmTaxref.cd_ref == cd_ref)
+    req = (
+        session.query(VmTaxref.lb_nom, TBibTaxrefRang.nom_rang)
+        .join(TBibTaxrefRang, TBibTaxrefRang.id_rang == VmTaxref.id_rang)
+        .filter(VmTaxref.cd_ref == cd_ref)
+    )
 
-    return {'lb_nom': req[0].lb_nom, 'nom_rang': req[0].nom_rang}
+    return {"lb_nom": req[0].lb_nom, "nom_rang": req[0].nom_rang}
 
 
 def getAllTaxonomy(session, cd_ref):
     taxonSup = getCd_sup(session, cd_ref)  # cd_taxsup
     taxon = getTaxon(session, taxonSup)
     tabTaxon = list()
-    while taxon.tri_rang >= config.LIMIT_RANG_TAXONOMIQUE_HIERARCHIE:
+    while taxon.tri_rang >= current_app.config["LIMIT_RANG_TAXONOMIQUE_HIERARCHIE"]:
         temp = {
-            'rang': taxon.id_rang,
-            'lb_nom': taxon.lb_nom,
-            'cd_ref': taxon.cd_ref,
-            'nom_rang': taxon.nom_rang,
-            'tri_rang': taxon.tri_rang
+            "rang": taxon.id_rang,
+            "lb_nom": taxon.lb_nom,
+            "cd_ref": taxon.cd_ref,
+            "nom_rang": taxon.nom_rang,
+            "tri_rang": taxon.tri_rang,
         }
         tabTaxon.insert(0, temp)
         taxon = getTaxon(session, taxon.cd_taxsup)  # on avance

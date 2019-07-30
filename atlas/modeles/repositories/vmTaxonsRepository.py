@@ -1,15 +1,13 @@
 
 # -*- coding:utf-8 -*-
 
+from flask import current_app
+
 import unicodedata
 
-from ...configuration import config
 from sqlalchemy.sql import text
 from .. import utils
 
-
-def deleteAccent(string):
-    return unicodedata.normalize('NFD', string).encode('ascii', 'ignore')
 
 
 # With distinct the result in a array not an object, 0: lb_nom, 1: nom_vern
@@ -27,7 +25,7 @@ def getTaxonsCommunes(connection, insee):
         GROUP BY o.cd_ref, t.nom_vern, t.nom_complet_html, t.group2_inpn,
             t.patrimonial, t.protection_stricte, m.url, m.chemin, m.id_media
         ORDER BY nb_obs DESC
-    """.format(config.ATTR_MAIN_PHOTO)
+    """.format(current_app.config['ATTR_MAIN_PHOTO'])
     req = connection.execute(text(sql), thisInsee=insee)
     taxonCommunesList = list()
     nbObsTotal = 0
@@ -38,7 +36,7 @@ def getTaxonsCommunes(connection, insee):
             'nom_vern': r.nom_vern,
             'cd_ref': r.cd_ref,
             'last_obs': r.last_obs,
-            'group2_inpn': deleteAccent(r.group2_inpn),
+            'group2_inpn': utils.deleteAccent(r.group2_inpn),
             'patrimonial': r.patrimonial,
             'protection_stricte': r.protection_stricte,
             'path': utils.findPath(r),
@@ -61,7 +59,7 @@ def getTaxonsChildsList(connection, cd_ref):
         ON m.cd_ref = tax.cd_ref AND m.id_type={}
         WHERE tax.cd_ref IN (
             SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
-        ) """.format(str(config.ATTR_MAIN_PHOTO))
+        ) """.format(str(current_app.config['ATTR_MAIN_PHOTO']))
     req = connection.execute(text(sql), thiscdref=cd_ref)
     taxonRankList = list()
     nbObsTotal = 0
@@ -119,7 +117,7 @@ def getTaxonsGroup(connection, groupe):
         GROUP BY t.cd_ref, t.nom_complet_html, t.nom_vern, t.nb_obs,
             t.group2_inpn, t.protection_stricte, t.patrimonial, t.yearmax,
             m.chemin, m.url, m.id_media
-        """.format(config.ATTR_MAIN_PHOTO)
+        """.format(current_app.config['ATTR_MAIN_PHOTO'])
     req = connection.execute(text(sql), thisGroupe=groupe)
     tabTaxons = list()
     nbObsTotal = 0

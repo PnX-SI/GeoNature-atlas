@@ -1,59 +1,153 @@
-.textIntroduction{
-  padding-left: 30px;
+.panel-default > .panel-heading {
+  border-color: transparent !important;
 }
 
+.font-icon {
+  font-size: 40px;
+}
 
-.textIntroduction a{
+.green {
+  color: var(--green);
+}
+
+.red {
+  color: var(--red);
+}
+
+.blue {
+  color: var(--blue);
+}
+
+.cyan {
+  color: var(--cyan);
+}
+
+.orange {
+  color: var(--orange);
+}
+
+#overlay {
+  /* position: absolute; */
+  padding: 10px;
+  color: white;
+}
+
+#intro-bloc {
+  margin-bottom: 20px;
+}
+
+.back-img {
+  padding: 0px;
+  margin-top: -20px;
+  background-size: contain;
+  background-attachment: fixed;
+  height: 60vh;
+  background-repeat: no-repeat;
+}
+
+#presentation-text {
+  font-size: 15px;
+}
+
+.btn-intro {
+  font-size: 20px;
+  border-radius: 0px;
+  letter-spacing: 0.1rem;
+  font-weight: 600;
+  padding: 0.8rem;
+  transition: all 0.2s;
+}
+
+.btn-success {
+  color: #fff;
+  background-color: var(--main-color);
+  border-color: var(--main-color);
+}
+
+.btn-success:hover {
+  background-color: var(--second-color);
+  border-color: var(--second-color);
+}
+
+.no-padding {
+  padding-top: 0px;
+  padding-left: 10px;
+}
+
+.large {
+  font-size: 5rem;
+}
+
+.text-muted {
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.title-spaced {
+  letter-spacing: 0.025em;
+  line-height: 38px;
+}
+#textIntroduction {
+  padding-left: 30px;
+  /* position: absolute; */
+  color: white;
+}
+
+.textIntroduction a {
   -webkit-transition: all 0.5s ease;
   transition: all 0.5s ease;
 }
 
-/*Stat block*/
-
-.stat-panel{
-  padding: 10px;
+h3.title-spaced {
+  margin-bottom: 0px !important;
+  margin-top: 0px !important;
 }
 
-.stat-object{
+/*Stat block*/
+
+.stat-panel {
+  padding-bottom: 0px;
+}
+
+.stat-object {
   min-height: 200px;
 }
 
-.stat-object .form-control{
-    width: 100%;
+.stat-object .form-control {
+  width: 100%;
 }
 
-.stat-thumbnail{
+.stat-thumbnail {
   text-align: center;
-  background-color:  #E3E7E8;
+  background-color: rgb(255, 255, 255);
   margin-bottom: 0px;
   border-radius: 0px;
 }
 
 .stat-thumbnail span {
-	font-size: 40px;
+  font-size: 40px;
 }
 
 .panel-heading h3 {
-	margin: 0px;
+  margin: 0px;
 }
 
-#searchTaxonsStat{
-	background-position: right center;
-    background-repeat: no-repeat;
-    background-size: 25px 25px;
-    background-position-x: calc(100% - 25px);
-    cursor: grab;
+#searchTaxonsStat {
+  background-position: right center;
+  background-repeat: no-repeat;
+  background-size: 25px 25px;
+  background-position-x: calc(100% - 25px);
 }
-
 
 /*Custom Stat Block*/
 
-.row-medias{
+.row-medias {
   margin-right: -5px;
   margin-left: -5px;
 }
 
-.stat-medias-wrapper{
+.stat-medias-wrapper {
   padding-left: 5px;
   padding-right: 5px;
 }
@@ -66,135 +160,134 @@
   font-size: 15px;
 }
 
-.statMedias{
+.statMedias {
   text-align: center;
   float: left;
   width: 100%;
 }
 
-.thumbnail-stat-medias{
+.thumbnail-stat-medias {
   padding: 0px;
   border: 1px solid #ddd;
   margin-bottom: 10px;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 
-.thumbnail-caption-medias{
+.thumbnail-caption-medias {
   padding-top: 5px;
   padding-right: 5px;
   padding-left: 5px;
 }
 
-.col-stat-medias{
+.col-stat-medias {
   padding-right: 5px;
   padding-left: 5px;
 }
 
 .zoom-wrapper a:link {
-    text-decoration: none;
+  text-decoration: none;
 }
 
-.zoom-wrapper{
-	overflow: hidden;
+.zoom-wrapper {
+  overflow: hidden;
 }
 
-.img-custom-medias{ /* Override atlas.css class */
-    height: 150px;
+.img-custom-medias {
+  /* Override atlas.css class */
+  height: 150px;
 }
 
 @media (max-width: 992px) {
-.img-custom-medias{
+  .img-custom-medias {
     height: 400px;
-    }
+  }
 }
 
-.stat-medias-hovereffet{
-  display:none;
-   position: absolute;
-   overflow: hidden;
-   top: 0;
-   left: 0;
-   padding: 6px;
-   width: 100%;
+.stat-medias-hovereffet {
+  display: none;
+  position: absolute;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  padding: 6px;
+  width: 100%;
 }
 
-.zoom-wrapper:hover .stat-medias-hovereffet{
-	display: block;
+.zoom-wrapper:hover .stat-medias-hovereffet {
+  display: block;
 }
 
-
-
-.overlay-obs{
-	color:#fff;
-	text-align:center;
-	position:relative;
-	top:100px;
-	font-size:13px;
-	background:rgba(0,0,0,0.6);
-	-webkit-transform:translatey(-100px);
-	-ms-transform:translatey(-100px);
-	transform:translatey(-100px);
-	-webkit-transition:all .2s ease-in-out;
-	transition:all .2s ease-in-out;
-	padding:10px;
-	text-decoration: none;
+.overlay-obs {
+  color: #fff;
+  text-align: center;
+  position: relative;
+  top: 100px;
+  font-size: 13px;
+  background: rgba(0, 0, 0, 0.6);
+  -webkit-transform: translatey(-100px);
+  -ms-transform: translatey(-100px);
+  transform: translatey(-100px);
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  padding: 10px;
+  text-decoration: none;
 }
 
-.zoom-wrapper:hover .img-custom-medias{
-	-ms-transform:scale(1.1);
-	-webkit-transform:scale(1.1);
-	transform:scale(1.1);
+.zoom-wrapper:hover .img-custom-medias {
+  -ms-transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
 }
 
-.stat-object a{
-	-webkit-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+.stat-object a {
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
 }
 
 /* END Stat Block */
 
-
 /* Latest observations */
 
 #DernieresObservations {
-	clear: both;
+  clear: both;
 }
 
 #mapRow {
-	max-height: 600px;
+  max-height: 600px;
 }
 
 #map {
-	width: 100%;
-	height: 600px;
+  width: 100%;
+  height: 600px;
 }
 
 @media (min-width: 992px) {
-#blocMap {
-	padding-right: 0px;
-	}
+  #blocMap {
+    padding-right: 0px;
+  }
 }
 
 @media (min-width: 992px) {
-#listMap {
-	padding-left: 0px;
-	}
+  #listMap {
+    padding-left: 0px;
+  }
 }
 
 .pictoImg {
-	width: 100%;
+  width: 100%;
   background-position: center center;
-  background-size: cover;
-	height: 60px;
-	border-radius: 6px;
-	min-width: 60px;
+  /* background-size: cover; */
+  height: 60px;
+  min-width: 60px;
 }
 
 .pictoImgSmall {
-	height: 60px;
+  height: 60px;
 }
 
 .pictoImgMedium {
-	height: 250px;
+  height: 250px;
 }
 table#tableEspece {
   display: block;
@@ -204,16 +297,16 @@ table#tableEspece {
 }
 
 .tabEspece:hover {
-	background-color: #cccccc;
+  background-color: #cccccc;
 }
 
 .tabEspece.current {
-	background-color: #e6e6e6;
-	font-weight: bold;
+  background-color: #e6e6e6;
+  font-weight: bold;
 }
 
 .singleTaxon {
- 	cursor: pointer
+  cursor: pointer;
 }
 
 td.singleTaxon.name {
@@ -234,35 +327,34 @@ td.singleTaxon.detail {
 }
 
 .singleTaxon .glyphicon {
-	color: #333333;
-	font-size: 1.5em;
+  color: #333333;
+  font-size: 1.5em;
 }
 
-
 /* END Latest observations */
-
 
 /*// BLOCK actual species */
 
 #mostViewNow {
-	clear: both;
+  clear: both;
 }
 
-.default-logo{
+.default-logo {
   margin: 0 auto;
   padding-bottom: 100px;
   padding-top: 100px;
 }
 
-.thumbnail-row{
+.thumbnail-row {
   margin: 0px;
   margin-top: 10px;
 }
 
-.thumbnail-col{
-  padding-left: 5px;
+.thumbnail-col {
+  /* padding-left: 5px;
   padding-right: 5px;
-  padding-bottom: 5px;
+  padding-bottom: 5px; */
+  padding: 0px;
 }
 
 .higlight {
@@ -270,8 +362,8 @@ td.singleTaxon.detail {
 }
 
 .helpTip {
-	color: #333333;
-	font-size: 16px;
-	top: -5px;
-	left: 3px;
+  color: #333333;
+  font-size: 16px;
+  top: -5px;
+  left: 3px;
 }

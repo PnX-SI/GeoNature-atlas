@@ -34,6 +34,8 @@
 		    <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.Default.css') }}" />
         <script src="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.css') }}" />
+		<!-- fontawesome -->
+        <script src="{{url_for('static', filename='lib/node_modules/@fortawesome/fontawesome-free/js/all.min.js') }}"></script>
 
         <!-- D3 -->
         <script src="{{url_for('static', filename='lib/d3/d3.min.js') }}"></script>
@@ -85,16 +87,17 @@
                                 <p class="imgDescription main">{{firstPhoto.title}}
                                 {% if firstPhoto.description %}
                                 - {{firstPhoto.description}}
-                                {% endif %}  
-                                &copy; {{firstPhoto.author|striptags}} 
+                                {% endif %}
+                                &copy; {{firstPhoto.author|striptags}}
                                 {% if firstPhoto.licence %}
                                 - {{firstPhoto.licence}}
                                 {% endif %}
-                                {% if photo.source %}
-                                - {{photo.source}}
+                                {% if firstPhoto.source %}
+                                - {{firstPhoto.source}}
                                 {% endif %}
-                                    
+
                                 </p>
+                            </a>
                         </div>
 
                     </div>
@@ -110,13 +113,15 @@
 						</div>
 						<div id="taxonName">
                             {% if taxon.taxonSearch.nom_vern != None %}
-                                <h3> {{taxon.taxonSearch.nom_vern}} </h3>
+                                <h4 class="strong"> {{taxon.taxonSearch.nom_vern}} </h4>
+                                <h4 > <i>{{taxon.taxonSearch.nom_complet_html|safe}} </i>  </h4>
+                            {% else %}
+                            <h4 class="strong"> <i>{{taxon.taxonSearch.nom_complet_html|safe}} </i> 
                             {% endif %}
-                            <h3> {{taxon.taxonSearch.nom_complet_html|safe}}
                             {% if taxon.taxonSearch.protection == 'oui' %}
                                 <br/>
                                 <a href="https://inpn.mnhn.fr/espece/cd_nom/{{taxon.taxonSearch.cd_ref}}/tab/statut" target="_blank">
-                                    <img class="caractEspece" width="130px" src="{{url_for('static', filename='images/logo_protection.png') }}"  data-toggle="tooltip" data-original-title="Ce taxon bénéficie d'un statut de protection" data-placement="right"></a>
+                                    <img class="caractEspece" width="100px" src="{{url_for('static', filename='images/logo_protection.png') }}"  data-toggle="tooltip" data-original-title="Ce taxon bénéficie d'un statut de protection" data-placement="right"></a>
                             {% endif %}
                             {% if taxon.taxonSearch.patrimonial in configuration.PATRIMONIALITE.config %}
                                 <img
@@ -126,7 +131,7 @@
                                     data-toggle="tooltip"
                                     data-original-title="{{configuration.PATRIMONIALITE.config[taxon.taxonSearch.patrimonial].text}}" data-placement="right">
                             {% endif %}
-                            </h3>
+                            </h5>
 
                         <div id="taxonomy">
                             {% for taxon in taxonomyHierarchy %}
@@ -208,7 +213,7 @@
                                                                 >
                                                             {% endif %}
                                                             </td>
-                                                            <td> {{child.nb_obs}} </td>
+                                                            <td> {{child.nb_obs | pretty}} </td>
                                                             <td>
                                                                 <a href = "{{url_for('main.ficheEspece', cd_ref = child.cd_ref) }}">
                                                                     <span id="ficheGlyficon"  data-toggle="tooltip" data-original-title="Consulter la fiche espèce" data-placement="right" class="glyphicon glyphicon-list"></span>
@@ -257,13 +262,34 @@
                     </div>
                     <div class="col-sm-2" id="mapStat">
                         <ul>
-                            <li> <span data-icon="&#xe037;" style="font-size: 30px;"></span> </br>
-                                    <b>{{taxon.taxonSearch.nb_obs}}</b> </br> {{ 'observations' if taxon.taxonSearch.nb_obs > 1 else 'observation' }}</li>
-                            <li> <img id="picto" src="{{url_for('static', filename='images/church.png')}}" style="width"><br/><b>{{communes|length}}</b><br/>{{ 'communes' if communes|length > 1 else 'commune' }}</li>
-                            <li> <span data-icon="&#xe040;"  style="font-size: 30px;"></span><br/><b>{{observers|length}}</b><br/>{{ 'observateurs' if observers|length > 1 else 'observateur' }}</li>
-                            <li id="firstObs" class="pointer"><span data-icon="&#xe037;" style="font-size: 25px; color: brown"></span><br/><b>Première observation</b><br/>{{taxon.taxonSearch.yearmin|int}}</li>
-                            <li id="lastObs" class="pointer"><span data-icon="&#xe037;" style="font-size: 25px; color: blue"></span><br/><b>Dernière observation</b><br/>{{taxon.taxonSearch.yearmax|int}}</li>
-
+                            <li>
+                                <span data-icon="&#xe037;" style="font-size: 30px;"></span> </br>
+                                <b>{{taxon.taxonSearch.nb_obs | pretty}}</b>
+                                </br>
+                                {{ 'observations' if taxon.taxonSearch.nb_obs > 1 else 'observation' }}
+                            </li>
+                            <li>
+                                <i class="fas fa-map-signs font-icon" style="font-size: 30px;"></i>                                <br/>
+                                <b>{{communes|length|pretty}}</b><br/>
+                                {{ 'communes' if communes|length > 1 else 'commune' }}
+                            </li>
+                            <li>
+                                <span data-icon="&#xe040;"  style="font-size: 30px;"></span>
+                                <br/>
+                                <b>{{observers|length|pretty}}</b>
+                                <br/>
+                                {{ 'observateurs' if observers|length > 1 else 'observateur' }}
+                            </li>
+                            <li id="firstObs" class="pointer">
+                                <span data-icon="&#xe037;" style="font-size: 25px; color: brown"></span>
+                                <br/>
+                                <b>Première observation</b><br/>{{taxon.taxonSearch.yearmin|int}}
+                            </li>
+                            <li id="lastObs" class="pointer">
+                                <span data-icon="&#xe037;" style="font-size: 25px; color: blue"></span>
+                                <br/>
+                                <b>Dernière observation</b><br/>{{taxon.taxonSearch.yearmax|int}}
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -397,7 +423,7 @@
                                 ">
                                   <div class="slider-size" style="background-image: url({{img_path}})" alt="{{photo.title}} &copy; {{photo.author|striptags}}">
                                       <div class="carousel-caption">
-                                        {{photo.title}} &copy; {{photo.author|striptags}}  
+                                        {{photo.title|safe}} &copy; {{photo.author|striptags}}
                                         {% if photo.licence %}
                                         - {{photo.licence}}
                                         {% endif %}
@@ -422,7 +448,7 @@
 
             <div class="panel panel-default" id="blocInfos">
 
-                <h4>
+                <h4 class="title-bar center">
 					<strong>Informations sur l'espèce</strong>
 				</h4>
                 <ul class="nav nav-tabs">
@@ -492,6 +518,10 @@
                     </h4>
                     <hr class="small-hr">
                     <h4>{{videoAudio.video[0].title}}</h4>
+
+                    {% with media=videoAudio.video[0] %}
+                        {% include "templates/block-descriptionMedia.html" %}
+                    {% endwith %}
                     {% if videoAudio.video[0].id_type == 6 %}
                         <video controls>
                           <source src="{{video.path}}" type="video/mp4">
@@ -503,6 +533,10 @@
                     <div id="moreVideo" class="collapse">
                         {% for i in range (1, videoAudio.video |length) %}
                             <h4> {{videoAudio.video[i].title}}</h4>
+
+                            {% with media=videoAudio.video[i] %}
+                                {% include "templates/block-descriptionMedia.html" %}
+                            {% endwith %}
                             {% if videoAudio.video[i].id_type == 6 %}
                                     <video controls>
                                       <source src="{{videoAudio.video[i].path}}" type="video/mp4">
@@ -517,17 +551,19 @@
 
                 {% if videoAudio.audio | length > 0 %}
 
-                    <h4><span class="glyphicon glyphicon-volume-up"></span> <strong>Audio</strong> ({{videoAudio.audio | length}})
+                    <h4><span class="glyphicon glyphicon-volume-up strong"></span> Audio ({{videoAudio.audio | length}})
                         {% if videoAudio.audio | length > 1 %}
                         <i class ="btn-more" id="btn-more-audio" data-toggle="collapse" data-target="#moreAudio" rel="tooltip" title="Afficher plus d'enregistrements"> <span class="glyphicon glyphicon-chevron-down"> </span> </i>
                         {% endif %}
                     </h4>
                     <hr class="small-hr">
-
                     <h4>{{videoAudio.audio[0].title}}</h4>
                     <audio controls>
-                            <source src="{{ videoAudio.audio[0].path }}" type="audio/mpeg">
+                        <source src="{{ videoAudio.audio[0].path }}" type="audio/mpeg">
                     </audio>
+                    {% with media=videoAudio.audio[0] %}
+                        {% include "templates/block-descriptionMedia.html" %}
+                    {% endwith %}
 
                     <div id="moreAudio" class="collapse">
                         {% for i in range (1, videoAudio.audio |length) %}
@@ -535,6 +571,9 @@
                             <audio controls>
                                 <source src="{{ videoAudio.audio[i].path }}" type="audio/mpeg">
                             </audio>
+                            {% with media=videoAudio.audio[i] %}
+                                {% include "templates/block-descriptionMedia.html" %}
+                            {% endwith %}
                         {% endfor %}
                     </div>
                 {% endif %}
@@ -543,9 +582,9 @@
             {% endif %}
 
             <div class="panel panel-default" id="graphBloc">
-                <h3 class="text-center">Observations par classes d'altitudes</h3>
+                <h4 class="title-bar title-spaced center strong">Observations par classes d'altitudes</h4>
                 <div id="altiChart"></div>
-                <h3 class="text-center">Observations mensuelles</h3>
+                <h4 class="title-bar title-spaced center strong">Observations mensuelles</h4>
                 <div id="phenologyChart"></div>
             </div>
         </div>

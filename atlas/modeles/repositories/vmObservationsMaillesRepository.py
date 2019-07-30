@@ -1,35 +1,45 @@
-# -*- coding:utf-8 -*-
-
-from .. import utils
-from sqlalchemy.sql import text
+from geojson import Feature, FeatureCollection
 import json
 
+from sqlalchemy.sql import text, func, or_
+from atlas.modeles.entities.vmObservations import VmObservationsMailles, VmObservations
+import atlas.utils
 
-def getObservationsMaillesChilds(connection, cd_ref):
-    sql = """SELECT
-            obs.id_maille,
-            obs.geojson_maille,
-            o.dateobs,
-            extract(YEAR FROM o.dateobs) as annee
-        FROM atlas.vm_observations_mailles obs
-        JOIN atlas.vm_observations o ON o.id_observation = obs.id_observation
-        WHERE obs.cd_ref in (
-                SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
+
+def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
+    """
+    Retourne les mailles et le nombre d'observation par maille pour un taxon et ses enfants
+    sous forme d'un geojson
+    """
+    subquery = session.query(func.atlas.find_all_taxons_childs(cd_ref))
+    query = (
+        session.query(
+            func.count(VmObservationsMailles.id_observation).label("nb_obs"),
+            VmObservationsMailles.id_maille,
+            VmObservationsMailles.geojson_maille,
+        )
+        .group_by(VmObservationsMailles.id_maille, VmObservationsMailles.geojson_maille)
+        .filter(
+            or_(
+                VmObservationsMailles.cd_ref.in_(subquery),
+                VmObservationsMailles.cd_ref == cd_ref,
             )
-            OR obs.cd_ref = :thiscdref
-        ORDER BY id_maille"""
-    observations = connection.execute(text(sql), thiscdref=cd_ref)
-    tabObs = list()
-    for o in observations:
-        temp = {
-            "id_maille": o.id_maille,
-            "nb_observations": 1,
-            "annee": o.annee,
-            "dateobs": str(o.dateobs),
-            "geojson_maille": json.loads(o.geojson_maille),
-        }
-        tabObs.append(temp)
-    return tabObs
+        )
+    )
+
+    if year_min and year_max:
+        query = query.filter(VmObservationsMailles.annee.between(year_min, year_max))
+
+    return FeatureCollection(
+        [
+            Feature(
+                id=o.id_maille,
+                geometry=json.loads(o.geojson_maille),
+                properties={"id_maille": o.id_maille, "nb_observations": o.nb_obs},
+            )
+            for o in query.all()
+        ]
+    )
 
 
 # last observation for index.html

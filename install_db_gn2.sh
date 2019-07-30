@@ -21,6 +21,21 @@ function database_exists () {
     fi
 }
 
+function test_settings() {
+    fields=('owner_atlas' 'user_pg' 'altitudes' 'time' 'attr_desc' 'attr_commentaire' 'attr_milieu' 'attr_chorologie')
+    echo "Vérification de la validité de settings.ini"
+    for i in "${!fields[@]}"
+    do
+        if [ -z ${!fields[$i]} ];
+        then
+            echo -e "\033\033[31m Error : \033[0m attribut ${fields[$i]} manquant dans settings.ini"
+            exit
+        fi
+    done
+}
+
+test_settings
+
 # Suppression du fichier de log d'installation si il existe déjà puis création de ce fichier vide.
 rm  -f ./log/install_db.log
 touch ./log/install_db.log
@@ -49,6 +64,7 @@ then
     echo "Ajout de postGIS et pgSQL à la base de données"
     sudo -n -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgis;"  &>> log/install_db.log
     sudo -n -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog; COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';"  &>> log/install_db.log
+    sudo -n -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;" &>> log/install_db.log
     # Si j'utilise GeoNature ($geonature_source = True), alors je créé les connexions en FWD à la BDD GeoNature
     if $geonature_source
 	then
@@ -283,14 +299,14 @@ then
 			  supprime boolean DEFAULT false,
 			  the_geom_point geometry('POINT',3857),
 			  effectif_total integer,
-              diffusable boolean
+              diffusion_level integer
 			);
 			INSERT INTO synthese.syntheseff
-			  (cd_nom, insee, observateurs, altitude_retenue, the_geom_point, effectif_total, diffusable)
-			  VALUES (67111, 05122, 'Mon observateur', 1254, '0101000020110F0000B19F3DEA8636264124CB9EB2D66A5541', 3, true);
+			  (cd_nom, insee, observateurs, altitude_retenue, the_geom_point, effectif_total, diffusion_level)
+			  VALUES (67111, 05122, 'Mon observateur', 1254, '0101000020110F0000B19F3DEA8636264124CB9EB2D66A5541', 3, 5);
 			INSERT INTO synthese.syntheseff
-			  (cd_nom, insee, observateurs, altitude_retenue, the_geom_point, effectif_total, diffusable)
-			  VALUES (67111, 05122, 'Mon observateur 3', 940, '0101000020110F00001F548906D05E25413391E5EE2B795541', 2, true);" &>> log/install_db.log
+			  (cd_nom, insee, observateurs, altitude_retenue, the_geom_point, effectif_total, diffusion_level)
+			  VALUES (67111, 05122, 'Mon observateur 3', 940, '0101000020110F00001F548906D05E25413391E5EE2B795541', 2, 5);" &>> log/install_db.log
         sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE synthese.syntheseff OWNER TO "$owner_atlas";"
 	fi
 
@@ -300,6 +316,23 @@ then
     sudo sed -i "s/WHERE id_attribut IN (100, 101, 102, 103);$/WHERE id_attribut  IN ($attr_desc, $attr_commentaire, $attr_milieu, $attr_chorologie);/" /tmp/atlas.sql
     sudo sed -i "s/date - 15$/date - $time/" /tmp/atlas.sql
     sudo sed -i "s/date + 15$/date - $time/" /tmp/atlas.sql
+
+
+    #customisation de l'altitude
+    insert=""
+    for i in "${!altitudes[@]}"
+    do
+        if [ $i -gt 0 ];
+        then
+            let max=${altitudes[$i]}-1
+            sql="INSERT INTO atlas.bib_altitudes VALUES ($i,${altitudes[$i-1]},$max);"
+            insert="${insert}\n${sql}"
+        fi
+    done
+
+    sudo sed -i "s/INSERT_ALTITUDE/${insert}/" /tmp/atlas.sql
+
+
     export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas.sql  &>> log/install_db.log
     sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.bib_altitudes OWNER TO "$owner_atlas";"
     sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.bib_taxref_rangs OWNER TO "$owner_atlas";"
@@ -331,5 +364,6 @@ then
     cd data/ref
     rm -f L*.shp L*.dbf L*.prj L*.sbn L*.sbx L*.shx output_clip.*
     cd ../..
+    rm -r /tmp/taxhub
 
 fi

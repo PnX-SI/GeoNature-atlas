@@ -7,15 +7,29 @@ $(document).ready(function() {
   });
 });
 
+window.onresize = function() {
+  var presentationText = document.getElementById("presentation-text");
+  if (presentationText) {
+    if (window.innerWidth <= 800) {
+      presentationText.hidden = true;
+    } else {
+      presentationText.hidden = false;
+    }
+  }
+};
+
+var presentationText = document.getElementById("presentation-text");
+if (window.innerWidth <= 800 && presentationText) {
+  presentationText.hidden = true;
+}
+
 autocompleteSearch = function(inputID, urlDestination, nbProposal) {
   $(inputID).autocomplete({
     source: function(request, response) {
       var searchUrl;
       if (urlDestination == "espece") {
         searchUrl = "/api/searchTaxon";
-      } else if (urlDestination == "enp") {
-        searchUrl = "/api/searchEnp";
-      } else {
+      } else if (urlDestination == "commune") {
         searchUrl = "/api/searchCommune";
       }
       $(inputID)
@@ -45,11 +59,18 @@ autocompleteSearch = function(inputID, urlDestination, nbProposal) {
       var url = ui.item.value;
       if (urlDestination == "espece") {
         location.href = configuration.URL_APPLICATION + "/espece/" + url;
-      } else {
+      } else if (urlDestination == "commune") {
         location.href = configuration.URL_APPLICATION + "/commune/" + url;
       }
 
       return false;
+    },
+    create: function(event, ui) {
+      $(this).data("ui-autocomplete")._renderItem = function(ul, item) {
+        return $("<li>")
+          .append('<a  class="search-bar-item">' + item.label + "</a>")
+          .appendTo(ul);
+      };
     }
   });
 };

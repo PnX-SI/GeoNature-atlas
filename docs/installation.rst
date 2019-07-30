@@ -11,7 +11,7 @@ Prérequis
 
 Application développée et installée sur un serveur Debian 8 ou 9.
 
-Ce serveur doit aussi disposer de : 
+Ce serveur doit aussi disposer de :
 
 - unzip (apt-get install unzip)
 - sudo (apt-get install sudo)
@@ -29,14 +29,14 @@ Ce serveur doit aussi disposer de :
 Installation de l'environnement logiciel
 ========================================
 
-Le script ``install_env.sh`` va automatiquement installer les outils nécessaires à l'application si ils ne sont pas déjà sur le serveur : 
+Le script ``install_env.sh`` va automatiquement installer les outils nécessaires à l'application si ils ne sont pas déjà sur le serveur :
 
 - PostgreSQL 9.6+
 - PostGIS 2.3+
 - Apache 2
 - Python 3
 
-Le script ``install_app.sh`` va préparer l'application et installer les dépendances listées dans le fichier `requirements.txt <https://github.com/PnEcrins/GeoNature-atlas/blob/master/requirements.txt>`_.
+Le script ``install_app.sh`` va préparer l'application et installer les dépendances listées dans le fichier `requirements.txt <https://github.com/PnX-SI/GeoNature-atlas/blob/master/requirements.txt>`_.
 
 **1. Mettre à jour les sources list**
 
@@ -71,7 +71,7 @@ On ajoute les signatures du dépôt puis on remet à jour la liste des paquets :
 
 :notes:
 
-    Cet exemple est basé sur une Debian 9. A adapter selon votre OS.
+Cet exemple est basé sur une Debian 9. A adapter selon votre OS.
     
 **2. Récupérez la dernière version (X.Y.Z à remplacer par le numéro de version) de GeoNature-atlas sur le dépot (https://github.com/PnX-SI/GeoNature-atlas/releases)**
 	
@@ -80,6 +80,7 @@ Ces opérations doivent être faites avec l'utilisateur courant (autre que ``roo
 ::
 
     cd /home/`whoami`
+
     wget https://github.com/PnX-SI/GeoNature-atlas/archive/X.Y.Z.zip
 
 
@@ -88,20 +89,20 @@ Ces opérations doivent être faites avec l'utilisateur courant (autre que ``roo
     Si la commande ``wget`` renvoie une erreur liée au certificat, installez le paquet ``ca-certificates`` (``sudo apt-get install ca-certificates``) puis relancer la commande ``wget`` ci-dessus.
 
 Dézippez l'archive :
-	
+
 ::
 
     unzip X.Y.Z.zip
 
 Vous pouvez renommer le dossier qui contient l'application (dans un dossier ``/home/`whoami`/atlas/`` par exemple) :
-	
+
 ::
 
     mv GeoNature-atlas-X.Y.Z atlas
 
 **3. Placez-vous dans le dossier qui contient l'application et lancez l'installation de l'environnement serveur :**
 
-Cela installera les logiciels nécessaires au fonctionnement de l'application 
+Cela installera les logiciels nécessaires au fonctionnement de l'application
 
 ::
 
@@ -120,6 +121,7 @@ Faites une copie du modèle de fichier de configuration de la BDD et de son inst
     cp settings.ini.sample settings.ini
 
 
+
 :notes:
 
     Suivez bien les indications en commentaire dans ce fichier
@@ -127,7 +129,7 @@ Faites une copie du modèle de fichier de configuration de la BDD et de son inst
 :notes:
 
     Attention à ne pas mettre de 'quote' dans les valeurs, même pour les chaines de caractères.
-    
+
 :notes:
 
     Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci en localhost car la création d'une BDD recquiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adaptez les commandes du fichier `install_db.sh` en les executant une par une.
@@ -180,17 +182,17 @@ Sinon :
 
     cd /home/`whoami`/atlas
     sudo ./install_db.sh
-    
+
 
 :notes:
 
-    Vous pouvez consulter le log de cette installation de la base dans ``log/install_db.log`` et vérifier qu'aucune erreur n'est intervenue. 
-    
-Vous pouvez alors modifier les vues, notamment ``atlas.vm_observations`` pour les adapter à votre contexte (ajouter les données partenaires, filtrer les espèces, limiter à un rang taxonomique...) ou le connecter à une autre BDD source (en important les données ou en s'y connectant en FDW). 
+    Vous pouvez consulter le log de cette installation de la base dans ``log/install_db.log`` et vérifier qu'aucune erreur n'est intervenue.
 
-Le script ``install_db.sh`` supprime la BDD de GeoNature-atlas et la recréer entièrement. 
+Vous pouvez alors modifier les vues, notamment ``atlas.vm_observations`` pour les adapter à votre contexte (ajouter les données partenaires, filtrer les espèces, limiter à un rang taxonomique...) ou le connecter à une autre BDD source (en important les données ou en s'y connectant en FDW).
 
-Si vous voulez adapter le contenu des vues matérialisées, vous pouvez modifier le fichier ``data/atlas.sql`` puis relancer ce script global de la BDD. 
+Le script ``install_db.sh`` supprime la BDD de GeoNature-atlas et la recréer entièrement.
+
+Si vous voulez adapter le contenu des vues matérialisées, vous pouvez modifier le fichier ``data/atlas.sql`` puis relancer ce script global de la BDD.
 
 Si vous souhaitez uniquement recréer la vue ``atlas.vm_observations`` et les 6 autres vues qui en dépendent vous pouvez utiliser le script ``data/update_vm_observations.sql``.
 
@@ -199,13 +201,13 @@ Installation de l'application
 ============================
 
 **Lancez l'installation automatique de l'application :**
-	
+
 ::
 
     ./install_app.sh
 
 Configuration de l'application
-==============================   
+==============================
 
 Editer le fichier de configuration ``atlas/configuration/config.py``.
 
@@ -216,24 +218,24 @@ Editer le fichier de configuration ``atlas/configuration/config.py``.
 
 
 Customisation de l'application
-==============================   
-	
+==============================
+
 En plus de la configuration, vous pouvez customiser l'application en modifiant et ajoutant des fichiers dans le répertoire ``static/custom/`` (css, templates, images).
 
 Vous pouvez aussi modifier ou ajouter des pages statiques de présentation, en plus de la page Présentation fournie par défaut. Pour cela, voir le paramètre ``STATIC_PAGES`` du fichier ``main/configuration/config.py``
-	
-    
+
+
 Configuration d'Apache
 ======================
 
 Créez un virtualhost pour l'atlas :
-	
+
 ::
 
     sudo nano /etc/apache2/sites-available/atlas.conf
 
 Pour rendre l'application consultable comme un sous répertoire du serveur  (http://monURL/atlas par exemple).
-Copiez/collez-y ces lignes en renseignant le bon port : 
+Copiez/collez-y ces lignes en renseignant le bon port :
 ::
 
     # Configuration GeoNature-atlas
@@ -242,7 +244,7 @@ Copiez/collez-y ces lignes en renseignant le bon port :
         ProxyPassReverse  http://127.0.0.1:8080
     </Location>
     #FIN Configuration GeoNature-atlas
-    
+
 Si l'atlas doit se trouver à la racine du serveur copiez/coller ces lignes (NB les '/' à la fin des ProxyPass et ProxPassReverse)
 ::
 
@@ -251,9 +253,9 @@ Si l'atlas doit se trouver à la racine du serveur copiez/coller ces lignes (NB 
 	    ProxyPassReverse http://127.0.0.1:8080/
  	 </Location>
 
-	
+
 Si l'atlas est associé à un domaine, ajoutez cette ligne au début du fichier :
-	 
+
 ::
 
     ServerName mondomaine.fr
@@ -266,6 +268,7 @@ Si l'atlas est associé à un domaine, ajoutez cette ligne au début du fichier 
     sudo a2enmod proxy_http
     sudo a2enmod rewrite
     sudo apache2ctl restart
+
 
 * Activez le virtualhost puis redémarrez Apache :
 
@@ -288,7 +291,7 @@ Mise à jour de l'application
 
 :notes:
 
-    A la racine de l'application, un fichier ``VERSION`` permet de savoir quelle version est installée. 
+    A la racine de l'application, un fichier ``VERSION`` permet de savoir quelle version est installée.
 
 - Copier ``atlas/configuration/settings.ini`` et ``atlas/configuration/config.py`` depuis l'ancienne version vers la nouvelle pour récupérer vos paramètres de configuration :
 
@@ -303,12 +306,12 @@ Mise à jour de l'application
 ::
 
     cp -aR ../VERSION-PRECEDENTE/static/custom/ ./static
-       
+
 
 Attention à bien lire les notes de chaque version, qui peuvent indiquer des opérations spécifiques à faire, notamment des nouveaux paramètres à ajouter dans votre configuration et/ou des modifications à appliquer dans la BDD.
 
 - Relancez l'installation automatique de l'application :
-	
+
 ::
 
     ./install_app.sh
@@ -318,14 +321,14 @@ Mise à jour des couches de référence
 ====================================
 
 Limite du territoire ou communes.
-	
+
 Voir les parties concernées dans `install_db.sh <../install_db.sh#L65-L88>`_.
 
 
 Accéder à votre BDD
 ===================
 
-Par défaut un serveur PostgreSQL n'écoute et n'autorise des connexions que du serveur lui-même (localhost). 
+Par défaut un serveur PostgreSQL n'écoute et n'autorise des connexions que du serveur lui-même (localhost).
 
 Si vous souhaitez vous y connecter depuis un autre serveur ou PC, connectez-vous en SSH sur le serveur de la BDD de l'atlas, puis éditez les fichiers de configuration de PostgreSQL.
 
@@ -343,13 +346,13 @@ Pour définir les IP qui peuvent se connecter au serveur PostgreSQL, éditez le 
 
     sudo nano /etc/postgresql/9.6/main/pg_hba.conf
 
-Si vous souhaitez définir des IP qui peuvent se connecter à la BDD, sous la ligne ``# IPv4 local connections:``, rajouter : 
+Si vous souhaitez définir des IP qui peuvent se connecter à la BDD, sous la ligne ``# IPv4 local connections:``, rajouter :
 
 ::
 
     host    all     all     MON_IP_A_REMPLACER/0        md5  #Pour donner accès à une IP
-    
-ou si vous souhaitez y donner accès depuis n'importe quelle IP, rajouter : 
+
+ou si vous souhaitez y donner accès depuis n'importe quelle IP, rajouter :
 
 ::
 
@@ -370,13 +373,13 @@ Connectez-vous en SSH sur le serveur hébergeant la BDD source, puis éditez la 
     sudo nano /etc/postgresql/9.6/main/pg_hba.conf
 
 Rajouter cette ligne à la fin du fichier (en remplacant IP_DE_LA_BDD_ATLAS par son adresse IP) :
-    
+
 ::
 
     host     all            all             IP_DE_LA_BDD_ATLAS/32       md5
 
 Redémarrez PostgreSQL pour que ces modifications soient prises en compte :
-   
+
 ::
 
     sudo /etc/init.d/postgresql restart
@@ -399,4 +402,4 @@ Développement
 
 Des données sont renvoyées aux templates par l'ORM, d'autres le sont sous forme d'API (fichiers JSON chargés en AJAX) pour charger certaines pages plus rapidement (observations sur les fiches espèces et auto-complétion de la recherche) :
 
-Pour en savoir plus, consultez le document `<vues_materialisees_maj.rst>`_ ainsi que le rapport de stage de Théo Lechemia (https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/2016-09-30-rapport_stage_Theo-Lechemia.pdf) ou sa présentation (https://github.com/PnEcrins/GeoNature-atlas/blob/master/docs/2016-09-soutenance-Theo-Lechemia.pdf)
+Pour en savoir plus, consultez le document `<vues_materialisees_maj.rst>`_ ainsi que le rapport de stage de Théo Lechemia (https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/2016-09-30-rapport_stage_Theo-Lechemia.pdf) ou sa présentation (https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/2016-09-soutenance-Theo-Lechemia.pdf)

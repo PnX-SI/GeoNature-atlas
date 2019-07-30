@@ -1,6 +1,13 @@
 var compteurJson = 0;
 var clearHtml = false;
 
+function formatPhotoAttribut(attribut) {
+  if (attribut) {
+    return attribut.split("'").join("&#39;");
+  }
+  return "";
+}
+
 // populate HTML with the selected photos
 function generateHtmlPhoto(photos, redimentionnement, taxhub_url) {
   window.lightbox.enable();
@@ -20,11 +27,11 @@ function generateHtmlPhoto(photos, redimentionnement, taxhub_url) {
     slicePhoto = photos.slice(compteurJson, compteurJson + 22);
     compteurJson = compteurJson + 22;
     slicePhoto.forEach(function(photo) {
-      photo.title = photo.title.split("'").join("&#39;");
-      photo.description = photo.description.split("'").join("&#39;");
-      photo.author = photo.author.split("'").join("&#39;");
-      photo.licence = photo.licence.split("'").join("&#39;");
-      photo.source = photo.source.split("'").join("&#39;");
+      photo.title = formatPhotoAttribut(photo.title);
+      photo.description = formatPhotoAttribut(photo.description);
+      photo.author = formatPhotoAttribut(photo.author);
+      photo.licence = formatPhotoAttribut(photo.licence);
+      photo.source = formatPhotoAttribut(photo.source);
       photo_url = photo.path;
       if (redimentionnement) {
         photo_url =
@@ -85,7 +92,7 @@ function scrollEvent(photos) {
     ) {
       generateHtmlPhoto(
         photos,
-        configuration.REDIMENTIONNEMENT_IMAGE,
+        configuration.REDIMENSIONNEMENT_IMAGE,
         configuration.TAXHUB_URL
       );
     }
@@ -113,7 +120,7 @@ function orderPhotosEvent(photos) {
 
     generateHtmlPhoto(
       sortedPhotos,
-      configuration.REDIMENTIONNEMENT_IMAGE,
+      configuration.REDIMENSIONNEMENT_IMAGE,
       configuration.TAXHUB_URL
     );
     $(window).off("scroll");
@@ -138,7 +145,7 @@ function sufflePhotosEvent(photos) {
     compteurJson = 0;
     generateHtmlPhoto(
       photos,
-      configuration.REDIMENTIONNEMENT_IMAGE,
+      configuration.REDIMENSIONNEMENT_IMAGE,
       configuration.TAXHUB_URL
     );
     $(window).off("scroll");
@@ -156,7 +163,7 @@ $(document).ready(function() {
   }).done(function(photos) {
     generateHtmlPhoto(
       photos,
-      configuration.REDIMENTIONNEMENT_IMAGE,
+      configuration.REDIMENSIONNEMENT_IMAGE,
       configuration.TAXHUB_URL
     );
     $("#nbPhotos").html(photos.length + " photos");
@@ -174,7 +181,7 @@ $(document).ready(function() {
       $(window).off("scroll");
       generateHtmlPhoto(
         photos,
-        configuration.REDIMENTIONNEMENT_IMAGE,
+        configuration.REDIMENSIONNEMENT_IMAGE,
         configuration.TAXHUB_URL
       );
       $("#group").html("");
@@ -215,7 +222,7 @@ $(document).ready(function() {
       compteurJson = 0;
       generateHtmlPhoto(
         filterJsonPhoto,
-        configuration.REDIMENTIONNEMENT_IMAGE,
+        configuration.REDIMENSIONNEMENT_IMAGE,
         configuration.TAXHUB_URL
       );
       $("#nbPhotos").html(filterJsonPhoto.length + " photos");
@@ -252,7 +259,7 @@ $(".INPNgroup").click(function() {
   }).done(function(photos) {
     generateHtmlPhoto(
       photos,
-      configuration.REDIMENTIONNEMENT_IMAGE,
+      configuration.REDIMENSIONNEMENT_IMAGE,
       configuration.TAXHUB_URL
     );
     $("#group").html("(" + group + ")");

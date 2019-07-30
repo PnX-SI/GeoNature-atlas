@@ -31,16 +31,22 @@ class SecretSchemaConf(Schema):
              postgresql://monuser:monpass@server:port/db_name""",
         ),
     )
+    GUNICORN_PORT = fields.Integer(missing=8080)
 
 
 class MapConfig(Schema):
     LAT_LONG = fields.List(fields.Float(), missing=[44.7952, 6.2287])
+    MIN_ZOOM = fields.Integer(missing=1)
+    MAX_BOUNDS = fields.List(
+        fields.List(fields.Float()), missing=[[-180, -90], [180, 90]]
+    )
     FIRST_MAP = fields.Dict(missing=MAP_1)
     SECOND_MAP = fields.Dict(missing=MAP_2)
     ZOOM = fields.Integer(missing=10)
     STEP = fields.Integer(missing=1)
     BORDERS_COLOR = fields.String(missing="#000000")
     BORDERS_WEIGHT = fields.Integer(missing=3)
+    ENABLE_SLIDER = fields.Boolean(missing=True)
 
 
 class AtlasConfig(Schema):
@@ -123,6 +129,11 @@ class AtlasConfig(Schema):
     )
 
     MAP = fields.Nested(MapConfig, missing=dict())
+    # Specify how communes are ordered
+    #   if true by length else by name
+    ORDER_COMMUNES_BYLENGTH = fields.Boolean(missing=False)
+    # coupe le nom_vernaculaire à la 1ere virgule sur les fiches espèces
+    SPLIT_NOM_VERN = fields.Integer(missing=True)
 
     @validates_schema
     def validate_url_taxhub(self, data):
