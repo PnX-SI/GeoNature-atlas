@@ -7,6 +7,22 @@ $(document).ready(function() {
   });
 });
 
+window.onresize = function() {
+  console.log(window.innerHeight);
+  console.log(window.innerWidth);
+  var el = document.getElementById("presentation-text");
+  if (window.innerWidth <= 800) {
+    el.hidden = true;
+  } else {
+    el.hidden = false;
+  }
+};
+
+var el = document.getElementById("presentation-text");
+if (window.innerWidth <= 800) {
+  el.hidden = true;
+}
+
 autocompleteSearch = function(inputID, urlDestination, nbProposal) {
   $(inputID).autocomplete({
     source: function(request, response) {
@@ -49,14 +65,14 @@ autocompleteSearch = function(inputID, urlDestination, nbProposal) {
 
       return false;
     },
-    create: function (event,ui){
-       $(this).data('ui-autocomplete')._renderItem = function (ul, item) {
-        return $('<li>')
-            .append('<a  class="search-bar-item">' + item.label + '</a>')
-            .appendTo(ul);
-       }
+    create: function(event, ui) {
+      $(this).data("ui-autocomplete")._renderItem = function(ul, item) {
+        return $("<li>")
+          .append('<a  class="search-bar-item">' + item.label + "</a>")
+          .appendTo(ul);
+      };
     }
-  })
+  });
 };
 
 // Generate the autocompletion with the list of item, the input id and the form id

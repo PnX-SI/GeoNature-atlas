@@ -12,6 +12,8 @@ CHANGELOG
   - Standardiation GeoJson des API 
   - Amélioration des performances
   - Possibilité de masquer le slider de ma carte des fiches espèces
+  - Raffraichissement de l'ergonomie
+  - Facilitation de la customisation grâce à des variables CSS
 
 Note de version:
 

@@ -34,6 +34,8 @@
 		    <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.Default.css') }}" />
         <script src="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.css') }}" />
+		<!-- fontawesome -->
+        <script src="{{url_for('static', filename='lib/node_modules/@fortawesome/fontawesome-free/js/all.min.js') }}"></script>
 
         <!-- D3 -->
         <script src="{{url_for('static', filename='lib/d3/d3.min.js') }}"></script>
@@ -111,9 +113,11 @@
 						</div>
 						<div id="taxonName">
                             {% if taxon.taxonSearch.nom_vern != None %}
-                                <h3> {{taxon.taxonSearch.nom_vern}} </h3>
+                                <h4 class="strong"> {{taxon.taxonSearch.nom_vern}} </h4>
+                                <h4 > <i>{{taxon.taxonSearch.nom_complet_html|safe}} </i>  </h4>
+                            {% else %}
+                            <h4 class="strong"> <i>{{taxon.taxonSearch.nom_complet_html|safe}} </i> 
                             {% endif %}
-                            <h3> {{taxon.taxonSearch.nom_complet_html|safe}}
                             {% if taxon.taxonSearch.protection == 'oui' %}
                                 <br/>
                                 <a href="https://inpn.mnhn.fr/espece/cd_nom/{{taxon.taxonSearch.cd_ref}}/tab/statut" target="_blank">
@@ -127,7 +131,7 @@
                                     data-toggle="tooltip"
                                     data-original-title="{{configuration.PATRIMONIALITE.config[taxon.taxonSearch.patrimonial].text}}" data-placement="right">
                             {% endif %}
-                            </h3>
+                            </h5>
 
                         <div id="taxonomy">
                             {% for taxon in taxonomyHierarchy %}
@@ -265,8 +269,7 @@
                                 {{ 'observations' if taxon.taxonSearch.nb_obs > 1 else 'observation' }}
                             </li>
                             <li>
-                                <img id="picto" src="{{url_for('static', filename='images/church.png')}}" style="width">
-                                <br/>
+                                <i class="fas fa-map-signs font-icon" style="font-size: 30px;"></i>                                <br/>
                                 <b>{{communes|length|pretty}}</b><br/>
                                 {{ 'communes' if communes|length > 1 else 'commune' }}
                             </li>
@@ -445,7 +448,7 @@
 
             <div class="panel panel-default" id="blocInfos">
 
-                <h4>
+                <h4 class="title-bar center">
 					<strong>Informations sur l'espèce</strong>
 				</h4>
                 <ul class="nav nav-tabs">
@@ -548,7 +551,7 @@
 
                 {% if videoAudio.audio | length > 0 %}
 
-                    <h4><span class="glyphicon glyphicon-volume-up"></span> <strong>Audio</strong> ({{videoAudio.audio | length}})
+                    <h4><span class="glyphicon glyphicon-volume-up strong"></span> Audio ({{videoAudio.audio | length}})
                         {% if videoAudio.audio | length > 1 %}
                         <i class ="btn-more" id="btn-more-audio" data-toggle="collapse" data-target="#moreAudio" rel="tooltip" title="Afficher plus d'enregistrements"> <span class="glyphicon glyphicon-chevron-down"> </span> </i>
                         {% endif %}
@@ -579,9 +582,9 @@
             {% endif %}
 
             <div class="panel panel-default" id="graphBloc">
-                <h3 class="text-center">Observations par classes d'altitudes</h3>
+                <h4 class="title-bar title-spaced center strong">Observations par classes d'altitudes</h4>
                 <div id="altiChart"></div>
-                <h3 class="text-center">Observations mensuelles</h3>
+                <h4 class="title-bar title-spaced center strong">Observations mensuelles</h4>
                 <div id="phenologyChart"></div>
             </div>
         </div>

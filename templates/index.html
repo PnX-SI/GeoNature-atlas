@@ -46,57 +46,57 @@
 
 			{% if configuration.AFFICHAGE_STAT_GLOBALES %}
 			<!-- Statistiques globales -->
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 dashboard">
-				<div class="panel panel-default stat-panel">
-					<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div class="panel panel-default stat-panel">
 						<div class="panel-heading no-padding">
-							<strong><h3 class="title-spaced"> <i id="stat" class="fas fa-chart-line">&nbsp;</i> En quelques chiffres</h3></strong></div>
-						<div class ="col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
-							<div class="stat-thumbnail border">
-								<i id="search" class="fas fa-search font-icon"></i>										<input id="hiddenInputTaxonStat" type="hidden" name="cd_ref">
-									<h1 class="large">{{stat.nbTotalObs | pretty}}</h1>
-								<h4 class="text-muted"> {{ 'observations' if stat.nbTotalObs > 1 else 'observation'}}</h4>
-								<p><a id="localScroll" href="#DernieresObservations" class="btn btn-default" role="button">Voir les dernières observations</a></p>
+								<strong><h3 class="title-spaced"> <i class="fas fa-chart-line orange">&nbsp;</i> En quelques chiffres</h3></strong>
+						</div>
+						<div class="row">
+							<div class ="col-lg-3 col-md-3 col-sm-12 col-xs-12 stat-object">
+								<div class="stat-thumbnail border">
+									<i class="fas fa-search font-icon blue"></i>	<input id="hiddenInputTaxonStat" type="hidden" name="cd_ref">
+										<h1 class="large">{{stat.nbTotalObs | pretty}}</h1>
+									<h4 class="text-muted"> {{ 'observations' if stat.nbTotalObs > 1 else 'observation'}}</h4>
+									<p><a id="localScroll" href="#DernieresObservations" class="btn btn-default" role="button">Voir les dernières observations</a></p>
+								</div>
+							</div>
+							<div class = "col-lg-3 col-md-3 col-sm-12 col-xs-12 stat-object">
+								<div class="stat-thumbnail border">
+									<i class="fas fa-leaf font-icon green"></i>									
+									<h1 class="large">{{stat.nbTotalTaxons | pretty}}</h1>
+									<h4 class="text-muted"> {{ 'espèces' if stat.nbTotalTaxons > 1 else 'espèce' }}</h4>
+									<form method="POST" id="searchFormTaxonsStat" class="navbar-form" role="search">
+										<div class="form-group has-feedback">
+											<input id="searchTaxonsStat" type="text" class="form-control" placeholder="Rechercher une espèce &nbsp; &nbsp; &nbsp;" loading="false" />
+											<i class="glyphicon glyphicon-search form-control-feedback"></i>
+											<input id="hiddenInputTaxonStat" type="hidden" name="cd_ref">
+										</div>
+													</form>
+								</div>
+							</div>
+							<div class ="col-lg-3 col-md-3 col-sm-12 col-xs-12 stat-object">
+								<div class="stat-thumbnail border">
+									<i class="fas fa-map-signs font-icon cyan"></i>
+									<h1 class="large">{{stat.town | pretty}}</h1>
+									<h4 class="text-muted"> {{ 'communes' if stat.town > 1 else 'commune' }}</h4>
+									<form method="POST" onsubmit="completeAction('#searchFormCommunesStat', hiddenInputCommunesStat)" id='searchFormCommunesStat' action=""  class="navbar-form" role="search">
+										<div class="form-group has-feedback">
+											<input id="searchCommunesStat" type="text" class="form-control" placeholder="Rechercher une commune" />
+											<i class="glyphicon glyphicon-search form-control-feedback"></i>
+											<input id="hiddenInputCommunesStat" type="hidden" name="insee">
+										</div>
+									</form>
+								</div>
+							</div>
+							<div class ="col-lg-3 col-md-3 col-sm-12 col-xs-12 stat-object">
+								<div class="stat-thumbnail">
+									<i class="fas fa-camera font-icon orange"></i>
+										<h1 class="large">{{stat.photo | pretty}}</h1>
+									<h4 class="text-muted"> {{ 'photos' if stat.photo > 1 else 'photo' }}</h4>
+									<p><a href="{{url_for('main.photos')}}" class="btn btn-default" role="button">Galerie photos</a></p>
+								</div>
 							</div>
 						</div>
-						<div class = "col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
-							<div class="stat-thumbnail border">
-								<i id="leaf" class="fas fa-leaf font-icon"></i>									
-								<h1 class="large">{{stat.nbTotalTaxons | pretty}}</h1>
-								<h4 class="text-muted"> {{ 'espèces' if stat.nbTotalTaxons > 1 else 'espèce' }}</h4>
-								<form method="POST" id="searchFormTaxonsStat" class="navbar-form" role="search">
-									<div class="form-group has-feedback">
-										<input id="searchTaxonsStat" type="text" class="form-control" placeholder="Rechercher une espèce &nbsp; &nbsp; &nbsp;" loading="false" />
-										<i class="glyphicon glyphicon-search form-control-feedback"></i>
-										<input id="hiddenInputTaxonStat" type="hidden" name="cd_ref">
-									</div>
-                				</form>
-							</div>
-						</div>
-						<div class ="col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
-							<div class="stat-thumbnail border">
-								<i id="town" class="fas fa-map-signs font-icon"></i>
-								<h1 class="large">{{stat.town | pretty}}</h1>
-								<h4 class="text-muted"> {{ 'communes' if stat.town > 1 else 'commune' }}</h4>
-								<form method="POST" onsubmit="completeAction('#searchFormCommunesStat', hiddenInputCommunesStat)" id='searchFormCommunesStat' action=""  class="navbar-form" role="search">
-									<div class="form-group has-feedback">
-										<input id="searchCommunesStat" type="text" class="form-control" placeholder="Rechercher une commune" />
-										<i class="glyphicon glyphicon-search form-control-feedback"></i>
-										<input id="hiddenInputCommunesStat" type="hidden" name="insee">
-									</div>
-								</form>
-							</div>
-						</div>
-						<div class ="col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
-							<div class="stat-thumbnail">
-								<i id="camera" class="fas fa-camera font-icon"></i>
-									<h1 class="large">{{stat.photo | pretty}}</h1>
-								<h4 class="text-muted"> {{ 'photos' if stat.photo > 1 else 'photo' }}</h4>
-								<p><a href="{{url_for('main.photos')}}" class="btn btn-default" role="button">Galerie photos</a></p>
-							</div>
-						</div>
-
-					</div>
 				</div>
 			</div>
 			{% endif %}
@@ -104,7 +104,12 @@
 			{% if customStatMedias != None and configuration.AFFICHAGE_RANG_STAT %}
 			<!-- Statistiques par rang taxonomique -->
 			<div class="col-sm-12">
-				<div class="row row-medias">
+					<div class="panel panel-default">
+							<div class="panel-heading no-padding">
+									<h3 class="title-spaced"><span class="glyphicon glyphicon-eye-open red"></span> &nbsp;Espèces à découvrir</h3>
+							</div>
+							<div class="row row-medias">
+
 				{% for i in range(customStatMedias | length) %}
 					{% if configuration.RANG_STAT | length == 2 %}
 					<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 stat-medias-wrapper">
@@ -113,12 +118,12 @@
 					{% elif configuration.RANG_STAT | length == 4 %}
 					<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 stat-medias-wrapper">
 					{% endif %}
-					<div class="panel panel-default statMedias">
-						<div class="panel-heading">
-							<h3>{{configuration.RANG_STAT_FR[i]}} </h3>
+					<div class="statMedias">
+						<div class="">
+							<h3 class="title-spaced title-bar" >{{configuration.RANG_STAT_FR[i]}} </h3>
 							<span class="higlight">{{customStat[i].nb_obs | pretty}}</span> observations | <span class="higlight">{{customStat[i].nb_taxons| pretty}}</span> espèces
 						</div>
-						<h5><span class="glyphicon glyphicon-eye-open"></span> Espèces à découvrir</h5>
+						
 					{% for j in range(2) %}
 						{% if loop.index <= customStatMedias[i] | length %}
 								<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-stat-medias">
@@ -148,6 +153,7 @@
 					</div>
 
 			{% endfor %}
+					</div>
 				</div>
 			</div>
 			{% endif %}
@@ -157,7 +163,7 @@
 			<div class="col-sm-12" id="DernieresObservations">
 					<div class="panel panel-default " >
 					  	<div class="panel-heading">
-							  <h3 class="title-spaced"> <i class="fas fa-binoculars"></i> 
+							  <h3 class="title-spaced"> <i class="fas fa-binoculars green"></i> 
 								{{configuration.TEXT_LAST_OBS}} {{observations | length}} {{ 'observations' if observations | length > 1 else 'observation' }}
 							</h3>
 						</div>
