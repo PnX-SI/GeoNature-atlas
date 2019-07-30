@@ -68,6 +68,10 @@ body {
   transform: translateY(-8px);
 }
 
+.border {
+  border-right: 1px solid #dadbda;
+}
+
 .center {
   text-align: center;
 }
