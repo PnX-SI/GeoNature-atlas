@@ -477,13 +477,8 @@ function printEspece(tabEspece, tabCdRef) {
   i = 0;
   while (i < tabEspece.length) {
     stringEspece +=
-      "<li> <a href='" +
-      configuration.URL_APPLICATION +
-      "/espece/" +
-      tabCdRef[i] +
-      "'>" +
-      tabEspece[i] +
-      "</li>";
+      "<li> <a href='../espece/" + tabCdRef[i] + "'>" + tabEspece[i] + "</li>";
+
     i = i + 1;
   }
   return stringEspece;

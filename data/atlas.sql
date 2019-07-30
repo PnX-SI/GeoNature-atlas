@@ -5,12 +5,12 @@
 --DROP materialized view taxonomie.vm_taxref;
 CREATE materialized view atlas.vm_taxref AS
 SELECT * FROM taxonomie.taxref;
-create unique index on atlas.vm_taxref (cd_nom);
-create index on atlas.vm_taxref (cd_ref);
-create index on atlas.vm_taxref (cd_taxsup);
-create index on atlas.vm_taxref (lb_nom);
-create index on atlas.vm_taxref (nom_complet);
-create index on atlas.vm_taxref (nom_valide);
+CREATE UNIQUE INDEX ON atlas.vm_taxref (cd_nom);
+CREATE INDEX ON atlas.vm_taxref (cd_ref);
+CREATE INDEX ON atlas.vm_taxref (cd_taxsup);
+CREATE INDEX ON atlas.vm_taxref (lb_nom);
+CREATE INDEX ON atlas.vm_taxref (nom_complet);
+CREATE INDEX ON atlas.vm_taxref (nom_valide);
 
 
 --Toutes les observations
@@ -25,19 +25,19 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
         s.the_geom_point::geometry('POINT',3857),
         s.effectif_total,
         tx.cd_ref,
-        st_asgeojson(ST_Transform(ST_SetSrid(s.the_geom_point, 3857), 4326)) as geojson_point
-        ,diffusion_level
+        st_asgeojson(ST_Transform(ST_SetSrid(s.the_geom_point, 3857), 4326)) as geojson_point,
+        diffusion_level
     FROM synthese.syntheseff s
     LEFT JOIN atlas.vm_taxref tx ON tx.cd_nom = s.cd_nom
     --JOIN atlas.t_layer_territoire m ON ST_Intersects(m.the_geom, s.the_geom_point)
     WHERE s.supprime = FALSE;
     --AND s.diffusable = TRUE;
 
-create unique index on atlas.vm_observations (id_observation);
-create index on atlas.vm_observations (cd_ref);
-create index on atlas.vm_observations (insee);
-create index on atlas.vm_observations (altitude_retenue);
-create index on atlas.vm_observations (dateobs);
+CREATE UNIQUE INDEX ON atlas.vm_observations (id_observation);
+CREATE INDEX ON atlas.vm_observations (cd_ref);
+CREATE INDEX ON atlas.vm_observations (insee);
+CREATE INDEX ON atlas.vm_observations (altitude_retenue);
+CREATE INDEX ON atlas.vm_observations (dateobs);
 CREATE INDEX index_gist_vm_observations_the_geom_point ON atlas.vm_observations USING gist (the_geom_point);
 
 
@@ -166,7 +166,7 @@ $BODY$
     monsql = monsql || ' WHERE o.cd_ref is not null ORDER BY o.cd_ref;';
 
     EXECUTE monsql;
-    create unique index on atlas.vm_altitudes (cd_ref);
+    create unique index ON atlas.vm_altitudes (cd_ref);
 
     RETURN monsql;
 
@@ -181,8 +181,9 @@ select atlas.create_vm_altitudes();
 
 -- Taxons observés et de tous leurs synonymes (utilisés pour la recherche d'une espèce)
 
-CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS
-SELECT t.cd_nom,
+CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS 
+SELECT row_number() OVER (ORDER BY t.cd_nom,t.cd_ref,t.search_name)::integer AS fid,
+  t.cd_nom,
   t.cd_ref,
   t.search_name,
   t.nom_valide,
@@ -206,8 +207,10 @@ FROM (
 ) t
 JOIN atlas.vm_taxons taxons ON taxons.cd_ref = t.cd_ref;
 
+CREATE UNIQUE INDEX ON atlas.vm_search_taxon(fid);
+CREATE INDEX ON atlas.vm_search_taxon(cd_nom);
+create INDEX ON atlas.vm_search_taxon(cd_ref);
 
-CREATE INDEX ON atlas.vm_search_taxon(cd_ref);
 CREATE INDEX trgm_idx ON atlas.vm_search_taxon USING GIST (search_name gist_trgm_ops);
 CREATE UNIQUE INDEX ON atlas.vm_search_taxon (cd_nom, search_name);
 
@@ -269,7 +272,7 @@ st_asgeojson(st_transform(c.the_geom, 4326)) as commune_geojson
 FROM atlas.l_communes c
 JOIN atlas.t_layer_territoire t ON ST_CONTAINS(ST_BUFFER(t.the_geom,200), c.the_geom);
 
-CREATE UNIQUE INDEX on atlas.vm_communes (insee);
+CREATE UNIQUE INDEX ON atlas.vm_communes (insee);
 CREATE INDEX index_gist_vm_communes_the_geom ON atlas.vm_communes USING gist (the_geom);
 
 
