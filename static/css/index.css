@@ -1,3 +1,99 @@
+.font-icon{
+  font-size: 40px;
+}
+
+#leaf{
+  color:#82c91e
+}
+
+#red{
+  color: red;
+}
+
+#stat{
+  color:#ff8800;
+}
+
+#search{
+  color:#30a5ff
+}
+
+#town{
+  color:#1ebfae;
+}
+
+#camera{
+  color:#ffb53e;
+}
+
+#overlay{
+  /* position: absolute; */
+  padding: 10px;
+  color: white;
+}
+
+.pastel-green{
+  background-color: #2df50885!important;
+}
+
+.pastel-blue{
+  background-color: #5a67ff75!important;
+}
+
+.back-img{
+  padding: 0px;
+  margin-top: -20px;
+  background-size: contain;
+  background-attachment: fixed;
+}
+
+.presentation-text{
+  font-size: 18px;
+}
+
+.btn-intro {
+  font-size: 20px;
+  border-radius: 0px;
+  letter-spacing: 0.1rem;
+  font-weight: 600;
+  padding: 0.8rem;
+  transition: all 0.2s;
+}
+
+.btn-success {
+  color: #fff;
+  background-color: #17c001;
+  border-color: #17c001;
+}
+
+.btn-success:hover {
+  background-color: #14af00;
+  border-color: #14af00;
+}
+
+.no-padding{
+  padding-top: 0px;
+}
+
+.large{
+  font-size:5rem;
+}
+
+.text-muted{
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.title-spaced {
+  letter-spacing: .025em;
+  line-height: 38px;
+}
+
+.dashboard{
+
+}
+
 .textIntroduction{
   padding-left: 30px;
 }
@@ -24,9 +120,14 @@
 
 .stat-thumbnail{
   text-align: center;
-  background-color:  #E3E7E8;
+  background-color:  rgb(255, 255, 255);
   margin-bottom: 0px;
   border-radius: 0px;
+}
+
+.border{
+  border-right: 1px solid #dadbda;
+
 }
 
 .stat-thumbnail span {

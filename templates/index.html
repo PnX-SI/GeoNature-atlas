@@ -20,10 +20,10 @@
         <script src="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.css') }}" />
 
-				<!-- fontawesome -->
-				<link rel="shortcut icon" href="{{ url_for('static', filename='node_modules/fontawesome.min.css') }}">
+		<!-- fontawesome -->
+        <script src="{{url_for('static', filename='lib/node_modules/@fortawesome/fontawesome-free/js/all.min.js') }}"></script>
 
-				<!-- CSS Application -->
+		<!-- CSS Application -->
         <link rel="shortcut icon" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
         <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />
         <link rel="stylesheet" href="{{url_for('static', filename='css/index.css') }}" />
@@ -46,23 +46,24 @@
 
 			{% if configuration.AFFICHAGE_STAT_GLOBALES %}
 			<!-- Statistiques globales -->
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 dashboard">
 				<div class="panel panel-default stat-panel">
 					<div class="row">
-						<div class="panel-heading"><strong><h3>En quelques chiffres</h3></strong></div>
+						<div class="panel-heading no-padding">
+							<strong><h3 class="title-spaced"> <i id="stat" class="fas fa-chart-line">&nbsp;</i> En quelques chiffres</h3></strong></div>
 						<div class ="col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
-							<div class="thumbnail stat-thumbnail">
-								<span class="glyphicon glyphicon-search"></span>
-								<h1>{{stat.nbTotalObs | pretty}}</h1>
-								<h4> {{ 'observations' if stat.nbTotalObs > 1 else 'observation'}}</h4>
+							<div class="stat-thumbnail border">
+								<i id="search" class="fas fa-search font-icon"></i>										<input id="hiddenInputTaxonStat" type="hidden" name="cd_ref">
+									<h1 class="large">{{stat.nbTotalObs | pretty}}</h1>
+								<h4 class="text-muted"> {{ 'observations' if stat.nbTotalObs > 1 else 'observation'}}</h4>
 								<p><a id="localScroll" href="#DernieresObservations" class="btn btn-default" role="button">Voir les dernières observations</a></p>
 							</div>
 						</div>
 						<div class = "col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
-							<div class="thumbnail stat-thumbnail">
-								<span class="glyphicon glyphicon-leaf"></span>
-								<h1>{{stat.nbTotalTaxons | pretty}}</h1>
-								<h4> {{ 'espèces' if stat.nbTotalTaxons > 1 else 'espèce' }}</h4>
+							<div class="stat-thumbnail border">
+								<i id="leaf" class="fas fa-leaf font-icon"></i>									
+								<h1 class="large">{{stat.nbTotalTaxons | pretty}}</h1>
+								<h4 class="text-muted"> {{ 'espèces' if stat.nbTotalTaxons > 1 else 'espèce' }}</h4>
 								<form method="POST" id="searchFormTaxonsStat" class="navbar-form" role="search">
 									<div class="form-group has-feedback">
 										<input id="searchTaxonsStat" type="text" class="form-control" placeholder="Rechercher une espèce &nbsp; &nbsp; &nbsp;" loading="false" />
@@ -73,10 +74,10 @@
 							</div>
 						</div>
 						<div class ="col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
-							<div class="thumbnail stat-thumbnail">
-								<img id="picto" src="{{url_for('static', filename='images/commune-icone.png')}}">
-								<h1>{{stat.town | pretty}}</h1>
-								<h4> {{ 'communes' if stat.town > 1 else 'commune' }}</h4>
+							<div class="stat-thumbnail border">
+								<i id="town" class="fas fa-map-signs font-icon"></i>
+								<h1 class="large">{{stat.town | pretty}}</h1>
+								<h4 class="text-muted"> {{ 'communes' if stat.town > 1 else 'commune' }}</h4>
 								<form method="POST" onsubmit="completeAction('#searchFormCommunesStat', hiddenInputCommunesStat)" id='searchFormCommunesStat' action=""  class="navbar-form" role="search">
 									<div class="form-group has-feedback">
 										<input id="searchCommunesStat" type="text" class="form-control" placeholder="Rechercher une commune" />
@@ -87,10 +88,10 @@
 							</div>
 						</div>
 						<div class ="col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
-							<div class="thumbnail stat-thumbnail">
-								<span class="glyphicon glyphicon-camera"></span>
-								<h1>{{stat.photo | pretty}}</h1>
-								<h4> {{ 'photos' if stat.photo > 1 else 'photo' }}</h4>
+							<div class="stat-thumbnail">
+								<i id="camera" class="fas fa-camera font-icon"></i>
+									<h1 class="large">{{stat.photo | pretty}}</h1>
+								<h4 class="text-muted"> {{ 'photos' if stat.photo > 1 else 'photo' }}</h4>
 								<p><a href="{{url_for('main.photos')}}" class="btn btn-default" role="button">Galerie photos</a></p>
 							</div>
 						</div>
@@ -154,8 +155,12 @@
 			{% if configuration.AFFICHAGE_DERNIERES_OBS %}
 			<!-- Dernières espèces observées (Carte et liste) -->
 			<div class="col-sm-12" id="DernieresObservations">
-					<div class="panel panel-default" >
-					  	<div class="panel-heading"><h3> {{configuration.TEXT_LAST_OBS}} {{observations | length}} {{ 'observations' if observations | length > 1 else 'observation' }}</h3></div>
+					<div class="panel panel-default " >
+					  	<div class="panel-heading">
+							  <h3 class="title-spaced"> <i class="fas fa-binoculars"></i> 
+								{{configuration.TEXT_LAST_OBS}} {{observations | length}} {{ 'observations' if observations | length > 1 else 'observation' }}
+							</h3>
+						</div>
 					  	<div class="row" id="mapRow">
 							<!-- CARTE des dernières observations -->
 							<div id="blocMap" class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
@@ -205,7 +210,12 @@
 			<!-- ESPECES PERIODE -->
 			<div class="col-sm-12" id="mostViewNow">
 				<div class="panel panel-default">
-					<div class="panel-heading"><h3>A voir en ce moment <span class="glyphicon glyphicon-question-sign helpTip" data-toggle="tooltip" data-original-title="Espèces les plus observées dans les 15 jours précédents et suivants aujourd'hui, toutes années confondues" data-placement="right"></span></h3></div>
+					<div class="panel-heading">
+						<h3 class="title-spaced">A voir en ce moment 
+							<span class="glyphicon glyphicon-question-sign helpTip" data-toggle="tooltip" data-original-title="Espèces les plus observées dans les 15 jours précédents et suivants aujourd'hui, toutes années confondues" 
+							data-placement="right"></span>
+						</h3>
+					</div>
 					<div class="row thumbnail-row">
 					{% for tax in mostViewTaxon %}
 						<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col">

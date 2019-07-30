@@ -2,6 +2,25 @@
 CHANGELOG
 =========
 
+1.4.0 (2018-05-17)
+------------------
+
+** Nouveautés **
+
+  - Fiche especes: les mailles ne sont plus dupliquées
+  - Support GeoNature2 et connexion au réferentiel géographique
+  - Standardiation GeoJson des API 
+  - Amélioration des performances
+  - Possibilité de masquer le slider de ma carte des fiches espèces
+
+Note de version:
+
+sudo -n -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
+TODO:
+- transformer la table synthese.syntheseff en gn_synthese.synthese -> pleinenment compatible GN2 plutot que de passer par une vue.
+- comment gérer la migration ?
+- question de la diffusion (plus de champs diffusable=true)
+
 1.3.2 (2018-05-17)
 ------------------
 

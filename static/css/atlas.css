@@ -3,6 +3,14 @@ body {
 	padding-top: 50px;
 }
 
+.panel{
+	border-radius: 0px!important;
+}
+
+.panel-heading{
+	background-color: white!important;
+}
+
 #page {
   padding-left: 60px;
   padding-right: 0px;
@@ -16,13 +24,14 @@ a{
 
 a.btn.btn-default{
 	color: black;
-	border-color: black;
+	border-color:#dadbda;
 	background-color: white !important;
 }
 
 a.btn.btn-default:hover{
 	background-color: #cccccc !important;
-	color: white;
+	color: black;
+	border-color: black;
 }
 
 .rowMargin {

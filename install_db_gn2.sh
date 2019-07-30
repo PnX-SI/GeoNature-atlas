@@ -64,6 +64,7 @@ then
     echo "Ajout de postGIS et pgSQL à la base de données"
     sudo -n -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgis;"  &>> log/install_db.log
     sudo -n -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog; COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';"  &>> log/install_db.log
+    sudo -n -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;" &>> log/install_db.log
     # Si j'utilise GeoNature ($geonature_source = True), alors je créé les connexions en FWD à la BDD GeoNature
     if $geonature_source
 	then
@@ -298,14 +299,14 @@ then
 			  supprime boolean DEFAULT false,
 			  the_geom_point geometry('POINT',3857),
 			  effectif_total integer,
-              diffusable boolean
+              diffusion_level integer
 			);
 			INSERT INTO synthese.syntheseff
-			  (cd_nom, insee, observateurs, altitude_retenue, the_geom_point, effectif_total, diffusable)
-			  VALUES (67111, 05122, 'Mon observateur', 1254, '0101000020110F0000B19F3DEA8636264124CB9EB2D66A5541', 3, true);
+			  (cd_nom, insee, observateurs, altitude_retenue, the_geom_point, effectif_total, diffusion_level)
+			  VALUES (67111, 05122, 'Mon observateur', 1254, '0101000020110F0000B19F3DEA8636264124CB9EB2D66A5541', 3, 5);
 			INSERT INTO synthese.syntheseff
-			  (cd_nom, insee, observateurs, altitude_retenue, the_geom_point, effectif_total, diffusable)
-			  VALUES (67111, 05122, 'Mon observateur 3', 940, '0101000020110F00001F548906D05E25413391E5EE2B795541', 2, true);" &>> log/install_db.log
+			  (cd_nom, insee, observateurs, altitude_retenue, the_geom_point, effectif_total, diffusion_level)
+			  VALUES (67111, 05122, 'Mon observateur 3', 940, '0101000020110F00001F548906D05E25413391E5EE2B795541', 2, 5);" &>> log/install_db.log
         sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE synthese.syntheseff OWNER TO "$owner_atlas";"
 	fi
 
@@ -363,5 +364,6 @@ then
     cd data/ref
     rm -f L*.shp L*.dbf L*.prj L*.sbn L*.sbx L*.shx output_clip.*
     cd ../..
+    rm -r /tmp/taxhub
 
 fi
