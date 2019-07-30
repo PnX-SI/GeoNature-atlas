@@ -8,19 +8,19 @@ $(document).ready(function() {
 });
 
 window.onresize = function() {
-  console.log(window.innerHeight);
-  console.log(window.innerWidth);
-  var el = document.getElementById("presentation-text");
-  if (window.innerWidth <= 800) {
-    el.hidden = true;
-  } else {
-    el.hidden = false;
+  var presentationText = document.getElementById("presentation-text");
+  if (presentationText) {
+    if (window.innerWidth <= 800) {
+      presentationText.hidden = true;
+    } else {
+      presentationText.hidden = false;
+    }
   }
 };
 
-var el = document.getElementById("presentation-text");
-if (window.innerWidth <= 800) {
-  el.hidden = true;
+var presentationText = document.getElementById("presentation-text");
+if (window.innerWidth <= 800 && presentationText) {
+  presentationText.hidden = true;
 }
 
 autocompleteSearch = function(inputID, urlDestination, nbProposal) {

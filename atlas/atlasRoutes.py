@@ -70,8 +70,7 @@ def groupeMedias(image):
 
 
 @main.route(
-    "/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>",
-    methods=["GET", "POST"],
+    "/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>", methods=["GET", "POST"]
 )
 def indexMedias(image):
     return redirect(
@@ -128,6 +127,7 @@ def ficheEspece(cd_ref):
 
     cd_ref = int(cd_ref)
     taxon = vmTaxrefRepository.searchEspece(connection, cd_ref)
+    print(taxon)
     altitudes = vmAltitudesRepository.getAltitudesChilds(connection, cd_ref)
     months = vmMoisRepository.getMonthlyObservationsChilds(connection, cd_ref)
     synonyme = vmTaxrefRepository.getSynonymy(connection, cd_ref)

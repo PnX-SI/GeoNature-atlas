@@ -121,7 +121,7 @@
                             {% if taxon.taxonSearch.protection == 'oui' %}
                                 <br/>
                                 <a href="https://inpn.mnhn.fr/espece/cd_nom/{{taxon.taxonSearch.cd_ref}}/tab/statut" target="_blank">
-                                    <img class="caractEspece" width="130px" src="{{url_for('static', filename='images/logo_protection.png') }}"  data-toggle="tooltip" data-original-title="Ce taxon bénéficie d'un statut de protection" data-placement="right"></a>
+                                    <img class="caractEspece" width="100px" src="{{url_for('static', filename='images/logo_protection.png') }}"  data-toggle="tooltip" data-original-title="Ce taxon bénéficie d'un statut de protection" data-placement="right"></a>
                             {% endif %}
                             {% if taxon.taxonSearch.patrimonial in configuration.PATRIMONIALITE.config %}
                                 <img
