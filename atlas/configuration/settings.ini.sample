@@ -86,14 +86,14 @@ import_commune_shp=true
 
 # Chemin et nom des colonnes du SHP des communes du territoire. Laisser tel quel (en modifiant uniquement MYUSERLINUX)
 # pour utiliser les communes du PnEcrins par défaut
-communes_shp=/home/MYUSERLINUX/atlas/data/ref/communes.shp
+communes_shp=/home/`whoami`/atlas/data/ref/communes.shp
 colonne_insee=insee
 colonne_nom_commune=nom_com
 
 #### TERRITOIRE ####
 
 # Chemin vers le SHP de l'emprise du territoire
-limit_shp=/home/MYUSERLINUX/atlas/data/ref/territoire.shp
+limit_shp=/home/`whoami`/atlas/data/ref/territoire.shp
 
 ##### MAILLES #####
 
@@ -104,7 +104,7 @@ metropole=true
 taillemaille=5
 
 # Si 'metropole=false', rajoutez dans le dossier /data/ref un SHP des mailles de votre territoire et renseignez son chemin
-chemin_custom_maille=/home/MYUSERLINUX/atlas/data/ref/custom_maille.shp
+chemin_custom_maille=/home/`whoami`/atlas/data/ref/custom_maille.shp
 
 # Altitudes
 # lister les valeurs des classes d'altitudes

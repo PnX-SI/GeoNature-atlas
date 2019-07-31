@@ -9,7 +9,7 @@ INSTALLATION
 Prérequis
 =========
 
-Application développée et installée sur un serveur Debian 8 ou 9.
+Application instalable sur un serveur Debian 8 ou 9 (Seul Debian 9 a été "prouvé et testé).
 
 Ce serveur doit aussi disposer de :
 
@@ -57,17 +57,19 @@ Ces opérations doivent être faites avec l'utilisateur courant (autre que ``roo
 
     Si la commande ``wget`` renvoie une erreur liée au certificat, installez le paquet ``ca-certificates`` (``sudo apt-get install ca-certificates``) puis relancer la commande ``wget`` ci-dessus.
 
-Dézippez l'archive :
+Dézippez l'archive et la supprimer:
 
 ::
 
     unzip X.Y.Z.zip
+    rm X.Y.Z.zip
 
 Vous pouvez renommer le dossier qui contient l'application (dans un dossier ``/home/`whoami`/atlas/`` par exemple) :
 
 ::
 
     mv GeoNature-atlas-X.Y.Z atlas
+    cd atlas
 
 **3. Installation de l'environnement logiciel**
 
@@ -76,7 +78,8 @@ Le script ``install_env.sh`` va automatiquement installer les outils nécessaire
 - PostgreSQL 9.6+
 - PostGIS 2.3+
 - Apache 2
-- Python 3
+- Python 3 et GDAL
+- Supervisor
 
 Lancer le script:
 
@@ -97,6 +100,7 @@ Faites une copie du modèle de fichier de configuration de la BDD et de son inst
 
     cd /home/`whoami`/atlas/atlas/configuration
     cp settings.ini.sample settings.ini
+    nano settings.ini
 
 
 
@@ -107,6 +111,10 @@ Faites une copie du modèle de fichier de configuration de la BDD et de son inst
 :notes:
 
     Attention à ne pas mettre de 'quote' dans les valeurs, même pour les chaines de caractères.
+
+:notes:
+
+    GeoNature atlas fonctionnent avec des données géographiques qui doivent être fournies  en amont (maillles, limite de territoire, limite de communes). Vous avez la possibilité de récupérer ces données directement depuis le referentiel géographique de GeoNature si les données y sont présentes (``use_ref_geo_gn2=true``); ou de fournir des fichiers shapefiles (à mettre dans le répertoire ``data/ref``)
 
 :notes:
 
