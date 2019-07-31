@@ -82,8 +82,8 @@ def create_app():
     return app
 
 
+app = create_app()
 if __name__ == "__main__":
-    app = create_app()
     # validation de la configuration secrète
     secret_conf = read_and_validate_conf(config, SecretSchemaConf)
     app.run(port=secret_conf["GUNICORN_PORT"], debug=app.config["modeDebug"])

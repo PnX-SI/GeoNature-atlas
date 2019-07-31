@@ -9,6 +9,11 @@ fi
 # sudo ls pour demander le mot de passe une fois
 sudo ls
 
+if [ ! -d 'log' ]
+  then
+      mkdir log
+fi
+
 . atlas/configuration/settings.ini
 
 function database_exists () {
@@ -368,7 +373,7 @@ then
     cd data/ref
     rm -f L*.shp L*.dbf L*.prj L*.sbn L*.sbx L*.shx output_clip.*
     cd ../..
-    if [ ! -d '/tmp/taxhub' ]
+    if [ -d '/tmp/taxhub' ]
     then
         rm -r /tmp/taxhub
     fi

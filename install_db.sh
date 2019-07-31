@@ -6,6 +6,11 @@ if [ "$(id -u)" != "0" ]; then
    exit 1
 fi
 
+if [ ! -d 'log' ]
+  then
+      mkdir log
+fi
+
 . atlas/configuration/settings.ini
 
 function database_exists () {
