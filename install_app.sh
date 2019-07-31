@@ -1,4 +1,14 @@
 #!/bin/bash
+if [ "$(id -u)" == "0" ]; then
+   echo -e "\e[91m\e[1mThis script should NOT be run as root\e[0m" >&2
+   exit 1
+fi
+
+if [ ! -d 'log' ]
+  then
+      mkdir log
+      touch log/errors_atlas.log
+fi
 
 if [ ! -f ./atlas/configuration/settings.ini ]; then
   cp ./atlas/configuration/settings.ini.sample ./atlas/configuration/settings.ini
@@ -90,30 +100,4 @@ if [ ! -f ./static/custom/images/logo_patrimonial.png ]; then
 fi
 if [ ! -f ./static/custom/maps-custom.js ]; then
   cp ./static/custom/maps-custom.js.sample ./static/custom/maps-custom.js
-fi
-
-echo "Creating GIS files if they dont already exist"
-if [ ! -f ./data/ref/communes.dbf ]; then
-  cp ./data/ref/communes.dbf.sample ./data/ref/communes.dbf
-fi
-if [ ! -f ./data/ref/communes.prj ]; then
-  cp ./data/ref/communes.prj.sample ./data/ref/communes.prj
-fi
-if [ ! -f ./data/ref/communes.shp ]; then
-  cp ./data/ref/communes.shp.sample ./data/ref/communes.shp
-fi
-if [ ! -f ./data/ref/communes.shx ]; then
-  cp ./data/ref/communes.shx.sample ./data/ref/communes.shx
-fi
-if [ ! -f ./data/ref/territoire.dbf ]; then
-  cp ./data/ref/territoire.dbf.sample ./data/ref/territoire.dbf
-fi
-if [ ! -f ./data/ref/territoire.prj ]; then
-  cp ./data/ref/territoire.prj.sample ./data/ref/territoire.prj
-fi
-if [ ! -f ./data/ref/territoire.shp ]; then
-  cp ./data/ref/territoire.shp.sample ./data/ref/territoire.shp
-fi
-if [ ! -f ./data/ref/territoire.shx ]; then
-  cp ./data/ref/territoire.shx.sample ./data/ref/territoire.shx
 fi

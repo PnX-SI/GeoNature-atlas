@@ -24,7 +24,11 @@ static/custom/territoire.json
 static/custom/glossaire.json
 static/custom/custom.css
 static/custom/maps-custom.js
-static/custom/images/*
+static/custom/images/logo-structure.png
+static/custom/images/accueil-intro.jpg
+static/custom/images/favicon.ico
+static/custom/images/logo_patrimonial.png
+
 static/custom/templates/presentation.html
 static/custom/templates/footer.html
 static/custom/templates/introduction.html

@@ -1,43 +1,27 @@
-<div class="col-sm-12">
-	<div class="panel panel-default">
+<div class="col-sm-12" id="intro-bloc">
 		<div class="row">
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 back-img">
-					<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 textIntroduction">
-						<div id="overlay">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 back-img" style="background-image: url({{url_for('static', filename='custom/images/accueil-intro.jpg') }})">
+					<div class="col-lg-5 col-md-6 col-sm-12 col-xs-12" id="textIntroduction">
+						<div >
 								<h1>
 										Bienvenue sur l'atlas de la faune et de la flore du {{configuration.STRUCTURE}}
 									</h1>
-									<p class="presentation-text">
-										Le Parc national des Ecrins met à votre disposition l'ensemble des espèces sauvages observées par ses agents depuis sa création en 1973. Chaque nouvelle observation alimente en temps réel les fiches de chaque espèce que vous consultez, dans une volonté de partage et d'enrichissement des connaissances sur la biodiversité alpine.
-									</p>
-									<p class="presentation-text">
-										Cet atlas vous présente des observations reéalisées dans le cadre de différents protocoles scientifiques. Il ne s'agit pas d'un inventaire exhaustif ni d'une répartition complète des espèces sur le territoire.
-									</p>
-									<p>
-										<a href="{{url_for('main.get_staticpages', page='presentation') }}" class="btn btn-lg btn-intro btn-success">En savoir plus</a>
-									</p>
+									<!-- ATTENTION: bien gardé l'id "presentation-text" pour conserver le comportement responsive -->
+									<div id="presentation-text">
+											<p >
+													Le Parc national des Ecrins met à votre disposition l'ensemble des espèces sauvages observées par ses agents depuis sa création en 1973. Chaque nouvelle observation alimente en temps réel les fiches de chaque espèce que vous consultez, dans une volonté de partage et d'enrichissement des connaissances sur la biodiversité alpine.
+												</p>
+												<p>
+													Cet atlas vous présente des observations reéalisées dans le cadre de différents protocoles scientifiques. Il ne s'agit pas d'un inventaire exhaustif ni d'une répartition complète des espèces sur le territoire.
+												</p>
+												<p>
+													<a href="{{url_for('main.get_staticpages', page='presentation') }}" class="btn btn-lg btn-intro btn-success">En savoir plus</a>
+												</p>
+									</div>
+
 						</div>	
 						
 					</div>
-				<img src="{{url_for('static', filename='custom/images/accueil-intro.jpg') }}" width="100%" alt="{{configuration.NOM_APPLICATION}}">
 			</div>
 		</div>
-	</div>
 </div>
-
-<!-- 
-
-<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 textIntroduction">
-		<h1>
-			Bienvenue sur l'atlas de la faune et de la flore du {{configuration.STRUCTURE}}
-		</h1>
-		<p>
-			Le Parc national des Ecrins met à votre disposition l'ensemble des espèces sauvages observées par ses agents depuis sa création en 1973. Chaque nouvelle observation alimente en temps réel les fiches de chaque espèce que vous consultez, dans une volonté de partage et d'enrichissement des connaissances sur la biodiversité alpine.
-		</p>
-		<p>
-			Cet atlas vous présente des observations reéalisées dans le cadre de différents protocoles scientifiques. Il ne s'agit pas d'un inventaire exhaustif ni d'une répartition complète des espèces sur le territoire.
-		</p>
-		<p>
-			<a href="{{url_for('main.get_staticpages', page='presentation') }}" class="btn btn-default">En savoir plus</a>
-		</p>
-	</div> -->

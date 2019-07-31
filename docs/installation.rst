@@ -253,7 +253,6 @@ Si l'atlas est associé à un domaine, ajoutez cette ligne au début du fichier 
 
     sudo a2enmod proxy
     sudo a2enmod proxy_http
-    sudo a2enmod rewrite
     sudo apache2ctl restart
 
 

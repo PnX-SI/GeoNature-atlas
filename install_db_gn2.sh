@@ -368,6 +368,9 @@ then
     cd data/ref
     rm -f L*.shp L*.dbf L*.prj L*.sbn L*.sbx L*.shx output_clip.*
     cd ../..
-    rm -r /tmp/taxhub
+    if [ ! -d '/tmp/taxhub' ]
+    then
+        rm -r /tmp/taxhub
+    fi
 
 fi
