@@ -1,14 +1,11 @@
 --################################
 --  Import FDW
 --################################
+
 IMPORT FOREIGN SCHEMA gn_synthese
 	LIMIT TO (gn_synthese.synthese, gn_synthese.cor_area_synthese)
     FROM SERVER geonaturedbserver INTO synthese;
 
-
-IMPORT FOREIGN SCHEMA ref_nomenclatures
-	LIMIT TO (ref_nomenclatures.t_nomenclatures, ref_nomenclatures.bib_nomenclatures_types)
-    FROM SERVER geonaturedbserver INTO synthese;
 
 
 CREATE VIEW synthese.syntheseff AS

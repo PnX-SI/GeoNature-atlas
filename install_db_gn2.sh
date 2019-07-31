@@ -1,10 +1,13 @@
 #!/bin/bash
 
-# Make sure only root can run our script
-if [ "$(id -u)" != "0" ]; then
-   echo "This script must be run as root" 1>&2
+# S'assurer que le script n'est pas lancer en root (utilisation de whoami)
+if [ "$(id -u)" == "0" ]; then
+   echo -e "\e[91m\e[1mThis script should NOT be run as root\e[0m" >&2
    exit 1
 fi
+
+# sudo ls pour demander le mot de passe une fois
+sudo ls
 
 . atlas/configuration/settings.ini
 
@@ -277,6 +280,8 @@ then
         elif test $geonature_version -eq 2
         then
             echo "Création de la connexion a GeoNature"
+            export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f data/gn2/atlas_gn2.sql  &>> log/install_db.log
+
             sudo cp data/gn2/atlas_synthese.sql /tmp/atlas_synthese.sql
             sudo sed -i "s/myuser;$/$owner_atlas;/" /tmp/atlas_synthese.sql
             export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas_synthese.sql  &>> log/install_db.log
