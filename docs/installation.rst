@@ -26,17 +26,6 @@ Ce serveur doit aussi disposer de :
     GeoNature-atlas est susceptible de fonctionner sur d'autres OS (comme Ubuntu par exemple) mais cela n'a pas été testé.
 
 
-Installation de l'environnement logiciel
-========================================
-
-Le script ``install_env.sh`` va automatiquement installer les outils nécessaires à l'application si ils ne sont pas déjà sur le serveur :
-
-- PostgreSQL 9.6+
-- PostGIS 2.3+
-- Apache 2
-- Python 3
-
-Le script ``install_app.sh`` va préparer l'application et installer les dépendances listées dans le fichier `requirements.txt <https://github.com/PnX-SI/GeoNature-atlas/blob/master/requirements.txt>`_.
 
 **1. Mettre à jour les sources list**
 
@@ -49,30 +38,10 @@ Adapter à votre version d'OS (ici Debian 9 Stretch) :
     sudo echo "#Ajout pour GeoNature-atlas" | sudo tee -a /etc/apt/sources.list
     sudo echo "deb http://httpredir.debian.org/debian stretch main" | sudo tee -a /etc/apt/sources.list
     sudo apt-get update
+    sudo apt-get upgrade
 
 
-On ajoute un fichier ``sources.list`` pour permettre d'installer la version de postgresql sans être dépendant de celle liée au ``sources.list`` de sa version d'OS :
 
-::
-
-    sudo touch /etc/apt/sources.list.d/pgdg.list
-    sudo echo "#Ajout des sources pour les differentes versions de PostGreSQL" | sudo tee -a /etc/apt/sources.list.d/pgdg.list
-    sudo echo "deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main" | sudo tee -a /etc/apt/sources.list.d/pgdg.list
-
-
-On ajoute les signatures du dépôt puis on remet à jour la liste des paquets :
-
-::
-
-    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | \
-        sudo apt-key add -
-    sudo apt-get update
-
-
-:notes:
-
-Cet exemple est basé sur une Debian 9. A adapter selon votre OS.
-    
 **2. Récupérez la dernière version (X.Y.Z à remplacer par le numéro de version) de GeoNature-atlas sur le dépot (https://github.com/PnX-SI/GeoNature-atlas/releases)**
 	
 Ces opérations doivent être faites avec l'utilisateur courant (autre que ``root``), ``whoami`` dans l'exemple :
@@ -100,18 +69,27 @@ Vous pouvez renommer le dossier qui contient l'application (dans un dossier ``/h
 
     mv GeoNature-atlas-X.Y.Z atlas
 
-**3. Placez-vous dans le dossier qui contient l'application et lancez l'installation de l'environnement serveur :**
+**3. Installation de l'environnement logiciel**
 
-Cela installera les logiciels nécessaires au fonctionnement de l'application
+Le script ``install_env.sh`` va automatiquement installer les outils nécessaires à l'application si ils ne sont pas déjà sur le serveur :
+
+- PostgreSQL 9.6+
+- PostGIS 2.3+
+- Apache 2
+- Python 3
+
+Lancer le script:
 
 ::
 
-    cd /home/`whoami`/atlas
     ./install_env.sh
 
 
-Installation de la base de données
-==================================
+
+
+**4. Installation de la base de données**
+
+
 
 Faites une copie du modèle de fichier de configuration de la BDD et de son installation automatique ``atlas/configuration/settings.ini.sample`` puis éditez-le. 
 
@@ -164,7 +142,7 @@ Par ailleurs, si vous n'utilisez pas GeoNature, il vous faut installer TaxHub (h
 
 L'installation du schéma `taxonomie` de TaxHub dans la BDD de l'atlas peut se faire automatiquement lors de l'installation de la BDD avec le paramètre ``install_taxonomie=true``.
 
-A noter aussi que si vous ne connectez pas l'atlas à une BDD GeoNature(``geonature_source=false``), une table exemple ``synthese.syntheseff`` comprenant 2 observations est créée. A vous d'adapter les vues après l'installation pour les connecter à vos données sources.
+A noter aussi que si vous ne connectez pas l'atlas à une BDD GeoNature (``geonature_source=false``), une table exemple ``synthese.syntheseff`` comprenant 2 observations est créée. A vous d'adapter les vues après l'installation pour les connecter à vos données sources.
 
 Lancez le fichier fichier d'installation de la base de données en sudo :
 
@@ -190,15 +168,13 @@ Sinon :
 
 Vous pouvez alors modifier les vues, notamment ``atlas.vm_observations`` pour les adapter à votre contexte (ajouter les données partenaires, filtrer les espèces, limiter à un rang taxonomique...) ou le connecter à une autre BDD source (en important les données ou en s'y connectant en FDW).
 
-Le script ``install_db.sh`` supprime la BDD de GeoNature-atlas et la recréer entièrement.
-
 Si vous voulez adapter le contenu des vues matérialisées, vous pouvez modifier le fichier ``data/atlas.sql`` puis relancer ce script global de la BDD.
 
 Si vous souhaitez uniquement recréer la vue ``atlas.vm_observations`` et les 6 autres vues qui en dépendent vous pouvez utiliser le script ``data/update_vm_observations.sql``.
 
 
-Installation de l'application
-============================
+**5. Installation de l'application**
+
 
 **Lancez l'installation automatique de l'application :**
 
@@ -209,18 +185,21 @@ Installation de l'application
 Configuration de l'application
 ==============================
 
-Editer le fichier de configuration ``atlas/configuration/config.py``.
+Le fichier de configuration central de l'application est ``atlas/configuration/config.py``. Celui ci est par défaut assez minimaliste. Il peut être completé par toutes une série d'autre paramètre pour personnaliser le comportement de l'application. L'ensemble des paramètres disponibles sont présents dans le ficher ``atlas/configuration/config.py.example``
 
 - Vérifier que la variable 'database_connection' contient les bonnes informations de connexion à la base
 - Renseignez l'URL de l'application à partir de la racine du serveur WEB ('/atlas' ou '' par exemple)
 - Renseignez les autres paramètres selon votre contexte
-- Rechargez le serveur Web Gunicorn pour que les modifications soient prises en compte (``sudo supervisorctl reload``)
+
+Après chaque modification de la configuration relancer la commande ``sudo supervisorctl restart atlas``
 
 
 Customisation de l'application
 ==============================
 
 En plus de la configuration, vous pouvez customiser l'application en modifiant et ajoutant des fichiers dans le répertoire ``static/custom/`` (css, templates, images).
+
+L'atlas est fourni avec des variables CSS qui permettent de personnaliser facilement l'interface (changement des couleurs principales). Pour cela éditer les variables présentes dans le fichier ``static/custom/custom.css``. Les variables ``--main-color`` et ``second-color`` sont les plus utilisées et permettent de customiser l'atlas selon les couleur de votre organisme.
 
 Vous pouvez aussi modifier ou ajouter des pages statiques de présentation, en plus de la page Présentation fournie par défaut. Pour cela, voir le paramètre ``STATIC_PAGES`` du fichier ``main/configuration/config.py``
 
