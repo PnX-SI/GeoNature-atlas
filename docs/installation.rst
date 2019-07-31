@@ -271,27 +271,38 @@ Si l'atlas est associé à un domaine, ajoutez cette ligne au début du fichier 
 Mise à jour de l'application
 ============================
 
-- Télécharger puis dézipper la nouvelle version de l'atlas à installer dans ``/home/`whoami`/``.
-- Renommer l'ancienne version de l'atlas puis la nouvelle version, en lui donnant le nom du répertoire précédemment utilisé si vous voulez éviter de devoir modifier votre configuration Apache.
-- Vous pouvez aussi créer un nouveau répertoire pour l'application dans ``home/`whoami`/`` et cloner la version souhaitée depuis le dépot Github (``git clone``).
+- Télécharger puis dézipper la nouvelle version de l'atlas.
 
-:notes:
+::
 
-    A la racine de l'application, un fichier ``VERSION`` permet de savoir quelle version est installée.
+    cd /home/`whoami`
+
+    wget https://github.com/PnX-SI/GeoNature-atlas/archive/X.Y.Z.zip
+    unzip X.Y.Z 
+    rm X.Y.Z
+
+- Renommer l'ancienne version de l'atlas puis la nouvelle version.
+
+::
+
+    mv /home/`whoami`/atlas/ /home/`whoami`/atlas_old/
+    mv GeoNature-atlas-X.Y.Z /home/`whoami`/atlas/
+
+
 
 - Copier ``atlas/configuration/settings.ini`` et ``atlas/configuration/config.py`` depuis l'ancienne version vers la nouvelle pour récupérer vos paramètres de configuration :
 
 ::
 
-    cd atlas-nouvelle-version
-    cp ../VERSION-PRECEDENTE/atlas/configuration/settings.ini atlas/configuration/settings.ini
-    cp ../VERSION-PRECEDENTE/atlas/configuration/config.py atlas/configuration/config.py
+    cd atlas
+    cp ../atlas_old/atlas/configuration/settings.ini atlas/configuration/settings.ini
+    cp ../atlas_old/atlas/configuration/config.py atlas/configuration/config.py
 
 - Copier le contenu du répertoire ``static/custom/`` depuis l'ancienne version vers la nouvelle pour récupérer toute votre customisation (CSS, templates, images...) :
 
 ::
 
-    cp -aR ../VERSION-PRECEDENTE/static/custom/ ./static
+    cp -aR ../atlas_old/static/custom/ ./static
 
 
 Attention à bien lire les notes de chaque version, qui peuvent indiquer des opérations spécifiques à faire, notamment des nouveaux paramètres à ajouter dans votre configuration et/ou des modifications à appliquer dans la BDD.

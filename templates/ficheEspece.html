@@ -158,8 +158,9 @@
 
                         {% if taxon.listTaxonsChild|length > 0 %}
                            <!-- Button trigger modal -->
-                           <a id="btn-taxons-fils" class="btn btn-default" data-toggle="modal" data-target="#myModal"> <b> {{taxon.listTaxonsChild | length}} </b> taxon(s) inférieur(s) agrégé(s) sur cette fiche</a>
-
+                           <button class="btn btn-default" data-toggle="modal" data-target="#myModal" style="margin-top: 10px;"> 
+                                <b> {{taxon.listTaxonsChild | length}} </b> taxon(s) inférieur(s) agrégé(s) sur cette fiche
+                           </button>
 
                                 <!-- Modal -->
                                 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

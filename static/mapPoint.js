@@ -17,6 +17,9 @@ var myGeoJson;
 
 var compteurLegend = 0; // counter to not put the legend each time
 
+// global variable to see if the slider has been touch
+var sliderTouch = false;
+
 // variable globale: observations récupérer en AJAX
 var observationsMaille;
 var observationsPoint;
@@ -42,7 +45,7 @@ $.ajax({
     mailleBoolean = true;
   } else {
     // affichage des points sans filtrer par annes pour gagner en perf
-    displayMarkerLayerFicheEspece(observations.point, null, null);
+    displayMarkerLayerFicheEspece(observationsPoint, null, null, sliderTouch);
   }
   if (mailleBoolean) {
     // zoom event
@@ -51,16 +54,20 @@ $.ajax({
     if (configuration.MAP.ENABLE_SLIDER) {
       // Slider event
       mySlider.on("slideStop", function() {
+        sliderTouch = true;
         years = mySlider.getValue();
-        // on vérifie si le slider a été touché
-        // sinon on met null a yearmin et yearmax pour ne pas filtrer par année a la génération du GeoJson
-        yearMin = years[0] == taxonYearMin ? null : years[0];
-        yearMax = years[1] == YEARMAX ? null : year[1];
+        yearMin = years[0];
+        yearMax = years[1];
 
         map.removeLayer(currentLayer);
         if (map.getZoom() >= configuration.ZOOM_LEVEL_POINT) {
           // on filtre en local
-          displayMarkerLayerFicheEspece(observations.point, yearMin, yearMax);
+          displayMarkerLayerFicheEspece(
+            observationsPoint,
+            yearMin,
+            yearMax,
+            sliderTouch
+          );
         } else {
           // on recharge que les mailles en AJAX - filtrée par années
           $.ajax({
@@ -103,14 +110,18 @@ $.ajax({
     if (configuration.MAP.ENABLE_SLIDER) {
       // Slider event
       mySlider.on("change", function() {
+        sliderTouch = true;
         years = mySlider.getValue();
-        // on vérifie si le slider a été touché
-        // sinon on met null a yearmin et yearmax pour ne pas filtrer par année a la génération du GeoJson
-        yearMin = years[0] == taxonYearMin ? null : years[0];
-        yearMax = years[1] == YEARMAX ? null : year[1];
+        yearMin = years[0];
+        yearMax = years[1];
 
         map.removeLayer(currentLayer);
-        displayMarkerLayerFicheEspece(observations.point, yearMin, yearMax);
+        displayMarkerLayerFicheEspece(
+          observationsPoint,
+          yearMin,
+          yearMax,
+          sliderTouch
+        );
         nbObs = 0;
         myGeoJson.features.forEach(function(l) {
           nbObs += l.properties.nb_observations;
@@ -138,13 +149,16 @@ function eventOnZoom(observationsMaille, observationsPoint) {
       var yearMax = null;
       if (configuration.MAP.ENABLE_SLIDER) {
         years = mySlider.getValue();
-        // on vérifie si le slider a été touché
-        // sinon on met null a yearmin et yearmax pour ne pas filtrer par année a la génération du GeoJson
-        yearMin = years[0] == taxonYearMin ? null : years[0];
-        yearMax = years[1] == YEARMAX ? null : year[1];
+        yearMin = years[0];
+        yearMax = years[1];
       }
 
-      displayMarkerLayerFicheEspece(observationsPoint, yearMin, yearMax);
+      displayMarkerLayerFicheEspece(
+        observationsPoint,
+        yearMin,
+        yearMax,
+        sliderTouch
+      );
       activeMode = "Point";
     }
     if (

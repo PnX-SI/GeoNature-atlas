@@ -109,13 +109,13 @@ a {
   transition: all 0.5s ease;
 }
 
-a.btn.btn-default {
+.btn.btn-default {
   color: white;
   border-color: var(--main-color);
   background-color: var(--main-color) !important;
 }
 
-a.btn.btn-default:hover {
+.btn.btn-default:hover {
   background-color: white !important;
   color: black;
   border-color: var(--main-color);

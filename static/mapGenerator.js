@@ -293,25 +293,41 @@ function displayMailleLayerCommune(observations) {
 }
 
 // GeoJson Point
-function generateGeojsonPointFicheEspece(geojsonPoint, yearMin, yearMax) {
-  // si yearMin et year Max on filtre les obs avec les données du slider
-  // sinon on retourne directement le geojson
-  if (yearMin && yearMax) {
-    geojsonPoint.features = geojsonPoint.features.filter(function(obs) {
+function generateGeojsonPointFicheEspece(
+  geojsonPoint,
+  yearMin,
+  yearMax,
+  sliderTouch
+) {
+  var filteredGeoJsonPoint = Object.assign({}, geojsonPoint);
+  // si on a touché le slider on filtre sinon on retourne directement le geojson
+  if (yearMin && yearMax && sliderTouch) {
+    filteredGeoJsonPoint.features = geojsonPoint.features.filter(function(obs) {
       return obs.properties.year >= yearMin && obs.properties.year <= yearMax;
     });
-    return geojsonPoint;
+    return filteredGeoJsonPoint;
   } else {
-    return geojsonPoint;
+    return filteredGeoJsonPoint;
   }
 }
 
 // Display marker Layer (cluster or not)
-function displayMarkerLayerFicheEspece(observationsPoint, yearMin, yearMax) {
+function displayMarkerLayerFicheEspece(
+  observationsPoint,
+  yearMin,
+  yearMax,
+  sliderTouch
+) {
+  // on vérifie si le slider a été touché
+  // sinon on met null a yearmin et yearmax pour ne pas filtrer par année a la génération du GeoJson
+
+  // yearMin = years[0] == taxonYearMin ? null : years[0];
+  // yearMax = years[1] == YEARMAX ? null : years[1];
   myGeoJson = generateGeojsonPointFicheEspece(
     observationsPoint,
     yearMin,
-    yearMax
+    yearMax,
+    sliderTouch
   );
 
   if (typeof pointDisplayOptionsFicheEspece == "undefined") {
