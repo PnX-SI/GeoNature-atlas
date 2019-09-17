@@ -91,6 +91,17 @@ then
     fi
 	sudo -n -u postgres -s psql -d $db_name -c "CREATE SCHEMA synthese AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
 
+    if $geonature_source
+	then
+        if test $geonature_version -eq 2
+        then
+            echo "Création des FDW depuis GN2"
+            echo "--------------------" &>> log/install_db.log
+            echo "Création des FDW depuis GN2" &>> log/install_db.log
+            echo "--------------------" &>> log/install_db.log
+            export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f data/gn2/atlas_gn2.sql  &>> log/install_db.log
+        fi
+    fi
 
     if $use_ref_geo_gn2
     then
@@ -284,9 +295,6 @@ then
             export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas_geonature.sql  &>> log/install_db.log
         elif test $geonature_version -eq 2
         then
-            echo "Création de la connexion a GeoNature"
-            export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f data/gn2/atlas_gn2.sql  &>> log/install_db.log
-
             sudo cp data/gn2/atlas_synthese.sql /tmp/atlas_synthese.sql
             sudo sed -i "s/myuser;$/$owner_atlas;/" /tmp/atlas_synthese.sql
             export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas_synthese.sql  &>> log/install_db.log

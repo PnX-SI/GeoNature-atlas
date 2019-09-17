@@ -1,13 +1,3 @@
---################################
---  Import FDW
---################################
-
-IMPORT FOREIGN SCHEMA gn_synthese
-	LIMIT TO (gn_synthese.synthese, gn_synthese.cor_area_synthese)
-    FROM SERVER geonaturedbserver INTO synthese;
-
-
-
 CREATE VIEW synthese.syntheseff AS
 WITH areas AS (
 	SELECT DISTINCT ON (sa.id_synthese,  t.type_code)
