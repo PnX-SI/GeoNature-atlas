@@ -153,7 +153,7 @@ function eventOnZoom(observationsMaille, observationsPoint) {
         yearMax = years[1];
       }
 
-      displayMarkerLayerFicheEspece(
+      displayMarkerLayerFicheEspecse(
         observationsPoint,
         yearMin,
         yearMax,
