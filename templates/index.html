@@ -48,8 +48,8 @@
 			<!-- Statistiques globales -->
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="panel panel-default stat-panel">
-						<div class="panel-heading no-padding">
-								<strong><h3 class="title-spaced"> <i class="fas fa-chart-line orange">&nbsp;</i> En quelques chiffres</h3></strong>
+						<div class="panel-heading padding-sm ">
+								<strong><h3 class="title-spaced"> <i class="fas fa-chart-line icon-color-title">&nbsp;</i> En quelques chiffres</h3></strong>
 						</div>
 						<div class="row">
 							<div class ="col-lg-3 col-md-3 col-sm-12 col-xs-12 stat-object">
@@ -76,7 +76,7 @@
 							</div>
 							<div class ="col-lg-3 col-md-3 col-sm-12 col-xs-12 stat-object">
 								<div class="stat-thumbnail border">
-									<i class="fas fa-map-signs font-icon cyan"></i>
+									<i class="fas fa-map-signs font-icon blue"></i>
 									<h1 class="large">{{stat.town | pretty}}</h1>
 									<h4 class="text-muted"> {{ 'communes' if stat.town > 1 else 'commune' }}</h4>
 									<form method="POST" onsubmit="completeAction('#searchFormCommunesStat', hiddenInputCommunesStat)" id='searchFormCommunesStat' action=""  class="navbar-form" role="search">
@@ -90,7 +90,7 @@
 							</div>
 							<div class ="col-lg-3 col-md-3 col-sm-12 col-xs-12 stat-object">
 								<div class="stat-thumbnail">
-									<i class="fas fa-camera font-icon orange"></i>
+									<i class="fas fa-camera font-icon green"></i>
 										<h1 class="large">{{stat.photo | pretty}}</h1>
 									<h4 class="text-muted"> {{ 'photos' if stat.photo > 1 else 'photo' }}</h4>
 									<p><a href="{{url_for('main.photos')}}" class="btn btn-default" role="button">Galerie photos</a></p>
@@ -105,8 +105,8 @@
 			<!-- Statistiques par rang taxonomique -->
 			<div class="col-sm-12">
 					<div class="panel panel-default">
-							<div class="panel-heading no-padding">
-									<h3 class="title-spaced"><span class="glyphicon glyphicon-eye-open red"></span> &nbsp;Espèces à découvrir</h3>
+							<div class="panel-heading padding-sm ">
+									<h3 class="title-spaced"><span class="glyphicon glyphicon-eye-open icon-color-title"></span> &nbsp;Espèces à découvrir</h3>
 							</div>
 							<div class="row row-medias">
 
@@ -120,7 +120,7 @@
 					{% endif %}
 					<div class="statMedias">
 						<div class="">
-							<h3 class="title-spaced title-bar" >{{configuration.RANG_STAT_FR[i]}} </h3>
+							<h4 class="title-spaced title-bar" >{{configuration.RANG_STAT_FR[i]}} </h4>
 							<span class="higlight">{{customStat[i].nb_obs | pretty}}</span> observations | <span class="higlight">{{customStat[i].nb_taxons| pretty}}</span> espèces
 						</div>
 						
@@ -162,8 +162,8 @@
 			<!-- Dernières espèces observées (Carte et liste) -->
 			<div class="col-sm-12" id="DernieresObservations">
 					<div class="panel panel-default " >
-					  	<div class="panel-heading">
-							  <h3 class="title-spaced"> <i class="fas fa-binoculars green"></i> 
+					  	<div class="panel-heading padding-sm ">
+							  <h3 class="title-spaced"> <i class="fas fa-binoculars icon-color-title"></i> 
 								{{configuration.TEXT_LAST_OBS}} {{observations | length}} {{ 'observations' if observations | length > 1 else 'observation' }}
 							</h3>
 						</div>
