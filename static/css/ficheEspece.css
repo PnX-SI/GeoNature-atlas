@@ -1,4 +1,4 @@
-#page a {
+#page li a {
   color: var(--main-color) !important;
 }
 
@@ -91,11 +91,11 @@ p.imgDescription.main {
 }
 
 #taxonomy {
-  margin-top: 30px;
+  margin-top: 15px;
 }
 
 #inpnLink {
-  margin-top: 30px;
+  margin-top: 15px;
 }
 
 .nav > li > a {

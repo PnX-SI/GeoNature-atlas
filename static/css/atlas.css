@@ -2,8 +2,7 @@
   --green: #82c91e;
   --blue: #30a5ff;
   --cyan: #1ebfae;
-  --orange: #ffb53e;
-  --cyan: #30a5ff;
+  --icon-color-title: #363e44;
   --red: red;
   --main-color: #82c91e;
   --second-color: #649b18;
@@ -12,6 +11,26 @@
 body {
   background-color: #e3e7e8;
   padding-top: 50px;
+}
+
+.green {
+  color: var(--green);
+}
+
+.red {
+  color: var(--red);
+}
+
+.blue {
+  color: var(--blue);
+}
+
+.cyan {
+  color: var(--cyan);
+}
+
+.icon-color-title {
+  color: var(--icon-color-title);
 }
 
 /* SCROL BAR */
@@ -51,7 +70,7 @@ body {
 .title-bar::before {
   display: inline-block;
   content: "";
-  border-top: 1px solid var(--main-color);
+  border-top: 1px solid rgba(2, 2, 2, 0.158);
   width: 5rem;
   margin: 0 1rem;
   -webkit-transform: translateY(-8px);
@@ -61,7 +80,7 @@ body {
 .title-bar::after {
   display: inline-block;
   content: "";
-  border-top: 1px solid var(--main-color);
+  border-top: 1px solid rgba(2, 2, 2, 0.158);
   width: 5rem;
   margin: 0 1rem;
   -webkit-transform: translateY(-8px);
@@ -69,7 +88,7 @@ body {
 }
 
 .border {
-  border-right: 1px solid var(--main-color);
+  border-right: 1px solid rgba(2, 2, 2, 0.158);
 }
 
 .center {
@@ -84,6 +103,12 @@ body {
   padding-left: 60px;
   padding-right: 0px;
   margin-top: 25px;
+}
+
+.form-control:focus {
+  border-color: var(--main-color);
+  box-shadow: inset 0 0.5px 0.5px rgba(0, 0, 0, 0.075),
+    0 0 5px var(--main-color);
 }
 
 /* carto */

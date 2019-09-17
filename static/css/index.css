@@ -6,26 +6,6 @@
   font-size: 40px;
 }
 
-.green {
-  color: var(--green);
-}
-
-.red {
-  color: var(--red);
-}
-
-.blue {
-  color: var(--blue);
-}
-
-.cyan {
-  color: var(--cyan);
-}
-
-.orange {
-  color: var(--orange);
-}
-
 #overlay {
   /* position: absolute; */
   padding: 10px;
@@ -65,9 +45,14 @@
   border-color: var(--second-color);
 }
 
-.no-padding {
-  padding-top: 0px;
-  padding-left: 10px;
+h4 {
+  font-size: 20px;
+}
+
+.padding-sm {
+  padding-top: 5px;
+  padding-left: 5px;
+  padding-bottom: 5px;
 }
 
 .large {
