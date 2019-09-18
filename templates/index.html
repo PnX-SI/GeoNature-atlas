@@ -55,7 +55,7 @@
 							<div class ="col-lg-3 col-md-3 col-sm-12 col-xs-12 stat-object">
 								<div class="stat-thumbnail border">
 									<i class="fas fa-search font-icon blue"></i>	<input id="hiddenInputTaxonStat" type="hidden" name="cd_ref">
-										<h1 class="large">{{stat.nbTotalObs | pretty}}</h1>
+										<h1 class="large muted">{{stat.nbTotalObs | pretty}}</h1>
 									<h4 class="text-muted"> {{ 'observations' if stat.nbTotalObs > 1 else 'observation'}}</h4>
 									<p><a id="localScroll" href="#DernieresObservations" class="btn btn-default" role="button">Voir les dernières observations</a></p>
 								</div>
@@ -63,7 +63,7 @@
 							<div class = "col-lg-3 col-md-3 col-sm-12 col-xs-12 stat-object">
 								<div class="stat-thumbnail border">
 									<i class="fas fa-leaf font-icon green"></i>									
-									<h1 class="large">{{stat.nbTotalTaxons | pretty}}</h1>
+									<h1 class="large muted">{{stat.nbTotalTaxons | pretty}}</h1>
 									<h4 class="text-muted"> {{ 'espèces' if stat.nbTotalTaxons > 1 else 'espèce' }}</h4>
 									<form method="POST" id="searchFormTaxonsStat" class="navbar-form" role="search">
 										<div class="form-group has-feedback">
@@ -77,7 +77,7 @@
 							<div class ="col-lg-3 col-md-3 col-sm-12 col-xs-12 stat-object">
 								<div class="stat-thumbnail border">
 									<i class="fas fa-map-signs font-icon blue"></i>
-									<h1 class="large">{{stat.town | pretty}}</h1>
+									<h1 class="large muted">{{stat.town | pretty}}</h1>
 									<h4 class="text-muted"> {{ 'communes' if stat.town > 1 else 'commune' }}</h4>
 									<form method="POST" onsubmit="completeAction('#searchFormCommunesStat', hiddenInputCommunesStat)" id='searchFormCommunesStat' action=""  class="navbar-form" role="search">
 										<div class="form-group has-feedback">
@@ -91,7 +91,7 @@
 							<div class ="col-lg-3 col-md-3 col-sm-12 col-xs-12 stat-object">
 								<div class="stat-thumbnail">
 									<i class="fas fa-camera font-icon green"></i>
-										<h1 class="large">{{stat.photo | pretty}}</h1>
+										<h1 class="large muted">{{stat.photo | pretty}}</h1>
 									<h4 class="text-muted"> {{ 'photos' if stat.photo > 1 else 'photo' }}</h4>
 									<p><a href="{{url_for('main.photos')}}" class="btn btn-default" role="button">Galerie photos</a></p>
 								</div>

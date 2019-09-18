@@ -6,6 +6,10 @@
   font-size: 40px;
 }
 
+h4.title-spaced {
+  margin-top: 0px;
+}
+
 #overlay {
   /* position: absolute; */
   padding: 10px;
@@ -57,6 +61,10 @@ h4 {
 
 .large {
   font-size: 5rem;
+}
+
+.muted {
+  color: grey;
 }
 
 .text-muted {
