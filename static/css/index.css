@@ -77,6 +77,11 @@ h4 {
   letter-spacing: 0.025em;
   line-height: 38px;
 }
+
+.textIntroduction {
+  padding-left: 30px;
+}
+
 #textIntroduction {
   padding-left: 30px;
   /* position: absolute; */
