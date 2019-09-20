@@ -63,6 +63,10 @@ atlas_source_pass=monpassachanger
 ### Données GEOGRAPHIQUES ###
 #############################
 
+# Niveau de simplification pour interescter la couche des communes avec le territoire de l'atlas
+# lorsque l'on charge une couche de communes très grosses (via SHP ou via le ref_geo) l'intersection peut être très longue. Avec un niveau de simplification élevé on accelère cette intersection (la géometrie initiale est conservé et utilisée pour les fiches communes)
+simplify_level=0
+
 # L'atlas est-il en lien avec le référentiel géographique modèle GeoNature v2
 use_ref_geo_gn2=true
 
