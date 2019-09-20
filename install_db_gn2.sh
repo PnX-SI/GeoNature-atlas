@@ -110,7 +110,7 @@ then
         echo "Creation of layers table from ref_geo of geonaturedb" &>> log/install_db.log
         echo "--------------------" &>> log/install_db.log
         export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port \
-            -v type_maille=$type_maille -v type_territoire=$type_territoire -v simplify_level=$simplify_level -f data/gn2/atlas_ref_geo.sql &>> log/install_db.log
+            -v type_maille=$type_maille -v type_territoire=$type_territoire -f data/gn2/atlas_ref_geo.sql &>> log/install_db.log
     else
         # Import du shape des limites du territoire ($limit_shp) dans la BDD / atlas.t_layer_territoire
         ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 data/ref/emprise_territoire_3857.shp $limit_shp

@@ -17,7 +17,6 @@ CREATE MATERIALIZED VIEW atlas.l_communes AS
  SELECT c.area_code as insee,
     c.area_name as commune_maj,
     st_transform(c.geom, 3857) as the_geom,
-    st_transform(st_simplify(c.geom,:simplify_level), 3857) as the_geom_simplify,
     st_asgeojson(st_transform(c.geom, 4326)) AS commune_geojson
    FROM ref_geo.l_areas c
    JOIN ref_geo.li_municipalities m ON c.id_area = m.id_area
