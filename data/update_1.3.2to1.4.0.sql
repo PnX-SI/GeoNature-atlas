@@ -1,4 +1,4 @@
-CREATE EXTENSION pg_trgm IF NOT EXISTS;
+DROP MATERIALIZED VIEW atlas.vm_search_taxon;
 
 CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS
 SELECT t.cd_nom,
@@ -23,7 +23,7 @@ FROM (
   FROM atlas.vm_taxref t_1
   WHERE t_1.nom_vern IS NOT NULL AND t_1.cd_nom = t_1.cd_ref
 ) t
-JOIN atlas.vm_taxons taxons ON taxons.cd_ref = t.cd_ref
+JOIN atlas.vm_taxons taxons ON taxons.cd_ref = t.cd_ref;
 
 
 
@@ -34,6 +34,9 @@ CREATE INDEX trgm_idx ON atlas.vm_search_taxon USING GIST (search_name gist_trgm
 
 
 -- update vm_medias
+
+ALTER FOREIGN TABLE taxonomie.t_medias ADD COLUMN licence character varying(100);
+ALTER FOREIGN TABLE taxonomie.t_medias ADD COLUMN source character varying(25);
 
 DROP MATERIALIZED VIEW atlas.vm_taxons_plus_observes;
 DROP MATERIALIZED VIEW atlas.vm_medias;
@@ -77,3 +80,24 @@ CREATE MATERIALIZED VIEW atlas.vm_taxons_plus_observes AS
   ON atlas.vm_taxons_plus_observes
   USING btree
   (cd_ref);
+
+
+
+DROP MATERIALIZED VIEW atlas.vm_observations_mailles;
+
+CREATE MATERIALIZED VIEW atlas.vm_observations_mailles AS 
+ SELECT obs.cd_ref,
+    obs.id_observation,
+    m.id_maille,
+    m.geojson_maille,
+    date_part('year', dateobs) as annee
+   FROM atlas.vm_observations obs
+     JOIN atlas.t_mailles_territoire m ON st_intersects(obs.the_geom_point, m.the_geom)
+WITH DATA;
+
+
+create unique index on atlas.vm_observations_mailles (id_observation);
+create index on atlas.vm_observations_mailles (id_maille);
+create index on atlas.vm_observations_mailles (cd_ref);
+create index on atlas.vm_observations_mailles (geojson_maille);
+

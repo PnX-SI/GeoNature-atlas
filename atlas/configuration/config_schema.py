@@ -57,12 +57,12 @@ class AtlasConfig(Schema):
     ID_GOOGLE_ANALYTICS = fields.String(missing="UA-xxxxxxx-xx")
     GLOSSAIRE = fields.Boolean(missing=False)
     IGNAPIKEY = fields.String(missing="")
-    AFFICHAGE_INTRODUCTION = fields.Bool(missing=True)
-    AFFICHAGE_FOOTER = fields.Bool(missing=False)
-    AFFICHAGE_STAT_GLOBALES = fields.Bool(missing=True)
-    AFFICHAGE_DERNIERES_OBS = fields.Bool(missing=True)
-    AFFICHAGE_EN_CE_MOMENT = fields.Bool(missing=True)
-    AFFICHAGE_RANG_STAT = fields.Bool(missing=True)
+    AFFICHAGE_INTRODUCTION = fields.Boolean(missing=True)
+    AFFICHAGE_FOOTER = fields.Boolean(missing=False)
+    AFFICHAGE_STAT_GLOBALES = fields.Boolean(missing=True)
+    AFFICHAGE_DERNIERES_OBS = fields.Boolean(missing=True)
+    AFFICHAGE_EN_CE_MOMENT = fields.Boolean(missing=True)
+    AFFICHAGE_RANG_STAT = fields.Boolean(missing=True)
     RANG_STAT = fields.List(
         fields.Dict,
         missing=[
@@ -94,6 +94,7 @@ class AtlasConfig(Schema):
     ATTR_DAILYMOTION = fields.Integer(missing=8)
     ATTR_VIMEO = fields.Integer(missing=9)
     PROTECTION = fields.Boolean(missing=False)
+    DISPLAY_PATRIMONIALITE = fields.Boolean(missing=False)
     PATRIMONIALITE = fields.Dict(
         missing={
             "label": "Patrimonial",

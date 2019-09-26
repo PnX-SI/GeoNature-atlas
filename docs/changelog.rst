@@ -17,6 +17,14 @@ CHANGELOG
 
 **⚠️ Notes de version**
 
+Ajouter l'extension Trigramme:
+::
+
+    sudo ls
+    sudo -n -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
+
+Lancer le script de migration update_1.3.2to1.4.0.sql (LIEN A METTRE) avec l'utilisateur lecteur de l'application (cf settings.ini: ``user_pg``)
+
 - Des nouvelles variables CSS permettent de customiser les couleurs de son instance. Si vous migrez depuis une version anterieur, vous pouvez ajouter ces variables ci-dessous au fichier ``static/custom/custom.css`` et les adapter à votre contexte (les variables ``--main-color`` et ``--second-color`` sont les couleurs principalement utilisés : bouton, scrollbar, navbar etc...)
 
 ::
@@ -27,6 +35,67 @@ CHANGELOG
   }
   
 sudo -n -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
+
+
+Monté de version (quelques petit changement en raison de la modification de l'arborescence):
+
+
+- Télécharger puis dézipper la nouvelle version de l'atlas.
+
+::
+
+    cd /home/`whoami`
+
+    wget https://github.com/PnX-SI/GeoNature-atlas/archive/X.Y.Z.zip
+    unzip X.Y.Z 
+    rm X.Y.Z
+
+- Renommer l'ancienne version de l'atlas puis la nouvelle version.
+
+::
+
+    mv /home/`whoami`/atlas/ /home/`whoami`/atlas_old/
+    mv GeoNature-atlas-X.Y.Z /home/`whoami`/atlas/
+
+
+
+- Copier ``atlas/configuration/settings.ini`` et ``atlas/configuration/config.py`` depuis l'ancienne version vers la nouvelle pour récupérer vos paramètres de configuration :
+
+::
+
+    cd atlas
+    cp ../atlas_old/main/configuration/settings.ini atlas/configuration/settings.ini
+    cp ../atlas_old/main/configuration/config.py atlas/configuration/config.py
+
+
+- Ouvrir le fichier ``settings.ini`` pour y rajouter un nouveau paramètre (laisser la valeurs fournie):
+
+- Le passage à python3 necessite quelques évolution dans le fichier ``config.py``: il faut supprimer tous les appels à la fonction 'unicode). Ouvrez le, puis supprimer la ligne 20 ``STRUCTURE = unicode(STRUCTURE, 'utf-8')``, la ligne 24 ``NOM_APPLICATION = unicode(NOM_APPLICATION, 'utf-8')`` et les lignes 113-114 ``for i in range(len(RANG_STAT_FR)):
+    RANG_STAT_FR[i]=unicode( RANG_STAT_FR[i], 'utf-8')``
+
+::
+
+    python_executable=/usr/bin/python3
+
+
+
+- Copier le contenu du répertoire ``static/custom/`` depuis l'ancienne version vers la nouvelle pour récupérer toute votre customisation (CSS, templates, images...) :
+
+::
+
+    cp -aR ../atlas_old/static/custom/ ./static
+
+- Relancez l'installation automatique de l'application :
+
+::
+
+    ./install_app.sh
+
+- Relancer l'application
+
+::
+
+    sudo supervisorctl restart atlas
 
 1.3.2 (2018-05-17)
 ------------------

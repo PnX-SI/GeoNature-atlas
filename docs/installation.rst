@@ -114,27 +114,9 @@ Faites une copie du modèle de fichier de configuration de la BDD et de son inst
 
 :notes:
 
-    GeoNature atlas fonctionnent avec des données géographiques qui doivent être fournies  en amont (maillles, limite de territoire, limite de communes). Vous avez la possibilité de récupérer ces données directement depuis le referentiel géographique de GeoNature si les données y sont présentes (``use_ref_geo_gn2=true``); ou de fournir des fichiers shapefiles (à mettre dans le répertoire ``data/ref``)
+    Dans le cas où vous vous souhaitez connecter l'atlas à une BDD distante de GeoNature v2, il faut au préalable créer un utilisateur spécifique pour l'atlas dans cette dernière (lecture seule). 
     
-    **Attention - si connection au ref_geo GeoNature**: par défaut le `ref_geo` contient l'ensemble des communes de France, ce qui ralenti fortement l'installation lorsqu'on qu'on construit la table `vm_communes` (table qui intersecte les communes avec les limites du territoire). Pour accelérer l'installation, vous pouvez "désactivér" les communes du ref_geo dont vous ne vous servez pas. Voir requête ci-dessous:
-
-    ::
-
-        UPDATE ref_geo.l_areas set enable = false where id_type = 25 AND id_area NOT in (
-        select a.id_area from ref_geo.l_areas a
-        join ref_geo.li_municipalities m ON a.id_area = m.id_area
-        where insee_dep in ('MON_CODE_DEPARTEMENT', 'MON_CODE_DEPARTEMENT_BIS')
-        )
-    
-    Si votre territoire est celui de t  oute la France, préferez une installation en fournissant une couche SHP des communes (sans connection au `ref_geo`)
-
-:notes:
-
-    Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci en localhost car la création d'une BDD recquiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adaptez les commandes du fichier `install_db.sh` en les executant une par une.
-  
-:notes:
-
-    Dans le cas où vous vous souhaitez connecter l'atlas à une BDD distante de GeoNature v2, il faut au préalable créer un utilisateur spécifique pour l'atlas dans cette dernière (lecture seule). Se connecter en SSH au serveur hébergeant la BDD mère de GeoNature v2 et lancez les commandes suivante en adaptant. Faire ensuite correspondre avec les paramètres concernés dans le fichier ``settings.ini`` (``atlas_source_user`` et ``atlas_source_pass``) :
+    Se connecter en SSH au serveur hébergeant la BDD mère de GeoNature v2 et lancez les commandes suivante en adaptant. Faire ensuite correspondre avec les paramètres concernés dans le fichier ``settings.ini`` (``atlas_source_user`` et ``atlas_source_pass``) :
 
     ::
 
@@ -145,6 +127,35 @@ Faites une copie du modèle de fichier de configuration de la BDD et de son inst
         GRANT SELECT ON ALL TABLES IN SCHEMA gn_synthese, ref_geo, ref_nomenclatures, taxonomie TO geonatatlas;
         \q
         exit
+
+:notes:
+    
+    GeoNature atlas fonctionnent avec des données géographiques qui doivent être fournies  en amont 
+    (maillles, limite de territoire, limite de communes). Vous avez la possibilité de récupérer ces données 
+    directement depuis le referentiel géographique de GeoNature si les données y sont présentes (``use_ref_geo_gn2=true``); ou de fournir des fichiers shapefiles (à mettre dans le répertoire ``data/ref``)
+    
+    
+    **Attention si ``use_ref_geo_gn2=true``: par défaut le `ref_geo` contient l'ensemble des communes de France,
+    ce qui ralenti fortement l'installation lorsqu'on qu'on construit la table `vm_communes` 
+    (table qui intersecte les communes avec les limites du territoire). 
+    
+    Pour accelérer l'installation, vous pouvez "désactivér" les communes du ref_geo dont vous ne vous servez pas. Voir requête ci-dessous:
+
+    ::
+
+        UPDATE ref_geo.l_areas set enable = false where id_type = 25 AND id_area NOT in (
+        select a.id_area from ref_geo.l_areas a
+        join ref_geo.li_municipalities m ON a.id_area = m.id_area
+        where insee_dep in ('MON_CODE_DEPARTEMENT', 'MON_CODE_DEPARTEMENT_BIS')
+        )
+    
+    Si votre territoire est celui de toute la France, préferez une installation en fournissant une couche SHP des communes (sans connection au `ref_geo`)
+
+:notes:
+
+    Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci en localhost car la création d'une BDD recquiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adaptez les commandes du fichier `install_db.sh` en les executant une par une.
+  
+
 
 L'application se base entièrement sur des vues matérialisées. Par défaut, celles-ci sont proposées pour requêter les données dans une BDD GeoNature.
 
