@@ -26,9 +26,17 @@ cd "$(dirname "$0")"
 
 sudo apt-get install -y unzip
 sudo apt-get install -y apache2
+sudo a2enmod proxy
+sudo a2enmod proxy_http
 sudo apachectl restart
 
 sudo apt-get install -y postgresql 
+
+if [ "$OS_VERSION" == "10" ]
+then
+    sudo apt-get install -y postgresql-server-dev-11
+    sudo apt install -y postgis-2.5 postgis
+fi
 
 if [ "$OS_VERSION" == "9" ]
 then
@@ -43,9 +51,9 @@ fi
 
 
 sudo apt-get install -y python-setuptools
-sudo apt-get install -y libpq-dev python-dev
+sudo apt-get install -y libpq-dev python3-dev
 
-sudo apt-get install -y python python-pip
+sudo apt-get install python-pip
 sudo apt-get install -y python-gdal
 sudo apt-get install -y gdal-bin
 

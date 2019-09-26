@@ -1,12 +1,7 @@
 /* Insert your custom override CSS in this file */
  
 :root {
-  --green: #82c91e;
-  --blue: #30a5ff;
-  --cyan: #1ebfae;
-  --orange: #ffb53e;
-  --cyan: #30a5ff;
-  --red: red;
+
   --main-color: #82c91e;
   --second-color: #649b18;
 }

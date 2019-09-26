@@ -1,9 +1,4 @@
 :root {
-  --green: #82c91e;
-  --blue: #30a5ff;
-  --cyan: #1ebfae;
-  --icon-color-title: #363e44;
-  --red: red;
   --main-color: #82c91e;
   --second-color: #649b18;
 }
@@ -11,22 +6,6 @@
 body {
   background-color: #e3e7e8;
   padding-top: 50px;
-}
-
-.green {
-  color: var(--green);
-}
-
-.red {
-  color: var(--red);
-}
-
-.blue {
-  color: var(--blue);
-}
-
-.cyan {
-  color: var(--cyan);
 }
 
 .icon-color-title {

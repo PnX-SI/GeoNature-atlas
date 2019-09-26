@@ -126,7 +126,7 @@ Faites une copie du modèle de fichier de configuration de la BDD et de son inst
         where insee_dep in ('MON_CODE_DEPARTEMENT', 'MON_CODE_DEPARTEMENT_BIS')
         )
     
-    Si votre territoire est celui de toute la France, préferez une installation en fournissant une couche SHP des communes (sans connection au `ref_geo`)
+    Si votre territoire est celui de t  oute la France, préferez une installation en fournissant une couche SHP des communes (sans connection au `ref_geo`)
 
 :notes:
 

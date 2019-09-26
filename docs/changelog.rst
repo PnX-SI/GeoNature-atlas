@@ -17,26 +17,16 @@ CHANGELOG
 
 **⚠️ Notes de version**
 
-- Des nouvelles variables CSS permettent de customiser les couleurs de son instance. Si vous migrez depuis une version anterieur, vous ajouter ces variables ci-dessous au fichier ``static/custom/custom.css`` et les adapter à votre contexte (les variables ``--main-color`` et ``--second-color`` sont les couleurs principalement utilisés : bouton, scrollbar, navbar etc...)
+- Des nouvelles variables CSS permettent de customiser les couleurs de son instance. Si vous migrez depuis une version anterieur, vous pouvez ajouter ces variables ci-dessous au fichier ``static/custom/custom.css`` et les adapter à votre contexte (les variables ``--main-color`` et ``--second-color`` sont les couleurs principalement utilisés : bouton, scrollbar, navbar etc...)
 
 ::
 
     :root {
-    --green: #82c91e;
-    --blue: #30a5ff;
-    --cyan: #1ebfae;
-    --orange: #ffb53e;
-    --cyan: #30a5ff;
-    --red: red;
     --main-color: #82c91e;
     --second-color: #649b18;
   }
   
 sudo -n -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
-TODO:
-- transformer la table synthese.syntheseff en gn_synthese.synthese -> pleinenment compatible GN2 plutot que de passer par une vue.
-- comment gérer la migration ?
-- question de la diffusion (plus de champs diffusable=true)
 
 1.3.2 (2018-05-17)
 ------------------
