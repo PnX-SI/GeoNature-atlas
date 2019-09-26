@@ -115,6 +115,18 @@ Faites une copie du modèle de fichier de configuration de la BDD et de son inst
 :notes:
 
     GeoNature atlas fonctionnent avec des données géographiques qui doivent être fournies  en amont (maillles, limite de territoire, limite de communes). Vous avez la possibilité de récupérer ces données directement depuis le referentiel géographique de GeoNature si les données y sont présentes (``use_ref_geo_gn2=true``); ou de fournir des fichiers shapefiles (à mettre dans le répertoire ``data/ref``)
+    
+    **Attention - si connection au ref_geo GeoNature**: par défaut le `ref_geo` contient l'ensemble des communes de France, ce qui ralenti fortement l'installation lorsqu'on qu'on construit la table `vm_communes` (table qui intersecte les communes avec les limites du territoire). Pour accelérer l'installation, vous pouvez "désactivér" les communes du ref_geo dont vous ne vous servez pas. Voir requête ci-dessous:
+
+    ::
+
+        UPDATE ref_geo.l_areas set enable = false where id_type = 25 AND id_area NOT in (
+        select a.id_area from ref_geo.l_areas a
+        join ref_geo.li_municipalities m ON a.id_area = m.id_area
+        where insee_dep in ('MON_CODE_DEPARTEMENT', 'MON_CODE_DEPARTEMENT_BIS')
+        )
+    
+    Si votre territoire est celui de toute la France, préferez une installation en fournissant une couche SHP des communes (sans connection au `ref_geo`)
 
 :notes:
 
