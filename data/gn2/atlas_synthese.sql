@@ -28,7 +28,7 @@ WITH areas AS (
 	    END AS the_geom_point,
 	    s.count_min AS effectif_total,
 	    false AS supprime,
-	    true AS diffusable,  dl.cd_nomenclature::int as diffusion_level, cd_nomenclature
+	    true AS diffusable,  dl.cd_nomenclature::int as diffusion_level
 	   FROM synthese.synthese s
 	   LEFT OUTER JOIN synthese.t_nomenclatures dl ON s.id_nomenclature_diffusion_level = dl.id_nomenclature
 	   LEFT OUTER JOIN synthese.t_nomenclatures st ON s.id_nomenclature_observation_status = st.id_nomenclature
