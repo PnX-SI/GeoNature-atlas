@@ -168,7 +168,7 @@ PROTECTION = True
 
 # Afficher ou non la colonne Patrimonialité dans les listes de taxons (basé sur le champs "patrimonial") et la customiser
 # Pour masquer cette colonne, passer uniquement le paramètre à "False"
-# PATRIMONIALITE = False
+DISPLAY_PATRIMONIALITE = False
 # Pour customiser l'affichage de cette colonne (label affiché, valeurs du champs et leur affichage) :
 PATRIMONIALITE = {
     'label': "Patrimonial",

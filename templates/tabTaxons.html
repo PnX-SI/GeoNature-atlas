@@ -7,7 +7,7 @@
             {% if configuration.PROTECTION %}
                 <th data-priority="7">Protection</th>
             {% endif %}
-            {% if configuration.PATRIMONIALITE %}
+            {% if configuration.DISPLAY_PATRIMONIALITE %}
                 <th data-priority="8">{{configuration.PATRIMONIALITE.label}}</th>
             {% endif %}
             <th id="sorted" data-priority="4"> Nombre d'observation(s)</th>
@@ -53,7 +53,7 @@
                         {% endif %}
                     </td>
                 {% endif %}
-                {% if configuration.PATRIMONIALITE %}
+                {% if configuration.DISPLAY_PATRIMONIALITE %}
                     <td>
                         {% if taxon.patrimonial in configuration.PATRIMONIALITE.config %}
                             <img

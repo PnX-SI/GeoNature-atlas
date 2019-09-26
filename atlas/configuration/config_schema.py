@@ -93,7 +93,7 @@ class AtlasConfig(Schema):
     ATTR_YOUTUBE = fields.Integer(missing=7)
     ATTR_DAILYMOTION = fields.Integer(missing=8)
     ATTR_VIMEO = fields.Integer(missing=9)
-    PROTECTION = fields.Boolean(missing=True)
+    PROTECTION = fields.Boolean(missing=False)
     PATRIMONIALITE = fields.Dict(
         missing={
             "label": "Patrimonial",

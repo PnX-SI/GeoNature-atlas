@@ -83,7 +83,7 @@
             var configuration = {{configuration|tojson}};
             //calcul du nb de colonnes pour le fonctionnement de dataTables.js
             var nbColumn = 6;
-            {% if configuration.PATRIMONIALITE %} nbColumn = nbColumn+1;{% endif %}
+            {% if configuration.DISPLAY_PATRIMONIALITE %} nbColumn = nbColumn+1;{% endif %}
             {% if configuration.PROTECTION %} nbColumn = nbColumn+1;{% endif %}
             var noSordedColumns=[nbColumn-1]; //var for dataTables js lib
             var defaultSortedColumn=nbColumn-3; //var for dataTables js lib

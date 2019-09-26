@@ -123,7 +123,7 @@
                                 <a href="https://inpn.mnhn.fr/espece/cd_nom/{{taxon.taxonSearch.cd_ref}}/tab/statut" target="_blank">
                                     <img class="caractEspece" width="100px" src="{{url_for('static', filename='images/logo_protection.png') }}"  data-toggle="tooltip" data-original-title="Ce taxon bénéficie d'un statut de protection" data-placement="right"></a>
                             {% endif %}
-                            {% if taxon.taxonSearch.patrimonial in configuration.PATRIMONIALITE.config %}
+                            {% if configuration.DISPLAY_PATRIMONIALITE and taxon.taxonSearch.patrimonial in configuration.PATRIMONIALITE.config %}
                                 <img
                                     class="caractEspece"
                                     width="130px"
@@ -179,7 +179,7 @@
                                                         {% if configuration.PROTECTION %}
                                                         <th>Protection</th>
                                                         {% endif %}
-                                                        {% if configuration.PATRIMONIALITE %}
+                                                        {% if configuration.DISPLAY_PATRIMONIALITE %}
                                                         <th>{{configuration.PATRIMONIALITE.label}}</th>
                                                         {% endif %}
                                                         <th>Observations </th>
@@ -205,7 +205,7 @@
                                                             {% endif %}
                                                             </td>
                                                             <td>
-                                                            {% if child.patrimonial in configuration.PATRIMONIALITE.config %}
+                                                            {% if config.DISPLAY_PATRIMONIALITE and child.patrimonial in configuration.PATRIMONIALITE.config %}
                                                                 <img
                                                                     class="caractEspece" width="130px"
                                                                     src="{{url_for('static', filename=configuration.PATRIMONIALITE.config[child.patrimonial].icon) }}"
