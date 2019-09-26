@@ -31,7 +31,9 @@ WITH areas AS (
 	    true AS diffusable,  dl.cd_nomenclature::int as diffusion_level, cd_nomenclature
 	   FROM synthese.synthese s
 	   LEFT OUTER JOIN synthese.t_nomenclatures dl ON s.id_nomenclature_diffusion_level = dl.id_nomenclature
+	   LEFT OUTER JOIN synthese.t_nomenclatures st ON s.id_nomenclature_observation_status = st.id_nomenclature
 	  WHERE (NOT dl.cd_nomenclature = '4'::text OR id_nomenclature_diffusion_level IS NULL)   -- Filtre données non diffusable code "4" ou pas de diffusion spécifiée
+		AND st.cd_nomenclature = 'Pr'-- seulement les données présentes (status_observation = )
 )
  SELECT d.id_synthese,
     d.cd_nom,
