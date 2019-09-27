@@ -2,22 +2,26 @@
 CHANGELOG
 =========
 
-1.4.0 (2018-05-17)
+1.4.0 (unreleased)
 ------------------
 
-** Nouveautés **
+Voir https://github.com/PnX-SI/GeoNature-atlas/compare/1.3.2...develop
+Attention, le Changelog de la version 1.3.2 ci-dessous n'a rien à voir avec celui de la Release : https://github.com/PnX-SI/GeoNature-atlas/releases / Des éléments sont à remonter dans cette version.
 
-  - Fiche especes: les mailles ne sont plus dupliquées
-  - Support GeoNature2 et connexion au réferentiel géographique
-  - Standardiation GeoJson des API 
-  - Amélioration des performances
-  - Possibilité de masquer le slider de ma carte des fiches espèces
-  - Raffraichissement de l'ergonomie
-  - Facilitation de la customisation grâce à des variables CSS
+**Nouveautés**
+
+* Compatible avec GeoNature version 2 et connexion au réferentiel géographique (#162)
+* Fiches espèce : les mailles ne sont plus dupliquées pour améliorer les performances (#53)
+* 
+* Standardisation GeoJson des API 
+* Amélioration des performances
+* Possibilité de masquer le slider de la carte des fiches espèces (``ENABLE_SLIDER``)
+* Rafraichissement de l'ergonomie
+* Facilitation de la customisation grâce à des variables CSS
 
 **⚠️ Notes de version**
 
-Ajouter l'extension Trigramme:
+Ajouter l'extension Trigramme à PostgreSQL :
 ::
 
     sudo ls
@@ -25,7 +29,7 @@ Ajouter l'extension Trigramme:
 
 Lancer le script de migration update_1.3.2to1.4.0.sql (LIEN A METTRE) avec l'utilisateur lecteur de l'application (cf settings.ini: ``user_pg``)
 
-- Des nouvelles variables CSS permettent de customiser les couleurs de son instance. Si vous migrez depuis une version anterieur, vous pouvez ajouter ces variables ci-dessous au fichier ``static/custom/custom.css`` et les adapter à votre contexte (les variables ``--main-color`` et ``--second-color`` sont les couleurs principalement utilisés : bouton, scrollbar, navbar etc...)
+- Des nouvelles variables CSS permettent de customiser les couleurs de l'application. Si vous migrez depuis une version anterieure, vous pouvez ajouter les variables ci-dessous au fichier ``static/custom/custom.css`` et les adapter à votre contexte (les variables ``--main-color`` et ``--second-color`` sont les couleurs principalement utilisées : bouton, scrollbar, navbar etc...)
 
 ::
 
@@ -34,11 +38,7 @@ Lancer le script de migration update_1.3.2to1.4.0.sql (LIEN A METTRE) avec l'uti
     --second-color: #649b18;
   }
   
-sudo -n -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
-
-
-Monté de version (quelques petit changement en raison de la modification de l'arborescence):
-
+Montée de version (quelques petit changement en raison de la modification de l'arborescence):
 
 - Télécharger puis dézipper la nouvelle version de l'atlas.
 
@@ -57,8 +57,6 @@ Monté de version (quelques petit changement en raison de la modification de l'a
     mv /home/`whoami`/atlas/ /home/`whoami`/atlas_old/
     mv GeoNature-atlas-X.Y.Z /home/`whoami`/atlas/
 
-
-
 - Copier ``atlas/configuration/settings.ini`` et ``atlas/configuration/config.py`` depuis l'ancienne version vers la nouvelle pour récupérer vos paramètres de configuration :
 
 ::
@@ -70,14 +68,12 @@ Monté de version (quelques petit changement en raison de la modification de l'a
 
 - Ouvrir le fichier ``settings.ini`` pour y rajouter un nouveau paramètre (laisser la valeurs fournie):
 
-- Le passage à python3 necessite quelques évolution dans le fichier ``config.py``: il faut supprimer tous les appels à la fonction 'unicode). Ouvrez le, puis supprimer la ligne 20 ``STRUCTURE = unicode(STRUCTURE, 'utf-8')``, la ligne 24 ``NOM_APPLICATION = unicode(NOM_APPLICATION, 'utf-8')`` et les lignes 113-114 ``for i in range(len(RANG_STAT_FR)):
+- Le passage à Python 3 nécessite quelques évolutions dans le fichier ``config.py`` : il faut supprimer tous les appels à la fonction 'unicode). Ouvrez le, puis supprimer la ligne 20 ``STRUCTURE = unicode(STRUCTURE, 'utf-8')``, la ligne 24 ``NOM_APPLICATION = unicode(NOM_APPLICATION, 'utf-8')`` et les lignes 113-114 ``for i in range(len(RANG_STAT_FR)):
     RANG_STAT_FR[i]=unicode( RANG_STAT_FR[i], 'utf-8')``
 
 ::
 
     python_executable=/usr/bin/python3
-
-
 
 - Copier le contenu du répertoire ``static/custom/`` depuis l'ancienne version vers la nouvelle pour récupérer toute votre customisation (CSS, templates, images...) :
 
@@ -107,7 +103,7 @@ Monté de version (quelques petit changement en raison de la modification de l'a
 * Amélioration du module de recherche de commune (AJAX)
 * Vérification des paramètres de configuration grâce à Marshmallow et passage de paramètres par défaut si paramètres absents
 * Simplification du passage de la configuration aux routes
-* Ajout de la description, de la licence et de la source sur les médias
+* Ajout de la description, de la licence et de la source sur les médias (par @sig-pnrnm)
 
 **Corrections**
 
