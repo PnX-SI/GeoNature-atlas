@@ -1,14 +1,14 @@
 
 # -*- coding:utf-8 -*-
 
-
 # Connexion de l'application à la BDD
 # Remplacer user, monpassachanger, IPADRESSE (localhost si la BDD est sur le même serveur que l'application), 
 # eventuellement le port de la BDD et le nom de la BDD avec l'utilisateur qui a des droits de lecture sur les vues de l'atlas (user_pg dans settings.ini)
-
 database_connection = "postgresql://user:monpassachanger@IPADRESSE:5432/databaseName"
+
 # Port sur lequel tourne le serveur gunicorn
 GUNICORN_PORT = 8080
+
 #################################
 #################################
 ### Customisation application ###
@@ -25,12 +25,9 @@ NOM_APPLICATION = "Nom de l application"
 # ex "/atlas" pour une URL: http://mon-domaine/atlas OU "" si l'application est accessible à la racine du domaine
 URL_APPLICATION = "/atlas"
 
-
 ###########################
 ###### Cartographie #######
 ###########################
-
-# Clé IGN si vous utilisez l'API Geoportail pour afficher les fonds cartographiques
 
 # Configuration des cartes (centre du territoire, couches CARTE et ORTHO, échelle par défaut...)
 MAP = {
@@ -53,5 +50,3 @@ MAP = {
     'BORDERS_WEIGHT': 3,
     'ENABLE_SLIDER': True
 }
-
-
