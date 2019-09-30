@@ -18,6 +18,7 @@ Attention, le Changelog de la version 1.3.2 ci-dessous n'a rien à voir avec cel
 * Possibilité de masquer le slider de la carte des fiches espèces (``ENABLE_SLIDER``)
 * Rafraichissement de l'ergonomie
 * Facilitation de la customisation grâce à des variables CSS
+* Ajout du paramètre ``DISPLAY_PATRIMONIALITE`` pour masquer l'info de patrimonialité sur les fiches espcèces et les listes.
 
 **⚠️ Notes de version**
 
