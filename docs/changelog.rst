@@ -21,6 +21,8 @@ Attention, le Changelog de la version 1.3.2 ci-dessous n'a rien à voir avec cel
 
 **⚠️ Notes de version**
 
+Si vous souhaitez connecter l'atlas à GeoNature 2, préferez une installation vierge de GeoNature-Atlas 1.4.0, plutôt qu'une migration. Dans le cas contraire, suivez les instructions suivantes:
+
 Ajouter l'extension Trigramme à PostgreSQL :
 ::
 
@@ -38,7 +40,7 @@ Lancer le script de migration update_1.3.2to1.4.0.sql (LIEN A METTRE) avec l'uti
     --second-color: #649b18;
   }
   
-Montée de version (quelques petit changement en raison de la modification de l'arborescence):
+Si vous effectuez une monté de version, suivez les instructions suivantes:
 
 - Télécharger puis dézipper la nouvelle version de l'atlas.
 
@@ -66,14 +68,16 @@ Montée de version (quelques petit changement en raison de la modification de l'
     cp ../atlas_old/main/configuration/config.py atlas/configuration/config.py
 
 
-- Ouvrir le fichier ``settings.ini`` pour y rajouter un nouveau paramètre (laisser la valeurs fournie):
-
-- Le passage à Python 3 nécessite quelques évolutions dans le fichier ``config.py`` : il faut supprimer tous les appels à la fonction 'unicode). Ouvrez le, puis supprimer la ligne 20 ``STRUCTURE = unicode(STRUCTURE, 'utf-8')``, la ligne 24 ``NOM_APPLICATION = unicode(NOM_APPLICATION, 'utf-8')`` et les lignes 113-114 ``for i in range(len(RANG_STAT_FR)):
-    RANG_STAT_FR[i]=unicode( RANG_STAT_FR[i], 'utf-8')``
+- Ouvrir le fichier ``settings.ini`` pour y rajouter le nouveau paramètre suivant (laisser la valeurs fournie):
 
 ::
 
     python_executable=/usr/bin/python3
+
+- Le passage à Python 3 nécessite quelques évolutions dans le fichier ``config.py`` : il faut supprimer tous les appels à la fonction 'unicode). Ouvrez le, puis supprimer la ligne 20 ``STRUCTURE = unicode(STRUCTURE, 'utf-8')``, la ligne 24 ``NOM_APPLICATION = unicode(NOM_APPLICATION, 'utf-8')`` et les lignes 113-114 ``for i in range(len(RANG_STAT_FR)):
+    RANG_STAT_FR[i]=unicode( RANG_STAT_FR[i], 'utf-8')``
+
+
 
 - Copier le contenu du répertoire ``static/custom/`` depuis l'ancienne version vers la nouvelle pour récupérer toute votre customisation (CSS, templates, images...) :
 
