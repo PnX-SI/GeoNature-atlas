@@ -12,13 +12,28 @@ Attention, le Changelog de la version 1.3.2 ci-dessous n'a rien à voir avec cel
 
 * Compatible avec GeoNature version 2 et connexion au réferentiel géographique (#162)
 * Fiches espèce : les mailles ne sont plus dupliquées pour améliorer les performances (#53)
-* 
+* Passage à python3
+* Amélioration du module de recherche de taxons (AJAX + trigrams)
+* Amélioration du module de recherche de commune (AJAX)
+* Vérification des paramètres de configuration grâce à Marshmallow et passage de paramètres par défaut si paramètres absents
+* Simplification du passage de la configuration aux routes
+* Ajout de la description, de la licence et de la source sur les médias (par @sig-pnrnm)
 * Standardisation GeoJson des API 
 * Amélioration des performances
 * Possibilité de masquer le slider de la carte des fiches espèces (``ENABLE_SLIDER``)
 * Rafraichissement de l'ergonomie
 * Facilitation de la customisation grâce à des variables CSS
 * Ajout du paramètre ``DISPLAY_PATRIMONIALITE`` pour masquer l'info de patrimonialité sur les fiches espcèces et les listes.
+
+
+**Correction**
+
+* Renommage du répertoire 'main' en 'atlas'
+* Suppression du paramètre COLONNES_RANG_STAT (calculé)
+* Suppression du paramètre IGNAPIKEY (le passer directement dans les variables ``MAP.FIRST_MAP`` et ``MAP.SECOND_MAP``)
+* Ajout du paramètre ``REDIMENSIONNEMENT_IMAGE`` qui active ou non le redimmentionnement par TaxHub
+* Ajout du paramètre ``DISPLAY_PATRIMONIALITE`` qui contrôle l'affichage du logo "patrimonial" sur les fiche espèces et les listes.
+
 
 **⚠️ Notes de version**
 
@@ -79,6 +94,25 @@ Si vous effectuez une monté de version, suivez les instructions suivantes:
     RANG_STAT_FR[i]=unicode( RANG_STAT_FR[i], 'utf-8')``
 
 
+- Replacer la clé IGN dans les variables FIRST_MAP et SECOND_MAP de la manière suivante:
+
+::
+
+    MAP = {
+        'LAT_LONG': [44.7952, 6.2287],
+        'FIRST_MAP': {
+                'url' : 'http://gpp3-wxs.ign.fr/MA_CLE_IGN/wmts?LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD&EXCEPTIONS=text/xml&FORMAT=image/jpeg&SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&STYLE=normal&TILEMATRIXSET=PM&&TILEMATRIX={z}&TILECOL={x}&TILEROW={y}',
+                'attribution' : '&copy; <a href="http://www.ign.fr/">IGN</a>',
+                'tileName' : 'IGN'
+        },
+        'SECOND_MAP' : {'url' :'https://gpp3-wxs.ign.fr/MA_CLE_IGN/geoportail/wmts?LAYER=ORTHOIMAGERY.ORTHOPHOTOS&EXCEPTIONS=text/xml&FORMAT=image/jpeg&SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&STYLE=normal&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}',
+                'attribution' : '&copy; <a href="http://www.ign.fr/">IGN</a>',
+                'tileName' : 'Ortho IGN'
+        },
+
+* Si le redimmentionnement d'image était activé, passer la variable ``REDIMENSIONNEMENT_IMAGE`` à ``True`` dans le fichier de configuration
+
+
 
 - Copier le contenu du répertoire ``static/custom/`` depuis l'ancienne version vers la nouvelle pour récupérer toute votre customisation (CSS, templates, images...) :
 
@@ -101,45 +135,10 @@ Si vous effectuez une monté de version, suivez les instructions suivantes:
 1.3.2 (2018-05-17)
 ------------------
 
-** Nouveautés **
-
-* Passage à python3
-* Amélioration du module de recherche de taxons (AJAX + trigrams)
-* Amélioration du module de recherche de commune (AJAX)
-* Vérification des paramètres de configuration grâce à Marshmallow et passage de paramètres par défaut si paramètres absents
-* Simplification du passage de la configuration aux routes
-* Ajout de la description, de la licence et de la source sur les médias (par @sig-pnrnm)
-
 **Corrections**
 
-* Renommage du répertoire 'main' en 'atlas'
-* Suppression du paramètre COLONNES_RANG_STAT (calculé)
-* Suppression du paramètre IGNAPIKEY (le passer directement dans les variables ``MAP.FIRST_MAP`` et ``MAP.SECOND_MAP``)
-* Correction erreur d'import inutilisé dans ``initAtlas.py``
-* Ajout du paramètre ``REDIMENSIONNEMENT_IMAGE`` qui active ou non le redimmentionnement par TaxHub
-* Ajout du paramètre ``DISPLAY_PATRIMONIALITE`` qui contrôle l'affichage du logo "patrimonial" sur les fiche espèces et les listes.
+- Correction erreur d'import inutilisé dans initAtlas.py
 
-
-
-**Note de version**
-
-* Replacer la clé IGN dans les variables FIRST_MAP et SECOND_MAP de la manière suivante:
-
-::
-
-    MAP = {
-        'LAT_LONG': [44.7952, 6.2287],
-        'FIRST_MAP': {
-                'url' : 'http://gpp3-wxs.ign.fr/MA_CLE_IGN/wmts?LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD&EXCEPTIONS=text/xml&FORMAT=image/jpeg&SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&STYLE=normal&TILEMATRIXSET=PM&&TILEMATRIX={z}&TILECOL={x}&TILEROW={y}',
-                'attribution' : '&copy; <a href="http://www.ign.fr/">IGN</a>',
-                'tileName' : 'IGN'
-        },
-        'SECOND_MAP' : {'url' :'https://gpp3-wxs.ign.fr/MA_CLE_IGN/geoportail/wmts?LAYER=ORTHOIMAGERY.ORTHOPHOTOS&EXCEPTIONS=text/xml&FORMAT=image/jpeg&SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&STYLE=normal&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}',
-                'attribution' : '&copy; <a href="http://www.ign.fr/">IGN</a>',
-                'tileName' : 'Ortho IGN'
-        },
-
-* Si le redimmentionnement d'image était activé, passer la variable ``REDIMENSIONNEMENT_IMAGE`` à ``True`` dans le fichier de configuration
 
 
 1.3.1 (2018-03-15)
