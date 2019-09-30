@@ -46,12 +46,12 @@
 
             <div class="col-sm-7">
                  <div class="panel panel-default" id="parent">
-					          <div class="row">
+					<div class="row">
                         <h4><b>Commune de {{referenciel.communeName}}</b></h4>
-                        <ul>
+                        <ul id="statHierarchy">
                             <li class="border"><span data-icon="&#xe037;" style="font-size: 30px;"></span><br/><b>{{listTaxons.nbObsTotal | pretty}}</b><br/>{{ 'observations' if listTaxons.nbObsTotal > 1 else 'observation' }}</li>
                             <li class="border"><span data-icon="&#xe03b;" style="font-size: 30px;"></span></br><b>{{listTaxons.taxons|length | pretty}}</b><br/>{{ 'espèces' if listTaxons.taxons|length > 1 else 'espèce' }}</li>
-                            <li class="border"><span data-icon="&#xe040;" style="font-size: 30px;"></span></br><b>{{observers | length | pretty}}</b><br/>{{ 'observateurs' if observers|length > 1 else 'observateur' }}</li>
+                            <li><span data-icon="&#xe040;" style="font-size: 30px;"></span></br><b>{{observers | length | pretty}}</b><br/>{{ 'observateurs' if observers|length > 1 else 'observateur' }}</li>
                         </ul>
                     </div>
                 </div>
