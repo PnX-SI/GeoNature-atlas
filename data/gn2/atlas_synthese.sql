@@ -1,7 +1,11 @@
 CREATE VIEW synthese.syntheseff AS
 WITH areas AS (
 	SELECT DISTINCT ON (sa.id_synthese,  t.type_code)
-        sa.id_synthese, sa.id_area, a.centroid, st_transform(centroid, 3857) as centroid_3857, t.type_code
+        sa.id_synthese, 
+				sa.id_area, 
+				a.centroid, 
+				st_transform(centroid, 3857) as centroid_3857, 
+				t.type_code
 	FROM  synthese.cor_area_synthese sa
 	JOIN ref_geo.l_areas a
 	ON sa.id_area = a.id_area
