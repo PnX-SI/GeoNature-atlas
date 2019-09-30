@@ -2,7 +2,7 @@
 CHANGELOG
 =========
 
-1.4.0 (unreleased)
+1.4.0 (2019-09-30)
 ------------------
 
 Voir https://github.com/PnX-SI/GeoNature-atlas/compare/1.3.2...develop
