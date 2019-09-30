@@ -12,6 +12,23 @@ from atlas.modeles import utils
 currentYear = datetime.now().year
 
 
+def _format_vm_observations(row):
+    """
+    return a dict from a vm_observation row
+    """
+    return {
+        "id_observation": row.id_observation,
+        "insee": row.insee,
+        "dateobs": str(row.dateobs),
+        "year": row.dateobs.year if row.dateobs else None,
+        "observateurs": row.observateurs,
+        "effectif_total": row.effectif_total,
+        "cd_ref": row.cd_ref,
+        "diffusion_level": row.diffusion_level,
+        "altitude_retenue": row.altitude_retenue,
+    }
+
+
 def searchObservationsChilds(session, cd_ref):
     subquery = session.query(func.atlas.find_all_taxons_childs(cd_ref))
     query = session.query(VmObservations).filter(
@@ -24,10 +41,7 @@ def searchObservationsChilds(session, cd_ref):
         Feature(
             id=o.id_observation,
             geometry=json.loads(o.geojson_point or "{}"),
-            properties={
-                "dateobs": str(o.dateobs.year),
-                "year": o.dateobs.year if o.dateobs else None,
-            },
+            properties=_format_vm_observations(o),
         )
         for o in observations
     ]
