@@ -142,7 +142,7 @@
 											</a>
 										</div>
 									    <div class="thumbnail-caption-medias" >
-									        <p>{% if customStatMedias[i][j].nom_vern != None %} {{customStatMedias[i][j].nom_vern}} {% endif %} <br/><i>{{customStatMedias[i][j].lb_nom}}</i></p>
+									        <p> {% if customStatMedias[i][j].nom_vern != None %} <b>  {{customStatMedias[i][j].nom_vern}}</b> {% endif %} <br/><i>{{customStatMedias[i][j].lb_nom}}</i></p>
 									        <p><a href="{{url_for('main.ficheEspece',cd_ref=customStatMedias[i][j].cd_ref)}}" class="btn btn-default" role="button">Fiche espèce</a></p>
 									    </div>
 									</div>
