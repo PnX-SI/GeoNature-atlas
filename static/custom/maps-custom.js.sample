@@ -1,4 +1,5 @@
 // Fonction style d'affichage des points dans la fiche espèce
+// Voir documentation leaflet pour customiser davantage l'affichage des points: http://leafletjs.com/reference-1.3.0.html#circlemarker-option
 var pointDisplayOptionsFicheEspece = (pointDisplayOptionsFicheCommuneHome = function(
   feature
 ) {
