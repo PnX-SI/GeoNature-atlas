@@ -157,7 +157,7 @@ Cela laisse donc la possibilité de la connecter à une autre BDD en adaptant la
 
 Plus de détails sur les différentes vues matérialisées dans le fichier `<vues_materialisees_maj.rst>`_  qui indique aussi comment automatiser leur mise à jour.
 
-Vous y trouverez aussi un exemple d'adaptation de la vue ``atlas.vm_observations`` basé sur une BDD SICEN.
+Vous y trouverez aussi un exemple d'adaptation de la vue ``atlas.vm_observations``, basé sur une BDD SICEN.
 
 Par ailleurs, si vous n'utilisez pas GeoNature, il vous faut installer TaxHub (https://github.com/PnX-SI/TaxHub/) ou au moins sa BDD, pour gérer les attributs (description, commentaire, milieu et chorologie) ainsi que les médias rattachés à chaque espèce (photos, videos, audios et articles)
 
@@ -200,26 +200,24 @@ Si vous souhaitez uniquement recréer la vue ``atlas.vm_observations`` et les 6 
 Configuration de l'application
 ==============================
 
-Le fichier de configuration central de l'application est ``atlas/configuration/config.py``. Celui ci est par défaut assez minimaliste. Il peut être completé par toutes une série d'autre paramètre pour personnaliser le comportement de l'application. L'ensemble des paramètres disponibles sont présents dans le ficher ``atlas/configuration/config.py.example``
+Le fichier de configuration central de l'application est ``atlas/configuration/config.py``. Celui-ci est par défaut assez minimaliste. Il peut être completé par toute une série d'autres paramètres pour personnaliser le comportement de l'application. L'ensemble des paramètres disponibles sont présents dans le ficher ``atlas/configuration/config.py.example``.
 
-- Vérifier que la variable 'database_connection' contient les bonnes informations de connexion à la base
+- Vérifier que la variable ``database_connection`` contient les bonnes informations de connexion à la BDD
 - Renseignez l'URL de l'application à partir de la racine du serveur WEB ('/atlas' ou '' par exemple)
 - Renseignez les autres paramètres selon votre contexte
 
-Après chaque modification de la configuration relancer la commande ``sudo supervisorctl restart atlas``
-
+Après chaque modification de la configuration, relancer la commande ``sudo supervisorctl restart atlas`` pour qu'elles soient appliquées.
 
 Customisation de l'application
 ==============================
 
 En plus de la configuration, vous pouvez customiser l'application en modifiant et ajoutant des fichiers dans le répertoire ``static/custom/`` (css, templates, images).
 
-L'atlas est fourni avec des variables CSS qui permettent de personnaliser facilement l'interface (changement des couleurs principales). Pour cela éditer les variables présentes dans le fichier ``static/custom/custom.css``. La variables ``--main-color`` et ``second-color`` permet de customiser l'atlas selon les couleur de votre organisme.
+L'atlas est fourni avec des variables CSS qui permettent de personnaliser facilement l'interface (changement des couleurs principales). Pour cela éditer les variables présentes dans le fichier ``static/custom/custom.css``. Les variables ``--main-color`` et ``second-color`` permettent de customiser l'atlas selon les couleurs de votre organisme.
 
-Vous pouvez aussi modifier ou ajouter des pages statiques de présentation, en plus de la page Présentation fournie par défaut. Pour cela, voir le paramètre ``STATIC_PAGES`` du fichier ``main/configuration/config.py``
+Vous pouvez aussi modifier ou ajouter des pages statiques de présentation, en plus de la page Présentation fournie par défaut. Pour cela, voir le paramètre ``STATIC_PAGES`` du fichier ``main/configuration/config.py``.
 
-En mode point il est possible de customiser l'affichage cartographique (modification de la couleur des points, modification de la légende) en éditant le fichier ``static/custom/maps-custom.js``. Par défaut l'affichage dissocie les données dégradées des données précises: voir `<degradation_donnees.rst.rst>`_
-
+En mode point, il est possible de customiser l'affichage cartographique (modification de la couleur des points, modification de la légende) en éditant le fichier ``static/custom/maps-custom.js``. Par défaut l'affichage dissocie les données dégradées des données précises : voir `<degradation_donnees.rst.rst>`_.
 
 Configuration d'Apache
 ======================
@@ -230,8 +228,8 @@ Créez un virtualhost pour l'atlas :
 
     sudo nano /etc/apache2/sites-available/atlas.conf
 
-Pour rendre l'application consultable comme un sous répertoire du serveur  (http://monURL/atlas par exemple).
-Copiez/collez-y ces lignes en renseignant le bon port :
+Pour rendre l'application consultable comme un sous répertoire du serveur (http://monURL/atlas par exemple), copiez/collez-y ces lignes en renseignant le bon port :
+
 ::
 
     # Configuration GeoNature-atlas
@@ -241,14 +239,14 @@ Copiez/collez-y ces lignes en renseignant le bon port :
     </Location>
     #FIN Configuration GeoNature-atlas
 
-Si l'atlas doit se trouver à la racine du serveur copiez/coller ces lignes (NB les '/' à la fin des ProxyPass et ProxPassReverse)
+Si l'atlas doit se trouver à la racine du serveur, copiez/coller ces lignes (NB les '/' à la fin des ProxyPass et ProxPassReverse)
+
 ::
 
 	<Location />
    	    ProxyPass http://127.0.0.1:8080/
 	    ProxyPassReverse http://127.0.0.1:8080/
  	 </Location>
-
 
 Si l'atlas est associé à un domaine, ajoutez cette ligne au début du fichier :
 
@@ -264,7 +262,6 @@ Si l'atlas est associé à un domaine, ajoutez cette ligne au début du fichier 
     sudo a2enmod proxy_http
     sudo apache2ctl restart
 
-
 * Activez le virtualhost puis redémarrez Apache :
 
 ::
@@ -274,7 +271,7 @@ Si l'atlas est associé à un domaine, ajoutez cette ligne au début du fichier 
 
 :notes:
 
-    En cas d'erreur, les logs serveurs ne sont pas au niveau d'Apache (serveur proxy) mais de Gunicorn (serveur HTTP) dans ``/home/`whoami/log/errors_atlas.log``
+    En cas d'erreur, les logs serveurs ne sont pas au niveau d'Apache (serveur proxy) mais de Gunicorn (serveur HTTP) dans ``/home/`whoami`/log/errors_atlas.log``
 
 
 Mise à jour de l'application
@@ -296,8 +293,6 @@ Mise à jour de l'application
 
     mv /home/`whoami`/atlas/ /home/`whoami`/atlas_old/
     mv GeoNature-atlas-X.Y.Z /home/`whoami`/atlas/
-
-
 
 - Copier ``atlas/configuration/settings.ini`` et ``atlas/configuration/config.py`` depuis l'ancienne version vers la nouvelle pour récupérer vos paramètres de configuration :
 
