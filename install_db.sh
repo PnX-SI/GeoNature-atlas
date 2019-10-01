@@ -357,15 +357,6 @@ then
     sudo -n -u postgres -s psql -d $db_name -c "ALTER FUNCTION atlas.create_vm_altitudes() OWNER TO "$owner_atlas";"
     sudo -n -u postgres -s psql -d $db_name -c "ALTER FUNCTION atlas.find_all_taxons_childs(integer) OWNER TO "$owner_atlas";"
 
-    # Si j'utilise GeoNature ($geonature_source = True), alors je vais ajouter des droits en lecture à l'utilisateur Admin de l'atlas
-    if $geonature_source
-	then
-        echo "Affectation des droits de lecture sur la BDD source GeoNature..."
-        sudo cp data/grant_geonature.sql /tmp/grant_geonature.sql
-        sudo sed -i "s/myuser;$/$user_pg;/" /tmp/grant_geonature.sql
-        #sudo -n -u postgres -s psql -d $db_source_name -f /tmp/grant_geonature.sql  &>> log/install_db.log
-    fi
-
     echo "Creation de la VM des observations de chaque taxon par mailles..."
     # Création de la vue matérialisée vm_mailles_observations (nombre d'observations par maille et par taxon)
     sudo -n -u postgres -s psql -d $db_name -f data/observations_mailles.sql  &>> log/install_db.log
