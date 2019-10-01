@@ -1,13 +1,9 @@
-
 # -*- coding:utf-8 -*-
 
 # Connexion de l'application à la BDD
 # Remplacer user, monpassachanger, IPADRESSE (localhost si la BDD est sur le même serveur que l'application), 
 # eventuellement le port de la BDD et le nom de la BDD avec l'utilisateur qui a des droits de lecture sur les vues de l'atlas (user_pg dans settings.ini)
 database_connection = "postgresql://user:monpassachanger@IPADRESSE:5432/databaseName"
-
-# Port sur lequel tourne le serveur gunicorn
-GUNICORN_PORT = 8080
 
 #################################
 #################################
@@ -37,10 +33,9 @@ MAP = {
             'attribution' : '&copy OpenStreetMap',
             'tileName' : 'OSM'
     },
-    'SECOND_MAP' : {'url' :'//{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
-            'attribution' : '\u00a9 GoogleMap',
-            'subdomains': ['mt0', 'mt1', 'mt2', 'mt3'],
-            'tileName' : 'Sattelite'
+    'SECOND_MAP' : {'url' :'//a.tile.opentopomap.org/{z}/{x}/{y}.png',
+            'attribution' : '&copy OpenTopoMap',
+            'tileName' : 'OTM'
     },
     'ZOOM' : 10,
     # Pas du slider sur les annees d'observations: 1 = pas de 1 an sur le slider
