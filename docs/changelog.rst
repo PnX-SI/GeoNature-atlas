@@ -2,50 +2,55 @@
 CHANGELOG
 =========
 
-1.4.0 (2019-09-30)
+1.4.0 (2019-10-01)
 ------------------
 
-Voir https://github.com/PnX-SI/GeoNature-atlas/compare/1.3.2...develop
-
-**Nouveautés**
+**🚀 Nouveautés**
 
 * Compatible avec GeoNature version 2 et connexion possible au réferentiel géographique (#162)
 * Fiches espèce : les mailles ne sont plus dupliquées pour améliorer les performances (#53)
-* Passage à Python3
-* Prise en compte de la dégradation des données (centroïde de la géométrie dégradée) basé sur les niveaux de diffusion du SINP (voir http://standards-sinp.mnhn.fr/nomenclature/5-niveaux-de-precision-de-diffusion-souhaites-niveauprecision-23-06-2016/) 
-* Amélioration du module de recherche de taxons (AJAX + trigrammes) (par @RNF-SI)
-* Amélioration du module de recherche de commune (AJAX) (par @RNF-SI)
-* Chargement "paresseux" des images dans les listes de taxons et la page d'accueil (par @RNF-SI)
-* Vérification des paramètres de configuration grâce à Marshmallow et passage de paramètres par défaut si paramètres absents
+* Passage à Python 3 (par @aroche)
+* Prise en compte de la dégradation des données (centroïde de la géométrie dégradée) de GeoNature, basé sur les niveaux de diffusion du SINP (voir http://standards-sinp.mnhn.fr/nomenclature/5-niveaux-de-precision-de-diffusion-souhaites-niveauprecision-23-06-2016/) 
+* Amélioration du module de recherche de taxons (AJAX + trigrammes) (par @aroche)
+* Amélioration du module de recherche de commune (AJAX) (par @aroche)
+* Chargement "paresseux" des images dans les listes de taxons et la page d'accueil (par @aroche)
+* Mise en place de paramètres par défaut, surcouchables si besoin. Vérification des paramètres de configuration grâce à Marshmallow et passage de paramètres par défaut si paramètres absents
 * Simplification du passage de la configuration aux routes
 * Ajout de la description, de la licence et de la source sur les médias (par @sig-pnrnm)
-* Standardisation GeoJson des API 
-* Amélioration des performances
+* Formatage des grands nombres (par @jbdesbas)
+* Ordonnancement des noms de communes par longueur (#193) (par @jbdesbas)
+* Standardisation GeoJson des API
 * Possibilité de masquer le slider de la carte des fiches espèces (``ENABLE_SLIDER``)
-* Rafraichissement de l'ergonomie
+* Possibilité de limiter l'étendue de la carte (paramètre ``MAX_BOUNDS``) (par @jbdesbas)
+* Ajout du paramètre ``REDIMENSIONNEMENT_IMAGE`` qui active ou non le redimmensionnement à la volée par TaxHub
+* Ajout du paramètre ``DISPLAY_PATRIMONIALITE`` qui contrôle l'affichage du logo "patrimonial" sur les fiches espèce et les listes
+* Rafraichissement du graphisme
 * Facilitation de la customisation grâce à des variables CSS
+* Compléments divers de la documentation (``/docs/``)
 
-**Correction**
+**🐛 Corrections**
 
-* Renommage du répertoire 'main' en 'atlas'
-* Suppression du paramètre COLONNES_RANG_STAT (calculé)
-* Suppression du paramètre IGNAPIKEY (le passer directement dans les variables ``MAP.FIRST_MAP`` et ``MAP.SECOND_MAP``)
-* Ajout du paramètre ``REDIMENSIONNEMENT_IMAGE`` qui active ou non le redimmentionnement par TaxHub
-* Ajout du paramètre ``DISPLAY_PATRIMONIALITE`` qui contrôle l'affichage du logo "patrimonial" sur les fiche espèces et les listes.
+* Renommage du répertoire ``main`` en ``atlas``
+* Suppression du paramètre ``COLONNES_RANG_STAT`` (calculé)
+* Suppression du paramètre ``IGNAPIKEY`` (le passer directement dans les variables ``MAP.FIRST_MAP`` et ``MAP.SECOND_MAP``)
+* Corrections diverses (par @xavyeah39 et @RomainBaghi)
 
 **⚠️ Notes de version**
 
-Si vous souhaitez connecter l'atlas à GeoNature 2, préferez une installation vierge de GeoNature-Atlas 1.4.0, plutôt qu'une migration. Dans le cas contraire, suivez les instructions suivantes:
+Si vous souhaitez connecter l'atlas à GeoNature 2, préferez une nouvelle installation de GeoNature-atlas 1.4.0, plutôt qu'une migration. 
 
-Ajouter l'extension Trigramme à PostgreSQL :
+Dans le cas contraire, suivez les instructions suivantes :
+
+* Ajouter l'extension Trigramme à PostgreSQL :
+
 ::
 
     sudo ls
     sudo -n -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
 
-Lancer le script de migration update_1.3.2to1.4.0.sql (https://github.com/PnX-SI/GeoNature-atlas/blob/develop/data/update_1.3.2to1.4.0.sql) avec l'utilisateur lecteur de l'application (cf settings.ini: ``user_pg``)
+Lancer le script de migration update_1.3.2to1.4.0.sql (https://github.com/PnX-SI/GeoNature-atlas/blob/develop/data/update_1.3.2to1.4.0.sql) avec l'utilisateur lecteur de l'application (cf settings.ini : ``user_pg``)
 
-- Des nouvelles variables CSS permettent de customiser les couleurs de l'application. Vous pouvez ajouter les variables ci-dessous au fichier ``static/custom/custom.css`` et les adapter à votre contexte (les variables ``--main-color`` et ``--second-color`` sont les couleurs principalement utilisées : bouton, scrollbar, navbar etc...)
+* Des nouvelles variables CSS permettent de customiser les couleurs de l'application. Vous pouvez ajouter les variables ci-dessous au fichier ``static/custom/custom.css`` et les adapter à votre contexte (les variables ``--main-color`` et ``--second-color`` sont les couleurs principalement utilisées : bouton, scrollbar, navbar etc...)
 
 ::
 
@@ -54,26 +59,25 @@ Lancer le script de migration update_1.3.2to1.4.0.sql (https://github.com/PnX-SI
     --second-color: #649b18;
   }
   
-Suivez ensuite les instructions suivantes:
+Suivez ensuite les instructions suivantes :
 
-- Télécharger puis dézipper la nouvelle version de l'atlas.
+* Télécharger puis dézipper la nouvelle version de l'atlas.
 
 ::
 
     cd /home/`whoami`
-
     wget https://github.com/PnX-SI/GeoNature-atlas/archive/X.Y.Z.zip
     unzip X.Y.Z 
     rm X.Y.Z
 
-- Renommer l'ancienne version de l'atlas puis la nouvelle version.
+* Renommer l'ancienne version de l'atlas puis la nouvelle version.
 
 ::
 
     mv /home/`whoami`/atlas/ /home/`whoami`/atlas_old/
     mv GeoNature-atlas-X.Y.Z /home/`whoami`/atlas/
 
-- Copier ``settings.ini`` et ``config.py`` depuis l'ancienne version vers la nouvelle pour récupérer vos paramètres de configuration :
+* Copier les fichiers ``settings.ini`` et ``config.py`` depuis l'ancienne version vers la nouvelle pour récupérer vos paramètres de configuration :
 
 ::
 
@@ -82,49 +86,31 @@ Suivez ensuite les instructions suivantes:
     cp ../atlas_old/main/configuration/config.py atlas/configuration/config.py
 
 
-- Ouvrir le fichier ``settings.ini`` pour y rajouter le nouveau paramètre suivant (laisser la valeurs fournie):
+* Ouvrir le fichier ``settings.ini`` pour y rajouter le nouveau paramètre suivant (laisser la valeur fournie) :
 
 ::
 
     python_executable=/usr/bin/python3
 
-- Le passage à Python 3 nécessite quelques évolutions dans le fichier ``config.py`` : il faut supprimer tous les appels à la fonction ``unicode``). Ouvrez le, puis supprimer la ligne 20 ``STRUCTURE = unicode(STRUCTURE, 'utf-8')``, la ligne 24 ``NOM_APPLICATION = unicode(NOM_APPLICATION, 'utf-8')`` et les lignes 113-114 ``for i in range(len(RANG_STAT_FR)):
-    RANG_STAT_FR[i]=unicode( RANG_STAT_FR[i], 'utf-8')``
+* Le passage à Python 3 nécessite quelques évolutions dans le fichier ``config.py`` : il faut supprimer tous les appels à la fonction ``unicode``). Ouvrez-le, puis supprimer la ligne 20 ``STRUCTURE = unicode(STRUCTURE, 'utf-8')``, la ligne 24 ``NOM_APPLICATION = unicode(NOM_APPLICATION, 'utf-8')`` et les lignes 113-114 ``for i in range(len(RANG_STAT_FR)): RANG_STAT_FR[i]=unicode( RANG_STAT_FR[i], 'utf-8')``
 
+* Dans le fichier ``config.py``, supprimer le paramètre ``IGNAPIKEY`` et intégrer votre clé IGN directement dans les variables ``FIRST_MAP`` et ``SECOND_MAP``.
 
-- Replacer la clé IGN dans les variables FIRST_MAP et SECOND_MAP de la manière suivante:
+* Si le redimmensionnement d'image était activé, passer la variable ``REDIMENSIONNEMENT_IMAGE`` à ``True`` dans le fichier de configuration ``config.py``
 
-::
-
-    MAP = {
-        'LAT_LONG': [44.7952, 6.2287],
-        'FIRST_MAP': {
-                'url' : 'http://gpp3-wxs.ign.fr/MA_CLE_IGN/wmts?LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD&EXCEPTIONS=text/xml&FORMAT=image/jpeg&SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&STYLE=normal&TILEMATRIXSET=PM&&TILEMATRIX={z}&TILECOL={x}&TILEROW={y}',
-                'attribution' : '&copy; <a href="http://www.ign.fr/">IGN</a>',
-                'tileName' : 'IGN'
-        },
-        'SECOND_MAP' : {'url' :'https://gpp3-wxs.ign.fr/MA_CLE_IGN/geoportail/wmts?LAYER=ORTHOIMAGERY.ORTHOPHOTOS&EXCEPTIONS=text/xml&FORMAT=image/jpeg&SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&STYLE=normal&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}',
-                'attribution' : '&copy; <a href="http://www.ign.fr/">IGN</a>',
-                'tileName' : 'Ortho IGN'
-        },
-
-* Si le redimmentionnement d'image était activé, passer la variable ``REDIMENSIONNEMENT_IMAGE`` à ``True`` dans le fichier de configuration ``config.py``
-
-
-
-- Copier le contenu du répertoire ``static/custom/`` depuis l'ancienne version vers la nouvelle pour récupérer toute votre customisation (CSS, templates, images...) :
+* Copier le contenu du répertoire ``static/custom/`` depuis l'ancienne version vers la nouvelle pour récupérer toute votre customisation (CSS, templates, images...) :
 
 ::
 
     cp -aR ../atlas_old/static/custom/ ./static
 
-- Relancez l'installation automatique de l'application :
+* Relancez l'installation automatique de l'application :
 
 ::
 
     ./install_app.sh
 
-- Relancer l'application
+* Relancer l'application
 
 ::
 

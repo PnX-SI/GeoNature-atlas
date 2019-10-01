@@ -118,8 +118,9 @@ CREATE UNIQUE INDEX ON atlas.vm_taxons (cd_ref);
 
 
 -- Materialized View: atlas.vm_search_taxon
-CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS
-SELECT t.cd_nom,
+CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS 
+SELECT row_number() OVER (ORDER BY t.cd_nom,t.cd_ref,t.search_name)::integer AS fid,
+  t.cd_nom,
   t.cd_ref,
   t.search_name,
   t.nom_valide,
@@ -141,11 +142,13 @@ FROM (
   FROM atlas.vm_taxref t_1
   WHERE t_1.nom_vern IS NOT NULL AND t_1.cd_nom = t_1.cd_ref
 ) t
-JOIN atlas.vm_taxons taxons ON taxons.cd_ref = t.cd_ref
+JOIN atlas.vm_taxons taxons ON taxons.cd_ref = t.cd_ref;
 
-CREATE UNIQUE INDEX ON atlas.vm_search_taxon (cd_nom, search_name);
+CREATE UNIQUE INDEX ON atlas.vm_search_taxon(fid);
+CREATE INDEX ON atlas.vm_search_taxon(cd_nom);
 CREATE INDEX ON atlas.vm_search_taxon(cd_ref);
 CREATE INDEX trgm_idx ON atlas.vm_search_taxon USING GIST (search_name gist_trgm_ops);
+CREATE UNIQUE INDEX ON atlas.vm_search_taxon (cd_nom, search_name);
 
 -- Materialized View: atlas.vm_mois
 CREATE MATERIALIZED VIEW atlas.vm_mois AS
