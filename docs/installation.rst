@@ -1,6 +1,7 @@
 ============
 INSTALLATION
 ============
+
 .. image:: http://geonature.fr/img/logo-pne.jpg
     :target: http://www.ecrins-parcnational.fr
 
@@ -15,7 +16,7 @@ Ce serveur doit aussi disposer de :
 
 - unzip (apt-get install unzip)
 - sudo (apt-get install sudo)
-- un utilisateur (``whoami`` dans cette documentation - ``whoami`` est une variable d'environnement Linux   qui désigne l'utilisateur courant) appartenant au groupe ``sudo`` (pour pouvoire bénéficier des droits d'administrateur)
+- un utilisateur (``whoami`` dans cette documentation - ``whoami`` est une variable d'environnement Linux qui désigne l'utilisateur courant) appartenant au groupe ``sudo`` (pour pouvoir bénéficier des droits d'administrateur)
 
 :notes:
 
@@ -24,7 +25,6 @@ Ce serveur doit aussi disposer de :
 :notes:
 
     GeoNature-atlas est susceptible de fonctionner sur d'autres OS (comme Ubuntu par exemple) mais cela n'a pas été testé.
-
 
 
 **1. Mettre à jour les sources list**
@@ -42,7 +42,7 @@ Adapter à votre version d'OS (ici Debian 9 Stretch) :
 
 
 
-**2. Récupérez la dernière version (X.Y.Z à remplacer par le numéro de version) de GeoNature-atlas sur le dépot (https://github.com/PnX-SI/GeoNature-atlas/releases)**
+**2. Récupérez la dernière version (X.Y.Z à remplacer par le numéro de version) de GeoNature-atlas (https://github.com/PnX-SI/GeoNature-atlas/releases)**
 	
 Ces opérations doivent être faites avec l'utilisateur courant (autre que ``root``), ``whoami`` dans l'exemple :
 
@@ -81,7 +81,7 @@ Le script ``install_env.sh`` va automatiquement installer les outils nécessaire
 - Python 3 et GDAL
 - Supervisor
 
-Lancer le script:
+Lancer le script :
 
 ::
 
@@ -90,7 +90,7 @@ Lancer le script:
 
 **4. Installation de la base de données**
 
-Faites une copie du modèle de fichier de configuration de la BDD et de son installation automatique ``atlas/configuration/settings.ini.sample`` puis éditez-le. 
+Faites une copie du modèle de fichier de configuration de la BDD et de son installation automatique ``atlas/configuration/settings.ini.sample`` puis modifiez-le. 
 
 ::
 
@@ -98,11 +98,11 @@ Faites une copie du modèle de fichier de configuration de la BDD et de son inst
     cp settings.ini.sample settings.ini
     nano settings.ini
 
-
+**NOTES**
 
 :notes:
 
-    Suivez bien les indications en commentaire dans ce fichier
+    Suivez bien les indications en commentaire dans ce fichier.
 
 :notes:
 
@@ -110,11 +110,11 @@ Faites une copie du modèle de fichier de configuration de la BDD et de son inst
 
 :notes:
 
-    Dans le cas où vous vous souhaitez connecter l'atlas à une BDD distante de
-    GeoNature v2, il faut au préalable créer un utilisateur spécifique pour l'atlas dans 
-    cette dernière (lecture seule). 
-    
-    Se connecter en SSH au serveur hébergeant la BDD mère de GeoNature v2 et lancez les commandes suivante en adaptant. Faire ensuite correspondre avec les paramètres concernés dans le fichier ``settings.ini`` (``atlas_source_user`` et ``atlas_source_pass``) :
+    Dans le cas où vous vous souhaitez connecter l'atlas à une BDD distante de GeoNature v2, il faut au préalable créer un utilisateur spécifique pour l'atlas dans cette dernière (lecture seule). 
+
+:notes:
+
+    Se connecter en SSH au serveur hébergeant la BDD mère de GeoNature v2 et lancez les commandes suivantes en les adaptant. Faire ensuite correspondre avec les paramètres concernés dans le fichier ``settings.ini`` (``atlas_source_user`` et ``atlas_source_pass``) :
 
     ::
 
@@ -127,12 +127,14 @@ Faites une copie du modèle de fichier de configuration de la BDD et de son inst
         exit
 
 :notes:
-    
+
     GeoNature-atlas fonctionne avec des données géographiques qui doivent être fournies en amont (mailles, limite de territoire, limite de communes). Vous avez la possibilité de récupérer ces données directement depuis le référentiel géographique de GeoNature si les données y sont présentes (``use_ref_geo_gn2=true``); ou de fournir des fichiers shapefiles (à mettre dans le répertoire ``data/ref``)
         
-    **Attention** si ``use_ref_geo_gn2=true``. Par défaut le ``ref_geo`` contient l'ensemble des communes de France, ce qui ralentit fortement l'installation lorsqu'on qu'on construit la vue matérialisée ``vm_communes`` (qui intersecte les communes avec les limites du territoire). 
+:notes:
+
+    **Attention** si ``use_ref_geo_gn2=true``. Par défaut le ``ref_geo`` contient l'ensemble des communes de France, ce qui ralentit fortement l'installation lorsqu'on construit la vue matérialisée ``vm_communes`` (qui intersecte les communes avec les limites du territoire). 
     
-    Pour accelérer l'installation, vous pouvez "désactiver" certaines communes du ``ref_geo``, dont vous ne vous servez pas. Voir requête ci-dessous :
+    Pour accelérer l'installation, vous pouvez "désactiver" certaines communes du ``ref_geo``, dont vous ne vous servez pas. Voir l'exemple de requête ci-dessous :
 
     ::
 
@@ -143,12 +145,11 @@ Faites une copie du modèle de fichier de configuration de la BDD et de son inst
         )
 
     
-    Si votre territoire est celui de toute la France, préferez une installation en fournissant une couche SHP des communes (sans connection au ``ref_geo``)
+    Si votre territoire est celui de toute la France, préférez une installation en fournissant une couche SHP des communes (sans connection au ``ref_geo``)
 
 :notes:
 
-    Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci en ``localhost`` car la création d'une BDD requiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adaptez les commandes du fichier ``install_db.sh`` en les exécutant une par une.
-  
+    Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci sur le même serveur que l'application (``localhost``) car la création d'une BDD requiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adaptez les commandes du fichier ``install_db.sh`` en les exécutant une par une.
 
 L'application se base entièrement sur des vues matérialisées. Par défaut, celles-ci sont proposées pour requêter les données dans une BDD GeoNature.
 
@@ -164,12 +165,11 @@ Vous y trouverez aussi un exemple d'adaptation de la vue ``atlas.vm_observations
 
 Par ailleurs, si vous n'utilisez pas GeoNature, il vous faut installer TaxHub (https://github.com/PnX-SI/TaxHub/) ou au moins sa BDD, pour gérer les attributs (description, commentaire, milieu et chorologie) ainsi que les médias rattachés à chaque espèce (photos, videos, audios et articles)
 
-L'installation du schéma `taxonomie` de TaxHub dans la BDD de l'atlas peut se faire automatiquement lors de l'installation de la BDD avec le paramètre ``install_taxonomie=true``.
+L'installation du schéma ``taxonomie`` de TaxHub dans la BDD de l'atlas peut se faire automatiquement lors de l'installation de la BDD avec le paramètre ``install_taxonomie=true``.
 
 A noter aussi que si vous ne connectez pas l'atlas à une BDD GeoNature (``geonature_source=false``), une table exemple ``synthese.syntheseff`` comprenant 2 observations est créée. A vous d'adapter les vues après l'installation pour les connecter à vos données sources.
 
-Lancez le fichier fichier d'installation de la base de données:
-
+Lancez le fichier fichier d'installation de la base de données :
 
 ::
 
