@@ -3,45 +3,58 @@ import json
 from datetime import datetime
 from geojson import Feature, FeatureCollection
 from flask import current_app
+from sqlalchemy import MetaData
 from sqlalchemy.sql import text, func, or_
 
 from atlas.modeles.entities.vmObservations import VmObservations
 from atlas.modeles import utils
+from atlas.utils import engine, GenericTable
 
 
 currentYear = datetime.now().year
+cached_vm_observation = None
 
 
-def _format_vm_observations(row):
+def _format_vm_observations(columns, row):
     """
     return a dict from a vm_observation row
     """
-    return {
-        "id_observation": row.id_observation,
-        "insee": row.insee,
-        "dateobs": str(row.dateobs),
-        "year": row.dateobs.year if row.dateobs else None,
-        "observateurs": row.observateurs,
-        "effectif_total": row.effectif_total,
-        "cd_ref": row.cd_ref,
-        "diffusion_level": row.diffusion_level,
-        "altitude_retenue": row.altitude_retenue,
-    }
+    # row = dict(row)
+    obs_dict = {}
+    for col in columns:
+        if col.type.__class__.__name__ == "Geometry":
+            pass
+        elif col.type.__class__.__name__ == "TIMESTAMP":
+            obs_dict[col.name] = str(getattr(row, col.name))
+        else:
+            obs_dict[col.name] = getattr(row, col.name)
+    return obs_dict
 
 
 def searchObservationsChilds(session, cd_ref):
-    subquery = session.query(func.atlas.find_all_taxons_childs(cd_ref))
-    query = session.query(VmObservations).filter(
-        or_(VmObservations.cd_ref.in_(subquery), VmObservations.cd_ref == cd_ref)
-    )
+    global cached_vm_observation
+    # on met en cache le GenericTable (lourd en traitement)
+    if cached_vm_observation is None:
+        cached_vm_observation = GenericTable("vm_observations", "atlas", engine)
 
+    subquery = session.query(func.atlas.find_all_taxons_childs(cd_ref))
+    query = session.query(cached_vm_observation.tableDef).filter(
+        or_(
+            cached_vm_observation.tableDef.c.cd_ref.in_(subquery),
+            cached_vm_observation.tableDef.c.cd_ref == cd_ref,
+        )
+    )
     observations = query.all()
     obsList = list()
+    serialize, db_cols = cached_vm_observation.get_serialized_columns()
+
     features = [
         Feature(
             id=o.id_observation,
             geometry=json.loads(o.geojson_point or "{}"),
-            properties=_format_vm_observations(o),
+            properties=cached_vm_observation.as_dict(
+                o, columns=[c.name for c in db_cols if c.name != "geojson_point"]
+            ),
         )
         for o in observations
     ]

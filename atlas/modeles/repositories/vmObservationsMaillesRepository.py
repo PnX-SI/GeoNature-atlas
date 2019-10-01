@@ -2,7 +2,7 @@ from geojson import Feature, FeatureCollection
 import json
 
 from sqlalchemy.sql import text, func, or_
-from atlas.modeles.entities.vmObservations import VmObservationsMailles, VmObservations
+from atlas.modeles.entities.vmObservations import VmObservationsMailles
 import atlas.utils
 
 
