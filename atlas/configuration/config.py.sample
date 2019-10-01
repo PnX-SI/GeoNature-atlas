@@ -34,7 +34,7 @@ MAP = {
             'tileName' : 'OSM'
     },
     'SECOND_MAP' : {'url' :'//a.tile.opentopomap.org/{z}/{x}/{y}.png',
-            'attribution' : '&copy OpenTopoMap',
+            'attribution' : '&copy OpenStreetMap-contributors, SRTM | Style: &copy OpenTopoMap (CC-BY-SA)',
             'tileName' : 'OTM'
     },
     'ZOOM' : 10,
