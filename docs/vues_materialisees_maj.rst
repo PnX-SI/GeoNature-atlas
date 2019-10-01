@@ -151,7 +151,6 @@ Une fonction, générée lors de la création de la BDD de GeoNature-atlas perme
         sudo su postgres
         crontab -e
 
-
 Ajouter la ligne suivante en prenant soin de mettre à jour les paramètres de connexion à la base de GeoNature-atlas :
 
 ::
@@ -160,5 +159,6 @@ Ajouter la ligne suivante en prenant soin de mettre à jour les paramètres de c
 
 Pour enregistrer et sortir : ``Ctrl + O``, ENTER puis ``Ctrl + X``
 
+Cette fonction rafraichit toutes les vues materialisées présentes dans le schéma ``atlas`` et ne tient pas compte de l'ordre du rafraichissement. Cette opération peut-être assez longue dans le cas où le réferentiel géographique est volumineux alors que celui-ci est relativement stable (peu de MAJ des communes ou du territoire). 
 
-Cette fonction rafraichit toutes les vues materialisées présentes dans le schéma ``atlas`` et ne tient pas compte de l'ordre du rafraichissement. Cette opération peut-être assez longue dans le cas où le réferentiel géographique est volumineux alors que celui-ci est relativement stable (peu de MAJ des communes ou du territoire). Dans ce cas, préferez un rafraichisement uniquement des données : fonction ``atlas.refresh_materialized_view_data()``. Pour rafraichir les données géographiques, lancer ponctuellement la fonction ``atlas.refresh_materialized_view_ref_geo()``.
+Dans ce cas, préferez un rafraichisement automatique uniquement des données : fonction ``atlas.refresh_materialized_view_data()``. Pour rafraichir les données géographiques, lancer ponctuellement la fonction ``atlas.refresh_materialized_view_ref_geo()``.
