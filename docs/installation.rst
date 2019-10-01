@@ -41,7 +41,6 @@ Adapter à votre version d'OS (ici Debian 9 Stretch) :
     sudo apt-get upgrade
 
 
-
 **2. Récupérez la dernière version (X.Y.Z à remplacer par le numéro de version) de GeoNature-atlas (https://github.com/PnX-SI/GeoNature-atlas/releases)**
 	
 Ces opérations doivent être faites avec l'utilisateur courant (autre que ``root``), ``whoami`` dans l'exemple :
@@ -49,11 +48,10 @@ Ces opérations doivent être faites avec l'utilisateur courant (autre que ``roo
 ::
 
     cd /home/`whoami`
-
     wget https://github.com/PnX-SI/GeoNature-atlas/archive/X.Y.Z.zip
 
 
-:notes:
+:note:
 
     Si la commande ``wget`` renvoie une erreur liée au certificat, installez le paquet ``ca-certificates`` (``sudo apt-get install ca-certificates``) puis relancer la commande ``wget`` ci-dessus.
 
@@ -98,21 +96,19 @@ Faites une copie du modèle de fichier de configuration de la BDD et de son inst
     cp settings.ini.sample settings.ini
     nano settings.ini
 
-**NOTES**
-
-:notes:
+:note:
 
     Suivez bien les indications en commentaire dans ce fichier.
 
-:notes:
+:note:
 
     Attention à ne pas mettre de 'quote' dans les valeurs, même pour les chaines de caractères.
 
-:notes:
+:note:
 
     Dans le cas où vous vous souhaitez connecter l'atlas à une BDD distante de GeoNature v2, il faut au préalable créer un utilisateur spécifique pour l'atlas dans cette dernière (lecture seule). 
 
-:notes:
+:note:
 
     Se connecter en SSH au serveur hébergeant la BDD mère de GeoNature v2 et lancez les commandes suivantes en les adaptant. Faire ensuite correspondre avec les paramètres concernés dans le fichier ``settings.ini`` (``atlas_source_user`` et ``atlas_source_pass``) :
 
@@ -126,11 +122,11 @@ Faites une copie du modèle de fichier de configuration de la BDD et de son inst
         \q
         exit
 
-:notes:
+:note:
 
     GeoNature-atlas fonctionne avec des données géographiques qui doivent être fournies en amont (mailles, limite de territoire, limite de communes). Vous avez la possibilité de récupérer ces données directement depuis le référentiel géographique de GeoNature si les données y sont présentes (``use_ref_geo_gn2=true``); ou de fournir des fichiers shapefiles (à mettre dans le répertoire ``data/ref``)
         
-:notes:
+:note:
 
     **Attention** si ``use_ref_geo_gn2=true``. Par défaut le ``ref_geo`` contient l'ensemble des communes de France, ce qui ralentit fortement l'installation lorsqu'on construit la vue matérialisée ``vm_communes`` (qui intersecte les communes avec les limites du territoire). 
     
@@ -147,7 +143,7 @@ Faites une copie du modèle de fichier de configuration de la BDD et de son inst
     
     Si votre territoire est celui de toute la France, préférez une installation en fournissant une couche SHP des communes (sans connection au ``ref_geo``)
 
-:notes:
+:note:
 
     Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci sur le même serveur que l'application (``localhost``) car la création d'une BDD requiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adaptez les commandes du fichier ``install_db.sh`` en les exécutant une par une.
 
