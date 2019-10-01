@@ -25,20 +25,19 @@ DROP MATERIALIZED VIEW atlas.vm_observations;
 ---------------------------------------------
 -- Materialized View: atlas.vm_observations
 CREATE MATERIALIZED VIEW atlas.vm_observations AS
- SELECT s.id_synthese AS id_observation,
-    s.insee,
-    s.dateobs,
-    s.observateurs,
-    s.altitude_retenue,
-    s.the_geom_point,
-    s.effectif_total,
-    tx.cd_ref,
-    st_asgeojson(st_transform(st_setsrid(s.the_geom_point, 3857), 4326)) AS geojson_point
-   FROM synthese.syntheseff s
-     LEFT JOIN atlas.vm_taxref tx ON tx.cd_nom = s.cd_nom
-     JOIN atlas.t_layer_territoire m ON st_intersects(m.the_geom, s.the_geom_point)
-  WHERE s.supprime = false AND s.diffusable = true
-WITH DATA;
+    SELECT s.id_synthese AS id_observation,
+        s.insee,
+        s.dateobs,
+        s.observateurs,
+        s.altitude_retenue,
+        s.the_geom_point::geometry('POINT',3857),
+        s.effectif_total,
+        tx.cd_ref,
+        st_asgeojson(ST_Transform(ST_SetSrid(s.the_geom_point, 3857), 4326)) as geojson_point,
+        diffusion_level
+    FROM synthese.syntheseff s
+    LEFT JOIN atlas.vm_taxref tx ON tx.cd_nom = s.cd_nom
+    JOIN atlas.t_layer_territoire m ON ST_Intersects(m.the_geom, s.the_geom_point);
 
 create unique index on atlas.vm_observations (id_observation);
 create index on atlas.vm_observations (cd_ref);
@@ -143,7 +142,6 @@ FROM (
   WHERE t_1.nom_vern IS NOT NULL AND t_1.cd_nom = t_1.cd_ref
 ) t
 JOIN atlas.vm_taxons taxons ON taxons.cd_ref = t.cd_ref
-
 
 CREATE UNIQUE INDEX ON atlas.vm_search_taxon (cd_nom, search_name);
 CREATE INDEX ON atlas.vm_search_taxon(cd_ref);
