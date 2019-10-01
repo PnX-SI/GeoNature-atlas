@@ -48,7 +48,7 @@ Dans le cas contraire, suivez les instructions suivantes :
     sudo ls
     sudo -n -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
 
-Lancer le script de migration update_1.3.2to1.4.0.sql (https://github.com/PnX-SI/GeoNature-atlas/blob/develop/data/update_1.3.2to1.4.0.sql) avec l'utilisateur lecteur de l'application (cf settings.ini : ``user_pg``)
+Lancer le script de migration update_1.3.2to1.4.0.sql (https://github.com/PnX-SI/GeoNature-atlas/blob/master/data/update_1.3.2to1.4.0.sql) avec l'utilisateur lecteur de l'application (cf settings.ini : ``user_pg``)
 
 * Des nouvelles variables CSS permettent de customiser les couleurs de l'application. Vous pouvez ajouter les variables ci-dessous au fichier ``static/custom/custom.css`` et les adapter à votre contexte (les variables ``--main-color`` et ``--second-color`` sont les couleurs principalement utilisées : bouton, scrollbar, navbar etc...)
 
