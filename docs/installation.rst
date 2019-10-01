@@ -9,13 +9,13 @@ INSTALLATION
 Prérequis
 =========
 
-Application installable sur un serveur Debian 8 ou 9 (Seul Debian 9 a été "prouvé et testé).
+Application installable sur un serveur Debian 8, 9 ou 10 (Seul Debian 9 et 10 ont été "prouvé et testé).
 
 Ce serveur doit aussi disposer de :
 
 - unzip (apt-get install unzip)
 - sudo (apt-get install sudo)
-- un utilisateur (``whoami`` dans cette documentation) appartenant au groupe ``sudo`` (pour pouvoire bénéficier des droits d'administrateur)
+- un utilisateur (``whoami`` dans cette documentation - ``whoami`` est une variable d'environnement Linux   qui désigne l'utilisateur courant) appartenant au groupe ``sudo`` (pour pouvoire bénéficier des droits d'administrateur)
 
 :notes:
 
@@ -110,7 +110,9 @@ Faites une copie du modèle de fichier de configuration de la BDD et de son inst
 
 :notes:
 
-    Dans le cas où vous vous souhaitez connecter l'atlas à une BDD distante de GeoNature v2, il faut au préalable créer un utilisateur spécifique pour l'atlas dans cette dernière (lecture seule). 
+    Dans le cas où vous vous souhaitez connecter l'atlas à une BDD distante de
+    GeoNature v2, il faut au préalable créer un utilisateur spécifique pour l'atlas dans 
+    cette dernière (lecture seule). 
     
     Se connecter en SSH au serveur hébergeant la BDD mère de GeoNature v2 et lancez les commandes suivante en adaptant. Faire ensuite correspondre avec les paramètres concernés dans le fichier ``settings.ini`` (``atlas_source_user`` et ``atlas_source_pass``) :
 
@@ -127,10 +129,8 @@ Faites une copie du modèle de fichier de configuration de la BDD et de son inst
 :notes:
     
     GeoNature-atlas fonctionne avec des données géographiques qui doivent être fournies en amont (mailles, limite de territoire, limite de communes). Vous avez la possibilité de récupérer ces données directement depuis le référentiel géographique de GeoNature si les données y sont présentes (``use_ref_geo_gn2=true``); ou de fournir des fichiers shapefiles (à mettre dans le répertoire ``data/ref``)
-    
-:notes:
-    
-    **Attention** si ``use_ref_geo_gn2=true`` : par défaut le ``ref_geo`` contient l'ensemble des communes de France, ce qui ralentit fortement l'installation lorsqu'on qu'on construit la vue matérialisée ``vm_communes`` (qui intersecte les communes avec les limites du territoire). 
+        
+    **Attention** si ``use_ref_geo_gn2=true``. Par défaut le ``ref_geo`` contient l'ensemble des communes de France, ce qui ralentit fortement l'installation lorsqu'on qu'on construit la vue matérialisée ``vm_communes`` (qui intersecte les communes avec les limites du territoire). 
     
     Pour accelérer l'installation, vous pouvez "désactiver" certaines communes du ``ref_geo``, dont vous ne vous servez pas. Voir requête ci-dessous :
 
@@ -141,6 +141,7 @@ Faites une copie du modèle de fichier de configuration de la BDD et de son inst
         join ref_geo.li_municipalities m ON a.id_area = m.id_area
         where insee_dep in ('MON_CODE_DEPARTEMENT', 'MON_CODE_DEPARTEMENT_BIS')
         )
+
     
     Si votre territoire est celui de toute la France, préferez une installation en fournissant une couche SHP des communes (sans connection au ``ref_geo``)
 
@@ -167,17 +168,8 @@ L'installation du schéma `taxonomie` de TaxHub dans la BDD de l'atlas peut se f
 
 A noter aussi que si vous ne connectez pas l'atlas à une BDD GeoNature (``geonature_source=false``), une table exemple ``synthese.syntheseff`` comprenant 2 observations est créée. A vous d'adapter les vues après l'installation pour les connecter à vos données sources.
 
-Lancez le fichier fichier d'installation de la base de données en sudo :
+Lancez le fichier fichier d'installation de la base de données:
 
-Pour installation connectée à GeoNature v2 :
-
-::
-
-    cd /home/`whoami`/atlas
-    sudo ./install_db_gn2.sh
-    
-
-Sinon :
 
 ::
 
@@ -222,7 +214,7 @@ Customisation de l'application
 
 En plus de la configuration, vous pouvez customiser l'application en modifiant et ajoutant des fichiers dans le répertoire ``static/custom/`` (css, templates, images).
 
-L'atlas est fourni avec des variables CSS qui permettent de personnaliser facilement l'interface (changement des couleurs principales). Pour cela éditer les variables présentes dans le fichier ``static/custom/custom.css``. Les variables ``--main-color`` et ``second-color`` sont les plus utilisées et permettent de customiser l'atlas selon les couleur de votre organisme.
+L'atlas est fourni avec des variables CSS qui permettent de personnaliser facilement l'interface (changement des couleurs principales). Pour cela éditer les variables présentes dans le fichier ``static/custom/custom.css``. La variables ``--main-color`` et ``second-color`` permet de customiser l'atlas selon les couleur de votre organisme.
 
 Vous pouvez aussi modifier ou ajouter des pages statiques de présentation, en plus de la page Présentation fournie par défaut. Pour cela, voir le paramètre ``STATIC_PAGES`` du fichier ``main/configuration/config.py``
 
@@ -280,7 +272,7 @@ Si l'atlas est associé à un domaine, ajoutez cette ligne au début du fichier 
 
 :notes:
 
-    En cas d'erreur, les logs serveurs ne sont pas au niveau d'Apache (serveur proxy) mais de Gunicorn (serveur HTTP) dans ``/tmp/errors_atlas.log``
+    En cas d'erreur, les logs serveurs ne sont pas au niveau d'Apache (serveur proxy) mais de Gunicorn (serveur HTTP) dans ``/home/`whoami/log/errors_atlas.log``
 
 
 Mise à jour de l'application

@@ -11,8 +11,8 @@ Voir https://github.com/PnX-SI/GeoNature-atlas/compare/1.3.2...develop
 
 * Compatible avec GeoNature version 2 et connexion possible au réferentiel géographique (#162)
 * Fiches espèce : les mailles ne sont plus dupliquées pour améliorer les performances (#53)
-* Passage à python3
-* Prise en compte de la dégradation des données (centroïde de la géométrie dégradée)
+* Passage à Python3
+* Prise en compte de la dégradation des données (centroïde de la géométrie dégradée) basé sur les niveaux de diffusion du SINP (voir http://standards-sinp.mnhn.fr/nomenclature/5-niveaux-de-precision-de-diffusion-souhaites-niveauprecision-23-06-2016/) 
 * Amélioration du module de recherche de taxons (AJAX + trigrammes) (par @RNF-SI)
 * Amélioration du module de recherche de commune (AJAX) (par @RNF-SI)
 * Chargement "paresseux" des images dans les listes de taxons et la page d'accueil (par @RNF-SI)
@@ -24,7 +24,6 @@ Voir https://github.com/PnX-SI/GeoNature-atlas/compare/1.3.2...develop
 * Possibilité de masquer le slider de la carte des fiches espèces (``ENABLE_SLIDER``)
 * Rafraichissement de l'ergonomie
 * Facilitation de la customisation grâce à des variables CSS
-* Ajout du paramètre ``DISPLAY_PATRIMONIALITE`` pour masquer l'info de patrimonialité sur les fiches espcèces et les listes.
 
 **Correction**
 
@@ -44,9 +43,9 @@ Ajouter l'extension Trigramme à PostgreSQL :
     sudo ls
     sudo -n -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
 
-Lancer le script de migration update_1.3.2to1.4.0.sql (LIEN A METTRE) avec l'utilisateur lecteur de l'application (cf settings.ini: ``user_pg``)
+Lancer le script de migration update_1.3.2to1.4.0.sql (https://github.com/PnX-SI/GeoNature-atlas/blob/develop/data/update_1.3.2to1.4.0.sql) avec l'utilisateur lecteur de l'application (cf settings.ini: ``user_pg``)
 
-- Des nouvelles variables CSS permettent de customiser les couleurs de l'application. Si vous migrez depuis une version anterieure, vous pouvez ajouter les variables ci-dessous au fichier ``static/custom/custom.css`` et les adapter à votre contexte (les variables ``--main-color`` et ``--second-color`` sont les couleurs principalement utilisées : bouton, scrollbar, navbar etc...)
+- Des nouvelles variables CSS permettent de customiser les couleurs de l'application. Vous pouvez ajouter les variables ci-dessous au fichier ``static/custom/custom.css`` et les adapter à votre contexte (les variables ``--main-color`` et ``--second-color`` sont les couleurs principalement utilisées : bouton, scrollbar, navbar etc...)
 
 ::
 
@@ -55,7 +54,7 @@ Lancer le script de migration update_1.3.2to1.4.0.sql (LIEN A METTRE) avec l'uti
     --second-color: #649b18;
   }
   
-Si vous effectuez une monté de version, suivez les instructions suivantes:
+Suivez ensuite les instructions suivantes:
 
 - Télécharger puis dézipper la nouvelle version de l'atlas.
 
@@ -74,7 +73,7 @@ Si vous effectuez une monté de version, suivez les instructions suivantes:
     mv /home/`whoami`/atlas/ /home/`whoami`/atlas_old/
     mv GeoNature-atlas-X.Y.Z /home/`whoami`/atlas/
 
-- Copier ``atlas/configuration/settings.ini`` et ``atlas/configuration/config.py`` depuis l'ancienne version vers la nouvelle pour récupérer vos paramètres de configuration :
+- Copier ``settings.ini`` et ``config.py`` depuis l'ancienne version vers la nouvelle pour récupérer vos paramètres de configuration :
 
 ::
 
@@ -89,7 +88,7 @@ Si vous effectuez une monté de version, suivez les instructions suivantes:
 
     python_executable=/usr/bin/python3
 
-- Le passage à Python 3 nécessite quelques évolutions dans le fichier ``config.py`` : il faut supprimer tous les appels à la fonction 'unicode). Ouvrez le, puis supprimer la ligne 20 ``STRUCTURE = unicode(STRUCTURE, 'utf-8')``, la ligne 24 ``NOM_APPLICATION = unicode(NOM_APPLICATION, 'utf-8')`` et les lignes 113-114 ``for i in range(len(RANG_STAT_FR)):
+- Le passage à Python 3 nécessite quelques évolutions dans le fichier ``config.py`` : il faut supprimer tous les appels à la fonction ``unicode``). Ouvrez le, puis supprimer la ligne 20 ``STRUCTURE = unicode(STRUCTURE, 'utf-8')``, la ligne 24 ``NOM_APPLICATION = unicode(NOM_APPLICATION, 'utf-8')`` et les lignes 113-114 ``for i in range(len(RANG_STAT_FR)):
     RANG_STAT_FR[i]=unicode( RANG_STAT_FR[i], 'utf-8')``
 
 
@@ -109,7 +108,7 @@ Si vous effectuez une monté de version, suivez les instructions suivantes:
                 'tileName' : 'Ortho IGN'
         },
 
-* Si le redimmentionnement d'image était activé, passer la variable ``REDIMENSIONNEMENT_IMAGE`` à ``True`` dans le fichier de configuration
+* Si le redimmentionnement d'image était activé, passer la variable ``REDIMENSIONNEMENT_IMAGE`` à ``True`` dans le fichier de configuration ``config.py``
 
 
 
