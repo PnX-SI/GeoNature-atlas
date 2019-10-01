@@ -1,16 +1,16 @@
+-- Creation d'une vue permettant de reproduire le contenu de la table du même nom dans les versions précédentes
+
 CREATE VIEW synthese.syntheseff AS
 WITH areas AS (
-	SELECT DISTINCT ON (sa.id_synthese,  t.type_code)
-        sa.id_synthese, 
-				sa.id_area, 
-				a.centroid, 
-				st_transform(centroid, 3857) as centroid_3857, 
-				t.type_code
-	FROM  synthese.cor_area_synthese sa
-	JOIN ref_geo.l_areas a
-	ON sa.id_area = a.id_area
-	JOIN ref_geo.bib_areas_types t
-	ON a.id_type = t.id_type
+	SELECT DISTINCT ON (sa.id_synthese, t.type_code)
+          sa.id_synthese, 
+          sa.id_area, 
+          a.centroid, 
+          st_transform(centroid, 3857) as centroid_3857, 
+          t.type_code
+	FROM synthese.cor_area_synthese sa
+	JOIN ref_geo.l_areas a ON sa.id_area = a.id_area
+	JOIN ref_geo.bib_areas_types t ON a.id_type = t.id_type
 	WHERE type_code IN ('M10', 'COM', 'DEP')
  ),  obs_data AS (
 	SELECT s.id_synthese,
@@ -21,18 +21,14 @@ WITH areas AS (
 	    CASE
 		WHEN dl.cd_nomenclature = '1' THEN
 			(SELECT centroid_3857 FROM areas a WHERE a.id_synthese = s.id_synthese AND type_code = 'COM' LIMIT 1)
-
 		WHEN dl.cd_nomenclature = '2' THEN
 			(SELECT centroid_3857 FROM areas a WHERE a.id_synthese = s.id_synthese AND type_code = 'M10' LIMIT 1)
-
 		WHEN dl.cd_nomenclature = '3' THEN
 			(SELECT centroid_3857 FROM areas a WHERE a.id_synthese = s.id_synthese AND type_code = 'DEP' LIMIT 1)
-
 		ELSE st_transform(s.the_geom_point, 3857)
 	    END AS the_geom_point,
 	    s.count_min AS effectif_total,
-	    false AS supprime,
-	    true AS diffusable,  dl.cd_nomenclature::int as diffusion_level
+	    dl.cd_nomenclature::int as diffusion_level
 	   FROM synthese.synthese s
 	   LEFT OUTER JOIN synthese.t_nomenclatures dl ON s.id_nomenclature_diffusion_level = dl.id_nomenclature
 	   LEFT OUTER JOIN synthese.t_nomenclatures st ON s.id_nomenclature_observation_status = st.id_nomenclature
@@ -46,8 +42,6 @@ WITH areas AS (
     d.altitude_retenue,
     d.the_geom_point,
     d.effectif_total,
-    d.supprime,
-    d.diffusable,
     c.insee,
     diffusion_level
 FROM obs_data d
