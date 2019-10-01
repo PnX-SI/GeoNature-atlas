@@ -14,10 +14,9 @@ MAP_1 = {
     "attribution": "&copy OpenStreetMap",
 }
 MAP_2 = {
-    "name": "GoogleSatellite",
-    "layer": "//{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",
-    "subdomains": ["mt0", "mt1", "mt2", "mt3"],
-    "attribution": "© GoogleMap",
+    "name": "OpenTopoMap",
+    "layer": "//a.tile.opentopomap.org/{z}/{x}/{y}.png",
+    "attribution": "&copy OpenStreetMap-contributors, SRTM | Style: &copy OpenTopoMap (CC-BY-SA)",
 }
 
 
