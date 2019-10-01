@@ -188,6 +188,10 @@ Si vous voulez adapter le contenu des vues matérialisées, vous pouvez modifier
 Si vous souhaitez uniquement recréer la vue ``atlas.vm_observations`` et les 6 autres vues qui en dépendent vous pouvez utiliser le script ``data/update_vm_observations.sql``.
 
 
+:notes:
+
+    Un mécanisme de dégradation des données est fournit par défaut dans GeoNature-atlas, voir la documentation à ce sujet: `<degradation_donnees.rst.rst>`_
+
 **5. Installation de l'application**
 
 
@@ -217,6 +221,8 @@ En plus de la configuration, vous pouvez customiser l'application en modifiant e
 L'atlas est fourni avec des variables CSS qui permettent de personnaliser facilement l'interface (changement des couleurs principales). Pour cela éditer les variables présentes dans le fichier ``static/custom/custom.css``. La variables ``--main-color`` et ``second-color`` permet de customiser l'atlas selon les couleur de votre organisme.
 
 Vous pouvez aussi modifier ou ajouter des pages statiques de présentation, en plus de la page Présentation fournie par défaut. Pour cela, voir le paramètre ``STATIC_PAGES`` du fichier ``main/configuration/config.py``
+
+En mode point il est possible de customiser l'affichage cartographique (modification de la couleur des points, modification de la légende) en éditant le fichier ``static/custom/maps-custom.js``. Par défaut l'affichage dissocie les données dégradées des données précises: voir `<degradation_donnees.rst.rst>`_
 
 
 Configuration d'Apache
