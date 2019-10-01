@@ -54,13 +54,13 @@ END$$;
 
 
 CREATE MATERIALIZED VIEW atlas.t_mailles_territoire AS
-SELECT st_transform(c.geom, 3857) as the_geom,
+SELECT st_transform(c.geom, 3857)::geometry('MultiPolygon',3857) as the_geom,
     st_asgeojson(st_transform(c.geom, 4326)) AS geojson_maille,
     id_area as id_maille
 FROM ref_geo.l_areas c
 JOIN ref_geo.bib_areas_types t
 ON t.id_type = c.id_type
-WHERE t.type_code = :type_maille;
+WHERE t.type_code = 'M10';
 
 
 
