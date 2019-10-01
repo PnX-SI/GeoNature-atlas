@@ -5,6 +5,7 @@
 --DROP materialized view taxonomie.vm_taxref;
 CREATE materialized view atlas.vm_taxref AS
 SELECT * FROM taxonomie.taxref;
+
 CREATE UNIQUE INDEX ON atlas.vm_taxref (cd_nom);
 CREATE INDEX ON atlas.vm_taxref (cd_ref);
 CREATE INDEX ON atlas.vm_taxref (cd_taxsup);
@@ -29,9 +30,7 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
         diffusion_level
     FROM synthese.syntheseff s
     LEFT JOIN atlas.vm_taxref tx ON tx.cd_nom = s.cd_nom
-    JOIN atlas.t_layer_territoire m ON ST_Intersects(m.the_geom, s.the_geom_point)
-    WHERE s.supprime = FALSE;
-    --AND s.diffusable = TRUE;
+    JOIN atlas.t_layer_territoire m ON ST_Intersects(m.the_geom, s.the_geom_point);
 
 CREATE UNIQUE INDEX ON atlas.vm_observations (id_observation);
 CREATE INDEX ON atlas.vm_observations (cd_ref);
