@@ -2,6 +2,13 @@
 CHANGELOG
 =========
 
+1.4.1 (unreleased)
+------------------
+
+**🐛 Corrections**
+
+* 
+
 1.4.0 (2019-10-01)
 ------------------
 
@@ -20,6 +27,7 @@ CHANGELOG
 * Formatage des grands nombres (par @jbdesbas)
 * Ordonnancement des noms de communes par longueur (#193) (par @jbdesbas)
 * Standardisation GeoJson des API
+* Ajout de fonctions SQL pour rafraichir uniquement les vues matérialisées des données dans l'ordre (``atlas.refresh_materialized_view_data()``) ou uniquement les données géographiques plus stables (``atlas.refresh_materialized_view_ref_geo()``)
 * Possibilité de masquer le slider de la carte des fiches espèces (``ENABLE_SLIDER``)
 * Possibilité de limiter l'étendue de la carte (paramètre ``MAX_BOUNDS``) (par @jbdesbas)
 * Ajout du paramètre ``REDIMENSIONNEMENT_IMAGE`` qui active ou non le redimmensionnement à la volée par TaxHub
