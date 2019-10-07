@@ -1,9 +1,9 @@
 # -*- coding:utf-8 -*-
 from flask import current_app
+from sqlalchemy.sql import text
 from .. import utils
 from ..entities.vmTaxref import VmTaxref
 from ..entities.tBibTaxrefRang import TBibTaxrefRang
-from sqlalchemy.sql import text
 
 
 def searchEspece(connection, cd_ref):
@@ -106,7 +106,7 @@ def getSynonymy(connection, cd_ref):
 
 
 def getTaxon(session, cd_nom):
-    req = (
+    taxon = (
         session.query(
             VmTaxref.lb_nom,
             VmTaxref.id_rang,
@@ -117,8 +117,9 @@ def getTaxon(session, cd_nom):
         )
         .join(TBibTaxrefRang, TBibTaxrefRang.id_rang == VmTaxref.id_rang)
         .filter(VmTaxref.cd_nom == cd_nom)
+        .one_or_none()
     )
-    return req[0]
+    return None
 
 
 def getCd_sup(session, cd_ref):
@@ -140,7 +141,10 @@ def getAllTaxonomy(session, cd_ref):
     taxonSup = getCd_sup(session, cd_ref)  # cd_taxsup
     taxon = getTaxon(session, taxonSup)
     tabTaxon = list()
-    while taxon.tri_rang >= current_app.config["LIMIT_RANG_TAXONOMIQUE_HIERARCHIE"]:
+    while (
+        taxon
+        and taxon.tri_rang >= current_app.config["LIMIT_RANG_TAXONOMIQUE_HIERARCHIE"]
+    ):
         temp = {
             "rang": taxon.id_rang,
             "lb_nom": taxon.lb_nom,
