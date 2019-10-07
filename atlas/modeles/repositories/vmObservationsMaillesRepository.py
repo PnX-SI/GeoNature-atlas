@@ -3,7 +3,7 @@ import json
 
 from sqlalchemy.sql import text, func, or_
 from atlas.modeles.entities.vmObservations import VmObservationsMailles
-import atlas.utils
+from atlas.modeles.utils import deleteAccent, findPath
 
 
 def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
