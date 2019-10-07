@@ -51,8 +51,8 @@ MAP = {
             'tileName' : 'Ortho IGN'
     },
     'ZOOM' : 10,
-    MIN_ZOOM = 6
-    MAX_BOUNDS = [[41.463,-1.876],[51.62,8.6]]
+    MIN_ZOOM : 6,
+    MAX_BOUNDS : [[41.463,-1.876],[51.62,8.6]],
     # Pas du slider sur les annees d'observations: 1 = pas de 1 an sur le slider
     'STEP': 1,
     # Couleur et épaisseur des limites du territoire
