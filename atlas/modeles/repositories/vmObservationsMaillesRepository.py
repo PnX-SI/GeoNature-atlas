@@ -74,8 +74,8 @@ def lastObservationsMailles(connection, mylimit, idPhoto):
             "altitude_retenue": o.altitude_retenue,
             "taxon": taxon,
             "geojson_maille": json.loads(o.geojson_maille),
-            "group2_inpn": utils.deleteAccent(o.group2_inpn),
-            "pathImg": utils.findPath(o),
+            "group2_inpn": deleteAccent(o.group2_inpn),
+            "pathImg": findPath(o),
             "id_media": o.id_media,
         }
         obsList.append(temp)
