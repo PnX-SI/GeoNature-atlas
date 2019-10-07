@@ -154,7 +154,7 @@ ATTR_DAILYMOTION = 8
 ATTR_VIMEO = 9
 
 # coupe le nom_vernaculaire à la 1ere virgule sur les fiches espèces
-SPLIT_NOM_VERN = true
+SPLIT_NOM_VERN = True
 
 ############################################
 #### FICHE COMMUNE ET RANG TAXONOMIQUE #####
