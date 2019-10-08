@@ -15,22 +15,6 @@ currentYear = datetime.now().year
 cached_vm_observation = None
 
 
-def _format_vm_observations(columns, row):
-    """
-    return a dict from a vm_observation row
-    """
-    # row = dict(row)
-    obs_dict = {}
-    for col in columns:
-        if col.type.__class__.__name__ == "Geometry":
-            pass
-        elif col.type.__class__.__name__ == "TIMESTAMP":
-            obs_dict[col.name] = str(getattr(row, col.name))
-        else:
-            obs_dict[col.name] = getattr(row, col.name)
-    return obs_dict
-
-
 def searchObservationsChilds(session, cd_ref):
     global cached_vm_observation
     # on met en cache le GenericTable (lourd en traitement)
@@ -48,16 +32,29 @@ def searchObservationsChilds(session, cd_ref):
     obsList = list()
     serialize, db_cols = cached_vm_observation.get_serialized_columns()
 
-    features = [
-        Feature(
+    # features = [
+    #     Feature(
+    #         id=o.id_observation,
+    #         geometry=json.loads(o.geojson_point or "{}"),
+    #         properties=cached_vm_observation.as_dict(
+    #             o, columns=[c.name for c in db_cols if c.name != "geojson_point"]
+    #         ),
+    #     )
+    #     for o in observations:
+    # ]
+    features = []
+    columns = [c.name for c in db_cols if c.name != "geojson_point"]
+    for o in observations:
+        year = o.dateobs.year if o.dateobs else None
+        properties = cached_vm_observation.as_dict(o, columns=columns)
+        properties["year"] = year
+        feature = Feature(
             id=o.id_observation,
             geometry=json.loads(o.geojson_point or "{}"),
-            properties=cached_vm_observation.as_dict(
-                o, columns=[c.name for c in db_cols if c.name != "geojson_point"]
-            ),
+            properties=properties,
         )
-        for o in observations
-    ]
+        features.append(feature)
+
     return FeatureCollection(features)
 
 
