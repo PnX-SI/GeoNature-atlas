@@ -7,14 +7,17 @@ CHANGELOG
 
 **🐛 Corrections**
 
-* Correction de syntaxe dans le fichier exemple de la configuration ``config.py.example``
+* Correction de syntaxe dans le fichier exemple de la configuration ``config.py.example`` (#206 et #208)
 * Correction du responsive sur la page d'accueil
-* Corrrection du slider en mode maille
-* Correction d'un python import incorrect
+* Correction du slider d'année sur les fiches espèce en mode maille
+* Correction d'un import python incorrect (#205)
+* Corrections mineures et mise en forme de la documentation
+* Requete ``get_taxon`` : utilisation ``get_or_none`` au lieu de prendre l'index 0 de la liste (#207)
 
 **⚠️ Notes de version**
 
-Si vous effectuez une montée de version, la correction du responsive necessite une correction sur le fichier du customisation ``introduction.html``. Supprimer simplement la première balise ``<div class="col-sm-12">`` et sa balise fermante correspondante (à la dernière ligne du fichier)
+* Si vous effectuez une montée de version, la correction du responsive nécessite une correction sur le fichier du customisation ``introduction.html``. Supprimer simplement la première balise ``<div class="col-sm-12">`` et sa balise fermante correspondante (à la dernière ligne du fichier).
+* Suivez la procédure classique de mise à jour : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/installation.rst#mise-%C3%A0-jour-de-lapplication
 
 1.4.0 (2019-10-01)
 ------------------
