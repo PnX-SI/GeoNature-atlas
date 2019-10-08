@@ -53,19 +53,38 @@ $.ajax({
   $("#nbObs").html("Nombre d'observation(s): " + nbObs);
 
   // Slider event
-  mySlider.on("change", function() {
+
+  mySlider.on("slideStop", function() {
     years = mySlider.getValue();
     yearMin = years[0];
     yearMax = years[1];
     map.removeLayer(currentLayer);
-    displayMailleLayerFicheEspece(observations, yearMin, yearMax);
+    $.ajax({
+      url: configuration.URL_APPLICATION + "/api/observationsMaille/" + cd_ref,
+      dataType: "json",
+      type: "get",
+      data: {
+        year_min: yearMin,
+        year_max: yearMax
+      },
+      beforeSend: function() {
+        $("#loadingGif").show();
+      }
+    }).done(function(observations) {
+      $("#loadingGif").hide();
+      observationsMaille = observations;
 
-    nbObs = 0;
-    myGeoJson.features.forEach(function(l) {
-      nbObs += l.properties.nb_observations;
+      // desactivation de l'event precedent
+      map.off("zoomend", function() {});
+
+      displayMailleLayerFicheEspece(observationsMaille);
+      nbObs = 0;
+      observationsMaille.features.forEach(function(l) {
+        nbObs += l.properties.nb_observations;
+      });
+
+      $("#nbObs").html("Nombre d'observation(s): " + nbObs);
     });
-
-    $("#nbObs").html("Nombre d'observation(s): " + nbObs);
   });
 
   // Stat - map interaction

@@ -15,6 +15,7 @@ def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
     query = (
         session.query(
             func.count(VmObservationsMailles.id_observation).label("nb_obs"),
+            func.max(VmObservationsMailles.annee).label("last_observation"),
             VmObservationsMailles.id_maille,
             VmObservationsMailles.geojson_maille,
         )
@@ -26,7 +27,6 @@ def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
             )
         )
     )
-
     if year_min and year_max:
         query = query.filter(VmObservationsMailles.annee.between(year_min, year_max))
 
@@ -35,7 +35,11 @@ def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
             Feature(
                 id=o.id_maille,
                 geometry=json.loads(o.geojson_maille),
-                properties={"id_maille": o.id_maille, "nb_observations": o.nb_obs},
+                properties={
+                    "id_maille": o.id_maille,
+                    "nb_observations": o.nb_obs,
+                    "last_observation": o.last_observation,
+                },
             )
             for o in query.all()
         ]
