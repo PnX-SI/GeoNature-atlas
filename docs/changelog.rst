@@ -2,12 +2,19 @@
 CHANGELOG
 =========
 
-1.4.1 (unreleased)
+1.4.1 (2019-10-08)
 ------------------
 
 **🐛 Corrections**
 
-* 
+* Correction de syntaxe dans le fichier exemple de la configuration ``config.py.example``
+* Correction du responsive sur la page d'accueil
+* Corrrection du slider en mode maille
+* Correction d'un python import incorrect
+
+**⚠️ Notes de version**
+
+Si vous effectuez une montée de version, la correction du responsive necessite une correction sur le fichier du customisation ``introduction.html``. Supprimer simplement la première balise ``<div class="col-sm-12">`` et sa balise fermante correspondante (à la dernière ligne du fichier)
 
 1.4.0 (2019-10-01)
 ------------------
