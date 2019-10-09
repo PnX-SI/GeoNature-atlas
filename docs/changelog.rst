@@ -13,6 +13,7 @@ CHANGELOG
 * Correction d'un import python incorrect (#205)
 * Corrections mineures et mise en forme de la documentation
 * Requete ``get_taxon`` : utilisation ``get_or_none`` au lieu de prendre l'index 0 de la liste (#207)
+* Correction de la serialisation de la route des observations ponctuelles (doit contenir la clé ``year`` pour que le slider fonctionne)
 
 **⚠️ Notes de version**
 
