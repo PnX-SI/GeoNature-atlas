@@ -1,8 +1,7 @@
 
 --################################
---###COMMUNES
+--### COMMUNES
 --################################
-
 
 -- Suppression si temporaire des communes la table existe
 DO $$
@@ -12,7 +11,7 @@ EXCEPTION WHEN others THEN
 	RAISE NOTICE 'view atlas.l_communes does not exist';
 END$$;
 
--- création de la vm l_communes à partir des communes du ref_geo
+-- Création de la vm l_communes à partir des communes du ref_geo
 CREATE MATERIALIZED VIEW atlas.l_communes AS
  SELECT c.area_code as insee,
     c.area_name as commune_maj,
@@ -41,7 +40,7 @@ CREATE UNIQUE INDEX l_communes_insee_idx
 
 --################################
 --################################
---###Mailles
+--### Mailles
 --################################
 --################################
 
@@ -66,7 +65,7 @@ WHERE t.type_code = :type_maille;
 
 --################################
 --################################
---###Territoires
+--### Territoires
 --################################
 --################################
 
@@ -74,7 +73,7 @@ DO $$
 BEGIN
 	DROP TABLE atlas.t_layer_territoire;
 EXCEPTION WHEN others THEN
-	RAISE NOTICE 'view atlas.t_mailles_territoire does not exist';
+	RAISE NOTICE 'view atlas.t_layer_territoire does not exist';
 END$$;
 
 
@@ -99,8 +98,6 @@ CREATE INDEX index_gist_t_layer_territoire_the_geom
   ON atlas.t_layer_territoire
   USING gist
   (the_geom);
-
-
 
 
 -- Rafraichissement des vues contenant les données de l'atlas
