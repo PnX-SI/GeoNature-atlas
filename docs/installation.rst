@@ -73,8 +73,8 @@ Vous pouvez renommer le dossier qui contient l'application (dans un dossier ``/h
 
 Le script ``install_env.sh`` va automatiquement installer les outils nécessaires à l'application si ils ne sont pas déjà sur le serveur :
 
-- PostgreSQL 9.6+
-- PostGIS 2.3+
+- PostgreSQL
+- PostGIS
 - Apache 2
 - Python 3 et GDAL
 - Supervisor
@@ -96,52 +96,40 @@ Faites une copie du modèle de fichier de configuration de la BDD et de son inst
     cp settings.ini.sample settings.ini
     nano settings.ini
 
-:note:
+NOTES : 
 
-    Suivez bien les indications en commentaire dans ce fichier.
+* Suivez bien les indications en commentaire dans ce fichier.
 
-:note:
+* Attention à ne pas mettre de 'quote' dans les valeurs, même pour les chaines de caractères.
 
-    Attention à ne pas mettre de 'quote' dans les valeurs, même pour les chaines de caractères.
+* Dans le cas où vous souhaitez connecter l'atlas à une BDD distante de GeoNature v2, il faut au préalable créer un utilisateur spécifique pour l'atlas dans cette dernière (lecture seule). Pour cela se connecter en SSH au serveur hébergeant la BDD mère de GeoNature v2 et lancez les commandes suivantes en les adaptant. Faire ensuite correspondre avec les paramètres concernés dans le fichier ``settings.ini`` (``atlas_source_user`` et ``atlas_source_pass``) :
 
-:note:
+::
 
-    Dans le cas où vous vous souhaitez connecter l'atlas à une BDD distante de GeoNature v2, il faut au préalable créer un utilisateur spécifique pour l'atlas dans cette dernière (lecture seule). 
+    sudo su - postgres
+    psql
+    CREATE USER geonatatlas WITH ENCRYPTED PASSWORD 'monpassachanger';
+    \c geonature2db
+    GRANT USAGE ON SCHEMA gn_synthese, ref_geo, ref_nomenclatures, taxonomie TO geonatatlas;
+    GRANT SELECT ON ALL TABLES IN SCHEMA gn_synthese, ref_geo, ref_nomenclatures, taxonomie TO geonatatlas;
+    \q
+    exit
 
-:note:
-
-    Se connecter en SSH au serveur hébergeant la BDD mère de GeoNature v2 et lancez les commandes suivantes en les adaptant. Faire ensuite correspondre avec les paramètres concernés dans le fichier ``settings.ini`` (``atlas_source_user`` et ``atlas_source_pass``) :
-
-    ::
-
-        sudo su - postgres
-        psql
-        CREATE USER geonatatlas WITH ENCRYPTED PASSWORD 'monpassachanger';
-        GRANT USAGE ON SCHEMA gn_synthese, ref_geo, ref_nomenclatures, taxonomie TO geonatatlas;
-        GRANT SELECT ON ALL TABLES IN SCHEMA gn_synthese, ref_geo, ref_nomenclatures, taxonomie TO geonatatlas;
-        \q
-        exit
-
-:note:
-
-    GeoNature-atlas fonctionne avec des données géographiques qui doivent être fournies en amont (mailles, limite de territoire, limite de communes). Vous avez la possibilité de récupérer ces données directement depuis le référentiel géographique de GeoNature si les données y sont présentes (``use_ref_geo_gn2=true``); ou de fournir des fichiers shapefiles (à mettre dans le répertoire ``data/ref``)
+* GeoNature-atlas fonctionne avec des données géographiques qui doivent être fournies en amont (mailles, limite de territoire, limite de communes). Vous avez la possibilité de récupérer ces données directement depuis le référentiel géographique de GeoNature si les données y sont présentes (``use_ref_geo_gn2=true``); ou de fournir des fichiers shapefiles (à mettre dans le répertoire ``data/ref``)
         
-:note:
-
-    **Attention** si ``use_ref_geo_gn2=true``. Par défaut le ``ref_geo`` contient l'ensemble des communes de France, ce qui ralentit fortement l'installation lorsqu'on construit la vue matérialisée ``vm_communes`` (qui intersecte les communes avec les limites du territoire). 
+**Attention** si ``use_ref_geo_gn2=true``. Par défaut le ``ref_geo`` contient l'ensemble des communes de France, ce qui ralentit fortement l'installation lorsqu'on construit la vue matérialisée ``vm_communes`` (qui intersecte les communes avec les limites du territoire). 
     
-    Pour accelérer l'installation, vous pouvez "désactiver" certaines communes du ``ref_geo``, dont vous ne vous servez pas. Voir l'exemple de requête ci-dessous :
+Pour accelérer l'installation, vous pouvez "désactiver" certaines communes du ``ref_geo``, dont vous ne vous servez pas. Voir l'exemple de requête ci-dessous :
 
-    ::
+::
 
-        UPDATE ref_geo.l_areas set enable = false where id_type = 25 AND id_area NOT in (
-        select a.id_area from ref_geo.l_areas a
-        join ref_geo.li_municipalities m ON a.id_area = m.id_area
-        where insee_dep in ('MON_CODE_DEPARTEMENT', 'MON_CODE_DEPARTEMENT_BIS')
-        )
+    UPDATE ref_geo.l_areas set enable = false where id_type = 25 AND id_area NOT in (
+    select a.id_area from ref_geo.l_areas a
+    join ref_geo.li_municipalities m ON a.id_area = m.id_area
+    where insee_dep in ('MON_CODE_DEPARTEMENT', 'MON_CODE_DEPARTEMENT_BIS')
+    )
 
-    
-    Si votre territoire est celui de toute la France, préférez une installation en fournissant une couche SHP des communes (sans connection au ``ref_geo``)
+Si votre territoire est celui de toute la France, préférez une installation en fournissant une couche SHP des communes (sans connection au ``ref_geo``)
 
 :note:
 
@@ -170,7 +158,7 @@ Lancez le fichier fichier d'installation de la base de données :
 ::
 
     cd /home/`whoami`/atlas
-    sudo ./install_db.sh
+    ./install_db.sh
 
 
 :notes:
@@ -186,7 +174,7 @@ Si vous souhaitez uniquement recréer la vue ``atlas.vm_observations`` et les 6 
 
 :notes:
 
-    Un mécanisme de dégradation des données est fournit par défaut dans GeoNature-atlas, voir la documentation à ce sujet: `<degradation_donnees.rst.rst>`_
+    Un mécanisme de dégradation des données est fourni par défaut dans GeoNature-atlas, voir la documentation à ce sujet : `<degradation_donnees.rst>`_
 
 **5. Installation de l'application**
 
