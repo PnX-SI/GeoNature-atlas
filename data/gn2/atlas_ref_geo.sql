@@ -1,6 +1,5 @@
-
 --################################
---### COMMUNES
+--###Communes
 --################################
 
 -- Suppression si temporaire des communes la table existe
@@ -11,7 +10,7 @@ EXCEPTION WHEN others THEN
 	RAISE NOTICE 'view atlas.l_communes does not exist';
 END$$;
 
--- Création de la vm l_communes à partir des communes du ref_geo
+-- création de la vm l_communes à partir des communes du ref_geo
 CREATE MATERIALIZED VIEW atlas.l_communes AS
  SELECT c.area_code as insee,
     c.area_name as commune_maj,
@@ -22,15 +21,11 @@ CREATE MATERIALIZED VIEW atlas.l_communes AS
    WHERE enable=true
 WITH DATA;
 
-
 CREATE INDEX index_gist_l_communes_the_geom
   ON atlas.l_communes
   USING gist
   (the_geom);
 
--- Index: atlas.l_communes_insee_idx
-
--- DROP INDEX atlas.l_communes_insee_idx;
 
 CREATE UNIQUE INDEX l_communes_insee_idx
   ON atlas.l_communes
@@ -40,7 +35,7 @@ CREATE UNIQUE INDEX l_communes_insee_idx
 
 --################################
 --################################
---### Mailles
+--###Mailles
 --################################
 --################################
 
@@ -51,7 +46,6 @@ EXCEPTION WHEN others THEN
 	RAISE NOTICE 'view atlas.t_mailles_territoire does not exist';
 END$$;
 
-
 CREATE MATERIALIZED VIEW atlas.t_mailles_territoire AS
 SELECT st_transform(c.geom, 3857)::geometry('MultiPolygon',3857) as the_geom,
     st_asgeojson(st_transform(c.geom, 4326)) AS geojson_maille,
@@ -61,11 +55,14 @@ JOIN ref_geo.bib_areas_types t
 ON t.id_type = c.id_type
 WHERE t.type_code = :type_maille;
 
+CREATE UNIQUE INDEX t_mailles_territoire_id_maille_idx
+  ON atlas.t_mailles_territoire
+  USING btree (id_maille);
 
 
 --################################
 --################################
---### Territoires
+--###Territoires
 --################################
 --################################
 
@@ -98,6 +95,10 @@ CREATE INDEX index_gist_t_layer_territoire_the_geom
   ON atlas.t_layer_territoire
   USING gist
   (the_geom);
+  
+CREATE UNIQUE INDEX t_layer_territoire_gid_idx
+  ON atlas.t_layer_territoire
+  USING btree (gid);
 
 
 -- Rafraichissement des vues contenant les données de l'atlas
