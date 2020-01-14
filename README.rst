@@ -38,6 +38,7 @@ Atlas en ligne utilisant GeoNature-atlas :
 - `LPO Auvergne-Rhône-Alpes <https://carto.fauneauvergnerhonealpes.org/>`_
 - `OcNat <https://biodiv-occitanie.fr/>`_
 - `Société Herpétologique de France <https://atlas.lashf.org/>`_
+- `Picardie Nature <https://clicnat.fr/>`_
 
 
 Technologies
