@@ -170,7 +170,7 @@ Lancez le fichier fichier d'installation de la base de données :
 ::
 
     cd /home/`whoami`/atlas
-    sudo ./install_db.sh
+    ./install_db.sh
 
 
 :notes:
