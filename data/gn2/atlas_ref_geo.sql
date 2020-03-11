@@ -53,7 +53,7 @@ SELECT st_transform(c.geom, 3857)::geometry('MultiPolygon',3857) as the_geom,
 FROM ref_geo.l_areas c
 JOIN ref_geo.bib_areas_types t
 ON t.id_type = c.id_type
-WHERE t.type_code = :type_maille;
+WHERE t.type_code = :type_maille and enable=true;
 
 CREATE UNIQUE INDEX t_mailles_territoire_id_maille_idx
   ON atlas.t_mailles_territoire
@@ -80,6 +80,7 @@ WITH d AS (
 	FROM ref_geo.l_areas l
 	JOIN ref_geo.bib_areas_types b USING(id_type)
 	WHERE REPLACE(b.type_code, ' ', '_') = :type_territoire
+  AND l.enable = TRUE
 	GROUP BY b.type_name
 )
 SELECT
