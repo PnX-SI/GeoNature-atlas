@@ -1,81 +1,54 @@
+// ChartJS Graphs
 
-// alti graph
-Morris.Bar({
-            element:"altiChart",
-            data : dataset,
-            xkey: "altitude",
-            ykeys : ["value"],
-            labels: ['Observation(s)'],
-            xLabelAngle: 45,
-            hideHover: 'auto',
-            resize: true,
-            axes: true,
-            gridIntegers: true
-            /*yLabelFormat: function(y){return y != Math.round(y)?'':y;}*/
-/*            horizontal: true
-*/        });
+Chart.defaults.global.defaultFontSize = 12;
+const chartMainColor = getComputedStyle(document.documentElement).getPropertyValue('--main-color');
+const chartHoverMainColor = getComputedStyle(document.documentElement).getPropertyValue('--second-color');
 
+const getChartDatas = function (data, key) {
+    let values = [];
+    for (var i = 0; i < data.length; i++) {
+        values.push(data[i][key])
+    }
+    return values
+};
 
-
-svgbis=d3.selectAll("svg");
-
-        svgbis.append("g")
-        .append("text")
-            .attr("y", "90%")
-            .attr("x", "100%")
-            .attr("dy", ".71em")
-            .attr("fill", "#888888")
-            .attr("font-size", "10px")
-            .style("text-anchor", "end")
-            .text("Altitude(m)");
-
-
-var phenologyChart =  Morris.Bar({
-                        element:"phenologyChart",
-                        data : months,
-                        xkey: "mois",
-                        ykeys : ["value"],
-                        labels: ['Observation(s)'],
-                        xLabelAngle: 60,
-                        hideHover: 'auto',
-                        resize: true,
-                        axes: true,
-                    });
-svgContainer = d3.selectAll("svg");
-    svgContainer.append("g")
-        .append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("y", '0%')
-            .attr('x', '-15%')
-            .attr("dy", ".71em")
-            .attr("fill", "#888888")
-            .attr("font-size", "10px")
-            .style("text-anchor", "end")
-            .text("Observations");
+genericChart = function (element, labels, values) {
+    return new Chart(element, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'observations',
+                data: values,
+                backgroundColor: chartMainColor,
+                hoverBackgroundColor: chartHoverMainColor,
+                borderWidth: 0
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }],
+                xAxes: [{
+                    gridLines: {
+                        display: false
+                    }
+                }]
+            },
+            maintainAspectRatio: false,
+            legend: {
+                display: false
+            }
+        }
+    });
+};
 
 
+var monthChartElement = document.getElementById('monthChart');
+const monthChart = genericChart(monthChartElement, getChartDatas(months, 'mois'), getChartDatas(months, 'value'));
 
-rect = d3.selectAll("rect");
-
-            rect.on("mouseover", function(d) {
-             d3.select(this).classed("highlight", true);
-             d3.select(this).select("text").style("visibility", "visible");
-
-});
-
-            rect.on("mouseout", function() {
-    d3.select(this).classed("highlight", false);
-
-});
-
-svgContainer = d3.selectAll("svg");
-    svgContainer.append("g")
-        .append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("y", '0%')
-            .attr('x', '-15%')
-            .attr("dy", ".71em")
-            .attr("fill", "#888888")
-            .attr("font-size", "10px")
-            .style("text-anchor", "end")
-            .text("Observations");
+var altiChartElement = document.getElementById('altiChart');
+const altiChart = genericChart(altiChartElement, getChartDatas(dataset, 'altitude'), getChartDatas(dataset, 'value'));
