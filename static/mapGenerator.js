@@ -31,9 +31,11 @@ function generateMap() {
   // Add limits of the territory to the map
   $(document).ready(function() {
     $.getJSON(url_limit_territory, function(json) {
-      L.geoJson(json, {
+      const territoryGeoJson = L.geoJson(json, {
         style: territoryStyle
-      }).addTo(map);
+      });
+      territoryGeoJson.addTo(map);
+      map.fitBounds(territoryGeoJson.getBounds())
     });
   });
 

@@ -2,9 +2,9 @@
   border-color: transparent !important;
 }
 
-.font-icon {
-  font-size: 40px;
-}
+/*.font-icon {*/
+/*  font-size: 40px;*/
+/*}*/
 
 h4.title-spaced {
   margin-top: 0px;
@@ -60,18 +60,18 @@ h4 {
 }
 
 .large {
-  font-size: 5rem;
+  font-size: 3rem;
 }
 
 .muted {
   color: grey;
 }
 
-.text-muted {
-  text-transform: uppercase;
-  font-weight: 700;
-  font-size: 1.5rem;
-}
+/*.text-muted {*/
+/*  text-transform: uppercase;*/
+/*  font-weight: 700;*/
+/*  font-size: 1.5rem;*/
+/*}*/
 
 .title-spaced {
   letter-spacing: 0.025em;
@@ -100,16 +100,14 @@ h3.title-spaced {
 
 /*Stat block*/
 
-.stat-panel {
-  padding-bottom: 0px;
-}
-
 .stat-object {
   min-height: 200px;
+    padding: 0px;
 }
 
 .stat-object .form-control {
   width: 100%;
+
 }
 
 .stat-thumbnail {
@@ -117,6 +115,7 @@ h3.title-spaced {
   background-color: rgb(255, 255, 255);
   margin-bottom: 0px;
   border-radius: 0px;
+  padding: 10px;
 }
 
 .stat-thumbnail span {

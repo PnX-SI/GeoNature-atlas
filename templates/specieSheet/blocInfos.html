@@ -1,0 +1,60 @@
+{% block blocInfo %}
+    <div class="card mt-4" id="blocInfos">
+        <h4 class="title-bar center">
+            <strong>Informations sur l'espèce</strong>
+        </h4>
+        <ul class="nav nav-tabs">
+            <li class="nav-items"><a class="nav-link active" data-toggle="tab" href="#description">Description</a>
+            </li>
+            {% if taxonDescription.commentaire != None %}
+                <li><a class="nav-link" data-toggle="tab" href="#commentaire">En savoir plus</a></li>
+            {% endif %}
+            <li class="nav-items"><a class="nav-link" data-toggle="tab" href="#milieu">Milieu</a></li>
+            <li class="nav-items"><a class="nav-link" data-toggle="tab" href="#chorologie">Répartition</a></li>
+            <li class="nav-items"><a class="nav-link" data-toggle="tab" href="#synonymes">Synonymes</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="description" class="tab-pane fade in active">
+                {% if taxonDescription.description == None %}
+                    Non renseignée pour le moment
+                {% else %}
+                    {{ taxonDescription.description | safe }}
+                {% endif %}
+            </div>
+            {% if taxonDescription.commentaire != None %}
+                <div id="commentaire" class="tab-pane fade">
+                    {{ taxonDescription.commentaire  | safe }}
+                </div>
+            {% endif %}
+            <div id="milieu" class="tab-pane fade">
+                {% if taxonDescription.milieu == None %}
+                    Non renseigné pour le moment
+                {% else %}
+                    {{ taxonDescription.milieu }}
+                {% endif %}
+            </div>
+            <div id="chorologie" class="tab-pane fade">
+                {% if taxonDescription.chorologie == None %}
+                    Non renseignée pour le moment
+                {% else %}
+                    {{ taxonDescription.chorologie }}
+                {% endif %}
+            </div>
+            <div id="synonymes" class="tab-pane fade">
+                {% if synonyme | length == 1 %}
+                    Aucun synonyme pour ce taxon
+                {% else %}
+                    {% for syn in synonyme %}
+                        {% if not syn.lb_nom == taxon.taxonSearch.lb_nom %}
+                            {{ syn.nom_complet_html | safe }}
+                        {% endif %}
+                        {% if ( (not loop.last) and (not syn.lb_nom == taxon.taxonSearch.lb_nom) ) %}
+                            |
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

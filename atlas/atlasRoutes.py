@@ -111,7 +111,7 @@ def index():
     session.close()
 
     return render_template(
-        "templates/index.html",
+        "templates/home/_main.html",
         observations=observations,
         mostViewTaxon=mostViewTaxon,
         stat=stat,
@@ -167,7 +167,7 @@ def ficheEspece(cd_ref):
     session.close()
 
     return render_template(
-        "templates/ficheEspece.html",
+        "templates/specieSheet/_main.html",
         taxon=taxon,
         listeTaxonsSearch=[],
         observations=[],

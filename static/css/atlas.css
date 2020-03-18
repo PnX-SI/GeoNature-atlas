@@ -57,7 +57,9 @@ body {
 #page {
   padding-left: 70px;
   padding-right: 10px;
-  margin-top: 25px;
+  /*padding-top: 60px;*/
+  /*margin-top: 25px;*/
+
 }
 
 .form-control:focus {
@@ -116,13 +118,14 @@ a {
   background-color: white !important;
   margin-bottom: 0px;
   border-radius: 0px;
-  border-bottom-color: var(--main-color);
+  border-bottom: 1px solid var(--main-color);
   z-index: 1999;
   height: 60px;
 }
 
 .logoStructure {
   height: 60px;
+  max-height: 60px;
   margin: -15px;
   padding-right: 15px;
 }
@@ -147,11 +150,12 @@ a {
 
 #sideBar {
   position: fixed;
+  /*padding-top: 60px;!**!*/
   width: 60px;
   background-color: #333333;
   height: 100%;
   z-index: 1998;
-  margin-top: 10px;
+  /*margin-top: 10px;!**!*/
 }
 
 #sidebar_menu {

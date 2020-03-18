@@ -1,0 +1,82 @@
+{% block navbar %}
+    <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light" role="navigation">
+        <a class="navbar-brand" href="{{ url_for('main.index') }}">
+            <img class="logoStructure" src="{{ url_for('static', filename='custom/images/logo-structure.png') }}"/>
+        </a>
+        <a class="navbar-brand titreAppli"
+           href="{{ url_for('main.index') }}">{{ configuration.NOM_APPLICATION }}</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="navbar-nav mr-auto">
+            </div>
+            <form class="form-inline my-2 my-lg-0">
+                <form method="POST" action="" id='searchFormTaxons' role="search">
+                    <div class="form-group has-feedback">
+                        <input id="searchTaxons" type="text" class="form-control mr-sm-2 ajax-search"
+                               placeholder="Rechercher une espèce&nbsp;&nbsp;&nbsp;" loading="false"/>
+                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    </div>
+                    <input id="hiddenInputTaxons" type="hidden" name="cd_ref"/>
+                </form>
+
+                <form class="form-inline my-2 my-lg-0" method="POST"
+                      onsubmit="completeAction('#searchFormCommunes', hiddenInputCommunes)"
+                      id='searchFormCommunes' action="" role="search">
+                    <div class="form-group has-feedback">
+                        <input id="searchCommunes" type="text" class="form-control mr-sm-2 ajax-search"
+                               placeholder="Rechercher une commune">
+                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                    </div>
+                    <input id="hiddenInputCommunes" type="hidden" name="insee">
+                </form>
+                {#            {% if configuration.ADVANCED_SEARCH %}#}
+
+                <button class="btn btn-success" data-toggle="modal" data-target="#advancedSearchModal"><i
+                        class="fas fa-search-location"></i></button>
+            </form>
+        </div>
+
+    </nav>
+    <div class="modal fade" id="advancedSearchModal" tabindex="-1" role="dialog"
+         aria-labelledby="advancedSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Recherches avancées</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-inline my-2 my-lg-0">
+                        <form method="POST" action="" id='searchFormTaxons' role="search">
+                            <div class="form-group has-feedback">
+                                <input id="searchTaxons" type="text" class="form-control mr-sm-2 ajax-search"
+                                       placeholder="Rechercher une espèce&nbsp;&nbsp;&nbsp;" loading="false"/>
+                                <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                            </div>
+                            <input id="hiddenInputTaxons" type="hidden" name="cd_ref"/>
+                        </form>
+
+                        <form class="form-inline my-2 my-lg-0" method="POST"
+                              onsubmit="completeAction('#searchFormCommunes', hiddenInputCommunes)"
+                              id='searchFormCommunes' action="" role="search">
+                            <div class="form-group has-feedback">
+                                <input id="searchCommunes" type="text" class="form-control mr-sm-2 ajax-search"
+                                       placeholder="Rechercher une commune">
+                                <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                            </div>
+                            <input id="hiddenInputCommunes" type="hidden" name="insee">
+                        </form>
+                        {#            {% if configuration.ADVANCED_SEARCH %}#}
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

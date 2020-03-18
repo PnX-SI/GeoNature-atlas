@@ -1,0 +1,82 @@
+{% block audioVideo %}
+    <div class="panel panel-default" style="padding: 10px;">
+
+        {% if videoAudio.video |length > 0 %}
+            <h4>
+                <span class="glyphicon glyphicon-film"></span>
+                <strong>Video</strong> ({{ videoAudio.video | length }})
+                {% if videoAudio.video | length > 1 %}
+                    <i class="btn-more" id="btn-more-video" data-toggle="collapse"
+                       data-target="#moreVideo"
+                       data-placement="left" rel="tooltip" title="Afficher plus de vidéos"><span
+                            class="glyphicon glyphicon-chevron-down"></span></i>
+                {% endif %}
+            </h4>
+            <hr class="small-hr">
+            <h4>{{ videoAudio.video[0].title }}</h4>
+
+            {% with media=videoAudio.video[0] %}
+                {% include "templates/block-descriptionMedia.html" %}
+            {% endwith %}
+            {% if videoAudio.video[0].id_type == 6 %}
+                <video controls>
+                    <source src="{{ video.path }}" type="video/mp4">
+                </video>
+            {% else %}
+                {{ videoAudio.video[0].path|safe }}
+            {% endif %}
+
+            <div id="moreVideo" class="collapse">
+                {% for i in range (1, videoAudio.video |length) %}
+                    <h4> {{ videoAudio.video[i].title }}</h4>
+
+                    {% with media=videoAudio.video[i] %}
+                        {% include "templates/block-descriptionMedia.html" %}
+                    {% endwith %}
+                    {% if videoAudio.video[i].id_type == 6 %}
+                        <video controls>
+                            <source src="{{ videoAudio.video[i].path }}" type="video/mp4">
+                        </video>
+                    {% else %}
+                        {{ videoAudio.video[i].path|safe }}
+                    {% endif %}
+
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if videoAudio.audio | length > 0 %}
+
+            <h4><span class="glyphicon glyphicon-volume-up strong"></span> Audio
+                ({{ videoAudio.audio | length }})
+                {% if videoAudio.audio | length > 1 %}
+                    <i class="btn-more" id="btn-more-audio" data-toggle="collapse"
+                       data-target="#moreAudio"
+                       rel="tooltip" title="Afficher plus d'enregistrements"> <span
+                            class="glyphicon glyphicon-chevron-down"> </span> </i>
+                {% endif %}
+            </h4>
+            <hr class="small-hr">
+            <h4>{{ videoAudio.audio[0].title }}</h4>
+            <audio controls>
+                <source src="{{ videoAudio.audio[0].path }}" type="audio/mpeg">
+            </audio>
+            {% with media=videoAudio.audio[0] %}
+                {% include "templates/block-descriptionMedia.html" %}
+            {% endwith %}
+
+            <div id="moreAudio" class="collapse">
+                {% for i in range (1, videoAudio.audio |length) %}
+                    <h4> {{ videoAudio.audio[i].title }} </h4>
+                    <audio controls>
+                        <source src="{{ videoAudio.audio[i].path }}" type="audio/mpeg">
+                    </audio>
+                    {% with media=videoAudio.audio[i] %}
+                        {% include "templates/block-descriptionMedia.html" %}
+                    {% endwith %}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+    </div>
+{% endblock %}
