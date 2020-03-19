@@ -21,7 +21,7 @@
 
             <div class="tab-content" style="width:100%;">
                 {% if articles | length != 0 %}
-                    <div id="articles" class="tab-pane fade in active">
+                    <div id="articles" class="tab-pane fade show active">
                         <table class="table table-striped">
                             <thead>
                             <th></th>
@@ -72,7 +72,7 @@
                 {% if articles | length != 0 %}
                     <div id="communes" class="tab-pane fade">
                 {% else %}
-                    <div id="communes" class="tab-pane fade in active">
+                    <div id="communes" class="tab-pane fade show active">
                 {% endif %}
                 <p>
                     {% for com in communes %}
