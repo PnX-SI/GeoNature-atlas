@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
-from flask import render_template, redirect, abort, current_app
+from flask import render_template, redirect, abort, current_app, make_response, request, url_for
+from datetime import datetime, timedelta
 from .configuration import config
 from .modeles.repositories import (
     vmTaxonsRepository,
@@ -13,6 +14,9 @@ from .modeles.repositories import (
     vmMedias,
     vmCorTaxonAttribut,
     vmTaxonsMostView,
+)
+from atlas.modeles.entities import (
+    vmTaxons
 )
 from . import utils
 
@@ -282,4 +286,32 @@ def get_staticpages(page):
     static_page = current_app.config["STATIC_PAGES"][page]
     session.close()
     return render_template(static_page["template"])
+
+
+@main.route('/sitemap.xml', methods=['GET'])
+def sitemap():
+    '''Generate sitemap.xml iterating over static and dynamic routes to make a list of urls and date modified'''
+    pages = []
+    ten_days_ago = datetime.now() - timedelta(days=10)
+    session = utils.loadSession()
+    connection = utils.engine.connect()
+    url_root = request.url_root
+    if url_root[-1] == '/':
+        url_root = url_root[:-1]
+    for rule in current_app.url_map.iter_rules():
+        # check for a 'GET' request and that the length of arguments is = 0 and if you have an admin area that the rule does not start with '/admin'
+        if 'GET' in rule.methods and len(rule.arguments) == 0 and not rule.rule.startswith('/api'):
+            pages.append([url_root + rule.rule, ten_days_ago])
+
+    # get dynamic routes for blog
+    species = session.query(vmTaxons.VmTaxons).order_by(vmTaxons.VmTaxons.cd_ref).all()
+    for specie in species:
+        url = url_root + url_for('main.ficheEspece', cd_ref=specie.cd_ref)
+        modified_time = ten_days_ago
+        pages.append([url, modified_time])
+
+    sitemap_template = render_template('templates/sitemap.xml', pages=pages, url_root=url_root)
+    response = make_response(sitemap_template)
+    response.headers["Content-Type"] = "application/xml"
+    return response
 
