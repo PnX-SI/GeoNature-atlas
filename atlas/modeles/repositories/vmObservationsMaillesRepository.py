@@ -1,7 +1,8 @@
-from geojson import Feature, FeatureCollection
 import json
 
+from geojson import Feature, FeatureCollection
 from sqlalchemy.sql import text, func, or_
+
 from atlas.modeles.entities.vmObservations import VmObservationsMailles
 from atlas.modeles.utils import deleteAccent, findPath
 
@@ -19,8 +20,8 @@ def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
             VmObservationsMailles.id_maille,
             VmObservationsMailles.geojson_maille,
         )
-        .group_by(VmObservationsMailles.id_maille, VmObservationsMailles.geojson_maille)
-        .filter(
+            .group_by(VmObservationsMailles.id_maille, VmObservationsMailles.geojson_maille)
+            .filter(
             or_(
                 VmObservationsMailles.cd_ref.in_(subquery),
                 VmObservationsMailles.cd_ref == cd_ref,
@@ -91,7 +92,7 @@ def lastObservationsCommuneMaille(connection, mylimit, insee):
     WITH last_obs AS (
         SELECT
             obs.cd_ref, obs.dateobs, t.lb_nom,
-            t.nom_vern, obs.the_geom_point as l_geom
+            t.nom_vern, obs.the_geom_point AS l_geom
         FROM atlas.vm_observations obs
         JOIN atlas.vm_communes c
         ON ST_Intersects(obs.the_geom_point, c.the_geom)
@@ -129,7 +130,7 @@ def getObservationsTaxonCommuneMaille(connection, insee, cd_ref):
     sql = """
         SELECT
             o.cd_ref, t.id_maille, t.geojson_maille,
-            extract(YEAR FROM o.dateobs) as annee
+            extract(YEAR FROM o.dateobs) AS annee
         FROM atlas.vm_observations o
         JOIN atlas.vm_communes c
         ON ST_INTERSECTS(o.the_geom_point, c.the_geom)

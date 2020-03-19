@@ -1,7 +1,7 @@
 
 # -*- coding:utf-8 -*-
 
-from .. import utils
+from atlas.modeles import utils
 from sqlalchemy.sql import text
 
 

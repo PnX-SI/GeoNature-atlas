@@ -5,11 +5,11 @@ from datetime import datetime, timedelta
 from flask import Blueprint
 from flask import render_template, redirect, abort, current_app, make_response, request, url_for
 
+from atlas import utils
 from atlas.modeles.entities import (
     vmTaxons, vmCommunes
 )
-from . import utils
-from .modeles.repositories import (
+from atlas.modeles.repositories import (
     vmTaxonsRepository,
     vmObservationsRepository,
     vmAltitudesRepository,

@@ -1,10 +1,10 @@
 # -*- coding:utf-8 -*-
 
-from sqlalchemy import create_engine
-from .configuration.config import database_connection, NOM_APPLICATION
 from sqlalchemy import MetaData
-
+from sqlalchemy import create_engine
 from sqlalchemy.pool import QueuePool
+
+from atlas.configuration.config import database_connection, NOM_APPLICATION
 
 engine = create_engine(
     database_connection,
@@ -57,8 +57,8 @@ class GenericTable:
         if geometry_field:
             try:
                 if (
-                    not self.tableDef.columns[geometry_field].type.__class__.__name__
-                    == "Geometry"
+                        not self.tableDef.columns[geometry_field].type.__class__.__name__
+                            == "Geometry"
                 ):
                     raise TypeError(
                         "field {} is not a geometry column".format(geometry_field)

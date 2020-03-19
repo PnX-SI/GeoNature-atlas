@@ -1,16 +1,15 @@
 # -*- coding:utf-8 -*-
 
 from flask import jsonify, Blueprint, request, current_app
-from werkzeug.wrappers import Response
-from . import utils
-from .modeles.repositories import (
+
+from atlas import utils
+from atlas.modeles.repositories import (
     vmSearchTaxonRepository,
     vmObservationsRepository,
     vmObservationsMaillesRepository,
     vmMedias,
     vmCommunesRepository,
 )
-from .configuration import config
 
 api = Blueprint("api", __name__)
 

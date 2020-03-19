@@ -1,21 +1,17 @@
 # coding: utf-8
+from geoalchemy2.types import Geometry
 from sqlalchemy import (
-    Boolean,
     Column,
     Date,
-    DateTime,
     Integer,
     MetaData,
     String,
     Table,
     Text,
 )
-from geoalchemy2.types import Geometry
-from sqlalchemy.sql.sqltypes import NullType
-from sqlalchemy.orm import mapper
 from sqlalchemy.ext.declarative import declarative_base
-from ...utils import engine
 
+from atlas.utils import engine
 
 metadata = MetaData()
 Base = declarative_base()
@@ -55,4 +51,3 @@ class VmObservationsMailles(Base):
         autoload=True,
         autoload_with=engine,
     )
-

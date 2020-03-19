@@ -1,9 +1,9 @@
 # -*- coding:utf-8 -*-
 from flask import current_app
 from sqlalchemy.sql import text
-from .. import utils
-from ..entities.vmTaxref import VmTaxref
-from ..entities.tBibTaxrefRang import TBibTaxrefRang
+from atlas.modeles import utils
+from atlas.modeles.entities.vmTaxref import VmTaxref
+from atlas.modeles.entities.tBibTaxrefRang import TBibTaxrefRang
 
 
 def searchEspece(connection, cd_ref):

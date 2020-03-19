@@ -1,13 +1,13 @@
-
 # -*- coding:utf-8 -*-
 
 import ast
+
 from flask import current_app
 from sqlalchemy import distinct
 from sqlalchemy.sql import text
 from sqlalchemy.sql.expression import func
 
-from ..entities.vmCommunes import VmCommunes
+from atlas.modeles.entities.vmCommunes import VmCommunes
 
 
 def getAllCommunes(session):
@@ -19,6 +19,7 @@ def getAllCommunes(session):
         temp = {'label': r[0], 'value': r[1]}
         communeList.append(temp)
     return communeList
+
 
 def getCommunesSearch(session, search, limit=50):
     req = session.query(
@@ -33,7 +34,7 @@ def getCommunesSearch(session, search, limit=50):
         req = req.order_by(VmCommunes.commune_maj)
 
     req = req.limit(limit).all()
-    
+
     communeList = list()
     for r in req:
         temp = {'label': r[0], 'value': r[1]}
@@ -42,7 +43,7 @@ def getCommunesSearch(session, search, limit=50):
 
 
 def getCommuneFromInsee(connection, insee):
-    sql =  """
+    sql = """
         SELECT c.commune_maj,
            c.insee,
            c.commune_geojson
@@ -62,12 +63,12 @@ def getCommuneFromInsee(connection, insee):
 
 def getCommunesObservationsChilds(connection, cd_ref):
     sql = """
-        SELECT DISTINCT (com.insee) as insee, com.commune_maj
+        SELECT DISTINCT (com.insee) AS insee, com.commune_maj
         FROM atlas.vm_communes com
         JOIN atlas.vm_observations obs
         ON obs.insee = com.insee
-        WHERE obs.cd_ref in (
-                SELECT * from atlas.find_all_taxons_childs(:thiscdref)
+        WHERE obs.cd_ref IN (
+                SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
             )
             OR obs.cd_ref = :thiscdref
         ORDER BY com.commune_maj ASC

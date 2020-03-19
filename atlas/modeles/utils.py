@@ -1,9 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from ..utils import engine
-from sqlalchemy import MetaData, Table
 import unicodedata
-from ..configuration import config
 
 
 def deleteAccent(string):
