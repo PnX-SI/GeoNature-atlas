@@ -1,8 +1,14 @@
 # -*- coding:utf-8 -*-
 
-from flask import render_template, redirect, abort, current_app, make_response, request, url_for
 from datetime import datetime, timedelta
-from .configuration import config
+
+from flask import Blueprint
+from flask import render_template, redirect, abort, current_app, make_response, request, url_for
+
+from atlas.modeles.entities import (
+    vmTaxons, vmCommunes
+)
+from . import utils
 from .modeles.repositories import (
     vmTaxonsRepository,
     vmObservationsRepository,
@@ -15,12 +21,6 @@ from .modeles.repositories import (
     vmCorTaxonAttribut,
     vmTaxonsMostView,
 )
-from atlas.modeles.entities import (
-    vmTaxons
-)
-from . import utils
-
-from flask import Blueprint
 
 main = Blueprint("main", __name__)
 
@@ -310,8 +310,22 @@ def sitemap():
         modified_time = ten_days_ago
         pages.append([url, modified_time])
 
-    sitemap_template = render_template('templates/sitemap.xml', pages=pages, url_root=url_root)
+    municipalities = session.query(vmCommunes.VmCommunes).order_by(vmCommunes.VmCommunes.insee).all()
+    for municipalitie in municipalities:
+        url = url_root + url_for('main.ficheCommune', insee=municipalitie.insee)
+        modified_time = ten_days_ago
+        pages.append([url, modified_time])
+
+    sitemap_template = render_template('templates/sitemap.xml', pages=pages, url_root=url_root,
+                                       last_modified=ten_days_ago)
     response = make_response(sitemap_template)
     response.headers["Content-Type"] = "application/xml"
     return response
 
+
+@main.route('/robots.txt', methods=['GET'])
+def robots():
+    robots_template = render_template('templates/robots.txt')
+    response = make_response(robots_template)
+    response.headers["Content-type"] = "text/plain"
+    return response
