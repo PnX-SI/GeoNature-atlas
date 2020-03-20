@@ -2,6 +2,10 @@
 
 {% block title %}Accueil{% endblock %}
 
+{% block additionalHeaderAssets %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}"/>
+{% endblock %}
+
 {% block additionalFooterAssets %}
     <script type="text/javascript">
         var observations = {{observations|tojson}}
@@ -51,5 +55,7 @@
         <!-- ESPECES PERIODE -->
         {% include 'templates/home/mostViewNow.html' %}
     {% endif %}
+
+
 
 {% endblock %}

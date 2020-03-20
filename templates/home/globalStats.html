@@ -50,8 +50,8 @@
                 <div class="col-lg-3 col-md-6 col-xs-12 stat-object">
                     <div class="stat-thumbnail">
                         <i class="fas fa-camera fa-3x"></i>
-                        <h1 class="large text-muted font-weight-bold">{{ stat.photo | pretty }}</h1>
-                        <h4 class="text-muted  text-uppercase"> {{ 'photos' if stat.photo > 1 else 'photo' }}</h4>
+                        <h1 class="large text-muted">{{ stat.photo | pretty }}</h1>
+                        <h4 class="text-muted  text-uppercase font-weight-bold"> {{ 'photos' if stat.photo > 1 else 'photo' }}</h4>
                         <p><a href="{{ url_for('main.photos') }}" class="btn btn-default" role="button">Galerie
                             photos</a></p>
                     </div>
