@@ -4,22 +4,21 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <title>{% block title %}{% endblock %} {{ configuration.NOM_APPLICATION }}
-            - {{ configuration.STRUCTURE }}</title>
+    <title>{% block title %}{% endblock %} {{ configuration.NOM_APPLICATION }}
+        - {{ configuration.STRUCTURE }}</title>
     {% include "templates/core/assets_header.html" %}
     <!-- Additional assets -->
-    {% block additionalHeaderAssets %}{% endblock %}
-    <style>
-        body {
-            padding-top: 60px;
-        }
-    </style>
+    {% block additionalHeaderAssets %}
+    {% endblock %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='custom/custom.css') }}"/>
+    {% block metaTags %}{% endblock %}
 </head>
+<body>
 <header id="navbar">
     {% include "templates/core/navbar.html" %}
 </header>
 
-<body>
+<main>
 <div id="sideBar">
     {% include 'templates/core/sideBar.html' %}
 </div>
@@ -42,10 +41,13 @@
     {% endwith %}
     {% block content %}
     {% endblock %}
-    {% if configuration.AFFICHAGE_FOOTER %}
-        {% include 'static/custom/templates/footer.html' %}
-    {% endif %}
+
 </div>
+</main>
+
+{% if configuration.AFFICHAGE_FOOTER %}
+        {% include 'static/custom/templates/footer.html' %}
+{% endif %}
 
 </body>
 {% block additionalFooterAssets %}{% endblock %}

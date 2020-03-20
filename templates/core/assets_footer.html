@@ -1,8 +1,6 @@
 {% block assets_footer %}
 
-<script src="{{url_for('static', filename='custom/maps-custom.js') }}"></script>
-<script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
-<script src="{{url_for('static', filename='mapHome.js') }}"></script>
-<script src="{{url_for('static', filename='main.js') }}"></script>
+    {% block additionalFooterAssets %}    {% endblock %}
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
 
 {% endblock %}
