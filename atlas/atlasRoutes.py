@@ -3,12 +3,18 @@
 from datetime import datetime, timedelta
 
 from flask import Blueprint
-from flask import render_template, redirect, abort, current_app, make_response, request, url_for
+from flask import (
+    render_template,
+    redirect,
+    abort,
+    current_app,
+    make_response,
+    request,
+    url_for,
+)
 
 from atlas import utils
-from atlas.modeles.entities import (
-    vmTaxons, vmCommunes
-)
+from atlas.modeles.entities import vmTaxons, vmCommunes
 from atlas.modeles.repositories import (
     vmTaxonsRepository,
     vmObservationsRepository,
@@ -212,7 +218,7 @@ def ficheCommune(insee):
     connection.close()
 
     return render_template(
-        "templates/ficheCommune.html",
+        "templates/areaSheet/_main.html",
         listTaxons=listTaxons,
         referenciel=commune,
         observations=observations,
@@ -288,44 +294,59 @@ def get_staticpages(page):
     return render_template(static_page["template"])
 
 
-@main.route('/sitemap.xml', methods=['GET'])
+@main.route("/sitemap.xml", methods=["GET"])
 def sitemap():
-    '''Generate sitemap.xml iterating over static and dynamic routes to make a list of urls and date modified'''
+    """Generate sitemap.xml iterating over static and dynamic routes to make a list of urls and date modified"""
     pages = []
     ten_days_ago = datetime.now() - timedelta(days=10)
     session = utils.loadSession()
     connection = utils.engine.connect()
     url_root = request.url_root
-    if url_root[-1] == '/':
+    if url_root[-1] == "/":
         url_root = url_root[:-1]
     for rule in current_app.url_map.iter_rules():
         # check for a 'GET' request and that the length of arguments is = 0 and if you have an admin area that the rule does not start with '/admin'
-        if 'GET' in rule.methods and len(rule.arguments) == 0 and not rule.rule.startswith('/api'):
+        if (
+            "GET" in rule.methods
+            and len(rule.arguments) == 0
+            and not rule.rule.startswith("/api")
+        ):
             pages.append([url_root + rule.rule, ten_days_ago])
 
     # get dynamic routes for blog
     species = session.query(vmTaxons.VmTaxons).order_by(vmTaxons.VmTaxons.cd_ref).all()
     for specie in species:
-        url = url_root + url_for('main.ficheEspece', cd_ref=specie.cd_ref)
+        url = url_root + url_for("main.ficheEspece", cd_ref=specie.cd_ref)
         modified_time = ten_days_ago
         pages.append([url, modified_time])
 
-    municipalities = session.query(vmCommunes.VmCommunes).order_by(vmCommunes.VmCommunes.insee).all()
+    municipalities = (
+        session.query(vmCommunes.VmCommunes).order_by(vmCommunes.VmCommunes.insee).all()
+    )
     for municipalitie in municipalities:
-        url = url_root + url_for('main.ficheCommune', insee=municipalitie.insee)
+        url = url_root + url_for("main.ficheCommune", insee=municipalitie.insee)
         modified_time = ten_days_ago
         pages.append([url, modified_time])
 
-    sitemap_template = render_template('templates/sitemap.xml', pages=pages, url_root=url_root,
-                                       last_modified=ten_days_ago)
+    sitemap_template = render_template(
+        "templates/sitemap.xml",
+        pages=pages,
+        url_root=url_root,
+        last_modified=ten_days_ago,
+    )
     response = make_response(sitemap_template)
     response.headers["Content-Type"] = "application/xml"
     return response
 
 
-@main.route('/robots.txt', methods=['GET'])
+@main.route("/robots.txt", methods=["GET"])
 def robots():
-    robots_template = render_template('templates/robots.txt')
+    robots_template = render_template("templates/robots.txt")
     response = make_response(robots_template)
     response.headers["Content-type"] = "text/plain"
     return response
+
+
+# @main.route("/test", methods=["GET", "POST"])
+# def test():
+#     return render_template("templates/_main.generic.html")
