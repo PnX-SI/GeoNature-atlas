@@ -2,8 +2,8 @@
     <div class="card mt-4" style="padding: 10px;">
 
         {% if videoAudio.video |length > 0 %}
-            <h4>
-                <span class="fas fa-film"></span>
+            <h4 class="title-bar center">
+{#                <span class="fas fa-film"></span>#}
                 <strong>Video</strong> ({{ videoAudio.video | length }})
                 {% if videoAudio.video | length > 1 %}
                     <i class="btn-more" id="btn-more-video" data-toggle="collapse"
@@ -12,7 +12,6 @@
                             class="fas fa-chevron-down"></span></i>
                 {% endif %}
             </h4>
-            <hr class="small-hr">
             <h4>{{ videoAudio.video[0].title }}</h4>
 
             {% with media=videoAudio.video[0] %}
