@@ -9,10 +9,11 @@ $(document).ready(function() {
         aTargets: noSordedColumns
       }
     ],
+    scrollY: 600,
     // ,"scrollY":500
     // ,"deferRender":true
     // ,"scroller": false
-    lengthChange: true,
+    paging: true,
     pageLength: 50,
     oLanguage: {
       sSearch: "",
