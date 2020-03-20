@@ -19,11 +19,12 @@
         <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.css') }}" />
 		    <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.Default.css') }}" />
 
-        <!-- DataTable -->
-		    <link rel="stylesheet" href="{{url_for('static', filename='lib/datatables/datatables.min.css') }}"/>
-        <script type="text/javascript" src="{{url_for('static', filename='lib/datatables/datatables.min.js') }}"></script>
+       <!-- DataTable -->
+       <link rel="stylesheet" href="{{ url_for('static', filename='lib/datatables/datatables.min.css') }}"/>
+       <script type="text/javascript"
+               src="{{ url_for('static', filename='lib/datatables/datatables.min.js') }}"></script>
 
-        <!-- Bootstrap -->
+       <!-- Bootstrap -->
         <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}"></link>
         <script type="text/javascript" src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
 
@@ -45,7 +46,7 @@
 		<div class="container-fluid" id="page">
 
             <div class="col-sm-7">
-                 <div class="panel panel-default" id="parent">
+                 <div class="card mt-4" id="parent">
 					<div class="row">
                         <h4><b>Commune de {{referenciel.communeName}}</b></h4>
                         <ul id="statHierarchy">
