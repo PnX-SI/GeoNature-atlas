@@ -158,14 +158,23 @@ function getColor(d) {
     : "#FFEDA0";
 }
 
+const mailleBorderColor= JSON.parse(String(getComputedStyle(document.documentElement).getPropertyValue('--map-maille-border-color')));
+
 function styleMaille(feature) {
   return {
     fillColor: getColor(feature.properties.nb_observations),
-    weight: 2,
-    color: "black",
+    weight: 1,
+    color: mailleBorderColor,
     fillOpacity: 0.8
   };
 }
+
+console.log({
+    fillColor: null,
+    weight: 1,
+    color: mailleBorderColor,
+    fillOpacity: 0.8
+  });
 
 function generateLegendMaille() {
   legend.onAdd = function(map) {
