@@ -4,8 +4,11 @@
 }
 
 #mapWrapper {
-  position: fixed !important;
-  left: 58% !important;
+  position: relative !important;
+  /*left: 58% !important;*/
+  top: 0;
+  bottom: 0;
+  width: 100%;
 }
 
 #mapContainer {
@@ -73,8 +76,8 @@ ul#stat {
 ul#statHierarchy {
   float: left;
   padding: 5px;
-  margin-left: 38%;
-  margin-top: 10px;
+  margin: auto;
+  /*margin-top: 10px;*/
 }
 
 .leaflet-bar.leaflet-control.leaflet-control-custom img {
