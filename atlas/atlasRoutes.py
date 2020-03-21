@@ -350,3 +350,7 @@ def robots():
 # @main.route("/test", methods=["GET", "POST"])
 # def test():
 #     return render_template("templates/_main.generic.html")
+
+# @main.route("/test2", methods=["GET", "POST"])
+# def test2():
+#     return render_template("templates/test.html")

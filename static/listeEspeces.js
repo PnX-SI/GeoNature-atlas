@@ -9,10 +9,11 @@ $(document).ready(function() {
         aTargets: noSordedColumns
       }
     ],
-    scrollY: 600,
+    scrollY: '500px',
+    scrollCollapse: true,
     // ,"scrollY":500
-    // ,"deferRender":true
-    // ,"scroller": false
+    deferRender:true,
+    // scroller: false,
     paging: true,
     pageLength: 50,
     oLanguage: {

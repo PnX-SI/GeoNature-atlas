@@ -10,45 +10,54 @@
     <!-- Additional assets -->
     {% block additionalHeaderAssets %}
     {% endblock %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='custom/custom.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='custom/custom.css') }}" />
     {% block metaTags %}{% endblock %}
+    <style>
+    #page {
+        padding-right: 0px;
+    }
+    </style>
 </head>
+
 <body>
-<header id="navbar">
-    {% include "templates/core/navbar.html" %}
-</header>
+    <header id="navbar">
+        {% include "templates/core/navbar.html" %}
+    </header>
 
-<main>
-<div id="sideBar">
-    {% include 'templates/core/sideBar.html' %}
-</div>
-<div class="container-fluid" id="page">
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
+    <sidebar id="sideBar">
+        {% include 'templates/core/sideBar.html' %}
+    </sidebar>
+    <main >
+
+        <div class="container-fluid" id="page">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
             {% for message in messages %}
-                <div id="message">
-                    <div id="inner-message"
-                         class="alert alert-warning alert-dismissible fade show position-fixed right"
-                         role="alert">
-                        {{ message }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+            <div id="message">
+                <div id="inner-message" class="alert alert-warning alert-dismissible fade show position-fixed right"
+                    role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
+            </div>
             {% endfor %}
-        {% endif %}
-    {% endwith %}
-    {% block content %}
-    {% endblock %}
+            {% endif %}
+            {% endwith %}
+            {% block content %}
+            {% endblock %}
 
-</div>
-</main>
+        </div>
+    </main>
 
-{% if configuration.AFFICHAGE_FOOTER %}
+    {% if configuration.AFFICHAGE_FOOTER %}
+    <footer>
         {% include 'static/custom/templates/footer.html' %}
-{% endif %}
+    </footer>
+    {% endif %}
 
 </body>
 {% block additionalFooterAssets %}{% endblock %}
+
 </html>

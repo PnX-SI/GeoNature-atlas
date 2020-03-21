@@ -11,6 +11,10 @@
 
 {% block additionalHeaderAssets %}
     {# Ajoutez ici les assets complémentaires qui seront dans le bloc <head></head> #}
+            <script src="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.css') }}" />
+		    <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.Default.css') }}" />
+
     <!-- DataTable -->
     <link rel="stylesheet" href="{{ url_for('static', filename='lib/datatables/datatables.min.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='lib/datatables/dataTables.bootstrap4.min.css') }}"/>
@@ -21,7 +25,7 @@
 
 
 {% block additionalFooterAssets %}
-    {# Ajoutez ici les assets complémentaires qui seront en bas de page #}*
+    {# Ajoutez ici les assets complémentaires qui seront en bas de page #}
     <script type="text/javascript">
         var configuration = {{configuration|tojson}};
         var observations = {{observations|tojson}};
@@ -79,8 +83,8 @@
             {#        </div>#}
         </div>
 
-        <div class="col-md-5 col-sm-12" id="mapWrapper">
-            <div class="card mt-4">
+        <div class="col-md-5 col-sm-12 m-0 p-0" id="mapWrapper">
+            <div class="card m-0 p-0">
                 <img id="loadingGif" src="">
                 <div id="mapTitle" class="card-header bg-light">
                     <h4 id="titleMap"><i class="fa fa-map"></i> {{ configuration.NB_LAST_OBS }} dernières observations

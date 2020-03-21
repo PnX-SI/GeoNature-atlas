@@ -12,11 +12,11 @@
 }
 
 #mapContainer {
-  margin-top: 10px;
+  height: calc(100vh - 60px);
 }
 
 #map {
-  height: 600px;
+  /*height: 600px;*/
 }
 
 #clear {
@@ -26,6 +26,11 @@
 #parent {
   text-align: center;
   margin-top: 10px;
+}
+
+table.dataTable {
+  line-height: 1;
+  font-size: 1rem;
 }
 
 table.dataTable thead .sorting,
