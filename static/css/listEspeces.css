@@ -1,51 +1,63 @@
 .panel {
-  margin-top: 10px;
-  padding: 5px;
+    margin-top: 10px;
+    padding: 5px;
 }
 
-#mapWrapper {
-  position: relative !important;
-  /*left: 58% !important;*/
-  top: 0;
-  bottom: 0;
-  width: 100%;
-}
+/*#mapWrapper {*/
+/*  position: relative !important;*/
+/*  !*left: 58% !important;*!*/
+/*  top: 0;*/
+/*  bottom: 0;*/
+/*  width: 100%;*/
+/*}*/
 
 #mapContainer {
-  height: calc(100vh - 60px);
+    height: calc(100vh - 60px);
 }
 
 #map {
-  /*height: 600px;*/
+    height: 600px;
 }
 
 #clear {
-  clear: both;
+    clear: both;
 }
 
 #parent {
-  text-align: center;
-  margin-top: 10px;
+    text-align: center;
+    margin-top: 10px;
 }
 
 table.dataTable {
-  line-height: 1;
-  font-size: 1rem;
+    line-height: 1;
+    font-size: 1rem;
 }
 
 table.dataTable thead .sorting,
 table.dataTable thead .sorting_asc,
 table.dataTable thead .sorting_desc {
-  background: none;
+    background: none;
+}
+
+.dataTables_length {
+    margin: 10px;
+}
+
+.dataTables_filter {
+    margin: 10px;
+}
+
+.dataTables_paginate {
+    margin: 10px;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button {
-  padding: 0px;
+    padding: 0px;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-  padding: 0px;
-  border: none;
+    padding: 0px;
+    border: none;
 }
 
 .pagination > .disabled > a,
@@ -54,47 +66,47 @@ table.dataTable thead .sorting_desc {
 .pagination > .disabled > span,
 .pagination > .disabled > span:focus,
 .pagination > .disabled > span:hover {
-  cursor: default;
+    cursor: default;
 }
 
 #stat li {
-  float: left;
-  width: 100px;
-  text-align: center;
-  border-right: 1px solid #e8e8e8;
-  list-style-type: none;
+    float: left;
+    width: 100px;
+    text-align: center;
+    border-right: 1px solid #e8e8e8;
+    list-style-type: none;
 }
 
 ul#stat {
-  float: left;
-  padding: 5px;
-  margin-left: 32%;
+    float: left;
+    padding: 5px;
+    margin-left: 32%;
 }
 
 #statHierarchy li {
-  float: left;
-  width: 100px;
-  text-align: center;
-  list-style-type: none;
+    display: inline-block;
+    width: 100px;
 }
 
 ul#statHierarchy {
-  float: left;
-  padding: 5px;
-  margin: auto;
-  /*margin-top: 10px;*/
+    float: left;
+    padding: 5px;
+    margin: auto;
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
 }
 
 .leaflet-bar.leaflet-control.leaflet-control-custom img {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 3px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 3px;
 }
 
 #myTable .glyphicon {
-  color: #333333;
-  font-size: 2em;
+    color: #333333;
+    font-size: 2em;
 }
 
 /* 
@@ -108,30 +120,30 @@ ul#statHierarchy {
 */
 
 #loadingGif {
-  z-index: 1000000;
-  position: absolute;
-  left: 40%;
-  top: 40%;
+    z-index: 1000000;
+    position: absolute;
+    left: 40%;
+    top: 40%;
 }
 
 .hiddenSpan {
-  visibility: hidden;
+    visibility: hidden;
 }
 
 tbody tr:hover {
-  /*background-color: #cccccc !important;*/
-  cursor: pointer;
+    /*background-color: #cccccc !important;*/
+    cursor: pointer;
 }
 
 tbody tr.current {
-  background-color: #e6e6e6 !important;
-  font-weight: bold;
+    background-color: #e6e6e6 !important;
+    font-weight: bold;
 }
 
 .pictoImgList {
-  width: 80px;
-  background-position: center center;
-  background-size: cover;
-  height: 80px;
-  border-radius: 6px;
+    width: 80px;
+    background-position: center center;
+    background-size: cover;
+    height: 80px;
+    border-radius: 6px;
 }

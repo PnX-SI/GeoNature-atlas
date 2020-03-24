@@ -136,13 +136,13 @@ h3.title-spaced {
 /*Custom Stat Block*/
 
 .row-medias {
-  margin-right: -5px;
-  margin-left: -5px;
+  /*margin-right: -5px;*/
+  /*margin-left: -5px;*/
 }
 
 .stat-medias-wrapper {
-  padding-left: 5px;
-  padding-right: 5px;
+  /*padding-left: 5px;*/
+  /*padding-right: 5px;*/
 }
 
 .stat-custom-panel {
@@ -225,6 +225,7 @@ h3.title-spaced {
   transition: all 0.2s ease-in-out;
   padding: 10px;
   text-decoration: none;
+  margin-top: 10px;
 }
 
 .zoom-wrapper:hover .img-custom-medias {
