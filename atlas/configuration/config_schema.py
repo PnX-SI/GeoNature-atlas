@@ -109,7 +109,7 @@ class AtlasConfig(Schema):
         missing={
             "presentation": {
                 "title": "Présentation de l'atlas",
-                "picto": "glyphicon-question-sign",
+                "picto": "fa-question-circle",
                 "order": 0,
                 "template": "static/custom/templates/presentation.html",
             }
