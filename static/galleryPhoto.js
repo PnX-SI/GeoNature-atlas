@@ -106,8 +106,8 @@ function orderPhotosEvent(photos) {
 
     span = $("#orderPhotos").find("span");
     $(span)
-      .toggleClass("glyphicon glyphicon-sort")
-      .toggleClass("glyphicon glyphicon-random");
+      .toggleClass("fas fa-sort")
+      .toggleClass("fas fa-random");
     $(span).attr("id", "random");
     $(span).attr("data-original-title", "Trier de manière aléatoire");
     sortedPhotos = photos.slice().sort(function(a, b) {
@@ -134,8 +134,8 @@ function sufflePhotosEvent(photos) {
 
     span = $("#orderPhotos").find("span");
     $(span)
-      .toggleClass("glyphicon glyphicon-sort")
-      .toggleClass("glyphicon glyphicon-random");
+      .toggleClass("fas fa-sort")
+      .toggleClass("fas fa-random");
     $(span).attr("id", "sort");
     $(span).attr(
       "data-original-title",
@@ -241,7 +241,7 @@ $(".INPNgroup").click(function() {
   $(window).off("scroll");
   $("#page").off("click");
   span = $("#orderPhotos").find("span");
-  $(span).attr("class", "glyphicon glyphicon-sort");
+  $(span).attr("class", "fas fa-sort");
   $(span).attr(
     "data-original-title",
     "Trier les photos par nombre d'observations"

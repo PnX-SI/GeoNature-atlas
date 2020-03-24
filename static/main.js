@@ -95,8 +95,8 @@ var childList = $("#childList");
 $("#buttonChild").click(function() {
   $("#buttonChild")
     .find("span")
-    .toggleClass("glyphicon glyphicon-chevron-right")
-    .toggleClass("glyphicon glyphicon-chevron-down");
+    .toggleClass("fas fa-chevron-right")
+    .toggleClass("fas fa-chevron-down");
   var childList = $("#childList");
   if (childList.attr("hidden") === "hidden") {
     childList.removeAttr("hidden");

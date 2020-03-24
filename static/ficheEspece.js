@@ -28,7 +28,7 @@ $('#btn-more-video').click(function(){
 });
 
 $('.accordion-toggle').click(function(){
-	$(this).find('span').toggleClass('glyphicon glyphicon-chevron-down').toggleClass('glyphicon glyphicon-chevron-up');
+	$(this).find('span').toggleClass('fas fa-chevron-down').toggleClass('fas fa-chevron-up');
 })
 
 

@@ -76,14 +76,16 @@ function displayObsTaxon(insee, cd_ref) {
       cd_ref,
     dataType: "json",
     beforeSend: function() {
-      $("#loadingGif").show();
-      $("#loadingGif").attr(
-        "src",
-        configuration.URL_APPLICATION + "/static/images/loading.svg"
-      );
+      $("#loaderSpinner").show();
+      // $("#loadingGif").show();
+      // $("#loadingGif").attr(
+      //   "src",
+      //   configuration.URL_APPLICATION + "/static/images/loading.svg"
+      // );
     }
   }).done(function(observations) {
-    $("#loadingGif").hide();
+    $("#loaderSpinner").hide();
+    // $("#loadingGif").hide();
     map.removeLayer(currentLayer);
     if (configuration.AFFICHAGE_MAILLE) {
     } else {
@@ -102,14 +104,16 @@ function displayObsTaxonMaille(insee, cd_ref) {
       cd_ref,
     dataType: "json",
     beforeSend: function() {
-      $("#loadingGif").show();
-      $("#loadingGif").attr(
-        "src",
-        configuration.URL_APPLICATION + "/static/images/loading.svg"
-      );
+      $("#loaderSpinner").show();
+      // $("#loadingGif").show();
+      // $("#loadingGif").attr(
+      //   "src",
+      //   configuration.URL_APPLICATION + "/static/images/loading.svg"
+      // );
     }
   }).done(function(observations) {
-    $("#loadingGif").hide();
+    $("#loaderSpinner").hide();
+    // $("#loadingGif").hide();
     map.removeLayer(currentLayer);
     displayMailleLayerCommune(observations);
   });
@@ -142,6 +146,7 @@ $("#myTable").on("page.dt", function() {
   refreshObsCommune();
 });
 $(document).ready(function() {
-  $("#loadingGif").hide();
+  // $("#loadingGif").hide();
+  $("#loaderSpinner").hide();
   refreshObsCommune();
 });
