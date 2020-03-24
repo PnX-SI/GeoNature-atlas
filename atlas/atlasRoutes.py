@@ -241,7 +241,7 @@ def ficheRangTaxonomie(cd_ref):
     session.close()
 
     return render_template(
-        "templates/ficheRangTaxonomique.html",
+        "templates/taxoRankSheet/_main.html",
         listTaxons=listTaxons,
         referenciel=referenciel,
         taxonomyHierarchy=taxonomyHierarchy,
@@ -263,7 +263,7 @@ def ficheGroupe(groupe):
     connection.close()
 
     return render_template(
-        "templates/ficheGroupe.html",
+        "templates/groupSheet/_main.html",
         listTaxons=listTaxons,
         referenciel=groupe,
         groups=groups,
@@ -281,7 +281,7 @@ def photos():
 
     session.close()
     connection.close()
-    return render_template("templates/galeriePhotos.html", groups=groups)
+    return render_template("templates/photoGalery/_main.html", groups=groups)
 
 
 @main.route("/<page>", methods=["GET", "POST"])
@@ -347,10 +347,7 @@ def robots():
     return response
 
 
-# @main.route("/test", methods=["GET", "POST"])
-# def test():
-#     return render_template("templates/_main.generic.html")
 
-# @main.route("/test2", methods=["GET", "POST"])
-# def test2():
-#     return render_template("templates/test.html")
+#@main.route("/test", methods=["GET", "POST"])
+#def test():
+#    return render_template("templates/test.html")
