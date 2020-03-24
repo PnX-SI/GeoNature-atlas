@@ -1,53 +1,54 @@
-$(document).ready(function() {
-  $("#myTable").show();
-  $("#myTable").DataTable({
-    responsive: true,
-    order: [defaultSortedColumn, "desc"],
-    aoColumnDefs: [
-      {
-        bSortable: false,
-        aTargets: noSordedColumns
-      }
-    ],
-    scrollY: '500px',
-    scrollCollapse: true,
-    // ,"scrollY":500
-    deferRender:true,
-    // scroller: false,
-    paging: true,
-    pageLength: 50,
-    oLanguage: {
-      sSearch: "",
-      sInfo: "",
-      sInfoEmpty: "",
-      sInfoFiltered: "",
-      sZeroRecords: "Aucune espèce trouvée",
-      oPaginate: {
-        sPrevious: "Précedent",
-        sNext: "Suivant"
-      }
-    },
-    fnDrawCallback: function(oSettings) {
-      //restore tooltips when page change
-      $('[data-toggle="tooltip"]').tooltip();
-      // Chargement "lazy" des photos
-      $(".lazy").lazy();
-    }
-  });
-  $(".dataTables_filter input")
-    .attr("placeholder", "Rechercher dans la liste ")
-    .attr("class", "form-control")
-    .css("font-weight", "normal");
-  $(".dataTables_empty").text("Aucune espèce trouvée");
+$(document).ready(function () {
+    $("#myTable").show();
+    const myTable = $("#myTable").DataTable({
+        responsive: {
+            details: {
+                type: 'inline'
+            }
+        },
+        order: [defaultSortedColumn, "desc"],
+        aoColumnDefs: [
+            {
+                bSortable: false,
+                aTargets: noSordedColumns
+            }
+        ],
+        paging: true,
+        pageLength: 50,
+        oLanguage: {
+            sSearch: "",
+            sInfo: "",
+            sInfoEmpty: "",
+            sInfoFiltered: "",
+            sZeroRecords: "Aucune espèce trouvée",
+            oPaginate: {
+                sPrevious: "Précedent",
+                sNext: "Suivant"
+            }
+        },
+        fnDrawCallback: function (oSettings) {
+            //restore tooltips when page change
+            $('[data-toggle="tooltip"]').tooltip();
+            // Chargement "lazy" des photos
+            $(".lazy").lazy();
+        }
+    });
+    $(".dataTables_filter input")
+        .attr("placeholder", "Rechercher dans la liste ")
+        .attr("class", "form-control")
+        .css("font-weight", "normal");
+    $(".dataTables_empty").text("Aucune espèce trouvée");
 });
 
-// change de glyphicon
-$("th").click(function() {
-  $(this)
-    .find("span")
-    .toggleClass("glyphicon glyphicon-menu-down")
-    .toggleClass("glyphicon glyphicon-menu-up");
+// change de fontawesome icon
+$("th").click(function () {
+    $(this)
+        .find("span")
+        .toggleClass("fas fa-menu-down")
+        .toggleClass("fas fa-menu-up");
 });
+
+
 
 // Load /espece/cd_ref on row click
 // deactivate because is no compatible with datatables responsive plugin
