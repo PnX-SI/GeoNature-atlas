@@ -12,11 +12,6 @@
     {% endblock %}
     <link rel="stylesheet" href="{{ url_for('static', filename='custom/custom.css') }}" />
     {% block metaTags %}{% endblock %}
-    <style>
-    #page {
-        padding-right: 0px;
-    }
-    </style>
 </head>
 
 <body>
@@ -27,7 +22,7 @@
     <sidebar id="sideBar">
         {% include 'templates/core/sideBar.html' %}
     </sidebar>
-    <main >
+    <main class="d-flex">
 
         <div class="container-fluid" id="page">
             {% with messages = get_flashed_messages() %}
@@ -58,6 +53,8 @@
     {% endif %}
 
 </body>
+
+{% include "templates/core/assets_footer.html" %}
 {% block additionalFooterAssets %}{% endblock %}
 
 </html>

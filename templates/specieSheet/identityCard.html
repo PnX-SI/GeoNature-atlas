@@ -3,9 +3,9 @@
         <div class="row" id="rowIdentity">
             {% if firstPhoto != None %}
                 <!-- Si il y a une photo principale -->
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="imgCol">
+                <div class="col-12 col-sm-6" id="imgCol">
                     <div class="imgWrapper">
-                        <span class="glyphicon glyphicon-search" id="zoomPhotos"> </span>
+                        <span class="fas fa-search" id="zoomPhotos"></span>
                         <a href="{{ firstPhoto.path }}" data-lightbox="imageSet"
                            data-title="{{ firstPhoto.title }} &copy; {{ firstPhoto.author }}"
                         >
@@ -84,7 +84,7 @@
                             {% endif %}
                         </i>
                         {% if not loop.last %}
-                            <span class="glyphicon glyphicon-chevron-right"> </span>
+                            <span class="fas fa-chevron-right"> </span>
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -172,7 +172,7 @@
                                                             <span id="ficheGlyficon" data-toggle="tooltip"
                                                                   data-original-title="Consulter la fiche espèce"
                                                                   data-placement="right"
-                                                                  class="glyphicon glyphicon-list"></span>
+                                                                  class="fas fa-list"></span>
                                                         </a>
                                                     </td>
 
@@ -188,7 +188,7 @@
                     </div>
 
 
-                    {#                            <h5 id="buttonChild"> <b>{{taxon.listTaxonsChild|length }}</b> taxon(s) agrégé(s) sur cette fiche: <span class="glyphicon glyphicon-chevron-right"></span>#}
+                    {#                            <h5 id="buttonChild"> <b>{{taxon.listTaxonsChild|length }}</b> taxon(s) agrégé(s) sur cette fiche: <span class="fas fa-chevron-right"></span>#}
                     {#    						</h5>#}
                     {#                            <div hidden="hidden" id="childList">#}
                     {#                                        {% for child in taxon.listTaxonsChild %}#}
@@ -209,6 +209,6 @@
                 {% endif %}
             </div>
             </div>
+            </div>
         </div>
-    </div>
 {% endblock %}

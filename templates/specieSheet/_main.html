@@ -14,14 +14,15 @@
             src="{{ url_for('static', filename='lib/bootstrap-switch/js/bootstrap-switch.js') }}"></script>
     <link rel="stylesheet"
           href="{{ url_for('static', filename='lib/bootstrap-switch/css/bootstrap-switch.min.css') }}"/>
-
     <!-- Leaflet marker cluster -->
     <script src="{{ url_for('static', filename='lib/leaflet/leafletMarkerCluster.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='lib/leaflet/leafletMarkerCluster.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='lib/leaflet/leafletMarkerCluster.Default.css') }}"/>
-    <!-- D3 -->
+    <!-- ChartJS -->
     <script src="{{ url_for('static', filename='lib/chartjs/Chart.min.js') }}"></script>
 
+    <!-- Lightbox -->
+    <link href="{{ url_for('static', filename='lib/lightbox2/css/lightbox.min.css') }}" rel="stylesheet"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/ficheEspece.css') }}"/>
 {% endblock %}
 
@@ -33,8 +34,8 @@
         var months = {{months|tojson}};
         var observationsPoint = [];
         var observationsMaille = [];
-        var listeTaxonsSearch = {{listeTaxonsSearch|tojson}};
         var configuration = {{configuration|tojson}};
+        var listeTaxonsSearch = {{listeTaxonsSearch|tojson}};
         var url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
         var taxonYearMin = {{taxon.taxonSearch.yearmin}};
         var cd_ref = {{taxon.taxonSearch.cd_ref}};

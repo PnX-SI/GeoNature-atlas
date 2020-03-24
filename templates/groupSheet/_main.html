@@ -1,0 +1,75 @@
+{% extends "templates/core/layout.html" %}
+
+{% block title %}
+    {# Personnalisez ici le titre de la page (celui qui est affiché dans l'onglet du navigateur) #}
+    {{ referenciel }}
+{% endblock %}
+
+{% block metaTags %}
+    {# Ajoutez ici les balises méta utilisées pour le SEO #}
+{% endblock %}
+
+{% block additionalHeaderAssets %}
+    {# Ajoutez ici les assets complémentaires qui seront dans le bloc <head></head> #}
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/datatables/datatables.min.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/datatables/dataTables.bootstrap4.min.css') }}"/>
+    <script type="text/javascript" src="{{ url_for('static', filename='lib/datatables/datatables.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/listEspeces.css') }}"/>
+{% endblock %}
+
+
+{% block additionalFooterAssets %}
+    {# Ajoutez ici les assets complémentaires qui seront en bas de page #}
+    <script type="text/javascript">
+        var configuration = {{configuration|tojson}};
+        //calcul du nb de colonnes pour le fonctionnement de dataTables.js
+        var nbColumn = 6;
+        {% if configuration.DISPLAY_PATRIMONIALITE %} nbColumn = nbColumn + 1;{% endif %}
+        {% if configuration.PROTECTION %} nbColumn = nbColumn + 1;{% endif %}
+        var noSordedColumns = [nbColumn - 1]; //var for dataTables js lib
+        var defaultSortedColumn = nbColumn - 3; //var for dataTables js lib
+    </script>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='lib/datatables/datatables.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='lib/datatables/dataTables.bootstrap4.min.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='listeEspeces.js') }}"></script>
+{% endblock %}
+
+
+{% block content %}
+    {# Ajoutez ici coeur de la page #}
+
+    <div class="card" id="parent">
+
+        <div>
+            <h1> Les {{ referenciel }} </h1>
+        </div>
+
+        <div class="row rowMargin">
+            {% include 'templates/core/statHierarchy.html' %}
+        </div>
+
+        <div id="allGroups">
+            {% for group in groups %}
+                <li class="floatLeft">
+                    <a href="{{ url_for('main.ficheGroupe', groupe=group.groupAccent ) }}">
+                        <img class="INPNgroup"
+                             src="{{ url_for('static', filename='images/picto_' + group.group | replace(" ", "_") +'.png') }}"
+                             alt="{{ group.groupAccent }}" data-toggle="tooltip" data-original-
+                             title="{{ group.groupAccent }}" data-placement="top">
+                    </a>
+                </li>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <div class="card mt-4">
+        <div class="row rowMargin" id="clear">
+            {% include 'templates/core/tabTaxons.html' %}
+        </div>
+    </div>
+
+{% endblock %}

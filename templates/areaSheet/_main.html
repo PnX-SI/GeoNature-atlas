@@ -11,15 +11,49 @@
 
 {% block additionalHeaderAssets %}
     {# Ajoutez ici les assets complémentaires qui seront dans le bloc <head></head> #}
-            <script src="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.js') }}"></script>
-        <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.css') }}" />
-		    <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.Default.css') }}" />
+    <script src="{{ url_for('static', filename='lib/leaflet/leafletMarkerCluster.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/leaflet/leafletMarkerCluster.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/leaflet/leafletMarkerCluster.Default.css') }}"/>
 
     <!-- DataTable -->
     <link rel="stylesheet" href="{{ url_for('static', filename='lib/datatables/datatables.min.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='lib/datatables/dataTables.bootstrap4.min.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/listEspeces.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/icones.css') }}"/>
+    <style>
+        #page {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        footer {
+            margin-top: 0;
+        }
+
+        table {
+            display: flex;
+            display: -webkit-flex;
+            flex-direction: column;
+            -webkit-flex-direction: column;
+        }
+
+        thead, tbody tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed; /* even columns width , fix width of table too*/
+        }
+
+        tbody {
+            display: block;
+            overflow: auto;
+            max-height: 400px;
+            flex: 1;
+            -webkit-flex: 1;
+        }
+
+
+        /* ie needs position:relative here*/
+    </style>
 {% endblock %}
 
 
@@ -41,59 +75,46 @@
 
     <script type="text/javascript"
             src="{{ url_for('static', filename='lib/datatables/datatables.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='lib/datatables/dataTables.bootstrap4.min.js') }}"></script>
+
 
     <script src="{{ url_for('static', filename='custom/maps-custom.js') }}"></script>
     <script src="{{ url_for('static', filename='listeEspeces.js') }}"></script>
     <script src="{{ url_for('static', filename='mapGenerator.js') }}"></script>
     <script src="{{ url_for('static', filename='mapCommune.js') }}"></script>
-    <script src="{{ url_for('static', filename='main.js') }}"></script>
 {% endblock %}
 
 
 {% block content %}
     {# Ajoutez ici coeur de la page #}
-    <div class="row">
-        <div class="col-md-7 col-sm-12">
-            <div class="card mt-4" id="parent">
+    <div class="row h-100 flex-grow-1 p-0 m-0 border-bottom">
+        <div class="col-12 col-md-7 d-flex flex-column m-0 p-0">
+            <div class="bg-light text-center border-bottom border-right p-2">
                 <h4><b>Commune de {{ referenciel.communeName }}</b></h4>
-                <ul id="statHierarchy">
-                    <li class="border-right">
-                        <i class="fas fa-search fa-2x"></i><br/>
-                        {#                    <span data-icon="&#xe037;" style="font-size: 30px;"></span><br/>#}
-                        <b>{{ listTaxons.nbObsTotal | pretty }}</b><br/>{{ 'observations' if listTaxons.nbObsTotal > 1 else 'observation' }}
-                    </li>
-                    <li class="border-right">
-                        <i class="fa fa-leaf fa-2x"></i><br/>
-                        {#                    <span data-icon="&#xe03b;" style="font-size: 30px;"></span></br>#}
-                        <b>{{ listTaxons.taxons|length | pretty }}</b><br/>{{ 'espèces' if listTaxons.taxons|length > 1 else 'espèce' }}
-                    </li>
-                    <li><i class="fa fa-users fa-2x"></i></br>
-                        {#                    <span data-icon="&#xe040;" style="font-size: 30px;"></span></br>#}
-                        <b>{{ observers | length | pretty }}</b><br/>{{ 'observateurs' if observers|length > 1 else 'observateur' }}
-                    </li>
-                </ul>
+                {% include 'templates/core/statHierarchy.html' %}
             </div>
-            <div class="card mt-4" >
-                {% include 'templates/areaSheet/tabTaxons.html' %}
+            <div class="d-flex align-content-stretch bg-white flex-grow-1 p-2">
+                {% include 'templates/core/tabTaxons.html' %}
             </div>
-            {#        <div class="row rowMargin" id="clear">#}
-            {#            <div class="card">#}
-            {#                {% include 'templates/areaSheet/tabTaxons.html' %}#}
-            {#            </div>#}
-            {#        </div>#}
         </div>
-
-        <div class="col-md-5 col-sm-12 m-0 p-0" id="mapWrapper">
-            <div class="card m-0 p-0">
-                <img id="loadingGif" src="">
-                <div id="mapTitle" class="card-header bg-light">
-                    <h4 id="titleMap"><i class="fa fa-map"></i> {{ configuration.NB_LAST_OBS }} dernières observations
-                        sur la commune de
-                        <i>{{ referenciel.communeName }}</i></h4></strong>
+        <div class="col-12 col-md-5 d-flex flex-column m-0 p-0">
+            <div class="bg-light p-2">
+                <h5 id="titleMap"><i class="fa fa-map"></i> {{ configuration.NB_LAST_OBS }} dernières
+                    observations
+                    sur la commune de
+                    <i>{{ referenciel.communeName }}</i></h5>
+            </div>
+            <div class="d-flex align-content-stretch bg-warning flex-grow-1">
+                <div class="d-flex flex-grow-1">
+                    {% include 'templates/core/loaderSpinner.html' %}
+                    <div id="map" style="height: unset;flex:1;"></div>
                 </div>
-                <div id="map" style="height: 100vh;width:100%;"></div>
             </div>
         </div>
     </div>
+
+
+    {# Ajoutez ici coeur de la page #}
 
 {% endblock %}
