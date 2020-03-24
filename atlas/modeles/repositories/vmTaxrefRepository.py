@@ -1,9 +1,10 @@
 # -*- coding:utf-8 -*-
 from flask import current_app
 from sqlalchemy.sql import text
+
 from atlas.modeles import utils
-from atlas.modeles.entities.vmTaxref import VmTaxref
 from atlas.modeles.entities.tBibTaxrefRang import TBibTaxrefRang
+from atlas.modeles.entities.vmTaxref import VmTaxref
 
 
 def searchEspece(connection, cd_ref):
@@ -12,16 +13,16 @@ def searchEspece(connection, cd_ref):
     """
     sql = """
     WITH limit_obs AS (
-        select
-            :thiscdref as cd_ref, min(yearmin) AS yearmin,
+        SELECT
+            :thiscdref AS cd_ref, min(yearmin) AS yearmin,
             max(yearmax) AS yearmax, SUM(nb_obs) AS nb_obs
         FROM atlas.vm_taxons
         WHERE
-            cd_ref in (SELECT * FROM atlas.find_all_taxons_childs(:thiscdref))
+            cd_ref IN (SELECT * FROM atlas.find_all_taxons_childs(:thiscdref))
             OR cd_ref = :thiscdref
     )
     SELECT taxref.*,
-        l.cd_ref, l.yearmin, l.yearmax, COALESCE(l.nb_obs, 0) as nb_obs,
+        l.cd_ref, l.yearmin, l.yearmax, COALESCE(l.nb_obs, 0) AS nb_obs,
         t2.patrimonial, t2.protection_stricte
     FROM atlas.vm_taxref taxref
     JOIN limit_obs l
@@ -115,11 +116,11 @@ def getTaxon(session, cd_nom):
             TBibTaxrefRang.nom_rang,
             TBibTaxrefRang.tri_rang,
         )
-        .join(TBibTaxrefRang, TBibTaxrefRang.id_rang == VmTaxref.id_rang)
-        .filter(VmTaxref.cd_nom == cd_nom)
-        .one_or_none()
+            .join(TBibTaxrefRang, TBibTaxrefRang.id_rang == VmTaxref.id_rang)
+            .filter(VmTaxref.cd_nom == cd_nom)
+            .one_or_none()
     )
-    return None
+    return taxon
 
 
 def getCd_sup(session, cd_ref):
@@ -130,8 +131,8 @@ def getCd_sup(session, cd_ref):
 def getInfoFromCd_ref(session, cd_ref):
     req = (
         session.query(VmTaxref.lb_nom, TBibTaxrefRang.nom_rang)
-        .join(TBibTaxrefRang, TBibTaxrefRang.id_rang == VmTaxref.id_rang)
-        .filter(VmTaxref.cd_ref == cd_ref)
+            .join(TBibTaxrefRang, TBibTaxrefRang.id_rang == VmTaxref.id_rang)
+            .filter(VmTaxref.cd_ref == cd_ref)
     )
 
     return {"lb_nom": req[0].lb_nom, "nom_rang": req[0].nom_rang}
@@ -142,8 +143,8 @@ def getAllTaxonomy(session, cd_ref):
     taxon = getTaxon(session, taxonSup)
     tabTaxon = list()
     while (
-        taxon
-        and taxon.tri_rang >= current_app.config["LIMIT_RANG_TAXONOMIQUE_HIERARCHIE"]
+            taxon
+            and taxon.tri_rang >= current_app.config["LIMIT_RANG_TAXONOMIQUE_HIERARCHIE"]
     ):
         temp = {
             "rang": taxon.id_rang,
