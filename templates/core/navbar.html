@@ -13,12 +13,15 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="navbar-nav mr-auto">
             </div>
-            <form class="form-inline my-2 my-lg-0">
+            <div class="form-inline my-2 my-lg-0">
+                <div class="mr-sm-2">
+                <i class="fas fa-search form-control-feedback"></i>
+            </div>
                 <form method="POST" action="" id='searchFormTaxons' role="search">
                     <div class="form-group has-feedback">
                         <input id="searchTaxons" type="text" class="form-control mr-sm-2 ajax-search"
                                placeholder="Rechercher une espèce&nbsp;&nbsp;&nbsp;" loading="false"/>
-                        <span class="fas fa-search form-control-feedback"></span>
+                        
                     </div>
                     <input id="hiddenInputTaxons" type="hidden" name="cd_ref"/>
                 </form>
@@ -29,7 +32,6 @@
                     <div class="form-group has-feedback">
                         <input id="searchCommunes" type="text" class="form-control mr-sm-2 ajax-search"
                                placeholder="Rechercher une commune">
-                        <span class="fas fa-search form-control-feedback"></span>
                     </div>
                     <input id="hiddenInputCommunes" type="hidden" name="insee">
                 </form>
@@ -81,7 +83,7 @@
                         </div>
                     </div>
                 {% endif %}
-            </form>
+                </div>
         </div>
 
     </nav>
