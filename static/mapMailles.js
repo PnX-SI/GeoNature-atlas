@@ -27,13 +27,13 @@ $.ajax({
   url: configuration.URL_APPLICATION + "/api/observationsMaille/" + cd_ref,
   dataType: "json",
   beforeSend: function() {
-    $("#loadingGif").attr(
-      "src",
-      configuration.URL_APPLICATION + "/static/images/loading.svg"
-    );
+    // // $("#loadingGif").attr(
+    //   "src",
+    //   configuration.URL_APPLICATION + "/static/images/loading.svg"
+    // );
   }
 }).done(function(observations) {
-  $("#loadingGif").hide();
+  $("#loaderSpinner").hide();
 
   // affichage des mailles
   displayMailleLayerFicheEspece(observations, taxonYearMin, YEARMAX);

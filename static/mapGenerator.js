@@ -35,7 +35,7 @@ function generateMap() {
         style: territoryStyle
       });
       territoryGeoJson.addTo(map);
-      map.fitBounds(territoryGeoJson.getBounds())
+      // map.fitBounds(territoryGeoJson.getBounds())
     });
   });
 
@@ -253,6 +253,7 @@ function displayMailleLayerFicheEspece(observationsMaille) {
     style: styleMaille
   });
   currentLayer.addTo(map);
+  map.fitBounds(currentLayer.getBounds());
 
   // ajout de la légende
   generateLegendMaille();
@@ -298,6 +299,7 @@ function displayMailleLayerCommune(observations) {
     style: styleMaille
   });
   currentLayer.addTo(map);
+  map.fitBounds(currentLayer.getBounds());
 
   // ajout de la légende
   generateLegendMaille();
@@ -361,6 +363,7 @@ function displayMarkerLayerFicheEspece(
   } else {
     currentLayer.addTo(map);
   }
+  map.fitBounds(currentLayer.getBounds());
 
   if (typeof divLegendeFicheEspece !== "undefined") {
     legend.onAdd = function(map) {
@@ -571,6 +574,7 @@ function displayMailleLayerLastObs(observations) {
     style: styleMailleLastObs
   });
   currentLayer.addTo(map);
+  map.fitBounds(currentLayer.getBounds())
 }
 
 // Legend
