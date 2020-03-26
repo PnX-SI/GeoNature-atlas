@@ -131,6 +131,31 @@ h3.title-spaced {
   background-repeat: no-repeat;
   background-size: 25px 25px;
   background-position-x: calc(100% - 25px);
+  outline: none;
+}
+
+.addon {
+	position: absolute;
+	margin-left: 5px;
+	display: flex;
+  align-items: center;
+  z-index: 100;
+  font-size: 20px !important;
+  color: grey;
+  padding-top: px;
+  margin-top: 9px;
+}
+
+.addon-navbar {
+  position: absolute;
+	margin-left: 5px;
+	display: flex;
+  align-items: center;
+  z-index: 100;
+  font-size: 20px !important;
+  color: grey;
+  padding-top: px;
+  margin-top: 9px;
 }
 
 /*Custom Stat Block*/
@@ -271,9 +296,12 @@ h3.title-spaced {
 .pictoImg {
   width: 100%;
   background-position: center center;
-  /* background-size: cover; */
   height: 60px;
   min-width: 60px;
+}
+
+.picto-img-no-resize {
+  background-size: cover
 }
 
 .pictoImgSmall {
