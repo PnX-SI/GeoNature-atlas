@@ -20,6 +20,12 @@ body {
   background-color: white !important;
 }
 
+/* PRESENTATION affix navbar */
+
+.affix {
+  top: 60px;
+}
+
 /* TITLE WITH border bar */
 
 .title-bar::before {
