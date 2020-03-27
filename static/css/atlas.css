@@ -16,6 +16,9 @@ main {
     margin-left: 60px;
     flex: 1;
 }
+.small-placeholder::placeholder{
+    font-size: 13px;
+  }
 
 .icon-color-title {
     color: var(--icon-color-title);
