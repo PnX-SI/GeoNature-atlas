@@ -133,6 +133,9 @@ h3.title-spaced {
   background-position-x: calc(100% - 25px);
   outline: none;
 }
+.small-placeholder::placeholder{
+  font-size: 13px;
+}
 
 .addon {
 	position: absolute;
