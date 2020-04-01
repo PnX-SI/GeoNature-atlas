@@ -140,10 +140,25 @@ tbody tr.current {
     font-weight: bold;
 }
 
+.pictoImgListIcon {
+    width: 60px;
+}
+
 .pictoImgList {
     width: 80px;
     background-position: center center;
     background-size: cover;
     height: 80px;
     border-radius: 6px;
+}
+
+
+#taxonList .current {
+    background-color: var(--light);
+}
+
+@media only screen and (max-width: 768px) {
+  #taxonList {
+    font-size: 0.8rem;
+  }
 }

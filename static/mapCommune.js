@@ -120,7 +120,7 @@ function displayObsTaxonMaille(insee, cd_ref) {
 }
 
 function refreshObsCommune() {
-  $("#myTable tbody").on("click", ".taxonRow", function() {
+  $("#taxonList ul").on("click", "#taxonListItem", function() {
     $(this)
       .siblings()
       .removeClass("current");
@@ -132,11 +132,11 @@ function refreshObsCommune() {
       displayObsTaxon($(this).attr("insee"), $(this).attr("cdRef"));
     }
     var name = $(this)
-      .find(".name")
+      .find("#name")
       .html();
     $("#titleMap").fadeOut(500, function() {
       $(this)
-        .html("Observations du taxon:" + name)
+        .html("Observations du taxon&nbsp;:&nbsp;" + name)
         .fadeIn(500);
     });
   });

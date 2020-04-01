@@ -1,60 +1,15 @@
-$(document).ready(function () {
-    $("#myTable").show();
-    const myTable = $("#myTable").DataTable({
-        responsive: {
-            details: {
-                type: 'inline'
-            }
-        },
-        order: [defaultSortedColumn, "desc"],
-        aoColumnDefs: [
-            {
-                bSortable: false,
-                aTargets: noSordedColumns
-            }
-        ],
-        paging: true,
-        pageLength: 50,
-        oLanguage: {
-            sSearch: "",
-            sInfo: "",
-            sInfoEmpty: "",
-            sInfoFiltered: "",
-            sZeroRecords: "Aucune espèce trouvée",
-            oPaginate: {
-                sPrevious: "Précedent",
-                sNext: "Suivant"
-            }
-        },
-        fnDrawCallback: function (oSettings) {
-            //restore tooltips when page change
-            $('[data-toggle="tooltip"]').tooltip();
-            // Chargement "lazy" des photos
-            $(".lazy").lazy();
-        }
+$(".lazy").lazy({
+          effect: "fadeIn",
+          effectTime: 2000,
+          threshold: 0
+        });
+$('[data-toggle="tooltip"]').tooltip();
+$(document).ready(function(){
+  $("#taxonInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    console.log(value);
+    $("#taxonList li").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
     });
-    $(".dataTables_filter input")
-        .attr("placeholder", "Rechercher dans la liste ")
-        .attr("class", "form-control")
-        .css("font-weight", "normal");
-    $(".dataTables_empty").text("Aucune espèce trouvée");
+  });
 });
-
-// change de fontawesome icon
-$("th").click(function () {
-    $(this)
-        .find("span")
-        .toggleClass("fas fa-menu-down")
-        .toggleClass("fas fa-menu-up");
-});
-
-
-
-// Load /espece/cd_ref on row click
-// deactivate because is no compatible with datatables responsive plugin
-// if(configuration.MYTYPE != 1){
-// $(".taxonRow").click(function(){
-// cd_ref = $(this).attr('cdRef');
-// location.href = configuration.URL_APPLICATION+'/espece/'+cd_ref;
-// });
-// }
