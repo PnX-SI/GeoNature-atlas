@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='lib/datatables/dataTables.bootstrap4.min.css') }}"/>
     <script type="text/javascript" src="{{ url_for('static', filename='lib/datatables/datatables.min.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/listEspeces.css') }}"/>
+
 {% endblock %}
 
 
@@ -41,35 +42,26 @@
 {% block content %}
     {# Ajoutez ici coeur de la page #}
 
-    <div class="card" id="parent">
+    <div class="row h-100 flex-grow-1 p-0 m-0 border-bottom">
+        <div class="col-12 d-flex flex-column m-0 p-0">
+            <div class="bg-light text-center border-bottom border-right p-2">
+                <h1> Les {{ referenciel }} </h1>
+                {% include 'templates/core/statHierarchy.html' %}
+            </div>
 
-        <div>
-            <h1> Les {{ referenciel }} </h1>
-        </div>
+            <div id="allGroups" class="bg-white border-bottom p-2">>
+                {% for group in groups %}
+                    <li class="floatLeft">
+                        <a href="{{ url_for('main.ficheGroupe', groupe=group.groupAccent ) }}">
+                            <img class="INPNgroup"
+                                 src="{{ url_for('static', filename='images/picto_' + group.group | replace(" ", "_") +'.png') }}"
+                                 alt="{{ group.groupAccent }}" data-toggle="tooltip" data-original-
+                                 title="{{ group.groupAccent }}" data-placement="top">
+                        </a>
+                    </li>
+                {% endfor %}
+            </div>
+                {% include 'templates/core/listTaxons.html' %}
 
-        <div class="row rowMargin">
-            {% include 'templates/core/statHierarchy.html' %}
-        </div>
-
-        <div id="allGroups">
-            {% for group in groups %}
-                <li class="floatLeft">
-                    <a href="{{ url_for('main.ficheGroupe', groupe=group.groupAccent ) }}">
-                        <img class="INPNgroup"
-                             src="{{ url_for('static', filename='images/picto_' + group.group | replace(" ", "_") +'.png') }}"
-                             alt="{{ group.groupAccent }}" data-toggle="tooltip" data-original-
-                             title="{{ group.groupAccent }}" data-placement="top">
-                    </a>
-                </li>
-            {% endfor %}
-        </div>
-    </div>
-
-
-    <div class="card mt-4">
-        <div class="row rowMargin" id="clear">
-            {% include 'templates/core/tabTaxons.html' %}
-        </div>
-    </div>
 
 {% endblock %}
