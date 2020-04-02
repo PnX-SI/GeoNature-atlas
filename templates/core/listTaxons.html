@@ -13,6 +13,7 @@
             {% for taxon in listTaxons.taxons %}
                 <li id="taxonListItem" class="media border-bottom p-2" insee="{{ referenciel.insee }}"
                     cdRef="{{ taxon.cd_ref }}">
+                <span class="d-none">{{ taxon.group2_inpn }}</span>
                 <div class="pictoImgList mr-2" data-toggle="tooltip" data-original-title="{{ taxon.group2_inpn }}"
                      data-placement="right">
                     {% if taxon.path == None %}
@@ -53,6 +54,7 @@
                         >
                     {% endif %}
                 {% endif %}
+
             </span>
                     <h4 class="mt-0 mb-1">
                         {% if DISPLAY_EYE_ON_LIST %}
