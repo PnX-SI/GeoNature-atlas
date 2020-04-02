@@ -180,8 +180,9 @@ sidebar {
 }
 
 #sidebar_menu li {
-    padding-top: 15px;
-    padding-bottom: 15px;
+    height: 60px;
+    min-height: 60px;
+    line-height: 60px;
     color: white;
     cursor: pointer;
     text-align: center;
@@ -211,9 +212,6 @@ li.sidebar-brand {
     color: black;
 }
 
-.sidebar-brand .glyphicon {
-    font-size: 20px;
-}
 
 /* END sidebar */
 
