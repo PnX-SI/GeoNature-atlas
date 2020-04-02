@@ -180,7 +180,7 @@ sidebar {
 }
 
 #sidebar_menu li {
-    height: 60px;
+    height: 60px !important;
     min-height: 60px;
     line-height: 60px;
     color: white;

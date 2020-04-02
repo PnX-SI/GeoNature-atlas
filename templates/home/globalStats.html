@@ -12,7 +12,7 @@
                     <h1 class="large text-muted">{{ stat.nbTotalObs | pretty }}</h1>
                     <h4 class="text-muted text-uppercase font-weight-bold">
                         {{ 'observations' if stat.nbTotalObs > 1 else 'observation' }}</h4>
-                    <p><a id="localScroll" href="#DernieresObservations" class="btn btn-default" role="button">Voir
+                    <p><a id="localScroll" href="#DernieresObservations" class="btn btn-default btn-block" role="button">Voir
                             les dernières observations</a></p>
                 </div>
             </div>
@@ -25,9 +25,8 @@
                     <form method="POST" id="searchFormTaxonsStat" class="navbar-form" role="search">
                         <div class="form-group has-feedback">
                             <span class="addon">
-                                <i class="fas fa-search form-control-feedback"></i>
+                                <i class="fas fa-search"></i>
                             </span>
-
                             <input id="searchTaxonsStat" type="text" class="form-control"
                                 placeholder="Rechercher une espèce &nbsp; &nbsp; &nbsp;" loading="false" />
                             <input id="hiddenInputTaxonStat" type="hidden" name="cd_ref">
@@ -43,9 +42,9 @@
                         {{ 'communes' if stat.town > 1 else 'commune' }}</h4>
                     <form method="POST" onsubmit="completeAction('#searchFormCommunesStat', hiddenInputCommunesStat)"
                         id='searchFormCommunesStat' action="" class="navbar-form" role="search">
-                        <div class="input-group has-feedback">
+                        <div class="form-group has-feedback">
                             <span class="addon">
-                                <i class="fas fa-search form-control-feedback" aria-hidden="true"></i>
+                                <i class="fas fa-search" aria-hidden="true"></i>
                             </span>
                             <input id="searchCommunesStat" type="text" class="form-control"
                                 placeholder="Rechercher une commune" />
@@ -60,7 +59,7 @@
                     <h1 class="large text-muted">{{ stat.photo | pretty }}</h1>
                     <h4 class="text-muted  text-uppercase font-weight-bold">
                         {{ 'photos' if stat.photo > 1 else 'photo' }}</h4>
-                    <p><a href="{{ url_for('main.photos') }}" class="btn btn-default" role="button">Galerie
+                    <p><a href="{{ url_for('main.photos') }}" class="btn btn-default btn-block" role="button">Galerie
                             photos</a></p>
                 </div>
             </div>
