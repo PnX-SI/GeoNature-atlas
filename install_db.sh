@@ -54,8 +54,8 @@ then
   which $psql_command_admindb
 else
   echo "Use local database" &>> log/install_db.log
-  psql_command_admindb="sudo -u postgres psql"
-  psql_command_atlasdb="sudo -u postgres psql -d ${db_name}"
+  psql_command_admindb="sudo -u postgres psql -p ${db_port}"
+  psql_command_atlasdb="sudo -u postgres psql -p ${db_port} -d ${db_name}"
 fi
 
 echo "$psql_command_admindb"
