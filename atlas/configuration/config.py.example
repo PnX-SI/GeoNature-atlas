@@ -181,6 +181,12 @@ PATRIMONIALITE = {
 }
 
 #############################
+#### Lien custom du logo ####
+#############################
+
+CUSTOM_LOGO_LINK='https://monadressecustom.org'
+
+#############################
 #### Pages statistiques #####
 #############################
 
