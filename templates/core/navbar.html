@@ -3,7 +3,7 @@
     <a class="navbar-brand" {% if configuration.CUSTOM_LOGO_LINK %}href="{{ configuration.CUSTOM_LOGO_LINK }}" target="_blank"{% else %}href="{{url_for('main.index') }}"{% endif %}>
         <img class="logoStructure" src="{{ url_for('static', filename='custom/images/logo-structure.png') }}" />
     </a>
-    <a class="navbar-brand titreAppli" href="{{ url_for('main.index') }}">{{ configuration.NOM_APPLICATION }}{{ configuration.CUSTOM_LOGO_LINK }}</a>
+    <a class="navbar-brand titreAppli" href="{{ url_for('main.index') }}">{{ configuration.NOM_APPLICATION }}</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
