@@ -52,6 +52,7 @@ class AtlasConfig(Schema):
     modeDebug = fields.Boolean(missing=False)
     STRUCTURE = fields.String(missing="Nom de la structure")
     NOM_APPLICATION = fields.String(missing="Nom de l'application")
+    CUSTOM_LOGO_LINK = fields.String(missing="")
     URL_APPLICATION = fields.String(missing="")
     ID_GOOGLE_ANALYTICS = fields.String(missing="UA-xxxxxxx-xx")
     GLOSSAIRE = fields.Boolean(missing=False)
