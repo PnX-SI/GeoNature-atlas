@@ -106,7 +106,7 @@ def getSynonymy(connection, cd_ref):
 
 
 def getTaxon(session, cd_nom):
-    taxon = (
+    return (
         session.query(
             VmTaxref.lb_nom,
             VmTaxref.id_rang,
@@ -119,7 +119,6 @@ def getTaxon(session, cd_nom):
         .filter(VmTaxref.cd_nom == cd_nom)
         .one_or_none()
     )
-    return None
 
 
 def getCd_sup(session, cd_ref):
