@@ -35,7 +35,7 @@ function generateMap() {
         style: territoryStyle
       });
       territoryGeoJson.addTo(map);
-      // map.fitBounds(territoryGeoJson.getBounds())
+      map.fitBounds(territoryGeoJson.getBounds())
     });
   });
 
