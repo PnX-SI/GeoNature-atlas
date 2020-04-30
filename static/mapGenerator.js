@@ -418,11 +418,6 @@ function generateGeojsonPointLastObs(observationsPoint) {
       properties: properties,
       geometry: obs.geojson_point
     });
-    myGeoJson.features.push({
-      type: "Feature",
-      properties: properties,
-      geometry: obs.geojson_point
-    });
   });
   return myGeoJson;
 }
