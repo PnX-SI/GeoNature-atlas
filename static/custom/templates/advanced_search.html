@@ -24,6 +24,8 @@
     <script src="//cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/underscore@1.10.2/underscore.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-bootstrap-typeahead@0.2.6/dist/VueBootstrapTypeahead.umd.min.js"></script>
+    <script src="https://unpkg.com/vue-select@latest"></script>
+    <link rel="stylesheet" href="https://unpkg.com/vue-select@latest/dist/vue-select.css">
     <!-- production version, optimized for size and speed -->
     {#<script src="https://cdn.jsdelivr.net/npm/vue"></script>#}
     <style>
@@ -34,6 +36,33 @@
             position: absolute;
             z-index: 999;
         }
+
+
+        .v-select {
+            width: 100%;
+            background-color: var(--white);
+        }
+
+        .v-select .dropdown li {
+            border-bottom: 1px solid rgba(112, 128, 144, 0.1);
+            max-width: 500px;
+        }
+
+        .v-select .dropdown li:last-child {
+            border-bottom: none;
+        }
+
+        .v-select .dropdown li a {
+            padding: 10px 20px;
+            width: 100%;
+            font-size: 1.25em;
+            color: #3c3c3c;
+        }
+
+        .v-select .dropdown-menu .active > a {
+            color: #fff;
+        }
+
     </style>
 {% endblock %}
 
@@ -51,76 +80,44 @@
         var legend = L.control({position: "bottomright"});
 
         $("#loaderSpinner").hide();
+        $(document).ready(function () {
+            $("#infoModal").modal('show');
+        });
+
 
         function getRandomColor() {
-            var letters = '0123456789ABCDEF';
+            var letters = '0123456789ABCDEF'.split('');
             var color = '#';
             for (var i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
+                color += letters[Math.round(Math.random() * 15)];
             }
             return color;
         }
 
-        Colors = {};
-Colors.names = {
-    aqua: "#00ffff",
-    azure: "#f0ffff",
-    beige: "#f5f5dc",
-    black: "#000000",
-    blue: "#0000ff",
-    brown: "#a52a2a",
-    cyan: "#00ffff",
-    darkblue: "#00008b",
-    darkcyan: "#008b8b",
-    darkgrey: "#a9a9a9",
-    darkgreen: "#006400",
-    darkkhaki: "#bdb76b",
-    darkmagenta: "#8b008b",
-    darkolivegreen: "#556b2f",
-    darkorange: "#ff8c00",
-    darkorchid: "#9932cc",
-    darkred: "#8b0000",
-    darksalmon: "#e9967a",
-    darkviolet: "#9400d3",
-    fuchsia: "#ff00ff",
-    gold: "#ffd700",
-    green: "#008000",
-    indigo: "#4b0082",
-    khaki: "#f0e68c",
-    lightblue: "#add8e6",
-    lightcyan: "#e0ffff",
-    lightgreen: "#90ee90",
-    lightgrey: "#d3d3d3",
-    lightpink: "#ffb6c1",
-    lightyellow: "#ffffe0",
-    lime: "#00ff00",
-    magenta: "#ff00ff",
-    maroon: "#800000",
-    navy: "#000080",
-    olive: "#808000",
-    orange: "#ffa500",
-    pink: "#ffc0cb",
-    purple: "#800080",
-    violet: "#800080",
-    red: "#ff0000",
-    silver: "#c0c0c0",
-    white: "#ffffff",
-    yellow: "#ffff00"
-};
+        function slugify(string) {
+            const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;'
+            const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------'
+            const p = new RegExp(a.split('').join('|'), 'g')
 
-Colors.random = function() {
-    var result;
-    var count = 0;
-    for (var prop in this.names)
-        if (Math.random() < 1/++count)
-           result = prop;
-    return result;
-};
+            return string.toString().toLowerCase()
+                .replace(/\s+/g, '-') // Replace spaces with -
+                .replace(p, c => b.charAt(a.indexOf(c))) // Replace special characters
+                .replace(/&/g, '-and-') // Replace & with 'and'
+                .replace(/[^\w\-]+/g, '') // Remove all non-word characters
+                .replace(/\-\-+/g, '-') // Replace multiple - with single -
+                .replace(/^-+/, '') // Trim - from start of text
+                .replace(/-+$/, '') // Trim - from end of text
+        };
+
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        };
 
         function displayObsTaxonMaille(cd_ref) {
         }
 
-        var radius = 2;
+        var initRadius = 4;
+        var radius = initRadius;
 
         var geojsonMarkerOptions = {
             weight: 2,
@@ -128,7 +125,14 @@ Colors.random = function() {
             fillOpacity: 0
         };
 
-        var typeData = 'maille';
+        if (configuration.AFFICHAGE_MAILLE) {
+            var typeData = 'maille';
+        } else {
+            var typeData = 'point'
+        }
+        ;
+
+        console.log('typeData', typeData);
 
         var polygonLayerToCentroid = function (geoJson) {
             geoJson;
@@ -149,21 +153,35 @@ Colors.random = function() {
 
         const taxaApiUrl = '/api/searchTaxon?search=:query';
 
+        Vue.component('v-select', VueSelect.VueSelect);
+
         var advancedSearch = new Vue({
             el: '#advancedSearch',
-            components: {
-                VueBootstrapTypeahead
-            },
+            components: {},
             delimiters: ['[[', ']]'],
             data: {
                 taxa: [],
                 taxaSearch: '',
                 selectedTaxa: null,
                 layers: [],
-                items: []
-                {#items: []#}
+                items: [],
+                options: [],
+                configuration: configuration,
+                alertLimit: false,
             },
             methods: {
+                onSearch(search, loading) {
+                    loading(true);
+                    this.search(loading, search, this);
+                },
+                search: _.debounce((loading, search, vm) => {
+                    fetch(
+                        taxaApiUrl.replace(':query', search) + '&limit=20'
+                    ).then(res => {
+                        res.json().then(json => (vm.options = json));
+                        loading(false);
+                    });
+                }, 350),
                 removeElement: function (index) {
                     this.items.splice(index, 1);
                     layerGroup.removeLayer(layerGroup.getLayers()[index]);
@@ -173,6 +191,32 @@ Colors.random = function() {
                     const suggestions = await res.json();
                     console.log(suggestions);
                     this.taxa = suggestions;
+                },
+                resetItems: function () {
+                    this.items = [];
+                    layerGroup.clearLayers();
+                    radius = initRadius;
+                },
+                displayAlertLimit: function () {
+                    this.alertLimit = true;
+                    setTimeout(function () {
+                        if (this.alertLimit) {
+                            this.alertLimit = false;
+                        }
+                    }, 3000);
+                }
+                ,
+                getMedias: async function (cdRef) {
+                    var mediaUrl = null;
+                    var idMedia = null;
+                    const res = await fetch(configuration.REMOTE_MEDIAS_URL + "/api/tmedias/bycdref/" + cdRef);
+                    const medias = await res.json();
+                    if (medias.length > 0) {
+                        idMedia = medias[0].id_media;
+                        mediaUrl = configuration.REMOTE_MEDIAS_URL + '/api/tmedias/thumbnail/' + idMedia + '?h=80&v=80';
+                        console.log('mediaUrl', mediaUrl);
+                        return mediaUrl
+                    }
                 },
                 addDatas: function (list) {
                     $("#loaderSpinner").show();
@@ -192,9 +236,14 @@ Colors.random = function() {
                         }).done(function (observations) {
                             // $("#loadingGif").hide();
                             {#map.removeLayer(currentLayer);#}
-                            var geoJsonDatas = observations['maille'];
+
                             console.log('obs', geoJsonDatas);
-                            polygonLayerToCentroid(geoJsonDatas);
+                            if (configuration.AFFICHAGE_MAILLE) {
+                                var geoJsonDatas = observations['maille'];
+                                polygonLayerToCentroid(geoJsonDatas);
+                            } else {
+                                var geoJsonDatas = observations['point']
+                            }
                             var color = getRandomColor();
 
                             layer[i] = L.geoJSON(geoJsonDatas, {
@@ -211,9 +260,8 @@ Colors.random = function() {
                         displayObsTaxonMaille(list[i]);
                     }
                     $("#loaderSpinner").hide();
-
                 },
-                addMapDatas: function (cd_nom) {
+                addMapDatas: function (cd_nom, color) {
                     $("#loaderSpinner").show();
                     $.ajax({
                         url:
@@ -230,7 +278,6 @@ Colors.random = function() {
                             polygonLayerToCentroid(geoJsonDatas);
                         }
                         //var color = getRandomColor();
-                        var color=Colors.random();
 
                         var layer = L.geoJSON(geoJsonDatas, {
                             style: function (feature) {
@@ -240,14 +287,16 @@ Colors.random = function() {
                                 return L.circleMarker(latlng, geojsonMarkerOptions);
                             }
                         });
-                        radius = radius + 2;
+                        if (configuration.AFFICHAGE_MAILLE) {
+                            radius = radius + 2;
+                        }
                         layerGroup.addLayer(layer);
                         console.log('layerGroup', layerGroup.getLayers());
                         map.fitBounds(layerGroup.getBounds());
                     });
                     $("#loaderSpinner").hide();
                 },
-           getTaxaImage: function (cd_nom) {
+                getTaxaImage: function (cd_nom) {
 
                 }
             },
@@ -255,27 +304,42 @@ Colors.random = function() {
                 taxaSearch: _.debounce(function (qs) {
                     this.getTaxa(qs)
                 }, 500),
-                selectedTaxa: function () {
-                    var self = this;
-                    console.log('selectedTaxa', this.selectedTaxa);
-                    fetch('https://geonature.cbiodiv.org/taxhub/api/taxref/' + this.selectedTaxa.value)
-                        .then(function (response) {
-                            return response.json();
-                        })
-                        .then(function (jsonResp) {
-                            var newItem = {
-                                cd_nom: jsonResp.cd_nom,
-                                nom_vern: jsonResp.nom_vern,
-                                nom_sci: jsonResp.nom_complet
-                            };
+                selectedTaxa: function (val) {
+                    if (this.items.length === 3) {
+                        this.displayAlertLimit();
+                    }
+                    ;
+                    if (val && this.items.length < 3) {
+                        var self = this;
+                        var color = getRandomColor();
+                        console.log('selectedTaxa', this.selectedTaxa);
+                        fetch(configuration.TAXHUB_URL + '/api/taxref/' + this.selectedTaxa.value)
+                            .then(function (response) {
+                                return response.json();
+                            })
+                            .then(function (jsonResp) {
+                                var media = '/static/images/picto_' + capitalizeFirstLetter(slugify(jsonResp.group2_inpn)) + '.png';
+                                var newItem = {
+                                    cd_nom: jsonResp.cd_nom,
+                                    nom_vern: jsonResp.nom_vern,
+                                    nom_sci: jsonResp.nom_complet,
+                                    group2_inpn: jsonResp.group2_inpn,
+                                    media: media,
+                                    marker_color: color
+                                };
+                                console.log('newItem', newItem);
 
-                            self.items.push(newItem);
-                            self.addMapDatas(newItem.cd_nom);
-                        });
+                                self.items.push(newItem);
+                                self.addMapDatas(newItem.cd_nom, color);
+                            });
+
+
+                    }
+                    ;
+                    this.selectedTaxa = null;
                 }
             },
             mounted() {
-                {#this.addDatas(this.items);#}
             }
         })
 
@@ -287,37 +351,89 @@ Colors.random = function() {
 {% block content %}
     {# Ajoutez ici coeur de la page #}
     <div class="row h-100 flex-grow-1 p-0 m-0 border-bottom">
-        <div id="advancedSearch" class="col-12 col-md-3 d-flex flex-column m-0 p-0">
+        <div id="advancedSearch" class="col-sm-12 col-md-5 col-lg-4 col-xl-3 d-flex flex-column m-0 p-0">
+            <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-info" id="infoModalLabel"><i class="fas fa-info-circle "></i>
+                                Information</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Cette page vous permet d'effectuer de superposer la répartition de plusieurs espèces
+                                simultanément.</p>
+                            <p>Pour des raisons de visibilité des répartitions sur carte, le nombre d'espèces total est
+                                limité à 3.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="bg-light border-bottom border-right p-2">
                 <div class="text-center">
+                    <span class="float-right ">
+                       <span data-toggle="modal"
+                             data-target="#infoModal">
+                           <a data-toggle="tooltip"
+                              data-target="#infoModal" data-placement="left"
+                              title="Voir les informations sur cette page">
+                            <i class="fas fa-info-circle"></i>
+                        </a>
+                           </span>
+                        <a class="text-danger" href="#" @click="resetItems" data-toggle="tooltip" data-placement="left"
+                           title="Purger la liste">
+                             <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </span>
                     <h4><b>Recherche avancée</b></h4>
+                    <div v-if="alertLimit" class="alert alert-danger alert-dismissible fade show sticky-top"
+                         role="alert">
+                        Vous ne pouvez pas ajouter plus de 3 taxons.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     <div class="input-group w-100">
-                        <vue-bootstrap-typeahead
-                                :data="taxa"
-                                v-model="taxaSearch"
-                                input-class="form-control w-100"
-                                :serializer="s => s.label"
-                                placeholder="Recherchez un taxon"
-                                @hit="selectedTaxa = $event"
-                        >
-                            <template slot="suggestion" slot-scope="{data, htmlText}">
-                                <span v-html="data.label"></span>
+                        <v-select label="label" v-model="selectedTaxa" :filterable="false" :options="options"
+                                  placeholder="Recherchez une espèce"
+                                  @search="onSearch">
+                            <template slot="no-options">
+                                Commencez à taper le nom d'une espèce
                             </template>
-                        </vue-bootstrap-typeahead>
+                            <template slot="option" slot-scope="option">
+                                <div class="d-center" v-html="option.label">
+                                </div>
+                            </template>
+                            <template slot="selected-option" slot-scope="option">
+                                <div class="selected d-center" v-html="option.label">
+                                </div>
+                            </template>
+                        </v-select>
                     </div>
                     <div v-if="items.length > 3" class="text-danger">
                         <i class="fa fa-info-circle fa-fw"></i> Vous ne pouvez ajouter plus de 3 taxons
                     </div>
+
                 </div>
             </div>
             <div id="list" class="bg-white flex-grow-1">
                 <ul class="list-unstyled">
                     <li v-for="(item, key)  in items" :key="key" class="media border-bottom px-0 py-0">
-                        <img class="mr-3" src="https://via.placeholder.com/80" alt="Generic placeholder image">
+                        <img class="mr-3" v-bind:src="item.media" alt="Generic placeholder image">
                         <div class="media-body p-2">
-                            <span class="float-right"><span href="#" v-on:click="removeElement(key)"
-                                                            class="badge badge-danger">X</span></span>
-                            <h5 class="mt-0 mb-1">[[item.nom_vern]]</h5>
+                            <span class="float-right text-danger" data-toggle="tooltip" data-placement="left"
+                                  title="Retirer de la sélection" href="#"
+                                  v-on:click="removeElement(key)"><i
+                                    class="fas fa-times-circle"></i></span>
+                            <h5 class="mt-0 mb-1"><i class="far fa-circle fa-fw"
+                                                     v-bind:style="{ color: item.marker_color}"></i>[[item.nom_vern]]
+                            </h5>
                             <span class="float-right">
                     <a class="badge badge-primary" :href="'/espece/'+item.cd_nom" data-toggle="tooltip"
                        title="Consulter la fiche espèce"
@@ -325,7 +441,7 @@ Colors.random = function() {
                         <i class="fas fa-list fa-fw"></i> Fiche espèce</i>
                     </a>
                             </span>
-                            <p class="mt-0 mb-1 text-info">[[item.nom_sci]]</p>
+                            <p class="mt-0 mb-1 text-info"><small>[[item.nom_sci]]</small></p>
 
                         </div>
                     </li>
@@ -333,9 +449,10 @@ Colors.random = function() {
             </div>
 
         </div>
-        <div class="col-12 col-md-9 d-flex flex-column m-0 p-0">
+        <div class="col-sm-12 col-md-7 col-lg-8 col-xl-9 d-flex flex-column m-0 p-0">
             <div class="d-flex align-content-stretch bg-warning flex-grow-1">
                 <div class="d-flex flex-grow-1">
+
                     <div id="map" style="height: unset;flex:1;"></div>
                     {% include 'templates/core/loaderSpinner.html' %}
                 </div>
