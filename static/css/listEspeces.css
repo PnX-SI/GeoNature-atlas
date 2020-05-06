@@ -17,6 +17,7 @@ footer {
     overflow-y: auto;
 }
 
+
 /*#mapWrapper {*/
 /*  position: relative !important;*/
 /*  !*left: 58% !important;*!*/
@@ -171,8 +172,35 @@ tbody tr.current {
     background-color: var(--light);
 }
 
-@media only screen and (max-width: 768px) {
-    #taxonList {
-        font-size: 0.8rem;
-    }
+
+
+@media (max-width: 1200px) {
+  #statHierarchy i {
+      font-size: 2rem;
+      color: red;
+  }
+}
+
+
+ @media (min-width: 992px and max-width: 1200px) {
+  #statHierarchy i {
+    font-size: 1.5rem;
+      color: green;
+  }
+}
+
+
+ @media screen and (max-width: 768px) {
+  #statHierarchy i {
+    font-size: 1rem;
+      color: blue;
+  }
+}
+
+
+ @media screen and (max-width: 576px) {
+  #statHierarchy i {
+    font-size: 0.8rem;
+      color: deeppink;
+  }
 }

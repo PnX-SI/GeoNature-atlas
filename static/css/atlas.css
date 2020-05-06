@@ -149,11 +149,44 @@ a {
     padding-right: 20px;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
     .navbar-collapse {
         background-color: #333;
     }
+
+    main h1 {
+        font-size: 1.8rem;
+    }
+
+
+    main h2 {
+        font-size: 1.6rem;
+    }
+
+
+    main h3 {
+        font-size: 1.4rem;
+    }
+
+
+    main h4 {
+        font-size: 1.2rem;
+    }
+
+main h5 {
+    font-size: 1rem;
 }
+
+    main {
+    font-size: 0.8rem;
+  }
+
+    footer {
+        font-size: 0.8rem;
+    }
+}
+
+
 
 .ui-autocomplete {
     z-index: 2000;
@@ -605,3 +638,6 @@ footer {
   padding: 10px;
   text-decoration: none;
 }
+
+
+
