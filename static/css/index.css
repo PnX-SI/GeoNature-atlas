@@ -311,25 +311,45 @@ h3.title-spaced {
 .pictoImgMedium {
   height: 250px;
 }
-table#tableEspece {
+
+
+#lastObsList {
   display: block;
   max-height: 600px;
   overflow-y: scroll;
   background: white;
 }
 
-.tabEspece:hover {
-  background-color: #cccccc;
-}
-
-.tabEspece.current {
-  background-color: #e6e6e6;
-  font-weight: bold;
-}
-
-.singleTaxon {
+.lastObslistItem:hover {
+  background-color: var(--light);
   cursor: pointer;
 }
+
+.lastObslistItem .lastObslistItemIcon {
+  width: 80px;
+  height: 40px;
+  background-position: center;
+  align: center;
+  object-fit: contain;
+}
+
+.lastObslistItem .lastObslistItemImage {
+  width: 80px;
+  height: 80px;
+  background-position: center;
+  object-fit: cover;
+  background-color: var(--light) ;
+}
+
+
+/*.lastObsList.current {
+  background-color: #e6e6e6;
+  font-weight: bold;
+}*/
+
+/*.singleTaxon {
+  cursor: pointer;
+}*/
 
 td.singleTaxon.name {
   width: 50%;
