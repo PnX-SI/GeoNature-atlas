@@ -56,7 +56,7 @@
 {% block content %}
     {# Ajoutez ici coeur de la page #}
     <div class="row h-100 flex-grow-1 p-0 m-0 border-bottom">
-        <div class="col-12 col-md-7 d-flex flex-column m-0 p-0">
+        <div class="col-12 col-xl-4 col-lg-5 col-md-6 d-flex flex-column m-0 p-0">
             <div class="bg-light text-center border-bottom border-right p-2">
                 <h4><b>Commune de {{ referenciel.communeName }}</b></h4>
                 {% include 'templates/core/statHierarchy.html' %}
@@ -64,7 +64,7 @@
 
                 {% include 'templates/core/listTaxons.html' %}
         </div>
-        <div class="col-12 col-md-5 d-flex flex-column m-0 p-0">
+        <div class="col-12 col-xl-8 col-lg-7 col-md-6 d-flex flex-column m-0 p-0">
             <div class="bg-light p-2">
                 <h5 id="titleMap"><i class="fa fa-map"></i> {{ configuration.NB_LAST_OBS }} dernières
                     observations
