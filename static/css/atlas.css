@@ -640,4 +640,19 @@ footer {
 }
 
 
+.modal-header {
+    background-color: var(--main-color) ;
+    color: white;
+    padding: 0.5rem 0.5rem;
+}
+
+#surroundingAreas .modal-body {
+    padding: 0;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+#surroundingAreasList li:hover {
+    background-color: var(--light);
+}
 

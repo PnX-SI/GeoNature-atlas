@@ -259,7 +259,7 @@ function displayMailleLayerFicheEspece(observationsMaille) {
   generateLegendMaille();
 }
 
-function generateGeojsonMailleCommune(observations) {
+function generateGeojsonGridArea(observations) {
   var i = 0;
   myGeoJson = { type: "FeatureCollection", features: [] };
   tabProperties = [];
@@ -292,8 +292,8 @@ function generateGeojsonMailleCommune(observations) {
   return myGeoJson;
 }
 
-function displayMailleLayerCommune(observations) {
-  myGeoJson = generateGeojsonMailleCommune(observations);
+function displayGridLayerArea(observations) {
+  myGeoJson = generateGeojsonGridArea(observations);
   currentLayer = L.geoJson(myGeoJson, {
     onEachFeature: onEachFeatureMaille,
     style: styleMaille
@@ -569,6 +569,7 @@ function find_id_observation_in_array(tab_id, id_observation) {
 function displayMailleLayerLastObs(observations) {
   observations.sort(compare);
   var geojsonMaille = generateGeoJsonMailleLastObs(observations);
+  console.log('<displayMailleLayerLastObs>', observations);
   currentLayer = L.geoJson(geojsonMaille, {
     onEachFeature: onEachFeatureMailleLastObs,
     style: styleMailleLastObs

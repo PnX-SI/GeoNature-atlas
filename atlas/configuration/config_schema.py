@@ -135,6 +135,7 @@ class AtlasConfig(Schema):
     ORDER_COMMUNES_BYLENGTH = fields.Boolean(missing=False)
     # coupe le nom_vernaculaire à la 1ere virgule sur les fiches espèces
     SPLIT_NOM_VERN = fields.Integer(missing=True)
+    EXTENDED_AREAS = fields.Boolean(missing=False)
 
     @validates_schema
     def validate_url_taxhub(self, data):
@@ -147,4 +148,3 @@ class AtlasConfig(Schema):
                     "Le champ TAXHUB_URL doit être rempli si REDIMENSIONNEMENT_IMAGE = True"
                 }
             )
-

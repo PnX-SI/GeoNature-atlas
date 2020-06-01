@@ -8,13 +8,13 @@ var currentLayer;
 var myGeoJson;
 
 // Diplay limit of the territory
-var communeLayer = L.geoJson(communeGeoJson, {
+var areaLayer = L.geoJson(areaInfos.areaGeoJson, {
   style: function() {
     return {
       fillColor: "blue",
       opacity: 1,
       weight: 2,
-      color: "black",
+      color: "red",
       dashArray: "3",
       fillOpacity: 0
     };
@@ -22,7 +22,7 @@ var communeLayer = L.geoJson(communeGeoJson, {
 }).addTo(map);
 
 var bounds = L.latLngBounds([]);
-var layerBounds = communeLayer.getBounds();
+var layerBounds = areaLayer.getBounds();
 bounds.extend(layerBounds);
 map.fitBounds(bounds);
 
@@ -40,7 +40,7 @@ else {
 
 htmlLegendMaille =
   "<i style='border: solid 1px red;'> &nbsp; &nbsp; &nbsp;</i> Maille comportant au moins une observation <br> <br>" +
-  "<i style='border-style: dotted;'> &nbsp; &nbsp; &nbsp;</i> Limite de la commune <br> <br>" +
+  "<i style='border-style: dotted;'> &nbsp; &nbsp; &nbsp;</i> Limite de la zone <br> <br>" +
   "<i style='border: solid " +
   configuration.MAP.BORDERS_WEIGHT +
   "px " +
@@ -49,7 +49,7 @@ htmlLegendMaille =
   configuration.STRUCTURE;
 
 htmlLegendPoint =
-  "<i style='border-style: dotted;'> &nbsp; &nbsp; &nbsp;</i> Limite de la commune <br> <br>" +
+  "<i style='border-style: dotted;'> &nbsp; &nbsp; &nbsp;</i> Limite de la zone <br> <br>" +
   "<i style='border: solid " +
   configuration.MAP.BORDERS_WEIGHT +
   "px " +
@@ -65,13 +65,21 @@ htmlLegend = configuration.AFFICHAGE_MAILLE
 
 generateLegende(htmlLegend);
 
+function displayObsPreciseBaseUrl() {
+  if (sheetType === 'commune') {
+    return configuration.URL_APPLICATION+"/api/observations/"+areaInfos.areaCode
+  }
+  else {
+    return configuration.URL_APPLICATION+"/api/observations/area/"+areaInfos.id_area
+  }
+};
+
 // display observation on click
-function displayObsTaxon(insee, cd_ref) {
+function displayObsPreciseBaseUrl(areaCode, cd_ref) {
   $.ajax({
     url:
-      configuration.URL_APPLICATION +
-      "/api/observations/" +
-      insee +
+      displayObsPreciseBaseUrl() +
+      areaCode +
       "/" +
       cd_ref,
     dataType: "json",
@@ -94,12 +102,20 @@ function displayObsTaxon(insee, cd_ref) {
   });
 }
 
-function displayObsTaxonMaille(insee, cd_ref) {
+function displayObsGridBaseUrl() {
+  if (sheetType === 'commune') {
+    return configuration.URL_APPLICATION+"/api/observationsMaille/"
+  }
+  else {
+    return configuration.URL_APPLICATION+"/api/observationsMaille/area/"
+  }
+}
+
+function displayObsTaxonMaille(areaCode, cd_ref) {
   $.ajax({
     url:
-      configuration.URL_APPLICATION +
-      "/api/observationsMaille/" +
-      insee +
+      displayObsGridBaseUrl()+
+      areaCode +
       "/" +
       cd_ref,
     dataType: "json",
@@ -115,11 +131,11 @@ function displayObsTaxonMaille(insee, cd_ref) {
     $("#loaderSpinner").hide();
     // $("#loadingGif").hide();
     map.removeLayer(currentLayer);
-    displayMailleLayerCommune(observations);
+    displayGridLayerArea(observations);
   });
 }
 
-function refreshObsCommune() {
+function refreshObsArea() {
   $("#taxonList ul").on("click", "#taxonListItem", function() {
     $(this)
       .siblings()
@@ -127,9 +143,9 @@ function refreshObsCommune() {
     $(this).addClass("current");
 
     if (configuration.AFFICHAGE_MAILLE) {
-      displayObsTaxonMaille($(this).attr("insee"), $(this).attr("cdRef"));
+      displayObsTaxonMaille($(this).attr("area-code"), $(this).attr("cdRef"));
     } else {
-      displayObsTaxon($(this).attr("insee"), $(this).attr("cdRef"));
+      displayObsTaxon($(this).attr("area-code"), $(this).attr("cdRef"));
     }
     var name = $(this)
       .find("#name")
@@ -143,10 +159,10 @@ function refreshObsCommune() {
 }
 
 $("#myTable").on("page.dt", function() {
-  refreshObsCommune();
+  refreshObsArea();
 });
 $(document).ready(function() {
   // $("#loadingGif").hide();
   $("#loaderSpinner").hide();
-  refreshObsCommune();
+  refreshObsArea();
 });

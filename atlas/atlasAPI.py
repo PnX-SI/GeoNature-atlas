@@ -132,3 +132,48 @@ def test():
     )
     connection.close()
     return jsonify(photos)
+
+
+if current_app.config["EXTENDED_AREAS"]:
+    from atlas.modeles.repositories import vmAreasRepository
+
+    @api.route("/searchArea/<type_code>", methods=["get"])
+    def searchArea(type_code):
+        # try:
+        session = utils.loadSession()
+        search = request.args.get("search", "")
+        limit = request.args.get("limit", "")
+        results = vmAreasRepository.search_area_by_type(
+            session, search, type_code, limit
+        )
+        return jsonify(results)
+        # except Exception as e:
+        #     return jsonify({"error": str(e)})
+
+    @api.route("/observations/area/<id_area>", methods=["GET"])
+    def getAreaObservations(id_area):
+        session = utils.loadSession()
+        observations = vmAreasRepository.get_areas_observations(session, id_area)
+        return jsonify(observations)
+
+    @api.route("/area/<id_area>/taxa", methods=["GET"])
+    def getAreaTaxa(id_area):
+        session = utils.loadSession()
+        taxa = vmAreasRepository.get_area_taxa(session, id_area)
+        return jsonify(taxa)
+
+    @api.route("/observations/area/<id_area>/<int:cd_ref>", methods=["GET"])
+    def get_area_point_observations(id_area, cd_ref):
+        session = utils.loadSession()
+        observations = vmAreasRepository.get_areas_observations_by_cdnom(
+            session, id_area, cd_ref
+        )
+        return jsonify(observations)
+
+    @api.route("/observationsMaille/area/<id_area>/<int:cd_ref>", methods=["GET"])
+    def get_area_grid_observations(id_area, cd_ref):
+        session = utils.loadSession()
+        observations = vmAreasRepository.get_areas_grid_observations_by_cdnom(
+            session, id_area, cd_ref
+        )
+        return jsonify(observations)

@@ -2,7 +2,11 @@
 
 {% block title %}
     {# Personnalisez ici le titre de la page (celui qui est affiché dans l'onglet du navigateur) #}
-    Commune de {{ referenciel.communeName }}
+    {% if sheetType =='commune' %}
+        Commune de {{ areaInfos.areaName }}
+    {% else %}
+        {{ areaInfos.typeName }} - {{ areaInfos.areaName }}
+    {% endif %}
 {% endblock %}
 
 {% block metaTags %}
@@ -30,26 +34,20 @@
     <script type="text/javascript">
         var configuration = {{configuration|tojson}};
         var observations = {{observations|tojson}};
-        var communeGeoJson = {{referenciel.communeGeoJson|tojson}};
+        var areaInfos = {{ areaInfos | tojson }};
+        console.log(areaInfos);
+        var sheetType = {{ sheetType|tojson }};
+        var communeArea = false;
+        if (sheetType === 'commune') {
+            var communeArea = true;
+        }
+        ;
         var url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
-        //calcul du nb de colonnes pour le fonctionnement de dataTables.js
-        var nbColumn = 7;
-        {% if configuration.DISPLAY_PATRIMONIALITE %} nbColumn = nbColumn + 1;{% endif %}
-        {% if configuration.PROTECTION %} nbColumn = nbColumn + 1;{% endif %}
-        var noSordedColumns = [nbColumn - 2, nbColumn - 1]; //var for dataTables js lib
-        var defaultSortedColumn = nbColumn - 4; //var for dataTables js lib
     </script>
-
-    <script type="text/javascript"
-            src="{{ url_for('static', filename='lib/datatables/datatables.min.js') }}"></script>
-    <script type="text/javascript"
-            src="{{ url_for('static', filename='lib/datatables/dataTables.bootstrap4.min.js') }}"></script>
-
-
     <script src="{{ url_for('static', filename='custom/maps-custom.js') }}"></script>
     <script src="{{ url_for('static', filename='listeEspeces.js') }}"></script>
     <script src="{{ url_for('static', filename='mapGenerator.js') }}"></script>
-    <script src="{{ url_for('static', filename='mapCommune.js') }}"></script>
+    <script src="{{ url_for('static', filename='mapAreas.js') }}"></script>
 {% endblock %}
 
 
@@ -58,18 +56,33 @@
     <div class="row h-100 flex-grow-1 p-0 m-0 border-bottom">
         <div class="col-12 col-xl-4 col-lg-5 col-md-6 d-flex flex-column m-0 p-0">
             <div class="bg-light text-center border-bottom border-right p-2">
-                <h4><b>Commune de {{ referenciel.communeName }}</b></h4>
+                {% if configuration.EXTENDED_AREAS %}
+                    {% include 'templates/areaSheet/surrounding_areas.html' %}
+                {% endif %}
+                {% if sheetType =='commune' %}
+                    <h4><b>Commune de {{ areaInfos.areaName }}</b></h4>
+                {% else %}
+                    <h4><b>{{ areaInfos.typeName }} - {{ areaInfos.areaName }}</b></h4>
+                {% endif %}
+
                 {% include 'templates/core/statHierarchy.html' %}
+
             </div>
 
-                {% include 'templates/core/listTaxons.html' %}
+            {% include 'templates/core/listTaxons.html' %}
         </div>
         <div class="col-12 col-xl-8 col-lg-7 col-md-6 d-flex flex-column m-0 p-0">
             <div class="bg-light p-2">
-                <h5 id="titleMap"><i class="fa fa-map"></i> {{ configuration.NB_LAST_OBS }} dernières
-                    observations
-                    sur la commune de
-                    <i>{{ referenciel.communeName }}</i></h5>
+                {% if sheetType =='commune' %}
+                    <h5 id="titleMap"><i class="fa fa-map"></i> {{ configuration.NB_LAST_OBS }} dernières
+                        observations
+                        sur la commune de
+                        <i>{{ areaInfos.areaName }}</i></h5>
+                {% else %}
+                    <h5 id="titleMap"><i class="fa fa-map"></i> {{ configuration.NB_LAST_OBS }} dernières
+                        observations sur la zone
+                        <i>{{ areaInfos.areaName }}</i></h5>
+                {% endif %}
             </div>
             <div class="d-flex align-content-stretch bg-warning flex-grow-1">
                 <div class="d-flex flex-grow-1">
@@ -79,7 +92,6 @@
             </div>
         </div>
     </div>
-
 
     {# Ajoutez ici coeur de la page #}
 
