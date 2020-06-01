@@ -11,12 +11,10 @@ from atlas.modeles.entities.vmCommunes import VmCommunes
 
 
 def getAllCommunes(session):
-    req = session.query(
-        distinct(VmCommunes.commune_maj), VmCommunes.insee
-    ).all()
+    req = session.query(distinct(VmCommunes.commune_maj), VmCommunes.insee).all()
     communeList = list()
     for r in req:
-        temp = {'label': r[0], 'value': r[1]}
+        temp = {"label": r[0], "value": r[1]}
         communeList.append(temp)
     return communeList
 
@@ -25,10 +23,10 @@ def getCommunesSearch(session, search, limit=50):
     req = session.query(
         distinct(VmCommunes.commune_maj),
         VmCommunes.insee,
-        func.length(VmCommunes.commune_maj)
-    ).filter(VmCommunes.commune_maj.ilike('%' + search + '%'))
+        func.length(VmCommunes.commune_maj),
+    ).filter(VmCommunes.commune_maj.ilike("%" + search + "%"))
 
-    if (current_app.config['ORDER_COMMUNES_BYLENGTH']):
+    if current_app.config["ORDER_COMMUNES_BYLENGTH"]:
         req = req.order_by(func.length(VmCommunes.commune_maj))
     else:
         req = req.order_by(VmCommunes.commune_maj)
@@ -37,7 +35,7 @@ def getCommunesSearch(session, search, limit=50):
 
     communeList = list()
     for r in req:
-        temp = {'label': r[0], 'value': r[1]}
+        temp = {"label": r[0], "value": r[1]}
         communeList.append(temp)
     return communeList
 
@@ -54,9 +52,9 @@ def getCommuneFromInsee(connection, insee):
     communeObj = dict()
     for r in req:
         communeObj = {
-            'communeName': r.commune_maj,
-            'insee': str(r.insee),
-            'communeGeoJson': ast.literal_eval(r.commune_geojson)
+            "areaName": r.commune_maj,
+            "areaCode": str(r.insee),
+            "areaGeoJson": ast.literal_eval(r.commune_geojson),
         }
     return communeObj
 
@@ -76,6 +74,6 @@ def getCommunesObservationsChilds(connection, cd_ref):
     req = connection.execute(text(sql), thiscdref=cd_ref)
     listCommunes = list()
     for r in req:
-        temp = {'insee': r.insee, 'commune_maj': r.commune_maj}
+        temp = {"insee": r.insee, "commune_maj": r.commune_maj}
         listCommunes.append(temp)
     return listCommunes
