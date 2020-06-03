@@ -1,18 +1,13 @@
 import os
-import sys
-from flask import Flask, render_template
+
+from flask import Flask
+from flask_compress import Compress
 from flask_sqlalchemy import SQLAlchemy
 
-from werkzeug.serving import run_simple
-
 from atlas.configuration import config
-from atlas.utils import format_number
-from sqlalchemy import create_engine, MetaData, Table
-from flask_compress import Compress
-
 from atlas.configuration.config_parser import read_and_validate_conf
 from atlas.configuration.config_schema import AtlasConfig, SecretSchemaConf
-from atlas.configuration import config
+from atlas.utils import format_number
 
 db = SQLAlchemy()
 compress = Compress()
@@ -89,4 +84,3 @@ if __name__ == "__main__":
     app.run(
         host="0.0.0.0", port=secret_conf["GUNICORN_PORT"], debug=app.config["modeDebug"]
     )
-

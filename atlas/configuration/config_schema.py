@@ -6,6 +6,7 @@ from marshmallow import (
     validates_schema,
 )
 from marshmallow.validate import OneOf, Regexp
+import os
 
 
 MAP_1 = {
@@ -50,6 +51,7 @@ class MapConfig(Schema):
 
 class AtlasConfig(Schema):
     modeDebug = fields.Boolean(missing=False)
+    SECRET_KEY = fields.String(missing=os.urandom(24).hex())
     STRUCTURE = fields.String(missing="Nom de la structure")
     NOM_APPLICATION = fields.String(missing="Nom de l'application")
     CUSTOM_LOGO_LINK = fields.String(missing="")
