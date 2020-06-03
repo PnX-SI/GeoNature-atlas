@@ -37,7 +37,9 @@ main = Blueprint("main", __name__)
 @main.context_processor
 def global_variables():
     session = utils.loadSession()
+    connection = utils.engine.connect()
     values = {}
+    values["generalStats"] = vmObservationsRepository.statIndex(connection)
     if current_app.config["EXTENDED_AREAS"]:
         values["areas_type_search"] = vmAreasRepository.area_types(session)
     return values
