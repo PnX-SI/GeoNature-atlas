@@ -37,9 +37,7 @@ main = Blueprint("main", __name__)
 @main.context_processor
 def global_variables():
     session = utils.loadSession()
-    connection = utils.engine.connect()
     values = {}
-    values["generalStats"] = vmObservationsRepository.statIndex(connection)
     if current_app.config["EXTENDED_AREAS"]:
         values["areas_type_search"] = vmAreasRepository.area_types(session)
     return values
@@ -108,28 +106,45 @@ def indexMedias(image):
 def index():
     session = utils.loadSession()
     connection = utils.engine.connect()
-
-    if current_app.config["AFFICHAGE_MAILLE"]:
-        observations = vmObservationsMaillesRepository.lastObservationsMailles(
-            connection,
-            current_app.config["NB_DAY_LAST_OBS"],
-            current_app.config["ATTR_MAIN_PHOTO"],
-        )
+    if current_app.config["AFFICHAGE_DERNIERES_OBS"]:
+        if current_app.config["AFFICHAGE_MAILLE"]:
+            current_app.logger.debug("start AFFICHAGE_MAILLE")
+            observations = vmObservationsMaillesRepository.lastObservationsMailles(
+                connection,
+                current_app.config["NB_DAY_LAST_OBS"],
+                current_app.config["ATTR_MAIN_PHOTO"],
+            )
+            current_app.logger.debug("end AFFICHAGE_MAILLE")
+        else:
+            current_app.logger.debug("start AFFICHAGE_PRECIS")
+            observations = vmObservationsRepository.lastObservations(
+                connection,
+                current_app.config["NB_DAY_LAST_OBS"],
+                current_app.config["ATTR_MAIN_PHOTO"],
+            )
+            current_app.logger.debug("end AFFICHAGE_PRECIS")
     else:
-        observations = vmObservationsRepository.lastObservations(
-            connection,
-            current_app.config["NB_DAY_LAST_OBS"],
-            current_app.config["ATTR_MAIN_PHOTO"],
-        )
+        observations = []
 
+    current_app.logger.debug("start mostViewTaxon")
     mostViewTaxon = vmTaxonsMostView.mostViewTaxon(connection)
-    # stat = vmObservationsRepository.statIndex(connection)
-    customStat = vmObservationsRepository.genericStat(
-        connection, current_app.config["RANG_STAT"]
-    )
-    customStatMedias = vmObservationsRepository.genericStatMedias(
-        connection, current_app.config["RANG_STAT"]
-    )
+    current_app.logger.debug("end mostViewTaxon")
+    stat = vmObservationsRepository.statIndex(connection)
+    current_app.logger.debug("start customStat")
+
+    if current_app.config["AFFICHAGE_RANG_STAT"]:
+        customStat = vmObservationsRepository.genericStat(
+            connection, current_app.config["RANG_STAT"]
+        )
+        current_app.logger.debug("end customStat")
+        current_app.logger.debug("start customStatMedia")
+        customStatMedias = vmObservationsRepository.genericStatMedias(
+            connection, current_app.config["RANG_STAT"]
+        )
+        current_app.logger.debug("end customStatMedia")
+    else:
+        customStat = []
+        customStatMedias = []
 
     connection.close()
     session.close()
@@ -138,7 +153,7 @@ def index():
         "templates/home/_main.html",
         observations=observations,
         mostViewTaxon=mostViewTaxon,
-        # stat=stat,
+        stat=stat,
         customStat=customStat,
         customStatMedias=customStatMedias,
     )
