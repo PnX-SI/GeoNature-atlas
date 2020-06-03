@@ -206,7 +206,6 @@ def getObserversCommunes(connection, insee):
 
 def statIndex(connection):
     result = {"nbTotalObs": None, "nbTotalTaxons": None, "town": None, "photo": None}
-
     sql = "SELECT COUNT(*) AS count \
     FROM atlas.vm_observations "
     req = connection.execute(text(sql))
