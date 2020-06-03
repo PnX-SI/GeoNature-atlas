@@ -50,6 +50,8 @@ CREATE INDEX vm_l_areas_area_name_idx
 
 --Table des correspondances observations <> zonages;
 
+DROP MATERIALIZED VIEW IF EXISTS atlas.vm_cor_area_observation;
+
 CREATE MATERIALIZED VIEW atlas.vm_cor_area_observation AS
 SELECT cas.id_synthese AS id_observation, cas.id_area
 FROM
@@ -58,7 +60,9 @@ FROM
 
 CREATE UNIQUE INDEX ON atlas.vm_cor_area_observation(id_observation, id_area);
 
-
+GRANT SELECT ON TABLE atlas.vm_bib_areas_types TO my_reader_user;
+GRANT SELECT ON TABLE atlas.vm_l_areas TO my_reader_user;
+GRANT SELECT ON TABLE atlas.vm_cor_area_observation TO my_reader_user;
 
 
 
