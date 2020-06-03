@@ -123,7 +123,7 @@ def index():
         )
 
     mostViewTaxon = vmTaxonsMostView.mostViewTaxon(connection)
-    stat = vmObservationsRepository.statIndex(connection)
+    # stat = vmObservationsRepository.statIndex(connection)
     customStat = vmObservationsRepository.genericStat(
         connection, current_app.config["RANG_STAT"]
     )
@@ -138,7 +138,7 @@ def index():
         "templates/home/_main.html",
         observations=observations,
         mostViewTaxon=mostViewTaxon,
-        stat=stat,
+        # stat=stat,
         customStat=customStat,
         customStatMedias=customStatMedias,
     )
