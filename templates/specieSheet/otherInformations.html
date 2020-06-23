@@ -1,95 +1,97 @@
 {% block otherInformations %}
-<div class="card mt-4" id="otherInformationsPanel">
-    <div class="row" id="otherInformations">
-        <ul class="nav nav-tabs">
-            {% if articles | length != 0 %}
-            <li class="nav-item"><a data-toggle="tab" class="nav-link active"
-                    href="#articles"><b>{{ articles|length }}</b> {{ 'articles' if articles|length > 1 else 'article' }}
-                </a></li>
-            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#communes">
-                    <b>{{ communes|length }}</b> {{ 'communes' if communes|length > 1 else 'commune' }}</a>
-            </li>
-            {% else %}
-            <li class="nav-item"><a data-toggle="tab" class="nav-link active" href="#communes">
-                    <b>{{ communes|length }}</b> {{ 'communes' if communes|length > 1 else 'commune' }}</a>
-            </li>
-            {% endif %}
-            <li class="nav-item"><a data-toggle="tab" class="nav-link" href="#observateurs">
+    <div class="card mt-4" id="otherInformationsPanel">
+        <div class="row" id="otherInformations">
+            <ul class="nav nav-tabs">
+                {% if articles | length != 0 %}
+                    <li class="nav-item"><a data-toggle="tab" class="nav-link active"
+                                            href="#articles"><b>{{ articles|length }}</b> {{ 'articles' if articles|length > 1 else 'article' }}
+                    </a></li>
+                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#communes">
+                        <b>{{ communes|length }}</b> {{ 'communes' if communes|length > 1 else 'commune' }}</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item"><a data-toggle="tab" class="nav-link active" href="#communes">
+                        <b>{{ communes|length }}</b> {{ 'communes' if communes|length > 1 else 'commune' }}</a>
+                    </li>
+                {% endif %}
+                <li class="nav-item"><a  class="nav-link" {% if not configuration.ANONYMIZE %}data-toggle="tab"
+                                        href="#observateurs" {% endif %}>
                     <b>{{ observers|length }} </b> {{ 'observateurs' if observers|length > 1 else 'observateur' }}
                 </a></li>
-        </ul>
+            </ul>
 
-        <div class="tab-content" style="width:100%;">
-            {% if articles | length != 0 %}
-            <div id="articles" class="tab-pane fade show active">
-                <table class="table table-striped">
-                    <thead>
-                        <th></th>
-                        <th> Titre</th>
-                        <th> Auteur</th>
-                    </thead>
-                    <tbody>
+            <div class="tab-content" style="width:100%;">
+                {% if articles | length != 0 %}
+                    <div id="articles" class="tab-pane fade show active">
+                        <table class="table table-striped">
+                            <thead>
+                            <th></th>
+                            <th> Titre</th>
+                            <th> Auteur</th>
+                            </thead>
+                            <tbody>
 
-                        {% for i in range (articles | length) %}
-                        <tr class="accordion-toggle" data-toggle="collapse" data-target=".moreInfo{{ i }}">
-                            <td> {% if articles[i].id_type == 3 %}
-                                <span class="fas fa-link"> </span>
-                                {% else %} <span class="fas fa-paperclip"> </span>
-                                {% endif %}
-                            </td>
+                            {% for i in range (articles | length) %}
+                                <tr class="accordion-toggle" data-toggle="collapse" data-target=".moreInfo{{ i }}">
+                                    <td> {% if articles[i].id_type == 3 %}
+                                        <span class="fas fa-link"> </span>
+                                    {% else %} <span class="fas fa-paperclip"> </span>
+                                    {% endif %}
+                                    </td>
 
-                            <td>
-                                <a href="{{ articles[i].path }}" target="_blank"> {{ articles[i].title }} </a>
-                            </td>
+                                    <td>
+                                        <a href="{{ articles[i].path }}" target="_blank"> {{ articles[i].title }} </a>
+                                    </td>
 
-                            <td>
-                                {{ articles[i].author }}
-                            </td>
-                            <td>
-                                <i class="btn-more"> <span class="fas fa-chevron-down "> </span></i>
-                            </td>
+                                    <td>
+                                        {{ articles[i].author }}
+                                    </td>
+                                    <td>
+                                        <i class="btn-more"> <span class="fas fa-chevron-down "> </span></i>
+                                    </td>
 
-                        </tr>
-                        <tr>
-                            <td colspan="4" class="hiddenRow" style="padding:0px;">
-                                <div class="collapse moreInfo{{ i }}">
-                                    <strong> Description : </strong>
-                                    <br> {{ articles[i].description | safe }} <br>
-                                    <strong> Date : </strong> {{ articles[i].date }}
-                                </div>
-                            </td>
-                        </tr>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="hiddenRow" style="padding:0px;">
+                                        <div class="collapse moreInfo{{ i }}">
+                                            <strong> Description : </strong>
+                                            <br> {{ articles[i].description | safe }} <br>
+                                            <strong> Date : </strong> {{ articles[i].date }}
+                                        </div>
+                                    </td>
+                                </tr>
 
-                        {% endfor %}
+                            {% endfor %}
 
-                    </tbody>
-                </table>
-            </div>
-            {% endif %}
-            {% if articles | length != 0 %}
-            <div id="communes" class="tab-pane fade">
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+                {% if articles | length != 0 %}
+                    <div id="communes" class="tab-pane fade">
                 {% else %}
-                <div id="communes" class="tab-pane fade show active">
-                    {% endif %}
-                    <p>
-                        {% for com in communes %}
+                    <div id="communes" class="tab-pane fade show active">
+                {% endif %}
+                <p>
+                    {% for com in communes %}
                         <a href="{{ url_for('main.ficheCommune', insee = com.insee) }}">{{ com.commune_maj }}</a>
                         {% if not loop.last %}
-                        -
+                            -
                         {% endif %}
-                        {% endfor %}
-                    </p>
-                </div>
-
-                <div id="observateurs" class="tab-pane fade">
-                    {% for o in observers %}
-                    {{ o }}
-                    {% if  not loop.last %}
-                    -
-                    {% endif %}
                     {% endfor %}
+                </p>
+                </div>
+                {% if not configuration.ANONYMIZE %}
+                    <div id="observateurs" class="tab-pane fade">
+                        {% for o in observers %}
+                            {{ o }}
+                            {% if  not loop.last %}
+                                -
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
                 </div>
             </div>
         </div>
-    </div>
-    {% endblock %}
+{% endblock %}
