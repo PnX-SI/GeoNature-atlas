@@ -2,9 +2,10 @@
 
 import ast
 import json
+from datetime import datetime
 
 from flask import current_app
-from sqlalchemy import or_, and_
+from sqlalchemy import or_, and_, case
 from sqlalchemy.sql.expression import func
 
 from atlas.modeles import utils
@@ -58,7 +59,24 @@ def get_area_info(session, id_area):
             VmBibAreasTypes.type_name,
             VmBibAreasTypes.type_code,
             VmAreas.area_geojson.label("geosjonArea"),
-            func.st_asgeojson(func.st_transform(VmAreas.the_geom, 4326)).label("geom"),
+            case(
+                [
+                    (
+                        func.st_npoints(VmAreas.the_geom)
+                        > current_app.config["SIMPLIFY_AREA_GEOM_TRESHOLD"],
+                        func.st_asgeojson(
+                            func.st_transform(
+                                func.st_simplifypreservetopology(
+                                    VmAreas.the_geom,
+                                    current_app.config["SIMPLIFY_AREA_GEOM_TOLERANCE"],
+                                ),
+                                4326,
+                            )
+                        ),
+                    ),
+                ],
+                else_=func.st_asgeojson(func.st_transform(VmAreas.the_geom, 4326)),
+            ).label("geom"),
         )
         .join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type)
         .filter(VmAreas.id_area == id_area)
@@ -72,6 +90,7 @@ def get_area_info(session, id_area):
     r["typeName"] = result.type_name
     r["typeCode"] = result.type_code
     r["areaGeoJson"] = ast.literal_eval(result.geom)
+
     return r
 
 
@@ -127,8 +146,13 @@ def last_observations_area_maille(session, myLimit, idArea):
     current_app.logger.debug(
         "<last_observations_area_maille> query q_mailles_obs: {}".format(q_mailles_obs)
     )
-
+    current_app.logger.debug(
+        "<last_observations_area_maille> start query: {}".format(datetime.now())
+    )
     result = q_mailles_obs.all()
+    current_app.logger.debug(
+        "<last_observations_area_maille> start loop: {}".format(datetime.now())
+    )
     obsList = list()
     for o in result:
         if o.nom_vern:
@@ -142,6 +166,9 @@ def last_observations_area_maille(session, myLimit, idArea):
             "id_maille": o.id_maille,
         }
         obsList.append(temp)
+    current_app.logger.debug(
+        "<last_observations_area_maille> end loop: {}".format(datetime.now())
+    )
     return obsList
 
 
@@ -264,6 +291,9 @@ def get_areas_grid_observations_by_cdnom(session, id_area, cd_nom):
         .order_by(TGrid.id_maille)
     )
 
+    current_app.logger.debug(
+        "<get_areas_grid_observations_by_cdnom> QUERY: {}".format(query)
+    )
     tabObs = list()
     for o in query.all():
         temp = {
@@ -316,6 +346,8 @@ def get_area_taxa(session, id_area):
         )
         .order_by(-func.count(VmObservations.id_observation))
     )
+    current_app.logger.debug("<get_area_taxa> QUERY: {}".format(query))
+    current_app.logger.debug("<get_area_taxa> start loop: {}".format(datetime.now()))
     result = []
     nbObsTotal = 0
     for r in query.all():
@@ -324,7 +356,7 @@ def get_area_taxa(session, id_area):
         temp["path"] = utils.findPath(r)
         nbObsTotal = nbObsTotal + r.nb_obs
         result.append(temp)
-
+    current_app.logger.debug("<get_area_taxa> end loop: {}".format(datetime.now()))
     return {"taxons": result, "nbObsTotal": nbObsTotal}
 
 

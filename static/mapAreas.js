@@ -11,10 +11,9 @@ var myGeoJson;
 var areaLayer = L.geoJson(areaInfos.areaGeoJson, {
   style: function() {
     return {
-      fillColor: "blue",
       opacity: 1,
       weight: 2,
-      color: "red",
+      color: areaBorderColor,
       dashArray: "3",
       fillOpacity: 0
     };

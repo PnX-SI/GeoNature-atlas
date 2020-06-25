@@ -130,8 +130,10 @@ class AtlasConfig(Schema):
     TYPE_DE_REPRESENTATION_MAILLE = fields.String(
         validate=OneOf(["LAST_OBS", "NB_OBS"])
     )
-
+    ANONYMIZE = fields.Boolean(missing=False)
     MAP = fields.Nested(MapConfig, missing=dict())
+    SIMPLIFY_AREA_GEOM_TRESHOLD = fields.Integer(missing=0)
+    SIMPLIFY_AREA_GEOM_TOLERANCE = fields.Integer(missing=0)
     # Specify how communes are ordered
     #   if true by length else by name
     ORDER_COMMUNES_BYLENGTH = fields.Boolean(missing=False)

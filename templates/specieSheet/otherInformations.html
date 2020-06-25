@@ -14,7 +14,7 @@
                         <b>{{ communes|length }}</b> {{ 'communes' if communes|length > 1 else 'commune' }}</a>
                     </li>
                 {% endif %}
-                <li class="nav-item"><a  class="nav-link" {% if not configuration.ANONYMIZE %}data-toggle="tab"
+                <li class="nav-item"><a class="nav-link" {% if not configuration.ANONYMIZE %}data-toggle="tab"
                                         href="#observateurs" {% endif %}>
                     <b>{{ observers|length }} </b> {{ 'observateurs' if observers|length > 1 else 'observateur' }}
                 </a></li>

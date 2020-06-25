@@ -37,10 +37,10 @@
                                     {% endif %}
                             <div class="media-body p-2">
                             <span class="float-right"><a href="{{ url_for('main.ficheEspece',cd_ref=obs.cd_ref) }}"
-                                                         class="badge" data-toggle="tooltip"
+                                                         class="badge badge-primary" data-toggle="tooltip"
                                                          data-placement="left"
                                                          data-original-title="Consulter la fiche espèce"><i
-                                    class="fas fa-list"></i></a></span>
+                                    class="fas fa-list"></i> Fiche espèce</a></span>
                             <p class="singleTaxon name" cdref="{{ obs.cd_ref }}"> {{ obs.taxon }}<br/>
                                 {{ obs.dateobs }} </p>
                             <span class="hidden" hidden="true">{{ obs.cd_ref }}</span>
