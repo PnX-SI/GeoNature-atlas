@@ -140,6 +140,7 @@ class AtlasConfig(Schema):
     # coupe le nom_vernaculaire à la 1ere virgule sur les fiches espèces
     SPLIT_NOM_VERN = fields.Integer(missing=True)
     EXTENDED_AREAS = fields.Boolean(missing=False)
+    INTERACTIVE_MAP_LIST = fields.Boolean(missing=True)
 
     @validates_schema
     def validate_url_taxhub(self, data):

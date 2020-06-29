@@ -1,16 +1,24 @@
 {% block tabTaxons %}
+    {% if configuration.INTERACTIVE_MAP_LIST %}
+        <style>
+            #taxonListItem:hover {
+                cursor: pointer;
+            }
+        </style>
+    {% endif %}
     <div class="bg-white border-right p-2">
 
-                <div class="col">
-                    <input id="taxonInput" type="text" class="form-control  form-control-sm" placeholder="Filtrer les espèces">
-                </div>
+        <div class="col">
+            <input id="taxonInput" type="text" class="form-control  form-control-sm" placeholder="Filtrer les espèces">
+        </div>
 
     </div>
     <div id="taxonList" class="d-flex align-content-stretch bg-white flex-grow-1">
         <ul class="list-group w-100">
             {% for taxon in listTaxons.taxons %}
                 <li id="taxonListItem" class="media border-bottom p-2" area-code="{{ areaInfos.areaCode }}"
-                    cdRef="{{ taxon.cd_ref }}">
+                    cdRef="{{ taxon.cd_ref }}" {% if configuration.INTERACTIVE_MAP_LIST %}data-toggle="tooltip"
+                    data-original-title="Voir la répartition de l'espèce sur ce territoire"{% endif %}>
                 <span class="d-none">{{ taxon.group2_inpn }}</span>
                 <div class="pictoImgList mr-2" data-toggle="tooltip" data-original-title="{{ taxon.group2_inpn }}"
                      data-placement="right">
@@ -54,19 +62,21 @@
                 {% endif %}
 
             </span>
-                    <h5 class="mt-0 mb-1">
+                    <h5 class="mt-0 mb-1 ">
                         {% if DISPLAY_EYE_ON_LIST %}
                             <a data-toggle="tooltip"
                                data-original-title="Afficher les observations sur la commune"
                                data-placement="right"><i class="fas fa-eye fa-fw"> </i></a>
                         {% endif %}
+                        <strong>{% if taxon.nom_vern == None %}
+                            -
+                        {% else %}
+                            {{ taxon.nom_vern.split(',')[0].strip() }}
+                        {% endif %}</strong></h5>
+                    <h5>
                         <span id="name">{{ taxon.nom_complet_html|safe }}</span>
                     </h5>
-                    <h5>{% if taxon.nom_vern == None %}
-                        -
-                    {% else %}
-                        {{ taxon.nom_vern }}
-                    {% endif %}</h5>
+
                     <strong>{{ taxon.nb_obs }}</strong> {% if taxon.nb_obs == 1 %}observation{% else %}
                     observations{% endif %} <br>
                     Dernière observation en <strong>{{ taxon.last_obs|int }}</strong>
