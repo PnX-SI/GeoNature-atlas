@@ -14,8 +14,8 @@ var areaLayer = L.geoJson(areaInfos.areaGeoJson, {
             opacity: 1,
             weight: 2,
             color: areaBorderColor,
-            dashArray: "3",
-            fillOpacity: 0
+            // dashArray: "3",
+            fillOpacity: 0.3
         };
     }
 }).addTo(map);
@@ -37,14 +37,11 @@ else {
 
 // Generate legends and check configuration to choose which to display (Maille ou Point)
 
+
 htmlLegendMaille =
-    "<i style='border: solid 1px red;'> &nbsp; &nbsp; &nbsp;</i> Maille comportant au moins une observation <br> <br>" +
-    "<i style='border-style: dotted;'> &nbsp; &nbsp; &nbsp;</i> Limite de la zone <br> <br>" +
-    "<i style='border: solid " +
-    configuration.MAP.BORDERS_WEIGHT +
-    "px " +
-    configuration.MAP.BORDERS_COLOR +
-    ";'> &nbsp; &nbsp; &nbsp;</i> Limite du " +
+    "<i style='border: solid 1px var(--map-maille-lastobs-border-color);'> &nbsp; &nbsp; &nbsp;</i> Maille comportant au moins une observation <br> <br>" +
+    "<i style='border: dashed 2px var(--map-area-border-color); background-color:var(--map-area-border-color); opacity:0.3'> &nbsp; &nbsp; &nbsp;</i> Limite de la zone <br> <br>" +
+    "<i style='border: solid var(--map-area-border-width) var(--map-territory-border-color);'> &nbsp; &nbsp; &nbsp;</i> Limite du " +
     configuration.STRUCTURE;
 
 htmlLegendPoint =

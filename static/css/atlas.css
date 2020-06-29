@@ -2,7 +2,9 @@
     --main-color: #C3B528;
     --second-color: #5A7526;
     --map-maille-border-color: #ddd;
-    --map-territory-border-color: #c218d0;
+    --map-maille-lastobs-border-color: #c218d0;
+    --map-territory-border-color: #333 ;
+    --map-area-border-width: 3px ;
     --map-area-border-color: var(--second-color);
     --scrollbarBG: #CFD8DC;
     --thumbBG: var(--main-color);

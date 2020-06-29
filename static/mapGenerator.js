@@ -1,3 +1,9 @@
+const mailleBorderColor = String(getComputedStyle(document.documentElement).getPropertyValue('--map-maille-border-color'));
+const mailleLastObsBorderColor = String(getComputedStyle(document.documentElement).getPropertyValue('--map-maille-lastobs-border-color'));
+const territoryBorderColor = String(getComputedStyle(document.documentElement).getPropertyValue('--map-territory-border-color'));
+const areaBorderColor = String(getComputedStyle(document.documentElement).getPropertyValue('--map-area-border-color'));
+
+
 function generateMap() {
     // Map initialization
     firstMapTile = L.tileLayer(configuration.MAP.FIRST_MAP.url, {
@@ -24,7 +30,7 @@ function generateMap() {
     // Style of territory on map
     territoryStyle = {
         fill: false,
-        color: configuration.MAP.BORDERS_COLOR,
+        color: territoryBorderColor,
         weight: configuration.MAP.BORDERS_WEIGHT
     };
 
@@ -158,9 +164,6 @@ function getColor(d) {
                                 : "#FFEDA0";
 }
 
-const mailleBorderColor = String(getComputedStyle(document.documentElement).getPropertyValue('--map-maille-border-color'));
-const territoryBorderColor = String(getComputedStyle(document.documentElement).getPropertyValue('--map-territory-border-color'));
-const areaBorderColor = String(getComputedStyle(document.documentElement).getPropertyValue('--map-area-border-color'));
 
 function styleMaille(feature) {
     return {
@@ -524,7 +527,7 @@ function styleMailleLastObs() {
     return {
         opacity: 1,
         weight: 2,
-        color: mailleBorderColor,
+        color: mailleLastObsBorderColor,
         fillOpacity: 0
     };
 }
