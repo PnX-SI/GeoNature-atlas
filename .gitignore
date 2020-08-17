@@ -35,6 +35,7 @@ static/custom/templates/footer.html
 static/custom/templates/introduction.html
 static/custom/templates/credits.html
 static/custom/templates/mentions-legales.html
+static/custom/templates/bandeaulogoshome.html
 
 data/ref/communes.dbf
 data/ref/communes.prj
