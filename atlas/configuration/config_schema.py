@@ -46,6 +46,7 @@ class MapConfig(Schema):
     BORDERS_COLOR = fields.String(missing="#000000")
     BORDERS_WEIGHT = fields.Integer(missing=3)
     ENABLE_SLIDER = fields.Boolean(missing=True)
+    INFO_MAP = fields.Boolean(missing=True)
 
 
 class AtlasConfig(Schema):

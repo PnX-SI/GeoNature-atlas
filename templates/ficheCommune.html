@@ -74,6 +74,9 @@
 							 <div id="map"> </div>
 						</div>
 					</div>
+                    {% if configuration.MAP.INFO_MAP %}
+                        {% include 'static/custom/templates/info_map.html' %}
+                    {% endif %}
 				</div>
             </div>
 
