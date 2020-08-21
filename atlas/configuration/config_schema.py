@@ -115,6 +115,7 @@ class AtlasConfig(Schema):
             }
         }
     )
+    INFOS_POPUP = fields.Boolean(missing=True)
 
     AFFICHAGE_MAILLE = fields.Boolean(missing=False)
     ZOOM_LEVEL_POINT = fields.Integer(missing=11)

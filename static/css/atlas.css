@@ -101,6 +101,18 @@ a {
   border-color: var(--main-color);
 }
 
+.btn.btn-light {
+  color: var(--main-color) !important;
+  border-color: var(--main-color) !important;
+  background-color: white; 
+}
+
+.btn.btn-light:hover {
+  background-color: var(--main-color);
+  color:  white !important;
+  border-color: var(--main-color);
+}
+
 .rowMargin {
   margin-left: 0px;
   margin-right: 0px;
