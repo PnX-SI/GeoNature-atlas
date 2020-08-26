@@ -49,8 +49,8 @@ class MapConfig(Schema):
 
 
 class StatConfig(Schema):
-    ENABLE_CLASSE_ALTITUDE = fields.Boolean(missing=True)
-    ENABLE_OBS_MENSUELLE = fields.Boolean(missing=True)
+    DISPLAY_CLASSE_ALTITUDE = fields.Boolean(missing=True)
+    DISPLAY_OBS_MENSUELLE = fields.Boolean(missing=True)
 
 
 class AtlasConfig(Schema):

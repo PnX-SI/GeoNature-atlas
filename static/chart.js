@@ -1,5 +1,5 @@
 // alti graph
-if (configuration.STAT.ENABLE_CLASSE_ALTITUDE) {
+if (configuration.STAT.DISPLAY_CLASSE_ALTITUDE) {
     Morris.Bar({
                 element:"altiChart",
                 data : dataset,
@@ -29,7 +29,7 @@ if (configuration.STAT.ENABLE_CLASSE_ALTITUDE) {
 }
 
 // month graph
-if (configuration.STAT.ENABLE_OBS_MENSUELLE) {
+if (configuration.STAT.DISPLAY_OBS_MENSUELLE) {
     var phenologyChart =  Morris.Bar({
                             element:"phenologyChart",
                             data : months,
