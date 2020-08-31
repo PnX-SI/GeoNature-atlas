@@ -302,7 +302,16 @@
                     <!-- Si on veux les infos sous la cartes en pop-up -->
                     {% if configuration.INFOS_POPUP %}
 
-                            <div class="col-lg-6 col-sm-12">
+                        <!-- au minimum il y a 1 btn : communes -->
+                        {% set nb_btn = 1 %}
+                        <!-- si on affiche les observateurs : + 1 btn -->
+                        {% if configuration.DISPLAY_OBSERVERS %}{% set nb_btn = nb_btn + 1 %}{% endif %}
+                        
+
+                        {% if nb_btn == 1 %} <div class="col-lg-offset-3 col-lg-6 col-sm-12">
+                        {% elif nb_btn == 2 %} <div class="col-lg-6 col-sm-12">
+                        {% else %} <div class="col-xs-12">
+                        {% endif %}
 
                                 <button type="button" class="btn btn-light btn-block btn-lg" data-toggle="modal"
                                         data-target="#listCommunes">
@@ -343,45 +352,57 @@
 
                             </div>
 
-                            <div class="col-lg-6 col-sm-12">
 
-                                <button type="button" class="btn btn-light btn-block btn-lg" data-toggle="modal"
-                                        data-target="#listObservers">
-                                    <b>{{ observers|length | pretty }} </b> {{ 'observateurs' if observers|length > 1 else 'observateur' }}
-                                </button>
+                            {% if configuration.DISPLAY_OBSERVERS %}
+                                <!-- au minimum il y a 1 btn : communes -->
+                                {% set nb_btn = 1 %}
+                                <!-- si on affiche les observateurs : + 1 btn -->
+                                {% if configuration.DISPLAY_OBSERVERS %}{% set nb_btn = nb_btn + 1 %}{% endif %}
+                                
 
-                                <!-- Modal -->
-                                <div id="listObservers" class="modal fade" role="dialog">
-                                    <div class="modal-dialog modal-lg">
+                                {% if nb_btn == 1 %} <div class="col-lg-offset-3 col-lg-6 col-sm-12">
+                                {% elif nb_btn == 2 %} <div class="col-lg-6 col-sm-12">
+                                {% else %} <div class="col-xs-12">
+                                {% endif %}
 
-                                        <!-- Modal content-->
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal">&times;
-                                                </button>
-                                                <h4 class="modal-title"><b>Liste des observateurs du taxon</b></h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="">
-                                                    {% for o in observers %}
-                                                        {{o }}
-                                                        {% if  not loop.last %}
-                                                        -
-                                                        {% endif %}
-                                                    {% endfor %}
+                                    <button type="button" class="btn btn-light btn-block btn-lg" data-toggle="modal"
+                                            data-target="#listObservers">
+                                        <b>{{ observers|length | pretty }} </b> {{ 'observateurs' if observers|length > 1 else 'observateur' }}
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div id="listObservers" class="modal fade" role="dialog">
+                                        <div class="modal-dialog modal-lg">
+
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;
+                                                    </button>
+                                                    <h4 class="modal-title"><b>Liste des observateurs du taxon</b></h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="">
+                                                        {% for o in observers %}
+                                                            {{o }}
+                                                            {% if  not loop.last %}
+                                                            -
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                        Fermer
+                                                    </button>
                                                 </div>
                                             </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">
-                                                    Fermer
-                                                </button>
-                                            </div>
+
                                         </div>
-
                                     </div>
-                                </div>
 
-                            </div>
+                                </div>
+                            {% endif %}
 
                             
                     <!-- Si on veux les infos sous la cartes dans des onglets -->
@@ -393,7 +414,9 @@
                             {% else %}
                             <li class="active"><a data-toggle="tab" href="#communes"> <b>{{communes|length | pretty}}</b> {{ 'communes' if communes|length > 1 else 'commune' }}</a></li>
                             {% endif %}
-                            <li><a data-toggle="tab" href="#observateurs"> <b>{{observers|length | pretty}} </b> {{ 'observateurs' if observers|length > 1 else 'observateur' }}</a></li>
+                            {% if configuration.DISPLAY_OBSERVERS %}
+                                <li><a data-toggle="tab" href="#observateurs"> <b>{{observers|length | pretty}} </b> {{ 'observateurs' if observers|length > 1 else 'observateur' }}</a></li>
+                            {% endif %}
                           </ul>
 
                         <div class="tab-content" style="width:100%;">
@@ -456,6 +479,7 @@
                                 </p>
                             </div>
 
+                            {% if configuration.DISPLAY_OBSERVERS %}
                             <div id="observateurs" class="tab-pane fade">
                                 {% for o in observers %}
                                     {{o }}
@@ -464,6 +488,7 @@
                                     {% endif %}
                                 {% endfor %}
                             </div>
+                            {% endif %}
                         </div>
                     {% endif %}
                 </div>
