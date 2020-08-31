@@ -12,7 +12,6 @@ atlas/configuration/config.py
 atlas/configuration/settings.ini
 robots.txt
 .htaccess
-.htpassword
 venv/*
 venv3/*
 
@@ -22,7 +21,6 @@ data/ref/communes.dbf
 data/ref/communes.prj
 
 static/custom/territoire.json
-static/custom/territoire_limit2.json
 static/custom/glossaire.json
 static/custom/custom.css
 static/custom/maps-custom.js
