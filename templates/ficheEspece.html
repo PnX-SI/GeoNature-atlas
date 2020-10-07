@@ -493,8 +493,63 @@
                     {% endif %}
                 </div>
             </div>
-        </div>
+            {% if configuration.INFOS_POPUP %}
+              {% if articles | length != 0 %}
+                <div class="panel panel-default" id="otherInformationsPanel">
+                    <div class="row" id="otherInformations">
+                        <div id="articles">
+                        <h4>
+                            <span class="glyphicon glyphicon-file"></span>
+                            <b>{{articles|length | pretty}}</b> {{ 'articles' if articles|length > 1 else 'article' }}
+                        </h4>
+                        <hr class="small-hr">
+                            <table class="table table-striped">
+                                <thead>
+                                    <th> </th>
+                                    <th> Titre </th>
+                                    <th> Auteur </th>
+                                </thead>
+                                <tbody>
 
+                                        {% for i in range (articles | length) %}
+                                            <tr class="accordion-toggle" data-toggle="collapse" data-target=".moreInfo{{i}}">
+                                                <td> {% if articles[i].id_type == 3 %} <span class="glyphicon glyphicon-link"> </span>
+                                                     {% else %} <span class="glyphicon glyphicon-paperclip"> </span>
+                                                     {% endif %}
+                                                </td>
+
+                                                <td>
+                                                    <a href="{{articles[i].path}}" target="_blank"> {{articles[i].title}} </a>
+                                                 </td>
+
+                                                <td>
+                                                    {{articles[i].author}}
+                                                </td>
+                                                <td>
+                                                   <i class="btn-more"> <span class="glyphicon glyphicon-chevron-down "> </span></i>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan ="4" class="hiddenRow" style="padding:0px;">
+                                                    <div  class="collapse moreInfo{{i}}">
+                                                        <strong> Description : </strong> <br> {{articles[i].description | safe}} <br>
+                                                        <strong> Date : </strong> {{articles[i].date}}
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                        {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+              {% endif %}
+            {% endif %}
+        </div>
         <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
             {% if photoCarousel | length >= 1 %}
             <div class="panel panel-default">
