@@ -36,6 +36,10 @@ Atlas en ligne utilisant GeoNature-atlas :
 - `CEN des Pays de la Loire <http://www.biodiv-paysdelaloire.fr/>`_
 - `Atlas du Languedoc-Roussillon <https://atlas.libellules-et-papillons-lr.org>`_
 - `LPO Auvergne-Rhône-Alpes <https://carto.fauneauvergnerhonealpes.org/>`_
+- `OcNat <https://biodiv-occitanie.fr/>`_
+- `Société Herpétologique de France <https://atlas.lashf.org/>`_
+- `Picardie Nature <https://clicnat.fr/>`_
+
 
 Technologies
 ------------
