@@ -2,6 +2,24 @@
 CHANGELOG
 =========
 
+1.4.2 (2020-11-25)
+------------------
+
+**🐛 Corrections**
+
+* Ajout d'index sur les vues matérialisées ``atlas.t_layer_territoire`` et ``atlas.t_mailles_territoire`` pour pouvoir les rafriahcir en parallèle (#254 et #260)
+* Désactivation de la route des observations ponctuelles quand l'atlas est paramétre en mode mailles (#237 par @lpofredc)
+* Correction des observations dupliquées dans les fiches communes (#225 par @jpm-cbna)
+* Correction du spinner pour la recherche par commune (#227 par @jpm-cbna)
+* Corrections CSS supprimant un scroll horizontal global (par @jpm-cbna) et un problème de positionnement sur la page de présentation
+* Mise à jour de la dépendance Python ``sqlalchemy`` en version 1.3.19
+* Clarification de la documentation et du fichier d'exemple de ``settings.ini``
+
+**⚠️ Notes de version**
+
+* Si vous mettez à jour l'application, exécutez le script SQL de mise à jour de la BDD : ``data/update_1.4.1to1.4.2.sql``
+* Suivez la procédure classique de mise à jour : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/installation.rst#mise-%C3%A0-jour-de-lapplication
+
 1.4.1 (2019-10-09)
 ------------------
 
