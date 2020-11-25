@@ -1,7 +1,7 @@
-
+# ................................
 #  GeoNature-atlas
 #  PostgreSQL database settings
-#.................................
+# ................................
 
 # Effacer la base de données existante lors de l'installation
 drop_apps_db=false
@@ -15,14 +15,14 @@ db_port=5432
 # Nom de la base de données de l'application
 db_name=geonatureatlas
 
-# Nom de l'utilisateur BDD, utilisé par l'application, lecteur des vues matérialisées uniquement
+# Nom de l'utilisateur BDD, utilisé par l'application atlas, lecteur des vues matérialisées uniquement
 user_pg=geonatatlas
 
-# Nom du propriétaire de la BDD, utilisé pour créer et mettre à jour la BDD
-owner_atlas=geonatuser
-
-# Password de l'utilisateur de l'application
+# Password de l'utilisateur BDD, utilisé par l'application, lecteur des vues matérialisées uniquement
 user_pg_pass=monpassachanger
+
+# Nom du propriétaire de la BDD atlas, utilisé pour créer et mettre à jour la BDD
+owner_atlas=geonatadmin
 
 # Password du propriétaire de la BDD
 owner_atlas_pass=monpassachanger
@@ -52,7 +52,7 @@ db_source_port=5432
 db_source_name=geonature2db
 
 # Nom de l'utilisateur atlas dans la BDD GeoNature source (lecture seule)
-atlas_source_user=geonatuser
+atlas_source_user=geonatatlas
 
 # Pass de l'utilisateur atlas dans la BDD GeoNature source (lecture seule)
 atlas_source_pass=monpassachanger

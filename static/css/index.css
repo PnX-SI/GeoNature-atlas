@@ -127,7 +127,7 @@ h3.title-spaced {
   margin: 0px;
 }
 
-#searchTaxonsStat {
+#searchTaxonsStat, #searchCommunesStat {
   background-position: right center;
   background-repeat: no-repeat;
   background-size: 25px 25px;

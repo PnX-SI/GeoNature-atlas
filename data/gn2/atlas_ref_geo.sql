@@ -1,8 +1,6 @@
-
 --################################
---###COMMUNES
+--###Communes
 --################################
-
 
 -- Suppression si temporaire des communes la table existe
 DO $$
@@ -23,15 +21,11 @@ CREATE MATERIALIZED VIEW atlas.l_communes AS
    WHERE enable=true
 WITH DATA;
 
-
 CREATE INDEX index_gist_l_communes_the_geom
   ON atlas.l_communes
   USING gist
   (the_geom);
 
--- Index: atlas.l_communes_insee_idx
-
--- DROP INDEX atlas.l_communes_insee_idx;
 
 CREATE UNIQUE INDEX l_communes_insee_idx
   ON atlas.l_communes
@@ -52,7 +46,6 @@ EXCEPTION WHEN others THEN
 	RAISE NOTICE 'view atlas.t_mailles_territoire does not exist';
 END$$;
 
-
 CREATE MATERIALIZED VIEW atlas.t_mailles_territoire AS
 SELECT st_transform(c.geom, 3857)::geometry('MultiPolygon',3857) as the_geom,
     st_asgeojson(st_transform(c.geom, 4326)) AS geojson_maille,
@@ -62,6 +55,9 @@ JOIN ref_geo.bib_areas_types t
 ON t.id_type = c.id_type
 WHERE t.type_code = :type_maille;
 
+CREATE UNIQUE INDEX t_mailles_territoire_id_maille_idx
+  ON atlas.t_mailles_territoire
+  USING btree (id_maille);
 
 
 --################################
@@ -74,7 +70,7 @@ DO $$
 BEGIN
 	DROP TABLE atlas.t_layer_territoire;
 EXCEPTION WHEN others THEN
-	RAISE NOTICE 'view atlas.t_mailles_territoire does not exist';
+	RAISE NOTICE 'view atlas.t_layer_territoire does not exist';
 END$$;
 
 
@@ -99,8 +95,10 @@ CREATE INDEX index_gist_t_layer_territoire_the_geom
   ON atlas.t_layer_territoire
   USING gist
   (the_geom);
-
-
+  
+CREATE UNIQUE INDEX t_layer_territoire_gid_idx
+  ON atlas.t_layer_territoire
+  USING btree (gid);
 
 
 -- Rafraichissement des vues contenant les données de l'atlas
