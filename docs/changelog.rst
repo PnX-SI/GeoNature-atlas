@@ -7,8 +7,9 @@ CHANGELOG
 
 **🐛 Corrections**
 
-* Ajout d'index sur les vues matérialisées ``atlas.t_layer_territoire`` et ``atlas.t_mailles_territoire`` pour pouvoir les rafriahcir en parallèle (#254 et #260)
 * Désactivation de la route des observations ponctuelles quand l'atlas est paramétre en mode mailles (#237 par @lpofredc)
+* Correction de l'affichage des rangs taxonomiques sur les fiches espèces
+* Ajout d'index sur les vues matérialisées ``atlas.t_layer_territoire`` et ``atlas.t_mailles_territoire`` pour pouvoir les rafriahcir en parallèle (#254 et #260)
 * Correction des observations dupliquées dans les fiches communes (#225 par @jpm-cbna)
 * Correction du spinner pour la recherche par commune (#227 par @jpm-cbna)
 * Corrections CSS supprimant un scroll horizontal global (par @jpm-cbna) et un problème de positionnement sur la page de présentation
