@@ -31,6 +31,8 @@ CREATE UNIQUE INDEX ON atlas.vm_search_taxon (cd_nom, search_name);
 CREATE INDEX ON atlas.vm_search_taxon(cd_ref);
 CREATE INDEX trgm_idx ON atlas.vm_search_taxon USING GIST (search_name gist_trgm_ops);
 
+-- index unique vm_taxons
+CREATE UNIQUE INDEX ON atlas.vm_taxons (cd_ref);
 
 
 -- update vm_medias
