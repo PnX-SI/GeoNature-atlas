@@ -49,11 +49,13 @@ def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
 # last observation for index.html
 def lastObservationsMailles(connection, mylimit, idPhoto):
     sql = """
-        SELECT obs.*,
-        tax.lb_nom, tax.nom_vern, tax.group2_inpn,
-        o.dateobs, o.altitude_retenue,
-        medias.url, medias.chemin, medias.id_media
+        SELECT obs.cd_ref, obs.id_observation, mt.id_maille, mt.geojson_maille, annee,
+            tax.lb_nom, tax.nom_vern, tax.group2_inpn,
+            o.dateobs, o.altitude_retenue,
+            medias.url, medias.chemin, medias.id_media
         FROM atlas.vm_observations_mailles obs
+        JOIN atlas.t_mailles_territoire mt
+        ON st_intersects(mt.the_geom, obs.the_geom)
         JOIN atlas.vm_taxons tax ON tax.cd_ref = obs.cd_ref
         JOIN atlas.vm_observations o ON o.id_observation=obs.id_observation
         LEFT JOIN atlas.vm_medias medias
@@ -91,10 +93,12 @@ def lastObservationsCommuneMaille(connection, mylimit, insee):
     WITH last_obs AS (
         SELECT
             obs.cd_ref, obs.dateobs, t.lb_nom,
-            t.nom_vern, obs.the_geom_point as l_geom
+            t.nom_vern, vom.the_geom as l_geom
         FROM atlas.vm_observations obs
         JOIN atlas.vm_communes c
         ON ST_Intersects(obs.the_geom_point, c.the_geom)
+        JOIN atlas.vm_observations_mailles vom
+        ON vom.id_observation = obs.id_observation
         JOIN atlas.vm_taxons t
         ON  obs.cd_ref = t.cd_ref
         WHERE c.insee = :thisInsee
@@ -131,10 +135,12 @@ def getObservationsTaxonCommuneMaille(connection, insee, cd_ref):
             o.cd_ref, t.id_maille, t.geojson_maille,
             extract(YEAR FROM o.dateobs) as annee
         FROM atlas.vm_observations o
+        JOIN atlas.vm_observations_mailles vom
+        ON vom.id_observation = o.id_observation
         JOIN atlas.vm_communes c
-        ON ST_INTERSECTS(o.the_geom_point, c.the_geom)
+        ON ST_INTERSECTS(vom.the_geom, c.the_geom)
         JOIN atlas.t_mailles_territoire t
-        ON ST_INTERSECTS(t.the_geom, o.the_geom_point)
+        ON ST_INTERSECTS(vom.the_geom, t.the_geom)
         WHERE o.cd_ref = :thiscdref AND c.insee = :thisInsee
         ORDER BY id_maille
     """
