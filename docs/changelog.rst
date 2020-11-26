@@ -20,6 +20,7 @@ CHANGELOG
 **⚠️ Notes de version**
 
 * Si vous mettez à jour l'application, exécutez le script SQL de mise à jour de la BDD : https://github.com/PnX-SI/GeoNature-atlas/blob/master/data/update_1.4.1to1.4.2.sql
+* Si vous disposiez d'un GeoNature de version inférieure à 2.5 et que vous passez à cette version, adaptez la table étrangère : ``ALTER FOREIGN TABLE synthese.synthese DROP  id_nomenclature_obs_meth;``
 * Suivez la procédure classique de mise à jour : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/installation.rst#mise-%C3%A0-jour-de-lapplication
 
 1.4.1 (2019-10-09)
