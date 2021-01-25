@@ -20,6 +20,11 @@
         <script src="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.min.js') }}"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.css') }}" />
 
+        <!-- Slick -->
+        <script src="{{url_for('static', filename='lib/slick-1.8.1/slick.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/slick-1.8.1/slick-theme.css') }}" />
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/slick-1.8.1/slick.css') }}" />
+
 		<!-- fontawesome -->
         <script src="{{url_for('static', filename='lib/node_modules/@fortawesome/fontawesome-free/js/all.min.js') }}"></script>
 
@@ -42,6 +47,10 @@
 			<!-- Introduction -->
 			{% if configuration.AFFICHAGE_INTRODUCTION %}
 				{% include 'static/custom/templates/introduction.html' %}
+			{% endif %}
+
+			{% if configuration.AFFICHAGE_LOGOS_HOME %}
+				{% include 'static/custom/templates/bandeaulogoshome.html' %}
 			{% endif %}
 
 			{% if configuration.AFFICHAGE_STAT_GLOBALES %}

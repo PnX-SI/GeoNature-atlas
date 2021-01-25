@@ -98,6 +98,24 @@ h3.title-spaced {
   margin-top: 0px !important;
 }
 
+
+/* Bandeau de logos (slider slick) en page accueil */
+
+.slidepartenaireindex {
+  width: 280px;
+}
+
+.slidepartenaireindex img {
+  max-height : 80px;
+  margin: auto;
+}
+
+.slick-prev::before, 
+.slick-next::before {
+    color: #1e1b0c;
+}
+
+
 /*Stat block*/
 
 .stat-panel {

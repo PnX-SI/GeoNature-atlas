@@ -57,6 +57,7 @@ class AtlasConfig(Schema):
     GLOSSAIRE = fields.Boolean(missing=False)
     IGNAPIKEY = fields.String(missing="")
     AFFICHAGE_INTRODUCTION = fields.Boolean(missing=True)
+    AFFICHAGE_LOGOS_HOME = fields.Boolean(missing=True)
     AFFICHAGE_FOOTER = fields.Boolean(missing=False)
     AFFICHAGE_STAT_GLOBALES = fields.Boolean(missing=True)
     AFFICHAGE_DERNIERES_OBS = fields.Boolean(missing=True)
