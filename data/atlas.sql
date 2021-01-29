@@ -122,7 +122,7 @@ CREATE TABLE atlas.bib_altitudes
   CONSTRAINT bib_altitudes_pk PRIMARY KEY (id_altitude)
 );
 
--- INSERT_ALTITUDE
+INSERT_ALTITUDE
 UPDATE atlas.bib_altitudes set label_altitude = '_' || altitude_min || '_' || altitude_max+1;
 
 
