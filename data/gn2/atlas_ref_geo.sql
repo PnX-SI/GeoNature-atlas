@@ -131,6 +131,7 @@ RETURNS VOID AS $$
 BEGIN
 
   REFRESH MATERIALIZED VIEW atlas.t_layer_territoire;
+  REFRESH MATERIALIZED VIEW atlas.t_subdivided_territory;
   REFRESH MATERIALIZED VIEW atlas.t_mailles_territoire;
   REFRESH MATERIALIZED VIEW atlas.l_communes;
   REFRESH MATERIALIZED VIEW atlas.vm_communes;
