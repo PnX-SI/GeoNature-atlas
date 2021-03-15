@@ -388,12 +388,38 @@ WHERE date_part('day'::text, obs.dateobs) >= date_part('day'::text, 'now'::text:
 GROUP BY obs.cd_ref, tax.lb_nom, tax.nom_vern, m.url, m.chemin, tax.group2_inpn, m.id_type, m.id_media
 ORDER BY (count(*)) DESC
 LIMIT 12;
--- DROP INDEX atlas.vm_taxons_plus_observes_cd_ref_idx;
 
+-- DROP INDEX atlas.vm_taxons_plus_observes_cd_ref_idx;
 CREATE UNIQUE INDEX vm_taxons_plus_observes_cd_ref_idx
   ON atlas.vm_taxons_plus_observes
   USING btree
   (cd_ref);
+
+
+-- Table: atlas.t_cache
+-- DROP TABLE IF EXISTS atlas.t_cache;
+CREATE TABLE atlas.t_cache (
+  label VARCHAR(250) NOT NULL PRIMARY KEY,
+  cache TEXT NOT NULL,
+  meta_create_date TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+
+-- Materialized View: atlas.vm_stats
+-- DROP MATERIALIZED VIEW IF EXISTS atlas.vm_stats;
+CREATE MATERIALIZED VIEW atlas.vm_stats AS
+    SELECT 'observations' AS label, COUNT(*) AS result FROM atlas.vm_observations
+    UNION
+    SELECT 'municipalities' AS label, COUNT(*) AS result FROM atlas.vm_communes
+    UNION 
+    SELECT 'taxons' AS label, COUNT(DISTINCT cd_ref) AS result FROM atlas.vm_taxons
+    UNION
+    SELECT 'pictures' AS label, COUNT (DISTINCT id_media) AS result
+    FROM atlas.vm_medias AS m 
+        JOIN atlas.vm_taxons AS t ON ( t.cd_ref = m.cd_ref )
+    WHERE id_type IN (1, 2) ;
+
+CREATE UNIQUE INDEX ON atlas.vm_stats (label);
 
 
 --Fonction qui permet de lister tous les taxons enfants d'un taxon
@@ -445,6 +471,9 @@ BEGIN
         EXECUTE 'REFRESH MATERIALIZED VIEW CONCURRENTLY ' || schema_arg || '.' || r.matviewname;
     END LOOP;
 
+    RAISE NOTICE 'Deleting cache in atlas.t_cache' ;
+    TRUNCATE atlas.t_cache ;
+
     RETURN 1;
 END
 $$ LANGUAGE plpgsql;
@@ -465,6 +494,8 @@ BEGIN
   REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_search_taxon;
   REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_medias;
   REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_taxons_plus_observes;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_stats;
 
+  TRUNCATE atlas.t_cache ;
 END
 $$ LANGUAGE plpgsql;
