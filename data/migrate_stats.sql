@@ -10,7 +10,7 @@ CREATE TABLE atlas.t_cache (
   meta_create_date TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-GRANT SELECT ON TABLE atlas.t_cache TO geonatatlas;
+GRANT SELECT, UPDATE, INSERT ON TABLE atlas.t_cache TO geonatatlas;
 
 
 -- Materialized View: atlas.vm_stats
