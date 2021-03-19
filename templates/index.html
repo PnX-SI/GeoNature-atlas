@@ -57,7 +57,9 @@
 										<i class="fas fa-search font-icon blue"></i>	<input id="hiddenInputTaxonStat" type="hidden" name="cd_ref">
 											<h1 class="large muted">{{stat.nbTotalObs | pretty}}</h1>
 										<h4 class="text-muted"> {{ 'observations' if stat.nbTotalObs > 1 else 'observation'}}</h4>
-										<p><a id="localScroll" href="#DernieresObservations" class="btn btn-default" role="button">Voir les dernières observations</a></p>
+										{% if configuration.AFFICHAGE_DERNIERES_OBS %}
+											<p><a id="localScroll" href="#DernieresObservations" class="btn btn-default" role="button">Voir les dernières observations</a></p>
+										{% endif %}
 									</div>
 								</div>
 								<div class = "col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
