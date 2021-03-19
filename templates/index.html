@@ -1,174 +1,199 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <title>{{configuration.NOM_APPLICATION}} - {{configuration.STRUCTURE}}</title>
+	<head>
+		<meta charset="utf-8" />
+		<title>{{configuration.NOM_APPLICATION}} - {{configuration.STRUCTURE}}</title>
 
-        <!-- Jquery -->
-        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
-				<script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
-				<script type="text/javascript" src="{{url_for('static', filename='lib/jquery.lazy/jquery.lazy.min.js') }}"></script>
-        <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
+		<!-- Jquery -->
+		<script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
+		<script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+		<script type="text/javascript" src="{{url_for('static', filename='lib/jquery.lazy/jquery.lazy.min.js') }}"></script>
+		<link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
 
 		<!-- Bootstrap -->
-        <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}"></link>
-        <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
+		<link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}" />
+		<script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
 
-        <!-- Leaflet -->
-        <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet.css') }}" />
-        <script src="{{url_for('static', filename='lib/leaflet/leaflet.js') }}"></script>
-        <script src="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.min.js') }}"></script>
-        <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.css') }}" />
+		{% if configuration.AFFICHAGE_DERNIERES_OBS %}
+			<!-- Leaflet -->
+			<link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet.css') }}" />
+			<script src="{{url_for('static', filename='lib/leaflet/leaflet.js') }}"></script>
+			<script src="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.min.js') }}"></script>
+			<link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.css') }}" />
+		{% endif %}
 
 		<!-- fontawesome -->
-        <script src="{{url_for('static', filename='lib/node_modules/@fortawesome/fontawesome-free/js/all.min.js') }}"></script>
+		<script src="{{url_for('static', filename='lib/node_modules/@fortawesome/fontawesome-free/js/all.min.js') }}"></script>
 
 		<!-- CSS Application -->
-        <link rel="shortcut icon" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
-        <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />
-        <link rel="stylesheet" href="{{url_for('static', filename='css/index.css') }}" />
-        <link rel="stylesheet" href="{{url_for('static', filename='custom/custom.css') }}" />
+		<link rel="shortcut icon" href="{{ url_for('static', filename='custom/images/favicon.ico') }}" />
+		<link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />
+		<link rel="stylesheet" href="{{url_for('static', filename='css/index.css') }}" />
+		<link rel="stylesheet" href="{{url_for('static', filename='custom/custom.css') }}" />
+	</head>
 
-    </head>
-
-    <body>
-
-        {% include 'templates/navbar.html' %}
+	<body>
+		{% include 'templates/navbar.html' %}
 		<div id="sideBar">
 			{% include 'templates/sideBar.html' %}
 		</div>
 		<div class="container-fluid" id="page">
-
-			<!-- Introduction -->
 			{% if configuration.AFFICHAGE_INTRODUCTION %}
+				<!-- Introduction -->
 				{% include 'static/custom/templates/introduction.html' %}
 			{% endif %}
 
 			{% if configuration.AFFICHAGE_STAT_GLOBALES %}
-			<!-- Statistiques globales -->
-					<div class="panel panel-default stat-panel">
-						<div class="panel-heading padding-sm ">
-								<strong><h3 class="title-spaced"> <i class="fas fa-chart-line icon-color-title">&nbsp;</i> En quelques chiffres</h3></strong>
-						</div>
-						<div class="panel-body">
-							<div class="row">
-								<div class ="col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
-									<div class="stat-thumbnail border">
-										<i class="fas fa-search font-icon blue"></i>	<input id="hiddenInputTaxonStat" type="hidden" name="cd_ref">
-											<h1 class="large muted">{{stat.nbTotalObs | pretty}}</h1>
-										<h4 class="text-muted"> {{ 'observations' if stat.nbTotalObs > 1 else 'observation'}}</h4>
-										{% if configuration.AFFICHAGE_DERNIERES_OBS %}
-											<p><a id="localScroll" href="#DernieresObservations" class="btn btn-default" role="button">Voir les dernières observations</a></p>
-										{% endif %}
-									</div>
-								</div>
-								<div class = "col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
-									<div class="stat-thumbnail border">
-										<i class="fas fa-leaf font-icon"></i>									
-										<h1 class="large muted">{{stat.nbTotalTaxons | pretty}}</h1>
-										<h4 class="text-muted"> {{ 'espèces' if stat.nbTotalTaxons > 1 else 'espèce' }}</h4>
-										<form method="POST" id="searchFormTaxonsStat" class="navbar-form" role="search">
-											<div class="form-group has-feedback">
-												<input id="searchTaxonsStat" type="text" class="form-control" placeholder="Rechercher une espèce &nbsp; &nbsp; &nbsp;" loading="false" />
-												<i class="glyphicon glyphicon-search form-control-feedback"></i>
-												<input id="hiddenInputTaxonStat" type="hidden" name="cd_ref">
-											</div>
-														</form>
-									</div>
-								</div>
-								<div class ="col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
-									<div class="stat-thumbnail border">
-										<i class="fas fa-map-signs font-icon blue"></i>
-										<h1 class="large muted">{{stat.town | pretty}}</h1>
-										<h4 class="text-muted"> {{ 'communes' if stat.town > 1 else 'commune' }}</h4>
-										<form method="POST" onsubmit="completeAction('#searchFormCommunesStat', hiddenInputCommunesStat)" id='searchFormCommunesStat' action=""  class="navbar-form" role="search">
-											<div class="form-group has-feedback">
-												<input id="searchCommunesStat" type="text" class="form-control" placeholder="Rechercher une commune" />
-												<i class="glyphicon glyphicon-search form-control-feedback"></i>
-												<input id="hiddenInputCommunesStat" type="hidden" name="insee">
-											</div>
-										</form>
-									</div>
-								</div>
-								<div class ="col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
-									<div class="stat-thumbnail">
-										<i class="fas fa-camera font-icon"></i>
-											<h1 class="large muted">{{stat.photo | pretty}}</h1>
-										<h4 class="text-muted"> {{ 'photos' if stat.photo > 1 else 'photo' }}</h4>
-										<p><a href="{{url_for('main.photos')}}" class="btn btn-default" role="button">Galerie photos</a></p>
-									</div>
+				<!-- Statistiques globales -->
+				<div class="panel panel-default stat-panel">
+					<div class="panel-heading padding-sm ">
+						<strong>
+							<h3 class="title-spaced"> 
+								<i class="fas fa-chart-line icon-color-title">&nbsp;</i> 
+								En quelques chiffres
+							</h3>
+						</strong>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class ="col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
+								<div class="stat-thumbnail border">
+									<i class="fas fa-search font-icon blue"></i>
+									<input id="hiddenInputTaxonStat" type="hidden" name="cd_ref" />
+									<h1 class="large muted">{{stat.nbTotalObs | pretty}}</h1>
+									<h4 class="text-muted">{{ 'observations' if stat.nbTotalObs > 1 else 'observation'}}</h4>
+									{% if configuration.AFFICHAGE_DERNIERES_OBS %}
+										<p>
+											<a id="localScroll" href="#DernieresObservations" class="btn btn-default" role="button">
+												Voir les dernières observations
+											</a>
+										</p>
+									{% endif %}
 								</div>
 							</div>
+							<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
+								<div class="stat-thumbnail border">
+									<i class="fas fa-leaf font-icon"></i>									
+									<h1 class="large muted">{{stat.nbTotalTaxons | pretty}}</h1>
+									<h4 class="text-muted"> {{ 'espèces' if stat.nbTotalTaxons > 1 else 'espèce' }}</h4>
+									<form method="POST" id="searchFormTaxonsStat" class="navbar-form" role="search">
+										<div class="form-group has-feedback">
+											<input id="searchTaxonsStat" type="text" class="form-control" placeholder="Rechercher une espèce &nbsp; &nbsp; &nbsp;" loading="false" />
+											<i class="glyphicon glyphicon-search form-control-feedback"></i>
+											<input id="hiddenInputTaxonStat" type="hidden" name="cd_ref" />
+										</div>
+									</form>
+								</div>
+							</div>
+							<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
+								<div class="stat-thumbnail border">
+									<i class="fas fa-map-signs font-icon blue"></i>
+									<h1 class="large muted">{{stat.town | pretty}}</h1>
+									<h4 class="text-muted">{{ 'communes' if stat.town > 1 else 'commune' }}</h4>
+									<form method="POST" onsubmit="completeAction('#searchFormCommunesStat', hiddenInputCommunesStat)" id='searchFormCommunesStat' action=""  class="navbar-form" role="search">
+										<div class="form-group has-feedback">
+											<input id="searchCommunesStat" type="text" class="form-control" placeholder="Rechercher une commune" />
+											<i class="glyphicon glyphicon-search form-control-feedback"></i>
+											<input id="hiddenInputCommunesStat" type="hidden" name="insee" />
+										</div>
+									</form>
+								</div>
+							</div>
+							<div class ="col-lg-3 col-md-3 col-sm-6 col-xs-12 stat-object">
+								<div class="stat-thumbnail">
+									<i class="fas fa-camera font-icon"></i>
+									<h1 class="large muted">{{stat.photo | pretty}}</h1>
+									<h4 class="text-muted"> {{ 'photos' if stat.photo > 1 else 'photo' }}</h4>
+									<p>
+										<a href="{{url_for('main.photos')}}" class="btn btn-default" role="button">
+											Galerie photos
+										</a>
+									</p>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
-
 			{% endif %}
 
-			{% if customStatMedias != None and configuration.AFFICHAGE_RANG_STAT %}
-			<!-- Statistiques par rang taxonomique -->
-					<div class="panel panel-default">
-							<div class="panel-heading padding-sm ">
-									<h3 class="title-spaced"><span class="glyphicon glyphicon-eye-open icon-color-title"></span> &nbsp;Espèces à découvrir</h3>
-							</div>
-							<div class="row row-medias">
-
-				{% for i in range(customStatMedias | length) %}
-					{% if configuration.RANG_STAT | length == 2 %}
-					<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 stat-medias-wrapper">
-					{% elif configuration.RANG_STAT | length == 3 %}
-					<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 stat-medias-wrapper">
-					{% elif configuration.RANG_STAT | length == 4 %}
-					<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 stat-medias-wrapper">
-					{% endif %}
-					<div class="statMedias">
-						<div class="">
-							<h4 class="title-spaced title-bar" >{{configuration.RANG_STAT_FR[i]}} </h4>
-							<span class="higlight">{{customStat[i].nb_obs | pretty}}</span> observations | <span class="higlight">{{customStat[i].nb_taxons| pretty}}</span> espèces
-						</div>
-						
-					{% for j in range(2) %}
-						{% if loop.index <= customStatMedias[i] | length %}
-								<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-stat-medias">
-									<div class ="thumbnail-stat-medias">
-										<div class="zoom-wrapper">
-											<a href="{{url_for('main.ficheEspece',cd_ref=customStatMedias[i][j].cd_ref)}}" >
-                          						{% if configuration.REDIMENSIONNEMENT_IMAGE %}
-										    	  <div class="img-custom-medias cover" style="background-image: url({{configuration.TAXHUB_URL}}/api/tmedias/thumbnail/{{customStatMedias[i][j].id_media}}?h=500&w=500)"></div>
-                          						{% else %}
-										    	  <div class="img-custom-medias cover" style="background-image: url({{customStatMedias[i][j].path}})"></div>
-                          						{% endif %}
-										    	<div class="stat-medias-hovereffet">
-										    		<img src="{{url_for('static', filename='images/eye.png') }}">
-										    		<h2 class="overlay-obs">{{customStatMedias[i][j].nb_obs | pretty}} observations</h2>
-										    	</div>
-											</a>
-										</div>
-									    <div class="thumbnail-caption-medias" >
-									        <p> {% if customStatMedias[i][j].nom_vern != None %} <b>  {{customStatMedias[i][j].nom_vern}}</b> {% endif %} <br/><i>{{customStatMedias[i][j].lb_nom}}</i></p>
-									        <p><a href="{{url_for('main.ficheEspece',cd_ref=customStatMedias[i][j].cd_ref)}}" class="btn btn-default" role="button">Fiche espèce</a></p>
-									    </div>
-									</div>
-								</div>
-						{% endif %}
-					{% endfor %}
-							</div>
+			{% if configuration.AFFICHAGE_RANG_STAT and customStatMedias != None %}
+				<!-- Statistiques par rang taxonomique -->
+				<div class="panel panel-default">
+					<div class="panel-heading padding-sm ">
+						<h3 class="title-spaced">
+							<span class="glyphicon glyphicon-eye-open icon-color-title"></span> 
+							&nbsp;Espèces à découvrir
+						</h3>
 					</div>
-
-			{% endfor %}
+					<div class="row row-medias">
+						{% for i in range(customStatMedias | length) %}
+							{% if configuration.RANG_STAT | length == 2 %}
+								<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 stat-medias-wrapper">
+							{% elif configuration.RANG_STAT | length == 3 %}
+								<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 stat-medias-wrapper">
+							{% elif configuration.RANG_STAT | length == 4 %}
+								<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 stat-medias-wrapper">
+							{% endif %}
+							<div class="statMedias">
+								<div class="">
+									<h4 class="title-spaced title-bar" >
+										{{configuration.RANG_STAT_FR[i]}}
+									</h4>
+								<span class="higlight">{{customStat[i].nb_obs | pretty}}</span> observations | <span class="higlight">{{customStat[i].nb_taxons| pretty}}</span> espèces
+							</div>
+								
+							{% for j in range(2) %}
+								{% if loop.index <= customStatMedias[i] | length %}
+									<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-stat-medias">
+										<div class ="thumbnail-stat-medias">
+											<div class="zoom-wrapper">
+												<a href="{{url_for('main.ficheEspece',cd_ref=customStatMedias[i][j].cd_ref)}}" >
+													{% if configuration.REDIMENSIONNEMENT_IMAGE %}
+														<div class="img-custom-medias cover" style="background-image: url({{configuration.TAXHUB_URL}}/api/tmedias/thumbnail/{{customStatMedias[i][j].id_media}}?h=500&w=500)"></div>
+													{% else %}
+														<div class="img-custom-medias cover" style="background-image: url({{customStatMedias[i][j].path}})"></div>
+													{% endif %}
+													<div class="stat-medias-hovereffet">
+														<img src="{{url_for('static', filename='images/eye.png') }}" />
+														<h2 class="overlay-obs">{{customStatMedias[i][j].nb_obs | pretty}} observations</h2>
+													</div>
+												</a>
+											</div>
+											<div class="thumbnail-caption-medias" >
+												<p>
+													{% if customStatMedias[i][j].nom_vern != None %} 
+														<b>{{customStatMedias[i][j].nom_vern}}</b>
+													{% endif %}
+													<br/>
+													<i>{{customStatMedias[i][j].lb_nom}}</i>
+												</p>
+												<p>
+													<a href="{{url_for('main.ficheEspece',cd_ref=customStatMedias[i][j].cd_ref)}}" class="btn btn-default" role="button">Fiche espèce</a></p>
+											</div>
+										</div>
+									</div>
+								{% endif %}
+							{% endfor %}
+							</div>
+							</div>
+						{% endfor %}
 					</div>
 				</div>
 			{% endif %}
 
 			{% if configuration.AFFICHAGE_DERNIERES_OBS %}
-			<!-- Dernières espèces observées (Carte et liste) -->
-			<div id="DernieresObservations">
-					<div class="panel panel-default" >
-					  	<div class="panel-heading padding-sm ">
-							  <h3 class="title-spaced"> <i class="fas fa-binoculars icon-color-title"></i> 
-								{{configuration.TEXT_LAST_OBS}} {{observations | length}} {{ 'observations' if observations | length > 1 else 'observation' }}
+				<!-- Dernières espèces observées (Carte et liste) -->
+				<div id="DernieresObservations">
+					<div class="panel panel-default">
+						<div class="panel-heading padding-sm">
+							<h3 class="title-spaced">
+								<i class="fas fa-binoculars icon-color-title"></i> 
+								{{configuration.TEXT_LAST_OBS}} 
+								{{observations | length}} 
+								{{ 'observations' if observations | length > 1 else 'observation' }}
 							</h3>
 						</div>
-					  	<div class="row" id="mapRow">
+						<div class="row" id="mapRow">
 							<!-- CARTE des dernières observations -->
 							<div id="blocMap" class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
 								<div id="map"></div>
@@ -176,92 +201,97 @@
 							<!-- LISTE des dernières observations -->
 							<div id="listMap" class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 								<table id='tableEspece' class="table">
-
 									<tbody>
 										{% for obs in observations %}
 										<tr class='tabEspece' idSynthese = "{{obs.id_observation}}">
-											<!-- <td class="singleTaxon img">
-											<div class ="pictoImg" style="background-image:url({{configuration.TAXHUB_URL}}/api/tmedias/thumbnail/{{obs.id_media}}?h=60&w=60);" data-toggle="tooltip" data-original-title="{{obs.group2_inpn}}" data-placement="left"></div>
-										</td> -->
-										<td class="singleTaxon img">
-											{% if obs.pathImg == None %}
-											<img class="singleTaxon" width="80%" src="{{url_for('static', filename='images/picto_' + obs.group2_inpn | replace(" ", "_") +'.png')}}" data-toggle="tooltip" data-original-title="{{obs.group2_inpn}}" data-placement="left">
-											{% else %}
-												{% if configuration.REDIMENSIONNEMENT_IMAGE %}
-													{% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+obs.id_media|string+'?h=500&w=500' %}
+											<!--
+											<td class="singleTaxon img">
+												<div class ="pictoImg" style="background-image:url({{configuration.TAXHUB_URL}}/api/tmedias/thumbnail/{{obs.id_media}}?h=60&w=60);" data-toggle="tooltip" data-original-title="{{obs.group2_inpn}}" data-placement="left"></div>
+											</td>
+											-->
+											<td class="singleTaxon img">
+												{% if obs.pathImg == None %}
+													<img class="singleTaxon" width="80%" src="{{url_for('static', filename='images/picto_' + obs.group2_inpn | replace(" ", "_") +'.png')}}" data-toggle="tooltip" data-original-title="{{obs.group2_inpn}}" data-placement="left">
 												{% else %}
-													{% set img_path = obs.pathImg %}
+													{% if configuration.REDIMENSIONNEMENT_IMAGE %}
+														{% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+obs.id_media|string+'?h=500&w=500' %}
+													{% else %}
+														{% set img_path = obs.pathImg %}
+													{% endif %}
+													<div class ="pictoImg pictoImgSmall lazy" data-src="{{img_path}}" ></div>
 												{% endif %}
-												<div class ="pictoImg pictoImgSmall lazy" data-src="{{img_path}}" ></div>
-											{% endif %}
-										</td>
-										<td class="singleTaxon name" cdref="{{obs.cd_ref}}" > {{obs.taxon}}</td>
-										<td class="singleTaxon date"> {{obs.dateobs}} </td>
-										<td class="singleTaxon detail">
-											<a href = "{{url_for('main.ficheEspece',cd_ref=obs.cd_ref)}}">
-												<span class="glyphicon glyphicon-list" data-toggle="tooltip" data-original-title="Consulter la fiche espèce" data-placement="left"> </span>
-											</a>
-                      					</td>
-										<td class="hiddenTd" hidden="true">{{obs.cd_ref}}</td>
+											</td>
+											<td class="singleTaxon name" cdref="{{obs.cd_ref}}" > {{obs.taxon}}</td>
+											<td class="singleTaxon date"> {{obs.dateobs}} </td>
+											<td class="singleTaxon detail">
+												<a href = "{{url_for('main.ficheEspece',cd_ref=obs.cd_ref)}}">
+													<span class="glyphicon glyphicon-list" data-toggle="tooltip" data-original-title="Consulter la fiche espèce" data-placement="left"> </span>
+												</a>
+											</td>
+											<td class="hiddenTd" hidden="true">{{obs.cd_ref}}</td>
 										</tr>
 										{% endfor %}
 									</tbody>
 								</table>
-							 </div>
+							</div>
 						</div>
 					</div>
-			</div>
+				</div>
 			{% endif %}
 
 			{% if configuration.AFFICHAGE_EN_CE_MOMENT %}
-			<!-- ESPECES PERIODE -->
-			<div id="mostViewNow">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="title-spaced">A voir en ce moment 
-							<span class="glyphicon glyphicon-question-sign helpTip" data-toggle="tooltip" data-original-title="Espèces les plus observées dans les 15 jours précédents et suivants aujourd'hui, toutes années confondues" 
-							data-placement="right"></span>
-						</h3>
-					</div>
-					<div class="row thumbnail-row">
-					{% for tax in mostViewTaxon %}
-						<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col">
-						    <div class="hovereffect">
-						        {% if tax.path == None %}
-                      <img class="default-logo " src="{{url_for('static', filename='images/picto_' + tax.group2_inpn | replace(" ", "_") +'.png') }}" alt="">
-						        {% else %}
-                      {% if configuration.REDIMENSIONNEMENT_IMAGE %}
-                        <div class ="pictoImg pictoImgMedium" style="background-image:url({{configuration.TAXHUB_URL}}/api/tmedias/thumbnail/{{tax.id_media}}?h=500&w=500);" data-toggle="tooltip" data-original-title="{{tax.group2_inpn}}" data-placement="left"></div>
-                      {% else %}
-						            <div class="img-responsive-logo" style="background-image:url({{tax.path}})"> </div>
-                      {% endif %}
-						        {% endif %}
-						        <div class="overlay">
-						           <h2>{{tax.taxonName}}</h2>
-						           <a class="info" href="{{url_for('main.ficheEspece',cd_ref=tax.cd_ref)}}">Fiche espèce</a>
-						        </div>
-						    </div>
+				<!-- ESPECES PERIODE -->
+				<div id="mostViewNow">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="title-spaced">A voir en ce moment 
+								<span class="glyphicon glyphicon-question-sign helpTip" data-toggle="tooltip" data-original-title="Espèces les plus observées dans les 15 jours précédents et suivants aujourd'hui, toutes années confondues" 
+								data-placement="right"></span>
+							</h3>
 						</div>
-					  {% endfor %}
+						<div class="row thumbnail-row">
+							{% for tax in mostViewTaxon %}
+								<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col">
+									<div class="hovereffect">
+										{% if tax.path == None %}
+											<img class="default-logo " src="{{url_for('static', filename='images/picto_' + tax.group2_inpn | replace(" ", "_") +'.png') }}" alt="">
+										{% else %}
+											{% if configuration.REDIMENSIONNEMENT_IMAGE %}
+												<div class ="pictoImg pictoImgMedium" style="background-image:url({{configuration.TAXHUB_URL}}/api/tmedias/thumbnail/{{tax.id_media}}?h=500&w=500);" data-toggle="tooltip" data-original-title="{{tax.group2_inpn}}" data-placement="left"></div>
+											{% else %}
+												<div class="img-responsive-logo" style="background-image:url({{tax.path}})"> </div>
+											{% endif %}
+										{% endif %}
+										<div class="overlay">
+											<h2>{{tax.taxonName}}</h2>
+											<a class="info" href="{{url_for('main.ficheEspece',cd_ref=tax.cd_ref)}}">
+												Fiche espèce
+											</a>
+										</div>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
 					</div>
 				</div>
-			</div>
 			{% endif %}
 
+			{% if configuration.AFFICHAGE_FOOTER %}
+				{% include 'static/custom/templates/footer.html' %}
+			{% endif %}
 
-        {% if configuration.AFFICHAGE_FOOTER %}
-			{% include 'static/custom/templates/footer.html' %}
-		{% endif %}
-
-    	<script type="text/javascript">
-  			var observations = {{observations|tojson}}
-  			, configuration = {{configuration|tojson}},
-  			url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
-	  	</script>
-
-	  	<script src="{{url_for('static', filename='custom/maps-custom.js') }}"></script>
-		<script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
-		<script src="{{url_for('static', filename='mapHome.js') }}"></script>
+			<script type="text/javascript">
+				var observations = {{observations|tojson}};
+				var configuration = {{configuration|tojson}};
+			</script>
+			{% if configuration.AFFICHAGE_DERNIERES_OBS %}
+				<script type="text/javascript">
+					var url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
+				</script>
+				<script src="{{url_for('static', filename='custom/maps-custom.js') }}"></script>
+				<script src="{{url_for('static', filename='mapGenerator.js') }}"></script>
+				<script src="{{url_for('static', filename='mapHome.js') }}"></script>
+			{% endif %}
 			<script src="{{url_for('static', filename='main.js') }}"></script>
 			<script>
 				// load lazy the images
@@ -272,6 +302,6 @@
 					$(".lazy").lazy();
 				});
 			</script>
-
-    </body>
+		</div>
+	</body>
 </html>
