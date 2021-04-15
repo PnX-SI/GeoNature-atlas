@@ -84,39 +84,51 @@ def indexMedias(image):
 def index():
     session = utils.loadSession()
     connection = utils.engine.connect()
-
-    if current_app.config["AFFICHAGE_MAILLE"]:
-        observations = vmObservationsMaillesRepository.lastObservationsMailles(
-            connection,
-            current_app.config["NB_DAY_LAST_OBS"],
-            current_app.config["ATTR_MAIN_PHOTO"],
+  
+    stat = None
+    if current_app.config["AFFICHAGE_STAT_GLOBALES"]:
+        stat = vmObservationsRepository.statIndex(connection)
+    
+    customStat = None
+    customStatMedias = None
+    if current_app.config["AFFICHAGE_RANG_STAT"]:
+        customStat = vmObservationsRepository.genericStat(
+            connection, current_app.config["RANG_STAT"]
         )
-    else:
-        observations = vmObservationsRepository.lastObservations(
-            connection,
-            current_app.config["NB_DAY_LAST_OBS"],
-            current_app.config["ATTR_MAIN_PHOTO"],
+        customStatMedias = vmObservationsRepository.genericStatMedias(
+            connection, current_app.config["RANG_STAT"]
         )
 
-    mostViewTaxon = vmTaxonsMostView.mostViewTaxon(connection)
-    stat = vmObservationsRepository.statIndex(connection)
-    customStat = vmObservationsRepository.genericStat(
-        connection, current_app.config["RANG_STAT"]
-    )
-    customStatMedias = vmObservationsRepository.genericStatMedias(
-        connection, current_app.config["RANG_STAT"]
-    )
+    observations = None
+    if current_app.config["AFFICHAGE_DERNIERES_OBS"]:
+        if current_app.config["AFFICHAGE_MAILLE"]:
+            observations = vmObservationsMaillesRepository.lastObservationsMailles(
+                connection,
+                current_app.config["NB_DAY_LAST_OBS"],
+                current_app.config["ATTR_MAIN_PHOTO"],
+            )
+        else:
+            observations = vmObservationsRepository.lastObservations(
+                connection,
+                current_app.config["NB_DAY_LAST_OBS"],
+                current_app.config["ATTR_MAIN_PHOTO"],
+            )
+  
+    mostViewTaxon = None
+    if current_app.config["AFFICHAGE_EN_CE_MOMENT"]:
+        mostViewTaxon = vmTaxonsMostView.mostViewTaxon(connection)
+
 
     connection.close()
     session.close()
 
     return render_template(
         "templates/index.html",
-        observations=observations,
-        mostViewTaxon=mostViewTaxon,
         stat=stat,
         customStat=customStat,
         customStatMedias=customStatMedias,
+        observations=observations,
+        mostViewTaxon=mostViewTaxon,
     )
 
 
