@@ -4,47 +4,69 @@
 -- A exécuter avec l'utilisateur propriétaire de la BDD (owner_atlas dans main/configuration/settings.ini).
 -- Ce script vous permet de recréer la vue atlas.vm_observations en l'adaptant à vos besoins.
 -- Pour cela toutes les vues qui en dépendent doivent être supprimées puis recréées.
--- Si votre utilisateur PostgreSQL en lecture seule sur ces vues n'est pas "geonatatlas" (celui utilisé par l'application web de l'atlas, user_pg dans main/configuration/settings.ini),
+-- Si votre utilisateur PostgreSQL en lecture seule sur ces vues n'est pas "geonatatlas"
+-- (celui utilisé par l'application web de l'atlas, user_pg dans main/configuration/settings.ini),
 -- vous devez modifier les GRANT à la fin de ce script avec le nom de votre utilisateur avant de l'exécuter.
+
+-- WARNING: you must set "ref_geo.l_areas.centroid" column on geonature2db database
+-- before executing this script !
+
+-- WARNING: contient un paramètre :'type_territoire' qu'il faut remplacer par le
+-- type de territoire défini dans /configuration/settings.ini.
+-- Exemple de lancement :
+--    source atlas/configuration/settings.ini
+--    psql -d "${db_name}" -U "${owner_atlas}" -h "${db_host} --v type_territoire=${type_territoire} -f data/update_vm_observations.sql
+
+BEGIN;
+
+-- Up fetch size for foreign data wrapper
+-- ALTER SERVER geonaturedbserver OPTIONS (SET fetch_size '100000');
+
 
 --------------------------------------------------------------
 -- SUPPRESSION DES VUES DEPENDANT DE LA VUE VM_OBSERVATIONS --
 --------------------------------------------------------------
 DROP MATERIALIZED VIEW IF EXISTS atlas.vm_stats;
-DROP MATERIALIZED VIEW atlas.vm_taxons_plus_observes;
-DROP MATERIALIZED VIEW atlas.vm_search_taxon;
-DROP MATERIALIZED VIEW atlas.vm_taxons;
-DROP MATERIALIZED VIEW atlas.vm_mois;
-DROP MATERIALIZED VIEW atlas.vm_altitudes;
-DROP MATERIALIZED VIEW atlas.vm_observations_mailles;
-DROP MATERIALIZED VIEW atlas.vm_observations;
-
+DROP MATERIALIZED VIEW IF EXISTS atlas.vm_taxons_plus_observes;
+DROP MATERIALIZED VIEW IF EXISTS atlas.vm_search_taxon;
+DROP MATERIALIZED VIEW IF EXISTS atlas.vm_taxons;
+DROP MATERIALIZED VIEW IF EXISTS atlas.vm_mois;
+DROP MATERIALIZED VIEW IF EXISTS atlas.vm_altitudes;
+DROP MATERIALIZED VIEW IF EXISTS atlas.vm_observations_mailles;
+DROP MATERIALIZED VIEW IF EXISTS atlas.vm_observations;
+DROP MATERIALIZED VIEW IF EXISTS atlas.t_subdivided_territory;
 
 ---------------------------------------------
 -- MODIFIER VOUS-MEME LE SCRIPT CI-DESSOUS --
 -- DE CREATION DE LA VUE VM_OBSERVATIONS ----
 ---------------------------------------------
+
 -- Materialized View: atlas.vm_observations
 CREATE MATERIALIZED VIEW atlas.vm_observations AS
-    SELECT s.id_synthese AS id_observation,
-        s.insee,
-        s.dateobs,
-        s.observateurs,
-        s.altitude_retenue,
-        s.the_geom_point::geometry('POINT',3857),
-        s.effectif_total,
-        tx.cd_ref,
-        st_asgeojson(ST_Transform(ST_SetSrid(s.the_geom_point, 3857), 4326)) as geojson_point,
-        diffusion_level
-    FROM synthese.syntheseff s
-    LEFT JOIN atlas.vm_taxref tx ON tx.cd_nom = s.cd_nom
-    JOIN atlas.t_layer_territoire m ON ST_Intersects(m.the_geom, s.the_geom_point);
+	SELECT s.id_synthese AS id_observation,
+		s.insee,
+		s.dateobs,
+		s.observateurs,
+		s.altitude_retenue,
+		s.the_geom_point::geometry(Point,3857) AS the_geom_point,
+		s.effectif_total,
+		tx.cd_ref,
+		st_asgeojson(st_transform(st_setsrid(s.the_geom_point, 3857), 4326)) AS geojson_point,
+		s.diffusion_level
+	FROM synthese.syntheseff AS s
+		LEFT JOIN atlas.vm_taxref AS tx ON tx.cd_nom = s.cd_nom
+	WHERE EXISTS (
+		SELECT 'X'
+		FROM atlas.t_subdivided_territory AS m
+		WHERE st_intersects(m.geom, s.the_geom_point)
+	)
+WITH DATA;
 
-create unique index on atlas.vm_observations (id_observation);
-create index on atlas.vm_observations (cd_ref);
-create index on atlas.vm_observations (insee);
-create index on atlas.vm_observations (altitude_retenue);
-create index on atlas.vm_observations (dateobs);
+CREATE UNIQUE INDEX ON atlas.vm_observations (id_observation);
+CREATE INDEX ON atlas.vm_observations (cd_ref);
+CREATE INDEX ON atlas.vm_observations (insee);
+CREATE INDEX ON atlas.vm_observations (altitude_retenue);
+CREATE INDEX ON atlas.vm_observations (dateobs);
 CREATE INDEX index_gist_vm_observations_the_geom_point ON atlas.vm_observations USING gist (the_geom_point);
 
 
@@ -119,7 +141,7 @@ CREATE UNIQUE INDEX ON atlas.vm_taxons (cd_ref);
 
 
 -- Materialized View: atlas.vm_search_taxon
-CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS 
+CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS
 SELECT row_number() OVER (ORDER BY t.cd_nom,t.cd_ref,t.search_name)::integer AS fid,
   t.cd_nom,
   t.cd_ref,
@@ -292,18 +314,18 @@ CREATE MATERIALIZED VIEW atlas.vm_observations_mailles AS
  SELECT obs.cd_ref,
     obs.id_observation,
     m.id_maille,
-    m.the_geom,
-    m.geojson_maille
+    m.geojson_maille,
+    date_part('year', dateobs) as annee
    FROM atlas.vm_observations obs
-     JOIN atlas.t_mailles_territoire m ON st_intersects(obs.the_geom_point, st_transform(m.the_geom, 3857))
+     JOIN atlas.t_mailles_territoire m ON st_intersects(obs.the_geom_point, m.the_geom)
 WITH DATA;
 
-CREATE INDEX index_gist_atlas_vm_observations_mailles_geom ON atlas.vm_observations_mailles USING gist (the_geom);
-CREATE INDEX ON atlas.vm_observations_mailles (cd_ref);
-CREATE INDEX ON atlas.vm_observations_mailles USING btree (geojson_maille COLLATE pg_catalog."default");
-CREATE INDEX ON atlas.vm_observations_mailles (id_maille);
 CREATE UNIQUE INDEX ON atlas.vm_observations_mailles (id_observation);
-
+CREATE INDEX ON atlas.vm_observations_mailles (id_maille);
+CREATE INDEX ON atlas.vm_observations_mailles (cd_ref);
+CREATE INDEX ON atlas.vm_observations_mailles (geojson_maille);
+CREATE INDEX ON atlas.vm_observations_mailles (annee);
+CREATE UNIQUE INDEX ON atlas.vm_observations_mailles USING btree (id_observation, geojson_maille) ;
 
 -- Materialized View: atlas.vm_altitudes (créé par une fonction dans la BDD)
 SELECT atlas.create_vm_altitudes();
@@ -315,11 +337,11 @@ CREATE MATERIALIZED VIEW atlas.vm_stats AS
     SELECT 'observations' AS label, COUNT(*) AS result FROM atlas.vm_observations
     UNION
     SELECT 'municipalities' AS label, COUNT(*) AS result FROM atlas.vm_communes
-    UNION 
+    UNION
     SELECT 'taxons' AS label, COUNT(DISTINCT cd_ref) AS result FROM atlas.vm_taxons
     UNION
     SELECT 'pictures' AS label, COUNT (DISTINCT id_media) AS result
-    FROM atlas.vm_medias AS m 
+    FROM atlas.vm_medias AS m
         JOIN atlas.vm_taxons AS t ON ( t.cd_ref = m.cd_ref )
     WHERE id_type IN (1, 2)
 WITH DATA ;
@@ -333,6 +355,7 @@ TRUNCATE atlas.t_cache ;
 
 -- Rétablir les droits SELECT à l'utilisateur de l'application GeoNature-atlas (user_pg dans main/configuration/settings.ini).
 -- Remplacer geonatatlas par votre utilisateur de BDD si vous l'avez modifié.
+GRANT SELECT ON TABLE atlas.t_subdivided_territory TO geonatatlas;
 GRANT SELECT ON TABLE atlas.vm_observations TO geonatatlas;
 GRANT SELECT ON TABLE atlas.vm_taxons_plus_observes TO geonatatlas;
 GRANT SELECT ON TABLE atlas.vm_search_taxon TO geonatatlas;
@@ -341,3 +364,5 @@ GRANT SELECT ON TABLE atlas.vm_mois TO geonatatlas;
 GRANT SELECT ON TABLE atlas.vm_altitudes TO geonatatlas;
 GRANT SELECT ON TABLE atlas.vm_observations_mailles TO geonatatlas;
 GRANT SELECT ON TABLE atlas.vm_stats TO geonatatlas;
+
+COMMIT;
