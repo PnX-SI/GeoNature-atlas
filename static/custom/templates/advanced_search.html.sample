@@ -228,7 +228,7 @@
                         $.ajax({
                             url:
                                 configuration.URL_APPLICATION +
-                                "/api/observationsMailleAndPoint/" + list[i].cd_nom,
+                                "/api/observations/" + list[i].cd_nom,
                             dataType: "json",
                             beforeSend: function () {
                                 $("#loaderSpinner").show();
@@ -266,15 +266,15 @@
                     $.ajax({
                         url:
                             configuration.URL_APPLICATION +
-                            "/api/observationsMailleAndPoint/" + cd_nom,
+                            "/api/observations/" + cd_nom,
                         dataType: "json",
                         beforeSend: function () {
                             $("#loaderSpinner").show();
                         }
                     }).done(function (observations) {
-                        var geoJsonDatas = observations[typeData];
+                        var geoJsonDatas = observations;
                         console.log('obs', geoJsonDatas);
-                        if (typeData === 'maille') {
+                        if (observations['features'][0]['geometry']['type'] != 'point') {
                             polygonLayerToCentroid(geoJsonDatas);
                         }
                         //var color = getRandomColor();
