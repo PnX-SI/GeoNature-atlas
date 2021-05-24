@@ -32,23 +32,23 @@ def searchCommuneAPI():
     results = vmCommunesRepository.getCommunesSearch(session, search, limit)
     return jsonify(results)
 
+if not current_app.config['AFFICHAGE_MAILLE']:
+    @api.route("/observationsMailleAndPoint/<int:cd_ref>", methods=["GET"])
+    def getObservationsMailleAndPointAPI(cd_ref):
+        """
+            Retourne les observations d'un taxon en point et en maille
 
-@api.route("/observationsMailleAndPoint/<int:cd_ref>", methods=["GET"])
-def getObservationsMailleAndPointAPI(cd_ref):
-    """
-        Retourne les observations d'un taxon en point et en maille
-
-        :returns: dict ({'point:<GeoJson>', 'maille': 'GeoJson})
-    """
-    session = utils.loadSession()
-    observations = {
-        "point": vmObservationsRepository.searchObservationsChilds(session, cd_ref),
-        "maille": vmObservationsMaillesRepository.getObservationsMaillesChilds(
-            session, cd_ref
-        ),
-    }
-    session.close()
-    return jsonify(observations)
+            :returns: dict ({'point:<GeoJson>', 'maille': 'GeoJson})
+        """
+        session = utils.loadSession()
+        observations = {
+            "point": vmObservationsRepository.searchObservationsChilds(session, cd_ref),
+            "maille": vmObservationsMaillesRepository.getObservationsMaillesChilds(
+                session, cd_ref
+            ),
+        }
+        session.close()
+        return jsonify(observations)
 
 
 @api.route("/observationsMaille/<int:cd_ref>", methods=["GET"])
@@ -69,22 +69,23 @@ def getObservationsMailleAPI(cd_ref, year_min=None, year_max=None):
     return jsonify(observations)
 
 
-@api.route("/observationsPoint/<int:cd_ref>", methods=["GET"])
-def getObservationsPointAPI(cd_ref):
-    connection = utils.engine.connect()
-    observations = vmObservationsRepository.searchObservationsChilds(connection, cd_ref)
-    connection.close()
-    return jsonify(observations)
+if not current_app.config['AFFICHAGE_MAILLE']:
+    @api.route("/observationsPoint/<int:cd_ref>", methods=["GET"])
+    def getObservationsPointAPI(cd_ref):
+        session = utils.loadSession()
+        observations = vmObservationsRepository.searchObservationsChilds(session, cd_ref)
+        session.close()
+        return jsonify(observations)
 
-
-@api.route("/observations/<insee>/<int:cd_ref>", methods=["GET"])
-def getObservationsCommuneTaxonAPI(insee, cd_ref):
-    connection = utils.engine.connect()
-    observations = vmObservationsRepository.getObservationTaxonCommune(
-        connection, insee, cd_ref
-    )
-    connection.close()
-    return jsonify(observations)
+if not current_app.config['AFFICHAGE_MAILLE']:
+    @api.route("/observations/<insee>/<int:cd_ref>", methods=["GET"])
+    def getObservationsCommuneTaxonAPI(insee, cd_ref):
+        connection = utils.engine.connect()
+        observations = vmObservationsRepository.getObservationTaxonCommune(
+            connection, insee, cd_ref
+        )
+        connection.close()
+        return jsonify(observations)
 
 
 @api.route("/observationsMaille/<insee>/<int:cd_ref>", methods=["GET"])
