@@ -69,6 +69,8 @@ def getObservationsMailleAPI(cd_ref, year_min=None, year_max=None):
     return jsonify(observations)
 
 
+
+
 if not current_app.config['AFFICHAGE_MAILLE']:
     @api.route("/observationsPoint/<int:cd_ref>", methods=["GET"])
     def getObservationsPointAPI(cd_ref):
@@ -76,6 +78,29 @@ if not current_app.config['AFFICHAGE_MAILLE']:
         observations = vmObservationsRepository.searchObservationsChilds(session, cd_ref)
         session.close()
         return jsonify(observations)
+
+
+
+@api.route("/observations/<int:cd_ref>", methods=["GET"])
+def getObservationsGenericApi(cd_ref: int):
+    """[summary]
+
+    Args:
+        cd_ref (int): [description]
+
+    Returns:
+        [type]: [description]
+    """
+    session = utils.loadSession()
+    observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(
+        session,
+        cd_ref,
+        year_min=request.args.get("year_min"),
+        year_max=request.args.get("year_max"),
+    ) if current_app.config['AFFICHAGE_MAILLE'] else vmObservationsRepository.searchObservationsChilds(session, cd_ref)
+    session.close()
+    return jsonify(observations)
+    
 
 if not current_app.config['AFFICHAGE_MAILLE']:
     @api.route("/observations/<insee>/<int:cd_ref>", methods=["GET"])
