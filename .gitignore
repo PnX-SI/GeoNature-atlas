@@ -12,6 +12,7 @@ atlas/configuration/config.py
 atlas/configuration/settings.ini
 robots.txt
 .htaccess
+.htpasswd
 venv/*
 venv3/*
 
