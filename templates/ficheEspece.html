@@ -296,6 +296,10 @@
                 </div>
             </div>
 
+            {% if configuration.MAP.INFO_MAP %}
+                {% include 'static/custom/templates/info_map.html' %}
+            {% endif %}
+
             <div class="panel panel-default" id="otherInformationsPanel">
                 <div class="row" id="otherInformations">
                           <ul class="nav nav-tabs">

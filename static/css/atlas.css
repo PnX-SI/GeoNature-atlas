@@ -115,6 +115,11 @@ a {
   top: 40px;
 }
 
+.msg_map {
+  background-color: white !important;
+  border-color: var(--main-color) !important;
+}
+
 /* Navbar */
 
 .navbar {

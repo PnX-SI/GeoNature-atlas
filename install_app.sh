@@ -80,6 +80,9 @@ fi
 if [ ! -f ./static/custom/templates/mentions-legales.html ]; then
   cp ./static/custom/templates/mentions-legales.html.sample ./static/custom/templates/mentions-legales.html
 fi
+if [ ! -f ./static/custom/templates/info_map.html ]; then
+  cp ./static/custom/templates/info_map.html.sample ./static/custom/templates/info_map.html
+fi
 if [ ! -f ./static/custom/custom.css ]; then
   cp ./static/custom/custom.css.sample ./static/custom/custom.css
 fi
