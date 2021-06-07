@@ -212,40 +212,42 @@
 			{% endif %}
 
 			{% if configuration.AFFICHAGE_EN_CE_MOMENT %}
-			<!-- ESPECES PERIODE -->
-			<div id="mostViewNow">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="title-spaced">A voir en ce moment 
-							<span class="glyphicon glyphicon-question-sign helpTip" data-toggle="tooltip" data-original-title="Espèces les plus observées dans les 15 jours précédents et suivants aujourd'hui, toutes années confondues" 
-							data-placement="right"></span>
-						</h3>
-					</div>
-					<div class="row thumbnail-row">
-					{% for tax in mostViewTaxon %}
-						<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col">
-						    <div class="hovereffect">
-						        {% if tax.path == None %}
-                      <img class="default-logo " src="{{url_for('static', filename='images/picto_' + tax.group2_inpn | replace(" ", "_") +'.png') }}" alt="">
-						        {% else %}
-                      {% if configuration.REDIMENSIONNEMENT_IMAGE %}
-                        <div class ="pictoImg pictoImgMedium" style="background-image:url({{configuration.TAXHUB_URL}}/api/tmedias/thumbnail/{{tax.id_media}}?h=500&w=500);" data-toggle="tooltip" data-original-title="{{tax.group2_inpn}}" data-placement="left"></div>
-                      {% else %}
-						            <div class="img-responsive-logo" style="background-image:url({{tax.path}})"> </div>
-                      {% endif %}
-						        {% endif %}
-						        <div class="overlay">
-						           <h2>{{tax.taxonName}}</h2>
-						           <a class="info" href="{{url_for('main.ficheEspece',cd_ref=tax.cd_ref)}}">Fiche espèce</a>
-						        </div>
-						    </div>
+				<!-- ESPECES PERIODE -->
+				<div id="mostViewNow">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="title-spaced">A voir en ce moment 
+								<span class="glyphicon glyphicon-question-sign helpTip" data-toggle="tooltip" data-original-title="Espèces les plus observées dans les 15 jours précédents et suivants aujourd'hui, toutes années confondues" 
+								data-placement="right"></span>
+							</h3>
 						</div>
-					  {% endfor %}
+						<div class="row thumbnail-row">
+							{% for tax in mostViewTaxon %}
+								<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col">
+									<div class="hovereffect">
+										{% if tax.path == None %}
+											<img class="default-logo" src="{{url_for('static', filename='images/picto_' + tax.group2_inpn | replace(' ', '_') +'.png') }}" alt="">
+										{% else %}
+											{% if configuration.REDIMENSIONNEMENT_IMAGE %}
+												<div class ="pictoImg pictoImgMedium" style="background-image:url({{configuration.TAXHUB_URL}}/api/tmedias/thumbnail/{{tax.id_media}}?h=500&w=500);" data-toggle="tooltip" data-original-title="{{tax.group2_inpn}}" data-placement="left"></div>
+											{% else %}
+												<div class="img-responsive-logo" style="background-image:url({{tax.path}})"> </div>
+											{% endif %}
+										{% endif %}
+										<div class="overlay">
+											<h2>{{tax.taxonName}}</h2>
+											<a class="info" href="{{url_for('main.ficheEspece',cd_ref=tax.cd_ref)}}">
+												Fiche espèce
+											</a>
+										</div>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
 					</div>
 				</div>
 			</div>
 			{% endif %}
-
 
         {% if configuration.AFFICHAGE_FOOTER %}
 			{% include 'static/custom/templates/footer.html' %}
