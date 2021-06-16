@@ -35,6 +35,23 @@ geonature_version=2
 # true : base de données distante
 geonature_fdw=true
 
+
+#####################################################################
+#####    PARAMETRES CUSTOM DE CONNEXION A LA BASE DE DONNEE    ######
+#####    EN TANT QU'ADMINISTRATEUR POUR BDD DISTANTE           ######
+#####################################################################
+# Paramètres à utiliser uniquement si le serveur de base de données de l'atlas est distant
+# si "custom_db_admin" vaut "true"
+
+# custom db admin role (not postgres, almost used when using distant database)
+custom_db_admin=false
+# db admin username
+db_admin_name=dbadmin
+# db admin password
+db_admin_pass=dbadminpass
+# default admin database, if different from postgres
+db_admin_default_db=postgres
+
 ################################################
 ##### CONNEXION A LA BDD GEONATURE SOURCE ######
 ################################################
