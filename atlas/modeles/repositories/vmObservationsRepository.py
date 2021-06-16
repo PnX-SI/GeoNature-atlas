@@ -59,12 +59,14 @@ def searchObservationsChilds(session, cd_ref):
 
 
 def firstObservationChild(connection, cd_ref):
-    sql = """SELECT min(taxons.yearmin) as yearmin 
-    FROM atlas.vm_taxons taxons 
-    JOIN atlas.vm_taxref taxref ON taxref.cd_ref=taxons.cd_ref 
-    WHERE taxons.cd_ref in ( 
-    SELECT * FROM atlas.find_all_taxons_childs(:thiscdref) 
-    )OR taxons.cd_ref = :thiscdref"""
+    sql = """
+        SELECT min(taxons.yearmin) AS yearmin 
+        FROM atlas.vm_taxons AS taxons 
+            JOIN atlas.vm_taxref taxref 
+                ON taxref.cd_ref=taxons.cd_ref 
+        WHERE taxons.cd_ref IN ( SELECT * FROM atlas.find_all_taxons_childs(:thiscdref) ) 
+            OR taxons.cd_ref = :thiscdref
+    """
     req = connection.execute(text(sql), thiscdref=cd_ref)
     for r in req:
         return r.yearmin
@@ -72,18 +74,19 @@ def firstObservationChild(connection, cd_ref):
 
 def lastObservations(connection, mylimit, idPhoto):
     sql = """
-    SELECT obs.*,
-        COALESCE(split_part(tax.nom_vern, ',', 1) || ' | ', '')
-            || tax.lb_nom as taxon,
-        tax.group2_inpn,
-        medias.url, medias.chemin, medias.id_media
-    FROM atlas.vm_observations obs
-    JOIN atlas.vm_taxons tax
-        ON tax.cd_ref = obs.cd_ref
-    LEFT JOIN atlas.vm_medias medias
-        ON medias.cd_ref = obs.cd_ref AND medias.id_type = :thisidphoto
-    WHERE  obs.dateobs >= (CURRENT_TIMESTAMP - INTERVAL :thislimit)
-    ORDER BY obs.dateobs DESC """
+        SELECT obs.*,
+            COALESCE(split_part(tax.nom_vern, ',', 1) || ' | ', '')
+                || tax.lb_nom as taxon,
+            tax.group2_inpn,
+            medias.url, medias.chemin, medias.id_media
+        FROM atlas.vm_observations obs
+            JOIN atlas.vm_taxons tax
+                ON tax.cd_ref = obs.cd_ref
+            LEFT JOIN atlas.vm_medias medias
+                ON medias.cd_ref = obs.cd_ref AND medias.id_type = :thisidphoto
+        WHERE  obs.dateobs >= (CURRENT_TIMESTAMP - INTERVAL :thislimit)
+        ORDER BY obs.dateobs DESC
+    """
 
     observations = connection.execute(text(sql), thislimit=mylimit, thisidphoto=idPhoto)
 
@@ -100,15 +103,19 @@ def lastObservations(connection, mylimit, idPhoto):
 
 
 def lastObservationsCommune(connection, mylimit, insee):
-    sql = """SELECT o.*,
+    sql = """
+        SELECT o.*,
             COALESCE(split_part(tax.nom_vern, ',', 1) || ' | ', '')
                 || tax.lb_nom as taxon
-    FROM atlas.vm_observations o
-    JOIN atlas.vm_communes c ON ST_Intersects(o.the_geom_point, c.the_geom)
-    JOIN atlas.vm_taxons tax ON  o.cd_ref = tax.cd_ref
-    WHERE c.insee = :thisInsee
-    ORDER BY o.dateobs DESC
-    LIMIT 100"""
+        FROM atlas.vm_observations o
+            JOIN atlas.vm_communes c 
+                ON ST_Intersects(o.the_geom_point, c.the_geom)
+            JOIN atlas.vm_taxons tax 
+                ON  o.cd_ref = tax.cd_ref
+        WHERE c.insee = :thisInsee
+        ORDER BY o.dateobs DESC
+        LIMIT 100
+    """
     observations = connection.execute(text(sql), thisInsee=insee)
     obsList = list()
     for o in observations:
@@ -122,19 +129,22 @@ def lastObservationsCommune(connection, mylimit, insee):
 
 def getObservationTaxonCommune(connection, insee, cd_ref):
     sql = """
-        SELECT o.*,
+        SELECT 
+            o.*,
             COALESCE(split_part(tax.nom_vern, ',', 1) || ' | ', '')
-                || tax.lb_nom as taxon,
-        o.observateurs
+                || tax.lb_nom AS taxon,
+            o.observateurs
         FROM (
-            SELECT * FROM atlas.vm_observations o
-            WHERE o.insee = :thisInsee AND o.cd_ref = :thiscdref
-        )  o
-        JOIN (
-            SELECT nom_vern, lb_nom, cd_ref
-            FROM atlas.vm_taxons
-            WHERE cd_ref = :thiscdref
-        ) tax ON tax.cd_ref = tax.cd_ref
+            SELECT * 
+            FROM atlas.vm_observations o
+            WHERE o.insee = :thisInsee 
+                AND o.cd_ref = :thiscdref
+        )  AS o
+            JOIN (
+                SELECT nom_vern, lb_nom, cd_ref
+                FROM atlas.vm_taxons
+                WHERE cd_ref = :thiscdref
+            ) AS tax ON tax.cd_ref = tax.cd_ref
     """
 
     observations = connection.execute(text(sql), thiscdref=cd_ref, thisInsee=insee)
@@ -174,11 +184,9 @@ def observersParser(req):
 
 def getObservers(connection, cd_ref):
     sql = """
-    SELECT distinct observateurs
+    SELECT DISTINCT observateurs
     FROM atlas.vm_observations
-    WHERE cd_ref in (
-            SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
-        )
+    WHERE cd_ref in ( SELECT * FROM atlas.find_all_taxons_childs(:thiscdref) )
         OR cd_ref = :thiscdref
     """
     req = connection.execute(text(sql), thiscdref=cd_ref)
@@ -187,11 +195,9 @@ def getObservers(connection, cd_ref):
 
 def getGroupeObservers(connection, groupe):
     sql = """
-        SELECT distinct observateurs
+        SELECT DISTINCT observateurs
         FROM atlas.vm_observations
-        WHERE cd_ref in (
-            SELECT cd_ref from atlas.vm_taxons WHERE group2_inpn = :thisgroupe
-        )
+        WHERE cd_ref IN ( SELECT cd_ref FROM atlas.vm_taxons WHERE group2_inpn = :thisgroupe )
     """
     req = connection.execute(text(sql), thisgroupe=groupe)
     return observersParser(req)
@@ -199,7 +205,7 @@ def getGroupeObservers(connection, groupe):
 
 def getObserversCommunes(connection, insee):
     sql = """
-        SELECT distinct observateurs
+        SELECT DISTINCT observateurs
         FROM atlas.vm_observations
         WHERE insee = :thisInsee
     """
@@ -208,58 +214,75 @@ def getObserversCommunes(connection, insee):
 
 
 def statIndex(connection):
-    result = {"nbTotalObs": None, "nbTotalTaxons": None, "town": None, "photo": None}
+    output = {"nbTotalObs": None, "nbTotalTaxons": None, "town": None, "photo": None}
 
-    sql = "SELECT COUNT(*) AS count \
-    FROM atlas.vm_observations "
-    req = connection.execute(text(sql))
-    for r in req:
-        result["nbTotalObs"] = r.count
-
-    sql = "SELECT COUNT(*) AS count\
-    FROM atlas.vm_communes"
-    req = connection.execute(text(sql))
-    for r in req:
-        result["town"] = r.count
-
-    sql = "SELECT COUNT(DISTINCT cd_ref) AS count \
-    FROM atlas.vm_taxons"
-    connection.execute(text(sql))
-    req = connection.execute(text(sql))
-    for r in req:
-        result["nbTotalTaxons"] = r.count
-
-    sql = "SELECT COUNT (DISTINCT id_media) AS count \
-    FROM atlas.vm_medias m \
-    JOIN atlas.vm_taxons t ON t.cd_ref = m.cd_ref \
-    WHERE id_type IN (:idType1, :id_type2)"
-    req = connection.execute(
-        text(sql),
-        idType1=current_app.config["ATTR_MAIN_PHOTO"],
-        id_type2=current_app.config["ATTR_OTHER_PHOTO"],
-    )
-    for r in req:
-        result["photo"] = r.count
-    return result
+    sql = "SELECT label, result FROM atlas.vm_stats"
+    results = connection.execute(text(sql))
+    for r in results:
+        if r.label == 'observations':
+            output["nbTotalObs"] = r.result
+        if r.label == 'municipalities':
+            output["town"] = r.result
+        if r.label == 'taxons':
+            output["nbTotalTaxons"] = r.result
+        if r.label == 'pictures':
+            output["photo"] = r.result
+    return output
 
 
 def genericStat(connection, tab):
     tabStat = list()
     for pair in tab:
         rang, nomTaxon = list(pair.items())[0]
-        sql = """
-            SELECT COUNT (o.id_observation) AS nb_obs,
-            COUNT (DISTINCT t.cd_ref) AS nb_taxons
-            FROM atlas.vm_taxons t
-            JOIN atlas.vm_observations o ON o.cd_ref = t.cd_ref
-            WHERE t.{rang} IN :nomTaxon
-        """.format(
-            rang=rang
-        )
-        req = connection.execute(text(sql), nomTaxon=tuple(nomTaxon))
-        for r in req:
-            temp = {"nb_obs": r.nb_obs, "nb_taxons": r.nb_taxons}
-            tabStat.append(temp)
+        output = {"nb_obs": None, "nb_taxons": None}
+
+        # Search computed stats
+        rank_names_key=f"{rang}:{','.join(nomTaxon)}"
+        obs_label=f"observations.{rank_names_key}"
+        taxon_label=f"taxons.{rank_names_key}"
+        labels=[]
+        labels.append(obs_label)
+        labels.append(taxon_label)
+        sql = "SELECT label, cache FROM atlas.t_cache WHERE label IN :labels"
+        results = connection.execute(text(sql), labels=tuple(labels))
+        cached_stats=0
+        for r in results:
+            if r["label"] == obs_label:
+                cached_stats+=1
+                output["nb_obs"] = int(r.cache)
+            if r["label"] == taxon_label:
+                cached_stats+=1
+                output["nb_taxons"] = int(r.cache)
+
+        if cached_stats != 2:
+            # Compute stats
+            sql = f"""
+                SELECT 
+                    COUNT (o.id_observation) AS nb_obs,
+                    COUNT (DISTINCT t.cd_ref) AS nb_taxons
+                FROM atlas.vm_taxons t
+                    JOIN atlas.vm_observations o 
+                        ON o.cd_ref = t.cd_ref
+                WHERE t.{rang} IN :nomTaxon
+            """
+            results = connection.execute(text(sql), nomTaxon=tuple(nomTaxon))
+            for r in results:
+                output["nb_obs"] = r.nb_obs
+                output["nb_taxons"] = r.nb_taxons
+            
+            # Add stats to cache
+            params={
+                "obsLabel": obs_label, "obsResult": output["nb_obs"],
+                "taxonLabel": taxon_label, "taxonResult": output["nb_taxons"],
+            }
+            sql = """
+                INSERT INTO atlas.t_cache (label, cache) VALUES 
+                    (:obsLabel, :obsResult), 
+                    (:taxonLabel, :taxonResult)
+            """
+            results = connection.execute(text(sql), params)
+
+        tabStat.append(output)
     return tabStat
 
 
@@ -267,17 +290,16 @@ def genericStatMedias(connection, tab):
     tabStat = list()
     for i in range(len(tab)):
         rang, nomTaxon = list(tab[i].items())[0]
-        sql = """
+        sql = f"""
             SELECT t.nb_obs, t.cd_ref, t.lb_nom, t.nom_vern, t.group2_inpn,
                 m.url, m.chemin, m.auteur, m.id_media
             FROM atlas.vm_taxons t
-            JOIN atlas.vm_medias m ON m.cd_ref = t.cd_ref AND m.id_type = 1
-            WHERE t.{} IN :nomTaxon
+                JOIN atlas.vm_medias m 
+                    ON m.cd_ref = t.cd_ref AND m.id_type = 1
+            WHERE t.{rang} IN :nomTaxon
             ORDER BY RANDOM()
             LIMIT 10
-        """.format(
-            rang
-        )
+        """
         req = connection.execute(text(sql), nomTaxon=tuple(nomTaxon))
         tabStat.insert(i, list())
         for r in req:

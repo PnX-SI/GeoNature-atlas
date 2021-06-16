@@ -10,6 +10,7 @@
 --------------------------------------------------------------
 -- SUPPRESSION DES VUES DEPENDANT DE LA VUE VM_OBSERVATIONS --
 --------------------------------------------------------------
+DROP MATERIALIZED VIEW IF EXISTS atlas.vm_stats;
 DROP MATERIALIZED VIEW atlas.vm_taxons_plus_observes;
 DROP MATERIALIZED VIEW atlas.vm_search_taxon;
 DROP MATERIALIZED VIEW atlas.vm_taxons;
@@ -308,6 +309,28 @@ CREATE UNIQUE INDEX ON atlas.vm_observations_mailles (id_observation);
 SELECT atlas.create_vm_altitudes();
 
 
+-- Materialized View: atlas.vm_observations
+-- TODO: replace id_type for 'media' with parameters...
+CREATE MATERIALIZED VIEW atlas.vm_stats AS
+    SELECT 'observations' AS label, COUNT(*) AS result FROM atlas.vm_observations
+    UNION
+    SELECT 'municipalities' AS label, COUNT(*) AS result FROM atlas.vm_communes
+    UNION 
+    SELECT 'taxons' AS label, COUNT(DISTINCT cd_ref) AS result FROM atlas.vm_taxons
+    UNION
+    SELECT 'pictures' AS label, COUNT (DISTINCT id_media) AS result
+    FROM atlas.vm_medias AS m 
+        JOIN atlas.vm_taxons AS t ON ( t.cd_ref = m.cd_ref )
+    WHERE id_type IN (1, 2)
+WITH DATA ;
+
+CREATE UNIQUE INDEX ON atlas.vm_stats (label);
+
+
+-- Table : atlas.t_cache
+TRUNCATE atlas.t_cache ;
+
+
 -- Rétablir les droits SELECT à l'utilisateur de l'application GeoNature-atlas (user_pg dans main/configuration/settings.ini).
 -- Remplacer geonatatlas par votre utilisateur de BDD si vous l'avez modifié.
 GRANT SELECT ON TABLE atlas.vm_observations TO geonatatlas;
@@ -317,3 +340,4 @@ GRANT SELECT ON TABLE atlas.vm_taxons TO geonatatlas;
 GRANT SELECT ON TABLE atlas.vm_mois TO geonatatlas;
 GRANT SELECT ON TABLE atlas.vm_altitudes TO geonatatlas;
 GRANT SELECT ON TABLE atlas.vm_observations_mailles TO geonatatlas;
+GRANT SELECT ON TABLE atlas.vm_stats TO geonatatlas;
