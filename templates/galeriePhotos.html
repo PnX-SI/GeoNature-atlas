@@ -5,16 +5,16 @@
         <title>Galerie photo | {{configuration.NOM_APPLICATION}} - {{configuration.STRUCTURE}}</title>
 
         <!-- Jquery -->
-        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
-		    <script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
-        <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
+        <script type=text/javascript src="{{url_for('static', filename='node_modules/jquery/dist/jquery.js') }}"></script>
+		    <script type=text/javascript src="{{url_for('static', filename='node_modules/jquery-ui-dist/jquery-ui.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='node_modules/jquery-ui-dist/jquery-ui.css') }}" />
 
         <!-- Bootstrap -->
-        <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}"></link>
-        <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='node_modules/bootstrap/dist/css/bootstrap.min.css') }}"></link>
+        <script type=text/javascript src="{{url_for('static', filename='node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 
         <!-- LightBox -->
-        <link rel="stylesheet" href="{{url_for('static', filename='lib/lightbox2/css/lightbox.css') }}" />
+        <link rel="stylesheet" href="{{url_for('static', filename='node_modules/lightbox2/dist/css/lightbox.css') }}" />
 
         <!-- Atlas -->
         <link rel="shortcut icon" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
@@ -76,7 +76,7 @@
 
 
         <div id="hide">
-            <script src="{{url_for('static', filename='lib/lightbox2/js/lightbox.js') }}"></script>
+            <script src="{{url_for('static', filename='node_modules/lightbox2/dist/js/lightbox.js') }}"></script>
             <script src="{{url_for('static', filename='galleryPhoto.js') }}"></script>
             <script src="{{url_for('static', filename='main.js') }}"></script>
         </div>

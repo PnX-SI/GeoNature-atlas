@@ -6,47 +6,47 @@
         <title>{%if taxon.taxonSearch.nom_vern %}  {{taxon.taxonSearch.nom_vern}} - {% endif %} {{taxon.taxonSearch.lb_nom}} | {{configuration.NOM_APPLICATION}} - {{configuration.STRUCTURE}}</title>
 
         <!-- Jquery -->
-        <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
-        <script type="text/javascript" src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
-        <script type="text/javascript" src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='node_modules/jquery-ui-dist/jquery-ui.css') }}" />
+        <script type="text/javascript" src="{{url_for('static', filename='node_modules/jquery/dist/jquery.js') }}"></script>
+        <script type="text/javascript" src="{{url_for('static', filename='node_modules/jquery-ui-dist/jquery-ui.min.js') }}"></script>
     		{% if configuration.GLOSSAIRE %}
       		<!-- Jquery Glossarizer -->
       		<script src="{{url_for('static', filename='lib/glossarizer/tooltip/tooltip.js') }}"></script>
-      		<script src="{{url_for('static', filename='lib/glossarizer/jquery.glossarize.js') }}"></script>
+      		<script src="{{url_for('static', filename='node_modules/glossarizer/jquery.glossarize.js') }}"></script>
       		<link rel="stylesheet" href="{{url_for('static', filename='lib/glossarizer/tooltip/tooltip.css') }}">
     		{% endif %}
 
         <!-- Bootstrap -->
-        <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}"></link>
-        <script type="text/javascript" src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='node_modules/bootstrap/dist/css/bootstrap.min.css') }}"></link>
+        <script type="text/javascript" src="{{url_for('static', filename='node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
         <!-- Bootstrap slider -->
-        <link rel="stylesheet" href="{{url_for('static', filename='lib/node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css') }}" />
-        <script src="{{url_for('static', filename='lib/node_modules/bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css') }}" />
+        <script src="{{url_for('static', filename='node_modules/bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
         <!-- Bootstrap switch -->
-        <script type="text/javascript" src="{{url_for('static', filename='lib/bootstrap-switch/js/bootstrap-switch.js') }}"></script>
-        <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap-switch/css/bootstrap-switch.min.css') }}" />
+        <script type="text/javascript" src="{{url_for('static', filename='node_modules/bootstrap/dist/js/bootstrap-switch.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='node_modules/bootstrap/dist/css/bootstrap-switch.min.css') }}" />
 
         <!-- Leaflet -->
-        <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet.css') }}" />
-        <script src="{{url_for('static', filename='lib/leaflet/leaflet.js') }}"></script>
-        <script src="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.js') }}"></script>
-        <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.css') }}" />
-		    <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leafletMarkerCluster.Default.css') }}" />
-        <script src="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.min.js') }}"></script>
-        <link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.css') }}" />
+        <link rel="stylesheet" href="{{url_for('static', filename='node_modules/leaflet/dist/leaflet.css') }}" />
+        <script src="{{url_for('static', filename='node_modules/leaflet/dist/leaflet.js') }}"></script>
+        <script src="{{url_for('static', filename='node_modules/leaflet.markercluster/leaflet.markercluster.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='node_modules/leaflet.markercluster/MarkerCluster.css') }}" />
+		    <link rel="stylesheet" href="{{url_for('static', filename='node_modules/leaflet.markercluster/MarkerCluster.Default.css') }}" />
+        <script src="{{url_for('static', filename='node_modules/leaflet.FullScreen/ControlFullScreen.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='node_modules/leaflet.FullScreen/ControlFullScreen.css') }}" />
 		<!-- fontawesome -->
         <script src="{{url_for('static', filename='lib/node_modules/@fortawesome/fontawesome-free/js/all.min.js') }}"></script>
 
         <!-- D3 -->
-        <script src="{{url_for('static', filename='lib/d3/d3.min.js') }}"></script>
+        <script src="{{url_for('static', filename='node_modules/d3/d3.min.js') }}"></script>
         <!-- MorrisJs -->
-        <script src="{{url_for('static', filename='lib/morrisJs/morris.min.js') }}"></script>
-        <link rel="stylesheet" href="{{url_for('static', filename='lib/morrisJs/morris.css') }}" />
+        <script src="{{url_for('static', filename='node_modules/morris.js/morris.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='node_modules/morris.js/morris.css') }}" />
         <!-- RaphaelJs -->
-        <script src="{{url_for('static', filename='lib/raphaelJs/raphael.min.js') }}"></script>
+        <script src="{{url_for('static', filename='node_modules/raphael/raphael.min.js') }}"></script>
 
         <!-- LightBox -->
-        <link rel="stylesheet" href="{{url_for('static', filename='lib/lightbox2/css/lightbox.min.css') }}" />
+        <link rel="stylesheet" href="{{url_for('static', filename='node_modules/lightbox2/dist/css/lightbox.min.css') }}" />
 
         <!-- CSS Application -->
         <link rel="shortcut icon" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
@@ -594,7 +594,7 @@
             {% include 'static/custom/templates/footer.html' %}
         {% endif %}
 
-    <script  src="{{url_for('static', filename='lib/lightbox2/js/lightbox.min.js') }}" ></script>
+    <script  src="{{url_for('static', filename='node_modules/lightbox2/dist/js/lightbox.min.js') }}" ></script>
 
 
     <script>
