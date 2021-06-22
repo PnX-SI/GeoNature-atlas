@@ -1,0 +1,16 @@
+# Query: lib/
+# Flags: CaseSensitive
+# Excluding: lib
+# ContextLines: 1
+
+2 results - 2 files
+
+templates/ficheEspece.html:
+  37  		<!-- fontawesome -->
+  38:         <script src="{{url_for('static', filename='node_modules/@fortawesome/fontawesome-free/js/all.min.js') }}"></script>
+  39  
+
+templates/index.html:
+  23  		<!-- fontawesome -->
+  24:         <script src="{{url_for('static', filename='node_modules/@fortawesome/fontawesome-free/js/all.min.js') }}"></script>
+  25  
