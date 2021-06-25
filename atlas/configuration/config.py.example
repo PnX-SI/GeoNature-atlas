@@ -57,7 +57,13 @@ MAP = {
     'STEP': 1,
     # Couleur et épaisseur des limites du territoire
     'BORDERS_COLOR': '#000000',
-    'BORDERS_WEIGHT': 3
+    'BORDERS_WEIGHT': 3,
+    'SHOW_MASK': False,
+    'MASK_STYLE': {"fillColor": 'white',
+                   "opacity": 0.8,
+                   "dashArray": "5 5",
+                   "fillOpacity": 0.3
+                  }
 }
 
 # Affichage des observations par maille ou point
