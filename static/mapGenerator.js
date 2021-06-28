@@ -101,7 +101,12 @@ function generateMap() {
 
   // Add scale depending on the configuration
   if (configuration.MAP.ENABLE_SCALE) {
-    L.control.scale({imperial: false}).addTo(map);
+    L.control.scale(
+      {
+        imperial: false, 
+        position: 'bottomright'
+      }
+      ).addTo(map);
   }
 
   return map;
