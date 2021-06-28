@@ -6,6 +6,7 @@ from marshmallow import (
     validates_schema,
 )
 from marshmallow.validate import OneOf, Regexp
+import os
 
 
 MAP_1 = {
@@ -50,8 +51,10 @@ class MapConfig(Schema):
 
 class AtlasConfig(Schema):
     modeDebug = fields.Boolean(missing=False)
+    SECRET_KEY = fields.String(missing=os.urandom(24).hex())
     STRUCTURE = fields.String(missing="Nom de la structure")
     NOM_APPLICATION = fields.String(missing="Nom de l'application")
+    CUSTOM_LOGO_LINK = fields.String(missing="")
     URL_APPLICATION = fields.String(missing="")
     ID_GOOGLE_ANALYTICS = fields.String(missing="UA-xxxxxxx-xx")
     GLOSSAIRE = fields.Boolean(missing=False)
@@ -109,7 +112,7 @@ class AtlasConfig(Schema):
         missing={
             "presentation": {
                 "title": "Présentation de l'atlas",
-                "picto": "glyphicon-question-sign",
+                "picto": "fa-question-circle",
                 "order": 0,
                 "template": "static/custom/templates/presentation.html",
             }
@@ -127,13 +130,17 @@ class AtlasConfig(Schema):
     TYPE_DE_REPRESENTATION_MAILLE = fields.String(
         validate=OneOf(["LAST_OBS", "NB_OBS"])
     )
-
+    ANONYMIZE = fields.Boolean(missing=False)
     MAP = fields.Nested(MapConfig, missing=dict())
+    SIMPLIFY_AREA_GEOM_TRESHOLD = fields.Integer(missing=0)
+    SIMPLIFY_AREA_GEOM_TOLERANCE = fields.Integer(missing=0)
     # Specify how communes are ordered
     #   if true by length else by name
     ORDER_COMMUNES_BYLENGTH = fields.Boolean(missing=False)
     # coupe le nom_vernaculaire à la 1ere virgule sur les fiches espèces
     SPLIT_NOM_VERN = fields.Integer(missing=True)
+    EXTENDED_AREAS = fields.Boolean(missing=False)
+    INTERACTIVE_MAP_LIST = fields.Boolean(missing=True)
 
     @validates_schema
     def validate_url_taxhub(self, data):
@@ -146,4 +153,3 @@ class AtlasConfig(Schema):
                     "Le champ TAXHUB_URL doit être rempli si REDIMENSIONNEMENT_IMAGE = True"
                 }
             )
-

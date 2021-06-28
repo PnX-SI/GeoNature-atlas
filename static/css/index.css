@@ -2,9 +2,9 @@
   border-color: transparent !important;
 }
 
-.font-icon {
-  font-size: 40px;
-}
+/*.font-icon {*/
+/*  font-size: 40px;*/
+/*}*/
 
 h4.title-spaced {
   margin-top: 0px;
@@ -60,18 +60,18 @@ h4 {
 }
 
 .large {
-  font-size: 5rem;
+  font-size: 3rem;
 }
 
 .muted {
   color: grey;
 }
 
-.text-muted {
-  text-transform: uppercase;
-  font-weight: 700;
-  font-size: 1.5rem;
-}
+/*.text-muted {*/
+/*  text-transform: uppercase;*/
+/*  font-weight: 700;*/
+/*  font-size: 1.5rem;*/
+/*}*/
 
 .title-spaced {
   letter-spacing: 0.025em;
@@ -100,16 +100,14 @@ h3.title-spaced {
 
 /*Stat block*/
 
-.stat-panel {
-  padding-bottom: 0px;
-}
-
 .stat-object {
   min-height: 200px;
+    padding: 0px;
 }
 
 .stat-object .form-control {
   width: 100%;
+
 }
 
 .stat-thumbnail {
@@ -117,6 +115,7 @@ h3.title-spaced {
   background-color: rgb(255, 255, 255);
   margin-bottom: 0px;
   border-radius: 0px;
+  padding: 10px;
 }
 
 .stat-thumbnail span {
@@ -132,18 +131,43 @@ h3.title-spaced {
   background-repeat: no-repeat;
   background-size: 25px 25px;
   background-position-x: calc(100% - 25px);
+  outline: none;
+}
+
+.addon {
+	position: absolute;
+	margin-left: 5px;
+	display: flex;
+  align-items: center;
+  z-index: 100;
+  font-size: 20px !important;
+  color: grey;
+  padding-top: px;
+  margin-top: 9px;
+}
+
+.addon-navbar {
+  position: absolute;
+	margin-left: 5px;
+	display: flex;
+  align-items: center;
+  z-index: 100;
+  font-size: 20px !important;
+  color: grey;
+  padding-top: px;
+  margin-top: 9px;
 }
 
 /*Custom Stat Block*/
 
 .row-medias {
-  margin-right: -5px;
-  margin-left: -5px;
+  /*margin-right: -5px;*/
+  /*margin-left: -5px;*/
 }
 
 .stat-medias-wrapper {
-  padding-left: 5px;
-  padding-right: 5px;
+  /*padding-left: 5px;*/
+  /*padding-right: 5px;*/
 }
 
 .stat-custom-panel {
@@ -226,6 +250,7 @@ h3.title-spaced {
   transition: all 0.2s ease-in-out;
   padding: 10px;
   text-decoration: none;
+  margin-top: 10px;
 }
 
 .zoom-wrapper:hover .img-custom-medias {
@@ -271,9 +296,12 @@ h3.title-spaced {
 .pictoImg {
   width: 100%;
   background-position: center center;
-  /* background-size: cover; */
   height: 60px;
   min-width: 60px;
+}
+
+.picto-img-no-resize {
+  background-size: cover
 }
 
 .pictoImgSmall {
@@ -283,25 +311,45 @@ h3.title-spaced {
 .pictoImgMedium {
   height: 250px;
 }
-table#tableEspece {
+
+
+#lastObsList {
   display: block;
   max-height: 600px;
   overflow-y: scroll;
   background: white;
 }
 
-.tabEspece:hover {
-  background-color: #cccccc;
-}
-
-.tabEspece.current {
-  background-color: #e6e6e6;
-  font-weight: bold;
-}
-
-.singleTaxon {
+.lastObslistItem:hover {
+  background-color: var(--light);
   cursor: pointer;
 }
+
+.lastObslistItem .lastObslistItemIcon {
+  width: 80px;
+  height: 40px;
+  background-position: center;
+  align: center;
+  object-fit: contain;
+}
+
+.lastObslistItem .lastObslistItemImage {
+  width: 80px;
+  height: 80px;
+  background-position: center;
+  object-fit: cover;
+  background-color: var(--light) ;
+}
+
+
+/*.lastObsList.current {
+  background-color: #e6e6e6;
+  font-weight: bold;
+}*/
+
+/*.singleTaxon {
+  cursor: pointer;
+}*/
 
 td.singleTaxon.name {
   width: 50%;

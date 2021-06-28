@@ -15,13 +15,14 @@ $(function(){
 
   if (configuration.AFFICHAGE_MAILLE){
     // display maille layer
-    displayMailleLayerLastObs(observations)
+    displayMailleLayerLastObs(observations);
 
     // interaction list - map
-      $('.tabEspece').click(function(){
-         $(this).siblings().removeClass('current');
-         $(this).addClass('current');
+      $('.lastObsListItem').click(function(){
+         $(this).siblings().removeClass('bg-light');
+         $(this).addClass('bg-light');
         var id_observation = $(this).attr('idSynthese');
+        console.log('idObs', id_observation)
         p = (currentLayer._layers);
         var selectLayer;
         for (var key in p) {

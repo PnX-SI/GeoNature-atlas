@@ -2,7 +2,7 @@
   color: var(--main-color) !important;
 }
 
-#identityPanel {
+#identityCard {
 }
 
 #taxonIdentity {
@@ -123,8 +123,8 @@ p.imgDescription.main {
 }
 
 #mapStat li {
-  margin-top: 15px;
-  margin-bottom: 15px;
+  margin-top: 12px;
+  margin-bottom: 12px;
   display: inline-block;
   width: 100px;
   text-align: center;
@@ -195,7 +195,7 @@ tr.accordion-toggle {
   padding-right: 10px;
 }
 
-#mapPanel {
+#mapCard {
   margin-bottom: 2px;
 }
 

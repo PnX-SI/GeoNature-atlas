@@ -1,10 +1,31 @@
+const mailleBorderColor = String(
+  getComputedStyle(document.documentElement).getPropertyValue(
+    "--map-maille-border-color"
+  )
+);
+const mailleLastObsBorderColor = String(
+  getComputedStyle(document.documentElement).getPropertyValue(
+    "--map-maille-lastobs-border-color"
+  )
+);
+const territoryBorderColor = String(
+  getComputedStyle(document.documentElement).getPropertyValue(
+    "--map-territory-border-color"
+  )
+);
+const areaBorderColor = String(
+  getComputedStyle(document.documentElement).getPropertyValue(
+    "--map-area-border-color"
+  )
+);
+
 function generateMap() {
   // Map initialization
   firstMapTile = L.tileLayer(configuration.MAP.FIRST_MAP.url, {
-    attribution: configuration.MAP.FIRST_MAP.attribution
+    attribution: configuration.MAP.FIRST_MAP.attribution,
   });
   orthoMap = L.tileLayer(configuration.MAP.SECOND_MAP.url, {
-    attribution: configuration.MAP.SECOND_MAP.attribution
+    attribution: configuration.MAP.SECOND_MAP.attribution,
   });
 
   baseMap = {};
@@ -18,22 +39,24 @@ function generateMap() {
     geosearch: true,
     zoom: configuration.MAP.ZOOM,
     layers: [firstMapTile],
-    fullscreenControl: true
+    fullscreenControl: true,
   });
 
   // Style of territory on map
   territoryStyle = {
     fill: false,
-    color: configuration.MAP.BORDERS_COLOR,
-    weight: configuration.MAP.BORDERS_WEIGHT
+    color: territoryBorderColor,
+    weight: configuration.MAP.BORDERS_WEIGHT,
   };
 
   // Add limits of the territory to the map
-  $(document).ready(function() {
-    $.getJSON(url_limit_territory, function(json) {
-      L.geoJson(json, {
-        style: territoryStyle
-      }).addTo(map);
+  $(document).ready(function () {
+    $.getJSON(url_limit_territory, function (json) {
+      const territoryGeoJson = L.geoJson(json, {
+        style: territoryStyle,
+      });
+      territoryGeoJson.addTo(map);
+      // map.fitBounds(territoryGeoJson.getBounds())
     });
   });
 
@@ -41,10 +64,10 @@ function generateMap() {
 
   var LayerControl = L.Control.extend({
     options: {
-      position: "bottomleft"
+      position: "bottomleft",
     },
 
-    onAdd: function(map) {
+    onAdd: function (map) {
       currentTileMap = "topo";
       var container = L.DomUtil.create(
         "div",
@@ -64,7 +87,7 @@ function generateMap() {
       $(container).attr("data-toggle", "tooltip");
       $(container).attr("data-original-title", "Photos aérienne");
 
-      container.onclick = function() {
+      container.onclick = function () {
         if (currentTileMap == "topo") {
           container.style.backgroundImage =
             "url(" +
@@ -86,7 +109,7 @@ function generateMap() {
         }
       };
       return container;
-    }
+    },
   });
 
   map.addControl(new LayerControl());
@@ -159,14 +182,21 @@ function getColor(d) {
 function styleMaille(feature) {
   return {
     fillColor: getColor(feature.properties.nb_observations),
-    weight: 2,
-    color: "black",
-    fillOpacity: 0.8
+    weight: 1,
+    color: mailleBorderColor,
+    fillOpacity: 0.8,
   };
 }
 
+console.log({
+  fillColor: null,
+  weight: 1,
+  color: mailleBorderColor,
+  fillOpacity: 0.8,
+});
+
 function generateLegendMaille() {
-  legend.onAdd = function(map) {
+  legend.onAdd = function (map) {
     var div = L.DomUtil.create("div", "info legend"),
       grades = [0, 1, 2, 5, 10, 20, 50, 100],
       labels = ["<strong> Nombre <br> d'observations </strong> <br>"];
@@ -202,7 +232,7 @@ function generateGeojsonMaille(observations, yearMin, yearMax) {
         id_maille: idMaille,
         nb_observations: 1,
         last_observation: observations[i].annee,
-        tabDateobs: [new Date(observations[i].dateobs)]
+        tabDateobs: [new Date(observations[i].dateobs)],
       };
       var j = i + 1;
       while (j < observations.length && observations[j].id_maille <= idMaille) {
@@ -221,7 +251,7 @@ function generateGeojsonMaille(observations, yearMin, yearMax) {
       myGeoJson.features.push({
         type: "Feature",
         properties: properties,
-        geometry: geometry
+        geometry: geometry,
       });
       // on avance jusqu' à j
       i = j;
@@ -239,15 +269,16 @@ function displayMailleLayerFicheEspece(observationsMaille) {
   myGeoJson = observationsMaille;
   currentLayer = L.geoJson(myGeoJson, {
     onEachFeature: onEachFeatureMaille,
-    style: styleMaille
+    style: styleMaille,
   });
   currentLayer.addTo(map);
+  map.fitBounds(currentLayer.getBounds());
 
   // ajout de la légende
   generateLegendMaille();
 }
 
-function generateGeojsonMailleCommune(observations) {
+function generateGeojsonGridArea(observations) {
   var i = 0;
   myGeoJson = { type: "FeatureCollection", features: [] };
   tabProperties = [];
@@ -257,7 +288,7 @@ function generateGeojsonMailleCommune(observations) {
     properties = {
       id_maille: idMaille,
       nb_observations: 1,
-      last_observation: observations[i].annee
+      last_observation: observations[i].annee,
     };
     var j = i + 1;
     while (j < observations.length && observations[j].id_maille <= idMaille) {
@@ -271,7 +302,7 @@ function generateGeojsonMailleCommune(observations) {
     myGeoJson.features.push({
       type: "Feature",
       properties: properties,
-      geometry: geometry
+      geometry: geometry,
     });
     // on avance jusqu' à j
     i = j;
@@ -280,13 +311,14 @@ function generateGeojsonMailleCommune(observations) {
   return myGeoJson;
 }
 
-function displayMailleLayerCommune(observations) {
-  myGeoJson = generateGeojsonMailleCommune(observations);
+function displayGridLayerArea(observations) {
+  myGeoJson = generateGeojsonGridArea(observations);
   currentLayer = L.geoJson(myGeoJson, {
     onEachFeature: onEachFeatureMaille,
-    style: styleMaille
+    style: styleMaille,
   });
   currentLayer.addTo(map);
+  map.fitBounds(currentLayer.getBounds());
 
   // ajout de la légende
   generateLegendMaille();
@@ -302,7 +334,9 @@ function generateGeojsonPointFicheEspece(
   var filteredGeoJsonPoint = Object.assign({}, geojsonPoint);
   // si on a touché le slider on filtre sinon on retourne directement le geojson
   if (yearMin && yearMax && sliderTouch) {
-    filteredGeoJsonPoint.features = geojsonPoint.features.filter(function(obs) {
+    filteredGeoJsonPoint.features = geojsonPoint.features.filter(function (
+      obs
+    ) {
       return obs.properties.year >= yearMin && obs.properties.year <= yearMax;
     });
     return filteredGeoJsonPoint;
@@ -331,16 +365,16 @@ function displayMarkerLayerFicheEspece(
   );
 
   if (typeof pointDisplayOptionsFicheEspece == "undefined") {
-    pointDisplayOptionsFicheEspece = function(feature) {
+    pointDisplayOptionsFicheEspece = function (feature) {
       return {};
     };
   }
   currentLayer = L.geoJson(myGeoJson, {
     onEachFeature: onEachFeaturePoint,
 
-    pointToLayer: function(feature, latlng) {
+    pointToLayer: function (feature, latlng) {
       return L.circleMarker(latlng, pointDisplayOptionsFicheEspece(feature));
-    }
+    },
   });
   if (myGeoJson.features.length > configuration.LIMIT_CLUSTER_POINT) {
     newLayer = currentLayer;
@@ -350,9 +384,10 @@ function displayMarkerLayerFicheEspece(
   } else {
     currentLayer.addTo(map);
   }
+  map.fitBounds(currentLayer.getBounds());
 
   if (typeof divLegendeFicheEspece !== "undefined") {
-    legend.onAdd = function(map) {
+    legend.onAdd = function (map) {
       var div = L.DomUtil.create("div", "info legend");
       div.innerHTML = divLegendeFicheEspece;
       return div;
@@ -408,7 +443,7 @@ function onEachFeaturePointCommune(feature, layer) {
 function generateGeojsonPointLastObs(observationsPoint) {
   myGeoJson = { type: "FeatureCollection", features: [] };
 
-  observationsPoint.forEach(function(obs) {
+  observationsPoint.forEach(function (obs) {
     properties = obs;
     properties["dateobsCompare"] = new Date(obs.dateobs);
     properties["dateobs"] = obs.dateobs;
@@ -416,7 +451,7 @@ function generateGeojsonPointLastObs(observationsPoint) {
     myGeoJson.features.push({
       type: "Feature",
       properties: properties,
-      geometry: obs.geojson_point
+      geometry: obs.geojson_point,
     });
   });
   return myGeoJson;
@@ -425,24 +460,24 @@ function generateGeojsonPointLastObs(observationsPoint) {
 function displayMarkerLayerPointLastObs(observationsPoint) {
   myGeoJson = generateGeojsonPointLastObs(observationsPoint);
   if (typeof pointDisplayOptionsFicheCommuneHome == "undefined") {
-    pointDisplayOptionsFicheCommuneHome = function(feature) {
+    pointDisplayOptionsFicheCommuneHome = function (feature) {
       return {};
     };
   }
 
   currentLayer = L.geoJson(myGeoJson, {
     onEachFeature: onEachFeaturePointLastObs,
-    pointToLayer: function(feature, latlng) {
+    pointToLayer: function (feature, latlng) {
       return L.circleMarker(
         latlng,
         pointDisplayOptionsFicheCommuneHome(feature)
       );
-    }
+    },
   });
 
   map.addLayer(currentLayer);
   if (typeof divLegendeFicheCommuneHome !== "undefined") {
-    legend.onAdd = function(map) {
+    legend.onAdd = function (map) {
       var div = L.DomUtil.create("div", "info legend");
       div.innerHTML = divLegendeFicheCommuneHome;
       return div;
@@ -454,19 +489,19 @@ function displayMarkerLayerPointLastObs(observationsPoint) {
 function displayMarkerLayerPointCommune(observationsPoint) {
   myGeoJson = generateGeojsonPointLastObs(observationsPoint);
   if (typeof pointDisplayOptionsFicheCommuneHome == "undefined") {
-    pointDisplayOptionsFicheCommuneHome = function(feature) {
+    pointDisplayOptionsFicheCommuneHome = function (feature) {
       return {};
     };
   }
 
   currentLayer = L.geoJson(myGeoJson, {
     onEachFeature: onEachFeaturePointCommune,
-    pointToLayer: function(feature, latlng) {
+    pointToLayer: function (feature, latlng) {
       return L.circleMarker(
         latlng,
         pointDisplayOptionsFicheCommuneHome(feature)
       );
-    }
+    },
   });
 
   newLayer = currentLayer;
@@ -490,7 +525,11 @@ function printEspece(tabEspece, tabCdRef) {
     stringEspece +=
       "<li> <a href='" +
       configuration.URL_APPLICATION +
-      "/espece/" + tabCdRef[i] + "'>" + tabEspece[i] + "</li>";
+      "/espece/" +
+      tabCdRef[i] +
+      "'>" +
+      tabEspece[i] +
+      "</li>";
 
     i = i + 1;
   }
@@ -510,8 +549,8 @@ function styleMailleLastObs() {
   return {
     opacity: 1,
     weight: 2,
-    color: "red",
-    fillOpacity: 0
+    color: mailleLastObsBorderColor,
+    fillOpacity: 0,
   };
 }
 
@@ -525,7 +564,7 @@ function generateGeoJsonMailleLastObs(observations) {
       id_maille: idMaille,
       list_taxon: [observations[i].taxon],
       list_cdref: [observations[i].cd_ref],
-      list_id_observation: [observations[i].id_observation]
+      list_id_observation: [observations[i].id_observation],
     };
     var j = i + 1;
     while (j < observations.length && observations[j].id_maille == idMaille) {
@@ -537,7 +576,7 @@ function generateGeoJsonMailleLastObs(observations) {
     myGeoJson.features.push({
       type: "Feature",
       properties: properties,
-      geometry: geometry
+      geometry: geometry,
     });
     // on avance jusqu' à j
     i = j;
@@ -557,11 +596,13 @@ function find_id_observation_in_array(tab_id, id_observation) {
 function displayMailleLayerLastObs(observations) {
   observations.sort(compare);
   var geojsonMaille = generateGeoJsonMailleLastObs(observations);
+  console.log("<displayMailleLayerLastObs>", observations);
   currentLayer = L.geoJson(geojsonMaille, {
     onEachFeature: onEachFeatureMailleLastObs,
-    style: styleMailleLastObs
+    style: styleMailleLastObs,
   });
   currentLayer.addTo(map);
+  map.fitBounds(currentLayer.getBounds());
 }
 
 // Legend
@@ -575,11 +616,11 @@ function generateLegende(htmlLegend) {
 
   var legendControl = L.Control.extend({
     options: {
-      position: "topleft"
+      position: "topleft",
       //control position - allowed: 'topleft', 'topright', 'bottomleft', 'bottomright'
     },
 
-    onAdd: function(map) {
+    onAdd: function (map) {
       var container = L.DomUtil.create(
         "div",
         "leaflet-bar leaflet-control leaflet-control-custom"
@@ -599,11 +640,11 @@ function generateLegende(htmlLegend) {
       $(container).attr("data-toggle", "tooltip");
       $(container).attr("data-original-title", "Légende");
 
-      container.onclick = function() {
+      container.onclick = function () {
         if (legendActiv == false) {
           legend = L.control({ position: "topleft" });
 
-          legend.onAdd = function(map) {
+          legend.onAdd = function (map) {
             (div = L.DomUtil.create("div", "info legend")),
               $(div).addClass("generalLegend");
 
@@ -619,21 +660,22 @@ function generateLegende(htmlLegend) {
         }
       };
       return container;
-    }
+    },
   });
 
   map.addControl(new legendControl());
 }
 
 var mySlider;
+
 function generateSliderOnMap() {
   var SliderControl = L.Control.extend({
     options: {
-      position: "bottomleft"
+      position: "bottomleft",
       //control position - allowed: 'topleft', 'topright', 'bottomleft', 'bottomright'
     },
 
-    onAdd: function(map) {
+    onAdd: function (map) {
       var sliderContainer = L.DomUtil.create(
         "div",
         "leaflet-bar leaflet-control leaflet-slider-control"
@@ -655,7 +697,7 @@ function generateSliderOnMap() {
       );
       L.DomEvent.disableClickPropagation(sliderContainer);
       return sliderContainer;
-    }
+    },
   });
 
   map.addControl(new SliderControl());
@@ -664,7 +706,7 @@ function generateSliderOnMap() {
     value: [taxonYearMin, YEARMAX],
     min: taxonYearMin,
     max: YEARMAX,
-    step: configuration.MAP.STEP
+    step: configuration.MAP.STEP,
   });
 
   $("#yearMax").html("&nbsp;&nbsp;&nbsp;&nbsp;" + YEARMAX);

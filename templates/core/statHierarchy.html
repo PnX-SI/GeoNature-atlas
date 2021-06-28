@@ -1,0 +1,15 @@
+{% block  statHierarchy %}
+    <ul id="statHierarchy">
+        <li class="border-right">
+            <i class="fas fa-search"></i><br/>
+            <b>{{ listTaxons.nbObsTotal | pretty }}</b><br/><span class="d-none d-md-block">{{ 'observations' if listTaxons.nbObsTotal > 1 else 'observation' }}</span>
+        </li>
+        <li class="border-right">
+            <i class="fa fa-leaf"></i><br/>
+            <b>{{ listTaxons.taxons|length | pretty }}</b><br/><span class="d-none d-md-block">{{ 'espèces' if listTaxons.taxons|length > 1 else 'espèce' }}</span>
+        </li>
+        <li><i class="fa fa-users"></i></br>
+            <b>{{ observers | length | pretty }}</b><br/><span class="d-none d-md-block">{{ 'observateurs' if observers|length > 1 else 'observateur' }}</span>
+        </li>
+    </ul>
+{% endblock %}

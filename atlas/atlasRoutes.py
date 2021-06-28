@@ -1,8 +1,21 @@
 # -*- coding:utf-8 -*-
 
-from flask import render_template, redirect, abort, current_app
-from .configuration import config
-from .modeles.repositories import (
+from datetime import datetime, timedelta
+
+from flask import Blueprint
+from flask import (
+    render_template,
+    redirect,
+    abort,
+    current_app,
+    make_response,
+    request,
+    url_for,
+)
+
+from atlas import utils
+from atlas.modeles.entities import vmTaxons, vmCommunes
+from atlas.modeles.repositories import (
     vmTaxonsRepository,
     vmObservationsRepository,
     vmAltitudesRepository,
@@ -14,11 +27,20 @@ from .modeles.repositories import (
     vmCorTaxonAttribut,
     vmTaxonsMostView,
 )
-from . import utils
 
-from flask import Blueprint
+if current_app.config["EXTENDED_AREAS"]:
+    from atlas.modeles.repositories import vmAreasRepository
 
 main = Blueprint("main", __name__)
+
+
+@main.context_processor
+def global_variables():
+    session = utils.loadSession()
+    values = {}
+    if current_app.config["EXTENDED_AREAS"]:
+        values["areas_type_search"] = vmAreasRepository.area_types(session)
+    return values
 
 
 @main.route(
@@ -84,34 +106,51 @@ def indexMedias(image):
 def index():
     session = utils.loadSession()
     connection = utils.engine.connect()
-
-    if current_app.config["AFFICHAGE_MAILLE"]:
-        observations = vmObservationsMaillesRepository.lastObservationsMailles(
-            connection,
-            current_app.config["NB_DAY_LAST_OBS"],
-            current_app.config["ATTR_MAIN_PHOTO"],
-        )
+    if current_app.config["AFFICHAGE_DERNIERES_OBS"]:
+        if current_app.config["AFFICHAGE_MAILLE"]:
+            current_app.logger.debug("start AFFICHAGE_MAILLE")
+            observations = vmObservationsMaillesRepository.lastObservationsMailles(
+                connection,
+                current_app.config["NB_DAY_LAST_OBS"],
+                current_app.config["ATTR_MAIN_PHOTO"],
+            )
+            current_app.logger.debug("end AFFICHAGE_MAILLE")
+        else:
+            current_app.logger.debug("start AFFICHAGE_PRECIS")
+            observations = vmObservationsRepository.lastObservations(
+                connection,
+                current_app.config["NB_DAY_LAST_OBS"],
+                current_app.config["ATTR_MAIN_PHOTO"],
+            )
+            current_app.logger.debug("end AFFICHAGE_PRECIS")
     else:
-        observations = vmObservationsRepository.lastObservations(
-            connection,
-            current_app.config["NB_DAY_LAST_OBS"],
-            current_app.config["ATTR_MAIN_PHOTO"],
-        )
+        observations = []
 
+    current_app.logger.debug("start mostViewTaxon")
     mostViewTaxon = vmTaxonsMostView.mostViewTaxon(connection)
+    current_app.logger.debug("end mostViewTaxon")
     stat = vmObservationsRepository.statIndex(connection)
-    customStat = vmObservationsRepository.genericStat(
-        connection, current_app.config["RANG_STAT"]
-    )
-    customStatMedias = vmObservationsRepository.genericStatMedias(
-        connection, current_app.config["RANG_STAT"]
-    )
+    current_app.logger.debug("start customStat")
+
+    if current_app.config["AFFICHAGE_RANG_STAT"]:
+        customStat = vmObservationsRepository.genericStat(
+            connection, current_app.config["RANG_STAT"]
+        )
+        current_app.logger.debug("end customStat")
+        current_app.logger.debug("start customStatMedia")
+        customStatMedias = vmObservationsRepository.genericStatMedias(
+            connection, current_app.config["RANG_STAT"]
+        )
+        current_app.logger.debug("end customStatMedia")
+    else:
+        customStat = []
+        customStatMedias = []
 
     connection.close()
     session.close()
 
     return render_template(
-        "templates/index.html",
+        "templates/home/_main.html",
         observations=observations,
         mostViewTaxon=mostViewTaxon,
         stat=stat,
@@ -167,7 +206,7 @@ def ficheEspece(cd_ref):
     session.close()
 
     return render_template(
-        "templates/ficheEspece.html",
+        "templates/specieSheet/_main.html",
         taxon=taxon,
         listeTaxonsSearch=[],
         observations=[],
@@ -202,15 +241,23 @@ def ficheCommune(insee):
             connection, current_app.config["NB_LAST_OBS"], insee
         )
 
+    if current_app.config["EXTENDED_AREAS"]:
+        id_area = vmAreasRepository.get_id_area(session, "COM", insee)
+        surroundingAreas = vmAreasRepository.get_surrounding_areas(session, id_area)
+    else:
+        surroundingAreas = []
+
     observers = vmObservationsRepository.getObserversCommunes(connection, insee)
 
     session.close()
     connection.close()
 
     return render_template(
-        "templates/ficheCommune.html",
+        "templates/areaSheet/_main.html",
+        sheetType="commune",
+        surroundingAreas=surroundingAreas,
         listTaxons=listTaxons,
-        referenciel=commune,
+        areaInfos=commune,
         observations=observations,
         observers=observers,
         DISPLAY_EYE_ON_LIST=True,
@@ -231,7 +278,7 @@ def ficheRangTaxonomie(cd_ref):
     session.close()
 
     return render_template(
-        "templates/ficheRangTaxonomique.html",
+        "templates/taxoRankSheet/_main.html",
         listTaxons=listTaxons,
         referenciel=referenciel,
         taxonomyHierarchy=taxonomyHierarchy,
@@ -253,7 +300,7 @@ def ficheGroupe(groupe):
     connection.close()
 
     return render_template(
-        "templates/ficheGroupe.html",
+        "templates/groupSheet/_main.html",
         listTaxons=listTaxons,
         referenciel=groupe,
         groups=groups,
@@ -271,7 +318,7 @@ def photos():
 
     session.close()
     connection.close()
-    return render_template("templates/galeriePhotos.html", groups=groups)
+    return render_template("templates/photoGalery/_main.html", groups=groups)
 
 
 @main.route("/<page>", methods=["GET", "POST"])
@@ -283,3 +330,95 @@ def get_staticpages(page):
     session.close()
     return render_template(static_page["template"])
 
+
+@main.route("/sitemap.xml", methods=["GET"])
+def sitemap():
+    """Generate sitemap.xml iterating over static and dynamic routes to make a list of urls and date modified"""
+    pages = []
+    ten_days_ago = datetime.now() - timedelta(days=10)
+    session = utils.loadSession()
+    connection = utils.engine.connect()
+    url_root = request.url_root
+    if url_root[-1] == "/":
+        url_root = url_root[:-1]
+    for rule in current_app.url_map.iter_rules():
+        # check for a 'GET' request and that the length of arguments is = 0 and if you have an admin area that the rule does not start with '/admin'
+        if (
+            "GET" in rule.methods
+            and len(rule.arguments) == 0
+            and not rule.rule.startswith("/api")
+        ):
+            pages.append([url_root + rule.rule, ten_days_ago])
+
+    # get dynamic routes for blog
+    species = session.query(vmTaxons.VmTaxons).order_by(vmTaxons.VmTaxons.cd_ref).all()
+    for specie in species:
+        url = url_root + url_for("main.ficheEspece", cd_ref=specie.cd_ref)
+        modified_time = ten_days_ago
+        pages.append([url, modified_time])
+
+    municipalities = (
+        session.query(vmCommunes.VmCommunes).order_by(vmCommunes.VmCommunes.insee).all()
+    )
+    for municipalitie in municipalities:
+        url = url_root + url_for("main.ficheCommune", insee=municipalitie.insee)
+        modified_time = ten_days_ago
+        pages.append([url, modified_time])
+
+    sitemap_template = render_template(
+        "templates/sitemap.xml",
+        pages=pages,
+        url_root=url_root,
+        last_modified=ten_days_ago,
+    )
+    response = make_response(sitemap_template)
+    response.headers["Content-Type"] = "application/xml"
+    return response
+
+
+@main.route("/robots.txt", methods=["GET"])
+def robots():
+    robots_template = render_template("templates/robots.txt")
+    response = make_response(robots_template)
+    response.headers["Content-type"] = "text/plain"
+    return response
+
+
+if current_app.config["EXTENDED_AREAS"]:
+
+    @main.route("/area/<type_code>/<area_code>", methods=["GET", "POST"])
+    def areaSheet(type_code, area_code):
+        session = utils.loadSession()
+        connection = utils.engine.connect()
+        id_area = vmAreasRepository.get_id_area(session, type_code, area_code)
+        listTaxons = vmAreasRepository.get_area_taxa(session, id_area)
+        area = vmAreasRepository.get_area_info(session, id_area)
+        if current_app.config["AFFICHAGE_MAILLE"]:
+            observations = vmAreasRepository.last_observations_area_maille(
+                session, current_app.config["NB_LAST_OBS"], id_area
+            )
+        else:
+            observations = vmAreasRepository.last_observations_area_maille(
+                session, current_app.config["NB_LAST_OBS"], id_area
+            )
+
+        observers = vmAreasRepository.get_observers_area(session, id_area)
+        surroundingAreas = vmAreasRepository.get_surrounding_areas(session, id_area)
+        session.close()
+        connection.close()
+
+        return render_template(
+            "templates/areaSheet/_main.html",
+            sheetType="area",
+            surroundingAreas=surroundingAreas,
+            listTaxons=listTaxons,
+            areaInfos=area,
+            observations=observations,
+            observers=observers,
+            DISPLAY_EYE_ON_LIST=True,
+        )
+
+
+# @main.route("/test", methods=["GET", "POST"])
+# def test():
+#    return render_template("templates/test.html")

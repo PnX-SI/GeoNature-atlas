@@ -181,11 +181,17 @@ PATRIMONIALITE = {
 }
 
 #############################
+#### Lien custom du logo ####
+#############################
+
+CUSTOM_LOGO_LINK='https://monadressecustom.org'
+
+#############################
 #### Pages statistiques #####
 #############################
 
 # Permet de lister les pages statiques souhaitées et de les afficher dynamiquement dans le menu sidebar
-# Les pictos se limitent au Glyphicon proposés par Bootstrap (https://getbootstrap.com/docs/3.3/components/)
+# Les pictos se limitent à font-awesome 5)
 STATIC_PAGES = {
-    'presentation': {'title': "Présentation de l'atlas", 'picto': 'glyphicon-question-sign', 'order': 0, 'template': 'static/custom/templates/presentation.html'}
+    'presentation': {'title': "Présentation de l'atlas", 'picto': 'fa-question-circle', 'order': 0, 'template': 'static/custom/templates/presentation.html'}
 }

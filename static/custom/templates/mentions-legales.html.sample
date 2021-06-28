@@ -1,8 +1,3 @@
-<div class="modal-header">
-  <button type="button" class="close" data-dismiss="modal">X</button>
-  <h1>MENTIONS LÉGALES</h1>
-</div>
-
 <div class="modal-body credits">
   <p>
     Vous êtes sur le site officiel de l'atlas de la faune et de la flore du Parc national des Ecrins.

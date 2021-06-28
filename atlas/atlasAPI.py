@@ -1,16 +1,15 @@
 # -*- coding:utf-8 -*-
 
 from flask import jsonify, Blueprint, request, current_app
-from werkzeug.wrappers import Response
-from . import utils
-from .modeles.repositories import (
+
+from atlas import utils
+from atlas.modeles.repositories import (
     vmSearchTaxonRepository,
     vmObservationsRepository,
     vmObservationsMaillesRepository,
     vmMedias,
     vmCommunesRepository,
 )
-from .configuration import config
 
 api = Blueprint("api", __name__)
 
@@ -70,6 +69,8 @@ def getObservationsMailleAPI(cd_ref, year_min=None, year_max=None):
     return jsonify(observations)
 
 
+
+
 if not current_app.config['AFFICHAGE_MAILLE']:
     @api.route("/observationsPoint/<int:cd_ref>", methods=["GET"])
     def getObservationsPointAPI(cd_ref):
@@ -77,6 +78,29 @@ if not current_app.config['AFFICHAGE_MAILLE']:
         observations = vmObservationsRepository.searchObservationsChilds(session, cd_ref)
         session.close()
         return jsonify(observations)
+
+
+
+@api.route("/observations/<int:cd_ref>", methods=["GET"])
+def getObservationsGenericApi(cd_ref: int):
+    """[summary]
+
+    Args:
+        cd_ref (int): [description]
+
+    Returns:
+        [type]: [description]
+    """
+    session = utils.loadSession()
+    observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(
+        session,
+        cd_ref,
+        year_min=request.args.get("year_min"),
+        year_max=request.args.get("year_max"),
+    ) if current_app.config['AFFICHAGE_MAILLE'] else vmObservationsRepository.searchObservationsChilds(session, cd_ref)
+    session.close()
+    return jsonify(observations)
+    
 
 if not current_app.config['AFFICHAGE_MAILLE']:
     @api.route("/observations/<insee>/<int:cd_ref>", methods=["GET"])
@@ -134,3 +158,48 @@ def test():
     )
     connection.close()
     return jsonify(photos)
+
+
+if current_app.config["EXTENDED_AREAS"]:
+    from atlas.modeles.repositories import vmAreasRepository
+
+    @api.route("/searchArea/<type_code>", methods=["get"])
+    def searchArea(type_code):
+        # try:
+        session = utils.loadSession()
+        search = request.args.get("search", "")
+        limit = request.args.get("limit", "")
+        results = vmAreasRepository.search_area_by_type(
+            session, search, type_code, limit
+        )
+        return jsonify(results)
+        # except Exception as e:
+        #     return jsonify({"error": str(e)})
+
+    @api.route("/observations/area/<id_area>", methods=["GET"])
+    def getAreaObservations(id_area):
+        session = utils.loadSession()
+        observations = vmAreasRepository.get_areas_observations(session, id_area)
+        return jsonify(observations)
+
+    @api.route("/area/<id_area>/taxa", methods=["GET"])
+    def getAreaTaxa(id_area):
+        session = utils.loadSession()
+        taxa = vmAreasRepository.get_area_taxa(session, id_area)
+        return jsonify(taxa)
+
+    @api.route("/observations/area/<id_area>/<int:cd_ref>", methods=["GET"])
+    def get_area_point_observations(id_area, cd_ref):
+        session = utils.loadSession()
+        observations = vmAreasRepository.get_areas_observations_by_cdnom(
+            session, id_area, cd_ref
+        )
+        return jsonify(observations)
+
+    @api.route("/observationsMaille/area/<id_area>/<int:cd_ref>", methods=["GET"])
+    def get_area_grid_observations(id_area, cd_ref):
+        session = utils.loadSession()
+        observations = vmAreasRepository.get_areas_grid_observations_by_cdnom(
+            session, id_area, cd_ref
+        )
+        return jsonify(observations)

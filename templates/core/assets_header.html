@@ -1,0 +1,27 @@
+{% block assets_header %}
+
+<!-- Jquery -->
+<script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
+<script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='lib/jquery.lazy/jquery.lazy.min.js') }}"></script>
+<link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
+
+<!-- Bootstrap -->
+<link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}">
+</link>
+<script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+<!-- Leaflet -->
+<link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet.css') }}" />
+<script src="{{url_for('static', filename='lib/leaflet/leaflet.js') }}"></script>
+<script src="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.min.js') }}"></script>
+<link rel="stylesheet" href="{{url_for('static', filename='lib/leaflet/leaflet-fullscreen/leafletFullScreen.css') }}" />
+
+<!-- fontawesome -->
+<script src="{{url_for('static', filename='lib/node_modules/@fortawesome/fontawesome-free/js/all.min.js') }}"></script>
+
+<!-- CSS Application -->
+<link rel="shortcut icon" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
+<link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />
+
+{% endblock %}

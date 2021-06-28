@@ -7,8 +7,8 @@ from sqlalchemy import (
     Table
 )
 from sqlalchemy.ext.declarative import declarative_base
-from ...utils import engine
 
+from atlas.utils import engine
 
 metadata = MetaData()
 Base = declarative_base()
@@ -25,4 +25,3 @@ class VmSearchTaxon(Base):
         autoload=True,
         autoload_with=engine,
     )
-

@@ -32,6 +32,9 @@ autocompleteSearch = function(inputID, urlDestination, nbProposal) {
       } else if (urlDestination == "commune") {
         searchUrl = "/api/searchCommune";
       }
+      else {
+        searchUrl = "/api/searchArea/"+urlDestination;
+      }
       $(inputID)
         .attr("loading", "true")
         .css(
@@ -61,6 +64,8 @@ autocompleteSearch = function(inputID, urlDestination, nbProposal) {
         location.href = configuration.URL_APPLICATION + "/espece/" + url;
       } else if (urlDestination == "commune") {
         location.href = configuration.URL_APPLICATION + "/commune/" + url;
+      } else {
+        location.href = configuration.URL_APPLICATION + "/area/" + urlDestination +"/"+ url;
       }
 
       return false;
@@ -90,13 +95,14 @@ $("#searchCommunesStat").focus(function() {
   autocompleteSearch("#searchCommunesStat", "commune", 10);
 });
 
+
 // child list display
 var childList = $("#childList");
 $("#buttonChild").click(function() {
   $("#buttonChild")
     .find("span")
-    .toggleClass("glyphicon glyphicon-chevron-right")
-    .toggleClass("glyphicon glyphicon-chevron-down");
+    .toggleClass("fas fa-chevron-right")
+    .toggleClass("fas fa-chevron-down");
   var childList = $("#childList");
   if (childList.attr("hidden") === "hidden") {
     childList.removeAttr("hidden");

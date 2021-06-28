@@ -1,0 +1,69 @@
+{% block globalStats %}
+
+<div class="card mt-4">
+    <div class="card-body">
+        <h3 class="card-title"><i class="fas fa-chart-line icon-color-title">&nbsp;</i> En quelques
+            chiffres</h3>
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-xs-12 stat-object">
+                <div class="stat-thumbnail border-right">
+                    <i class="fas fa-search fa-3x blue"></i> <input id="hiddenInputTaxonStat" type="hidden"
+                        name="cd_ref">
+                    <h1 class="large text-muted">{{ stat.nbTotalObs | pretty }}</h1>
+                    <h4 class="text-muted text-uppercase font-weight-bold">
+                        {{ 'observations' if stat.nbTotalObs > 1 else 'observation' }}</h4>
+                    <p><a id="localScroll" href="#DernieresObservations" class="btn btn-default btn-block" role="button">Voir
+                            les dernières observations</a></p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-xs-12 stat-object">
+                <div class="stat-thumbnail border-right">
+                    <i class="fas fa-leaf fa-3x"></i>
+                    <h1 class="large text-muted">{{ stat.nbTotalTaxons | pretty }}</h1>
+                    <h4 class="text-muted text-uppercase font-weight-bold">
+                        {{ 'espèces' if stat.nbTotalTaxons > 1 else 'espèce' }}</h4>
+                    <form method="POST" id="searchFormTaxonsStat" class="navbar-form" role="search">
+                        <div class="form-group has-feedback">
+                            <span class="addon">
+                                <i class="fas fa-search"></i>
+                            </span>
+                            <input id="searchTaxonsStat" type="text" class="form-control"
+                                placeholder="Rechercher une espèce &nbsp; &nbsp; &nbsp;" loading="false" />
+                            <input id="hiddenInputTaxonStat" type="hidden" name="cd_ref">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-xs-12 stat-object">
+                <div class="stat-thumbnail border-right">
+                    <i class="fas fa-map-signs fa-3x blue"></i>
+                    <h1 class="large text-muted">{{ stat.town | pretty }}</h1>
+                    <h4 class="text-muted  text-uppercase font-weight-bold">
+                        {{ 'communes' if stat.town > 1 else 'commune' }}</h4>
+                    <form method="POST" onsubmit="completeAction('#searchFormCommunesStat', hiddenInputCommunesStat)"
+                        id='searchFormCommunesStat' action="" class="navbar-form" role="search">
+                        <div class="form-group has-feedback">
+                            <span class="addon">
+                                <i class="fas fa-search" aria-hidden="true"></i>
+                            </span>
+                            <input id="searchCommunesStat" type="text" class="form-control"
+                                placeholder="Rechercher une commune" />
+                        </div>
+                        <input id="hiddenInputCommunesStat" type="hidden" name="insee">
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-xs-12 stat-object">
+                <div class="stat-thumbnail">
+                    <i class="fas fa-camera fa-3x"></i>
+                    <h1 class="large text-muted">{{ stat.photo | pretty }}</h1>
+                    <h4 class="text-muted  text-uppercase font-weight-bold">
+                        {{ 'photos' if stat.photo > 1 else 'photo' }}</h4>
+                    <p><a href="{{ url_for('main.photos') }}" class="btn btn-default btn-block" role="button">Galerie
+                            photos</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
