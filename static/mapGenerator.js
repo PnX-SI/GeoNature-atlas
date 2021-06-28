@@ -23,7 +23,9 @@ function generateMap() {
 
   // Style of territory on map
   territoryStyle = {
-    fill: false,
+    fill: configuration.MAP.MASK_STYLE.fill,
+    fillOpacity: configuration.MAP.MASK_STYLE.fillOpacity,
+    fillColor: configuration.MAP.MASK_STYLE.fillColor,
     color: configuration.MAP.BORDERS_COLOR,
     weight: configuration.MAP.BORDERS_WEIGHT
   };
@@ -32,7 +34,8 @@ function generateMap() {
   $(document).ready(function() {
     $.getJSON(url_limit_territory, function(json) {
       L.geoJson(json, {
-        style: territoryStyle
+        style: territoryStyle,
+        invert: true,
       }).addTo(map);
     });
   });
