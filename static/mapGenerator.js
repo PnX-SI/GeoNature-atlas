@@ -22,6 +22,7 @@ function generateMap() {
   });
 
   // Style of territory on map
+  // Uses snogylop to generate a mask
   territoryStyle = {
     fill: configuration.MAP.MASK_STYLE.fill,
     fillOpacity: configuration.MAP.MASK_STYLE.fillOpacity,
@@ -35,7 +36,7 @@ function generateMap() {
     $.getJSON(url_limit_territory, function(json) {
       L.geoJson(json, {
         style: territoryStyle,
-        invert: true,
+        invert: true
       }).addTo(map);
     });
   });

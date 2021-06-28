@@ -53,6 +53,7 @@ class MapConfig(Schema):
                 "fillOpacity": 0.3
                 })
 
+
 class AtlasConfig(Schema):
     modeDebug = fields.Boolean(missing=False)
     STRUCTURE = fields.String(missing="Nom de la structure")
