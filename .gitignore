@@ -54,3 +54,8 @@ data/ref/territoire.shx
 .idea/
 
 .vscode
+
+.coverage
+.tox
+*.swp
+*.swo

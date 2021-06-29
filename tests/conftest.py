@@ -1,12 +1,16 @@
 # pylint: disable=redefined-outer-name
 import pytest
 
-from initAtlas import app as flask_app
+from atlas.app import create_app
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def app():
-    yield flask_app
+    app = create_app()
+    app.testing = True
+    app.config['SERVER_NAME'] = 'test.atlas.local'  # required by url_for
+    with app.app_context():
+        yield app
 
 @pytest.fixture
 def client(app):
-    return app.test_client()    
+    return app.test_client()
