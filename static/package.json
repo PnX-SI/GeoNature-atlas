@@ -17,6 +17,7 @@
     "bootstrap-slider": "^7.1.0",
     "bootstrap-switch": "^3.3.2",
     "chart.js": "^2.9.3",
+    "jquery": "^1.12.4",
     "lightbox2": "^2.8.2"
   }
 }
