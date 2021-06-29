@@ -22,12 +22,12 @@
 <script src="{{ url_for('static', filename='node_modules/chart.js/dist/Chart.min.js') }}"></script>
 
 <!-- Lightbox -->
-<link href="{{ url_for('static', filename='lib/lightbox2/css/lightbox.min.css') }}" rel="stylesheet" />
+<link href="{{ url_for('static', filename='node_modules/lightbox2/dist/css/lightbox.min.css') }}" rel="stylesheet" />
 <link rel="stylesheet" href="{{ url_for('static', filename='css/ficheEspece.css') }}" />
 {% endblock %}
 
 {% block additionalFooterAssets %}
-<script src="{{ url_for('static', filename='lib/lightbox2/js/lightbox.min.js') }}"></script>
+<script src="{{ url_for('static', filename='node_modules/lightbox2/dist/js/lightbox.min.js') }}"></script>
 
 <script>
     var dataset = {{ altitudes| tojson}};
