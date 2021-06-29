@@ -11,9 +11,9 @@
 
 {% block additionalHeaderAssets %}
     {# Ajoutez ici les assets complémentaires qui seront dans le bloc <head></head> #}
-    <script src="{{ url_for('static', filename='lib/leaflet/leafletMarkerCluster.js') }}"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='lib/leaflet/leafletMarkerCluster.css') }}"/>
-    <link rel="stylesheet" href="{{ url_for('static', filename='lib/leaflet/leafletMarkerCluster.Default.css') }}"/>
+    <script src="{{ url_for('static', filename='node_modules/leaflet.markercluster/dist/leaflet.markercluster.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/leaflet.markercluster/dist/MarkerCluster.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css') }}"/>
 
     <!-- DataTable -->
     <link rel="stylesheet" href="{{ url_for('static', filename='lib/datatables/datatables.min.css') }}"/>

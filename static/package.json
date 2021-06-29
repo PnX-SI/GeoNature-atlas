@@ -22,6 +22,7 @@
     "jquery-ui-dist": "^1.12.0",
     "leaflet": "^1.0.2",
     "leaflet-fullscreen": "0.0.2",
+    "leaflet.markercluster": "^1.0.0",
     "lightbox2": "^2.8.2"
   }
 }
