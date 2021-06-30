@@ -2,11 +2,11 @@
 config/settings.ini
 config/config.py
 log/*
-static/conf/custom.js
+atlas/static/conf/custom.js
 atlas/debug.py
 data/ref/emprise_territoire.*
-static/territoire.json
-static/images/ancien
+atlas/static/territoire.json
+atlas/static/images/ancien
 atlas/configuration/config.py
 atlas/configuration/settings.ini
 robots.txt
@@ -21,23 +21,23 @@ data/ref/communes.prj
 
 satic/node_modules
 
-static/custom/territoire.json
-static/custom/glossaire.json
-static/custom/custom.css
-static/custom/maps-custom.js
-static/custom/images/logo-structure.png
-static/custom/images/accueil-intro.jpg
-static/custom/images/favicon.icom
-static/custom/images/logo_patrimonial.png
+atlas/static/custom/territoire.json
+atlas/static/custom/glossaire.json
+atlas/static/custom/custom.css
+atlas/static/custom/maps-custom.js
+atlas/static/custom/images/logo-structure.png
+atlas/static/custom/images/accueil-intro.jpg
+atlas/static/custom/images/favicon.icom
+atlas/static/custom/images/logo_patrimonial.png
 
-static/node_modules
+atlas/static/node_modules
 
-static/custom/templates/presentation.html
-static/custom/templates/footer.html
-static/custom/templates/introduction.html
-static/custom/templates/credits.html
-static/custom/templates/mentions-legales.html
-static/custom/templates/advanced_search.html
+atlas/static/custom/templates/presentation.html
+atlas/static/custom/templates/footer.html
+atlas/static/custom/templates/introduction.html
+atlas/static/custom/templates/credits.html
+atlas/static/custom/templates/mentions-legales.html
+atlas/static/custom/templates/advanced_search.html
 
 geonature_atlas.egg-info
 
