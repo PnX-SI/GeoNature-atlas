@@ -41,7 +41,6 @@ static/custom/templates/advanced_search.html
 
 geonature_atlas.egg-info
 
-
 data/ref/communes.dbf
 data/ref/communes.prj
 data/ref/communes.shp
