@@ -13,7 +13,7 @@ db = SQLAlchemy()
 compress = Compress()
 
 APP_DIR = os.path.abspath(os.path.dirname(__file__))
-
+print(APP_DIR)
 
 class ReverseProxied(object):
     def __init__(self, app, script_name=None, scheme=None, server=None):
@@ -47,7 +47,7 @@ def create_app():
     # configuration publique
     valid_config = read_and_validate_conf(config, AtlasConfig)
 
-    app = Flask(__name__, template_folder='../' + APP_DIR)
+    app = Flask(__name__, template_folder = APP_DIR)
     # push the config in app config at 'PUBLIC' key
     app.config.update(valid_config)
 
