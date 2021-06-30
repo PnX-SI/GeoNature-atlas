@@ -1,0 +1,206 @@
+.panel {
+    margin-top: 10px;
+    padding: 5px;
+}
+
+#page {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+footer {
+    margin-top: 0;
+}
+
+#taxonList {
+    flex: 1 1 0;
+    overflow-y: auto;
+}
+
+
+/*#mapWrapper {*/
+/*  position: relative !important;*/
+/*  !*left: 58% !important;*!*/
+/*  top: 0;*/
+/*  bottom: 0;*/
+/*  width: 100%;*/
+/*}*/
+
+#mapContainer {
+    height: calc(100vh - 60px);
+}
+
+#map {
+    height: 600px;
+}
+
+#clear {
+    clear: both;
+}
+
+#parent {
+    text-align: center;
+    margin-top: 10px;
+}
+
+table.dataTable {
+    line-height: 1;
+    font-size: 1rem;
+}
+
+table.dataTable thead .sorting,
+table.dataTable thead .sorting_asc,
+table.dataTable thead .sorting_desc {
+    background: none;
+}
+
+.dataTables_length {
+    margin: 10px;
+}
+
+.dataTables_filter {
+    margin: 10px;
+}
+
+.dataTables_paginate {
+    margin: 10px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 0px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    padding: 0px;
+    border: none;
+}
+
+.pagination > .disabled > a,
+.pagination > .disabled > a:focus,
+.pagination > .disabled > a:hover,
+.pagination > .disabled > span,
+.pagination > .disabled > span:focus,
+.pagination > .disabled > span:hover {
+    cursor: default;
+}
+
+#stat li {
+    float: left;
+    width: 100px;
+    text-align: center;
+    border-right: 1px solid #e8e8e8;
+    list-style-type: none;
+}
+
+ul#stat {
+    float: left;
+    padding: 5px;
+    margin-left: 32%;
+}
+
+#statHierarchy li {
+    display: inline-block;
+    width: 100px;
+}
+
+ul#statHierarchy {
+    float: left;
+    padding: 5px;
+    margin: auto;
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.leaflet-bar.leaflet-control.leaflet-control-custom img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 3px;
+}
+
+#myTable .glyphicon {
+    color: #333333;
+    font-size: 2em;
+}
+
+/* 
+.eye {
+	padding-left: 20%
+}
+
+.displayObs {
+	cursor: pointer;
+}
+*/
+
+#loadingGif {
+    z-index: 1000000;
+    position: absolute;
+    left: 40%;
+    top: 40%;
+}
+
+.hiddenSpan {
+    visibility: hidden;
+}
+
+tbody tr:hover {
+    /*background-color: #cccccc !important;*/
+    cursor: pointer;
+}
+
+tbody tr.current {
+    background-color: #e6e6e6 !important;
+    font-weight: bold;
+}
+
+.pictoImgListIcon {
+    width: 60px;
+}
+
+.pictoImgList {
+    width: 80px;
+    background-position: center center;
+    background-size: cover;
+    height: 80px;
+    border-radius: 6px;
+}
+
+
+#taxonList .current {
+    background-color: var(--light);
+}
+
+
+
+@media (max-width: 1200px) {
+  #statHierarchy i {
+      font-size: 2rem;
+      color: red;
+  }
+}
+
+
+ @media (min-width: 992px and max-width: 1200px) {
+  #statHierarchy i {
+    font-size: 1.5rem;
+      color: green;
+  }
+}
+
+
+ @media screen and (max-width: 768px) {
+  #statHierarchy i {
+    font-size: 1rem;
+      color: blue;
+  }
+}
+
+
+ @media screen and (max-width: 576px) {
+  #statHierarchy i {
+    font-size: 0.8rem;
+      color: deeppink;
+  }
+}

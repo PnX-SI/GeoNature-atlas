@@ -1,0 +1,7 @@
+/* Insert your custom override CSS in this file */
+
+:root {
+    --main-color: #82c91e;
+    --second-color: #649b18;
+    --map-maille-border-color: "black";
+}

@@ -1,0 +1,430 @@
+[  
+  {
+    "term" : "abdomen",
+    "description" : "Chez les insectes, troisième division du corps après la tête et l'abdomen"
+  },
+  {
+    "term" : "ailé, ailés",
+    "description" : "Se dit d'un organe pourvu d'une « aile » (membrane mince entourant une tige, un fruit, un utricule, une graine)"
+  },
+  {
+    "term" : "akène, akènes",
+    "description" : "Fruit réduit ne contenant qu'une seule graine"
+  },
+  {
+    "term" : "alterne, alternes",
+    "description" : "Désigne des organes (feuilles) situés de chaque côté d'un axe mais pas l'un en face de l'autre"
+  },
+  {
+    "term" : "anguleux, anguleuse, anguleuses",
+    "description" : "Présentant des angles aigus"
+  },
+  {
+    "term" : "Arctico-alpine",
+    "description" : "Région artique (zone nord de l'Eurasie et de l'Amérique où les arbres ne peuvent plus pousser) et étages supérieurs des montagnes tempérées"
+  },
+  {
+    "term" : "arthropode",
+    "description" : "Animal dont le squelette, externe, est articulé  (insecte, araignée...)"
+  },
+  {
+    "term" : "auriculée, auriculées",
+    "description" : "Qui présente une petite excroissance en forme d'oreille, en général à la base d'une feuille"
+  },
+  {
+    "term" : "autonyme, autonymes",
+    "description" : "Figure de style pour désigner la substance d'un mot lorsque celui-ci est cité lui-même (ex : <i>Gentiana verna</i> subsp. <i>Verna</i>)"
+  },
+  {
+    "term" : "bisannuel, bisannuelle, bisannuelles",
+    "description" : "Qualifie un végétal se développant en rosette végétative la 1ère année, fleurissant et fructifiant avant de disparaître la 2ème année"
+  },
+  {
+    "term" : "Boréomontagnarde",
+    "description" : "Région boréale (zone nord de l'Eurasie et de l'Amérique à forêts de conifères) et étages inférieurs des montagnes tempérées"
+  },
+  {
+    "term" : "bractée, bractées",
+    "description" : "Organe en forme de petite feuille ou d'écaille situé juste sous une fleur ou une inflorescence"
+  },
+  {
+    "term" : "calice, calices",
+    "description" : "Ensemble des sépales (membranes insérées sous les pétales)"
+  },
+  {
+    "term" : "caréné, carénés",
+    "description" : "Muni d'une carène (ligne saillante sous un organe)"
+  },
+  {
+    "term" : "caulinaire, caulinaires",
+    "description" : "Inséré sur ou relatif à la tige"
+  },
+  {
+    "term" : "céphalothorax",
+    "description" : "Chez certains arthropodes, fusion de la tête et du thorax (chez les araignées par exemple)"
+  },
+  {
+    "term" : "cerque, cerques",
+    "description" : "Appendices situés à l'extrémité de l'abdomen, chez certains insectes"
+  },
+  {
+    "term" : "chélicère, chélicères",
+    "description" : "Appendice proche de la bouche se terminant par 2 crochets"
+  },
+  {
+    "term" : "Circumboréale",
+    "description" : "Toute la zone tempérée froide de l'hémisphère nord<br/><img width='300px' src='https://upload.wikimedia.org/wikipedia/commons/0/08/R%C3%A9gion_circumbor%C3%A9ale.png'/>"
+  },
+  {
+    "term" : "coléoptère, coléoptères",
+    "description" : "Insecte possédant des élytres protégeant les ailes postérieures (scarabée...)"
+  },
+  {
+    "term" : "combe à neige, combes à neige",
+    "description" : "Dépression des hautes montagnes où la neige persiste 8 à 10 mois de l'année"
+  },
+  {
+    "term" : "corolle, corolles",
+    "description" : "Ensemble des pétales"
+  },
+  {
+    "term" : "corymbe, corymbes",
+    "description" : "Inflorescence dans laquelle les fleurs se trouvent toutes sur le même plan horizontal"
+  },
+  {
+    "term" : "dextre, dextres",
+    "description" : "Qui s'enroule dans le sens des aiguilles d'une montre (vers la droite)"
+  },
+  {
+    "term" : "dioïque, dioïques",
+    "description" : "Se dit d'une espèce pour qui les fleurs mâles et les fleurs femelles se trouvent sur des individus séparés (ex : saule, peuplier)"
+  },
+  {
+    "term" : "diptère, diptères",
+    "description" : "Insecte n'ayant qu'une seule paire d'aile, qui est membraneuse (mouche, taon...)"
+  },
+  {
+    "term" : "drageon, drageons",
+    "description" : "Pousse naissant d'un bourgeon situé sur une racine ou une tige souterraine"
+  },
+  {
+    "term" : "drageonnement, drageonnements",
+    "description" : "Action de drageonner (émettre une pousse à partir d'une racine ou d'une tige souterraine)"
+  },
+  {
+    "term" : "écusson, écussons",
+    "description" : "(Ou scutellum) : partie sclérifiée, en général triangulaire, placée à la base de la suture des élytres"
+  },
+  {
+    "term" : "élytre, élytres",
+    "description" : "Chez certains insectes, ailes antérieures durcies recouvrant les ailes postérieures, membraneuses"
+  },
+  {
+    "term" : "émergence, émergences",
+    "description" : "Passage d'un insecte de l'état de larve ou de nymphe à l'état d'imago (adulte)"
+  },
+  {
+    "term" : "exuvie, exuvies",
+    "description" : "Peau rejetée lors de la mue"
+  },
+  {
+    "term" : "embrassant, embrassants, embrassante, embrassantes",
+    "description" : "Se dit d'un organe, généralement une feuille, qui entoure plus ou moins la tige"
+  },
+  {
+    "term" : "endémique, endémiques",
+    "description" : "Une espèce est dite endémique d'une région déterminée si elle n'existe que là"
+  },
+  {
+    "term" : "Endémique alpine",
+    "description" : "Répartition restreinte au massif alpin"
+  },
+  {
+    "term" : "Endémique Ouest alpine",
+    "description" : "Répartition restreinte à l'Ouest du massif alpin"
+  },
+  {
+    "term" : "épillet, épillets",
+    "description" : "Chez les graminées ou les cypéracées, ensemble de petites fleurs faisant penser à un petit « épi »"
+  },
+  {
+    "term" : "épi, épis",
+    "description" : "Ensemble de fleurs attachées sur un axe central"
+  },
+  {
+    "term" : "étalé, étalés",
+    "description" : "Qui se développe plus ou moins à l'horizontal"
+  },
+  {
+    "term" : "Eurasiatique",
+    "description" : "Large partie de l'Europe et de l'Asie"
+  },
+  {
+    "term" : "fémur, fémurs",
+    "description" : "Segment de la patte des insectes correspondant à la cuisse ou au bras des mammifères"
+  },
+  {
+    "term" : "genitalia",
+    "description" : "Ensemble des pièces génitales"
+  },
+  {
+    "term" : "hémiptère, hémiptères",
+    "description" : "Ordre d'insectes qui ont tous la particularité d'avoir un appareil buccal de type piqueur-suceur (punaises, cigales, pucerons ...)"
+  },
+  {
+    "term" : "Holarctique",
+    "description" : "Amérique du Nord, Afrique du Nord, Europe et Asie (hormis les péninsules arabique, indienne et indochinoise, ainsi que l'archipel malais)"
+  },
+  {
+    "term" : "hyménoptère, hyménoptères",
+    "description" : "Insecte ayant 4 ailes membraneuses (abeille, bourdon...)"
+  },
+  {
+    "term" : "imago, imagos",
+    "description" : "Adulte"
+  },
+  {
+    "term" : "inflorescence, inflorescences",
+    "description" : "Chez une plante, ensemble de ses fleurs"
+  },
+  {
+    "term" : "lépidoptère, lépidoptères",
+    "description" : "Insecte dont les ailes sont recouvertes de petites écailles (papillon)"
+  },
+  {
+    "term" : "ligule, ligules",
+    "description" : "Dans la famille des Astéracées, pétale unique d'une fleur élémentaire, ressemblant à une languette. Dans la famille des Poacées, membrane séparant la feuille en deux parties distinctes : la gaine (entourant la tige) et le limbe (partie décollée de la tige)"
+  },
+  {
+    "term" : "mandibule, mandibules",
+    "description" : "Pièces buccales durcies et tranchantes"
+  },
+  {
+    "term" : "membraneux",
+    "description" : "Fin et transparent ou translucide"
+  },
+  {
+    "term" : "métamorphose, métamorphoses",
+    "description" : "Série de transformations faisant passer la larve au stade adulte"
+  },
+  {
+    "term" : "monoïque, monoïques",
+    "description" : "Se dit d'une espèce dont les individus possèdent à la fois des fleurs mâles et des fleurs femelles (ex : noisetier)"
+  },
+  {
+    "term" : "moraine, moraines",
+    "description" : "Amas de blocs et de débris rocheux entraînés par le mouvement de glissement d'un glacier"
+  },
+  {
+    "term" : "mue, mues",
+    "description" : "Changement de tégument lors de la croissance d'un animal"
+  },
+  {
+    "term" : "multicaule, multicaules",
+    "description" : "Se dit d'une plante qui a de nombreuses tiges"
+  },
+  {
+    "term" : "nervation, nervations",
+    "description" : "Disposition des nervures d'une aile"
+  },
+  {
+    "term" : "nitrophile, nitrophiles",
+    "description" : "Plante qui préfère des sols riches en nitrates ou nitrites (matière azotée) (ex : ortie dioïque)"
+  },
+  {
+    "term" : "nymphe, nymphes",
+    "description" : "Stade immobile entre la larve et l'adulte, où la larve subit d'importantes transformations"
+  },
+  {
+    "term" : "obtus, obtuse, obtuses",
+    "description" : "Dont le sommet forme un angle obtus, > 45°"
+  },
+  {
+    "term" : "ocelle, ocelles",
+    "description" : "Œil simple situé sur le front d'un insecte ou, chez les papillons, tache évoquant un œil située sur une aile"
+  },
+  {
+    "term" : "odonate, odonates",
+    "description" : "Insecte prédateur à 4 ailes et au corps allongé (libellule, demoiselle...)"
+  },
+  {
+    "term" : "ombelle, ombelles",
+    "description" : "Inflorescence où les pédicelles et pédoncules floraux, de même longueur, partent du même point de la tige"
+  },
+  {
+    "term" : "ombilic, ombilics",
+    "description" : "Orifice situé sur la base de la coquille d'un gastéropode (escargot)"
+  },
+  {
+    "term" : "ongulé, ongulés",
+    "description" : "Se dit d'un mammifère pourvu de sabots ou d'onglons tel que les suidés, les ruminants, les chevaux, etc"
+  },
+  {
+    "term" : "opposé, opposés",
+    "description" : "Désigne deux organes situés 2 à 2 au même niveau et se faisant face"
+  },
+  {
+    "term" : "orthoptère, orthoptères",
+    "description" : "Insecte possédant 4 ailes, et dont les 2 ailes postérieures, à nervures droites, se replient en éventail sous les élytres (criquet ...)"
+  },
+  {
+    "term" : "ovipositeur, ovipositeurs",
+    "description" : "Organe situé à l’extrémité postérieure de l’abdomen et servant à la ponte"
+  },
+  {
+    "term" : "palmé, palmés",
+    "description" : "(Du latin palma = paume) divisé en segments tous partant d'un même point, comme les doigts de la main"
+  },
+  {
+    "term" : "panicule, panicules",
+    "description" : "Inflorescence étalée et ramifiée en forme de cône ou de pyramide"
+  },
+  {
+    "term" : "pédipalpe, pédipalpes",
+    "description" : "Appendice situé sur la tête servant à palper (chez les mâles d'araignées, sert à la reproduction)"
+  },
+  {
+    "term" : "pédonculé, pédonculée, pédonculées, pédonculés",
+    "description" : "Se dit d'un organe pourvu d'un pédoncule"
+  },
+  {
+    "term" : "pédoncule, pédoncules",
+    "description" : "Sorte de petite « tige » portant les fleurs puis les fruits (après fécondation)"
+  },
+  {
+    "term" : "pédicelle, pédicelles",
+    "description" : "Axe non feuillé portant une fleur"
+  }, 
+  {
+    "term" : "penné, pennés",
+    "description" : "(Du latin pinna = plume) divisé en segments disposés des deux côtés d'un axe comme les barbes d'une plume"
+  },
+  {
+    "term" : "péristome, péristomes",
+    "description" : "Pourtour d'une ouverture"
+  },
+  {
+    "term" : "pétiole, pétioles",
+    "description" : "Partie rétrécie d'une feuille – comme une petite « tige » – la reliant à la tige"
+  },
+  {
+    "term" : "pétiolé, pétiolés",
+    "description" : "Qui présente un pétiole (partie rétrécie d'une feuille la reliant à la tige)"
+  },
+  {
+    "term" : "pistil, pistils",
+    "description" : "Organe reproducteur femelle, situé au centre de la fleur, généralement composé de l'ovaire, du style et du stigmate"
+  },
+  {
+    "term" : "pronotum, pronotums",
+    "description" : "Partie dorsale du premier segment thoracique"
+  },
+  {
+    "term" : "pruine, pruines",
+    "description" : "Couche épidermique très fine des rameaux et tiges, à aspect de poussière, s'enlevant aisément par frottement (ex : sur prune, raisin)"
+  },
+  {
+    "term" : "ptérostigma",
+    "description" : "Partie épaisse, souvent colorée, située vers l'extrémité et sur le bord extérieur de l'aile d'un insecte"
+  },
+  {
+    "term" : "pupillé, pupillés",
+    "description" : "Tache évoquant une pupille"
+  },
+  {
+    "term" : "ramifié, ramifiés",
+    "description" : "Portant de nombreuses branches ou tiges secondaires"
+  },
+  {
+    "term" : "rejet, rejets",
+    "description" : "Pousse apparaissant à la base d'une tige, une branche, une souche ou un tronc"
+  },
+  {
+    "term" : "renflé, renflés",
+    "description" : "Qui présente une dilatation sur une partie de sa hauteur"
+  },
+  {
+    "term" : "rhizomateux, rhizomateuse, rhizomateuses",
+    "description" : "Qui possède un rhizome (tige souterraine plus ou moins allongée)"
+  },
+  {
+    "term" : "rhizome, rhizomes",
+    "description" : "Tige souterraine plus ou moins allongée constituant une réserve de survie pour la plante d'une saison à l'autre"
+  },
+  {
+    "term" : "rostre, rostres",
+    "description" : "Appareil buccal allongé des insectes de type 'piqueur-suceur' (cigales, punaises, moustiques...)"
+  },
+  {
+    "term" : "samare, samares",
+    "description" : "Fruit possédant une aile membraneuse permettant sa dissémination par le vent (ex : fruit de l'orme, du frêne)"
+  },
+  {
+    "term" : "scutellum, scutellums",
+    "description" : "(Ou écusson) : partie sclérifiée, en général triangulaire, placée à la base de la suture des élytres"
+  },
+  {
+    "term" : "sénestre, sénestres",
+    "description" : "Qui s'enroule dans le sens inverse des aiguilles d'une montre (vers la gauche)"
+  },
+  {
+    "term" : "sépale, sépales",
+    "description" : "Membranes insérées sous (ou en alternance avec) les pétales, dont la couleur et la forme peuvent être très variables"
+  },
+  {
+    "term" : "séqué, séqués",
+    "description" : "Découpé de manière presque totale en plusieurs parties"
+  }, 
+  {
+    "term" : "sore, sores",
+    "description" : "Amas de sporanges"
+  },
+  {
+    "term" : "sporange, sporanges",
+    "description" : "Organe qui produit et renferme les spores"
+  },
+  {
+    "term" : "spore, spores",
+    "description" : "Cellule participant à la reproduction de certains végétaux (fougères ...)"
+  },
+  {
+    "term" : "steppique, steppiques",
+    "description" : "Qualifie une espèce ou une végétation adapté aux milieux secs"
+  },
+  {
+    "term" : "stolonifère, stolonifères",
+    "description" : "Qui possède des stolons (tiges poussant s'enraciner et donner de nouvelles plantes)"
+  },
+  {
+    "term" : "Subcosmopolite",
+    "description" : "Large répartition à la surface du globe mais avec des lacunes"
+  },
+  {
+    "term" : "tegmen, tegmina",
+    "description" : "Chez les orthoptères, aile antérieure durcie"
+  },
+  {
+    "term" : "tépale, tépales",
+    "description" : "Désigne un pétale ou un sépale lorsqu'on ne peut pas les différencier (ex : la fleur de tulipe)"
+  },
+  {
+    "term" : "thorax",
+    "description" : "Chez les insectes, deuxième division du corps, située entre la tête et l'abdomen"
+  },
+  {
+    "term" : "trigone, trigones",
+    "description" : "Qui à trois angles, plus ou moins marqués"
+  },
+  {
+    "term" : "verticille, verticilles",
+    "description" : "Ensemble d''organes disposés en cercle, à un même niveau, sur la tige"
+  },
+  {
+    "term" : "verticillé, verticillés",
+    "description" : "Qualifie des organes attachés au même niveau autour d'un axe"
+  },
+  {
+    "term" : "vivace, vivaces",
+    "description" : "Qualifie une plante qui vit plus de deux saisons"
+  }
+]
