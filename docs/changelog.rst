@@ -142,7 +142,7 @@ Suivez ensuite les instructions suivantes :
 
 ::
 
-    cp -aR ../atlas_old/static/custom/ ./static
+    cp -aR ../atlas_old/static/custom/ ./atlas/static
 
 * Relancez l'installation automatique de l'application :
 

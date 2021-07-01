@@ -191,8 +191,8 @@ then
 
 
     # Conversion des limites du territoire en json
-    rm  -f ./static/custom/territoire.json
-    ogr2ogr -f "GeoJSON" -t_srs "EPSG:4326" -s_srs "EPSG:3857" ./static/custom/territoire.json \
+    rm  -f ./atlas/static/custom/territoire.json
+    ogr2ogr -f "GeoJSON" -t_srs "EPSG:4326" -s_srs "EPSG:3857" ./atlas/static/custom/territoire.json \
         PG:"host=$db_host user=$owner_atlas dbname=$db_name port=$db_port password=$owner_atlas_pass" "atlas.t_layer_territoire"
 
 
