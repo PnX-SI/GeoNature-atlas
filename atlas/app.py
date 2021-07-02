@@ -46,8 +46,7 @@ def create_app():
     # validation de la configuration
     # configuration publique
     valid_config = read_and_validate_conf(config, AtlasConfig)
-
-    app = Flask(__name__, template_folder='../' + APP_DIR)
+    app = Flask(__name__, template_folder=APP_DIR)
     # push the config in app config at 'PUBLIC' key
     app.config.update(valid_config)
 
