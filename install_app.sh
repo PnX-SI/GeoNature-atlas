@@ -40,6 +40,9 @@ echo "Installing requirements..."
 pip install -r requirements.txt
 deactivate
 
+echo "Installing node packages"
+npm i
+
 echo "Creating configuration files if they dont already exist"
 if [ ! -f ./atlas/configuration/config.py ]; then
   cp ./atlas/configuration/config.py.sample ./atlas/configuration/config.py

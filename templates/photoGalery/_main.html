@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block additionalHeaderAssets %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='lib/lightbox2/css/lightbox.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/lightbox2/dist/css/lightbox.css') }}"/>
     {# Ajoutez ici les assets complémentaires qui seront dans le bloc <head></head> #}
     <style>
         #page {
@@ -36,7 +36,7 @@
         var configuration = {{ configuration| tojson}};
     </script>
 
-    <script src="{{ url_for('static', filename='lib/lightbox2/js/lightbox.js') }}"></script>
+    <script src="{{ url_for('static', filename='node_modules/lightbox2/dist/js/lightbox.js') }}"></script>
     <script src="{{ url_for('static', filename='galleryPhoto.js') }}"></script>
     <script src="{{ url_for('static', filename='main.js') }}"></script>
 {% endblock %}

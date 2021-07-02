@@ -7,27 +7,27 @@
 {% block additionalHeaderAssets %}
 <!-- Bootstrap slider -->
 <link rel="stylesheet"
-    href="{{ url_for('static', filename='lib/node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css') }}" />
+    href="{{ url_for('static', filename='node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css') }}" />
 <script
-    src="{{ url_for('static', filename='lib/node_modules/bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
+    src="{{ url_for('static', filename='node_modules/bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
 <!-- Bootstrap switch -->
 <script type="text/javascript"
-    src="{{ url_for('static', filename='lib/bootstrap-switch/js/bootstrap-switch.js') }}"></script>
-<link rel="stylesheet" href="{{ url_for('static', filename='lib/bootstrap-switch/css/bootstrap-switch.min.css') }}" />
+    src="{{ url_for('static', filename='node_modules/bootstrap-switch/dist/js/bootstrap-switch.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='node_modules/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css') }}" />
 <!-- Leaflet marker cluster -->
-<script src="{{ url_for('static', filename='lib/leaflet/leafletMarkerCluster.js') }}"></script>
-<link rel="stylesheet" href="{{ url_for('static', filename='lib/leaflet/leafletMarkerCluster.css') }}" />
-<link rel="stylesheet" href="{{ url_for('static', filename='lib/leaflet/leafletMarkerCluster.Default.css') }}" />
+<script src="{{ url_for('static', filename='node_modules/leaflet.markercluster/dist/leaflet.markercluster.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='node_modules/leaflet.markercluster/dist/MarkerCluster.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css') }}" />
 <!-- ChartJS -->
-<script src="{{ url_for('static', filename='lib/chartjs/Chart.min.js') }}"></script>
+<script src="{{ url_for('static', filename='node_modules/chart.js/dist/Chart.min.js') }}"></script>
 
 <!-- Lightbox -->
-<link href="{{ url_for('static', filename='lib/lightbox2/css/lightbox.min.css') }}" rel="stylesheet" />
+<link href="{{ url_for('static', filename='node_modules/lightbox2/dist/css/lightbox.min.css') }}" rel="stylesheet" />
 <link rel="stylesheet" href="{{ url_for('static', filename='css/ficheEspece.css') }}" />
 {% endblock %}
 
 {% block additionalFooterAssets %}
-<script src="{{ url_for('static', filename='lib/lightbox2/js/lightbox.min.js') }}"></script>
+<script src="{{ url_for('static', filename='node_modules/lightbox2/dist/js/lightbox.min.js') }}"></script>
 
 <script>
     var dataset = {{ altitudes| tojson}};
