@@ -20,3 +20,9 @@ def test_photos(app, client):
     del app
     res = client.get('/atlas/photos')
     assert res.status_code == 200
+
+
+def test_specie(app, client):
+    del app
+    res = client.get('/atlas/espece/11030')
+    assert res.status_code == 200
