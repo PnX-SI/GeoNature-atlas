@@ -19,7 +19,7 @@ data/ref/communes.shx
 data/ref/communes.dbf
 data/ref/communes.prj
 
-satic/node_modules
+static/node_modules
 
 atlas/static/custom/territoire.json
 atlas/static/custom/glossaire.json
