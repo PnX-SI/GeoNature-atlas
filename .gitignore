@@ -1,5 +1,4 @@
 *.pyc
-tests/*
 config/settings.ini
 config/config.py
 log/*
@@ -20,13 +19,15 @@ data/ref/communes.shx
 data/ref/communes.dbf
 data/ref/communes.prj
 
+satic/node_modules
+
 static/custom/territoire.json
 static/custom/glossaire.json
 static/custom/custom.css
 static/custom/maps-custom.js
 static/custom/images/logo-structure.png
 static/custom/images/accueil-intro.jpg
-static/custom/images/favicon.ico
+static/custom/images/favicon.icom
 static/custom/images/logo_patrimonial.png
 
 static/node_modules
@@ -37,6 +38,8 @@ static/custom/templates/introduction.html
 static/custom/templates/credits.html
 static/custom/templates/mentions-legales.html
 static/custom/templates/advanced_search.html
+
+
 
 
 data/ref/communes.dbf
@@ -53,3 +56,8 @@ data/ref/territoire.shx
 .idea/
 
 .vscode
+
+.coverage
+.tox
+*.swp
+*.swo

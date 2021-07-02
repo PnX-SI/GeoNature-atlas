@@ -1,7 +1,10 @@
 {
   "name": "geonature-atlas",
   "version": "1.0.0",
+<<<<<<< HEAD
   "description": "",
+=======
+>>>>>>> global/packaging
   "main": "main.js",
   "directories": {
     "lib": "lib"
@@ -11,11 +14,16 @@
   },
   "author": "",
   "license": "ISC",
+<<<<<<< HEAD
+=======
+  "description": "",
+>>>>>>> global/packaging
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.9.0",
     "bootstrap": "^4.4.1",
     "bootstrap-slider": "^7.1.0",
     "bootstrap-switch": "^3.3.2",
+<<<<<<< HEAD
     "chart.js": "^2.9.3",
     "datatables.net-bs4": "^3.2.2",
     "datatables.net-responsive-bs4": "^2.1.1",
@@ -28,5 +36,23 @@
     "leaflet-fullscreen": "0.0.2",
     "leaflet.markercluster": "^1.0.0",
     "lightbox2": "^2.8.2"
+=======
+    "chart.js": "^3.4.0",
+    "datatables": "1.10.12",
+    "datatables.net-bs4": "^3.2.2",
+    "datatables.net-responsive-bs4": "^2.2.9",
+    "datatables.net-scroller-bs4": "^2.0.4",
+    "eve-raphael": "^0.5.0",
+    "glossarizer": "^1.5.2",
+    "jquery": "^1.12.4",
+    "jquery-lazy": "^1.7.9",
+    "jquery-ui-dist": "^1.12.1",
+    "leaflet": "^1.0.2",
+    "leaflet.fullscreen": "^2.0.0",
+    "leaflet.markercluster": "^0.5.0",
+    "lightbox2": "^2.8.2",
+    "popper.js": "^1.16.0",
+    "raphael": "^2.2.0"
+>>>>>>> global/packaging
   }
 }
