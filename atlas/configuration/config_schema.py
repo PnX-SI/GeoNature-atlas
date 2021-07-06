@@ -48,12 +48,10 @@ class MapConfig(Schema):
     BORDERS_WEIGHT = fields.Integer(missing=3)
     ENABLE_SLIDER = fields.Boolean(missing=True)
     ENABLE_SCALE = fields.Boolean(missing=True)
-
-    SHOW_MASK = fields.Boolean(missing=False)
     MASK_STYLE = fields.Dict(
-        missing={"fillColor": 'white',
-                "opacity": 0.8,
-                "dashArray": "5 5",
+        missing={
+                "fill": False,
+                "fillColor": '#020202',
                 "fillOpacity": 0.3
                 })
 

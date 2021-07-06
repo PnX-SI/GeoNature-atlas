@@ -43,6 +43,7 @@ function generateMap() {
   });
 
   // Style of territory on map
+  // Uses snogylop to generate a mask
   territoryStyle = {
     fill: false,
     color: territoryBorderColor,
