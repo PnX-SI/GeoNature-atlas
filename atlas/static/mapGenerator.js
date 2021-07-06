@@ -121,7 +121,18 @@ function generateMap() {
   fullScreenButton.attr("data-toggle", "tooltip");
   fullScreenButton.attr("data-original-title", "Plein écran");
   $(".leaflet-control-fullscreen-button").removeAttr("title");
-
+  
+  // Add scale depending on the configuration
+  if (configuration.MAP.ENABLE_SCALE) {
+    L.control.scale({imperial: false}).addTo(map);
+    L.control.scale(
+      {
+        imperial: false, 
+        position: 'bottomright'
+      }
+      ).addTo(map);
+  }
+  
   return map;
 }
 
