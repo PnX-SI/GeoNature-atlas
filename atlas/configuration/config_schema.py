@@ -49,6 +49,13 @@ class MapConfig(Schema):
     ENABLE_SLIDER = fields.Boolean(missing=True)
     ENABLE_SCALE = fields.Boolean(missing=True)
 
+    SHOW_MASK = fields.Boolean(missing=False)
+    MASK_STYLE = fields.Dict(
+        missing={"fillColor": 'white',
+                "opacity": 0.8,
+                "dashArray": "5 5",
+                "fillOpacity": 0.3
+                })
 
 class AtlasConfig(Schema):
     modeDebug = fields.Boolean(missing=False)
