@@ -47,7 +47,13 @@ class MapConfig(Schema):
     BORDERS_COLOR = fields.String(missing="#000000")
     BORDERS_WEIGHT = fields.Integer(missing=3)
     ENABLE_SLIDER = fields.Boolean(missing=True)
-
+    ENABLE_SCALE = fields.Boolean(missing=True)
+    MASK_STYLE = fields.Dict(
+        missing={
+                "fill": False,
+                "fillColor": '#020202',
+                "fillOpacity": 0.3
+                })
 
 class AtlasConfig(Schema):
     modeDebug = fields.Boolean(missing=False)

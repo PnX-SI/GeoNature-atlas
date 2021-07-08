@@ -151,6 +151,7 @@ app_name=atlas
 gun_num_workers=4
 gun_host=0.0.0.0
 gun_port=8080
+gun_timeout=60
 
 ####################
 ### Python settings

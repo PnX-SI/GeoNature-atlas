@@ -26,10 +26,11 @@
     "jquery": "^1.12.4",
     "jquery-lazy": "^1.7.9",
     "jquery-ui-dist": "^1.12.1",
-    "leaflet": "^1.0.2",
+    "leaflet": "^1.6.0",
     "leaflet-fullscreen": "0.0.2",
     "leaflet.fullscreen": "^2.0.0",
     "leaflet.markercluster": "^0.5.0",
+    "leaflet.snogylop": "^0.4.0",
     "lightbox2": "^2.8.2",
     "popper.js": "^1.16.0",
     "raphael": "^2.2.0"
