@@ -46,7 +46,6 @@ def create_app():
     # validation de la configuration
     # configuration publique
     valid_config = read_and_validate_conf(config, AtlasConfig)
-
     app = Flask(__name__, template_folder=APP_DIR)
     # push the config in app config at 'PUBLIC' key
     app.config.update(valid_config)
@@ -77,9 +76,9 @@ def create_app():
     return app
 
 
-app = create_app()
 if __name__ == "__main__":
     # validation de la configuration secrète
+    app = create_app()
     secret_conf = read_and_validate_conf(config, SecretSchemaConf)
     app.run(
         host="0.0.0.0", port=secret_conf["GUNICORN_PORT"], debug=app.config["modeDebug"]

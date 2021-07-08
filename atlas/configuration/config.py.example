@@ -107,7 +107,7 @@ AFFICHAGE_EN_CE_MOMENT = True
 
 AFFICHAGE_RANG_STAT = True
 COLONNES_RANG_STAT = 3
-RANG_STAT = [{'phylum': ["Arthropoda", "Mollusca", "Annelida", "Cnidaria", "Platyhelminthes"]]}, {'phylum': ["Chordata"]}, {'regne': ["Plantae"]}]
+RANG_STAT = [{'phylum': ["Arthropoda", "Mollusca", "Annelida", "Cnidaria", "Platyhelminthes"]}, {'phylum': ["Chordata"]}, {'regne': ["Plantae"]}]
 RANG_STAT_FR = ['Faune invertébrée', 'Faune vertébrée', 'Flore']
 
 
