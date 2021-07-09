@@ -22,6 +22,19 @@ NOM_APPLICATION = "Nom de l application"
 URL_APPLICATION = "/atlas"
 
 ###########################
+###### Multilingual #######
+###########################
+
+# Available languages
+LANGUAGES = {
+    'en': 'English',
+    'fr': 'French'
+}
+
+# Default language to use if browser language is not available
+BABEL_DEFAULT_LOCALE= 'fr'
+
+###########################
 ###### Cartographie #######
 ###########################
 

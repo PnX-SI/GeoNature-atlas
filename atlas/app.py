@@ -51,8 +51,14 @@ def create_app():
     # push the config in app config at 'PUBLIC' key
     app.config.update(valid_config)
     
-    app.config['BABEL_DEFAULT_LOCALE'] = 'en'
+    app.config['BABEL_DEFAULT_LOCALE'] = './translations/'+config.BABEL_DEFAULT_LOCALE+'/LC_MESSAGES/messages.po'
     babel = Babel(app)
+
+    #Recuperation de la langue du navigateur
+    @babel.localeselector
+    def get_locale():
+        return request.accept_languages.best_match(LANGUAGES.keys())
+
 
     app.debug = valid_config["modeDebug"]
     with app.app_context() as context:
@@ -77,12 +83,11 @@ def create_app():
         def pretty(val):
             return format_number(val)
 
+        
+
+
     return app
 
-@babel.localselector
-def get_locale():
-    return 'en'
-    return .accept_language.best_match(['en', 'fr', 'it'])
 
 if __name__ == "__main__":
     # validation de la configuration secrète
