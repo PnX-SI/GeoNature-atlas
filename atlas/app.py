@@ -54,7 +54,7 @@ def create_app():
     app.config['BABEL_DEFAULT_LOCALE'] = './translations/'+config.BABEL_DEFAULT_LOCALE+'/LC_MESSAGES/messages.po'
     babel = Babel(app)
 
-    #Recuperation de la langue du navigateur
+    #Getting browser language
     @babel.localeselector
     def get_locale():
         return request.accept_languages.best_match(LANGUAGES.keys())
@@ -82,9 +82,6 @@ def create_app():
         @app.template_filter("pretty")
         def pretty(val):
             return format_number(val)
-
-        
-
 
     return app
 

@@ -28,7 +28,8 @@ URL_APPLICATION = "/atlas"
 # Available languages
 LANGUAGES = {
     'en': 'English',
-    'fr': 'French'
+    'fr': 'French',
+    'it': 'Italian'
 }
 
 # Default language to use if browser language is not available
