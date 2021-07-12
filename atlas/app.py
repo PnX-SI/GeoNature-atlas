@@ -3,6 +3,7 @@ import os
 from flask import Flask
 from flask_compress import Compress
 from flask_sqlalchemy import SQLAlchemy
+from flask_babel import Babel, format_date, gettext, ngettext
 
 from atlas.configuration import config
 from atlas.configuration.config_parser import read_and_validate_conf
@@ -49,6 +50,15 @@ def create_app():
     app = Flask(__name__, template_folder=APP_DIR)
     # push the config in app config at 'PUBLIC' key
     app.config.update(valid_config)
+    
+    app.config['BABEL_DEFAULT_LOCALE'] = './translations/'+config.BABEL_DEFAULT_LOCALE+'/LC_MESSAGES/messages.po'
+    babel = Babel(app)
+
+    #Getting browser language
+    @babel.localeselector
+    def get_locale():
+        return request.accept_languages.best_match(LANGUAGES.keys())
+
 
     app.debug = valid_config["modeDebug"]
     with app.app_context() as context:
