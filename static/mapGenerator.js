@@ -10,6 +10,18 @@ function generateMap() {
   baseMap = {};
   baseMap[configuration.MAP.FIRST_MAP.tileName] = firstMapTile;
 
+  cities = L.layerGroup();
+  department = L.layerGroup();
+  tenCell = L.layerGroup();
+  oneCell = L.layerGroup();
+
+  var overlays = {
+    "Communes": cities,
+    "Departement": department,
+    "10km²": tenCell,
+    "1km²": oneCell 
+  }
+
   var map = L.map("map", {
     crs: L.CRS.EPSG3857,
     center: configuration.MAP.LAT_LONG,
@@ -20,6 +32,14 @@ function generateMap() {
     layers: [firstMapTile],
     fullscreenControl: true
   });
+
+  // Add layers
+  L.control.layers(null, overlays).addTo(map)
+
+  // Activate layers
+  for (var key in overlays) {
+    map.addLayer(overlays[key])
+  }
 
   // Style of territory on map
   territoryStyle = {
@@ -99,7 +119,10 @@ function generateMap() {
   fullScreenButton.attr("data-original-title", "Plein écran");
   $(".leaflet-control-fullscreen-button").removeAttr("title");
 
+
   return map;
+
+  
 }
 
 //****** Fonction fiche espècce ***********
@@ -124,10 +147,13 @@ function onEachFeaturePoint(feature, layer) {
   } else {
     layer.bindPopup(popupContent);
   }
+
+  filterMaille(feature, layer)
 }
 
 // popup Maille
 function onEachFeatureMaille(feature, layer) {
+
   popupContent =
     "<b>Nombre d'observation(s): </b>" +
     feature.properties.nb_observations +
@@ -135,6 +161,8 @@ function onEachFeatureMaille(feature, layer) {
     feature.properties.last_observation +
     " ";
   layer.bindPopup(popupContent);
+  
+  filterMaille(feature, layer)
 }
 
 // Style maille
@@ -237,6 +265,7 @@ function generateGeojsonMaille(observations, yearMin, yearMax) {
 
 function displayMailleLayerFicheEspece(observationsMaille) {
   myGeoJson = observationsMaille;
+  
   currentLayer = L.geoJson(myGeoJson, {
     onEachFeature: onEachFeatureMaille,
     style: styleMaille
@@ -366,6 +395,7 @@ function displayMarkerLayerFicheEspece(
 /* *** Point ****/
 
 function onEachFeaturePointLastObs(feature, layer) {
+  
   popupContent =
     "<b>Espèce: </b>" +
     feature.properties.taxon +
@@ -498,12 +528,15 @@ function printEspece(tabEspece, tabCdRef) {
 }
 
 function onEachFeatureMailleLastObs(feature, layer) {
+ 
   popupContent =
     "<b>Espèces observées dans la maille: </b> <ul> " +
     printEspece(feature.properties.list_taxon, feature.properties.list_cdref) +
     "</ul>";
 
   layer.bindPopup(popupContent);
+
+  filterMaille(feature, layer)
 }
 
 function styleMailleLastObs() {
@@ -515,6 +548,22 @@ function styleMailleLastObs() {
   };
 }
 
+function filterMaille(feature, layer) {
+  id = feature.properties.id_type;
+  if (id === 25 ) {
+    cities.addLayer(layer);
+  }
+  else if ( id === 26) {
+    department.addLayer(layer);
+  }
+  else if ( id === 27) {
+    tenCell.addLayer(layer);
+  }
+  else {
+    oneCell.addLayer(layer);
+  }
+}
+
 function generateGeoJsonMailleLastObs(observations) {
   var i = 0;
   myGeoJson = { type: "FeatureCollection", features: [] };
@@ -522,6 +571,7 @@ function generateGeoJsonMailleLastObs(observations) {
     geometry = observations[i].geojson_maille;
     idMaille = observations[i].id_maille;
     properties = {
+      id_type: observations[i].id_type,
       id_maille: idMaille,
       list_taxon: [observations[i].taxon],
       list_cdref: [observations[i].cd_ref],
@@ -561,7 +611,7 @@ function displayMailleLayerLastObs(observations) {
     onEachFeature: onEachFeatureMailleLastObs,
     style: styleMailleLastObs
   });
-  currentLayer.addTo(map);
+  // currentLayer.addTo(map);
 }
 
 // Legend
