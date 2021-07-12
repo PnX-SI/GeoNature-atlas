@@ -10,14 +10,14 @@ function generateMap() {
   baseMap = {};
   baseMap[configuration.MAP.FIRST_MAP.tileName] = firstMapTile;
 
-  cities = L.layerGroup();
-  department = L.layerGroup();
-  tenCell = L.layerGroup();
-  oneCell = L.layerGroup();
+  department = L.featureGroup();
+  cities = L.featureGroup();
+  tenCell = L.featureGroup();
+  oneCell = L.featureGroup();
 
   var overlays = {
-    "Communes": cities,
     "Departement": department,
+    "Communes": cities,
     "10km²": tenCell,
     "1km²": oneCell 
   }
@@ -147,8 +147,6 @@ function onEachFeaturePoint(feature, layer) {
   } else {
     layer.bindPopup(popupContent);
   }
-
-  filterMaille(feature, layer)
 }
 
 // popup Maille
@@ -162,7 +160,9 @@ function onEachFeatureMaille(feature, layer) {
     " ";
   layer.bindPopup(popupContent);
   
-  filterMaille(feature, layer)
+  filterMaille(feature, layer);
+
+  zoomMaille(layer);
 }
 
 // Style maille
@@ -191,6 +191,18 @@ function styleMaille(feature) {
     color: "black",
     fillOpacity: 0.8
   };
+}
+
+function zoomMaille(layer) {
+  layer.on('click', function(e){
+    bounds = e.sourceTarget.feature.geometry.coordinates;
+    bounds = bounds.map(b => {
+      return b.map(c => {
+        return c.map(d => [d[1], d[0]])
+      })
+    })
+    map.fitBounds(bounds);
+  });
 }
 
 function generateLegendMaille() {
@@ -536,7 +548,9 @@ function onEachFeatureMailleLastObs(feature, layer) {
 
   layer.bindPopup(popupContent);
 
-  filterMaille(feature, layer)
+  filterMaille(feature, layer);
+
+  zoomMaille(layer);
 }
 
 function styleMailleLastObs() {
@@ -550,17 +564,21 @@ function styleMailleLastObs() {
 
 function filterMaille(feature, layer) {
   id = feature.properties.id_type;
-  if (id === 25 ) {
-    cities.addLayer(layer);
-  }
-  else if ( id === 26) {
+  if ( id === 26) {
     department.addLayer(layer);
+    // Need to do it there otherwise it will be
+    // in front of cities featureGroup
+    department.bringToBack();
+  }
+  else if (id === 25 ) {
+    cities.addLayer(layer);
   }
   else if ( id === 27) {
     tenCell.addLayer(layer);
   }
   else {
     oneCell.addLayer(layer);
+    oneCell.bringToFront();
   }
 }
 

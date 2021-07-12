@@ -3,7 +3,6 @@ var map = generateMap();
 var legend = L.control({ position: "bottomright" });
 // Current observation Layer: leaflet layer type
 var currentLayer;
-
 // Current observation geoJson:  type object
 var myGeoJson;
 
@@ -16,7 +15,8 @@ var communeLayer = L.geoJson(communeGeoJson, {
       weight: 2,
       color: "black",
       dashArray: "3",
-      fillOpacity: 0
+      fillOpacity: 0,
+      invert: true
     };
   }
 }).addTo(map);
