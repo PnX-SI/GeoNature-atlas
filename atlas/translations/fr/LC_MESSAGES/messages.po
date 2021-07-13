@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-07-12 15:12+0200\n"
+"POT-Creation-Date: 2021-07-13 15:10+0200\n"
 "PO-Revision-Date: 2021-07-12 12:20+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -22,6 +22,109 @@ msgstr ""
 msgid "My custom presentation"
 msgstr "Ma présentation personnalisée"
 
+#: templates/areaSheet/_main.html:76
+#, fuzzy
+msgid "last.obs.municipality"
+msgstr "commune"
+
+#: templates/areaSheet/_main.html:79
+msgid "last.obs.zone"
+msgstr ""
+
+#: templates/areaSheet/surrounding_areas.html:10
+msgid "associate.zone"
+msgstr "Zones associées"
+
+#: templates/core/extended_areas_search.html:13
+msgid "search.other.zones.type"
+msgstr ""
+
+#: templates/core/listTaxons.html:80 templates/core/statHierarchy.html:5
+#: templates/home/globalStats.html:13 templates/home/lastObs.html:7
+#: templates/specieSheet/map.html:15
+msgid "observation"
+msgstr "observation"
+
+#: templates/core/listTaxons.html:81 templates/core/statHierarchy.html:5
+#: templates/core/tabTaxons.html:19 templates/home/globalStats.html:13
+#: templates/home/lastObs.html:7 templates/specieSheet/map.html:15
+msgid "observations"
+msgstr "observations"
+
+#: templates/core/listTaxons.html:82
+msgid "last.obs.in"
+msgstr ""
+
+#: templates/core/loaderSpinner.html:3
+msgid "loading"
+msgstr "Chargement..."
+
+#: templates/core/navbar.html:23 templates/home/globalStats.html:29
+#, fuzzy
+msgid "search.specie"
+msgstr "Recherche par espèce"
+
+#: templates/core/navbar.html:36 templates/home/globalStats.html:48
+msgid "search.city"
+msgstr "Recherche par commune"
+
+#: templates/core/statHierarchy.html:9 templates/home/globalStats.html:22
+msgid "species"
+msgstr "espèces"
+
+#: templates/core/statHierarchy.html:9 templates/home/globalStats.html:22
+msgid "specie"
+msgstr "espèce"
+
+#: templates/core/statHierarchy.html:12 templates/specieSheet/map.html:25
+#: templates/specieSheet/otherInformations.html:19
+#, fuzzy
+msgid "observers"
+msgstr "observations"
+
+#: templates/core/statHierarchy.html:12 templates/specieSheet/map.html:25
+#: templates/specieSheet/otherInformations.html:19
+#, fuzzy
+msgid "observer"
+msgstr "observation"
+
+#: templates/core/tabTaxons.html:7
+msgid "group"
+msgstr "Groupes"
+
+#: templates/core/tabTaxons.html:8
+msgid "scientific.name"
+msgstr "Nom scientifique"
+
+#: templates/core/tabTaxons.html:9
+msgid "common.name"
+msgstr "Nom vernaculaire"
+
+#: templates/core/tabTaxons.html:16
+msgid "obs.number.s"
+msgstr "Nombre d'observation(s)"
+
+#: templates/core/tabTaxons.html:17 templates/specieSheet/map.html:33
+msgid "last.obs"
+msgstr "Dernières observations"
+
+#: templates/core/tabTaxons.html:21
+msgid "sheet"
+msgstr "Fiche"
+
+#: templates/core/tabTaxons.html:60
+msgid "this.taxon.has.a.protected.status"
+msgstr "Ce taxon a un statut de proctection"
+
+#: templates/core/tabTaxons.html:80
+msgid "display.city.infos"
+msgstr "Afficher les informations de la commune"
+
+#: templates/core/tabTaxons.html:85
+#, fuzzy
+msgid "check.specie.sheet"
+msgstr "Afficher la fiche espèce"
+
 #: templates/home/globalStats.html:5
 msgid "home.insomefigures"
 msgstr "En quelques chiffres"
@@ -30,19 +133,15 @@ msgstr "En quelques chiffres"
 msgid "home.seelatestobs"
 msgstr "Dernière observations"
 
-#: templates/home/globalStats.html:22
-msgid "species"
-msgstr "espèces"
-
-#: templates/home/globalStats.html:22
-msgid "specie"
-msgstr "espèce"
-
-#: templates/home/globalStats.html:40
+#: templates/home/globalStats.html:40 templates/specieSheet/map.html:20
+#: templates/specieSheet/otherInformations.html:10
+#: templates/specieSheet/otherInformations.html:14
 msgid "municipalities"
 msgstr "communes"
 
-#: templates/home/globalStats.html:40
+#: templates/home/globalStats.html:40 templates/specieSheet/map.html:20
+#: templates/specieSheet/otherInformations.html:10
+#: templates/specieSheet/otherInformations.html:14
 msgid "municipality"
 msgstr "commune"
 
@@ -58,20 +157,82 @@ msgstr "photo"
 msgid "gallery.title"
 msgstr "Galerie photos"
 
-#: templates/home/lastObs.html:7
-msgid "observations"
-msgstr "observations"
+#: templates/home/mostViewNow.html:5
+msgid "see.at.the.moment"
+msgstr "A voir en ce moment"
 
-#: templates/home/lastObs.html:7
-msgid "observation"
-msgstr "observation"
+#: templates/home/mostViewNow.html:7
+msgid "species.most.obs.last.15.days"
+msgstr "Espèces les plus observées ces derniers 15 jours"
 
 #: templates/home/mostViewNow.html:31
 #, fuzzy
 msgid "specie.sheet"
 msgstr "Fiche espèce"
 
+#: templates/specieSheet/audioVideo.html:7
+msgid "Video"
+msgstr "Video"
+
+#: templates/specieSheet/blocInfos.html:11
+#, fuzzy
+msgid "specie.infos"
+msgstr "espèces"
+
+#: templates/specieSheet/blocInfos.html:14
+#: templates/specieSheet/descriptionMedia.html:16
+#: templates/specieSheet/otherInformations.html:57
+msgid "description"
+msgstr "Description"
+
+#: templates/specieSheet/blocInfos.html:17
+msgid "read.more"
+msgstr "En savoir plus"
+
+#: templates/specieSheet/blocInfos.html:19
+msgid "environment"
+msgstr "Milieu"
+
+#: templates/specieSheet/blocInfos.html:20
+msgid "repartition"
+msgstr "Répartition"
+
+#: templates/specieSheet/blocInfos.html:21
+msgid "synonyms"
+msgstr "Synonymes"
+
+#: templates/specieSheet/blocInfos.html:27
+#: templates/specieSheet/blocInfos.html:39
+#: templates/specieSheet/blocInfos.html:46
+msgid "not.resigned.for.the.moment"
+msgstr "Non renseigné pour le moment"
+
+#: templates/specieSheet/blocInfos.html:53
+msgid "no.synonym.for.this.taxon"
+msgstr "Pas de synonymes pour ce taxon"
+
+#: templates/specieSheet/charts.html:3
+msgid "alt.classes.obs"
+msgstr "Observations par classes d'altitudes"
+
 #: templates/specieSheet/charts.html:7
 msgid "monthly.obs"
 msgstr "Observations mensuelles"
+
+#: templates/specieSheet/descriptionMedia.html:12
+#: templates/specieSheet/otherInformations.html:30
+msgid "author"
+msgstr "Auteur"
+
+#: templates/specieSheet/map.html:29
+msgid "first.obs"
+msgstr "Première observation"
+
+#: templates/specieSheet/otherInformations.html:29
+msgid "title"
+msgstr "Titre"
+
+#: templates/specieSheet/otherInformations.html:59
+msgid "date"
+msgstr "Date"
 
