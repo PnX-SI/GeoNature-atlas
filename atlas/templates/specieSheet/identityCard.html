@@ -59,7 +59,7 @@
                         <img class="caractEspece" width="100px"
                              src="{{ url_for('static', filename='images/logo_protection.png') }}"
                              data-toggle="tooltip"
-                             data-original-title="Ce taxon bénéficie d'un statut de protection"
+                             data-original-title="{{ _('this.taxon.has.a.protected.status') }}"
                              data-placement="right"></a>
                 {% endif %}
                 {% if configuration.DISPLAY_PATRIMONIALITE and taxon.taxonSearch.patrimonial in configuration.PATRIMONIALITE.config %}
@@ -92,7 +92,7 @@
                 <div id="inpnLink">
                     <a href='https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.taxonSearch.cd_ref }}' target="_blank">
                         <img width="90px" src="{{ url_for('static', filename='images/logo_inpn.png') }}"
-                             data-toggle="tooltip" data-original-title="Consultez la fiche espèce sur l'INPN"
+                             data-toggle="tooltip" data-original-title="{{ _('check.specie.sheet.inpn') }}"
                              data-placement="right">
                     </a>
                 </div>
@@ -120,16 +120,16 @@
                                     <table class="table table-hover">
                                         <thead>
                                         <tr>
-                                            <th> Nom Vernaculaire</th>
-                                            <th> Nom scientifique</th>
+                                            <th> {{ _('common.name') }}</th>
+                                            <th> {{ _('scientific.name') }}</th>
                                             {% if configuration.PROTECTION %}
-                                                <th>Protection</th>
+                                                <th> {{ _('protection') }}</th>
                                             {% endif %}
                                             {% if configuration.DISPLAY_PATRIMONIALITE %}
                                                 <th>{{ configuration.PATRIMONIALITE.label }}</th>
                                             {% endif %}
-                                            <th>Observations</th>
-                                            <th> Fiche</th>
+                                            <th>{{ _('observations') }}</th>
+                                            <th> {{ _('sheet') }}</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -151,7 +151,7 @@
                                                                 <img class="caractEspece" width="130px"
                                                                      src="{{ url_for('static', filename='images/logo_protection.png') }}"
                                                                      data-toggle="tooltip"
-                                                                     data-original-title="Ce taxon bénéficie d'un statut de protection"
+                                                                     data-original-title="{{ _('this.taxon.has.a.protected.status') }}"
                                                                      data-placement="right"></a>
                                                         {% endif %}
                                                     </td>
@@ -170,7 +170,7 @@
                                                     <td>
                                                         <a href="{{ url_for('main.ficheEspece', cd_ref = child.cd_ref) }}">
                                                             <span id="ficheGlyficon" data-toggle="tooltip"
-                                                                  data-original-title="Consulter la fiche espèce"
+                                                                  data-original-title="{{ _('check.specie.sheet')"
                                                                   data-placement="right"
                                                                   class="fas fa-list"></span>
                                                         </a>

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-07-08 15:27+0200\n"
-"PO-Revision-Date: 2021-07-08 15:29+0200\n"
+"POT-Creation-Date: 2021-07-12 15:12+0200\n"
+"PO-Revision-Date: 2021-07-12 12:20+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
 "Language-Team: fr <LL@li.org>\n"
@@ -17,4 +17,61 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
+
+#: static/custom/templates/presentation.html:11
+msgid "My custom presentation"
+msgstr "Ma présentation personnalisée"
+
+#: templates/home/globalStats.html:5
+msgid "home.insomefigures"
+msgstr "En quelques chiffres"
+
+#: templates/home/globalStats.html:14
+msgid "home.seelatestobs"
+msgstr "Dernière observations"
+
+#: templates/home/globalStats.html:22
+msgid "species"
+msgstr "espèces"
+
+#: templates/home/globalStats.html:22
+msgid "specie"
+msgstr "espèce"
+
+#: templates/home/globalStats.html:40
+msgid "municipalities"
+msgstr "communes"
+
+#: templates/home/globalStats.html:40
+msgid "municipality"
+msgstr "commune"
+
+#: templates/home/globalStats.html:59
+msgid "photos"
+msgstr "photos"
+
+#: templates/home/globalStats.html:59
+msgid "photo"
+msgstr "photo"
+
+#: templates/home/globalStats.html:60
+msgid "gallery.title"
+msgstr "Galerie photos"
+
+#: templates/home/lastObs.html:7
+msgid "observations"
+msgstr "observations"
+
+#: templates/home/lastObs.html:7
+msgid "observation"
+msgstr "observation"
+
+#: templates/home/mostViewNow.html:31
+#, fuzzy
+msgid "specie.sheet"
+msgstr "Fiche espèce"
+
+#: templates/specieSheet/charts.html:7
+msgid "monthly.obs"
+msgstr "Observations mensuelles"
 

@@ -77,9 +77,9 @@
                         <span id="name">{{ taxon.nom_complet_html|safe }}</span>
                     </h5>
 
-                    <strong>{{ taxon.nb_obs }}</strong> {% if taxon.nb_obs == 1 %}observation{% else %}
-                    observations{% endif %} <br>
-                    Dernière observation en <strong>{{ taxon.last_obs|int }}</strong>
+                    <strong>{{ taxon.nb_obs }}</strong> {% if taxon.nb_obs == 1 %}{{_ ('observation')}}{% else %}
+                    {{_ ('observations')}}{% endif %} <br>
+                    {{_('last.obs.in')}} <strong>{{ taxon.last_obs|int }}</strong>
                     <span class="float-right">
                     <a class="badge badge-primary" href="{{ url_for('main.ficheEspece',cd_ref=taxon.cd_ref) }}"
                        data-toggle="tooltip"

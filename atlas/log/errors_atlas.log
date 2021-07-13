@@ -1,0 +1,459 @@
+Starting atlas
+/home/atlas/GeoNature-atlas
+[2021-07-05 16:39:46 +0200] [5913] [INFO] Starting gunicorn 19.9.0
+[2021-07-05 16:39:46 +0200] [5913] [INFO] Listening at: http://0.0.0.0:8080 (5913)
+[2021-07-05 16:39:46 +0200] [5913] [INFO] Using worker: sync
+[2021-07-05 16:39:46 +0200] [5935] [INFO] Booting worker with pid: 5935
+[2021-07-05 16:39:46 +0200] [5944] [INFO] Booting worker with pid: 5944
+[2021-07-05 16:39:46 +0200] [5947] [INFO] Booting worker with pid: 5947
+[2021-07-05 16:39:46 +0200] [5951] [INFO] Booting worker with pid: 5951
+[2021-07-05 16:44:56,981] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/atlas/GeoNature-atlas/atlas/atlasRoutes.py", line 119, in index
+    current_app.logger.debug("start AFFICHAGE_PRECIS")
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 138, in render_template
+    ctx.app.jinja_env.get_or_select_template(template_name_or_list),
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/environment.py", line 869, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/environment.py", line 830, in get_template
+    return self._load_template(name, self.make_globals(globals))
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/environment.py", line 804, in _load_template
+    template = self.loader.load(self, name, globals)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/loaders.py", line 113, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 60, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 89, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: templates/index.html
+[2021-07-05 16:45:10,822] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/atlas/GeoNature-atlas/atlas/atlasRoutes.py", line 119, in index
+    current_app.logger.debug("start AFFICHAGE_PRECIS")
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 138, in render_template
+    ctx.app.jinja_env.get_or_select_template(template_name_or_list),
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/environment.py", line 869, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/environment.py", line 830, in get_template
+    return self._load_template(name, self.make_globals(globals))
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/environment.py", line 804, in _load_template
+    template = self.loader.load(self, name, globals)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/loaders.py", line 113, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 60, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 89, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: templates/index.html
+[2021-07-05 16:45:25 +0200] [5913] [INFO] Handling signal: term
+[2021-07-05 16:45:25 +0200] [5935] [INFO] Worker exiting (pid: 5935)
+[2021-07-05 16:45:25 +0200] [5951] [INFO] Worker exiting (pid: 5951)
+[2021-07-05 16:45:25 +0200] [5944] [INFO] Worker exiting (pid: 5944)
+[2021-07-05 16:45:25 +0200] [5947] [INFO] Worker exiting (pid: 5947)
+[2021-07-05 16:45:25 +0200] [5913] [INFO] Shutting down: Master
+Starting atlas
+/home/atlas/GeoNature-atlas
+[2021-07-05 16:58:41 +0200] [8358] [INFO] Starting gunicorn 19.9.0
+[2021-07-05 16:58:41 +0200] [8358] [INFO] Listening at: http://0.0.0.0:8080 (8358)
+[2021-07-05 16:58:41 +0200] [8358] [INFO] Using worker: sync
+[2021-07-05 16:58:41 +0200] [8365] [INFO] Booting worker with pid: 8365
+[2021-07-05 16:58:41 +0200] [8366] [INFO] Booting worker with pid: 8366
+[2021-07-05 16:58:41 +0200] [8367] [INFO] Booting worker with pid: 8367
+[2021-07-05 16:58:41 +0200] [8368] [INFO] Booting worker with pid: 8368
+[2021-07-05 16:58:46,479] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/atlas/GeoNature-atlas/atlas/atlasRoutes.py", line 158, in index
+    customStatMedias=customStatMedias,
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 140, in render_template
+    ctx.app,
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 120, in _render
+    rv = template.render(context)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/home/atlas/GeoNature-atlas/atlas/templates/home/_main.html", line 1, in top-level template code
+    {% extends "templates/core/layout.html" %}
+  File "/home/atlas/GeoNature-atlas/atlas/templates/core/layout.html", line 45, in top-level template code
+    {% block content %}
+  File "/home/atlas/GeoNature-atlas/atlas/templates/home/_main.html", line 36, in block "content"
+    {% include 'static/custom/templates/introduction.html' %}
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 60, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 89, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: static/custom/templates/introduction.html
+[2021-07-05 16:58:47,280] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/atlas/GeoNature-atlas/atlas/atlasRoutes.py", line 158, in index
+    customStatMedias=customStatMedias,
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 140, in render_template
+    ctx.app,
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 120, in _render
+    rv = template.render(context)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/home/atlas/GeoNature-atlas/atlas/templates/home/_main.html", line 1, in top-level template code
+    {% extends "templates/core/layout.html" %}
+  File "/home/atlas/GeoNature-atlas/atlas/templates/core/layout.html", line 45, in top-level template code
+    {% block content %}
+  File "/home/atlas/GeoNature-atlas/atlas/templates/home/_main.html", line 36, in block "content"
+    {% include 'static/custom/templates/introduction.html' %}
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 60, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 89, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: static/custom/templates/introduction.html
+[2021-07-05 16:58:47,440] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/atlas/GeoNature-atlas/atlas/atlasRoutes.py", line 158, in index
+    customStatMedias=customStatMedias,
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 140, in render_template
+    ctx.app,
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 120, in _render
+    rv = template.render(context)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/home/atlas/GeoNature-atlas/atlas/templates/home/_main.html", line 1, in top-level template code
+    {% extends "templates/core/layout.html" %}
+  File "/home/atlas/GeoNature-atlas/atlas/templates/core/layout.html", line 45, in top-level template code
+    {% block content %}
+  File "/home/atlas/GeoNature-atlas/atlas/templates/home/_main.html", line 36, in block "content"
+    {% include 'static/custom/templates/introduction.html' %}
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 60, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 89, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: static/custom/templates/introduction.html
+[2021-07-05 16:58:47,581] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/atlas/GeoNature-atlas/atlas/atlasRoutes.py", line 158, in index
+    customStatMedias=customStatMedias,
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 140, in render_template
+    ctx.app,
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 120, in _render
+    rv = template.render(context)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/home/atlas/GeoNature-atlas/atlas/templates/home/_main.html", line 1, in top-level template code
+    {% extends "templates/core/layout.html" %}
+  File "/home/atlas/GeoNature-atlas/atlas/templates/core/layout.html", line 45, in top-level template code
+    {% block content %}
+  File "/home/atlas/GeoNature-atlas/atlas/templates/home/_main.html", line 36, in block "content"
+    {% include 'static/custom/templates/introduction.html' %}
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 60, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 89, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: static/custom/templates/introduction.html
+[2021-07-05 16:58:47,773] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/atlas/GeoNature-atlas/atlas/atlasRoutes.py", line 158, in index
+    customStatMedias=customStatMedias,
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 140, in render_template
+    ctx.app,
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 120, in _render
+    rv = template.render(context)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/home/atlas/GeoNature-atlas/atlas/templates/home/_main.html", line 1, in top-level template code
+    {% extends "templates/core/layout.html" %}
+  File "/home/atlas/GeoNature-atlas/atlas/templates/core/layout.html", line 45, in top-level template code
+    {% block content %}
+  File "/home/atlas/GeoNature-atlas/atlas/templates/home/_main.html", line 36, in block "content"
+    {% include 'static/custom/templates/introduction.html' %}
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 60, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 89, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: static/custom/templates/introduction.html
+[2021-07-05 16:58:47,927] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/atlas/GeoNature-atlas/atlas/atlasRoutes.py", line 158, in index
+    customStatMedias=customStatMedias,
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 140, in render_template
+    ctx.app,
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 120, in _render
+    rv = template.render(context)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/home/atlas/GeoNature-atlas/atlas/templates/home/_main.html", line 1, in top-level template code
+    {% extends "templates/core/layout.html" %}
+  File "/home/atlas/GeoNature-atlas/atlas/templates/core/layout.html", line 45, in top-level template code
+    {% block content %}
+  File "/home/atlas/GeoNature-atlas/atlas/templates/home/_main.html", line 36, in block "content"
+    {% include 'static/custom/templates/introduction.html' %}
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 60, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 89, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: static/custom/templates/introduction.html
+[2021-07-05 16:58:48,115] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/atlas/GeoNature-atlas/atlas/atlasRoutes.py", line 158, in index
+    customStatMedias=customStatMedias,
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 140, in render_template
+    ctx.app,
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 120, in _render
+    rv = template.render(context)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/home/atlas/GeoNature-atlas/atlas/templates/home/_main.html", line 1, in top-level template code
+    {% extends "templates/core/layout.html" %}
+  File "/home/atlas/GeoNature-atlas/atlas/templates/core/layout.html", line 45, in top-level template code
+    {% block content %}
+  File "/home/atlas/GeoNature-atlas/atlas/templates/home/_main.html", line 36, in block "content"
+    {% include 'static/custom/templates/introduction.html' %}
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 60, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 89, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: static/custom/templates/introduction.html
+[2021-07-05 16:58:48,261] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/atlas/GeoNature-atlas/atlas/atlasRoutes.py", line 158, in index
+    customStatMedias=customStatMedias,
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 140, in render_template
+    ctx.app,
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 120, in _render
+    rv = template.render(context)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/home/atlas/GeoNature-atlas/atlas/templates/home/_main.html", line 1, in top-level template code
+    {% extends "templates/core/layout.html" %}
+  File "/home/atlas/GeoNature-atlas/atlas/templates/core/layout.html", line 45, in top-level template code
+    {% block content %}
+  File "/home/atlas/GeoNature-atlas/atlas/templates/home/_main.html", line 36, in block "content"
+    {% include 'static/custom/templates/introduction.html' %}
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 60, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 89, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: static/custom/templates/introduction.html
+[2021-07-05 16:58:48,413] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/atlas/GeoNature-atlas/atlas/atlasRoutes.py", line 158, in index
+    customStatMedias=customStatMedias,
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 140, in render_template
+    ctx.app,
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 120, in _render
+    rv = template.render(context)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/home/atlas/GeoNature-atlas/atlas/templates/home/_main.html", line 1, in top-level template code
+    {% extends "templates/core/layout.html" %}
+  File "/home/atlas/GeoNature-atlas/atlas/templates/core/layout.html", line 45, in top-level template code
+    {% block content %}
+  File "/home/atlas/GeoNature-atlas/atlas/templates/home/_main.html", line 36, in block "content"
+    {% include 'static/custom/templates/introduction.html' %}
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 60, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/atlas/GeoNature-atlas/venv/lib/python3.7/site-packages/flask/templating.py", line 89, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: static/custom/templates/introduction.html
+[2021-07-05 16:58:59 +0200] [8358] [INFO] Handling signal: term
+[2021-07-05 16:58:59 +0200] [8365] [INFO] Worker exiting (pid: 8365)
+[2021-07-05 16:58:59 +0200] [8368] [INFO] Worker exiting (pid: 8368)
+[2021-07-05 16:58:59 +0200] [8367] [INFO] Worker exiting (pid: 8367)
+[2021-07-05 16:58:59 +0200] [8366] [INFO] Worker exiting (pid: 8366)
+[2021-07-05 16:58:59 +0200] [8358] [INFO] Shutting down: Master
+Starting atlas
+/home/atlas/GeoNature-atlas
+usage: gunicorn [OPTIONS] [APP_MODULE]
+gunicorn: error: argument -t/--timeout: invalid int value: ''
+Starting atlas
+/home/atlas/GeoNature-atlas
+usage: gunicorn [OPTIONS] [APP_MODULE]
+gunicorn: error: argument -t/--timeout: invalid int value: ''
+Starting atlas
+/home/atlas/GeoNature-atlas
+usage: gunicorn [OPTIONS] [APP_MODULE]
+gunicorn: error: argument -t/--timeout: invalid int value: ''
+Starting atlas
+/home/atlas/GeoNature-atlas
+usage: gunicorn [OPTIONS] [APP_MODULE]
+gunicorn: error: argument -t/--timeout: invalid int value: ''

@@ -7,16 +7,16 @@
                                             href="#articles"><b>{{ articles|length }}</b> {{ 'articles' if articles|length > 1 else 'article' }}
                     </a></li>
                     <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#communes">
-                        <b>{{ communes|length }}</b> {{ 'communes' if communes|length > 1 else 'commune' }}</a>
+                        <b>{{ communes|length }}</b> {{ _('municipalities') if communes|length > 1 else _('municipality') }}</a>
                     </li>
                 {% else %}
                     <li class="nav-item"><a data-toggle="tab" class="nav-link active" href="#communes">
-                        <b>{{ communes|length }}</b> {{ 'communes' if communes|length > 1 else 'commune' }}</a>
+                        <b>{{ communes|length }}</b> {{ _('municipalities') if communes|length > 1 else _('municipality') }}</a>
                     </li>
                 {% endif %}
                 <li class="nav-item"><a class="nav-link" {% if not configuration.ANONYMIZE %}data-toggle="tab"
                                         href="#observateurs" {% endif %}>
-                    <b>{{ observers|length }} </b> {{ 'observateurs' if observers|length > 1 else 'observateur' }}
+                    <b>{{ observers|length }} </b> {{ _('observers') if observers|length > 1 else _('observer') }}
                 </a></li>
             </ul>
 
@@ -26,8 +26,8 @@
                         <table class="table table-striped">
                             <thead>
                             <th></th>
-                            <th> Titre</th>
-                            <th> Auteur</th>
+                            <th> {{ _('title') }}</th>
+                            <th> {{ _('author')}}</th>
                             </thead>
                             <tbody>
 
@@ -54,9 +54,9 @@
                                 <tr>
                                     <td colspan="4" class="hiddenRow" style="padding:0px;">
                                         <div class="collapse moreInfo{{ i }}">
-                                            <strong> Description : </strong>
+                                            <strong> {{ _('description') }} : </strong>
                                             <br> {{ articles[i].description | safe }} <br>
-                                            <strong> Date : </strong> {{ articles[i].date }}
+                                            <strong> {{ _('date') }} : </strong> {{ articles[i].date }}
                                         </div>
                                     </td>
                                 </tr>

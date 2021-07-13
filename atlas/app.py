@@ -1,14 +1,16 @@
 import os
 
-from flask import Flask
+from flask import Flask, request
 from flask_compress import Compress
 from flask_sqlalchemy import SQLAlchemy
-from flask_babel import Babel, format_date, gettext, ngettext
+from flask_babel import Babel, format_date, gettext, ngettext, get_locale
 
 from atlas.configuration import config
 from atlas.configuration.config_parser import read_and_validate_conf
 from atlas.configuration.config_schema import AtlasConfig, SecretSchemaConf
 from atlas.utils import format_number
+
+from configuration.config import LANGUAGES
 
 db = SQLAlchemy()
 compress = Compress()
@@ -56,9 +58,10 @@ def create_app():
 
     #Getting browser language
     @babel.localeselector
-    def get_locale():
+    def localeselector():
         return request.accept_languages.best_match(LANGUAGES.keys())
 
+    
 
     app.debug = valid_config["modeDebug"]
     with app.app_context() as context:

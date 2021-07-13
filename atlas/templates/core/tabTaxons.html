@@ -4,21 +4,21 @@
             <!-- Ne s'affiche que lorsque le JS est chargé -->
             <thead>
             <tr>
-                <th style="font-size: 12px !important;" data-priority="1">Groupe</th>
-                <th data-priority="2">Nom Scientifique</th>
-                <th data-priority="6">Nom Vernaculaire</th>
+                <th style="font-size: 12px !important;" data-priority="1">{{ _('group') }}</th>
+                <th data-priority="2">{{ _('scientific.name') }}</th>
+                <th data-priority="6">{{ _('common.name') }}</th>
                 {% if configuration.PROTECTION %}
                     <th data-priority="7">Protection</th>
                 {% endif %}
                 {% if configuration.DISPLAY_PATRIMONIALITE %}
                     <th data-priority="8">{{ configuration.PATRIMONIALITE.label }}</th>
                 {% endif %}
-                <th id="sorted" data-priority="4"> Nombre d'observation(s)</th>
-                <th data-priority="9">Dernière observation</th>
+                <th id="sorted" data-priority="4">{{ _('obs.number.s') }}</th>
+                <th data-priority="9">{{ _('last.obs') }}</th>
                 {% if DISPLAY_EYE_ON_LIST %}
-                    <th data-priority="5">Observations</th>
+                    <th data-priority="5">{{ _('observations') }}</th>
                 {% endif %}
-                <th data-priority="3">Fiche</th>
+                <th data-priority="3">{{ _('sheet') }}</th>
             </tr>
             </thead>
             <tbody>
@@ -57,7 +57,7 @@
                                    target="_blank">
                                     <img src="{{ url_for('static', filename='images/logo_protection.png') }}"
                                          style="width : 40px; height: 40px" data-placement="left" data-toggle="tooltip"
-                                         data-original-title="Ce taxon béneficie d'un statut de protection">
+                                         data-original-title={{ _('this.taxon.has.a.protected.status') }}>
                                 </a>
                             {% endif %}
                         </td>
@@ -77,12 +77,12 @@
                     {% if DISPLAY_EYE_ON_LIST %}
                         <td>
                     <span class="fas fa-eye" data-toggle="tooltip"
-                          data-original-title="Afficher les observations sur la commune" data-placement="right"> </span>
+                          data-original-title={{ _('display.city.infos') }} data-placement="right"> </span>
                         </td>
                     {% endif %}
                     <td>
                         <a href="{{ url_for('main.ficheEspece',cd_ref=taxon.cd_ref) }}">
-                        <span class="fas fa-list" data-toggle="tooltip" data-original-title="Consulter la fiche espèce"
+                        <span class="fas fa-list" data-toggle="tooltip" data-original-title={{ _('check.specie.sheet') }}
                               data-placement="left"> </span>
                         </a>
                     </td>
