@@ -18,26 +18,30 @@ $(function(){
     displayMailleLayerLastObs(observations)
 
     // interaction list - map
-      $('.tabEspece').click(function(){
-         $(this).siblings().removeClass('current');
-         $(this).addClass('current');
-        var id_observation = $(this).attr('idSynthese');
-        p = (currentLayer._layers);
-        var selectLayer;
-        for (var key in p) {
-          if (find_id_observation_in_array(p[key].feature.properties.list_id_observation, id_observation) ){
-              selectLayer = p[key];
-          }
+   
+    $('.tabEspece').click(function(){
+       $(this).siblings().removeClass('current');
+       $(this).addClass('current');
+      var id_observation = $(this).attr('idSynthese');
+      p = (currentLayer._layers);
+      var selectLayer;
+      for (var key in p) {
+        if (find_id_observation_in_array(p[key].feature.properties.list_id_observation, id_observation) ){
+            selectLayer = p[key];
         }
+      }
 
-        selectLayer.openPopup();
-        var bounds = L.latLngBounds([]);
-        var layerBounds = selectLayer.getBounds();
-        bounds.extend(layerBounds);
-        map.fitBounds(bounds, {
-          maxZoom : 12
-        });
+      resetStyleMailles()
+
+      selectLayer.setStyle(styleMailleClickedOrHover());
+      selectLayer.openPopup();
+      var bounds = L.latLngBounds([]);
+      var layerBounds = selectLayer.getBounds();
+      bounds.extend(layerBounds);
+      map.fitBounds(bounds, {
+        maxZoom : 12
       });
+    });
   }
 
   // Display point layer
@@ -57,8 +61,8 @@ $(function(){
             selectLayer = p[key];
           }
       }
-      selectLayer.openPopup();
-          map.setView(selectLayer._latlng, 14);
+      selectLayer.openPopup(selectLayer._latlng);
+      map.setView(selectLayer._latlng, 14);
       })
   }
 

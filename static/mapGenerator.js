@@ -195,6 +195,7 @@ function styleMaille(feature) {
 
 function zoomMaille(layer) {
   layer.on('click', function(e){
+    layer.setStyle(styleMailleClickedOrHover());
     bounds = e.sourceTarget.feature.geometry.coordinates;
     bounds = bounds.map(b => {
       return b.map(c => {
@@ -551,6 +552,13 @@ function onEachFeatureMailleLastObs(feature, layer) {
   filterMaille(feature, layer);
 
   zoomMaille(layer);
+
+  layer.on('mouseover', function () {
+    this.setStyle(styleMailleClickedOrHover());
+  });
+  layer.on('mouseout', function () {
+    this.setStyle(styleMailleLastObs());
+  });
 }
 
 function styleMailleLastObs() {
@@ -562,21 +570,42 @@ function styleMailleLastObs() {
   };
 }
 
+function styleMailleClickedOrHover() {
+  return {
+    ...styleMailleLastObs,
+    fillColor:styleMailleLastObs.color,
+    fillOpacity: 0.4
+  }
+}
+
+function resetStyleMailles() {
+  // set style for all cells
+  map.eachLayer(function(layer){
+    if (layer.feature && layer.feature.properties.id_type) {
+        layer.setStyle(styleMailleLastObs())
+    };
+  });
+}
+
 function filterMaille(feature, layer) {
   id = feature.properties.id_type;
   if ( id === 26) {
+    layer.setZIndex(1);
     department.addLayer(layer);
     // Need to do it there otherwise it will be
     // in front of cities featureGroup
     department.bringToBack();
   }
   else if (id === 25 ) {
+    layer.setZIndex(2);
     cities.addLayer(layer);
   }
   else if ( id === 27) {
+    layer.setZIndex(3);
     tenCell.addLayer(layer);
   }
   else {
+    layer.setZIndex(4);
     oneCell.addLayer(layer);
     oneCell.bringToFront();
   }
