@@ -1,4 +1,5 @@
 {% block navbar %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.1.0/css/flag-icon.min.css" rel="stylesheet">
     <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light" role="navigation">
         <a class="navbar-brand" {% if configuration.CUSTOM_LOGO_LINK %}href="{{ configuration.CUSTOM_LOGO_LINK }}"
            target="_blank"{% else %}href="{{ url_for('main.index') }}"{% endif %}>
@@ -37,6 +38,16 @@
                     </div>
                     <input id="hiddenInputCommunes" type="hidden" name="insee">
                 </form>
+        
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="flag-icon flag-icon-gb"> </span> English</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown09">
+                        <a class="dropdown-item" href="#en"><span class="flag-icon flag-icon-gb"> </span>  English</a>
+                        <a class="dropdown-item" href="#fr"><span class="flag-icon flag-icon-fr"> </span>  French</a>
+                        <a class="dropdown-item" href="#it"><span class="flag-icon flag-icon-it"> </span>  Italian</a>
+                    </div>
+                </li>
+
                 {% if configuration.EXTENDED_AREAS %}
                     {% include 'templates/core/extended_areas_search.html' %}
                 {% endif %}
