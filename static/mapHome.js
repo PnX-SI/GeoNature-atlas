@@ -32,9 +32,8 @@ $(function(){
       }
 
       resetStyleMailles()
-
-      selectLayer.setStyle(styleMailleClickedOrHover());
-      selectLayer.openPopup();
+      selectLayer.setStyle(styleMailleClickedOrHover(selectLayer));
+      selectLayer.openPopup(selectLayer._bounds.getCenter());
       var bounds = L.latLngBounds([]);
       var layerBounds = selectLayer.getBounds();
       bounds.extend(layerBounds);

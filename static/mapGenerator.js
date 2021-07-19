@@ -188,14 +188,13 @@ function styleMaille(feature) {
   return {
     fillColor: getColor(feature.properties.nb_observations),
     weight: 2,
-    color: "black",
+    color: "#333333",
     fillOpacity: 0.8
   };
 }
 
 function zoomMaille(layer) {
   layer.on('click', function(e){
-    layer.setStyle(styleMailleClickedOrHover());
     bounds = e.sourceTarget.feature.geometry.coordinates;
     bounds = bounds.map(b => {
       return b.map(c => {
@@ -553,9 +552,10 @@ function onEachFeatureMailleLastObs(feature, layer) {
 
   zoomMaille(layer);
 
-  layer.on('mouseover', function () {
-    this.setStyle(styleMailleClickedOrHover());
+  layer.on('mouseover', function (layer) {
+    this.setStyle(styleMailleClickedOrHover(layer.target));
   });
+
   layer.on('mouseout', function () {
     this.setStyle(styleMailleLastObs());
   });
@@ -565,16 +565,33 @@ function styleMailleLastObs() {
   return {
     opacity: 1,
     weight: 2,
-    color: "red",
+    color: "#333333",
     fillOpacity: 0
   };
 }
 
-function styleMailleClickedOrHover() {
+function styleMailleClickedOrHover(layer) {
+  var id = layer.feature.properties.id_type;
+  var fillColor = getComputedStyle(document.body).getPropertyValue('--main-color');
+  var fillOpacity = 0.5;
+
+  if ( id === 26) {
+    var fillOpacity = 0.2;
+  }
+  else if (id === 25 ) {
+    var fillOpacity = 0.4;
+  }
+  else if ( id === 27) {
+    var fillOpacity = 0.6;
+  }
+  else {
+    var fillOpacity = 0.85;
+  }
+  var options = layer.options;
   return {
-    ...styleMailleLastObs,
-    fillColor:styleMailleLastObs.color,
-    fillOpacity: 0.4
+    ...options,
+    fillColor: fillColor,
+    fillOpacity: fillOpacity
   }
 }
 
@@ -590,22 +607,18 @@ function resetStyleMailles() {
 function filterMaille(feature, layer) {
   id = feature.properties.id_type;
   if ( id === 26) {
-    layer.setZIndex(1);
     department.addLayer(layer);
     // Need to do it there otherwise it will be
     // in front of cities featureGroup
     department.bringToBack();
   }
   else if (id === 25 ) {
-    layer.setZIndex(2);
     cities.addLayer(layer);
   }
   else if ( id === 27) {
-    layer.setZIndex(3);
     tenCell.addLayer(layer);
   }
   else {
-    layer.setZIndex(4);
     oneCell.addLayer(layer);
     oneCell.bringToFront();
   }
