@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-07-13 15:10+0200\n"
-"PO-Revision-Date: 2021-07-12 12:20+0200\n"
+"POT-Creation-Date: 2021-07-19 11:16+0200\n"
+"PO-Revision-Date: 2021-07-19 09:53+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
 "Language-Team: fr <LL@li.org>\n"
@@ -18,18 +18,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: static/custom/templates/presentation.html:11
-msgid "My custom presentation"
-msgstr "Ma présentation personnalisée"
+#: templates/areaSheet/_main.html:6
+msgid "municipality.of"
+msgstr "Commune de"
 
 #: templates/areaSheet/_main.html:76
-#, fuzzy
 msgid "last.obs.municipality"
-msgstr "commune"
+msgstr "dernières observations de la commune de"
 
 #: templates/areaSheet/_main.html:79
 msgid "last.obs.zone"
-msgstr ""
+msgstr "Dernière observations: "
 
 #: templates/areaSheet/surrounding_areas.html:10
 msgid "associate.zone"
@@ -37,30 +36,31 @@ msgstr "Zones associées"
 
 #: templates/core/extended_areas_search.html:13
 msgid "search.other.zones.type"
-msgstr ""
+msgstr "Recherche par autre type de zones"
 
 #: templates/core/listTaxons.html:80 templates/core/statHierarchy.html:5
 #: templates/home/globalStats.html:13 templates/home/lastObs.html:7
 #: templates/specieSheet/map.html:15
 msgid "observation"
-msgstr "observation"
+msgstr "Observation"
 
 #: templates/core/listTaxons.html:81 templates/core/statHierarchy.html:5
 #: templates/core/tabTaxons.html:19 templates/home/globalStats.html:13
-#: templates/home/lastObs.html:7 templates/specieSheet/map.html:15
+#: templates/home/lastObs.html:7 templates/specieSheet/identityCard.html:131
+#: templates/specieSheet/map.html:15
 msgid "observations"
-msgstr "observations"
+msgstr "Observations"
 
 #: templates/core/listTaxons.html:82
 msgid "last.obs.in"
-msgstr ""
+msgstr "Dernière observations les "
 
 #: templates/core/loaderSpinner.html:3
 msgid "loading"
 msgstr "Chargement..."
 
 #: templates/core/navbar.html:23 templates/home/globalStats.html:29
-#, fuzzy
+#: templates/photoGalery/_main.html:76
 msgid "search.specie"
 msgstr "Recherche par espèce"
 
@@ -68,35 +68,43 @@ msgstr "Recherche par espèce"
 msgid "search.city"
 msgstr "Recherche par commune"
 
+#: templates/core/sideBar.html:3
+msgid "back.to.home"
+msgstr "Retour à l'accueil"
+
+#: templates/core/sideBar.html:20 templates/home/globalStats.html:60
+#: templates/photoGalery/_main.html:5 templates/photoGalery/_main.html:50
+msgid "gallery.title"
+msgstr "Galerie photos"
+
 #: templates/core/statHierarchy.html:9 templates/home/globalStats.html:22
+#: templates/home/taxoRank.html:28
 msgid "species"
-msgstr "espèces"
+msgstr "Espèces"
 
 #: templates/core/statHierarchy.html:9 templates/home/globalStats.html:22
 msgid "specie"
-msgstr "espèce"
+msgstr "Espèce"
 
 #: templates/core/statHierarchy.html:12 templates/specieSheet/map.html:25
 #: templates/specieSheet/otherInformations.html:19
-#, fuzzy
 msgid "observers"
-msgstr "observations"
+msgstr "Observateurs"
 
 #: templates/core/statHierarchy.html:12 templates/specieSheet/map.html:25
 #: templates/specieSheet/otherInformations.html:19
-#, fuzzy
 msgid "observer"
-msgstr "observation"
+msgstr "Observateur"
 
 #: templates/core/tabTaxons.html:7
 msgid "group"
-msgstr "Groupes"
+msgstr "Groupe"
 
-#: templates/core/tabTaxons.html:8
+#: templates/core/tabTaxons.html:8 templates/specieSheet/identityCard.html:124
 msgid "scientific.name"
-msgstr "Nom scientifique"
+msgstr "Nom binomial"
 
-#: templates/core/tabTaxons.html:9
+#: templates/core/tabTaxons.html:9 templates/specieSheet/identityCard.html:123
 msgid "common.name"
 msgstr "Nom vernaculaire"
 
@@ -108,22 +116,22 @@ msgstr "Nombre d'observation(s)"
 msgid "last.obs"
 msgstr "Dernières observations"
 
-#: templates/core/tabTaxons.html:21
+#: templates/core/tabTaxons.html:21 templates/specieSheet/identityCard.html:132
 msgid "sheet"
 msgstr "Fiche"
 
-#: templates/core/tabTaxons.html:60
+#: templates/core/tabTaxons.html:60 templates/specieSheet/identityCard.html:62
+#: templates/specieSheet/identityCard.html:154
 msgid "this.taxon.has.a.protected.status"
-msgstr "Ce taxon a un statut de proctection"
+msgstr "Ce taxon a un statut de protection"
 
 #: templates/core/tabTaxons.html:80
 msgid "display.city.infos"
 msgstr "Afficher les informations de la commune"
 
-#: templates/core/tabTaxons.html:85
-#, fuzzy
+#: templates/core/tabTaxons.html:85 templates/specieSheet/identityCard.html:173
 msgid "check.specie.sheet"
-msgstr "Afficher la fiche espèce"
+msgstr "Voir la fiche espèce"
 
 #: templates/home/globalStats.html:5
 msgid "home.insomefigures"
@@ -131,31 +139,27 @@ msgstr "En quelques chiffres"
 
 #: templates/home/globalStats.html:14
 msgid "home.seelatestobs"
-msgstr "Dernière observations"
+msgstr "Voir les dernières observationss"
 
 #: templates/home/globalStats.html:40 templates/specieSheet/map.html:20
 #: templates/specieSheet/otherInformations.html:10
 #: templates/specieSheet/otherInformations.html:14
 msgid "municipalities"
-msgstr "communes"
+msgstr "Communes"
 
 #: templates/home/globalStats.html:40 templates/specieSheet/map.html:20
 #: templates/specieSheet/otherInformations.html:10
 #: templates/specieSheet/otherInformations.html:14
 msgid "municipality"
-msgstr "commune"
+msgstr "Commune"
 
 #: templates/home/globalStats.html:59
 msgid "photos"
-msgstr "photos"
+msgstr "Photos"
 
 #: templates/home/globalStats.html:59
 msgid "photo"
-msgstr "photo"
-
-#: templates/home/globalStats.html:60
-msgid "gallery.title"
-msgstr "Galerie photos"
+msgstr "Photo"
 
 #: templates/home/mostViewNow.html:5
 msgid "see.at.the.moment"
@@ -163,21 +167,32 @@ msgstr "A voir en ce moment"
 
 #: templates/home/mostViewNow.html:7
 msgid "species.most.obs.last.15.days"
-msgstr "Espèces les plus observées ces derniers 15 jours"
+msgstr "Espèces les plus observées ces 15 derniers jours"
 
-#: templates/home/mostViewNow.html:31
-#, fuzzy
+#: templates/home/mostViewNow.html:31 templates/home/taxoRank.html:57
 msgid "specie.sheet"
 msgstr "Fiche espèce"
 
+#: templates/home/taxoRank.html:8
+msgid "species.to.discover"
+msgstr "Espèces à découvrir"
+
+#: templates/photoGalery/_main.html:64
+msgid "all.groups.tooltip"
+msgstr ""
+
+#: templates/photoGalery/_main.html:65
+#, fuzzy
+msgid "all.groups"
+msgstr "Groupe"
+
 #: templates/specieSheet/audioVideo.html:7
 msgid "Video"
-msgstr "Video"
+msgstr "Vidéo(s)"
 
 #: templates/specieSheet/blocInfos.html:11
-#, fuzzy
 msgid "specie.infos"
-msgstr "espèces"
+msgstr "Informations espèce"
 
 #: templates/specieSheet/blocInfos.html:14
 #: templates/specieSheet/descriptionMedia.html:16
@@ -224,6 +239,14 @@ msgstr "Observations mensuelles"
 msgid "author"
 msgstr "Auteur"
 
+#: templates/specieSheet/identityCard.html:95
+msgid "check.specie.sheet.inpn"
+msgstr "Voir la fiche espèce INPN"
+
+#: templates/specieSheet/identityCard.html:126
+msgid "protection"
+msgstr "Statut de protection"
+
 #: templates/specieSheet/map.html:29
 msgid "first.obs"
 msgstr "Première observation"
@@ -235,4 +258,10 @@ msgstr "Titre"
 #: templates/specieSheet/otherInformations.html:59
 msgid "date"
 msgstr "Date"
+
+#~ msgid "last.obs.municipality"
+#~ msgstr "Dernière observation par commune"
+
+#~ msgid "last.obs.zone"
+#~ msgstr "Dernière observation par zone"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-07-13 15:10+0200\n"
+"POT-Creation-Date: 2021-07-19 11:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,8 +17,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: static/custom/templates/presentation.html:11
-msgid "My custom presentation"
+#: templates/areaSheet/_main.html:6
+msgid "municipality.of"
 msgstr ""
 
 #: templates/areaSheet/_main.html:76
@@ -45,7 +45,8 @@ msgstr ""
 
 #: templates/core/listTaxons.html:81 templates/core/statHierarchy.html:5
 #: templates/core/tabTaxons.html:19 templates/home/globalStats.html:13
-#: templates/home/lastObs.html:7 templates/specieSheet/map.html:15
+#: templates/home/lastObs.html:7 templates/specieSheet/identityCard.html:131
+#: templates/specieSheet/map.html:15
 msgid "observations"
 msgstr ""
 
@@ -58,6 +59,7 @@ msgid "loading"
 msgstr ""
 
 #: templates/core/navbar.html:23 templates/home/globalStats.html:29
+#: templates/photoGalery/_main.html:76
 msgid "search.specie"
 msgstr ""
 
@@ -65,7 +67,17 @@ msgstr ""
 msgid "search.city"
 msgstr ""
 
+#: templates/core/sideBar.html:3
+msgid "back.to.home"
+msgstr ""
+
+#: templates/core/sideBar.html:20 templates/home/globalStats.html:60
+#: templates/photoGalery/_main.html:5 templates/photoGalery/_main.html:50
+msgid "gallery.title"
+msgstr ""
+
 #: templates/core/statHierarchy.html:9 templates/home/globalStats.html:22
+#: templates/home/taxoRank.html:28
 msgid "species"
 msgstr ""
 
@@ -87,11 +99,11 @@ msgstr ""
 msgid "group"
 msgstr ""
 
-#: templates/core/tabTaxons.html:8
+#: templates/core/tabTaxons.html:8 templates/specieSheet/identityCard.html:124
 msgid "scientific.name"
 msgstr ""
 
-#: templates/core/tabTaxons.html:9
+#: templates/core/tabTaxons.html:9 templates/specieSheet/identityCard.html:123
 msgid "common.name"
 msgstr ""
 
@@ -103,11 +115,12 @@ msgstr ""
 msgid "last.obs"
 msgstr ""
 
-#: templates/core/tabTaxons.html:21
+#: templates/core/tabTaxons.html:21 templates/specieSheet/identityCard.html:132
 msgid "sheet"
 msgstr ""
 
-#: templates/core/tabTaxons.html:60
+#: templates/core/tabTaxons.html:60 templates/specieSheet/identityCard.html:62
+#: templates/specieSheet/identityCard.html:154
 msgid "this.taxon.has.a.protected.status"
 msgstr ""
 
@@ -115,7 +128,7 @@ msgstr ""
 msgid "display.city.infos"
 msgstr ""
 
-#: templates/core/tabTaxons.html:85
+#: templates/core/tabTaxons.html:85 templates/specieSheet/identityCard.html:173
 msgid "check.specie.sheet"
 msgstr ""
 
@@ -147,10 +160,6 @@ msgstr ""
 msgid "photo"
 msgstr ""
 
-#: templates/home/globalStats.html:60
-msgid "gallery.title"
-msgstr ""
-
 #: templates/home/mostViewNow.html:5
 msgid "see.at.the.moment"
 msgstr ""
@@ -159,8 +168,20 @@ msgstr ""
 msgid "species.most.obs.last.15.days"
 msgstr ""
 
-#: templates/home/mostViewNow.html:31
+#: templates/home/mostViewNow.html:31 templates/home/taxoRank.html:57
 msgid "specie.sheet"
+msgstr ""
+
+#: templates/home/taxoRank.html:8
+msgid "species.to.discover"
+msgstr ""
+
+#: templates/photoGalery/_main.html:64
+msgid "all.groups.tooltip"
+msgstr ""
+
+#: templates/photoGalery/_main.html:65
+msgid "all.groups"
 msgstr ""
 
 #: templates/specieSheet/audioVideo.html:7
@@ -214,6 +235,14 @@ msgstr ""
 #: templates/specieSheet/descriptionMedia.html:12
 #: templates/specieSheet/otherInformations.html:30
 msgid "author"
+msgstr ""
+
+#: templates/specieSheet/identityCard.html:95
+msgid "check.specie.sheet.inpn"
+msgstr ""
+
+#: templates/specieSheet/identityCard.html:126
+msgid "protection"
 msgstr ""
 
 #: templates/specieSheet/map.html:29

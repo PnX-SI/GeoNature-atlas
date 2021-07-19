@@ -3,7 +3,7 @@
 {% block title %}
     {# Personnalisez ici le titre de la page (celui qui est affiché dans l'onglet du navigateur) #}
     {% if sheetType =='commune' %}
-        Commune de {{ areaInfos.areaName }}
+        {{ _('municipality.of') }} {{ areaInfos.areaName }}
     {% else %}
         {{ areaInfos.typeName }} - {{ areaInfos.areaName }}
     {% endif %}
