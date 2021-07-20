@@ -291,9 +291,8 @@ table#tableEspece {
 }
 
 .tabEspece:hover {
-  background-color: --main-color;
+  background-color: rgba(var(--main-color-rgb), 0.2);
 }
-
 
 .tabEspece.current {
   background-color: rgba(var(--main-color-rgb), 0.4);
