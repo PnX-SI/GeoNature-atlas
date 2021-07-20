@@ -291,17 +291,13 @@ table#tableEspece {
 }
 
 .tabEspece:hover {
-  background-color: rgba(var(--main-color-rgb), 0.2);
+  background-color: --main-color;
 }
 
 
 .tabEspece.current {
   background-color: rgba(var(--main-color-rgb), 0.4);
   font-weight: bold;
-}
-
-.tabEspece.before {
-  opacity: 0.5;
 }
 
 .singleTaxon {
