@@ -11,6 +11,7 @@ from flask import (
     make_response,
     request,
     url_for,
+    session
 )
 
 from atlas import utils
@@ -383,6 +384,10 @@ def robots():
     response.headers["Content-type"] = "text/plain"
     return response
 
+@main.route('/language/<language>', methods=["GET", "POST"])
+def set_language(language=None):
+    session['language'] = language
+    return redirect(request.referrer)
 
 if current_app.config["EXTENDED_AREAS"]:
 
