@@ -127,7 +127,7 @@ msgstr "This taxon has a protected status"
 
 #: templates/core/tabTaxons.html:80
 msgid "display.city.infos"
-msgstr "Display municipaliti informations"
+msgstr "Display municipality informations"
 
 #: templates/core/tabTaxons.html:85 templates/specieSheet/identityCard.html:173
 msgid "check.specie.sheet"
@@ -145,21 +145,21 @@ msgstr "See latest observations"
 #: templates/specieSheet/otherInformations.html:10
 #: templates/specieSheet/otherInformations.html:14
 msgid "municipalities"
-msgstr "municipalities"
+msgstr "Municipalities"
 
 #: templates/home/globalStats.html:40 templates/specieSheet/map.html:20
 #: templates/specieSheet/otherInformations.html:10
 #: templates/specieSheet/otherInformations.html:14
 msgid "municipality"
-msgstr "municipality"
+msgstr "Municipality"
 
 #: templates/home/globalStats.html:59
 msgid "photos"
-msgstr "photos"
+msgstr "Photos"
 
 #: templates/home/globalStats.html:59
 msgid "photo"
-msgstr "photo"
+msgstr "Photo"
 
 #: templates/home/mostViewNow.html:5
 msgid "see.at.the.moment"
@@ -191,7 +191,7 @@ msgstr "Video"
 
 #: templates/specieSheet/blocInfos.html:11
 msgid "specie.infos"
-msgstr "species"
+msgstr "Species"
 
 #: templates/specieSheet/blocInfos.html:14
 #: templates/specieSheet/descriptionMedia.html:16
@@ -209,7 +209,7 @@ msgstr "Environment"
 
 #: templates/specieSheet/blocInfos.html:20
 msgid "repartition"
-msgstr "Repartition"
+msgstr "Distribution"
 
 #: templates/specieSheet/blocInfos.html:21
 msgid "synonyms"

@@ -139,7 +139,7 @@ msgstr "En quelques chiffres"
 
 #: templates/home/globalStats.html:14
 msgid "home.seelatestobs"
-msgstr "Voir les dernières observationss"
+msgstr "Voir les dernières observations"
 
 #: templates/home/globalStats.html:40 templates/specieSheet/map.html:20
 #: templates/specieSheet/otherInformations.html:10
