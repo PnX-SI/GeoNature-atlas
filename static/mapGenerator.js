@@ -37,9 +37,14 @@ function generateMap() {
   L.control.layers(null, overlays).addTo(map)
 
   // Activate layers
-  for (var key in overlays) {
-    map.addLayer(overlays[key])
-  }
+  Object.values(overlays).forEach(e => map.addLayer(e))
+
+  // Keep Layers in the same order as specified by the
+  // overlays variable so Departement under Commune
+  // under 10km2 under 1km2 
+  map.on('overlayadd', function(e){
+    Object.values(overlays).forEach(e => e.bringToFront())
+  })
 
   // Style of territory on map
   territoryStyle = {
@@ -552,12 +557,22 @@ function onEachFeatureMailleLastObs(feature, layer) {
 
   zoomMaille(layer);
 
+  var selected = false;
+
+  layer.on('click', function (layer) {
+    resetStyleMailles();
+    this.setStyle(styleMailleClickedOrHover(layer.target));
+    selected = true;
+  });
   layer.on('mouseover', function (layer) {
     this.setStyle(styleMailleClickedOrHover(layer.target));
+    selected = false;
   });
 
   layer.on('mouseout', function () {
-    this.setStyle(styleMailleLastObs());
+    if (!selected) {
+      this.setStyle(styleMailleLastObs());
+    }
   });
 }
 
