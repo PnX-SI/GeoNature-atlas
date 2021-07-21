@@ -111,6 +111,8 @@ function displayObsTaxonMaille(insee, cd_ref) {
   }).done(function(observations) {
     $("#loadingGif").hide();
     map.removeLayer(currentLayer);
+    // Remove the layer filter because it messes up
+    control.remove();
     displayMailleLayerCommune(observations);
   });
 }
