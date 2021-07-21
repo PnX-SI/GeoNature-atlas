@@ -114,6 +114,7 @@ def lastObservationsCommuneMaille(connection, mylimit, insee):
             taxon = o.lb_nom
         temp = {
             "cd_ref": o.cd_ref,
+            "dateobs": o.dateobs,
             "taxon": taxon,
             "geojson_maille": json.loads(o.geojson_maille),
             "id_maille": o.id_maille,
@@ -126,14 +127,12 @@ def lastObservationsCommuneMaille(connection, mylimit, insee):
 # Use for API
 def getObservationsTaxonCommuneMaille(connection, insee, cd_ref):
     sql = """
-        SELECT
-            o.cd_ref, t.id_maille, t.id_type, t.geojson_maille,
+     SELECT
+            o.cd_ref, o.id_maille, o.id_type, o.geojson_maille, o.the_geom,
             extract(YEAR FROM o.dateobs) as annee
-        FROM atlas.vm_observations o
+        FROM atlas.vm_observations_mailles o
         JOIN atlas.vm_communes c
-        ON ST_INTERSECTS(o.the_geom_point, c.the_geom)
-        JOIN atlas.t_mailles_territoire t
-        ON ST_EQUALS(t.the_geom, o.the_geom_point)
+        ON ST_INTERSECTS(o.the_geom, c.the_geom)
         WHERE o.cd_ref = :thiscdref AND c.insee = :thisInsee
         ORDER BY id_maille
     """
@@ -142,7 +141,7 @@ def getObservationsTaxonCommuneMaille(connection, insee, cd_ref):
     for o in observations:
         temp = {
             "id_maille": o.id_maille,
-            "id_type": o.id_maille,
+            "id_type": o.id_type,
             "nb_observations": 1,
             "annee": o.annee,
             "geojson_maille": json.loads(o.geojson_maille),
