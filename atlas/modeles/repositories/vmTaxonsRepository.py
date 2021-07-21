@@ -3,8 +3,6 @@
 from collections import Counter
 from flask import current_app
 
-import unicodedata
-
 from sqlalchemy.sql import text
 from .. import utils
 
