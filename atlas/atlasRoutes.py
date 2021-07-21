@@ -191,7 +191,7 @@ def ficheCommune(insee):
     session = utils.loadSession()
     connection = utils.engine.connect()
 
-    listTaxons = vmTaxonsRepository.getTaxonsCommunes(connection, insee)
+    
     commune = vmCommunesRepository.getCommuneFromInsee(connection, insee)
     if current_app.config["AFFICHAGE_MAILLE"]:
         observations = vmObservationsMaillesRepository.lastObservationsCommuneMaille(
@@ -201,6 +201,9 @@ def ficheCommune(insee):
         observations = vmObservationsRepository.lastObservationsCommune(
             connection, current_app.config["NB_LAST_OBS"], insee
         )
+    
+    # listTaxons = vmTaxonsRepository.getTaxonsCommunes(connection, insee)
+    listTaxons = vmTaxonsRepository.get_taxons_from_obs(connection, observations)
 
     observers = vmObservationsRepository.getObserversCommunes(connection, insee)
 
