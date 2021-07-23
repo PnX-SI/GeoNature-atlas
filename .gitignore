@@ -1,6 +1,6 @@
 *.pyc
-config/settings.ini
-config/config.py
+atlas/configuration/settings.ini
+atlas/configuration/config.py
 log/*
 atlas/static/conf/custom.js
 atlas/debug.py
