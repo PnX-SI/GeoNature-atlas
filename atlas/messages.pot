@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-07-19 11:16+0200\n"
+"POT-Creation-Date: 2021-07-22 17:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,6 +33,11 @@ msgstr ""
 msgid "associate.zone"
 msgstr ""
 
+#: templates/areaSheet/surrounding_areas.html:23
+#: templates/core/tabTaxons.html:85 templates/specieSheet/identityCard.html:173
+msgid "check.specie.sheet"
+msgstr ""
+
 #: templates/core/extended_areas_search.html:13
 msgid "search.other.zones.type"
 msgstr ""
@@ -45,7 +50,8 @@ msgstr ""
 
 #: templates/core/listTaxons.html:81 templates/core/statHierarchy.html:5
 #: templates/core/tabTaxons.html:19 templates/home/globalStats.html:13
-#: templates/home/lastObs.html:7 templates/specieSheet/identityCard.html:131
+#: templates/home/lastObs.html:7 templates/organismSheet/statsInfos.html:12
+#: templates/specieSheet/identityCard.html:131
 #: templates/specieSheet/map.html:15
 msgid "observations"
 msgstr ""
@@ -58,12 +64,12 @@ msgstr ""
 msgid "loading"
 msgstr ""
 
-#: templates/core/navbar.html:23 templates/home/globalStats.html:29
+#: templates/core/navbar.html:24 templates/home/globalStats.html:29
 #: templates/photoGalery/_main.html:76
 msgid "search.specie"
 msgstr ""
 
-#: templates/core/navbar.html:36 templates/home/globalStats.html:48
+#: templates/core/navbar.html:37 templates/home/globalStats.html:48
 msgid "search.city"
 msgstr ""
 
@@ -77,7 +83,7 @@ msgid "gallery.title"
 msgstr ""
 
 #: templates/core/statHierarchy.html:9 templates/home/globalStats.html:22
-#: templates/home/taxoRank.html:28
+#: templates/home/taxoRank.html:28 templates/organismSheet/statsInfos.html:22
 msgid "species"
 msgstr ""
 
@@ -85,13 +91,14 @@ msgstr ""
 msgid "specie"
 msgstr ""
 
-#: templates/core/statHierarchy.html:12 templates/specieSheet/map.html:25
-#: templates/specieSheet/otherInformations.html:19
+#: templates/core/statHierarchy.html:12
+#: templates/organismSheet/statsInfos.html:17 templates/specieSheet/map.html:25
+#: templates/specieSheet/otherInformations.html:23
 msgid "observers"
 msgstr ""
 
 #: templates/core/statHierarchy.html:12 templates/specieSheet/map.html:25
-#: templates/specieSheet/otherInformations.html:19
+#: templates/specieSheet/otherInformations.html:23
 msgid "observer"
 msgstr ""
 
@@ -126,10 +133,6 @@ msgstr ""
 
 #: templates/core/tabTaxons.html:80
 msgid "display.city.infos"
-msgstr ""
-
-#: templates/core/tabTaxons.html:85 templates/specieSheet/identityCard.html:173
-msgid "check.specie.sheet"
 msgstr ""
 
 #: templates/home/globalStats.html:5
@@ -176,6 +179,26 @@ msgstr ""
 msgid "species.to.discover"
 msgstr ""
 
+#: templates/organismSheet/blocInfos.html:4
+msgid "other.informations"
+msgstr ""
+
+#: templates/organismSheet/identityCard.html:4
+msgid "organism.name"
+msgstr ""
+
+#: templates/organismSheet/mapLocation.html:5
+msgid "map.location"
+msgstr ""
+
+#: templates/organismSheet/mapObs.html:5
+msgid "map.observations"
+msgstr ""
+
+#: templates/organismSheet/statsInfos.html:4
+msgid "organism.stats"
+msgstr ""
+
 #: templates/photoGalery/_main.html:64
 msgid "all.groups.tooltip"
 msgstr ""
@@ -194,7 +217,7 @@ msgstr ""
 
 #: templates/specieSheet/blocInfos.html:14
 #: templates/specieSheet/descriptionMedia.html:16
-#: templates/specieSheet/otherInformations.html:57
+#: templates/specieSheet/otherInformations.html:63
 msgid "description"
 msgstr ""
 
@@ -233,7 +256,7 @@ msgid "monthly.obs"
 msgstr ""
 
 #: templates/specieSheet/descriptionMedia.html:12
-#: templates/specieSheet/otherInformations.html:30
+#: templates/specieSheet/otherInformations.html:36
 msgid "author"
 msgstr ""
 
@@ -249,11 +272,27 @@ msgstr ""
 msgid "first.obs"
 msgstr ""
 
-#: templates/specieSheet/otherInformations.html:29
+#: templates/specieSheet/otherInformations.html:19
+msgid "organisms"
+msgstr ""
+
+#: templates/specieSheet/otherInformations.html:19
+msgid "organism"
+msgstr ""
+
+#: templates/specieSheet/otherInformations.html:35
 msgid "title"
 msgstr ""
 
-#: templates/specieSheet/otherInformations.html:59
+#: templates/specieSheet/otherInformations.html:65
 msgid "date"
+msgstr ""
+
+#: templates/specieSheet/otherInformations.html:135
+msgid "check.organism.sheet"
+msgstr ""
+
+#: templates/specieSheet/otherInformations.html:136
+msgid "organism.sheet"
 msgstr ""
 

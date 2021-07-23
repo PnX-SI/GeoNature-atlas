@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 
+from atlas.configuration.config import BABEL_DEFAULT_LOCALE
 from datetime import datetime, timedelta
 
 from flask import Blueprint
@@ -32,8 +33,15 @@ from atlas.modeles.repositories import (
 if current_app.config["EXTENDED_AREAS"]:
     from atlas.modeles.repositories import vmAreasRepository
 
-main = Blueprint("main", __name__)
+main = Blueprint("main", __name__, url_prefix='/<lang_code>')
 
+@main.url_defaults
+def add_language_code(endpoint, values):
+    values.setdefault('lang_code', session['language'])
+
+@main.url_value_preprocessor
+def pull_lang_code(endpoint, values):
+    session['language']=values.pop('lang_code')
 
 @main.context_processor
 def global_variables():
@@ -264,6 +272,11 @@ def ficheCommune(insee):
         DISPLAY_EYE_ON_LIST=True,
     )
 
+@main.route("/organisme/", methods=["GET", "POST"])
+def ficheOrganisme():
+    return render_template(
+        "templates/organismSheet/_main.html"
+    )
 
 @main.route("/liste/<cd_ref>", methods=["GET", "POST"])
 def ficheRangTaxonomie(cd_ref):
@@ -387,6 +400,7 @@ def robots():
 @main.route('/language/<language>', methods=["GET", "POST"])
 def set_language(language=None):
     session['language'] = language
+    print(3)
     return redirect(request.referrer)
 
 if current_app.config["EXTENDED_AREAS"]:

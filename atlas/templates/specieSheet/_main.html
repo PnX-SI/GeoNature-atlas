@@ -59,24 +59,24 @@
 {% block content %}
 <!-- MorrisJs -->
 <div class="row">
-    {#        <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">#}
-    <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+    <!--Left row-->
+    <div class="col-lg-7 col-md-8 col-sm-12 col-xs-12">
         {% include 'templates/specieSheet/identityCard.html' %}
         {% include 'templates/specieSheet/map.html' %}
         {% include 'templates/specieSheet/otherInformations.html' %}
-
     </div>
-    {#        <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">#}
+    
+    <!--Right row-->
     <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
         {% if photoCarousel | length >= 1 %}
-        {% include 'templates/specieSheet/photoCarousel.html' %}
+            {% include 'templates/specieSheet/photoCarousel.html' %}
         {% endif %}
 
 
         {% include 'templates/specieSheet/blocInfos.html' %}
 
         {% if (videoAudio.video | length > 0 ) or (videoAudio.audio | length > 0) %}
-        {% include 'templates/specieSheet/audioVideo.html' %}
+            {% include 'templates/specieSheet/audioVideo.html' %}
         {% endif %}
 
         {% include 'templates/specieSheet/charts.html' %}
