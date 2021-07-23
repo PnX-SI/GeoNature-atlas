@@ -98,16 +98,48 @@ CREATE UNIQUE INDEX t_layer_territoire_gid_idx
         USING btree(gid);
 
 
+-- Materialized View: atlas.t_subdivided_territory
+--DROP materialized view atlas.t_subdivided_territory;
+CREATE MATERIALIZED VIEW atlas.t_subdivided_territory
+TABLESPACE pg_default
+AS 
+	WITH d AS (
+		SELECT st_union(l.geom) AS st_union
+		FROM ref_geo.l_areas AS l
+			JOIN ref_geo.bib_areas_types AS b USING (id_type)
+		WHERE replace(b.type_code::text, ' '::text, '_'::text) = :'type_territoire'
+		GROUP BY b.type_name
+	)
+	SELECT
+		random() AS gid,
+		1 AS territory_layer_id,
+		st_subdivide(st_transform(d.st_union, 3857), 255) AS geom
+	FROM d
+WITH DATA;
+
+-- View indexes:
+CREATE INDEX index_gist_t_subdivided_territory_geom ON atlas.t_subdivided_territory USING gist (geom);
+CREATE UNIQUE INDEX t_subdivided_territory_gid_idx ON atlas.t_subdivided_territory USING btree (gid);
+
+
 -- Rafraichissement des vues contenant les données de l'atlas
 CREATE OR REPLACE FUNCTION atlas.refresh_materialized_view_ref_geo()
     RETURNS VOID AS
 $$
 BEGIN
 
+<<<<<<< HEAD
     REFRESH MATERIALIZED VIEW atlas.t_layer_territoire;
     REFRESH MATERIALIZED VIEW atlas.t_mailles_territoire;
     REFRESH MATERIALIZED VIEW atlas.l_communes;
     REFRESH MATERIALIZED VIEW atlas.vm_communes;
+=======
+  REFRESH MATERIALIZED VIEW atlas.t_layer_territoire;
+  REFRESH MATERIALIZED VIEW atlas.t_subdivided_territory;
+  REFRESH MATERIALIZED VIEW atlas.t_mailles_territoire;
+  REFRESH MATERIALIZED VIEW atlas.l_communes;
+  REFRESH MATERIALIZED VIEW atlas.vm_communes;
+>>>>>>> upstream/feat/subdivided-territory
 
 END
 $$ LANGUAGE plpgsql;

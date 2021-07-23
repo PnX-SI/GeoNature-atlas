@@ -16,21 +16,27 @@ CREATE INDEX ON atlas.vm_taxref (nom_valide);
 
 --Toutes les observations
 
+-- Materialized View: atlas.vm_observations
 --DROP materialized view atlas.vm_observations;
 CREATE MATERIALIZED VIEW atlas.vm_observations AS
-    SELECT s.id_synthese AS id_observation,
-        s.insee,
-        s.dateobs,
-        s.observateurs,
-        s.altitude_retenue,
-        s.the_geom_point::geometry('POINT',3857),
-        s.effectif_total,
-        tx.cd_ref,
-        st_asgeojson(ST_Transform(ST_SetSrid(s.the_geom_point, 3857), 4326)) as geojson_point,
-        diffusion_level
-    FROM synthese.syntheseff s
-    LEFT JOIN atlas.vm_taxref tx ON tx.cd_nom = s.cd_nom
-    JOIN atlas.t_layer_territoire m ON ST_Intersects(m.the_geom, s.the_geom_point);
+	SELECT s.id_synthese AS id_observation,
+		s.insee,
+		s.dateobs,
+		s.observateurs,
+		s.altitude_retenue,
+		s.the_geom_point::geometry(Point,3857) AS the_geom_point,
+		s.effectif_total,
+		tx.cd_ref,
+		st_asgeojson(st_transform(st_setsrid(s.the_geom_point, 3857), 4326)) AS geojson_point,
+		s.diffusion_level
+	FROM synthese.syntheseff AS s
+		LEFT JOIN atlas.vm_taxref AS tx ON tx.cd_nom = s.cd_nom
+	WHERE EXISTS (
+		SELECT 'X' 
+		FROM atlas.t_subdivided_territory AS m 
+		WHERE st_intersects(m.geom, s.the_geom_point)
+	)
+WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_observations (id_observation);
 CREATE INDEX ON atlas.vm_observations (cd_ref);
