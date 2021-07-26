@@ -433,25 +433,6 @@ function onEachFeaturePointLastObs(feature, layer) {
       feature.properties.cd_ref +
       "'> Fiche espèce </a>"
   );
-
-  id = feature.properties.id_type;
-  if ( id === 26) {
-    department.addLayer(layer);
-    // Need to do it there otherwise it will be
-    // in front of cities featureGroup
-    department.bringToBack();
-  }
-  else if (id === 25 ) {
-    cities.addLayer(layer);
-  }
-  else if ( id === 27) {
-    tenCell.addLayer(layer);
-  }
-  else {
-    oneCell.addLayer(layer);
-    oneCell.bringToFront();
-  }
-
 }
 
 function onEachFeaturePointCommune(feature, layer) {
