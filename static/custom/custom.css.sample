@@ -3,5 +3,13 @@
 :root {
 
   --main-color: #82c91e;
+  /* DO NOT USE rbg() BELOW
+  This variable is used for the tabEspece style
+  To set the opacity of the background color, 
+  we need to use rgba() function to add opacity
+  to a rgb color. Unfortunately, this does not 
+  work with hex values. So need to have rgb value... 
+  */
+  --main-color-rgb: 130, 201, 30;  
   --second-color: #649b18;
 }
