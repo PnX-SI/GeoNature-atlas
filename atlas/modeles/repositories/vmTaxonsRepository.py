@@ -30,13 +30,21 @@ def get_taxons_from_obs(connection, observations: dict):
             - nbObsTotal
                 - nb_obs_total
     """
+    # Init
+    taxon_commune_list = []
+    nb_obs_total = 0
+
     # Get the nb of observations for each cd_ref to have the nb_obs
     count = Counter(obs['cd_ref'] for obs in observations)
     cd_refs = tuple(count.keys())
 
+    if not cd_refs:
+        return {'taxons': taxon_commune_list, 
+                'nbObsTotal': nb_obs_total}
+
     # Get the most recent observation date for each cd_ref.
     # TODO: there must be a better way than 2 loops...
-    max_obs = [max(obs['dateobs'] for obs in observations if obs['cd_ref'] == cd_ref) for cd_ref in cd_refs]
+    max_obs = {cd_ref: max(obs['dateobs'] for obs in observations if obs['cd_ref'] == cd_ref) for cd_ref in cd_refs}
 
     # Request
     sql = """
@@ -46,17 +54,13 @@ def get_taxons_from_obs(connection, observations: dict):
             m.url, m.chemin, m.id_media
         from atlas.vm_taxons t
         LEFT JOIN atlas.vm_medias m ON m.cd_ref=t.cd_ref AND m.id_type={}
-        WHERE t.cd_ref in {}
+        WHERE t.cd_ref in ({})
         GROUP BY t.cd_ref, t.nom_vern, t.nom_complet_html, t.group2_inpn,
             t.patrimonial, t.protection_stricte, m.url, m.chemin, m.id_media
         ORDER BY t.cd_ref
-    """.format(current_app.config['ATTR_MAIN_PHOTO'], cd_refs)
+    """.format(current_app.config['ATTR_MAIN_PHOTO'], ','.join(str(k) for k in cd_refs))
 
     req = connection.execute(text(sql))
-
-    taxon_commune_list = []
-
-    nb_obs_total = 0
 
     for r in req:
         nb_obs = count[r.cd_ref]
@@ -65,7 +69,7 @@ def get_taxons_from_obs(connection, observations: dict):
             'nb_obs': nb_obs,
             'nom_vern': r.nom_vern,
             'cd_ref': r.cd_ref,
-            'last_obs': max_obs.year,
+            'last_obs': max_obs[r.cd_ref].year,
             'group2_inpn': utils.deleteAccent(r.group2_inpn),
             'patrimonial': r.patrimonial,
             'protection_stricte': r.protection_stricte,
