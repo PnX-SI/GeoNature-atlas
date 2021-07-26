@@ -115,7 +115,7 @@ def lastObservationsCommune(connection, mylimit, insee):
         temp = dict(o)
         temp.pop("the_geom_point", None)
         temp["geojson_point"] = json.loads(o.geojson_point or "{}")
-        temp["dateobs"] = str(o.dateobs)
+        temp["dateobs"] = o.dateobs
         obsList.append(temp)
     return obsList
 
