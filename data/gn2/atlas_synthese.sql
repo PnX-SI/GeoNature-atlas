@@ -1,7 +1,7 @@
 -- Creation d'une vue permettant de reproduire le contenu de la table du même nom dans les versions précédentes
 CREATE OR REPLACE VIEW synthese.syntheseff
 AS WITH areas AS (
-         SELECT DISTINCT ON (sa.id_synthese, t.type_code) sa.id_synthese,
+         SELECT DISTINCT ON (sa.id_synthese, a.id_area) sa.id_synthese,
             sa.id_area,
             a.centroid,
             st_transform(a.geom, 3857) AS geom,
@@ -30,19 +30,14 @@ AS WITH areas AS (
                        FROM areas a
                       WHERE a.id_synthese = s.id_synthese AND a.type_code::text = 'DEP'::text
                      LIMIT 1)
-                    ELSE ( SELECT a.geom
-                       FROM areas a
-                      WHERE a.id_synthese = s.id_synthese AND a.type_code::text = 'M1'::text
-                     LIMIT 1)
-                    -- ELSE st_transform(s.the_geom_point, 3857)
+                    ELSE st_transform(s.the_geom_point, 3857)
                 END AS the_geom_point,
             s.count_min AS effectif_total,
             dl.cd_nomenclature::integer AS diffusion_level
            FROM synthese.synthese s
              LEFT JOIN synthese.t_nomenclatures dl ON s.id_nomenclature_diffusion_level = dl.id_nomenclature
              LEFT JOIN synthese.t_nomenclatures st ON s.id_nomenclature_observation_status = st.id_nomenclature
-          WHERE (NOT dl.cd_nomenclature::text = '4'::text OR s.id_nomenclature_diffusion_level IS NULL) 
-                 AND st.cd_nomenclature::text = 'Pr'::text
+          WHERE (NOT dl.cd_nomenclature::text = '4'::text OR s.id_nomenclature_diffusion_level IS NULL) AND st.cd_nomenclature::text = 'Pr'::text
         )
  SELECT d.id_synthese,
     d.cd_nom,

@@ -23,10 +23,10 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
         s.dateobs,
         s.observateurs,
         s.altitude_retenue,
-        s.the_geom_point,
+        st_centroid(s.the_geom_point) as the_geom_point,
         s.effectif_total,
         tx.cd_ref,
-        st_asgeojson(ST_Transform(ST_SetSrid(s.the_geom_point, 3857), 4326)) as geojson_point,
+        st_asgeojson(ST_Transform(ST_SetSrid(st_centroid(s.the_geom_point), 3857), 4326)) as geojson_point,
         s.diffusion_level
     FROM synthese.syntheseff s
     LEFT JOIN atlas.vm_taxref tx ON tx.cd_nom = s.cd_nom
@@ -269,7 +269,7 @@ c.commune_maj,
 c.the_geom,
 st_asgeojson(st_transform(c.the_geom, 4326)) as commune_geojson
 FROM atlas.l_communes c
-JOIN atlas.t_layer_territoire t ON ST_CONTAINS(ST_BUFFER(t.the_geom,200), c.the_geom);
+JOIN atlas.t_layer_territoire t ON ST_INTERSECTS(t.the_geom, c.the_geom);
 
 CREATE UNIQUE INDEX ON atlas.vm_communes (insee);
 CREATE INDEX index_gist_vm_communes_the_geom ON atlas.vm_communes USING gist (the_geom);
