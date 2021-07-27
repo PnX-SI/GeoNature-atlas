@@ -2,7 +2,7 @@
 
 from datetime import datetime, timedelta
 
-from flask import Blueprint
+from flask import Blueprint, g
 from flask import (
     render_template,
     redirect,
@@ -15,6 +15,7 @@ from flask import (
 )
 
 from atlas import utils
+from atlas.configuration import config
 from atlas.modeles.entities import vmTaxons, vmCommunes
 from atlas.modeles.repositories import (
     vmTaxonsRepository,
@@ -32,8 +33,20 @@ from atlas.modeles.repositories import (
 if current_app.config["EXTENDED_AREAS"]:
     from atlas.modeles.repositories import vmAreasRepository
 
-main = Blueprint("main", __name__)
+main = Blueprint("main", __name__, url_prefix='/<lang_code>')
 
+@main.url_defaults
+def add_language_code(endpoint, values):
+    if 'language' not in session:
+        session['language'] = config.BABEL_DEFAULT_LOCALE
+    g.lang_code=session['language']
+    values.setdefault('lang_code', g.lang_code )
+
+
+@main.url_value_preprocessor
+def pull_lang_code(endpoint, values):
+    g.lang_code = values.pop('lang_code')
+    
 
 @main.context_processor
 def global_variables():
@@ -43,10 +56,10 @@ def global_variables():
         values["areas_type_search"] = vmAreasRepository.area_types(session)
     return values
 
-
+ 
 @main.route(
     "/espece/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>",
-    methods=["GET", "POST"],
+    methods=["GET", "POST"]
 )
 def especeMedias(image):
     return redirect(
@@ -384,10 +397,14 @@ def robots():
     response.headers["Content-type"] = "text/plain"
     return response
 
+#Changing language
 @main.route('/language/<language>', methods=["GET", "POST"])
 def set_language(language=None):
     session['language'] = language
-    return redirect(request.referrer)
+    url_redirection = request.referrer.split('/')
+    url_redirection[len(url_redirection)-2]=language # Replacing language_id in URL at the same time
+    url_redirection = ('/').join(url_redirection)
+    return redirect(url_redirection)
 
 if current_app.config["EXTENDED_AREAS"]:
 
