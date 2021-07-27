@@ -16,7 +16,7 @@ export PYTHONPATH=$FLASKDIR:$PYTHONPATH
 
 
 # Start your unicorn
-exec gunicorn initAtlas:app --error-log $FLASKDIR/log/errors_atlas.log \
+exec gunicorn atlas.wsgi:app --error-log $FLASKDIR/log/errors_atlas.log \
     --pid="${app_name}.pid" \
     --timeout=${gun_timeout} \
     -w "${gun_num_workers}" \
