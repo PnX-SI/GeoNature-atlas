@@ -1,4 +1,8 @@
 {% block navbar %}
+<script type="text/javascript">
+    var language = '{{ session.language }}';
+</script>
+
 <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.1.0/css/flag-icon.min.css" rel="stylesheet">
     <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light" role="navigation">
         <a class="navbar-brand" {% if configuration.CUSTOM_LOGO_LINK %}href="{{ configuration.CUSTOM_LOGO_LINK }}"

@@ -8,8 +8,8 @@
 
 {% block additionalFooterAssets %}
     <script type="text/javascript">
-        var observations = {{observations|tojson}}
-            , configuration = {{configuration|tojson}},
+        var observations = {{observations|tojson}},
+            configuration = {{configuration|tojson}},
             url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
     </script>
 
