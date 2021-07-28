@@ -59,10 +59,12 @@ if config.MULTILINGUAL:
 
 @main.context_processor
 def global_variables():
-    session = utils.loadSession()
+    db_session = utils.loadSession()
     values = {}
+    session['language'] = config.BABEL_DEFAULT_LOCALE
     if current_app.config["EXTENDED_AREAS"]:
-        values["areas_type_search"] = vmAreasRepository.area_types(session)
+        values["areas_type_search"] = vmAreasRepository.area_types(db_session)
+    db_session.close()
     return values
 
 @main.route(
@@ -409,7 +411,6 @@ def robots():
 if config.MULTILINGUAL:
     @main.route('/language/<language>', methods=["GET", "POST"])
     def set_language(language=None):
-        current_app.logger.error('PASSE DANS LANGUAGE')
         session['language'] = language
 
         is_language_id = False

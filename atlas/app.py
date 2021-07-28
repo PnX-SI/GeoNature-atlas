@@ -49,6 +49,7 @@ def create_app():
     # push the config in app config at 'PUBLIC' key
     app.config.update(valid_config)
     babel = Babel(app)
+    
 
     #Getting browser language
     @babel.localeselector
@@ -98,7 +99,7 @@ def create_app():
                         AVAILABLE_LANGUAGES=config.LANGUAGES,
                         CURRENT_LANGUAGE=session.get('language',request.accept_languages.best_match(config.LANGUAGES.keys()))
                     )
-
+        
 
     return app
 
