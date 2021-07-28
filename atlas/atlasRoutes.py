@@ -179,7 +179,7 @@ def index():
 
 @main.route("/espece/<int:cd_ref>", methods=["GET", "POST"])
 def ficheEspece(cd_ref):
-    session = utils.loadSession()
+    db_session = utils.loadSession()
     connection = utils.engine.connect()
 
     cd_ref = int(cd_ref)
@@ -188,7 +188,7 @@ def ficheEspece(cd_ref):
     months = vmMoisRepository.getMonthlyObservationsChilds(connection, cd_ref)
     synonyme = vmTaxrefRepository.getSynonymy(connection, cd_ref)
     communes = vmCommunesRepository.getCommunesObservationsChilds(connection, cd_ref)
-    taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
+    taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(db_session, cd_ref)
     firstPhoto = vmMedias.getFirstPhoto(
         connection, cd_ref, current_app.config["ATTR_MAIN_PHOTO"]
     )
@@ -221,7 +221,7 @@ def ficheEspece(cd_ref):
     observers = vmObservationsRepository.getObservers(connection, cd_ref)
 
     connection.close()
-    session.close()
+    db_session.close()
 
     return render_template(
         "templates/specieSheet/_main.html",
@@ -404,7 +404,9 @@ def robots():
 #Changing language
 @main.route('/language/<language>', methods=["GET", "POST"])
 def set_language(language=None):
+    current_app.logger.error('PASSE DANS LANGUAGE')
     session['language'] = language
+
     is_language_id = False
     actual_lang_id = config.BABEL_DEFAULT_LOCALE
     url_redirection = request.referrer
