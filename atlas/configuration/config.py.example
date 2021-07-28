@@ -42,6 +42,9 @@ LANGUAGES = {
 # Default language to use if browser language is not available
 BABEL_DEFAULT_LOCALE= 'fr'
 
+#Domain name for multilingual SEO
+DOMAIN_NAME = "http://my-domaine-name.com"
+
 # Code de suivi des statistiques Google Analytics (si AFFICHAGE_FOOTER = True)
 ID_GOOGLE_ANALYTICS = "UA-xxxxxxx-xx"
 

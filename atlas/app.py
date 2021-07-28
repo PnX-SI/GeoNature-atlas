@@ -14,7 +14,6 @@ db = SQLAlchemy()
 compress = Compress()
 
 APP_DIR = os.path.abspath(os.path.dirname(__file__))
-LANGUAGES = config.LANGUAGES
 
 class ReverseProxied(object):
     def __init__(self, app, script_name=None, scheme=None, server=None):
@@ -62,7 +61,7 @@ def create_app():
             language = None
         if request.args.get('language'):
             session['language'] = request.args.get('language')
-        return session.get('language', request.accept_languages.best_match(LANGUAGES.keys()))
+        return session.get('language', request.accept_languages.best_match(config.LANGUAGES.keys()))
     
 
     app.debug = valid_config["modeDebug"]
@@ -95,8 +94,9 @@ def create_app():
         @app.context_processor
         def inject_conf_var():
             return dict(
-                    AVAILABLE_LANGUAGES=LANGUAGES,
-                    CURRENT_LANGUAGE=session.get('language',request.accept_languages.best_match(LANGUAGES.keys())))
+                    AVAILABLE_LANGUAGES=config.LANGUAGES,
+                    CURRENT_LANGUAGE=session.get('language',request.accept_languages.best_match(config.LANGUAGES.keys()))
+                    )
 
     return app
 
