@@ -25,11 +25,12 @@ URL_APPLICATION = "/atlas"
 ###### Multilingual #######
 ###########################
 
-# Available languages
+# Available languages currently English, French and Italian
+# Check documentation for adding another language
 LANGUAGES = {
-    'en': 'English',
-    'fr': 'French',
-    'it': 'Italian'
+    'en': {'name' : 'English', 'flag_icon' : 'flag-icon-gb'},
+    'fr': {'name' : 'Français', 'flag_icon' : 'flag-icon-fr'},
+    'it': {'name' : 'Italiano', 'flag_icon' : 'flag-icon-it'}
 }
 
 # Default language to use if browser language is not available
