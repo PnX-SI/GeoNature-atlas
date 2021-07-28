@@ -75,6 +75,9 @@ def create_app():
 
         from atlas.atlasAPI import api
 
+        from atlas.atlasRoutes import index_bp
+        app.register_blueprint(index_bp)
+
         app.register_blueprint(api, url_prefix="/api")
         compress.init_app(app)
 

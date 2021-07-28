@@ -411,6 +411,9 @@ def set_language(language=None):
     url_parsed = urlparse(request.referrer)
     print(url_parsed)
     print(url_parsed.path)
+    #Check if there is a url at the end
+
+
     #Is there a language_id in the url ? Yes -> change to new language_id
     for lang_id in config.LANGUAGES.keys():
         if url_parsed.path.find(('/') + lang_id +('/')) != -1:
@@ -418,14 +421,20 @@ def set_language(language=None):
             is_language_id=True
             break
 
-    #If they're no language_id -> adding it
+    #If they're  language_id -> replacing it with new one
     if is_language_id:
         url_parsed = url_parsed._replace(path=url_parsed.path.replace('/' + actual_lang_id + '/', '/' + language + '/'))
         print('/' + actual_lang_id + '/')
         print('/' + language + '/')
         print(url_parsed)
+    #If they're no language_id -> adding it to url
     else:
-        url_parsed = url_parsed._replace(path=url_parsed.path + language + ('/'))   
+        if  url_parsed.path[len(url_parsed.path)-1] != '/' : 
+        #If there's not '/' at the end of index url
+            url_parsed = url_parsed._replace(path=url_parsed.path + '/' + language + '/')  
+        else:   
+        #If there's '/' at the end of index url
+            url_parsed = url_parsed._replace(path=url_parsed.path + language + '/')   
     
     url_redirection = urlunparse(url_parsed)
 
