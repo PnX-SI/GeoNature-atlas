@@ -53,16 +53,18 @@ def create_app():
     #Getting browser language
     @babel.localeselector
     def get_locale():
-        # if the user has set up the language manually it will be stored in the session,
-        # so we use the locale from the user settings
-        try:
-            language = session['language']
-        except KeyError:
-            language = None
-        if request.args.get('language'):
-            session['language'] = request.args.get('language')
-        return session.get('language', request.accept_languages.best_match(config.LANGUAGES.keys()))
-    
+        # If multilinguale is activated, language return is default or the best near the user's browser language
+        # Else language is defined by locale defined
+        if config.MULTILINGUAL:
+            try:
+                language = session['language']
+            except KeyError:
+                language = None
+            if request.args.get('language'):
+                session['language'] = request.args.get('language')
+            return session.get('language', request.accept_languages.best_match(config.LANGUAGES.keys()))
+        else:
+            return config.BABEL_DEFAULT_LOCALE
 
     app.debug = valid_config["modeDebug"]
     with app.app_context() as context:
@@ -90,13 +92,13 @@ def create_app():
         def pretty(val):
             return format_number(val)
 
-
         @app.context_processor
         def inject_conf_var():
             return dict(
-                    AVAILABLE_LANGUAGES=config.LANGUAGES,
-                    CURRENT_LANGUAGE=session.get('language',request.accept_languages.best_match(config.LANGUAGES.keys()))
+                        AVAILABLE_LANGUAGES=config.LANGUAGES,
+                        CURRENT_LANGUAGE=session.get('language',request.accept_languages.best_match(config.LANGUAGES.keys()))
                     )
+
 
     return app
 

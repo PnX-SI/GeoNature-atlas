@@ -27,11 +27,21 @@ NOM_APPLICATION = "Nom de l application"
 # ex "/atlas" pour une URL: http://mon-domaine/atlas OU "" si l'application est accessible à la racine du domaine
 URL_APPLICATION = ""
 
+
 ###########################
 ###### Multilingual #######
 ###########################
 
-# Available languages currently English, French and Italian
+# Default language
+BABEL_DEFAULT_LOCALE = 'fr'
+
+#Activate or deactivate multilingual
+MULTILINGUAL = True
+
+###########################
+# If multilingual is activated configure under
+
+# Available languages
 # Check documentation for adding another language
 LANGUAGES = {
     'en': {'name' : 'English', 'flag_icon' : 'flag-icon-gb'},
@@ -39,11 +49,11 @@ LANGUAGES = {
     'it': {'name' : 'Italiano', 'flag_icon' : 'flag-icon-it'}
 }
 
-# Default language to use if browser language is not available
-BABEL_DEFAULT_LOCALE= 'fr'
+# Domain name for multilingual SEO
+DOMAIN_NAME = 'http://example.com'
 
-#Domain name for multilingual SEO
-DOMAIN_NAME = "http://my-domaine-name.com"
+#  Else, multilingual is deactivated
+###########################
 
 # Code de suivi des statistiques Google Analytics (si AFFICHAGE_FOOTER = True)
 ID_GOOGLE_ANALYTICS = "UA-xxxxxxx-xx"

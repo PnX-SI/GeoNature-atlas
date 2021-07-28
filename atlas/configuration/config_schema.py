@@ -64,6 +64,7 @@ class AtlasConfig(Schema):
     DOMAIN_NAME = fields.String(missing="")
     URL_APPLICATION = fields.String(missing="")
     BABEL_DEFAULT_LOCALE = fields.String(missing="")
+    MULTILINGUAL = fields.Boolean(missing=True)
     ID_GOOGLE_ANALYTICS = fields.String(missing="UA-xxxxxxx-xx")
     GLOSSAIRE = fields.Boolean(missing=False)
     IGNAPIKEY = fields.String(missing="")

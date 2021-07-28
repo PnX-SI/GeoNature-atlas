@@ -43,7 +43,8 @@
                     <input id="hiddenInputCommunes" type="hidden" name="insee">
                 </form>
 
-                <!--- Languages button and dropdown-->
+                <!--- Languages button and dropdown displaid if MULTILINGUAL is True-->
+                {% if configuration.MULTILINGUAL %}
                 <div class="nav-item dropdown">
 
                     <a class="nav-link dropdown-toggle" id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -56,6 +57,7 @@
                         {% endfor %}
                         </div>
                 </div>
+                {% endif %}
                 
                 {% if configuration.EXTENDED_AREAS %}
                     {% include 'templates/core/extended_areas_search.html' %}

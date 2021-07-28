@@ -25,8 +25,9 @@
 <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />
 
 <!-- Href lang-->
+{% if configuration.MULTILINGUAL %}
 {% for language in AVAILABLE_LANGUAGES %}<link rel="alternate" hreflang='{{ language }}' href="{{ configuration.DOMAIN_NAME + configuration.URL_APPLICATION + '/'+ language + '/'}}">
 {% endfor %}
 <link rel="alternate" hreflang='{{ configuration.BABEL_DEFAULT_LOCALE }}' href="x-default">
-
+{% endif %}
 {% endblock %}

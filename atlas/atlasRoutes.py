@@ -35,22 +35,26 @@ from atlas.modeles.repositories import (
 if current_app.config["EXTENDED_AREAS"]:
     from atlas.modeles.repositories import vmAreasRepository
 
-main = Blueprint("main", __name__, url_prefix='/<lang_code>')
+if config.MULTILINGUAL:
+    main = Blueprint("main", __name__, url_prefix='/<lang_code>')
+else:
+    main = Blueprint("main", __name__)
 
 index_bp = Blueprint("index_bp", __name__)
 
-@main.url_defaults
-def add_language_code(endpoint, values):
-    if 'language' not in session:
-        session['language'] = config.BABEL_DEFAULT_LOCALE
-    g.lang_code=session['language']
-    values.setdefault('lang_code', g.lang_code )
+if config.MULTILINGUAL:
+    @main.url_defaults
+    def add_language_code(endpoint, values):
+        if 'language' not in session:
+            session['language'] = config.BABEL_DEFAULT_LOCALE
+        g.lang_code=session['language']
+        values.setdefault('lang_code', g.lang_code )
 
 
 
-@main.url_value_preprocessor
-def pull_lang_code(endpoint, values):
-    g.lang_code = values.pop('lang_code')
+    @main.url_value_preprocessor
+    def pull_lang_code(endpoint, values):
+        g.lang_code = values.pop('lang_code')
     
 
 @main.context_processor
@@ -402,42 +406,43 @@ def robots():
     return response
 
 #Changing language
-@main.route('/language/<language>', methods=["GET", "POST"])
-def set_language(language=None):
-    current_app.logger.error('PASSE DANS LANGUAGE')
-    session['language'] = language
+if config.MULTILINGUAL:
+    @main.route('/language/<language>', methods=["GET", "POST"])
+    def set_language(language=None):
+        current_app.logger.error('PASSE DANS LANGUAGE')
+        session['language'] = language
 
-    is_language_id = False
-    actual_lang_id = config.BABEL_DEFAULT_LOCALE
-    url_redirection = request.referrer
-    url_parsed = urlparse(request.referrer)
+        is_language_id = False
+        actual_lang_id = config.BABEL_DEFAULT_LOCALE
+        url_redirection = request.referrer
+        url_parsed = urlparse(request.referrer)
 
-    #Check if there is already a language in url
-    for lang_id in config.LANGUAGES.keys():
-        if url_parsed.path.find(('/') + lang_id +('/')) != -1:
-            actual_lang_id = lang_id
-            is_language_id=True
-            break
+        #Check if there is already a language in url
+        for lang_id in config.LANGUAGES.keys():
+            if url_parsed.path.find(('/') + lang_id +('/')) != -1:
+                actual_lang_id = lang_id
+                is_language_id=True
+                break
 
-    #If they're  language_id -> replacing it with new one
-    if is_language_id:
-        url_parsed = url_parsed._replace(path=url_parsed.path.replace('/' + actual_lang_id + '/', '/' + language + '/'))
-        print('/' + actual_lang_id + '/')
-        print('/' + language + '/')
-        print(url_parsed)
-    #If they're no language_id -> adding it to url
-    else:
-        #If there's not '/' at the end of index url
-        if  url_parsed.path[len(url_parsed.path)-1] != '/' : 
-            url_parsed = url_parsed._replace(path=url_parsed.path + '/' + language + '/')  
-        #If there's '/' at the end of index url
-        else:   
-            url_parsed = url_parsed._replace(path=url_parsed.path + language + '/')   
-    
-    url_redirection = urlunparse(url_parsed)
+        #If they're  language_id -> replacing it with new one
+        if is_language_id:
+            url_parsed = url_parsed._replace(path=url_parsed.path.replace('/' + actual_lang_id + '/', '/' + language + '/'))
+            print('/' + actual_lang_id + '/')
+            print('/' + language + '/')
+            print(url_parsed)
+        #If they're no language_id -> adding it to url
+        else:
+            #If there's not '/' at the end of index url
+            if  url_parsed.path[len(url_parsed.path)-1] != '/' : 
+                url_parsed = url_parsed._replace(path=url_parsed.path + '/' + language + '/')  
+            #If there's '/' at the end of index url
+            else:   
+                url_parsed = url_parsed._replace(path=url_parsed.path + language + '/')   
+        
+        url_redirection = urlunparse(url_parsed)
 
-    print(url_redirection)
-    return redirect(url_redirection)
+        print(url_redirection)
+        return redirect(url_redirection)
 
 if current_app.config["EXTENDED_AREAS"]:
 
