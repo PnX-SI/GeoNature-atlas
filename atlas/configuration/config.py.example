@@ -221,3 +221,9 @@ CUSTOM_LOGO_LINK='https://monadressecustom.org'
 STATIC_PAGES = {
     'presentation': {'title': "Présentation de l'atlas", 'picto': 'fa-question-circle', 'order': 0, 'template': 'static/custom/templates/presentation.html'}
 }
+
+###########################
+#### Security  Config #####
+###########################
+
+SECRET_KEY = '282799166744079489444397'

@@ -60,3 +60,9 @@ MAP = {
     'BORDERS_WEIGHT': 3,
     'ENABLE_SLIDER': True
 }
+
+###########################
+#### Security  Config #####
+###########################
+
+SECRET_KEY = 'INSERT_A_RANDOM_SECRET_KEY'

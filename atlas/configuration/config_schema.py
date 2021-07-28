@@ -57,7 +57,7 @@ class MapConfig(Schema):
 
 class AtlasConfig(Schema):
     modeDebug = fields.Boolean(missing=False)
-    SECRET_KEY = fields.String()
+    SECRET_KEY = fields.String(required=True)
     STRUCTURE = fields.String(missing="Nom de la structure")
     NOM_APPLICATION = fields.String(missing="Nom de l'application")
     CUSTOM_LOGO_LINK = fields.String(missing="")
