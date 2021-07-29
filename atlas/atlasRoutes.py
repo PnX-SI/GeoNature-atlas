@@ -130,7 +130,10 @@ def ficheEspece(cd_ref):
     altitudes = vmAltitudesRepository.getAltitudesChilds(connection, cd_ref)
     months = vmMoisRepository.getMonthlyObservationsChilds(connection, cd_ref)
     synonyme = vmTaxrefRepository.getSynonymy(connection, cd_ref)
-    communes = vmCommunesRepository.getCommunesObservationsChilds(connection, cd_ref)
+    if current_app.config["AFFICHAGE_MAILLE"]:
+        communes = vmCommunesRepository.getCommunesObservationsChildsMailles(connection, cd_ref)
+    else:
+        communes = vmCommunesRepository.getCommunesObservationsChilds(connection, cd_ref)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
     firstPhoto = vmMedias.getFirstPhoto(
         connection, cd_ref, current_app.config["ATTR_MAIN_PHOTO"]
