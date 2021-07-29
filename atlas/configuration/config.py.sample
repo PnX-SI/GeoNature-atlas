@@ -38,9 +38,21 @@ MULTILINGUAL = True
 # Available languages
 # Check documentation for adding another language
 LANGUAGES = {
-    'en': {'name' : 'English', 'flag_icon' : 'flag-icon-gb'},
-    'fr': {'name' : 'Français', 'flag_icon' : 'flag-icon-fr'},
-    'it': {'name' : 'Italiano', 'flag_icon' : 'flag-icon-it'}
+    'en': {
+        'name' : 'English',
+        'flag_icon' : 'flag-icon-gb',
+        'months' : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] 
+        },
+    'fr': {
+        'name' : 'Français',
+        'flag_icon' : 'flag-icon-fr',
+        'months' : ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Decembre'] 
+        },
+    'it': {
+        'name' : 'Italiano',
+        'flag_icon' : 'flag-icon-it',
+        'months' : ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'] 
+        }
 }
 
 # Domain name for multilingual SEO
