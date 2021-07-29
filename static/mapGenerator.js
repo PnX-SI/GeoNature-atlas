@@ -549,11 +549,13 @@ function printEspece(tabEspece, tabCdRef) {
 
 function onEachFeatureMailleLastObs(feature, layer) {
  
+  // "Set" removes the duplicates. We do not want the same
+  // species in the popup => Clearer
   popupContent =
     "<b>Espèces observées dans la maille: </b> <ul> " +
-    printEspece(feature.properties.list_taxon, feature.properties.list_cdref) +
+    printEspece([... new Set(feature.properties.list_taxon)], 
+                [... new Set(feature.properties.list_cdref)]) +
     "</ul>";
-
   layer.bindPopup(popupContent);
 
   filterMaille(feature, layer);
