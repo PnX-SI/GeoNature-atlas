@@ -35,14 +35,10 @@ from atlas.modeles.repositories import (
 if current_app.config["EXTENDED_AREAS"]:
     from atlas.modeles.repositories import vmAreasRepository
 
+# Adding functions for multilingual url process if MULTILINGUAL = True
 if config.MULTILINGUAL:
     main = Blueprint("main", __name__, url_prefix='/<lang_code>')
-else:
-    main = Blueprint("main", __name__)
 
-index_bp = Blueprint("index_bp", __name__)
-
-if config.MULTILINGUAL:
     @main.url_defaults
     def add_language_code(endpoint, values):
         if 'language' not in session:
@@ -50,18 +46,21 @@ if config.MULTILINGUAL:
         g.lang_code=session['language']
         values.setdefault('lang_code', g.lang_code )
 
-
-
     @main.url_value_preprocessor
     def pull_lang_code(endpoint, values):
         g.lang_code = values.pop('lang_code')
-    
+
+else:
+    main = Blueprint("main", __name__)
+
+index_bp = Blueprint("index_bp", __name__)
+
 
 @main.context_processor
 def global_variables():
     db_session = utils.loadSession()
     values = {}
-    session['language'] = config.BABEL_DEFAULT_LOCALE
+
     if current_app.config["EXTENDED_AREAS"]:
         values["areas_type_search"] = vmAreasRepository.area_types(db_session)
     db_session.close()
@@ -411,6 +410,7 @@ def robots():
 if config.MULTILINGUAL:
     @main.route('/language/<language>', methods=["GET", "POST"])
     def set_language(language=None):
+        print('LANGUE : ' + language)
         session['language'] = language
 
         is_language_id = False
