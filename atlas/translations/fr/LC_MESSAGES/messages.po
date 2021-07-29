@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-07-19 11:16+0200\n"
+"POT-Creation-Date: 2021-07-29 11:45+0200\n"
 "PO-Revision-Date: 2021-07-19 09:53+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -17,6 +17,10 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
+
+#: static/custom/templates/presentation.html:11
+msgid "My custom presentation"
+msgstr ""
 
 #: templates/areaSheet/_main.html:6
 msgid "municipality.of"
@@ -33,6 +37,11 @@ msgstr "Dernière observations: "
 #: templates/areaSheet/surrounding_areas.html:10
 msgid "associate.zone"
 msgstr "Zones associées"
+
+#: templates/areaSheet/surrounding_areas.html:23
+#, fuzzy
+msgid "check.sheet"
+msgstr "Voir la fiche espèce"
 
 #: templates/core/extended_areas_search.html:13
 msgid "search.other.zones.type"
@@ -59,12 +68,12 @@ msgstr "Dernière observations les "
 msgid "loading"
 msgstr "Chargement..."
 
-#: templates/core/navbar.html:23 templates/home/globalStats.html:29
+#: templates/core/navbar.html:28 templates/home/globalStats.html:29
 #: templates/photoGalery/_main.html:76
 msgid "search.specie"
 msgstr "Recherche par espèce"
 
-#: templates/core/navbar.html:36 templates/home/globalStats.html:48
+#: templates/core/navbar.html:41 templates/home/globalStats.html:48
 msgid "search.city"
 msgstr "Recherche par commune"
 
@@ -161,6 +170,11 @@ msgstr "Photos"
 msgid "photo"
 msgstr "Photo"
 
+#: templates/home/lastObs.html:43 templates/home/mostViewNow.html:31
+#: templates/home/taxoRank.html:57
+msgid "specie.sheet"
+msgstr "Fiche espèce"
+
 #: templates/home/mostViewNow.html:5
 msgid "see.at.the.moment"
 msgstr "A voir en ce moment"
@@ -168,10 +182,6 @@ msgstr "A voir en ce moment"
 #: templates/home/mostViewNow.html:7
 msgid "species.most.obs.last.15.days"
 msgstr "Espèces les plus observées ces 15 derniers jours"
-
-#: templates/home/mostViewNow.html:31 templates/home/taxoRank.html:57
-msgid "specie.sheet"
-msgstr "Fiche espèce"
 
 #: templates/home/taxoRank.html:8
 msgid "species.to.discover"
