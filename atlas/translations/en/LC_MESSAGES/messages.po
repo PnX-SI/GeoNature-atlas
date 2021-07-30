@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-07-29 11:45+0200\n"
+"POT-Creation-Date: 2021-07-30 10:01+0200\n"
 "PO-Revision-Date: 2021-07-12 12:12+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -20,7 +20,7 @@ msgstr ""
 
 #: static/custom/templates/presentation.html:11
 msgid "My custom presentation"
-msgstr ""
+msgstr "My custom presentation"
 
 #: templates/areaSheet/_main.html:6
 msgid "municipality.of"
@@ -39,13 +39,16 @@ msgid "associate.zone"
 msgstr "Associate zones"
 
 #: templates/areaSheet/surrounding_areas.html:23
-#, fuzzy
-msgid "check.sheet"
-msgstr "Check specie sheet"
+msgid "check.area.sheet"
+msgstr "Check area sheet"
 
 #: templates/core/extended_areas_search.html:13
 msgid "search.other.zones.type"
 msgstr "Search other zone type"
+
+#: templates/core/listTaxons.html:21
+msgid "see.repartition.on.territory"
+msgstr "See repartition on territory"
 
 #: templates/core/listTaxons.html:80 templates/core/statHierarchy.html:5
 #: templates/home/globalStats.html:13 templates/home/lastObs.html:7
@@ -63,6 +66,16 @@ msgstr "Observations"
 #: templates/core/listTaxons.html:82
 msgid "last.obs.in"
 msgstr "Last observations within"
+
+#: templates/core/listTaxons.html:86 templates/core/tabTaxons.html:85
+#: templates/home/lastObs.html:42 templates/specieSheet/identityCard.html:173
+msgid "check.specie.sheet"
+msgstr "Check specie sheet"
+
+#: templates/core/listTaxons.html:87 templates/home/lastObs.html:43
+#: templates/home/mostViewNow.html:31 templates/home/taxoRank.html:57
+msgid "specie.sheet"
+msgstr "Specie sheet"
 
 #: templates/core/loaderSpinner.html:3
 msgid "loading"
@@ -138,10 +151,6 @@ msgstr "This taxon has a protected status"
 msgid "display.city.infos"
 msgstr "Display municipality informations"
 
-#: templates/core/tabTaxons.html:85 templates/specieSheet/identityCard.html:173
-msgid "check.specie.sheet"
-msgstr "Check specie sheet"
-
 #: templates/home/globalStats.html:5
 msgid "home.insomefigures"
 msgstr "In some figures"
@@ -170,10 +179,9 @@ msgstr "Photos"
 msgid "photo"
 msgstr "Photo"
 
-#: templates/home/lastObs.html:43 templates/home/mostViewNow.html:31
-#: templates/home/taxoRank.html:57
-msgid "specie.sheet"
-msgstr "Specie sheet"
+#: templates/home/lastObs.html:6
+msgid "last.7.days.obs"
+msgstr "The observations of the last 7 days"
 
 #: templates/home/mostViewNow.html:5
 msgid "see.at.the.moment"
@@ -254,7 +262,7 @@ msgstr "Check specie's sheet on INPN"
 
 #: templates/specieSheet/identityCard.html:126
 msgid "protection"
-msgstr ""
+msgstr "Protection"
 
 #: templates/specieSheet/map.html:29
 msgid "first.obs"

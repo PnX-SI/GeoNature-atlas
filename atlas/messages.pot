@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-07-29 11:45+0200\n"
+"POT-Creation-Date: 2021-07-30 10:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,11 +38,15 @@ msgid "associate.zone"
 msgstr ""
 
 #: templates/areaSheet/surrounding_areas.html:23
-msgid "check.sheet"
+msgid "check.area.sheet"
 msgstr ""
 
 #: templates/core/extended_areas_search.html:13
 msgid "search.other.zones.type"
+msgstr ""
+
+#: templates/core/listTaxons.html:21
+msgid "see.repartition.on.territory"
 msgstr ""
 
 #: templates/core/listTaxons.html:80 templates/core/statHierarchy.html:5
@@ -60,6 +64,16 @@ msgstr ""
 
 #: templates/core/listTaxons.html:82
 msgid "last.obs.in"
+msgstr ""
+
+#: templates/core/listTaxons.html:86 templates/core/tabTaxons.html:85
+#: templates/home/lastObs.html:42 templates/specieSheet/identityCard.html:173
+msgid "check.specie.sheet"
+msgstr ""
+
+#: templates/core/listTaxons.html:87 templates/home/lastObs.html:43
+#: templates/home/mostViewNow.html:31 templates/home/taxoRank.html:57
+msgid "specie.sheet"
 msgstr ""
 
 #: templates/core/loaderSpinner.html:3
@@ -136,10 +150,6 @@ msgstr ""
 msgid "display.city.infos"
 msgstr ""
 
-#: templates/core/tabTaxons.html:85 templates/specieSheet/identityCard.html:173
-msgid "check.specie.sheet"
-msgstr ""
-
 #: templates/home/globalStats.html:5
 msgid "home.insomefigures"
 msgstr ""
@@ -168,9 +178,8 @@ msgstr ""
 msgid "photo"
 msgstr ""
 
-#: templates/home/lastObs.html:43 templates/home/mostViewNow.html:31
-#: templates/home/taxoRank.html:57
-msgid "specie.sheet"
+#: templates/home/lastObs.html:6
+msgid "last.7.days.obs"
 msgstr ""
 
 #: templates/home/mostViewNow.html:5
