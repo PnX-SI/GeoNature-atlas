@@ -39,9 +39,8 @@ msgid "associate.zone"
 msgstr "Zones associées"
 
 #: templates/areaSheet/surrounding_areas.html:23
-#, fuzzy
 msgid "check.area.sheet"
-msgstr "Voir la fiche espèce"
+msgstr "Voir la fiche de la zone"
 
 #: templates/core/extended_areas_search.html:13
 msgid "search.other.zones.type"
@@ -278,7 +277,6 @@ msgid "date"
 msgstr "Date"
 
 #: templates/taxoRankSheet/_main.html:47
-#, fuzzy
 msgid "specie.obs.for.tax"
 msgstr "Espèces observées pour le taxon"
 

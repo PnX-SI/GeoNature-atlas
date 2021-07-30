@@ -277,7 +277,6 @@ msgid "date"
 msgstr "Date"
 
 #: templates/taxoRankSheet/_main.html:47
-#, fuzzy
 msgid "specie.obs.for.tax"
 msgstr "Species observated for taxon"
 
