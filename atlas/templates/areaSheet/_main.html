@@ -3,7 +3,7 @@
 {% block title %}
     {# Personnalisez ici le titre de la page (celui qui est affiché dans l'onglet du navigateur) #}
     {% if sheetType =='commune' %}
-        Commune de {{ areaInfos.areaName }}
+        {{ _('municipality.of') }} {{ areaInfos.areaName }}
     {% else %}
         {{ areaInfos.typeName }} - {{ areaInfos.areaName }}
     {% endif %}
@@ -73,13 +73,10 @@
         <div class="col-12 col-xl-8 col-lg-7 col-md-6 d-flex flex-column m-0 p-0">
             <div class="bg-light p-2">
                 {% if sheetType =='commune' %}
-                    <h5 id="titleMap"><i class="fa fa-map"></i> {{ configuration.NB_LAST_OBS }} dernières
-                        observations
-                        sur la commune de
+                    <h5 id="titleMap"><i class="fa fa-map"></i> {{ configuration.NB_LAST_OBS }} {{ _('last.obs.municipality') }}
                         <i>{{ areaInfos.areaName }}</i></h5>
                 {% else %}
-                    <h5 id="titleMap"><i class="fa fa-map"></i> {{ configuration.NB_LAST_OBS }} dernières
-                        observations sur la zone
+                    <h5 id="titleMap"><i class="fa fa-map"></i> {{ configuration.NB_LAST_OBS }} {{ _('last.obs.zone') }}
                         <i>{{ areaInfos.areaName }}</i></h5>
                 {% endif %}
             </div>

@@ -1,0 +1,17 @@
+Click
+dominate
+Flask-Compress
+Flask-Script
+Flask-SQLAlchemy
+Flask<2
+GeoAlchemy2
+geojson
+gunicorn
+itsdangerous
+Jinja2
+MarkupSafe
+marshmallow
+psycopg2
+SQLAlchemy
+visitor
+Werkzeug

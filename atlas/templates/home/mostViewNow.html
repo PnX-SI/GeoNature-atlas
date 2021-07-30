@@ -2,9 +2,9 @@
     <div class="card mt-4" id="mostViewNow">
         <div class="card-body">
 
-            <h3 class="title-spaced">A voir en ce moment
+            <h3 class="title-spaced">{{ _('see.at.the.moment') }}
                 <span class="fa fa-question-circle helpTip" data-toggle="tooltip"
-                      title="Espèces les plus observées dans les 15 jours précédents et suivants aujourd'hui, toutes années confondues"
+                      title="{{ _('species.most.obs.last.15.days')}}"
                       data-placement="right"></span>
             </h3>
             <div class="row thumbnail-row">
@@ -28,8 +28,7 @@
                             {% endif %}
                             <div class="overlay">
                                 <h2>{{ tax.taxonName }}</h2>
-                                <a class="info" href="{{ url_for('main.ficheEspece',cd_ref=tax.cd_ref) }}">Fiche
-                                    espèce</a>
+                                <a class="info" href="{{ url_for('main.ficheEspece',cd_ref=tax.cd_ref) }}">{{ _('specie.sheet') }}</a>
                             </div>
                         </div>
                     </div>

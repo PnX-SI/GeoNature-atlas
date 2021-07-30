@@ -1,6 +1,9 @@
 <!doctype html>
-<html>
-
+{% if configuration.MULTILINGUAL %}
+<html lang='{{CURRENT_LANGUAGE}}'>
+{% else %}
+<html lang='{{configuration.BABEL_DEFAULT_LOCALE}}'>
+{% endif %}
 <head>
 <base href="{{ configuration.URL_APPLICATION }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

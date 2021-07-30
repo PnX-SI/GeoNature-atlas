@@ -1,8 +1,10 @@
 # -*- coding:utf-8 -*-
+from urllib.parse import urlparse
+from urllib.parse import urlunparse
 
 from datetime import datetime, timedelta
 
-from flask import Blueprint
+from flask import Blueprint, g
 from flask import (
     render_template,
     redirect,
@@ -11,9 +13,11 @@ from flask import (
     make_response,
     request,
     url_for,
+    session
 )
 
 from atlas import utils
+from atlas.configuration import config
 from atlas.modeles.entities import vmTaxons, vmCommunes
 from atlas.modeles.repositories import (
     vmTaxonsRepository,
@@ -31,21 +35,40 @@ from atlas.modeles.repositories import (
 if current_app.config["EXTENDED_AREAS"]:
     from atlas.modeles.repositories import vmAreasRepository
 
-main = Blueprint("main", __name__)
+# Adding functions for multilingual url process if MULTILINGUAL = True
+if config.MULTILINGUAL:
+    main = Blueprint("main", __name__, url_prefix='/<lang_code>')
+
+    @main.url_defaults
+    def add_language_code(endpoint, values):
+        if 'language' not in session:
+            session['language'] = config.BABEL_DEFAULT_LOCALE
+        g.lang_code=session['language']
+        values.setdefault('lang_code', g.lang_code )
+
+    @main.url_value_preprocessor
+    def pull_lang_code(endpoint, values):
+        g.lang_code = values.pop('lang_code')
+
+else:
+    main = Blueprint("main", __name__)
+
+index_bp = Blueprint("index_bp", __name__)
 
 
 @main.context_processor
 def global_variables():
-    session = utils.loadSession()
+    db_session = utils.loadSession()
     values = {}
-    if current_app.config["EXTENDED_AREAS"]:
-        values["areas_type_search"] = vmAreasRepository.area_types(session)
-    return values
 
+    if current_app.config["EXTENDED_AREAS"]:
+        values["areas_type_search"] = vmAreasRepository.area_types(db_session)
+    db_session.close()
+    return values
 
 @main.route(
     "/espece/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>",
-    methods=["GET", "POST"],
+    methods=["GET", "POST"]
 )
 def especeMedias(image):
     return redirect(
@@ -101,8 +124,8 @@ def indexMedias(image):
         + image
     )
 
-
 @main.route("/", methods=["GET", "POST"])
+@index_bp.route("/", methods=["GET", "POST"])
 def index():
     session = utils.loadSession()
     connection = utils.engine.connect()
@@ -161,7 +184,7 @@ def index():
 
 @main.route("/espece/<int:cd_ref>", methods=["GET", "POST"])
 def ficheEspece(cd_ref):
-    session = utils.loadSession()
+    db_session = utils.loadSession()
     connection = utils.engine.connect()
 
     cd_ref = int(cd_ref)
@@ -170,7 +193,7 @@ def ficheEspece(cd_ref):
     months = vmMoisRepository.getMonthlyObservationsChilds(connection, cd_ref)
     synonyme = vmTaxrefRepository.getSynonymy(connection, cd_ref)
     communes = vmCommunesRepository.getCommunesObservationsChilds(connection, cd_ref)
-    taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
+    taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(db_session, cd_ref)
     firstPhoto = vmMedias.getFirstPhoto(
         connection, cd_ref, current_app.config["ATTR_MAIN_PHOTO"]
     )
@@ -203,7 +226,7 @@ def ficheEspece(cd_ref):
     observers = vmObservationsRepository.getObservers(connection, cd_ref)
 
     connection.close()
-    session.close()
+    db_session.close()
 
     return render_template(
         "templates/specieSheet/_main.html",
@@ -383,6 +406,44 @@ def robots():
     response.headers["Content-type"] = "text/plain"
     return response
 
+#Changing language
+if config.MULTILINGUAL:
+    @main.route('/language/<language>', methods=["GET", "POST"])
+    def set_language(language=None):
+        print('LANGUE : ' + language)
+        session['language'] = language
+
+        is_language_id = False
+        actual_lang_id = config.BABEL_DEFAULT_LOCALE
+        url_redirection = request.referrer
+        url_parsed = urlparse(request.referrer)
+
+        #Check if there is already a language in url
+        for lang_id in config.LANGUAGES.keys():
+            if url_parsed.path.find(('/') + lang_id +('/')) != -1:
+                actual_lang_id = lang_id
+                is_language_id=True
+                break
+
+        #If they're  language_id -> replacing it with new one
+        if is_language_id:
+            url_parsed = url_parsed._replace(path=url_parsed.path.replace('/' + actual_lang_id + '/', '/' + language + '/'))
+            print('/' + actual_lang_id + '/')
+            print('/' + language + '/')
+            print(url_parsed)
+        #If they're no language_id -> adding it to url
+        else:
+            #If there's not '/' at the end of index url
+            if  url_parsed.path[len(url_parsed.path)-1] != '/' : 
+                url_parsed = url_parsed._replace(path=url_parsed.path + '/' + language + '/')  
+            #If there's '/' at the end of index url
+            else:   
+                url_parsed = url_parsed._replace(path=url_parsed.path + language + '/')   
+        
+        url_redirection = urlunparse(url_parsed)
+
+        print(url_redirection)
+        return redirect(url_redirection)
 
 if current_app.config["EXTENDED_AREAS"]:
 

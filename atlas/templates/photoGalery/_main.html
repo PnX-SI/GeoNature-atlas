@@ -2,7 +2,7 @@
 
 {% block title %}
     {# Personnalisez ici le titre de la page (celui qui est affiché dans l'onglet du navigateur) #}
-    Galerie photo
+    {{ _('gallery.title') }}
 {% endblock %}
 
 {% block metaTags %}
@@ -47,7 +47,7 @@
     <div class="row h-100 flex-grow-1 p-0 m-0 border-bottom">
         <div class="col d-flex flex-column m-0 p-0">
             <div class="bg-light text-center border-bottom border-right p-2">
-                <h1 class="title">Galerie photos <span id="group"></span></h1>
+                <h1 class="title">{{ _('gallery.title') }}<span id="group"></span></h1>
                 <div id="filtresPhotos text-center">
                     <ul class="floatParent">
                         {% for group in groups %}
@@ -61,8 +61,8 @@
 
                         <li class="floatLeft bottom">
                             <a id="allGroups" class="btn btn-default" role="button" data-toggle="tooltip"
-                               data-original-title="Afficher les photos de tous les groupes" data-placement="top">
-                                Tous les groupes</a>
+                               data-original-title="{{ _('all.groups.tooltip') }}" data-placement="top">
+                                {{ _('all.groups') }}</a>
                         </li>
                         <li class="floatLeft bottom">
                         <span id="orderPhotos" class="sortedButton">
@@ -73,7 +73,7 @@
                         </li>
                         <li class="floatLeft bottom">
                             <input type="text" class="form-control" id="searchPhotos"
-                                   placeholder="Rechercher une espèce"
+                                   placeholder="{{ _('search.specie')}}"
                                    value="">
                         </li>
                     </ul>

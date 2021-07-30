@@ -61,11 +61,11 @@ autocompleteSearch = function(inputID, urlDestination, nbProposal) {
       $(inputID).val(ui.item.label);
       var url = ui.item.value;
       if (urlDestination == "espece") {
-        location.href = configuration.URL_APPLICATION + "/espece/" + url;
+        location.href = configuration.URL_APPLICATION + language  + "/espece/" + url;
       } else if (urlDestination == "commune") {
-        location.href = configuration.URL_APPLICATION + "/commune/" + url;
+        location.href = configuration.URL_APPLICATION + language  + "/commune/" + url;
       } else {
-        location.href = configuration.URL_APPLICATION + "/area/" + urlDestination +"/"+ url;
+        location.href = configuration.URL_APPLICATION + language  + "/area/" + urlDestination +"/"+ url;
       }
 
       return false;

@@ -9,11 +9,11 @@
     </div>
     <div>
         {% if media.author %}
-            <div><u>Auteur</u>: {{ media.author|safe }}</div>
+            <div><u>{{ _('author') }}</u>: {{ media.author|safe }}</div>
         {% endif %}
 
         {% if media.description %}
-            <div><u>Description</u>: {{ media.description|safe }}</div>
+            <div><u>{{ _('description') }}</u>: {{ media.description|safe }}</div>
         {% endif %}
     </div>
 {% endblock %}

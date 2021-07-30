@@ -27,6 +27,46 @@ NOM_APPLICATION = "Nom de l application"
 # ex "/atlas" pour une URL: http://mon-domaine/atlas OU "" si l'application est accessible à la racine du domaine
 URL_APPLICATION = ""
 
+
+###########################
+###### Multilingual #######
+###########################
+
+# Default language
+BABEL_DEFAULT_LOCALE = 'fr'
+
+#Activate or deactivate multilingual
+MULTILINGUAL = True
+
+###########################
+# If multilingual is activated configure under
+
+# Available languages
+# Check documentation for adding another language
+LANGUAGES = {
+    'en': {
+        'name' : 'English',
+        'flag_icon' : 'flag-icon-gb',
+        'months' : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] 
+        },
+    'fr': {
+        'name' : 'Français',
+        'flag_icon' : 'flag-icon-fr',
+        'months' : ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Decembre'] 
+        },
+    'it': {
+        'name' : 'Italiano',
+        'flag_icon' : 'flag-icon-it',
+        'months' : ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'] 
+        }
+}
+
+# Domain name for multilingual SEO
+DOMAIN_NAME = 'http://example.com'
+
+#  Else, multilingual is deactivated
+###########################
+
 # Code de suivi des statistiques Google Analytics (si AFFICHAGE_FOOTER = True)
 ID_GOOGLE_ANALYTICS = "UA-xxxxxxx-xx"
 
@@ -82,7 +122,7 @@ ZOOM_LEVEL_POINT = 11
 LIMIT_CLUSTER_POINT = 1000
 
 # Carte de la page d'accueil: observations des 'x' derniers jours. Bien mettre en anglais et non accordé
-NB_DAY_LAST_OBS = '7 day'
+NB_DAY_LAST_OBS = '7'
 # Texte à afficher pour décrire la cartographie des 'dernières observations'
 TEXT_LAST_OBS = 'Les observations des agents ces 7 derniers jours |'
 
@@ -206,3 +246,9 @@ CUSTOM_LOGO_LINK='https://monadressecustom.org'
 STATIC_PAGES = {
     'presentation': {'title': "Présentation de l'atlas", 'picto': 'fa-question-circle', 'order': 0, 'template': 'static/custom/templates/presentation.html'}
 }
+
+###########################
+#### Security  Config #####
+###########################
+
+SECRET_KEY = '282799166744079489444397'

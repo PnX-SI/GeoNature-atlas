@@ -7,7 +7,7 @@
     </a>
 
     </span>
-    <a href="{{ url_for('main.index') }}">Accueil</a> |
+    <a href="{{ url_for('index_bp.index') }}">Accueil</a> |
     <a href="http://www.ecrins-parcnational.fr" target="_blank">Site du {{ configuration.STRUCTURE }}</a> |
     <a data-toggle="modal" href="#"
        data-target="#modalCredits">Conception et crédits</a> |
