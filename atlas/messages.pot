@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-07-30 10:21+0200\n"
+"POT-Creation-Date: 2021-07-30 16:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -84,12 +84,12 @@ msgstr ""
 msgid "loading"
 msgstr ""
 
-#: templates/core/navbar.html:28 templates/home/globalStats.html:29
+#: templates/core/navbar.html:34 templates/home/globalStats.html:29
 #: templates/photoGalery/_main.html:76
 msgid "search.specie"
 msgstr ""
 
-#: templates/core/navbar.html:41 templates/home/globalStats.html:48
+#: templates/core/navbar.html:47 templates/home/globalStats.html:48
 msgid "search.city"
 msgstr ""
 
@@ -183,7 +183,11 @@ msgid "photo"
 msgstr ""
 
 #: templates/home/lastObs.html:6
-msgid "last.7.days.obs"
+msgid "last.obs.since"
+msgstr ""
+
+#: templates/home/lastObs.html:6
+msgid "days"
 msgstr ""
 
 #: templates/home/mostViewNow.html:5

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-07-30 10:21+0200\n"
+"POT-Creation-Date: 2021-07-30 16:52+0200\n"
 "PO-Revision-Date: 2021-07-12 12:12+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -85,12 +85,12 @@ msgstr "Specie sheet"
 msgid "loading"
 msgstr "Loading..."
 
-#: templates/core/navbar.html:28 templates/home/globalStats.html:29
+#: templates/core/navbar.html:34 templates/home/globalStats.html:29
 #: templates/photoGalery/_main.html:76
 msgid "search.specie"
 msgstr "Search by specie"
 
-#: templates/core/navbar.html:41 templates/home/globalStats.html:48
+#: templates/core/navbar.html:47 templates/home/globalStats.html:48
 msgid "search.city"
 msgstr "Search by municipality"
 
@@ -184,8 +184,12 @@ msgid "photo"
 msgstr "Photo"
 
 #: templates/home/lastObs.html:6
-msgid "last.7.days.obs"
-msgstr "The observations of the last 7 days"
+msgid "last.obs.since"
+msgstr "Last observations since last"
+
+#: templates/home/lastObs.html:6
+msgid "days"
+msgstr "days"
 
 #: templates/home/mostViewNow.html:5
 msgid "see.at.the.moment"
@@ -193,7 +197,9 @@ msgstr "See at the moment"
 
 #: templates/home/mostViewNow.html:7
 msgid "species.most.obs.last.15.days"
-msgstr "Species most observated last 15 days"
+msgstr ""
+"Most common species observed in the 15 days before and after today, all "
+"years combined"
 
 #: templates/home/taxoRank.html:8
 msgid "species.to.discover"
@@ -283,4 +289,7 @@ msgstr "Date"
 #: templates/taxoRankSheet/_main.html:47
 msgid "specie.obs.for.tax"
 msgstr "Species observated for taxon"
+
+#~ msgid "last.%s.days.obs"
+#~ msgstr "The observations of the last %s days"
 
