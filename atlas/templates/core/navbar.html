@@ -1,7 +1,13 @@
 {% block navbar %}
-<script type="text/javascript">
-    var language = '{{ session.get(language, request.accept_languages.best_match(AVAILABLE_LANGUAGES.keys())) }}';
-</script>
+{% if configuration.MULTILINGUAL %}
+    <script type="text/javascript">
+        var language = '{{ '/' + session.get(language, request.accept_languages.best_match(AVAILABLE_LANGUAGES.keys())) }}';
+    </script>
+{% else %}
+    <script type="text/javascript">
+        var language = ''
+    </script>
+{% endif %}
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.1.0/css/flag-icon.min.css" rel="stylesheet">
     <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light" role="navigation">
