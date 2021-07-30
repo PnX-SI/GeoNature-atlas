@@ -1,7 +1,8 @@
 {% block navbar %}
+test
 {% if configuration.MULTILINGUAL %}
     <script type="text/javascript">
-        var language = '{{ '/' + session.get(language, request.accept_languages.best_match(AVAILABLE_LANGUAGES.keys())) }}';
+        var language = '{{ '/' + CURRENT_LANGUAGE }}';
     </script>
 {% else %}
     <script type="text/javascript">
