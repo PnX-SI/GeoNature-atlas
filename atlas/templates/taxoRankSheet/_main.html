@@ -44,7 +44,7 @@ ff
     <div class="row h-100 flex-grow-1 p-0 m-0 border-bottom">
         <div class="col-12 d-flex flex-column m-0 p-0">
             <div class="bg-light text-center border-bottom border-right p-2">
-        <h4><b> Espèces observées pour le taxon <i>{{ referenciel.lb_nom }}</i> ({{ referenciel.nom_rang }}) </b>        </h4>
+        <h4><b> {{ _('specie.obs.for.tax') }} <i>{{ referenciel.lb_nom }}</i> ({{ referenciel.nom_rang }}) </b>        </h4>
 
         <div id="hierarchy">
             {% for taxon in taxonomyHierarchy %}

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-07-30 10:01+0200\n"
+"POT-Creation-Date: 2021-07-30 10:17+0200\n"
 "PO-Revision-Date: 2021-07-12 12:12+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -275,4 +275,9 @@ msgstr "Title"
 #: templates/specieSheet/otherInformations.html:59
 msgid "date"
 msgstr "Date"
+
+#: templates/taxoRankSheet/_main.html:47
+#, fuzzy
+msgid "specie.obs.for.tax"
+msgstr "Species observated for taxon"
 
