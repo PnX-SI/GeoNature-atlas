@@ -4,19 +4,21 @@
             <!-- Logo -->
             <div class="imgWrapper  left">
                 <span class="fas fa-search" id="zoomPhotos"></span>
-                <a href="http://www.cbn-alpin.fr/" data-lightbox="imageSet">
+                <a href="{{ url_organisme }}" data-lightbox="imageSet">
+                    {% if url_logo != none %}
                     <img id="mainImg" 
-                    src="http://www.cbn-alpin.fr/images/stories/habillage/logo-cbna.jpg"
+                    src='{{ url_logo }}'
                     style="width: 200px;">
+                    {% endif %}
                 </a>
             </div>
             <div class="left col-9  ">
             <h1>
-                <strong>{{ _('organism.name') }}</strong>
+                <strong>{{ nom_organisme }}</strong>
             </h1>
-                <br>Région/département rattaché :
-                <br>Dépend de...
-                <br>Description...s
+                <br>Région/département rattaché : {{ adresse_organisme}} {{ cp_organisme }}
+                <br>Téléphone : {{ tel_organisme }}
+                <br>Description
             </div>
         </div>
         

@@ -2,7 +2,6 @@
 from urllib.parse import urlparse
 from urllib.parse import urlunparse
 
-from atlas.configuration.config import BABEL_DEFAULT_LOCALE
 from datetime import datetime, timedelta
 
 from flask import Blueprint, g
@@ -21,6 +20,7 @@ from atlas import utils
 from atlas.configuration import config
 from atlas.modeles.entities import vmTaxons, vmCommunes
 from atlas.modeles.repositories import (
+    vmOrganismesRepository,
     vmTaxonsRepository,
     vmObservationsRepository,
     vmAltitudesRepository,
@@ -56,13 +56,6 @@ else:
 
 index_bp = Blueprint("index_bp", __name__)
 
-@main.url_defaults
-def add_language_code(endpoint, values):
-    values.setdefault('lang_code', session['language'])
-
-@main.url_value_preprocessor
-def pull_lang_code(endpoint, values):
-    session['language']=values.pop('lang_code')
 
 @main.context_processor
 def global_variables():
@@ -83,6 +76,29 @@ def especeMedias(image):
         current_app.config["REMOTE_MEDIAS_URL"]
         + current_app.config["REMOTE_MEDIAS_PATH"]
         + image
+    )
+
+@main.route("/organisme/<int:id_organisme>", methods=["GET", "POST"])
+def ficheOrganisme(id_organisme):
+    db_session = utils.loadSession()
+    connection = utils.engine.connect()
+
+    infos_organisme = vmOrganismesRepository.statOrganisme(connection, id_organisme)
+
+    connection.close()
+    db_session.close()
+
+    return render_template( 
+        "templates/organismSheet/_main.html",
+        nom_organisme = infos_organisme['nom_organisme'],
+        adresse_organisme = infos_organisme['adresse_organisme'],
+        cp_organisme = infos_organisme['cp_organisme'],
+        ville_organisme = infos_organisme['ville_organisme'],
+        tel_organisme = infos_organisme['tel_organisme'],
+        url_organisme = infos_organisme['url_organisme'],
+        url_logo = infos_organisme['url_logo'],
+        nb_taxons = infos_organisme['nb_taxons'],
+        nb_obs = infos_organisme['nb_obs']
     )
 
 
@@ -233,6 +249,9 @@ def ficheEspece(cd_ref):
     )
     observers = vmObservationsRepository.getObservers(connection, cd_ref)
 
+    organisms = vmOrganismesRepository.getListOrganisme(connection, cd_ref)
+
+
     connection.close()
     db_session.close()
 
@@ -253,6 +272,7 @@ def ficheEspece(cd_ref):
         articles=articles,
         taxonDescription=taxonDescription,
         observers=observers,
+        organisms=organisms
     )
 
 
@@ -294,11 +314,6 @@ def ficheCommune(insee):
         DISPLAY_EYE_ON_LIST=True,
     )
 
-@main.route("/organisme/", methods=["GET", "POST"])
-def ficheOrganisme():
-    return render_template(
-        "templates/organismSheet/_main.html"
-    )
 
 @main.route("/liste/<cd_ref>", methods=["GET", "POST"])
 def ficheRangTaxonomie(cd_ref):

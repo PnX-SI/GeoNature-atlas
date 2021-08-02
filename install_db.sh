@@ -363,6 +363,7 @@ then
     # Création de la vue matérialisée vm_mailles_observations (nombre d'observations par maille et par taxon)
     sudo -n -u postgres -s psql -d $db_name -f data/observations_mailles.sql  &>> log/install_db.log
     sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.vm_observations_mailles OWNER TO "$owner_atlas";"
+    sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.vm_organismes OWNER TO "$owner_atlas";"
 
     # Affectation de droits en lecture sur les VM à l'utilisateur de l'application ($user_pg)
     echo "Grant..."

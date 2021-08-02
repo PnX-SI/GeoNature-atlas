@@ -18,24 +18,19 @@ CREATE INDEX ON atlas.vm_taxref (nom_valide);
 
 -- Materialized View: atlas.vm_observations
 --DROP materialized view atlas.vm_observations;
-CREATE MATERIALIZED VIEW atlas.vm_observations AS
+ CREATE MATERIALIZED VIEW atlas.vm_observations AS
 	SELECT s.id_synthese AS id_observation,
 		s.insee,
 		s.dateobs,
 		s.observateurs,
 		s.altitude_retenue,
-		s.the_geom_point::geometry(Point,3857) AS the_geom_point,
+		s.the_geom_point AS the_geom_point,
 		s.effectif_total,
 		tx.cd_ref,
-		st_asgeojson(st_transform(st_setsrid(s.the_geom_point, 3857), 4326)) AS geojson_point,
+		st_asgeojson(s.the_geom_point) AS geojson_point,
 		s.diffusion_level
 	FROM synthese.syntheseff AS s
 		LEFT JOIN atlas.vm_taxref AS tx ON tx.cd_nom = s.cd_nom
-	WHERE EXISTS (
-		SELECT 'X' 
-		FROM atlas.t_subdivided_territory AS m 
-		WHERE st_intersects(m.geom, s.the_geom_point)
-	)
 WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_observations (id_observation);
@@ -435,6 +430,48 @@ $BODY$
   ROWS 1000;
 
 
+-------- CRÉATION DU SCHÉMA -------------
+CREATE SCHEMA utilisateurs AUTHORIZATION geonatadmin;
+
+-- TABLE bib_organisme
+CREATE FOREIGN TABLE utilisateurs.bib_organismes (
+    id_organisme int4 OPTIONS(column_name 'id_organisme') NOT NULL,
+    uuid_organisme uuid OPTIONS(column_name 'uuid_organisme') NULL,
+    nom_organisme varchar(500) OPTIONS(column_name 'nom_organisme') NULL,
+    adresse_organisme varchar(128) OPTIONS(column_name 'adresse_organisme') NULL,
+    cp_organisme varchar(5) OPTIONS(column_name 'cp_organisme') NULL,
+    ville_organisme varchar(50) OPTIONS(column_name 'ville_organisme') NULL,
+    tel_organisme varchar(14) OPTIONS(column_name 'tel_organisme') NULL,
+    fax_organisme varchar(14) OPTIONS(column_name 'fax_organisme') NULL,
+    email_organisme varchar(100) OPTIONS(column_name 'email_organisme') NULL,
+    url_organisme varchar(255) OPTIONS(column_name 'url_organisme') NULL,
+    url_logo varchar(255) OPTIONS(column_name 'url_logo') NULL,
+    id_parent int4 OPTIONS(column_name 'id_parent') NULL
+)
+SERVER geonaturedbserver
+OPTIONS (schema_name 'utilisateurs', table_name 'bib_organismes');
+
+-- TABLE cor_data_actor
+CREATE FOREIGN TABLE utilisateurs.cor_dataset_actor (
+    id_cda int4 OPTIONS(column_name 'id_cda') NOT NULL,
+    id_dataset int4 OPTIONS(column_name 'id_dataset') NULL,
+    id_role int4 OPTIONS(column_name 'id_role') NULL,
+    id_organism int4 OPTIONS(column_name 'id_organism') NULL,
+    id_nomenclature_actor_role int4 OPTIONS(column_name 'id_nomenclature_actor_role') NULL
+)
+SERVER geonaturedbserver
+OPTIONS (schema_name 'gn_meta', table_name 'cor_dataset_actor');
+
+--CRÉATION VUE MATÉRIALISÉE
+create MATERIALIZED VIEW atlas.vm_organismes
+AS SELECT cd_ref, count(*) as nb_observations, id_organisme , nom_organisme , adresse_organisme , cp_organisme , ville_organisme , tel_organisme , email_organisme , url_organisme ,url_logo
+   FROM utilisateurs.bib_organismes bo
+     JOIN utilisateurs.cor_dataset_actor cda ON bo.id_organisme =cda.id_organism 
+     JOIN synthese.synthese s ON s.id_dataset =cda.id_dataset 
+     JOIN taxonomie.taxref t on s.cd_nom=t.cd_nom
+  group by t.cd_ref, bo.id_organisme, bo.nom_organisme, bo.adresse_organisme, bo.cp_organisme, bo.ville_organisme, bo.tel_organisme, bo.email_organisme, bo.url_organisme, bo.url_logo
+  with data;
+
 --Fonction pour rafraichir toutes les vues matérialisées d'un schéma
 
 --USAGE : SELECT RefreshAllMaterializedViews('atlas');
@@ -471,6 +508,7 @@ BEGIN
   REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_search_taxon;
   REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_medias;
   REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_taxons_plus_observes;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_organismes;
 
 END
 $$ LANGUAGE plpgsql;

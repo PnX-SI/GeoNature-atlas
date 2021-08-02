@@ -128,18 +128,10 @@ CREATE OR REPLACE FUNCTION atlas.refresh_materialized_view_ref_geo()
 $$
 BEGIN
 
-<<<<<<< HEAD
     REFRESH MATERIALIZED VIEW atlas.t_layer_territoire;
     REFRESH MATERIALIZED VIEW atlas.t_mailles_territoire;
     REFRESH MATERIALIZED VIEW atlas.l_communes;
     REFRESH MATERIALIZED VIEW atlas.vm_communes;
-=======
-  REFRESH MATERIALIZED VIEW atlas.t_layer_territoire;
-  REFRESH MATERIALIZED VIEW atlas.t_subdivided_territory;
-  REFRESH MATERIALIZED VIEW atlas.t_mailles_territoire;
-  REFRESH MATERIALIZED VIEW atlas.l_communes;
-  REFRESH MATERIALIZED VIEW atlas.vm_communes;
->>>>>>> upstream/feat/subdivided-territory
 
 END
 $$ LANGUAGE plpgsql;
