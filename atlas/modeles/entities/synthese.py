@@ -2,5 +2,3 @@
 from sqlalchemy import MetaData
 
 metadata = MetaData()
-
-test = 1
