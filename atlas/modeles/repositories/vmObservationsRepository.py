@@ -296,3 +296,22 @@ def genericStatMedias(connection, tab):
         return None
     else:
         return tabStat
+
+def getLastDiscoveries(connection):
+    sql="""
+    SELECT max(dateobs),cd_ref
+    FROM atlas.vm_observations
+    GROUP BY cd_ref
+    ORDER BY max(dateobs)
+    LIMIT 5
+    """
+    req = connection.execute(text(sql))
+    LastDiscoveriesList= list()
+    for r in req :
+        temp = {
+            'cd_ref':r.cd_ref,
+            'nom_vern':r.nom_vern,
+            'lb_nom':r.lb_nom
+        }
+        LastDiscoveriesList.append(temp)
+    return LastDiscoveriesList
