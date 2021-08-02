@@ -2,6 +2,7 @@
 from urllib.parse import urlparse
 from urllib.parse import urlunparse
 
+from atlas.configuration.config import BABEL_DEFAULT_LOCALE
 from datetime import datetime, timedelta
 
 from flask import Blueprint, g
@@ -55,6 +56,13 @@ else:
 
 index_bp = Blueprint("index_bp", __name__)
 
+@main.url_defaults
+def add_language_code(endpoint, values):
+    values.setdefault('lang_code', session['language'])
+
+@main.url_value_preprocessor
+def pull_lang_code(endpoint, values):
+    session['language']=values.pop('lang_code')
 
 @main.context_processor
 def global_variables():
@@ -286,6 +294,11 @@ def ficheCommune(insee):
         DISPLAY_EYE_ON_LIST=True,
     )
 
+@main.route("/organisme/", methods=["GET", "POST"])
+def ficheOrganisme():
+    return render_template(
+        "templates/organismSheet/_main.html"
+    )
 
 @main.route("/liste/<cd_ref>", methods=["GET", "POST"])
 def ficheRangTaxonomie(cd_ref):

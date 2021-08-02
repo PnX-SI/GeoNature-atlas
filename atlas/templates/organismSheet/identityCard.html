@@ -1,0 +1,25 @@
+{% block identityCard %}
+    <div class="card mt-4" id="identityCard">
+        <div class="row" id="rowIdentity">
+            <!-- Logo -->
+            <div class="imgWrapper  left">
+                <span class="fas fa-search" id="zoomPhotos"></span>
+                <a href="http://www.cbn-alpin.fr/" data-lightbox="imageSet">
+                    <img id="mainImg" 
+                    src="http://www.cbn-alpin.fr/images/stories/habillage/logo-cbna.jpg"
+                    style="width: 200px;">
+                </a>
+            </div>
+            <div class="left col-9  ">
+            <h1>
+                <strong>{{ _('organism.name') }}</strong>
+            </h1>
+                <br>Région/département rattaché :
+                <br>Dépend de...
+                <br>Description...s
+            </div>
+        </div>
+        
+       
+    </div>
+{% endblock %}

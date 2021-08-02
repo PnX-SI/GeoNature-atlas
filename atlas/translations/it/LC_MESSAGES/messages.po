@@ -62,7 +62,8 @@ msgstr "Osservazione"
 
 #: templates/core/listTaxons.html:81 templates/core/statHierarchy.html:5
 #: templates/core/tabTaxons.html:19 templates/home/globalStats.html:13
-#: templates/home/lastObs.html:7 templates/specieSheet/identityCard.html:131
+#: templates/home/lastObs.html:7 templates/organismSheet/statsInfos.html:12
+#: templates/specieSheet/identityCard.html:131
 #: templates/specieSheet/map.html:15
 msgid "observations"
 msgstr "Osservazioni"
@@ -85,12 +86,20 @@ msgstr "Scheda delle specie"
 msgid "loading"
 msgstr "Caricamento in corso..."
 
+<<<<<<< HEAD
 #: templates/core/navbar.html:34 templates/home/globalStats.html:29
+=======
+#: templates/core/navbar.html:24 templates/home/globalStats.html:29
+>>>>>>> dev-cobiodiv-specie-improve
 #: templates/photoGalery/_main.html:76
 msgid "search.specie"
 msgstr "Cerca per specie"
 
+<<<<<<< HEAD
 #: templates/core/navbar.html:47 templates/home/globalStats.html:48
+=======
+#: templates/core/navbar.html:37 templates/home/globalStats.html:48
+>>>>>>> dev-cobiodiv-specie-improve
 msgid "search.city"
 msgstr "Ricerca per comune"
 
@@ -104,7 +113,7 @@ msgid "gallery.title"
 msgstr "Galleria di foto"
 
 #: templates/core/statHierarchy.html:9 templates/home/globalStats.html:22
-#: templates/home/taxoRank.html:28
+#: templates/home/taxoRank.html:28 templates/organismSheet/statsInfos.html:22
 msgid "species"
 msgstr "Contanti"
 
@@ -112,13 +121,25 @@ msgstr "Contanti"
 msgid "specie"
 msgstr "Specie"
 
+<<<<<<< HEAD
 #: templates/core/statHierarchy.html:12 templates/specieSheet/map.html:25
 #: templates/specieSheet/otherInformations.html:19
+=======
+#: templates/core/statHierarchy.html:12
+#: templates/organismSheet/statsInfos.html:17 templates/specieSheet/map.html:25
+#: templates/specieSheet/otherInformations.html:23
+#, fuzzy
+>>>>>>> dev-cobiodiv-specie-improve
 msgid "observers"
 msgstr "Osservatori"
 
 #: templates/core/statHierarchy.html:12 templates/specieSheet/map.html:25
+<<<<<<< HEAD
 #: templates/specieSheet/otherInformations.html:19
+=======
+#: templates/specieSheet/otherInformations.html:23
+#, fuzzy
+>>>>>>> dev-cobiodiv-specie-improve
 msgid "observer"
 msgstr "Osservatore"
 
@@ -205,6 +226,28 @@ msgstr ""
 msgid "species.to.discover"
 msgstr "Specie da scoprire"
 
+#: templates/organismSheet/blocInfos.html:4
+#, fuzzy
+msgid "other.informations"
+msgstr "Observatione mensual"
+
+#: templates/organismSheet/identityCard.html:4
+msgid "organism.name"
+msgstr ""
+
+#: templates/organismSheet/mapLocation.html:5
+msgid "map.location"
+msgstr ""
+
+#: templates/organismSheet/mapObs.html:5
+#, fuzzy
+msgid "map.observations"
+msgstr "Observatione mensual"
+
+#: templates/organismSheet/statsInfos.html:4
+msgid "organism.stats"
+msgstr ""
+
 #: templates/photoGalery/_main.html:64
 msgid "all.groups.tooltip"
 msgstr "Gruppo"
@@ -223,7 +266,7 @@ msgstr "Informazioni sulle specie"
 
 #: templates/specieSheet/blocInfos.html:14
 #: templates/specieSheet/descriptionMedia.html:16
-#: templates/specieSheet/otherInformations.html:57
+#: templates/specieSheet/otherInformations.html:63
 msgid "description"
 msgstr "Descrizione"
 
@@ -262,7 +305,7 @@ msgid "monthly.obs"
 msgstr "Osservazioni mensili"
 
 #: templates/specieSheet/descriptionMedia.html:12
-#: templates/specieSheet/otherInformations.html:30
+#: templates/specieSheet/otherInformations.html:36
 msgid "author"
 msgstr "Autore"
 
@@ -278,17 +321,41 @@ msgstr "Stato di protezione"
 msgid "first.obs"
 msgstr "Prima osservazione"
 
-#: templates/specieSheet/otherInformations.html:29
+#: templates/specieSheet/otherInformations.html:19
+msgid "organisms"
+msgstr ""
+
+#: templates/specieSheet/otherInformations.html:19
+msgid "organism"
+msgstr ""
+
+#: templates/specieSheet/otherInformations.html:35
 msgid "title"
 msgstr "Titolo"
 
-#: templates/specieSheet/otherInformations.html:59
+#: templates/specieSheet/otherInformations.html:65
 msgid "date"
 msgstr "Datato"
 
+<<<<<<< HEAD
 #: templates/taxoRankSheet/_main.html:47
 msgid "specie.obs.for.tax"
 msgstr "Specie osservate per il taxon"
+=======
+#: templates/specieSheet/otherInformations.html:135
+msgid "check.organism.sheet"
+msgstr ""
+
+#: templates/specieSheet/otherInformations.html:136
+msgid "organism.sheet"
+msgstr ""
+
+#~ msgid "My custom presentation"
+#~ msgstr "Ma presentation personalidad"
+
+#~ msgid "leaflet-fullscreen/"
+#~ msgstr ""
+>>>>>>> dev-cobiodiv-specie-improve
 
 #~ msgid "last.obs.municipality"
 #~ msgstr "Ultima osservazione per comune"

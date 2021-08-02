@@ -1,8 +1,7 @@
 {% extends "templates/core/layout.html" %}
 
-{% block title %}{% if taxon.taxonSearch.nom_vern %} {{ taxon.taxonSearch.nom_vern }}
-- {% endif %} {{ taxon.taxonSearch.lb_nom }} | {{ configuration.NOM_APPLICATION }}
-- {{ configuration.STRUCTURE }}{% endblock %}
+{% block title %}
+{% endblock %}
 
 {% block additionalHeaderAssets %}
 <!-- Bootstrap slider -->
@@ -31,19 +30,6 @@
 {% block additionalFooterAssets %}
 <script src="{{ url_for('static', filename='node_modules/lightbox2/dist/js/lightbox.min.js') }}"></script>
 
-<script>
-    var dataset = {{ altitudes| tojson}};
-    var months_value = {{ months | tojson}};
-    var months_name = {{ AVAILABLE_LANGUAGES[session.language]['months'] | tojson }};
-    var observationsPoint = [];
-    var observationsMaille = [];
-    var configuration = {{ configuration| tojson}};
-    var url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
-    var taxonYearMin = {{ taxon.taxonSearch.yearmin }};
-    var cd_ref = {{ taxon.taxonSearch.cd_ref }};
-    var nb_obs = {{ taxon.taxonSearch.nb_obs }};
-</script>
-
 <script src="{{ url_for('static', filename='custom/maps-custom.js') }}"></script>
 <script src="{{ url_for('static', filename='ficheEspece.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='chart.js') }}"></script>
@@ -58,32 +44,17 @@
 {% endblock %}
 
 {% block content %}
-<!-- MorrisJs -->
-<div class="row">
-    <!--Left row-->
-    <div class="col-lg-7 col-md-8 col-sm-12 col-xs-12">
-        {% include 'templates/specieSheet/identityCard.html' %}
-        {% include 'templates/specieSheet/map.html' %}
-        {% include 'templates/specieSheet/otherInformations.html' %}
+    <div class="row">
+        <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+            {% include 'templates/organismSheet/identityCard.html' %}
+            {% include 'templates/organismSheet/statsInfos.html' %}
+            {% include 'templates/organismSheet/mapObs.html' %}
+        </div>
+
+        <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+            {% include 'templates/organismSheet/mapLocation.html' %}
+            {% include 'templates/organismSheet/partsChart.html' %}
+            {% include 'templates/organismSheet/blocInfos.html' %}
+        </div>
     </div>
-    
-    <!--Right row-->
-    <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
-        {% if photoCarousel | length >= 1 %}
-            {% include 'templates/specieSheet/photoCarousel.html' %}
-        {% endif %}
-
-
-        {% include 'templates/specieSheet/blocInfos.html' %}
-
-        {% if (videoAudio.video | length > 0 ) or (videoAudio.audio | length > 0) %}
-            {% include 'templates/specieSheet/audioVideo.html' %}
-        {% endif %}
-
-        {% include 'templates/specieSheet/charts.html' %}
-    </div>
-</div>
-
-
-
 {% endblock %}
