@@ -10,6 +10,42 @@
             </div>
         </div>
         <div class="row row-medias">
+            <div class="lastDiscoveries">
+                <div class="row">
+                    {% for i in range(lastDiscoveries | length) %}
+                        <div class="col-12 col-md-6 col-stat-medias">
+                            <!--<div class="thumbnail-stat-medias">
+                                <div class="zoom-wrapper">
+                                    <a href="{{ url_for('main.ficheEspece',cd_ref=lastDiscoveries[i].cd_ref) }}">
+                                        {% if configuration.REDIMENSIONNEMENT_IMAGE %}
+                                            <div class="img-custom-medias cover"
+                                                style="background-image: url({{ configuration.TAXHUB_URL }}/api/tmedias/thumbnail/{{ lastDiscoveries[i].id_media }}?h=500&w=500)"></div>
+                                        {% else %}
+                                            <div class="img-custom-medias cover"
+                                                style="background-image: url({{ lastDiscoveries[i].path }})"></div>
+                                        {% endif %}
+                                        <div class="stat-medias-hovereffet">
+                                            <img src="{{ url_for('static', filename='images/eye.png') }}">-->
+                                            <h2 class="overlay-obs">{{ lastDiscoveries[i].date | pretty }}
+                                                </h2>
+                                        <!--</div>
+                                    </a>
+                                </div>-->
+                                <div class="thumbnail-caption-medias">
+                                    <p> {% if lastDiscoveries[i].nom_vern != None %}
+                                        <b>  {{ lastDiscoveries[i].nom_vern }}</b> {% endif %}
+                                        <br/><i>{{ lastDiscoveries[i].lb_nom }}</i></p>
+                                    <p>
+                                        <a href="{{ url_for('main.ficheEspece',cd_ref=lastDiscoveries[i].cd_ref) }}"
+                                        class="btn btn-default" role="button">Fiche espèce</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
 
   Ma viariable : {{test}}
 {% endblock %}
