@@ -84,6 +84,16 @@ def ficheOrganisme(id_organisme):
     connection = utils.engine.connect()
 
     infos_organisme = vmOrganismesRepository.statOrganisme(connection, id_organisme)
+   
+    stat = vmObservationsRepository.statIndex(connection)
+    
+    mostObsTaxs=vmOrganismesRepository.topObsOrganism(connection, id_organisme)
+
+    top_taxons = [
+                vmTaxrefRepository.searchEspece(connection, mostObsTaxs[0]['cd_ref']),
+                vmTaxrefRepository.searchEspece(connection, mostObsTaxs[1]['cd_ref']),
+                vmTaxrefRepository.searchEspece(connection, mostObsTaxs[2]['cd_ref']),
+            ]
 
     connection.close()
     db_session.close()
@@ -98,7 +108,11 @@ def ficheOrganisme(id_organisme):
         url_organisme = infos_organisme['url_organisme'],
         url_logo = infos_organisme['url_logo'],
         nb_taxons = infos_organisme['nb_taxons'],
-        nb_obs = infos_organisme['nb_obs']
+        nb_obs = infos_organisme['nb_obs'],
+
+        stat = stat,
+        mostObsTaxs = mostObsTaxs,
+        top_taxons = top_taxons
     )
 
 

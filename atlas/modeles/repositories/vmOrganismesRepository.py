@@ -33,6 +33,26 @@ def statOrganisme (connection,id_organisme):
     return StatsOrga
 
 
+def topObsOrganism(connection, id_organisme):
+    #Stats avancées organisme
+    sql = """SELECT cd_ref, nb_observations as nb_obs 
+    FROM atlas.vm_organismes o
+    WHERE o.id_organisme = :thisidorganisme
+    ORDER BY nb_observations DESC
+    LIMIT 3
+    """
+    req = connection.execute(text(sql), thisidorganisme=id_organisme)
+    topSpecie = list()
+    for r in req:
+        temp={
+            'cd_ref':r.cd_ref,
+            'nb_obs':r.nb_obs,
+        }
+        topSpecie.append(temp)
+    return topSpecie
+
+
+
 def getListOrganisme(connection,cd_ref):
     # Fiche espèce : Liste des organismes pour un taxon
     sql = """SELECT nb_observations, id_organisme, nom_organisme, url_organisme, url_logo

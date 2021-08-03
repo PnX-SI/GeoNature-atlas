@@ -13,8 +13,8 @@
           </div>
           <div class="col-sm center">
             <i class="fas fa-users fa-2x"></i>
-            <br><strong>organism.observers</strong> 
-            <br>{{ _('observers') }}
+            <br><strong>{{ "%.2f"|format(nb_obs / stat.nbTotalObs*100) }}%</strong> 
+            <br>{{ _('atlas.participation') }}
           </div>
           <div class="col-sm center">
             <i class="fas fa-leaf fa-2x"></i>

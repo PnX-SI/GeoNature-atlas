@@ -86,20 +86,12 @@ msgstr "Specie sheet"
 msgid "loading"
 msgstr "Loading..."
 
-<<<<<<< HEAD
-#: templates/core/navbar.html:34 templates/home/globalStats.html:29
-=======
 #: templates/core/navbar.html:24 templates/home/globalStats.html:29
->>>>>>> dev-cobiodiv-specie-improve
 #: templates/photoGalery/_main.html:76
 msgid "search.specie"
 msgstr "Search by specie"
 
-<<<<<<< HEAD
-#: templates/core/navbar.html:47 templates/home/globalStats.html:48
-=======
 #: templates/core/navbar.html:37 templates/home/globalStats.html:48
->>>>>>> dev-cobiodiv-specie-improve
 msgid "search.city"
 msgstr "Search by municipality"
 
@@ -310,11 +302,11 @@ msgstr "First Observations"
 
 #: templates/specieSheet/otherInformations.html:19
 msgid "organisms"
-msgstr ""
+msgstr "Organisms"
 
 #: templates/specieSheet/otherInformations.html:19
 msgid "organism"
-msgstr ""
+msgstr "Organism"
 
 #: templates/specieSheet/otherInformations.html:35
 msgid "title"
@@ -324,14 +316,6 @@ msgstr "Title"
 msgid "date"
 msgstr "Date"
 
-<<<<<<< HEAD
-#: templates/taxoRankSheet/_main.html:47
-msgid "specie.obs.for.tax"
-msgstr "Species observated for taxon"
-
-#~ msgid "last.%s.days.obs"
-#~ msgstr "The observations of the last %s days"
-=======
 #: templates/specieSheet/otherInformations.html:135
 msgid "check.organism.sheet"
 msgstr "Check organism sheet"
@@ -339,5 +323,4 @@ msgstr "Check organism sheet"
 #: templates/specieSheet/otherInformations.html:136
 msgid "organism.sheet"
 msgstr "Organism sheet"
->>>>>>> dev-cobiodiv-specie-improve
 

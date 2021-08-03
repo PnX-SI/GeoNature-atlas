@@ -35,7 +35,9 @@ MULTILINGUAL = True
 ###########################
 # If multilingual is activated configure under
 
-# Available languages
+# Available languages 
+# Don't delete even if you uninstall MULTILINGUAL
+# You need to add your own default language(BABEL_DEFAULT_LOCALE) here if it's not present 
 # Check documentation for adding another language
 LANGUAGES = {
     'en': {

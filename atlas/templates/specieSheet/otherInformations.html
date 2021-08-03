@@ -111,10 +111,12 @@
                                     <span class="float-right"></span>
                                     <div class="pictoImgList mr-2" data-toggle="tooltip" data-original-title="{{ taxon.group2_inpn }}"
                                     data-placement="right">
-                                        <a href='http://www.cbn-alpin.fr' target="_blank">
+                                        <a href="{{ o['url_organisme'] }}" target="_blank">
+                                            {% if o['url_logo']!= None %}
                                             <img class="mx-auto d-block"
-                                            src="http://www.cbn-alpin.fr/images/stories/habillage/logo-cbna.jpg"
+                                            src="{{ o['url_logo'] }}"
                                             >
+                                            {% endif %}
                                         </a>
                                     </div>
                                 </div>
@@ -125,8 +127,8 @@
                                         <span id="name"><b>{{ o['nom_organisme'] }}</b></span>
                                     </h5>
 
-                                    <strong>{{ o['nb_observation']}} Observations</strong>
-                                    <br>Part de prospections : <strong>{{ o['nb_observation']/100}} %</strong>
+                                    <strong>Participation à {{ o['nb_observation']}} Observations</strong>
+                                    <br>Part d'aide à la prospection : <strong>{{ "%.2f"|format(o['nb_observation']/taxon.taxonSearch.nb_obs*100) }} %</strong>
                                     <br>
                                     <br>
                                     <span class="float-right">   

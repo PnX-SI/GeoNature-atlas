@@ -86,20 +86,12 @@ msgstr "Scheda delle specie"
 msgid "loading"
 msgstr "Caricamento in corso..."
 
-<<<<<<< HEAD
-#: templates/core/navbar.html:34 templates/home/globalStats.html:29
-=======
 #: templates/core/navbar.html:24 templates/home/globalStats.html:29
->>>>>>> dev-cobiodiv-specie-improve
 #: templates/photoGalery/_main.html:76
 msgid "search.specie"
 msgstr "Cerca per specie"
 
-<<<<<<< HEAD
-#: templates/core/navbar.html:47 templates/home/globalStats.html:48
-=======
 #: templates/core/navbar.html:37 templates/home/globalStats.html:48
->>>>>>> dev-cobiodiv-specie-improve
 msgid "search.city"
 msgstr "Ricerca per comune"
 
@@ -121,25 +113,16 @@ msgstr "Contanti"
 msgid "specie"
 msgstr "Specie"
 
-<<<<<<< HEAD
-#: templates/core/statHierarchy.html:12 templates/specieSheet/map.html:25
-#: templates/specieSheet/otherInformations.html:19
-=======
 #: templates/core/statHierarchy.html:12
 #: templates/organismSheet/statsInfos.html:17 templates/specieSheet/map.html:25
 #: templates/specieSheet/otherInformations.html:23
 #, fuzzy
->>>>>>> dev-cobiodiv-specie-improve
 msgid "observers"
 msgstr "Osservatori"
 
 #: templates/core/statHierarchy.html:12 templates/specieSheet/map.html:25
-<<<<<<< HEAD
-#: templates/specieSheet/otherInformations.html:19
-=======
 #: templates/specieSheet/otherInformations.html:23
 #, fuzzy
->>>>>>> dev-cobiodiv-specie-improve
 msgid "observer"
 msgstr "Osservatore"
 
@@ -337,11 +320,6 @@ msgstr "Titolo"
 msgid "date"
 msgstr "Datato"
 
-<<<<<<< HEAD
-#: templates/taxoRankSheet/_main.html:47
-msgid "specie.obs.for.tax"
-msgstr "Specie osservate per il taxon"
-=======
 #: templates/specieSheet/otherInformations.html:135
 msgid "check.organism.sheet"
 msgstr ""
@@ -355,7 +333,6 @@ msgstr ""
 
 #~ msgid "leaflet-fullscreen/"
 #~ msgstr ""
->>>>>>> dev-cobiodiv-specie-improve
 
 #~ msgid "last.obs.municipality"
 #~ msgstr "Ultima osservazione per comune"

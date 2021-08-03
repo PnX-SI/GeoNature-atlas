@@ -86,20 +86,12 @@ msgstr "Fiche espèce"
 msgid "loading"
 msgstr "Chargement..."
 
-<<<<<<< HEAD
-#: templates/core/navbar.html:34 templates/home/globalStats.html:29
-=======
 #: templates/core/navbar.html:24 templates/home/globalStats.html:29
->>>>>>> dev-cobiodiv-specie-improve
 #: templates/photoGalery/_main.html:76
 msgid "search.specie"
 msgstr "Recherche par espèce"
 
-<<<<<<< HEAD
-#: templates/core/navbar.html:47 templates/home/globalStats.html:48
-=======
 #: templates/core/navbar.html:37 templates/home/globalStats.html:48
->>>>>>> dev-cobiodiv-specie-improve
 msgid "search.city"
 msgstr "Recherche par commune"
 
@@ -327,11 +319,6 @@ msgstr "Titre"
 msgid "date"
 msgstr "Date"
 
-<<<<<<< HEAD
-#: templates/taxoRankSheet/_main.html:47
-msgid "specie.obs.for.tax"
-msgstr "Espèces observées pour le taxon"
-=======
 #: templates/specieSheet/otherInformations.html:135
 #, fuzzy
 msgid "check.organism.sheet"
@@ -340,7 +327,6 @@ msgstr "Voir la fiche espèce"
 #: templates/specieSheet/otherInformations.html:136
 msgid "organism.sheet"
 msgstr "Fiche organisme"
->>>>>>> dev-cobiodiv-specie-improve
 
 #~ msgid "last.obs.municipality"
 #~ msgstr "Dernière observation par commune"
