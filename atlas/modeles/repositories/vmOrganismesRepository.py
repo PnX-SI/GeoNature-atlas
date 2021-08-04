@@ -71,3 +71,21 @@ def getListOrganisme(connection,cd_ref):
         }
         ListOrganisme.append(temp)
     return ListOrganisme 
+
+def getTaxonRepartitionOrganisme(connection, id_organisme):
+    #Fiche organisme : réparition du type d'observations
+    sql="""SELECT  SUM(o.nb_observations) as nb_obs_group, g.group2_inpn
+    FROM atlas.vm_organismes o
+    JOIN atlas.vm_taxref g on g.cd_nom=o.cd_ref
+    WHERE o.id_organisme = :thisidorganisme
+   	GROUP BY g.group2_inpn, o.id_organisme
+    """;
+    req = connection.execute(text(sql), thisidorganisme=id_organisme)
+    ListGroup=list()
+    for r in req:   
+        temp={
+            'group2_inpn': r.group2_inpn,
+            'nb_obs_group': int(r.nb_obs_group)
+        }
+        ListGroup.append(temp)
+    return ListGroup

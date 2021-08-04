@@ -1,87 +1,74 @@
 {% block topSpecie %}
     <div class="card mt-4" id="mapPanel mt-4">
+        <!-- Card title-->
         <h4 class="title-bar center mt-2">
-            <i class="fas fa-map fa-1x"></i>
             <strong>{{ _('top.specie') }}</strong>
         </h4>
+        <!-- List taxons-->
         <div id="taxonList" class="d-flex align-content-stretch bg-white flex-grow-1">
             <ul class="list-group w-100">
                 {% for taxon in top_taxons %}
-                <li id="taxonListItem" class="media border-bottom p-2"
-                    cdRef="{{ taxon['taxonSearch']['cd_ref'] }}">
-                <div class="container">
-                    <div center ='left' class='row'>
-                    {{ top_taxons.index(taxon) }}
-                    </div>  
-                    <div class='row'>
-                    <span class="d-none">{{ taxon['taxonSearch']['group2_inpn'] }}</span>
+                    <li id="taxonListItem" class="media border-bottom p-2"  
+                        cdRef="{{ taxon.cd_ref }}">
                     <div class="pictoImgList mr-2" data-toggle="tooltip" data-original-title="{{ taxon['taxonSearch']['group2_inpn'] }}"
-                    data-placement="right">
-                    {% if taxon.path == None %}
-
-                       <img class="mx-auto d-block"
-                            src="{{ url_for('static', filename='images/picto_'+ taxon['taxonSearch']['group2_inpn']| replace(" ", "_") |urlencode+'.png') }}">
-
-                    {% else %}
-                       {% if configuration.REDIMENSIONNEMENT_IMAGE %}
-                           {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+taxon.id_media|string+'?h=500&w=500' %}
-                       {% else %}
-                           {% set img_path = taxon.path %}
-                       {% endif %}
-                       <img class="lazy pictoImgList" data-src="{{ img_path }}">
-                    {% endif %}
+                    data-placement="center" >
+                        {% if photos[top_taxons.index(taxon)].path == None %}
+                            <img class="mx-auto d-block"
+                                 src="{{ url_for('static', filename='images/picto_'+ taxon['taxonSearch']['group2_inpn']| replace(" ", "_") |urlencode+'.png') }}">
+                        {% else %}
+                            {% if configuration.REDIMENSIONNEMENT_IMAGE %}
+                                {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+ photos[top_taxons.index(taxon)].path|string+'?h=500&w=500' %}
+                            {% else %}
+                                {% set img_path = photos[top_taxons.index(taxon)].path %}
+                            {% endif %}
+                            <img class="mainImg" src="{{ img_path    }}"
+                                style='width:100px'>
+                                {{ photos[top_taxons.index(taxon)].mainPhoto }}
+                        {% endif %}
                     </div>
                     <div class="media-body">
                         <span class="float-right">
-                                                           {% if configuration.PROTECTION %}
-                                                               {% if taxon.protection_stricte == 'oui' %}
-                                                                   <a
-                                                                           href="https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.cd_ref }}/tab/statut"
-                                                                           target="_blank">
-                                                <img src="{{ url_for('static', filename='images/logo_protection.png') }}"
-                                                     style="width : 30px; height: 30px" data-placement="left" data-toggle="tooltip"
-                                                     data-original-title="{{ ('this.taxon.has.a.protected.status') }}">
-                                                            </a>
-                                                               {% endif %}
-                                                           {% endif %}
-                            {% if configuration.DISPLAY_PATRIMONIALITE %}
-                                {% if taxon.patrimonial in configuration.PATRIMONIALITE.config %}
-            
-                                    <img
-                                            src="{{ url_for('static', filename=configuration.PATRIMONIALITE.config[taxon.patrimonial].icon) }}"
-                                            style="width : 30px; height: 30px" data-placement="left" data-toggle="tooltip"
-                                            data-original-title="{{ configuration.PATRIMONIALITE.config[taxon.patrimonial].text }}"
-                                            data-placement="right"
-                                    >
-                                {% endif %}
+                        {% if configuration.PROTECTION %}
+                            {% if taxon['taxonSearch']['protection'] == 'oui' %}
+                                <a  href="https://inpn.mnhn.fr/espece/cd_nom/mostObsTaxs[top_taxons.index(taxon)]['cd_ref']/tab/statut"
+                                    target="_blank">
+                                    <img src="{{ url_for('static', filename='images/logo_protection.png') }}"
+                                    style="width : 30px; height: 30px;" data-placement="left" data-toggle="tooltip"
+                                    data-original-title="{{ ('this.taxon.has.a.protected.status') }}">
+                                </a>
                             {% endif %}
-            
+                        {% endif %}
+                        {% if configuration.DISPLAY_PATRIMONIALITE %}
+                            {% if taxon.patrimonial in configuration.PATRIMONIALITE.config %}
+                                <img    src="{{ url_for('static', filename=configuration.PATRIMONIALITE.config[taxon.patrimonial].icon) }}"
+                                        style="width : 30px; height: 30px" data-placement="left" data-toggle="tooltip"
+                                        data-original-title="{{ configuration.PATRIMONIALITE.config[taxon.patrimonial].text }}"
+                                        data-placement="right">
+                            {% endif %}
+                        {% endif %}
                         </span>
-                                <h5 class="mt-0 mb-1 ">
-                                    {% if DISPLAY_EYE_ON_LIST %}
-                                        <a data-toggle="tooltip"
-                                           data-original-title="{ _('display.municipality.obs')}"
-                                           data-placement="right"><i class="fas fa-eye fa-fw"> </i></a>
-                                    {% endif %}
-                              
-                                <h5>
-                                    <span id="name">{{ taxon['taxonSearch']['lb_nom']|safe }}</span>
-                                </h5>
-            
-                                <strong>{{ mostObsTaxs[top_taxons.index(taxon)].nb_obs }}</strong> {% if mostObsTaxs[top_taxons.index(taxon)].nb_obs == 1 %}{{_ ('observation')}}{% else %}
-                                {{_ ('observations')}}{% endif %} <br>
-                                <span class="float-right">
-                    <a class="badge badge-primary" href="{{ url_for('main.ficheEspece',cd_ref=taxon['taxonSearch']['cd_ref']) }}"
-                    data-toggle="tooltip"
-                    title="{{ _('check.specie.sheet') }}" data-placement="left">
-                     <i class="fas fa-list fa-fw"></i> {{ _('specie.sheet') }}</i>
-                 </a>
-                 </span>
-                </div>
-            </div>
-            </div>
-            {% endfor %}
-            </li>
+                        <h5 class="mt-0 mb-1 ">
+                            <b>{% if taxon['taxonSearch']['nom_vern'] == None %}
+                                -
+                            {% else %}
+                                {{ taxon['taxonSearch']['nom_vern'].split(',')[0].strip() }}
+                            {% endif %}</b></h5>
+                        <h5>
+                            <span id="name">{{ taxon['taxonSearch']['lb_nom']|safe }}</span>
+                        </h5>
+    
+                        <b>{{ mostObsTaxs[top_taxons.index(taxon)]['nb_obs']}}</b> {% if taxon['taxonSearch']['nb_obs'] == 1 %}{{_ ('observation')}}{% else %}{{_ ('observations')}}{% endif %} <br>
+                        Représente <b>{{ "%.2f"|format(mostObsTaxs[top_taxons.index(taxon)]['nb_obs'] / nb_obs*100) }}% </b>des observations de l'organisme.
+                        <span class="float-right">
+                        <a class="badge badge-primary" href="{{ url_for('main.ficheEspece',cd_ref=mostObsTaxs[top_taxons.index(taxon)]['cd_ref']) }}"
+                           data-toggle="tooltip"
+                           title="{{ _('check.specie.sheet') }}" data-placement="left">
+                            <i class="fas fa-list fa-fw"></i> {{ _('specie.sheet') }}</i>
+                        </a>
+                        </span>
+    
+                    </div>
+                {% endfor %}
             </ul>
         </div>
     </div>

@@ -47,40 +47,8 @@ genericChart = function (element, labels, values) {
     });
 };
 
-//Circle graph for parts graph
-circleChart = function (element) {
-    return new Chart(element, {
-        type: 'doughnut',
-        data: {
-            labels: ['Organisme', 'Total'],
-            datasets: [{
-                    label: 'parts',
-                    data: [10, 90],
-                    backgroundColor: chartMainColor
-                }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              position: 'top',
-            },
-            title: {
-              display: true,
-              text: 'Parts des observations totales'
-            }
-          }
-        },
-    })
-};
-
-
-
 var monthChartElement = document.getElementById('monthChart');
 const monthChart = genericChart(monthChartElement, months_name, getChartDatas(months_value, 'value'));
 
 var altiChartElement = document.getElementById('altiChart');
 const altiChart = genericChart(altiChartElement, getChartDatas(dataset, 'altitude'), getChartDatas(dataset, 'value'));
-
-var partsChartElement = document.getElementById('partsChart');
-const partsChart = circleChart(partsChartElement);

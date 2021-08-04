@@ -89,15 +89,18 @@ def ficheOrganisme(id_organisme):
     
     mostObsTaxs=vmOrganismesRepository.topObsOrganism(connection, id_organisme)
 
-    top_taxons = [
-                vmTaxrefRepository.searchEspece(connection, mostObsTaxs[0]['cd_ref']),
-                vmTaxrefRepository.searchEspece(connection, mostObsTaxs[1]['cd_ref']),
-                vmTaxrefRepository.searchEspece(connection, mostObsTaxs[2]['cd_ref']),
-            ]
+    top_taxons=list()
+    photos=list()
+
+    for taxons in mostObsTaxs:
+        top_taxons.append(vmTaxrefRepository.searchEspece(connection, taxons['cd_ref']))
+        photos.append(vmMedias.getFirstPhoto(connection, taxons['cd_ref'], current_app.config["ATTR_MAIN_PHOTO"]))
+
+    stats_group=vmOrganismesRepository.getTaxonRepartitionOrganisme(connection, id_organisme)
 
     connection.close()
     db_session.close()
-
+    
     return render_template( 
         "templates/organismSheet/_main.html",
         nom_organisme = infos_organisme['nom_organisme'],
@@ -112,7 +115,9 @@ def ficheOrganisme(id_organisme):
 
         stat = stat,
         mostObsTaxs = mostObsTaxs,
-        top_taxons = top_taxons
+        top_taxons = top_taxons,
+        photos = photos,
+        stats_group = stats_group
     )
 
 

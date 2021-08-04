@@ -5,8 +5,7 @@
 
 {% block additionalHeaderAssets %}
 <!-- Bootstrap slider -->
-<link rel="stylesheet"
-    href="{{ url_for('static', filename='node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css') }}" />
 <script
     src="{{ url_for('static', filename='node_modules/bootstrap-slider/dist/bootstrap-slider.min.js') }}"></script>
 <!-- Bootstrap switch -->
@@ -18,7 +17,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/leaflet.markercluster/dist/MarkerCluster.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css') }}" />
 <!-- Leaflet snogylop -->
-<script src="{{url_for('static', filename='node_modules/lealeaflet.snogylop/src/leaflet.snogylop.js') }}"></script>
+<script src="{{url_for('static', filename='node_modules/leaflet.snogylop/src/leaflet.snogylop.js') }}"></script>
 <!-- ChartJS -->
 <script src="{{ url_for('static', filename='node_modules/chart.js/dist/Chart.min.js') }}"></script>
 
@@ -28,11 +27,18 @@
 {% endblock %}
 
 {% block additionalFooterAssets %}
+<script>
+    var dataset = {{ stats_group| tojson}};
+    var observationsPoint = [];
+    var observationsMaille = [];
+
+</script>
+
 <script src="{{ url_for('static', filename='node_modules/lightbox2/dist/js/lightbox.min.js') }}"></script>
 
 <script src="{{ url_for('static', filename='custom/maps-custom.js') }}"></script>
 <script src="{{ url_for('static', filename='ficheEspece.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='chart.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='chart_organism.js') }}"></script>
 
 <script src="{{ url_for('static', filename='mapGenerator.js') }}"></script>
 <script src="{{ url_for('static', filename='main.js') }}"></script>
@@ -45,15 +51,16 @@
 
 {% block content %}
     <div class="row">
+        <!-- Left row -->
         <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
             {% include 'templates/organismSheet/identityCard.html' %}
             {% include 'templates/organismSheet/statsInfos.html' %}
             {% include 'templates/organismSheet/mapObs.html' %}
         </div>
-
+        <!-- Right row -->
         <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
             {% include 'templates/organismSheet/topSpecie.html' %}
-            {% include 'templates/organismSheet/partsChart.html' %}
+            {% include 'templates/organismSheet/groupChart.html' %}
             {% include 'templates/organismSheet/blocInfos.html' %}
         </div>
     </div>

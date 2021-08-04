@@ -1,13 +1,12 @@
 {% block navbar %}
-test
 {% if configuration.MULTILINGUAL %}
-    <script type="text/javascript">
-        var language = '{{ '/' + CURRENT_LANGUAGE }}';
-    </script>
+<script type="text/javascript"> 
+    var language = '{{ '/' + CURRENT_LANGUAGE }}'; 
+</script>
 {% else %}
-    <script type="text/javascript">
-        var language = ''
-    </script>
+<script type="text/javascript"> 
+    var language = '' 
+</script>
 {% endif %}
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.1.0/css/flag-icon.min.css" rel="stylesheet">

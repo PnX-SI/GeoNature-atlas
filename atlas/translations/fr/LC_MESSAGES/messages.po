@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-07-30 16:52+0200\n"
+"POT-Creation-Date: 2021-08-03 12:45+0200\n"
 "PO-Revision-Date: 2021-07-19 09:53+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -17,10 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
-
-#: static/custom/templates/presentation.html:11
-msgid "My custom presentation"
-msgstr "Ma présentation personnalisée"
 
 #: templates/areaSheet/_main.html:6
 msgid "municipality.of"
@@ -56,29 +52,32 @@ msgstr "Voir la répartition sur le territoire"
 
 #: templates/core/listTaxons.html:80 templates/core/statHierarchy.html:5
 #: templates/home/globalStats.html:13 templates/home/lastObs.html:7
-#: templates/specieSheet/map.html:15
+#: templates/organismSheet/topSpecie.html:63 templates/specieSheet/map.html:15
 msgid "observation"
 msgstr "Observation"
 
 #: templates/core/listTaxons.html:81 templates/core/statHierarchy.html:5
 #: templates/core/tabTaxons.html:19 templates/home/globalStats.html:13
 #: templates/home/lastObs.html:7 templates/organismSheet/statsInfos.html:12
+#: templates/organismSheet/topSpecie.html:64
 #: templates/specieSheet/identityCard.html:131
 #: templates/specieSheet/map.html:15
 msgid "observations"
 msgstr "Observations"
 
-#: templates/core/listTaxons.html:82
+#: templates/core/listTaxons.html:82 templates/organismSheet/topSpecie.html:65
 msgid "last.obs.in"
 msgstr "Dernière observations les "
 
 #: templates/core/listTaxons.html:86 templates/core/tabTaxons.html:85
-#: templates/home/lastObs.html:42 templates/specieSheet/identityCard.html:173
+#: templates/home/lastObs.html:42 templates/organismSheet/topSpecie.html:69
+#: templates/specieSheet/identityCard.html:173
 msgid "check.specie.sheet"
 msgstr "Voir la fiche espèce"
 
 #: templates/core/listTaxons.html:87 templates/home/lastObs.html:43
 #: templates/home/mostViewNow.html:31 templates/home/taxoRank.html:57
+#: templates/organismSheet/topSpecie.html:70
 msgid "specie.sheet"
 msgstr "Fiche espèce"
 
@@ -86,12 +85,12 @@ msgstr "Fiche espèce"
 msgid "loading"
 msgstr "Chargement..."
 
-#: templates/core/navbar.html:24 templates/home/globalStats.html:29
+#: templates/core/navbar.html:35 templates/home/globalStats.html:29
 #: templates/photoGalery/_main.html:76
 msgid "search.specie"
 msgstr "Recherche par espèce"
 
-#: templates/core/navbar.html:37 templates/home/globalStats.html:48
+#: templates/core/navbar.html:48 templates/home/globalStats.html:48
 msgid "search.city"
 msgstr "Recherche par commune"
 
@@ -113,8 +112,7 @@ msgstr "Espèces"
 msgid "specie"
 msgstr "Espèce"
 
-#: templates/core/statHierarchy.html:12
-#: templates/organismSheet/statsInfos.html:17 templates/specieSheet/map.html:25
+#: templates/core/statHierarchy.html:12 templates/specieSheet/map.html:25
 #: templates/specieSheet/otherInformations.html:23
 msgid "observers"
 msgstr "Observateurs"
@@ -199,36 +197,35 @@ msgstr "A voir en ce moment"
 
 #: templates/home/mostViewNow.html:7
 msgid "species.most.obs.last.15.days"
-msgstr ""
-"Espèces les plus observées dans les 15 jours précédents et suivants "
-"aujourd'hui, toutes années confondues"
+msgstr "Espèces les plus observées dans les 15 jours précédents et suivants aujourd'hui, toutes années confondues"
 
 #: templates/home/taxoRank.html:8
 msgid "species.to.discover"
 msgstr "Espèces à découvrir"
 
 #: templates/organismSheet/blocInfos.html:4
-#, fuzzy
 msgid "other.informations"
-msgstr "Observations"
-
-#: templates/organismSheet/identityCard.html:4
-msgid "organism.name"
-msgstr "Nom de l'organisme"
-
-#: templates/organismSheet/mapLocation.html:5
-#, fuzzy
-msgid "map.location"
-msgstr "Statut de protection"
+msgstr "Autres informations"
 
 #: templates/organismSheet/mapObs.html:5
-#, fuzzy
 msgid "map.observations"
-msgstr "Observations"
+msgstr "Carte des observations"
+
+#: templates/organismSheet/partsChart.html:3
+msgid "part.graph"
+msgstr "Répartition des observations"
 
 #: templates/organismSheet/statsInfos.html:4
 msgid "organism.stats"
 msgstr "Données de l'organisme"
+
+#: templates/organismSheet/statsInfos.html:17
+msgid "atlas.participation"
+msgstr "Participation à l'atlas"
+
+#: templates/organismSheet/topSpecie.html:6
+msgid "top.specie"
+msgstr "Espèces les plus observées"
 
 #: templates/photoGalery/_main.html:64
 msgid "all.groups.tooltip"
@@ -305,11 +302,11 @@ msgstr "Première observation"
 
 #: templates/specieSheet/otherInformations.html:19
 msgid "organisms"
-msgstr ""
+msgstr "Organismes"
 
 #: templates/specieSheet/otherInformations.html:19
 msgid "organism"
-msgstr ""
+msgstr "Organisme"
 
 #: templates/specieSheet/otherInformations.html:35
 msgid "title"
@@ -319,14 +316,17 @@ msgstr "Titre"
 msgid "date"
 msgstr "Date"
 
-#: templates/specieSheet/otherInformations.html:135
-#, fuzzy
+#: templates/specieSheet/otherInformations.html:137
 msgid "check.organism.sheet"
-msgstr "Voir la fiche espèce"
+msgstr "Voir la fiche organisme"
 
-#: templates/specieSheet/otherInformations.html:136
+#: templates/specieSheet/otherInformations.html:138
 msgid "organism.sheet"
 msgstr "Fiche organisme"
+
+#: templates/taxoRankSheet/_main.html:47
+msgid "specie.obs.for.tax"
+msgstr "Observation pour le taxon"
 
 #~ msgid "last.obs.municipality"
 #~ msgstr "Dernière observation par commune"
@@ -336,4 +336,13 @@ msgstr "Fiche organisme"
 
 #~ msgid "last.7.days.obs"
 #~ msgstr "Les observations de ces 7 derniers jours"
+
+#~ msgid "My custom presentation"
+#~ msgstr "Ma présentation personnalisée"
+
+#~ msgid "organism.name"
+#~ msgstr "Nom de l'organisme"
+
+#~ msgid "map.location"
+#~ msgstr "Statut de protection"
 
