@@ -78,47 +78,49 @@ def especeMedias(image):
         + image
     )
 
-@main.route("/organisme/<int:id_organisme>", methods=["GET", "POST"])
-def ficheOrganisme(id_organisme):
-    db_session = utils.loadSession()
-    connection = utils.engine.connect()
+# Activating organisms sheets routes
+if config.ORGANISM_MODULE:
+    @main.route("/organisme/<int:id_organisme>", methods=["GET", "POST"])
+    def ficheOrganisme(id_organisme):
+        db_session = utils.loadSession()
+        connection = utils.engine.connect()
 
-    infos_organisme = vmOrganismesRepository.statOrganisme(connection, id_organisme)
-   
-    stat = vmObservationsRepository.statIndex(connection)
+        infos_organisme = vmOrganismesRepository.statOrganisme(connection, id_organisme)
     
-    mostObsTaxs=vmOrganismesRepository.topObsOrganism(connection, id_organisme)
+        stat = vmObservationsRepository.statIndex(connection)
+        
+        mostObsTaxs=vmOrganismesRepository.topObsOrganism(connection, id_organisme)
 
-    top_taxons=list()
-    photos=list()
+        top_taxons=list()
+        photos=list()
 
-    for taxons in mostObsTaxs:
-        top_taxons.append(vmTaxrefRepository.searchEspece(connection, taxons['cd_ref']))
-        photos.append(vmMedias.getFirstPhoto(connection, taxons['cd_ref'], current_app.config["ATTR_MAIN_PHOTO"]))
+        for taxons in mostObsTaxs:
+            top_taxons.append(vmTaxrefRepository.searchEspece(connection, taxons['cd_ref']))
+            photos.append(vmMedias.getFirstPhoto(connection, taxons['cd_ref'], current_app.config["ATTR_MAIN_PHOTO"]))
 
-    stats_group=vmOrganismesRepository.getTaxonRepartitionOrganisme(connection, id_organisme)
+        stats_group=vmOrganismesRepository.getTaxonRepartitionOrganisme(connection, id_organisme)
 
-    connection.close()
-    db_session.close()
-    
-    return render_template( 
-        "templates/organismSheet/_main.html",
-        nom_organisme = infos_organisme['nom_organisme'],
-        adresse_organisme = infos_organisme['adresse_organisme'],
-        cp_organisme = infos_organisme['cp_organisme'],
-        ville_organisme = infos_organisme['ville_organisme'],
-        tel_organisme = infos_organisme['tel_organisme'],
-        url_organisme = infos_organisme['url_organisme'],
-        url_logo = infos_organisme['url_logo'],
-        nb_taxons = infos_organisme['nb_taxons'],
-        nb_obs = infos_organisme['nb_obs'],
+        connection.close()
+        db_session.close()
+        
+        return render_template( 
+            "templates/organismSheet/_main.html",
+            nom_organisme = infos_organisme['nom_organisme'],
+            adresse_organisme = infos_organisme['adresse_organisme'],
+            cp_organisme = infos_organisme['cp_organisme'],
+            ville_organisme = infos_organisme['ville_organisme'],
+            tel_organisme = infos_organisme['tel_organisme'],
+            url_organisme = infos_organisme['url_organisme'],
+            url_logo = infos_organisme['url_logo'],
+            nb_taxons = infos_organisme['nb_taxons'],
+            nb_obs = infos_organisme['nb_obs'],
 
-        stat = stat,
-        mostObsTaxs = mostObsTaxs,
-        top_taxons = top_taxons,
-        photos = photos,
-        stats_group = stats_group
-    )
+            stat = stat,
+            mostObsTaxs = mostObsTaxs,
+            top_taxons = top_taxons,
+            photos = photos,
+            stats_group = stats_group
+        )
 
 
 @main.route(

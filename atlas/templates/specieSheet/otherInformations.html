@@ -14,10 +14,14 @@
                         <b>{{ communes|length }}</b> {{ _('municipalities') if communes|length > 1 else _('municipality') }}</a>
                     </li>
                 {% endif %}
-                <li class="nav-item"><a class="nav-link" {% if not configuration.ANONYMIZE %}data-toggle="tab"
-                    href="#organisms" {% endif %}>
-                <b>{{ organisms|length }} </b> {{ _('organisms') if organisms|length > 1 else _('organism') }}
-                </a></li>
+                
+                {% if config.ORGANISM_MODULE %}
+                    <li class="nav-item"><a class="nav-link" {% if not configuration.ANONYMIZE %}data-toggle="tab"
+                        href="#organisms" {% endif %}>
+                    <b>{{ organisms|length }} </b> {{ _('organisms') if organisms|length > 1 else _('organism') }}
+                    </a></li>
+                {% endif %}
+
                 <li class="nav-item"><a class="nav-link" {% if not configuration.ANONYMIZE %}data-toggle="tab"
                                         href="#observateurs" {% endif %}>
                     <b>{{ observers|length }} </b> {{ _('observers') if observers|length > 1 else _('observer') }}
@@ -100,6 +104,7 @@
                     </div>
                 {% endif %}
         
+                {% if configuration.ORGANISM_MODULE %}
                 <!-- organism tab -->
                     <div id="organisms" class="tab-pane fade flex-grow-1">
                         <ul class="list-group w-100">
@@ -143,6 +148,8 @@
                             {% endfor %}
                         </ul>
                     </div>
+                {% endif %}
+
             </div>
 
             </div>
