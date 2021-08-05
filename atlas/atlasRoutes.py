@@ -169,6 +169,8 @@ def index():
         customStat = []
         customStatMedias = []
 
+    lastDiscoveries=vmObservationsRepository.getLastDiscoveries(connection)
+
     connection.close()
     session.close()
 
@@ -179,6 +181,7 @@ def index():
         stat=stat,
         customStat=customStat,
         customStatMedias=customStatMedias,
+        lastDiscoveries=lastDiscoveries,
     )
 
 

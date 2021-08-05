@@ -7,6 +7,7 @@ from sqlalchemy.sql import text, func, or_
 
 from atlas.modeles import utils
 from atlas.utils import engine, GenericTable
+from atlas.modeles.repositories import vmMedias
 
 currentYear = datetime.now().year
 cached_vm_observation = None
@@ -296,3 +297,28 @@ def genericStatMedias(connection, tab):
         return None
     else:
         return tabStat
+
+def getLastDiscoveries(connection):
+    sql="""
+    SELECT date(min(dateobs)), vo.cd_ref, vt.lb_nom, vt.nom_vern, m.id_media, m.chemin, m.url 
+    FROM atlas.vm_observations vo 
+    JOIN atlas.vm_taxref vt ON vo.cd_ref = vt.cd_nom 
+    LEFT JOIN atlas.vm_medias m ON m.cd_ref=vo.cd_ref and m.id_type = :thisidtype
+    WHERE id_rang='ES'
+    GROUP BY vo.cd_ref, vt.lb_nom, vt.nom_vern, m.id_media, m.chemin, m.url 
+    ORDER BY min(dateobs) DESC
+    LIMIT 5
+    """
+    req = connection.execute(text(sql), thisidtype=current_app.config["ATTR_MAIN_PHOTO"])
+    lastDiscoveriesList= list()
+    for r in req :
+        temp = {
+            'date':r.date,
+            'cd_ref':r.cd_ref,
+            'nom_vern':r.nom_vern,
+            'lb_nom':r.lb_nom,
+            'id_media':r.id_media,
+            'media_path': r.chemin if r.chemin is not None else r.url
+        }
+        lastDiscoveriesList.append(temp)
+    return lastDiscoveriesList
