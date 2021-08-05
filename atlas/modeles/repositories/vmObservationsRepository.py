@@ -300,26 +300,25 @@ def genericStatMedias(connection, tab):
 
 def getLastDiscoveries(connection):
     sql="""
-    SELECT date(min(dateobs)), vo.cd_ref, vt.lb_nom, vt.nom_vern 
-    FROM atlas.vm_observations vo JOIN atlas.vm_taxref vt ON vo.cd_ref = vt.cd_nom 
-    WHERE vt.cd_nom in(
-    SELECT o.cd_ref 
-    FROM atlas.vm_observations o
-    GROUP BY o.cd_ref 
-    ORDER BY max(dateobs) DESC
+    SELECT date(min(dateobs)), vo.cd_ref, vt.lb_nom, vt.nom_vern, m.id_media, m.chemin, m.url 
+    FROM atlas.vm_observations vo 
+    JOIN atlas.vm_taxref vt ON vo.cd_ref = vt.cd_nom 
+    LEFT JOIN atlas.vm_medias m ON m.cd_ref=vo.cd_ref and m.id_type = :thisidtype
+    WHERE id_rang='ES'
+    GROUP BY vo.cd_ref, vt.lb_nom, vt.nom_vern, m.id_media, m.chemin, m.url 
+    ORDER BY min(dateobs) DESC
     LIMIT 5
-    )
-    GROUP BY vo.cd_ref, vt.lb_nom, vt.nom_vern 
     """
-    req = connection.execute(text(sql))
+    req = connection.execute(text(sql), thisidtype=current_app.config["ATTR_MAIN_PHOTO"])
     lastDiscoveriesList= list()
     for r in req :
-        
         temp = {
             'date':r.date,
             'cd_ref':r.cd_ref,
             'nom_vern':r.nom_vern,
-            'lb_nom':r.lb_nom
+            'lb_nom':r.lb_nom,
+            'id_media':r.id_media,
+            'media_path': r.chemin if r.chemin is not None else r.url
         }
         lastDiscoveriesList.append(temp)
     return lastDiscoveriesList
