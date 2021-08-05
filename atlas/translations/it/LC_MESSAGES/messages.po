@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-03 12:45+0200\n"
+"POT-Creation-Date: 2021-08-05 09:33+0200\n"
 "PO-Revision-Date: 2021-07-19 09:53+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
@@ -17,6 +17,23 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
+
+#: static/custom/templates/introduction.html:6
+msgid "welcome.message"
+msgstr "Benvenuti nell'atlante della fauna e della flora di"
+
+#: static/custom/templates/introduction.html:8
+msgid "home.introduction.message"
+msgstr ""
+
+#: static/custom/templates/introduction.html:11
+#: templates/specieSheet/blocInfos.html:17
+msgid "read.more"
+msgstr "Saperne di più"
+
+#: static/custom/templates/presentation.html:11
+msgid "My custom presentation"
+msgstr ""
 
 #: templates/areaSheet/_main.html:6
 msgid "municipality.of"
@@ -52,32 +69,32 @@ msgstr "Vedi ripartizione sul territorio"
 
 #: templates/core/listTaxons.html:80 templates/core/statHierarchy.html:5
 #: templates/home/globalStats.html:13 templates/home/lastObs.html:7
-#: templates/organismSheet/topSpecie.html:63 templates/specieSheet/map.html:15
+#: templates/organismSheet/topSpecie.html:60 templates/specieSheet/map.html:15
 msgid "observation"
 msgstr "Osservazione"
 
 #: templates/core/listTaxons.html:81 templates/core/statHierarchy.html:5
 #: templates/core/tabTaxons.html:19 templates/home/globalStats.html:13
 #: templates/home/lastObs.html:7 templates/organismSheet/statsInfos.html:12
-#: templates/organismSheet/topSpecie.html:64
+#: templates/organismSheet/topSpecie.html:60
 #: templates/specieSheet/identityCard.html:131
 #: templates/specieSheet/map.html:15
 msgid "observations"
 msgstr "Osservazioni"
 
-#: templates/core/listTaxons.html:82 templates/organismSheet/topSpecie.html:65
+#: templates/core/listTaxons.html:82
 msgid "last.obs.in"
 msgstr "Ultime osservazioni "
 
 #: templates/core/listTaxons.html:86 templates/core/tabTaxons.html:85
-#: templates/home/lastObs.html:42 templates/organismSheet/topSpecie.html:69
+#: templates/home/lastObs.html:42 templates/organismSheet/topSpecie.html:65
 #: templates/specieSheet/identityCard.html:173
 msgid "check.specie.sheet"
 msgstr "Guarda la scheda zone"
 
 #: templates/core/listTaxons.html:87 templates/home/lastObs.html:43
 #: templates/home/mostViewNow.html:31 templates/home/taxoRank.html:57
-#: templates/organismSheet/topSpecie.html:70
+#: templates/organismSheet/topSpecie.html:66
 msgid "specie.sheet"
 msgstr "Scheda delle specie"
 
@@ -85,12 +102,12 @@ msgstr "Scheda delle specie"
 msgid "loading"
 msgstr "Caricamento in corso..."
 
-#: templates/core/navbar.html:35 templates/home/globalStats.html:29
+#: templates/core/navbar.html:34 templates/home/globalStats.html:29
 #: templates/photoGalery/_main.html:76
 msgid "search.specie"
 msgstr "Cerca per specie"
 
-#: templates/core/navbar.html:48 templates/home/globalStats.html:48
+#: templates/core/navbar.html:47 templates/home/globalStats.html:48
 msgid "search.city"
 msgstr "Ricerca per comune"
 
@@ -212,14 +229,14 @@ msgstr "Specie da scoprire"
 msgid "other.informations"
 msgstr "Observatione mensual"
 
+#: templates/organismSheet/groupChart.html:3
+msgid "part.graph"
+msgstr ""
+
 #: templates/organismSheet/mapObs.html:5
 #, fuzzy
 msgid "map.observations"
 msgstr "Observatione mensual"
-
-#: templates/organismSheet/partsChart.html:3
-msgid "part.graph"
-msgstr ""
 
 #: templates/organismSheet/statsInfos.html:4
 msgid "organism.stats"
@@ -230,7 +247,7 @@ msgstr ""
 msgid "atlas.participation"
 msgstr "Divisione"
 
-#: templates/organismSheet/topSpecie.html:6
+#: templates/organismSheet/topSpecie.html:5
 #, fuzzy
 msgid "top.specie"
 msgstr "Specie"
@@ -256,10 +273,6 @@ msgstr "Informazioni sulle specie"
 #: templates/specieSheet/otherInformations.html:63
 msgid "description"
 msgstr "Descrizione"
-
-#: templates/specieSheet/blocInfos.html:17
-msgid "read.more"
-msgstr "Saperne di più"
 
 #: templates/specieSheet/blocInfos.html:19
 msgid "environment"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-03 12:45+0200\n"
+"POT-Creation-Date: 2021-08-05 09:33+0200\n"
 "PO-Revision-Date: 2021-07-19 09:53+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -17,6 +17,26 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
+
+#: static/custom/templates/introduction.html:6
+msgid "welcome.message"
+msgstr "Bienvenue sur l'atlas de la faune et de la flore"
+
+#: static/custom/templates/introduction.html:8
+msgid "home.introduction.message"
+msgstr "L'atlas ALCOTRA est le fruit d'une collaboration transfrontalière franco-italienne."
+" Issu de l'action WP4.2 du projet COBIODIV inclus dans le PITEM Biodiv'ALP, cet atlas a été mis en place par l'équipe SI du Parc National des Ecrins et Natural Solutions. <br/><br/>"
+"Cet atlas met à votre disposition les observations d'espèces sauvages réalisées dans la zone ALCOTRA. Les données sont issues de différentes structures présentées plus bas et possédant chacune leur fiche de présentation. <br/><br/>"
+ 
+
+#: static/custom/templates/introduction.html:11
+#: templates/specieSheet/blocInfos.html:17
+msgid "read.more"
+msgstr "En savoir plus"
+
+#: static/custom/templates/presentation.html:11
+msgid "My custom presentation"
+msgstr ""
 
 #: templates/areaSheet/_main.html:6
 msgid "municipality.of"
@@ -52,32 +72,32 @@ msgstr "Voir la répartition sur le territoire"
 
 #: templates/core/listTaxons.html:80 templates/core/statHierarchy.html:5
 #: templates/home/globalStats.html:13 templates/home/lastObs.html:7
-#: templates/organismSheet/topSpecie.html:63 templates/specieSheet/map.html:15
+#: templates/organismSheet/topSpecie.html:60 templates/specieSheet/map.html:15
 msgid "observation"
 msgstr "Observation"
 
 #: templates/core/listTaxons.html:81 templates/core/statHierarchy.html:5
 #: templates/core/tabTaxons.html:19 templates/home/globalStats.html:13
 #: templates/home/lastObs.html:7 templates/organismSheet/statsInfos.html:12
-#: templates/organismSheet/topSpecie.html:64
+#: templates/organismSheet/topSpecie.html:60
 #: templates/specieSheet/identityCard.html:131
 #: templates/specieSheet/map.html:15
 msgid "observations"
 msgstr "Observations"
 
-#: templates/core/listTaxons.html:82 templates/organismSheet/topSpecie.html:65
+#: templates/core/listTaxons.html:82
 msgid "last.obs.in"
 msgstr "Dernière observations les "
 
 #: templates/core/listTaxons.html:86 templates/core/tabTaxons.html:85
-#: templates/home/lastObs.html:42 templates/organismSheet/topSpecie.html:69
+#: templates/home/lastObs.html:42 templates/organismSheet/topSpecie.html:65
 #: templates/specieSheet/identityCard.html:173
 msgid "check.specie.sheet"
 msgstr "Voir la fiche espèce"
 
 #: templates/core/listTaxons.html:87 templates/home/lastObs.html:43
 #: templates/home/mostViewNow.html:31 templates/home/taxoRank.html:57
-#: templates/organismSheet/topSpecie.html:70
+#: templates/organismSheet/topSpecie.html:66
 msgid "specie.sheet"
 msgstr "Fiche espèce"
 
@@ -85,12 +105,12 @@ msgstr "Fiche espèce"
 msgid "loading"
 msgstr "Chargement..."
 
-#: templates/core/navbar.html:35 templates/home/globalStats.html:29
+#: templates/core/navbar.html:34 templates/home/globalStats.html:29
 #: templates/photoGalery/_main.html:76
 msgid "search.specie"
 msgstr "Recherche par espèce"
 
-#: templates/core/navbar.html:48 templates/home/globalStats.html:48
+#: templates/core/navbar.html:47 templates/home/globalStats.html:48
 msgid "search.city"
 msgstr "Recherche par commune"
 
@@ -197,7 +217,9 @@ msgstr "A voir en ce moment"
 
 #: templates/home/mostViewNow.html:7
 msgid "species.most.obs.last.15.days"
-msgstr "Espèces les plus observées dans les 15 jours précédents et suivants aujourd'hui, toutes années confondues"
+msgstr ""
+"Espèces les plus observées dans les 15 jours précédents et suivants "
+"aujourd'hui, toutes années confondues"
 
 #: templates/home/taxoRank.html:8
 msgid "species.to.discover"
@@ -207,13 +229,13 @@ msgstr "Espèces à découvrir"
 msgid "other.informations"
 msgstr "Autres informations"
 
+#: templates/organismSheet/groupChart.html:3
+msgid "part.graph"
+msgstr "Répartition des observations"
+
 #: templates/organismSheet/mapObs.html:5
 msgid "map.observations"
 msgstr "Carte des observations"
-
-#: templates/organismSheet/partsChart.html:3
-msgid "part.graph"
-msgstr "Répartition des observations"
 
 #: templates/organismSheet/statsInfos.html:4
 msgid "organism.stats"
@@ -223,7 +245,7 @@ msgstr "Données de l'organisme"
 msgid "atlas.participation"
 msgstr "Participation à l'atlas"
 
-#: templates/organismSheet/topSpecie.html:6
+#: templates/organismSheet/topSpecie.html:5
 msgid "top.specie"
 msgstr "Espèces les plus observées"
 
@@ -248,10 +270,6 @@ msgstr "Informations espèce"
 #: templates/specieSheet/otherInformations.html:63
 msgid "description"
 msgstr "Description"
-
-#: templates/specieSheet/blocInfos.html:17
-msgid "read.more"
-msgstr "En savoir plus"
 
 #: templates/specieSheet/blocInfos.html:19
 msgid "environment"
