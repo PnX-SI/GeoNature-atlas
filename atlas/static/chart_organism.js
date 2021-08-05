@@ -1,6 +1,4 @@
 // ChartJS Graphs
-
-Chart.defaults.global.defaultFontSize = 12;
 const chartMainColor = getComputedStyle(document.documentElement).getPropertyValue('--main-color');
 const chartHoverMainColor = getComputedStyle(document.documentElement).getPropertyValue('--second-color');
 
@@ -11,21 +9,6 @@ const getChartDatas = function (data, key) {
     }
     return values
 };
-
-const createColor = function(data) {
-    let colors = [];
-    for (var i = 0; i < data.length; i++) {
-        if(i%2==0){
-            colors.push(chartMainColor);  
-        } else {
-            colors.push(chartHoverMainColor);  
-        }
-        
-    
-    }
-    return colors
-};
-
 
 //Circle graph for parts graph
 circleChart = function (element, labels, values, colors) {
@@ -43,16 +26,37 @@ circleChart = function (element, labels, values, colors) {
           responsive: true,
           plugins: {
             legend: {
-              position: 'top',
+              position: 'left',
             },
-            title: {
-              display: true,
-              text: 'Parts des observations totales'
-            }
           }
         },
     })
 };
 
+var color_tab = [
+    '#e7d51d',
+    '#ded01f',
+    '#d5ca20',
+    '#cdc521',
+    '#c4c022',
+    '#bcba24',
+    '#b4b524',
+    '#acaf25',
+    '#a4aa26',
+    '#9da427',
+    '#959f27',
+    '#8e9a28',
+    '#879428',
+    '#808f28',
+    '#7a8928',
+    '#738428',
+    '#6d7e28',
+    '#677928',
+    '#617328',
+    '#5b6e27',
+    '#556827',
+    '#506326'
+  ];
+
 var groupChartElement = document.getElementById('groupChart');
-const groupChart = circleChart(groupChartElement, getChartDatas(dataset, 'group2_inpn'), getChartDatas(dataset, 'nb_obs_group'), createColor(dataset));
+const groupChart = circleChart(groupChartElement, getChartDatas(dataset, 'group2_inpn'), getChartDatas(dataset, 'nb_obs_group'), color_tab);
