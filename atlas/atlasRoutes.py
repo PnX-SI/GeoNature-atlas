@@ -20,7 +20,7 @@ from atlas import utils
 from atlas.configuration import config
 from atlas.modeles.entities import vmTaxons, vmCommunes
 from atlas.modeles.repositories import (
-    vmOrganismesRepository,
+    vmOrganismsRepository,
     vmTaxonsRepository,
     vmObservationsRepository,
     vmAltitudesRepository,
@@ -80,16 +80,16 @@ def especeMedias(image):
 
 # Activating organisms sheets routes
 if config.ORGANISM_MODULE:
-    @main.route("/organisme/<int:id_organisme>", methods=["GET", "POST"])
-    def ficheOrganisme(id_organisme):
+    @main.route("/organism/<int:id_organism>", methods=["GET", "POST"])
+    def ficheOrganism(id_organism):
         db_session = utils.loadSession()
         connection = utils.engine.connect()
 
-        infos_organisme = vmOrganismesRepository.statOrganisme(connection, id_organisme)
+        infos_organism = vmOrganismsRepository.statOrganism(connection, id_organism)
     
         stat = vmObservationsRepository.statIndex(connection)
         
-        mostObsTaxs=vmOrganismesRepository.topObsOrganism(connection, id_organisme)
+        mostObsTaxs=vmOrganismsRepository.topObsOrganism(connection, id_organism)
 
         top_taxons=list()
         photos=list()
@@ -98,22 +98,22 @@ if config.ORGANISM_MODULE:
             top_taxons.append(vmTaxrefRepository.searchEspece(connection, taxons['cd_ref']))
             photos.append(vmMedias.getFirstPhoto(connection, taxons['cd_ref'], current_app.config["ATTR_MAIN_PHOTO"]))
 
-        stats_group=vmOrganismesRepository.getTaxonRepartitionOrganisme(connection, id_organisme)
+        stats_group=vmOrganismsRepository.getTaxonRepartitionOrganism(connection, id_organism)
 
         connection.close()
         db_session.close()
         
         return render_template( 
             "templates/organismSheet/_main.html",
-            nom_organisme = infos_organisme['nom_organisme'],
-            adresse_organisme = infos_organisme['adresse_organisme'],
-            cp_organisme = infos_organisme['cp_organisme'],
-            ville_organisme = infos_organisme['ville_organisme'],
-            tel_organisme = infos_organisme['tel_organisme'],
-            url_organisme = infos_organisme['url_organisme'],
-            url_logo = infos_organisme['url_logo'],
-            nb_taxons = infos_organisme['nb_taxons'],
-            nb_obs = infos_organisme['nb_obs'],
+            nom_organism = infos_organism['nom_organism'],
+            adresse_organism = infos_organism['adresse_organism'],
+            cp_organism = infos_organism['cp_organism'],
+            ville_organism = infos_organism['ville_organism'],
+            tel_organism = infos_organism['tel_organism'],
+            url_organism = infos_organism['url_organism'],
+            url_logo = infos_organism['url_logo'],
+            nb_taxons = infos_organism['nb_taxons'],
+            nb_obs = infos_organism['nb_obs'],
 
             stat = stat,
             mostObsTaxs = mostObsTaxs,
@@ -273,7 +273,7 @@ def ficheEspece(cd_ref):
     )
     observers = vmObservationsRepository.getObservers(connection, cd_ref)
 
-    organisms = vmOrganismesRepository.getListOrganisme(connection, cd_ref)
+    organisms = vmOrganismsRepository.getListOrganism(connection, cd_ref)
 
 
     connection.close()

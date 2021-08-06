@@ -10,7 +10,6 @@
 
 -- WARNING: you must set "ref_geo.l_areas.centroid" column on geonature2db database
 -- before executing this script !
-
 -- WARNING: contient un paramètre :'type_territoire' qu'il faut remplacer par le 
 -- type de territoire défini dans /configuration/settings.ini.
 -- Exemple de lancement :
@@ -34,6 +33,7 @@ DROP MATERIALIZED VIEW IF EXISTS atlas.vm_altitudes;
 DROP MATERIALIZED VIEW IF EXISTS atlas.vm_observations_mailles;
 DROP MATERIALIZED VIEW IF EXISTS atlas.vm_observations;
 DROP MATERIALIZED VIEW IF EXISTS atlas.t_subdivided_territory;
+DROP MATERIALIZED VIEW IF EXISTS atlas.vm_organisms;
 
 ---------------------------------------------
 -- MODIFIER VOUS-MEME LE SCRIPT CI-DESSOUS --

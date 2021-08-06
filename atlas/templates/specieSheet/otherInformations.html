@@ -110,13 +110,13 @@
                         <ul class="list-group w-100">
                             {% for o in organisms %}
                                 <li id="organismListItem" class="media border-bottom p-2" 
-                                    id_organisme="{{ o['nom_organisme'] }}">
+                                    id_organism="{{ o['nom_organism'] }}">
                                 <div class="pictoImgList mr-2" data-toggle="tooltip" data-original-title="{{ taxon.group2_inpn }}"
                                  data-placement="right">
                                     <span class="float-right"></span>
                                     <div class="pictoImgList mr-2" data-toggle="tooltip" data-original-title="{{ taxon.group2_inpn }}"
                                     data-placement="right">
-                                        <a href="{{ o['url_organisme'] }}" target="_blank">
+                                        <a href="{{ o['url_organism'] }}" target="_blank">
                                             {% if o['url_logo']!= None %}
                                             <img class="mx-auto d-block"
                                             src="{{ o['url_logo'] }}" style='width:100px'
@@ -129,7 +129,7 @@
                                 <div class="media-body">
                                     <span class="float-right"></span>
                                     <h5 class="mt-0 mb-1 ">
-                                        <span id="name"><b>{{ o['nom_organisme'] }}</b></span>
+                                        <span id="name"><b>{{ o['nom_organism'] }}</b></span>
                                     </h5>
 
                                     <strong>Participation à {{ o['nb_observation']}} Observations</strong>
@@ -137,7 +137,7 @@
                                     <br>
                                     <br>
                                     <span class="float-right">   
-                                        <h3><a class="badge badge-primary" href="{{ url_for('main.ficheOrganisme', id_organisme=o['id_organisme']) }}"
+                                        <h3><a class="badge badge-primary" href="{{ url_for('main.ficheOrganism', id_organism=o['id_organism']) }}"
                                             data-toggle="tooltip"
                                             title="{{ _('check.organism.sheet') }}" data-placement="left">
                                          <i class="fas fa-list fa-fw"></i> {{ _('organism.sheet') }}</i>

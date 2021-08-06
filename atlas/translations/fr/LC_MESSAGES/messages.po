@@ -239,7 +239,7 @@ msgstr "Carte des observations"
 
 #: templates/organismSheet/statsInfos.html:4
 msgid "organism.stats"
-msgstr "Données de l'organisme"
+msgstr "Données de l'organism"
 
 #: templates/organismSheet/statsInfos.html:17
 msgid "atlas.participation"
@@ -320,11 +320,11 @@ msgstr "Première observation"
 
 #: templates/specieSheet/otherInformations.html:19
 msgid "organisms"
-msgstr "Organismes"
+msgstr "Organisms"
 
 #: templates/specieSheet/otherInformations.html:19
 msgid "organism"
-msgstr "Organisme"
+msgstr "Organism"
 
 #: templates/specieSheet/otherInformations.html:35
 msgid "title"
@@ -336,11 +336,11 @@ msgstr "Date"
 
 #: templates/specieSheet/otherInformations.html:137
 msgid "check.organism.sheet"
-msgstr "Voir la fiche organisme"
+msgstr "Voir la fiche organism"
 
 #: templates/specieSheet/otherInformations.html:138
 msgid "organism.sheet"
-msgstr "Fiche organisme"
+msgstr "Fiche organism"
 
 #: templates/taxoRankSheet/_main.html:47
 msgid "specie.obs.for.tax"
@@ -359,7 +359,7 @@ msgstr "Observation pour le taxon"
 #~ msgstr "Ma présentation personnalisée"
 
 #~ msgid "organism.name"
-#~ msgstr "Nom de l'organisme"
+#~ msgstr "Nom de l'organism"
 
 #~ msgid "map.location"
 #~ msgstr "Statut de protection"
