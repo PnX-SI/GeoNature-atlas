@@ -24,7 +24,9 @@ msgstr "Welcome to the fauna and flora atlas"
 
 #: static/custom/templates/introduction.html:8
 msgid "home.introduction.message"
-msgstr "Test"
+msgstr "The ALCOTRA atlas is the result of a Franco-Italian cross-border collaboration."
+"Resulting from action WP4.2 of the COBIODIV project included in the PITEM Biodiv'ALP, this atlas was set up by the Ecrins National Park IS team and Natural Solutions. <br/><br/>"
+"This atlas puts at your disposal the observations of wild species made in the ALCOTRA area. The data come from different structures presented below, each with its own presentation sheet. <br/><br/>"
 
 #: static/custom/templates/introduction.html:11
 #: templates/specieSheet/blocInfos.html:17
@@ -33,7 +35,7 @@ msgstr "Read more"
 
 #: static/custom/templates/presentation.html:11
 msgid "My custom presentation"
-msgstr ""
+msgstr "My custom presentation"
 
 #: templates/areaSheet/_main.html:6
 msgid "municipality.of"
@@ -214,8 +216,7 @@ msgstr "See at the moment"
 
 #: templates/home/mostViewNow.html:7
 msgid "species.most.obs.last.15.days"
-msgstr ""
-"Most common species observed in the 15 days before and after today, all "
+msgstr "Most common species observed in the 15 days before and after today, all "
 "years combined"
 
 #: templates/home/taxoRank.html:8
@@ -228,7 +229,7 @@ msgstr "Autres informations"
 
 #: templates/organismSheet/groupChart.html:3
 msgid "part.graph"
-msgstr ""
+msgstr "Family repartiio    "
 
 #: templates/organismSheet/mapObs.html:5
 msgid "map.observations"
@@ -239,14 +240,12 @@ msgid "organism.stats"
 msgstr "Numbers"
 
 #: templates/organismSheet/statsInfos.html:17
-#, fuzzy
 msgid "atlas.participation"
-msgstr "Distribution"
+msgstr "Atlas participation"
 
 #: templates/organismSheet/topSpecies.html:5
-#, fuzzy
 msgid "top.specie"
-msgstr "specie"
+msgstr "Most observed species"
 
 #: templates/photoGalery/_main.html:64
 msgid "all.groups.tooltip"
@@ -342,16 +341,5 @@ msgid "organism.sheet"
 msgstr "Organism sheet"
 
 #: templates/taxoRankSheet/_main.html:47
-#, fuzzy
 msgid "specie.obs.for.tax"
-msgstr "Specie sheet"
-
-#~ msgid "My custom presentation"
-#~ msgstr "My custom presentation"
-
-#~ msgid "organism.name"
-#~ msgstr "Organism's name"
-
-#~ msgid "map.location"
-#~ msgstr ""
-
+msgstr "Osservazioni specifiche per questo taxon"

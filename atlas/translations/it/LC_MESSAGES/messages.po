@@ -24,8 +24,10 @@ msgstr "Benvenuti nell'atlante della fauna e della flora di"
 
 #: static/custom/templates/introduction.html:8
 msgid "home.introduction.message"
-msgstr ""
-
+msgstr "L'atlante ALCOTRA è il risultato di una collaborazione transfrontaliera franco-italiana".
+"Frutto dell'azione WP4.2 del progetto COBIODIV incluso nel PITEM Biodiv'ALP, questo atlante è stato realizzato dal team IS del Parco Nazionale degli Ecrins e da Natural Solutions. <br/><br/>"
+"Questo atlante ti fornisce le osservazioni di specie selvatiche fatte nell'area ALCOTRA. I dati provengono da diverse strutture presentate di seguito, ognuna con la propria scheda di presentazione. <br/><br/>"
+ 
 #: static/custom/templates/introduction.html:11
 #: templates/specieSheet/blocInfos.html:17
 msgid "read.more"
@@ -33,7 +35,7 @@ msgstr "Saperne di più"
 
 #: static/custom/templates/presentation.html:11
 msgid "My custom presentation"
-msgstr ""
+msgstr "La mia presentazione personalizzata"
 
 #: templates/areaSheet/_main.html:6
 msgid "municipality.of"
@@ -131,15 +133,8 @@ msgstr "Specie"
 
 #: templates/core/statHierarchy.html:12 templates/specieSheet/map.html:25
 #: templates/specieSheet/otherInformations.html:23
-#, fuzzy
-msgid "observers"
-msgstr "Osservatori"
-
-#: templates/core/statHierarchy.html:12 templates/specieSheet/map.html:25
-#: templates/specieSheet/otherInformations.html:23
-#, fuzzy
 msgid "observer"
-msgstr "Osservatore"
+msgstr "Osservatori"
 
 #: templates/core/tabTaxons.html:7
 msgid "group"
@@ -216,41 +211,35 @@ msgstr "Da vedere ora"
 
 #: templates/home/mostViewNow.html:7
 msgid "species.most.obs.last.15.days"
-msgstr ""
-"Specie più osservate nei 15 giorni prima e dopo oggi, tutti gli anni "
-"combinati"
+msgstr "Specie più osservate nei 15 giorni prima e dopo oggi, tutti gli anni combinati"
 
 #: templates/home/taxoRank.html:8
 msgid "species.to.discover"
 msgstr "Specie da scoprire"
 
 #: templates/organismSheet/blocInfos.html:4
-#, fuzzy
 msgid "other.informations"
-msgstr "Observatione mensual"
+msgstr "Altre informazioni"
 
 #: templates/organismSheet/groupChart.html:3
 msgid "part.graph"
-msgstr ""
+msgstr "Distribuzione delle osservazioni per famiglia"
 
 #: templates/organismSheet/mapObs.html:5
-#, fuzzy
 msgid "map.observations"
 msgstr "Observatione mensual"
 
 #: templates/organismSheet/statsInfos.html:4
 msgid "organism.stats"
-msgstr ""
+msgstr "Statistiche dell'organizzazione"
 
 #: templates/organismSheet/statsInfos.html:17
-#, fuzzy
 msgid "atlas.participation"
-msgstr "Divisione"
+msgstr "Partecipazione dell'Atlante"
 
 #: templates/organismSheet/topSpecies.html:5
-#, fuzzy
 msgid "top.specie"
-msgstr "Specie"
+msgstr "Specie più comunemente osservate"
 
 #: templates/photoGalery/_main.html:64
 msgid "all.groups.tooltip"
@@ -323,11 +312,11 @@ msgstr "Prima osservazione"
 
 #: templates/specieSheet/otherInformations.html:19
 msgid "organisms"
-msgstr ""
+msgstr "Organizzazioni"
 
 #: templates/specieSheet/otherInformations.html:19
 msgid "organism"
-msgstr ""
+msgstr "Organizzazione"
 
 #: templates/specieSheet/otherInformations.html:35
 msgid "title"
@@ -339,22 +328,18 @@ msgstr "Datato"
 
 #: templates/specieSheet/otherInformations.html:137
 msgid "check.organism.sheet"
-msgstr ""
+msgstr "Vedere il foglio delle specie"
 
 #: templates/specieSheet/otherInformations.html:138
 msgid "organism.sheet"
-msgstr ""
+msgstr "Scheda organismo"
 
 #: templates/taxoRankSheet/_main.html:47
-#, fuzzy
 msgid "specie.obs.for.tax"
-msgstr "Scheda delle specie"
+msgstr "Scheda delle specie per taxon"
 
 #~ msgid "My custom presentation"
 #~ msgstr "La mia presentazione personalizzata"
-
-#~ msgid "leaflet-fullscreen/"
-#~ msgstr ""
 
 #~ msgid "last.obs.municipality"
 #~ msgstr "Ultima osservazione per comune"
@@ -364,10 +349,4 @@ msgstr "Scheda delle specie"
 
 #~ msgid "last.7.days.obs"
 #~ msgstr "Osservazioni degli ultimi 7 giorni"
-
-#~ msgid "organism.name"
-#~ msgstr ""
-
-#~ msgid "map.location"
-#~ msgstr ""
 

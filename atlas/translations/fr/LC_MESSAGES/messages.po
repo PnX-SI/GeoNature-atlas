@@ -36,7 +36,7 @@ msgstr "En savoir plus"
 
 #: static/custom/templates/presentation.html:11
 msgid "My custom presentation"
-msgstr ""
+msgstr "Ma présentation personnalisée"
 
 #: templates/areaSheet/_main.html:6
 msgid "municipality.of"
@@ -217,9 +217,7 @@ msgstr "A voir en ce moment"
 
 #: templates/home/mostViewNow.html:7
 msgid "species.most.obs.last.15.days"
-msgstr ""
-"Espèces les plus observées dans les 15 jours précédents et suivants "
-"aujourd'hui, toutes années confondues"
+msgstr "Espèces les plus observées dans les 15 jours précédents et suivants aujourd'hui, toutes années confondues"
 
 #: templates/home/taxoRank.html:8
 msgid "species.to.discover"
@@ -231,7 +229,7 @@ msgstr "Autres informations"
 
 #: templates/organismSheet/groupChart.html:3
 msgid "part.graph"
-msgstr "Répartition des observations"
+msgstr "Répartition des observations par famille"
 
 #: templates/organismSheet/mapObs.html:5
 msgid "map.observations"
