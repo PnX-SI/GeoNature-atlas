@@ -52,12 +52,13 @@
         <!-- Dernières espèces observées (Carte et liste) -->
         {% include 'templates/home/lastObs.html' %}
     {% endif %}
+    
+    <!--Nouvelles espèces observées-->
+    {% include 'templates/home/newSpecies.html' %}
 
     {% if configuration.AFFICHAGE_EN_CE_MOMENT %}
         <!-- ESPECES PERIODE -->
         {% include 'templates/home/mostViewNow.html' %}
     {% endif %}
-
-
 
 {% endblock %}
