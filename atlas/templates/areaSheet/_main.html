@@ -18,12 +18,10 @@
     <script src="{{ url_for('static', filename='node_modules/leaflet.markercluster/dist/leaflet.markercluster.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/leaflet.markercluster/dist/MarkerCluster.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css') }}"/>
-
     <!-- DataTable -->
     <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/datatables.net-bs4/css/dataTables.bootstrap4.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/listEspeces.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/icones.css') }}"/>
-
 {% endblock %}
 
 
@@ -63,11 +61,8 @@
                 {% else %}
                     <h4><b>{{ areaInfos.typeName }} - {{ areaInfos.areaName }}</b></h4>
                 {% endif %}
-
                 {% include 'templates/core/statHierarchy.html' %}
-
             </div>
-
             {% include 'templates/core/listTaxons.html' %}
         </div>
         <div class="col-12 col-xl-8 col-lg-7 col-md-6 d-flex flex-column m-0 p-0">

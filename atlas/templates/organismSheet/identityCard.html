@@ -1,27 +1,25 @@
 {% block identityCard %}
-    <div class="card mt-4" id="identityCard">
-        <div class="row" id="rowIdentity">
-            <!-- Logo -->
-            <div class="imgWrapper  left">
-                <span class="fas fa-search" id="zoomPhotos"></span>
-                <a href="{{ url_organisme }}" data-lightbox="imageSet">
-                    {% if url_logo != none %}
-                    <img id="mainImg" 
-                    src='{{ url_logo }}'
-                    style="width: 200px;">
-                    {% endif %}
-                </a>
-            </div>
-            <div class="left col-9  ">
-            <h1>
-                <strong>{{ nom_organisme }}</strong>
-            </h1>
-                <br>Région/département rattaché : {{ adresse_organisme}} {{ cp_organisme }}
-                <br>Téléphone : {{ tel_organisme }}
-                <br>Description
-            </div>
-        </div>
-        
-       
-    </div>
+	<div class="card mt-4" id="identityCard">
+		<div class="row" id="rowIdentity">
+			<!-- Logo -->
+			<div class="imgWrapper  left">
+				<span class="fas fa-search" id="zoomPhotos"></span>
+				<a href="{{ url_organisme }}" data-lightbox="imageSet">
+					{% if url_logo != none %}
+					<img id="mainImg" 
+					src='{{ url_logo }}'
+					style="width: 200px;">
+					{% endif %}
+				</a>
+			</div>
+			<div class="left col-9  ">
+			<h1>
+				<strong>{{ nom_organisme }}</strong>
+			</h1>
+				<br>Région/département rattaché : {{ adresse_organisme}} {{ cp_organisme }}
+				<br>Téléphone : {{ tel_organisme }}
+				<br>Description
+			</div>
+		</div>
+	</div>
 {% endblock %}
