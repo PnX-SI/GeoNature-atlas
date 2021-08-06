@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-06 15:03+0200\n"
+"POT-Creation-Date: 2021-08-06 15:08+0200\n"
 "PO-Revision-Date: 2021-07-12 12:12+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -260,6 +260,11 @@ msgstr "Atlas participation"
 #: templates/organismSheet/topSpecies.html:5
 msgid "top.specie"
 msgstr "Most observed species"
+
+#: templates/organismSheet/topSpecies.html:61
+#, fuzzy
+msgid "from.organism.observations"
+msgstr "of the organism's observations"
 
 #: templates/photoGalery/_main.html:64
 msgid "all.groups.tooltip"

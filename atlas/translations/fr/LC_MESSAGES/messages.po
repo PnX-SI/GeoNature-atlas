@@ -4,11 +4,11 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
 #
 msgid ""
-msgstr ""pybabel compile -d translations
+msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-06 15:03+0200\n"
-"PO-Revision-Date: 2021-07-19 09:53+0200\n"
+"POT-Creation-Date: 2021-08-06 15:08+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
 "Language-Team: fr <LL@li.org>\n"
@@ -260,6 +260,10 @@ msgstr "Participation à l'atlas"
 #: templates/organismSheet/topSpecies.html:5
 msgid "top.specie"
 msgstr "Espèces les plus observées"
+
+#: templates/organismSheet/topSpecies.html:61
+msgid "from.organism.observations"
+msgstr "des observations de l'organisme"
 
 #: templates/photoGalery/_main.html:64
 msgid "all.groups.tooltip"

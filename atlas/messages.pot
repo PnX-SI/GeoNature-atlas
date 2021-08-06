@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-06 15:03+0200\n"
+"POT-Creation-Date: 2021-08-06 15:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -249,6 +249,10 @@ msgstr ""
 
 #: templates/organismSheet/topSpecies.html:5
 msgid "top.specie"
+msgstr ""
+
+#: templates/organismSheet/topSpecies.html:61
+msgid "from.organism.observations"
 msgstr ""
 
 #: templates/photoGalery/_main.html:64

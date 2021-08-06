@@ -58,7 +58,7 @@
                         </h5>
     
                         <b>{{ mostObsTaxs[top_taxons.index(taxon)]['nb_obs']}}</b> {% if taxon['taxonSearch']['nb_obs'] == 1 %}{{_ ('observation')}}{% else %}{{_ ('observations')}}{% endif %} <br>
-                        Représente <b>{{ "%.2f"|format(mostObsTaxs[top_taxons.index(taxon)]['nb_obs'] / nb_obs*100) }}% </b>des observations de l'organism.
+                        <b>{{ "%.2f"|format(mostObsTaxs[top_taxons.index(taxon)]['nb_obs'] / nb_obs*100) }}% </b>{{ _('from.organism.observations') }}
                         <span class="float-right">
                         <a class="badge badge-primary" href="{{ url_for('main.ficheEspece',cd_ref=mostObsTaxs[top_taxons.index(taxon)]['cd_ref']) }}"
                            data-toggle="tooltip"
@@ -66,7 +66,7 @@
                             <i class="fas fa-list fa-fw"></i> {{ _('specie.sheet') }}</i>
                         </a>
                         </span>
-    
+
                     </div>
                 {% endfor %}
             </ul>
