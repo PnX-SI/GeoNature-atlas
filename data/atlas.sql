@@ -18,7 +18,7 @@ CREATE INDEX ON atlas.vm_taxref (nom_valide);
 
 -- Materialized View: atlas.vm_observations
 --DROP materialized view atlas.vm_observations;
- CREATE MATERIALIZED VIEW atlas.vm_observations AS
+CREATE MATERIALIZED VIEW atlas.vm_observations AS
 	SELECT s.id_synthese AS id_observation,
 		s.insee,
 		s.dateobs,
@@ -30,8 +30,8 @@ CREATE INDEX ON atlas.vm_taxref (nom_valide);
 		st_asgeojson(s.the_geom_point) AS geojson_point,
 		s.diffusion_level
 	FROM synthese.syntheseff s
-		LEFT JOIN atlas.vm_taxref tx ON tx.cd_nom = s.cd_nom
-WITH DATA;
+  LEFT JOIN atlas.vm_taxref tx ON tx.cd_nom = s.cd_nom
+  WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_observations (id_observation);
 CREATE INDEX ON atlas.vm_observations (cd_ref);
