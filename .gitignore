@@ -1,9 +1,7 @@
 *.pyc
-<<<<<<< HEAD
 log/*
 atlas/static/conf/custom.js
 atlas/debug.py
-
 robots.txt
 .htaccess
 venv/*
@@ -11,12 +9,6 @@ venv3/*
 
 atlas/configuration/config.py
 atlas/configuration/settings.ini
-=======
-atlas/debug.py
-
-atlas/configuration/settings.ini
-atlas/configuration/config.py
->>>>>>> dev-cobiodiv-specie-improve
 
 atlas/static/conf/custom.js
 atlas/static/territoire.json
