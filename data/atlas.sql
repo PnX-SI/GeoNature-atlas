@@ -24,13 +24,13 @@ CREATE INDEX ON atlas.vm_taxref (nom_valide);
 		s.dateobs,
 		s.observateurs,
 		s.altitude_retenue,
-		s.the_geom_point AS the_geom_point,
+		s.the_geom_point,
 		s.effectif_total,
 		tx.cd_ref,
 		st_asgeojson(s.the_geom_point) AS geojson_point,
 		s.diffusion_level
-	FROM synthese.syntheseff AS s
-		LEFT JOIN atlas.vm_taxref AS tx ON tx.cd_nom = s.cd_nom
+	FROM synthese.syntheseff s
+		LEFT JOIN atlas.vm_taxref tx ON tx.cd_nom = s.cd_nom
 WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_observations (id_observation);

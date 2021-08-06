@@ -105,8 +105,8 @@ TABLESPACE pg_default
 AS 
 	WITH d AS (
 		SELECT st_union(l.geom) AS st_union
-		FROM ref_geo.l_areas AS l
-			JOIN ref_geo.bib_areas_types AS b USING (id_type)
+		FROM ref_geo.l_areas l
+			JOIN ref_geo.bib_areas_types b USING (id_type)
 		WHERE replace(b.type_code::text, ' '::text, '_'::text) = :'type_territoire'
 		GROUP BY b.type_name
 	)

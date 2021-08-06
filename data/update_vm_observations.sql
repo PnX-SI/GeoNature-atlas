@@ -47,13 +47,13 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
 		s.dateobs,
 		s.observateurs,
 		s.altitude_retenue,
-		s.the_geom_point::geometry(Point,3857) AS the_geom_point,
+		s.the_geom_point::geometry(Point,3857),
 		s.effectif_total,
 		tx.cd_ref,
 		st_asgeojson(st_transform(st_setsrid(s.the_geom_point, 3857), 4326)) AS geojson_point,
 		s.diffusion_level
-	FROM synthese.syntheseff AS s
-		LEFT JOIN atlas.vm_taxref AS tx ON tx.cd_nom = s.cd_nom
+	FROM synthese.syntheseff s
+		LEFT JOIN atlas.vm_taxref tx ON tx.cd_nom = s.cd_nom
 	WHERE EXISTS (
 		SELECT 'X' 
 		FROM atlas.t_subdivided_territory AS m 
