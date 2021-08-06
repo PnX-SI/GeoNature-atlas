@@ -42,14 +42,14 @@ def topObsOrganism(connection, id_organisme):
     LIMIT 3
     """
     req = connection.execute(text(sql), thisidorganisme=id_organisme)
-    topSpecie = list()
+    topSpecies = list()
     for r in req:
         temp={
             'cd_ref':r.cd_ref,
             'nb_obs':r.nb_obs,
         }
-        topSpecie.append(temp)
-    return topSpecie
+        topSpecies.append(temp)
+    return topSpecies
 
 
 

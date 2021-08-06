@@ -69,14 +69,14 @@ msgstr "Vedi ripartizione sul territorio"
 
 #: templates/core/listTaxons.html:80 templates/core/statHierarchy.html:5
 #: templates/home/globalStats.html:13 templates/home/lastObs.html:7
-#: templates/organismSheet/topSpecie.html:60 templates/specieSheet/map.html:15
+#: templates/organismSheet/topSpecies.html:60 templates/specieSheet/map.html:15
 msgid "observation"
 msgstr "Osservazione"
 
 #: templates/core/listTaxons.html:81 templates/core/statHierarchy.html:5
 #: templates/core/tabTaxons.html:19 templates/home/globalStats.html:13
 #: templates/home/lastObs.html:7 templates/organismSheet/statsInfos.html:12
-#: templates/organismSheet/topSpecie.html:60
+#: templates/organismSheet/topSpecies.html:60
 #: templates/specieSheet/identityCard.html:131
 #: templates/specieSheet/map.html:15
 msgid "observations"
@@ -87,14 +87,14 @@ msgid "last.obs.in"
 msgstr "Ultime osservazioni "
 
 #: templates/core/listTaxons.html:86 templates/core/tabTaxons.html:85
-#: templates/home/lastObs.html:42 templates/organismSheet/topSpecie.html:65
+#: templates/home/lastObs.html:42 templates/organismSheet/topSpecies.html:65
 #: templates/specieSheet/identityCard.html:173
 msgid "check.specie.sheet"
 msgstr "Guarda la scheda zone"
 
 #: templates/core/listTaxons.html:87 templates/home/lastObs.html:43
 #: templates/home/mostViewNow.html:31 templates/home/taxoRank.html:57
-#: templates/organismSheet/topSpecie.html:66
+#: templates/organismSheet/topSpecies.html:66
 msgid "specie.sheet"
 msgstr "Scheda delle specie"
 
@@ -247,7 +247,7 @@ msgstr ""
 msgid "atlas.participation"
 msgstr "Divisione"
 
-#: templates/organismSheet/topSpecie.html:5
+#: templates/organismSheet/topSpecies.html:5
 #, fuzzy
 msgid "top.specie"
 msgstr "Specie"
