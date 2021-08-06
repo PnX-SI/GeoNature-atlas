@@ -81,9 +81,6 @@ def create_app():
         app.register_blueprint(api, url_prefix="/api")
         compress.init_app(app)
 
-
-
-
         app.wsgi_app = ReverseProxied(
             app.wsgi_app, script_name=valid_config["URL_APPLICATION"]
         )

@@ -8,8 +8,7 @@
 <base href="{{ configuration.URL_APPLICATION }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{% block title %}{% endblock %} {{ configuration.NOM_APPLICATION }}
-        - {{ configuration.STRUCTURE }}</title>
+    <title>{% block title %}{% endblock %} {{ configuration.NOM_APPLICATION }} - {{ configuration.STRUCTURE }}</title>
     {% include "templates/core/assets_header.html" %}
     <!-- Additional assets -->
     {% block additionalHeaderAssets %}
@@ -69,5 +68,4 @@
 </script>
 {% block additionalFooterAssets %}{% endblock %}
 
-TEST
 </html>

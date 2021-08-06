@@ -1,6 +1,4 @@
 BEGIN;
-
-
 -- Materialized View: atlas.t_subdivided_territory
 CREATE MATERIALIZED VIEW atlas.t_subdivided_territory
 TABLESPACE pg_default
@@ -18,6 +16,16 @@ AS
 		st_subdivide(st_transform(d.st_union, 3857), 255) AS geom
 	FROM d
 WITH DATA;
+
+CREATE MATERIALIZED VIEW atlas.vm_organisms
+AS SELECT cd_ref, count(*) as nb_observations, id_organism , nom_organism , adresse_organism , cp_organism , ville_organism , tel_organism , email_organism , url_organism ,url_logo
+   FROM utilisateurs.bib_organisms bo
+     JOIN utilisateurs.cor_dataset_actor cda ON bo.id_organism =cda.id_organism 
+     JOIN synthese.synthese s ON s.id_dataset =cda.id_dataset 
+     JOIN taxonomie.taxref t on s.cd_nom=t.cd_nom
+  group by t.cd_ref, bo.id_organism, bo.nom_organism, bo.adresse_organism, bo.cp_organism, bo.ville_organism, bo.tel_organism, bo.email_organism, bo.url_organism, bo.url_logo
+  with data;
+
 
 -- View indexes:
 CREATE INDEX index_gist_t_subdivided_territory_geom ON atlas.t_subdivided_territory USING gist (geom);

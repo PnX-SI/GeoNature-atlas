@@ -1,6 +1,4 @@
 // ChartJS Graphs
-
-Chart.defaults.global.defaultFontSize = 12;
 const chartMainColor = getComputedStyle(document.documentElement).getPropertyValue('--main-color');
 const chartHoverMainColor = getComputedStyle(document.documentElement).getPropertyValue('--second-color');
 
@@ -40,8 +38,11 @@ genericChart = function (element, labels, values) {
                 }]
             },
             maintainAspectRatio: false,
-            legend: {
-                display: false
+            plugins: {
+                legend: {
+                  position: 'top',
+                  display: false
+                },
             }
         }
     });
