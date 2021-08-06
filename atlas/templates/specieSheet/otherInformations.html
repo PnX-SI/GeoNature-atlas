@@ -16,10 +16,12 @@
                 {% endif %}
                 
                 {% if config.ORGANISM_MODULE %}
-                    <li class="nav-item"><a class="nav-link" {% if not configuration.ANONYMIZE %}data-toggle="tab"
+                    <li class="nav-item">
+                        <a class="nav-link" {% if not configuration.ANONYMIZE %}data-toggle="tab"
                         href="#organisms" {% endif %}>
-                    <b>{{ organisms|length }} </b> {{ _('organisms') if organisms|length > 1 else _('organism') }}
-                    </a></li>
+                            <b>{{ organisms|length }} </b> {{ _('organisms') if organisms|length > 1 else _('organism') }}
+                        </a>
+                </li>
                 {% endif %}
 
                 <li class="nav-item"><a class="nav-link" {% if not configuration.ANONYMIZE %}data-toggle="tab"
