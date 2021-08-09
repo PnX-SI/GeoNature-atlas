@@ -1,6 +1,4 @@
 // ChartJS Graphs
-
-Chart.defaults.global.defaultFontSize = 12;
 const chartMainColor = getComputedStyle(document.documentElement).getPropertyValue('--main-color');
 const chartHoverMainColor = getComputedStyle(document.documentElement).getPropertyValue('--second-color');
 
@@ -12,6 +10,7 @@ const getChartDatas = function (data, key) {
     return values
 };
 
+//Generic vertical bar graph
 genericChart = function (element, labels, values) {
     return new Chart(element, {
         type: 'bar',
@@ -39,13 +38,15 @@ genericChart = function (element, labels, values) {
                 }]
             },
             maintainAspectRatio: false,
-            legend: {
-                display: false
+            plugins: {
+                legend: {
+                  position: 'top',
+                  display: false
+                },
             }
         }
     });
 };
-
 
 var monthChartElement = document.getElementById('monthChart');
 const monthChart = genericChart(monthChartElement, months_name, getChartDatas(months_value, 'value'));

@@ -20,6 +20,7 @@ from atlas import utils
 from atlas.configuration import config
 from atlas.modeles.entities import vmTaxons, vmCommunes
 from atlas.modeles.repositories import (
+    vmOrganismsRepository,
     vmTaxonsRepository,
     vmObservationsRepository,
     vmAltitudesRepository,
@@ -76,6 +77,50 @@ def especeMedias(image):
         + current_app.config["REMOTE_MEDIAS_PATH"]
         + image
     )
+
+# Activating organisms sheets routes
+if config.ORGANISM_MODULE:
+    @main.route("/organism/<int:id_organism>", methods=["GET", "POST"])
+    def ficheOrganism(id_organism):
+        db_session = utils.loadSession()
+        connection = utils.engine.connect()
+
+        infos_organism = vmOrganismsRepository.statOrganism(connection, id_organism)
+    
+        stat = vmObservationsRepository.statIndex(connection)
+        
+        mostObsTaxs=vmOrganismsRepository.topObsOrganism(connection, id_organism)
+
+        top_taxons=list()
+        photos=list()
+
+        for taxons in mostObsTaxs:
+            top_taxons.append(vmTaxrefRepository.searchEspece(connection, taxons['cd_ref']))
+            photos.append(vmMedias.getFirstPhoto(connection, taxons['cd_ref'], current_app.config["ATTR_MAIN_PHOTO"]))
+
+        stats_group=vmOrganismsRepository.getTaxonRepartitionOrganism(connection, id_organism)
+
+        connection.close()
+        db_session.close()
+        
+        return render_template( 
+            "templates/organismSheet/_main.html",
+            nom_organism = infos_organism['nom_organism'],
+            adresse_organism = infos_organism['adresse_organism'],
+            cp_organism = infos_organism['cp_organism'],
+            ville_organism = infos_organism['ville_organism'],
+            tel_organism = infos_organism['tel_organism'],
+            url_organism = infos_organism['url_organism'],
+            url_logo = infos_organism['url_logo'],
+            nb_taxons = infos_organism['nb_taxons'],
+            nb_obs = infos_organism['nb_obs'],
+
+            stat = stat,
+            mostObsTaxs = mostObsTaxs,
+            top_taxons = top_taxons,
+            photos = photos,
+            stats_group = stats_group
+        )
 
 
 @main.route(
@@ -134,7 +179,7 @@ def index():
             current_app.logger.debug("start AFFICHAGE_MAILLE")
             observations = vmObservationsMaillesRepository.lastObservationsMailles(
                 connection,
-                current_app.config["NB_DAY_LAST_OBS"],
+                str(current_app.config["NB_DAY_LAST_OBS"]) + ' day',
                 current_app.config["ATTR_MAIN_PHOTO"],
             )
             current_app.logger.debug("end AFFICHAGE_MAILLE")
@@ -142,7 +187,7 @@ def index():
             current_app.logger.debug("start AFFICHAGE_PRECIS")
             observations = vmObservationsRepository.lastObservations(
                 connection,
-                current_app.config["NB_DAY_LAST_OBS"],
+                str(current_app.config["NB_DAY_LAST_OBS"]) + ' day',
                 current_app.config["ATTR_MAIN_PHOTO"],
             )
             current_app.logger.debug("end AFFICHAGE_PRECIS")
@@ -228,6 +273,9 @@ def ficheEspece(cd_ref):
     )
     observers = vmObservationsRepository.getObservers(connection, cd_ref)
 
+    organisms = vmOrganismsRepository.getListOrganism(connection, cd_ref)
+
+
     connection.close()
     db_session.close()
 
@@ -248,6 +296,7 @@ def ficheEspece(cd_ref):
         articles=articles,
         taxonDescription=taxonDescription,
         observers=observers,
+        organisms=organisms
     )
 
 

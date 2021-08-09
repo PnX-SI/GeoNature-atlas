@@ -109,8 +109,10 @@ then
         echo "--------------------" &>> log/install_db.log
         echo "Creation of layers table from ref_geo of geonaturedb" &>> log/install_db.log
         echo "--------------------" &>> log/install_db.log
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port \
-            -v type_maille=$type_maille -v type_territoire=$type_territoire -f data/gn2/atlas_ref_geo.sql &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass; psql -d $db_name -U $owner_atlas -h $db_host -p $db_port \
+            -v type_maille=$type_maille \
+            -v type_territoire=$type_territoire \
+            -f data/gn2/atlas_ref_geo.sql &>> log/install_db.log
     else
         # Import du shape des limites du territoire ($limit_shp) dans la BDD / atlas.t_layer_territoire
         ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 data/ref/emprise_territoire_3857.shp $limit_shp
@@ -307,7 +309,7 @@ then
 		sudo -n -u postgres -s psql -d $db_name -c "CREATE TABLE synthese.syntheseff
 			(
 			  id_synthese serial PRIMARY KEY,
-			  id_organisme integer DEFAULT 2,
+			  id_organism integer DEFAULT 2,
 			  cd_nom integer,
 			  insee character(5),
 			  dateobs date NOT NULL DEFAULT now(),
@@ -359,8 +361,9 @@ then
 
     echo "Creation de la VM des observations de chaque taxon par mailles..."
     # Création de la vue matérialisée vm_mailles_observations (nombre d'observations par maille et par taxon)
-    sudo -n -u postgres -s psql -d $db_name -f data/observations_mailles.sql  &>> log/install_db.log
+    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f data/observations_mailles.sql  &>> log/install_db.log
     sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.vm_observations_mailles OWNER TO "$owner_atlas";"
+    sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.vm_organisms OWNER TO "$owner_atlas";"
 
     # Affectation de droits en lecture sur les VM à l'utilisateur de l'application ($user_pg)
     echo "Grant..."

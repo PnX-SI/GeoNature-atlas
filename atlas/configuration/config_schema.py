@@ -66,6 +66,7 @@ class AtlasConfig(Schema):
     BABEL_DEFAULT_LOCALE = fields.String(missing="")
     MULTILINGUAL = fields.Boolean(missing=True)
     ID_GOOGLE_ANALYTICS = fields.String(missing="UA-xxxxxxx-xx")
+    ORGANISM_MODULE = fields.Boolean(missing="False")
     GLOSSAIRE = fields.Boolean(missing=False)
     IGNAPIKEY = fields.String(missing="")
     AFFICHAGE_INTRODUCTION = fields.Boolean(missing=True)

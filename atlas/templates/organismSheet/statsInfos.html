@@ -1,0 +1,26 @@
+{% block statsInfos %}
+<div class="card mt-4" id="identityCard">
+    <h4 class="title-bar center mt-2">
+        <strong>{{ _('organism.stats') }}</strong>
+    </h4>
+    <div class="container">
+      <div class="row mt-3">
+        <div class="col-sm center">
+          <i class="fas fa-search fa-2x"></i>
+          <br><strong>{{ nb_obs }}</strong> 
+          <br>{{ _('observations') }}
+        </div>
+        <div class="col-sm center">
+          <i class="fas fa-users fa-2x"></i>
+          <br><strong>{{ "%.2f"|format(nb_obs / stat.nbTotalObs*100) }}%</strong> 
+          <br>{{ _('atlas.participation') }}
+        </div>
+        <div class="col-sm center">
+          <i class="fas fa-leaf fa-2x"></i>
+          <br><strong>{{ nb_taxons }}</strong> 
+          <br>{{ _('species') }}
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}

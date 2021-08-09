@@ -2,7 +2,6 @@
 log/*
 atlas/static/conf/custom.js
 atlas/debug.py
-
 robots.txt
 .htaccess
 venv/*
@@ -11,6 +10,9 @@ venv3/*
 atlas/configuration/config.py
 atlas/configuration/settings.ini
 
+atlas/static/conf/custom.js
+atlas/static/territoire.json
+atlas/static/images/ancien
 atlas/static/node_modules
 atlas/static/territoire.json
 atlas/static/images/ancie

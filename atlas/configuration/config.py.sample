@@ -21,6 +21,14 @@ NOM_APPLICATION = "Nom de l application"
 # ex "/atlas" pour une URL: http://mon-domaine/atlas OU "" si l'application est accessible à la racine du domaine
 URL_APPLICATION = "/atlas"
 
+#################################
+#################################
+###### Modules activation #######
+#################################
+#################################
+
+# Organism module : organism's sheet + organism participation on specie sheet
+ORGANISM_MODULE = False
 
 ###########################
 ###### Multilingual #######
@@ -35,7 +43,9 @@ MULTILINGUAL = True
 ###########################
 # If multilingual is activated configure under
 
-# Available languages
+# Available languages 
+# Don't delete even if you uninstall MULTILINGUAL
+# You need to add your own default language(BABEL_DEFAULT_LOCALE) here if it's not present 
 # Check documentation for adding another language
 LANGUAGES = {
     'en': {
