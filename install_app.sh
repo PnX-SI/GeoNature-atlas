@@ -38,6 +38,7 @@ virtualenv -p $python_executable $venv_dir
 
 echo "Installing requirements..."
 pip install -r requirements.txt
+pip install -e .
 deactivate
 
 echo "Installing node packages"
@@ -61,46 +62,46 @@ sudo -s supervisorctl reread
 sudo -s supervisorctl reload
 
 echo "Creating custom images folder if it doesnt already exist"
-if [ ! -d ./static/custom/images/ ]; then
-  mkdir -p ./static/custom/images/
+if [ ! -d ./atlas/static/custom/images/ ]; then
+  mkdir -p ./atlas/static/custom/images/
 fi
 
 
 
 echo "Creating customisation files if they dont already exist"
-if [ ! -f ./static/custom/templates/footer.html ]; then
-  cp ./static/custom/templates/footer.html.sample ./static/custom/templates/footer.html
+if [ ! -f ./atlas/static/custom/templates/footer.html ]; then
+  cp ./atlas/static/custom/templates/footer.html.sample ./atlas/static/custom/templates/footer.html
 fi
-if [ ! -f ./static/custom/templates/introduction.html ]; then
-  cp ./static/custom/templates/introduction.html.sample ./static/custom/templates/introduction.html
+if [ ! -f ./atlas/static/custom/templates/introduction.html ]; then
+  cp ./atlas/static/custom/templates/introduction.html.sample ./atlas/static/custom/templates/introduction.html
 fi
-if [ ! -f ./static/custom/templates/presentation.html ]; then
-  cp ./static/custom/templates/presentation.html.sample ./static/custom/templates/presentation.html
+if [ ! -f ./atlas/static/custom/templates/presentation.html ]; then
+  cp ./atlas/static/custom/templates/presentation.html.sample ./atlas/static/custom/templates/presentation.html
 fi
-if [ ! -f ./static/custom/templates/credits.html ]; then
-  cp ./static/custom/templates/credits.html.sample ./static/custom/templates/credits.html
+if [ ! -f ./atlas/static/custom/templates/credits.html ]; then
+  cp ./atlas/static/custom/templates/credits.html.sample ./atlas/static/custom/templates/credits.html
 fi
-if [ ! -f ./static/custom/templates/mentions-legales.html ]; then
-  cp ./static/custom/templates/mentions-legales.html.sample ./static/custom/templates/mentions-legales.html
+if [ ! -f ./atlas/static/custom/templates/mentions-legales.html ]; then
+  cp ./atlas/static/custom/templates/mentions-legales.html.sample ./atlas/static/custom/templates/mentions-legales.html
 fi
-if [ ! -f ./static/custom/custom.css ]; then
-  cp ./static/custom/custom.css.sample ./static/custom/custom.css
+if [ ! -f ./atlas/static/custom/custom.css ]; then
+  cp ./atlas/static/custom/custom.css.sample ./atlas/static/custom/custom.css
 fi
-if [ ! -f ./static/custom/glossaire.json ]; then
-  cp ./static/custom/glossaire.json.sample ./static/custom/glossaire.json
+if [ ! -f ./atlas/static/custom/glossaire.json ]; then
+  cp ./atlas/static/custom/glossaire.json.sample ./atlas/static/custom/glossaire.json
 fi
-if [ ! -f ./static/custom/images/favicon.ico ]; then
-  cp ./static/images/sample.favicon.ico ./static/custom/images/favicon.ico
+if [ ! -f ./atlas/static/custom/images/favicon.ico ]; then
+  cp ./atlas/static/images/sample.favicon.ico ./atlas/static/custom/images/favicon.ico
 fi
-if [ ! -f ./static/custom/images/accueil-intro.jpg ]; then
-  cp ./static/images/sample.accueil-intro.jpg ./static/custom/images/accueil-intro.jpg
+if [ ! -f ./atlas/static/custom/images/accueil-intro.jpg ]; then
+  cp ./atlas/static/images/sample.accueil-intro.jpg ./atlas/static/custom/images/accueil-intro.jpg
 fi
-if [ ! -f ./static/custom/images/logo-structure.png ]; then
-  cp ./static/images/sample.logo-structure.png ./static/custom/images/logo-structure.png
+if [ ! -f ./atlas/static/custom/images/logo-structure.png ]; then
+  cp ./atlas/static/images/sample.logo-structure.png ./atlas/static/custom/images/logo-structure.png
 fi
-if [ ! -f ./static/custom/images/logo_patrimonial.png ]; then
-  cp ./static/images/sample.logo_patrimonial.png ./static/custom/images/logo_patrimonial.png
+if [ ! -f ./atlas/static/custom/images/logo_patrimonial.png ]; then
+  cp ./atlas/static/images/sample.logo_patrimonial.png ./atlas/static/custom/images/logo_patrimonial.png
 fi
-if [ ! -f ./static/custom/maps-custom.js ]; then
-  cp ./static/custom/maps-custom.js.sample ./static/custom/maps-custom.js
+if [ ! -f ./atlas/static/custom/maps-custom.js ]; then
+  cp ./atlas/static/custom/maps-custom.js.sample ./atlas/static/custom/maps-custom.js
 fi
