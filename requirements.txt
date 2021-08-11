@@ -13,7 +13,6 @@ Flask-Script==2.0.6
 Flask-SQLAlchemy==2.4.0
 GeoAlchemy2==0.6.3
 geojson==2.4.1
--e git+https://github.com/corentinlange/GeoNature-atlas.git@2feb473d852208edb52b46661e686e08d3ab41ba#egg=geonature_atlas
 gunicorn==19.9.0
 importlib-metadata==4.6.1
 iniconfig==1.1.1
@@ -36,5 +35,5 @@ tox==3.23.1
 typing-extensions==3.10.0.0
 virtualenv==20.4.7
 visitor==0.1.3
-Werkzeug==0.15.4
+Werkzeug==0.15.5
 zipp==3.5.0
