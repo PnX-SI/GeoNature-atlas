@@ -42,7 +42,9 @@ pip install -e .
 deactivate
 
 echo "Installing node packages"
+cd atlas/static
 npm i
+cd ../..
 
 echo "Creating configuration files if they dont already exist"
 if [ ! -f ./atlas/configuration/config.py ]; then
