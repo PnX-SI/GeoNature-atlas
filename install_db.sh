@@ -349,21 +349,77 @@ then
         fi
     done
 
-    sudo sed -i "s/INSERT_ALTITUDE/${insert}/" /tmp/atlas.sql
+    sudo sed -i "s/INSERT_ALTITUDE/${insert}/" /tmp/atlas/atlas.vm_altitudes.sql
 
+    echo "[$(date +'%H:%M:%S')] Creating atlas.vm_taxref..."
+    time_temp=$SECONDS
+    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_taxref.sql  &>> log/install_db.log
+    echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
+    
+    echo "[$(date +'%H:%M:%S')] Creating atlas.vm_observations..."
+    time_temp=$SECONDS
+    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_observations.sql  &>> log/install_db.log
+    echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
-    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas.sql  &>> log/install_db.log
-    sudo  -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.bib_altitudes OWNER TO "$owner_atlas";"
+    echo "[$(date +'%H:%M:%S')] Creating atlas.vm_taxons..."
+    time_temp=$SECONDS
+    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_taxons.sql  &>> log/install_db.log
+    echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
+
+    echo "[$(date +'%H:%M:%S')] Creating atlas.vm_altitudes..."
+    time_temp=$SECONDS
+    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_altitudes.sql  &>> log/install_db.log
+    echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
+
+    echo "[$(date +'%H:%M:%S')] Creating atlas.vm_search_taxon..."
+    time_temp=$SECONDS
+    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_search_taxon.sql  &>> log/install_db.log
+    echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
+
+    echo "[$(date +'%H:%M:%S')] Creating atlas.vm_mois..."
+    time_temp=$SECONDS
+    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_mois.sql  &>> log/install_db.log
+    echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
+
+    echo "[$(date +'%H:%M:%S')] Creating atlas.vm_communes..."
+    time_temp=$SECONDS
+    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_communes.sql  &>> log/install_db.log
+    echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
+
+    echo "[$(date +'%H:%M:%S')] Creating atlas.vm_medias"
+    time_temp=$SECONDS
+    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_medias.sql  &>> log/install_db.log
+    echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
+
+    echo "[$(date +'%H:%M:%S')] Creating atlas.vm_cor_taxon_attribut..."
+    time_temp=$SECONDS
+    sudo sed -i "s/WHERE id_attribut IN (100, 101, 102, 103);$/WHERE id_attribut  IN ($attr_desc, $attr_commentaire, $attr_milieu, $attr_chorologie);/" /tmp/atlas/atlas.vm_cor_taxon_attribut.sql
+    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_cor_taxon_attribut.sql  &>> log/install_db.log
+    echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
+
+    echo "[$(date +'%H:%M:%S')] Creating atlas.vm_taxons_plus_observes..."
+    time_temp=$SECONDS
+    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_taxons_plus_observes.sql  &>> log/install_db.log
+    echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
+
+    echo "[$(date +'%H:%M:%S')] Creating atlas.vm_organisms..."
+    time_temp=$SECONDS
+    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_organisms.sql  &>> log/install_db.log
+    echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
+
+    # FR: Création de la vue matérialisée vm_mailles_observations (nombre d'observations par maille et par taxon)
+    # EN: Creation of the materialized view vm_meshes_observations (number of observations per mesh and per taxon)
+    time_temp=$SECONDS
+    echo "[$(date +'%H:%M:%S')] Creating atlas.vm_observations_mailles..."
+    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f data/atlas/atlas.vm_observations_mailles.sql  &>> log/install_db.log
+    echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
+
     sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.bib_taxref_rangs OWNER TO "$owner_atlas";"
     sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.bib_taxref_rangs OWNER TO "$owner_atlas";"
     sudo -u postgres -s psql -d $db_name -c "ALTER FUNCTION atlas.create_vm_altitudes() OWNER TO "$owner_atlas";"
     sudo -u postgres -s psql -d $db_name -c "ALTER FUNCTION atlas.find_all_taxons_childs(integer) OWNER TO "$owner_atlas";"
-
-    echo "Creation de la VM des observations de chaque taxon par mailles..."
-    # Création de la vue matérialisée vm_mailles_observations (nombre d'observations par maille et par taxon)
-    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f data/observations_mailles.sql  &>> log/install_db.log
-    sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.vm_observations_mailles OWNER TO "$owner_atlas";"
-    sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.vm_organisms OWNER TO "$owner_atlas";"
+    sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.vm_observations_mailles OWNER TO "$owner_atlas";"
+    sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.vm_organisms OWNER TO "$owner_atlas";"
 
     # Affectation de droits en lecture sur les VM à l'utilisateur de l'application ($user_pg)
     echo "Grant..."
