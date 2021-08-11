@@ -438,7 +438,7 @@ then
     # EN: Creation of the materialized view vm_meshes_observations (number of observations per mesh and per taxon)
     time_temp=$SECONDS
     echo "[$(date +'%H:%M:%S')] Creating atlas.vm_observations_mailles..."
-    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f data/observations_mailles_extended.sql  &>> log/install_db.log
+    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f data/atlas/atlas.vm_observations_mailles_extended.sql  &>> log/install_db.log
     echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
     sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.bib_taxref_rangs OWNER TO "$owner_atlas";"
