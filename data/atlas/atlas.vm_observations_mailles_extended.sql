@@ -1,8 +1,3 @@
-CREATE VIEW ref_geo.mon_territoire AS
-SELECT st_transform(la.geom, 3857) AS geom
-FROM ref_geo.l_areas la
-WHERE la.area_name = 'ALCOTRA-France';
-
 DROP MATERIALIZED VIEW atlas.t_mailles_territoire;
 
 -- MV for having only meshs of the territory
@@ -12,7 +7,7 @@ st_asgeojson(st_transform(c.geom, 4326)) AS geojson_maille,
 c.id_area AS id_maille
 FROM ref_geo.l_areas c
 JOIN ref_geo.bib_areas_types t ON t.id_type = c.id_type
-JOIN ref_geo.mon_territoire mt ON ST_intersects(c.geom,st_transform(mt.geom, 2154))
+JOIN atlas.t_layer_territoire mt ON ST_intersects(c.geom,st_transform(mt.the_geom, 2154))
 WHERE c.enable = true AND c.id_type = 27;
 
 CREATE UNIQUE INDEX t_mailles_territoire_id_maille_idx ON atlas.t_mailles_territoire USING btree (id_maille);

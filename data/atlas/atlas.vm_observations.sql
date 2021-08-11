@@ -14,7 +14,6 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
         s.diffusion_level
     FROM synthese.syntheseff s
       LEFT JOIN atlas.vm_taxref tx ON tx.cd_nom = s.cd_nom
-    LIMIT 10
     WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_observations (id_observation);
