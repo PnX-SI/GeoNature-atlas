@@ -22,7 +22,6 @@ Jinja2==2.11.3
 MarkupSafe==1.1.1
 marshmallow==2.19.5
 packaging==21.0
-pkg-resources==0.0.0
 pluggy==0.13.1
 psycopg2==2.8.5
 py==1.10.0
