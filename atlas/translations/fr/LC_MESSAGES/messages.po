@@ -92,7 +92,7 @@ msgstr "Observations"
 
 #: templates/core/listTaxons.html:82
 msgid "last.obs.in"
-msgstr "Dernière observations les "
+msgstr "Dernière observation en "
 
 #: templates/core/listTaxons.html:86 templates/core/tabTaxons.html:85
 #: templates/home/lastObs.html:42 templates/organismSheet/topSpecies.html:65
@@ -207,11 +207,11 @@ msgstr "Photo"
 
 #: templates/home/lastObs.html:6
 msgid "last.obs.since"
-msgstr "Dernières observations des"
+msgstr "Observations des"
 
 #: templates/home/lastObs.html:6
 msgid "days"
-msgstr "jours"
+msgstr "derniers jours"
 
 #: templates/home/mostViewNow.html:5
 msgid "see.at.the.moment"
