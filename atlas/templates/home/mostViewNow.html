@@ -3,9 +3,11 @@
         <div class="card-body">
 
             <h3 class="title-spaced">{{ _('see.at.the.moment') }}
-                <span class="fa fa-question-circle helpTip" data-toggle="tooltip"
-                      title="{{ _('species.most.obs.last.15.days')}}"
-                      data-placement="right"></span>
+                <span data-toggle="tooltip"
+                      data-toggle-title="{{ _('species.most.obs.last.15.days')}}"
+                      data-placement="right">
+                    <a class="fa fa-question-circle helpTip"></a>
+                </span>
             </h3>
             <div class="row thumbnail-row">
                 {% for tax in mostViewTaxon %}
