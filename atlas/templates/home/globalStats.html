@@ -19,14 +19,14 @@
                     <i class="fas fa-leaf fa-3x"></i>
                     <h1 class="large text-muted">{{ stat.nbTotalTaxons | pretty }}</h1>
                     <h4 class="text-muted text-uppercase font-weight-bold">
-                        {{ _('species') if stat.nbTotalTaxons > 1 else _('specie') }}</h4>
+                        {{ _('species') if stat.nbTotalTaxons > 1 else _('species') }}</h4>
                     <form method="POST" id="searchFormTaxonsStat" class="navbar-form" role="search">
                         <div class="form-group has-feedback">
                             <span class="addon">
                                 <i class="fas fa-search"></i>
                             </span>
                             <input id="searchTaxonsStat" type="text" class="form-control"
-                                placeholder="{{ _('search.specie') }}&nbsp; &nbsp; &nbsp;" loading="false" />
+                                placeholder="{{ _('search.species') }}&nbsp; &nbsp; &nbsp;" loading="false" />
                             <input id="hiddenInputTaxonStat" type="hidden" name="cd_ref">
                         </div>
                     </form>

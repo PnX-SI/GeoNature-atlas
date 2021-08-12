@@ -15,7 +15,7 @@
             <h4>{{ videoAudio.video[0].title }}</h4>
 
             {% with media=videoAudio.video[0] %}
-                {% include "templates/specieSheet/descriptionMedia.html" %}
+                {% include "templates/speciesSheet/descriptionMedia.html" %}
             {% endwith %}
             {% if videoAudio.video[0].id_type == 6 %}
                 <video controls>
@@ -30,7 +30,7 @@
                     <h4> {{ videoAudio.video[i].title }}</h4>
 
                     {% with media=videoAudio.video[i] %}
-                        {% include "templates/specieSheet/descriptionMedia.html" %}
+                        {% include "templates/speciesSheet/descriptionMedia.html" %}
                     {% endwith %}
                     {% if videoAudio.video[i].id_type == 6 %}
                         <video controls>
@@ -61,7 +61,7 @@
                 <source src="{{ videoAudio.audio[0].path }}" type="audio/mpeg">
             </audio>
             {% with media=videoAudio.audio[0] %}
-                {% include "templates/specieSheet/descriptionMedia.html" %}
+                {% include "templates/speciesSheet/descriptionMedia.html" %}
             {% endwith %}
 
             <div id="moreAudio" class="collapse">
@@ -71,7 +71,7 @@
                         <source src="{{ videoAudio.audio[i].path }}" type="audio/mpeg">
                     </audio>
                     {% with media=videoAudio.audio[i] %}
-                        {% include "templates/specieSheet/descriptionMedia.html" %}
+                        {% include "templates/speciesSheet/descriptionMedia.html" %}
                     {% endwith %}
                 {% endfor %}
             </div>

@@ -6,7 +6,7 @@
         </li>
         <li class="border-right">
             <i class="fa fa-leaf"></i><br/>
-            <b>{{ listTaxons.taxons|length | pretty }}</b><br/><span class="d-none d-md-block">{{ _('species') if listTaxons.taxons|length > 1 else _('specie') }}</span>
+            <b>{{ listTaxons.taxons|length | pretty }}</b><br/><span class="d-none d-md-block">{{ _('species') if listTaxons.taxons|length > 1 else _('species') }}</span>
         </li>
         <li><i class="fa fa-users"></i></br>
             <b>{{ observers | length | pretty }}</b><br/><span class="d-none d-md-block">{{ _('observers') if observers|length > 1 else _('observer') }}</span>

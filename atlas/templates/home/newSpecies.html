@@ -13,29 +13,29 @@
             <div class="lastDiscoveries">
                 <center>
                 <div class="card-deck">
-                    {% for specie in lastDiscoveries %}
+                    {% for species in lastDiscoveries %}
                         <div class="card border-secondary">
-                            {% if specie.id_media == None %}
+                            {% if species.id_media == None %}
                                 {% set img_path='static/images/Photo_non_disponible.png' %}
                             {% else %}
                                 {% if configuration.REDIMENSIONNEMENT_IMAGE %}
-                                    {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+specie.id_media|string+'?h=500' %}
+                                    {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+species.id_media|string+'?h=500' %}
                                 {% else %}
-                                    {% set img_path = specie.media_path %}
+                                    {% set img_path = species.media_path %}
                                 {% endif %}
                             {% endif %}
-                             <a href="{{ url_for('main.ficheEspece',cd_ref=specie.cd_ref) }}">
+                             <a href="{{ url_for('main.ficheEspece',cd_ref=species.cd_ref) }}">
                                 <img src="{{img_path}}" alt="" width="230" class="img-thumbnail">                         
                                 </a>
                                 <div class="card-body">
-                                    <p> {% if specie.nom_vern != None %}
-                                        <b>  {{ specie.nom_vern }}</b> {% endif %}
-                                        <br/><i>{{ specie.lb_nom }}</i></p>
-                                        <a href="{{ url_for('main.ficheEspece',cd_ref=specie.cd_ref) }}"
-                                        class="btn btn-default rounded-pill" role="button">{{ _('specie.sheet') }}</a>
+                                    <p> {% if species.nom_vern != None %}
+                                        <b>  {{ species.nom_vern }}</b> {% endif %}
+                                        <br/><i>{{ species.lb_nom }}</i></p>
+                                        <a href="{{ url_for('main.ficheEspece',cd_ref=species.cd_ref) }}"
+                                        class="btn btn-default rounded-pill" role="button">{{ _('species.sheet') }}</a>
                                 </div>
                                 <div class="card-footer border-secondary text-muted"> 
-                                    {{specie.date}}
+                                    {{species.date}}
                                 </div>      
                         </div>
                     {% endfor %}
