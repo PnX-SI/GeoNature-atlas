@@ -16,7 +16,7 @@
                     {% for species in lastDiscoveries %}
                         <div class="card border-secondary">
                             {% if species.id_media == None %}
-                                {% set img_path='static/images/Photo_non_disponible.png' %}
+                                {% set img_path='atlas/static/images/Photo_non_disponible.png' %}
                             {% else %}
                                 {% if configuration.REDIMENSIONNEMENT_IMAGE %}
                                     {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+species.id_media|string+'?h=500' %}
