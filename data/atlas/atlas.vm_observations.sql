@@ -7,7 +7,7 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
         s.dateobs,
         s.observateurs,
         s.altitude_retenue,
-        s.the_geom_point as the_geom_point,
+        st_transform(s.the_geom_point, 3857) as the_geom_point,
         s.effectif_total,
         tx.cd_ref,
         st_asgeojson(s.the_geom_point) as geojson_point,

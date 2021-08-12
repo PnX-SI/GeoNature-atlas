@@ -92,7 +92,7 @@
                 <div id="inpnLink">
                     <a href='https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.taxonSearch.cd_ref }}' target="_blank">
                         <img width="90px" src="{{ url_for('static', filename='images/logo_inpn.png') }}"
-                             data-toggle="tooltip" data-original-title="{{ _('check.specie.sheet.inpn') }}"
+                             data-toggle="tooltip" data-original-title="{{ _('check.species.sheet.inpn') }}"
                              data-placement="right">
                     </a>
                 </div>
@@ -170,7 +170,7 @@
                                                     <td>
                                                         <a href="{{ url_for('main.ficheEspece', cd_ref = child.cd_ref) }}">
                                                             <span id="ficheGlyficon" data-toggle="tooltip"
-                                                                  data-original-title="{{ _('check.specie.sheet')}}"
+                                                                  data-original-title="{{ _('check.species.sheet')}}"
                                                                   data-placement="right"
                                                                   class="fas fa-list"></span>
                                                         </a>

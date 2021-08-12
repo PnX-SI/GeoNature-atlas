@@ -27,7 +27,7 @@ URL_APPLICATION = "/atlas"
 #################################
 #################################
 
-# Organism module : organism's sheet + organism participation on specie sheet
+# Organism module : organism's sheet + organism participation on species sheet
 ORGANISM_MODULE = False
 
 ###########################

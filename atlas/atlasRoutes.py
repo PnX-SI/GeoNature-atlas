@@ -280,7 +280,7 @@ def ficheEspece(cd_ref):
     db_session.close()
 
     return render_template(
-        "templates/specieSheet/_main.html",
+        "templates/speciesSheet/_main.html",
         taxon=taxon,
         listeTaxonsSearch=[],
         observations=[],
@@ -427,8 +427,8 @@ def sitemap():
 
     # get dynamic routes for blog
     species = session.query(vmTaxons.VmTaxons).order_by(vmTaxons.VmTaxons.cd_ref).all()
-    for specie in species:
-        url = url_root + url_for("main.ficheEspece", cd_ref=specie.cd_ref)
+    for species in species:
+        url = url_root + url_for("main.ficheEspece", cd_ref=species.cd_ref)
         modified_time = ten_days_ago
         pages.append([url, modified_time])
 
