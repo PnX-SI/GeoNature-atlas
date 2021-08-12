@@ -12,43 +12,47 @@
                 <div id="blocMap" class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                     <div id="map"></div>
                 </div>
+
                 <!-- LISTE des dernières observations -->
                 <div id="listMap" class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                    <ul id='lastObsList' class="list-unstyled w-100 border-top">
-
-                        {% for obs in observations %}
-                            <li class="lastObslistItem media border-bottom p-0"
-                                idsynthese="{{ obs.id_observation }}">
-
-                                    {% if obs.pathImg == None %}
-                                        <img class="align-self-center lastObslistItemIcon" data-toggle="tooltip"
-                                     data-original-title="{{ obs.group2_inpn }}" data-placement="left"
-                                     data-placement="right" src="{{ url_for('static', filename='images/picto_' + obs.group2_inpn | replace(" ", "_") +'.png') }}">
-                                    {% else %}
-                                        {% if configuration.REDIMENSIONNEMENT_IMAGE %}
-                                            {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+obs.id_media|string+'?h=80&w=80' %}
+                    <table id='tableEspece' class="table">
+                        <tbody>
+                            {% for obs in observations %}
+                                <tr class='tabEspece' idSynthese="{{obs.id_observation}}">
+                                    <!-- <td class="singleTaxon img">
+                                    <div class ="pictoImg" style="background-image:url({{configuration.TAXHUB_URL}}/api/tmedias/thumbnail/{{obs.id_media}}?h=60&w=60);" data-toggle="tooltip" data-original-title="{{obs.group2_inpn}}" data-placement="left"></div>
+                                    </td> -->
+                                    <td class="singleTaxon img">
+                                        {% if obs.pathImg == None %}
+                                            <img class="singleTaxon" width="80%"
+                                                src="{{url_for('static', filename='images/picto_' + obs.group2_inpn | replace(" ", " _")+'.png')}}" 
+                                                data-toggle="tooltip" data-original-title="{{obs.group2_inpn}}"
+                                                data-placement="left">
                                         {% else %}
-                                            {% set img_path = obs.pathImg %}
-
+                                            {% if configuration.REDIMENSIONNEMENT_IMAGE %}
+                                                {% set img_path=configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+obs.id_media|string+'?h=500&w=500' %}
+                                            {% else %}
+                                                {% set img_path = obs.pathImg %}
+                                            {% endif %}
+                                        <div class="pictoImg pictoImgSmall lazy" data-src="{{img_path}}"></div>
                                         {% endif %}
-                                        <img class="lazy align-self-center lastObslistItemImage" data-toggle="tooltip"
-                                     data-original-title="{{ obs.group2_inpn }}" data-placement="left"
-                                     data-placement="right" data-src="{{ img_path }}">
-                                    {% endif %}
-                            <div class="media-body p-2">
-                            <span class="float-right"><a href="{{ url_for('main.ficheEspece',cd_ref=obs.cd_ref) }}"
-                                                         class="badge badge-primary" data-toggle="tooltip"
-                                                         data-placement="left"
-                                                         data-original-title="{{ _('check.species.sheet') }}"><i
-                                    class="fas fa-list"></i> {{ _('species.sheet') }}</a></span>
-                            <p class="singleTaxon name" cdref="{{ obs.cd_ref }}"> {{ obs.taxon }}<br/>
-                                {{ obs.dateobs }} </p>
-                            <span class="hidden" hidden="true">{{ obs.cd_ref }}</span>
-                            </tr>
-                        {% endfor %}
+                                    </td>
+                                    <td class="singleTaxon name" cdref="{{obs.cd_ref}}"> {{obs.taxon}}</td>
+                                    <td class="singleTaxon date"> {{obs.dateobs}} </td>
+                                    <td class="singleTaxon detail">
+                                        <a href="{{url_for('main.ficheEspece',cd_ref=obs.cd_ref)}}" 
+                                            data-toggle="tooltip"
+                                            data-original-title="{{ _('check.species.sheet')}}" 
+                                            data-placement="left">
+                                            <span class="fas fa-search"></span>
+                                        </a>
+                                    </td>
+                                    <td class="hiddenTd" hidden="true">{{obs.cd_ref}}</td>
+                                </tr>
+                            {% endfor %}
                         </tbody>
-                        </ul>
-                        </div>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

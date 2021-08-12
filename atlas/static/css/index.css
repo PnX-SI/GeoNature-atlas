@@ -102,12 +102,11 @@ h3.title-spaced {
 
 .stat-object {
   min-height: 200px;
-    padding: 0px;
+  padding: 0px;
 }
 
 .stat-object .form-control {
   width: 100%;
-
 }
 
 .stat-thumbnail {
@@ -126,7 +125,8 @@ h3.title-spaced {
   margin: 0px;
 }
 
-#searchTaxonsStat, #searchCommunesStat {
+#searchTaxonsStat,
+#searchCommunesStat {
   background-position: right center;
   background-repeat: no-repeat;
   background-size: 25px 25px;
@@ -135,9 +135,9 @@ h3.title-spaced {
 }
 
 .addon {
-	position: absolute;
-	margin-left: 5px;
-	display: flex;
+  position: absolute;
+  margin-left: 5px;
+  display: flex;
   align-items: center;
   z-index: 100;
   font-size: 20px !important;
@@ -148,8 +148,8 @@ h3.title-spaced {
 
 .addon-navbar {
   position: absolute;
-	margin-left: 5px;
-	display: flex;
+  margin-left: 5px;
+  display: flex;
   align-items: center;
   z-index: 100;
   font-size: 20px !important;
@@ -301,7 +301,7 @@ h3.title-spaced {
 }
 
 .picto-img-no-resize {
-  background-size: cover
+  background-size: cover;
 }
 
 .pictoImgSmall {
@@ -311,7 +311,6 @@ h3.title-spaced {
 .pictoImgMedium {
   height: 250px;
 }
-
 
 #lastObsList {
   display: block;
@@ -338,9 +337,8 @@ h3.title-spaced {
   height: 80px;
   background-position: center;
   object-fit: cover;
-  background-color: var(--light) ;
+  background-color: var(--light);
 }
-
 
 /*.lastObsList.current {
   background-color: #e6e6e6;
@@ -350,6 +348,15 @@ h3.title-spaced {
 /*.singleTaxon {
   cursor: pointer;
 }*/
+
+.tabEspece:hover {
+  background-color: #cccccc;
+}
+
+.tabEspece.current {
+  background-color: #e6e6e6;
+  font-weight: bold;
+}
 
 td.singleTaxon.name {
   width: 50%;
