@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-06 15:08+0200\n"
+"POT-Creation-Date: 2021-08-12 10:19+0200\n"
 "PO-Revision-Date: 2021-07-19 09:53+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
@@ -100,8 +100,8 @@ msgid "check.specie.sheet"
 msgstr "Guarda la scheda zone"
 
 #: templates/core/listTaxons.html:87 templates/home/lastObs.html:43
-#: templates/home/mostViewNow.html:31 templates/home/taxoRank.html:57
-#: templates/organismSheet/topSpecies.html:66
+#: templates/home/mostViewNow.html:33 templates/home/newSpecies.html:35
+#: templates/home/taxoRank.html:57 templates/organismSheet/topSpecies.html:66
 msgid "specie.sheet"
 msgstr "Scheda delle specie"
 
@@ -138,7 +138,6 @@ msgstr "Specie"
 
 #: templates/core/statHierarchy.html:12 templates/specieSheet/map.html:25
 #: templates/specieSheet/otherInformations.html:29
-#, fuzzy
 msgid "observers"
 msgstr "Osservatori"
 
@@ -226,6 +225,10 @@ msgstr ""
 "Specie più osservate nei 15 giorni prima e dopo oggi, tutti gli anni "
 "combinati"
 
+#: templates/home/newSpecies.html:8
+msgid "new.species.observed"
+msgstr "Nuove specie scoperte"
+
 #: templates/home/taxoRank.html:8
 msgid "species.to.discover"
 msgstr "Specie da scoprire"
@@ -263,7 +266,6 @@ msgid "top.specie"
 msgstr "Specie più comunemente osservate"
 
 #: templates/organismSheet/topSpecies.html:61
-#, fuzzy
 msgid "from.organism.observations"
 msgstr "delle osservazioni dell'organizzazione"
 

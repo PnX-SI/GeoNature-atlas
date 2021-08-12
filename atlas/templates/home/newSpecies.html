@@ -5,8 +5,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <h3 class="card-title title-spaced">
-                    <span class="fa fa-bell icon-color-title"></span> &nbsp;Nouvelles espèces observées
-                </h3>
+                    <span class="fa fa-bell icon-color-title"></span> &nbsp;{{ _('new.species.observed') }}
                 <br>
             </div>
         </div>
@@ -33,7 +32,7 @@
                                         <b>  {{ specie.nom_vern }}</b> {% endif %}
                                         <br/><i>{{ specie.lb_nom }}</i></p>
                                         <a href="{{ url_for('main.ficheEspece',cd_ref=specie.cd_ref) }}"
-                                        class="btn btn-default rounded-pill" role="button">Fiche espèce</a>
+                                        class="btn btn-default rounded-pill" role="button">{{ _('specie.sheet') }}</a>
                                 </div>
                                 <div class="card-footer border-secondary text-muted"> 
                                     {{specie.date}}
