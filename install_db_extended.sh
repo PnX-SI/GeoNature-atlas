@@ -1,20 +1,26 @@
 #!/bin/bash
+SECONDS=0
 
-# S'assurer que le script n'est pas lancer en root (utilisation de whoami)
+# FR: S'assurer que le script n'est pas lancer en root (utilisation de whoami)
+# EN: Make sure the script is not run as root (use whoami)
 if [ "$(id -u)" == "0" ]; then
    echo -e "\e[91m\e[1mThis script should NOT be run as root\e[0m" >&2
    exit 1
 fi
 
-# sudo ls pour demander le mot de passe une fois
+# FR: sudo ls pour demander le mot de passe une fois
+# EN: sudo ls to request the password once
 sudo ls
-
 if [ ! -d 'log' ]
   then
       mkdir log
 fi
 
 . atlas/configuration/settings.ini
+
+function print_time () {
+    echo $(date +'%H:%M:%S')
+}
 
 function database_exists () {
     # /!\ Will return false if psql can't list database. Edit your pg_hba.conf as appropriate.
@@ -29,9 +35,10 @@ function database_exists () {
     fi
 }
 
+
 function test_settings() {
     fields=('owner_atlas' 'user_pg' 'altitudes' 'time' 'attr_desc' 'attr_commentaire' 'attr_milieu' 'attr_chorologie')
-    echo "Vérification de la validité de settings.ini"
+    echo "Checking the validity of settings.ini"
     for i in "${!fields[@]}"
     do
         if [ -z ${!fields[$i]} ];
@@ -44,46 +51,54 @@ function test_settings() {
 
 test_settings
 
-# Suppression du fichier de log d'installation si il existe déjà puis création de ce fichier vide.
+# FR: Suppression du fichier de log d'installation si il existe déjà puis création de ce fichier vide.
+# EN: Delete the installation log file if it already exists and create this empty file.
+
 rm  -f ./log/install_db.log
 touch ./log/install_db.log
 
-# Si la BDD existe, je verifie le parametre qui indique si je dois la supprimer ou non
+
+# FR: Si la BDD existe, je verifie le parametre qui indique si je dois la supprimer ou non
+# EN: If the DB exists, I check the parameter that indicates whether I should delete it or not
 if database_exists $db_name
 then
         if $drop_apps_db
             then
-            echo "Suppression de la BDD..."
+            echo "Deleting DB..."
             sudo -u postgres -s dropdb $db_name  &>> log/install_db.log
         else
-            echo "La base de données existe et le fichier de settings indique de ne pas la supprimer."
+            echo "The database exists and the settings file says not to delete it."
         fi
 fi
 
-# Sinon je créé la BDD
+# FR: Sinon je créé la BDD
+# EN: Else I create the DB
 if ! database_exists $db_name
 then
 
-	echo "Création de la BDD..."
+    print_time
+	echo "Creating DB..."
 
     sudo -u postgres psql -c "CREATE USER $owner_atlas WITH PASSWORD '$owner_atlas_pass' "  &>> log/install_db.log
     sudo -u postgres psql -c "CREATE USER $user_pg WITH PASSWORD '$user_pg_pass' "  &>> log/install_db.log
     sudo -u postgres -s createdb -O $owner_atlas $db_name
-    echo "Ajout de postGIS et pgSQL à la base de données"
+    echo "Adding postGIS and  pgSQL to DB"
     sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgis;"  &>> log/install_db.log
     sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog; COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';"  &>> log/install_db.log
     sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;" &>> log/install_db.log
-    # Si j'utilise GeoNature ($geonature_source = True), alors je créé les connexions en FWD à la BDD GeoNature
+    # FR: Si j'utilise GeoNature ($geonature_source = True), alors je créé les connexions en FWD à la BDD GeoNature
+    # EN: If I use GeoNature ($geonature_source = True), then I create the connections in FWD to the GeoNature DB
     if $geonature_source
 	then
-        echo "Ajout du FDW et connexion à la BDD mère GeoNature"
+        echo "Adding FDW and connection to the GeoNature parent DB"
         sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgres_fdw;"  &>> log/install_db.log
         sudo -u postgres -s psql -d $db_name -c "CREATE SERVER geonaturedbserver FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$db_source_host', dbname '$db_source_name', port '$db_source_port');"  &>> log/install_db.log
         sudo -u postgres -s psql -d $db_name -c "ALTER SERVER geonaturedbserver OWNER TO $owner_atlas;"  &>> log/install_db.log
         sudo -u postgres -s psql -d $db_name -c "CREATE USER MAPPING FOR $owner_atlas SERVER geonaturedbserver OPTIONS (user '$atlas_source_user', password '$atlas_source_pass') ;"  &>> log/install_db.log
     fi
 
-    # Création des schémas de la BDD
+    # FR: Création des schémas de la BDD
+    # EN: Creating DB schemes
     sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA atlas AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
 	if [ $install_taxonomie = "false" ]
 	then
@@ -95,9 +110,9 @@ then
 	then
         if test $geonature_version -eq 2
         then
-            echo "Création des FDW depuis GN2"
+            echo "Creating FDW from GN2"
             echo "--------------------" &>> log/install_db.log
-            echo "Création des FDW depuis GN2" &>> log/install_db.log
+            echo "Creating FDW from GN2" &>> log/install_db.log
             echo "--------------------" &>> log/install_db.log
             export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f data/gn2/atlas_gn2.sql  &>> log/install_db.log
         fi
@@ -105,7 +120,7 @@ then
 
     if $use_ref_geo_gn2
     then
-        echo "Creation des table géographiques à partir du schéma ref_geo de la base geonature"
+        echo "Creation of geographic tables from the ref_geo schema of the geonature database"
         echo "--------------------" &>> log/install_db.log
         echo "Creation of layers table from ref_geo of geonaturedb" &>> log/install_db.log
         echo "--------------------" &>> log/install_db.log
@@ -114,15 +129,19 @@ then
             -v type_territoire=$type_territoire \
             -f data/gn2/atlas_ref_geo.sql &>> log/install_db.log
     else
-        # Import du shape des limites du territoire ($limit_shp) dans la BDD / atlas.t_layer_territoire
+        # FR: Import du shape des limites du territoire ($limit_shp) dans la BDD / atlas.t_layer_territoire    
+        # EN: Import of the shape of the territory limits ($limit_shp) in the BDD / atlas.t_layer_territory
+
         ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 data/ref/emprise_territoire_3857.shp $limit_shp
         sudo -u postgres -s shp2pgsql -W "LATIN1" -s 3857 -D -I ./data/ref/emprise_territoire_3857.shp atlas.t_layer_territoire | sudo -n -u postgres -s psql -d $db_name  &>> log/install_db.log
         rm data/ref/emprise_territoire_3857.*
         sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_layer_territoire OWNER TO "$owner_atlas";"
-        # Creation de l'index GIST sur la couche territoire atlas.t_layer_territoire
+        # FR: Creation de l'index GIST sur la couche territoire atlas.t_layer_territoire
+        # EN: Creation of the GIST index on the territory layer atlas.t_layer_territory
         sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_layer_territoire RENAME COLUMN geom TO the_geom; CREATE INDEX index_gist_t_layer_territoire ON atlas.t_layer_territoire USING gist(the_geom); "  &>> log/install_db.log
 
-        # Import du shape des communes ($communes_shp) dans la BDD (si parametre import_commune_shp = TRUE) / atlas.l_communes
+        # FR: Import du shape des communes ($communes_shp) dans la BDD (si parametre import_commune_shp = TRUE) / atlas.l_communes
+        # EN: Import of the shape of the communes ($communes_shp) in the DB (if parameter import_commune_shp = TRUE) / atlas.l_communes
         if $import_commune_shp
         then
             ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 ./data/ref/communes_3857.shp $communes_shp
@@ -135,13 +154,14 @@ then
             rm ./data/ref/communes_3857.*
         fi
 
-        # Mise en place des mailles
-        echo "Découpage des mailles et creation de la table des mailles"
-
+        # FR: Mise en place des mailles
+        # EN: Setting up the meshes
+        echo "Cutting of meshes and creation of the mesh table"
         cd data/ref
         rm -f L93*.dbf L93*.prj L93*.sbn L93*.sbx L93*.shp L93*.shx
 
-        # Si je suis en métropole (metropole=true), alors j'utilise les mailles fournies par l'INPN
+        # FR: Si je suis en métropole (metropole=true), alors j'utilise les mailles fournies par l'INPN
+        # EN: If I am in metropolitan France (metropole=true), then I use the grids provided by the INPN, comments are only in french here
         if $metropole
         then
             # Je dézippe mailles fournies par l'INPN aux 3 échelles
@@ -171,7 +191,8 @@ then
                                                         ADD COLUMN id_maille serial;
                                                         ALTER TABLE atlas.t_mailles_territoire
                                                         ADD PRIMARY KEY (id_maille);"  &>> log/install_db.log
-        # Sinon j'utilise un SHP des mailles fournies par l'utilisateur
+        # FR: Sinon j'utilise un SHP des mailles fournies par l'utilisateur
+        # EN: Otherwise I use a SHP of user supplied meshes
         else
             ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 custom_mailles_3857.shp $chemin_custom_maille
             sudo -u postgres -s shp2pgsql -W "LATIN1" -s 3857 -D -I custom_mailles_3857.shp atlas.t_mailles_custom | sudo -n -u postgres -s psql -d $db_name  &>> log/install_db.log
@@ -191,15 +212,17 @@ then
         sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_mailles_territoire OWNER TO "$owner_atlas";"
     fi
 
-
-    # Conversion des limites du territoire en json
+    # FR: Conversion des limites du territoire en json
+    # EN: Conversion of territory boundaries to json
     rm  -f ./atlas/static/custom/territoire.json
     ogr2ogr -f "GeoJSON" -t_srs "EPSG:4326" -s_srs "EPSG:3857" ./atlas/static/custom/territoire.json \
         PG:"host=$db_host user=$owner_atlas dbname=$db_name port=$db_port password=$owner_atlas_pass" "atlas.t_layer_territoire"
 
 
-    # Si j'installe le schéma taxonomie de TaxHub dans la BDD de GeoNature-atlas ($install_taxonomie = True),
-    #  alors je récupère les fichiers dans le dépôt de TaxHub et les éxécute
+    # FR: Si j'installe le schéma taxonomie de TaxHub dans la BDD de GeoNature-atlas ($install_taxonomie = True),
+    #     alors je récupère les fichiers dans le dépôt de TaxHub et les éxécute
+    # EN: If I install the TaxHub taxonomy schema in the GeoNature-atlas DB ($install_taxonomy = True),
+    #     then I get the files from the TaxHub repository and run them
     if $install_taxonomie
 	then
 
@@ -276,36 +299,39 @@ then
         export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/taxhub/materialized_views.sql  &>> log/install_db.log
     elif $geonature_source
     then
-        # Creation des tables filles en FWD
-        echo "Création de la connexion a GeoNature pour la taxonomie"
+        # FR: Creation des tables filles en FWD
+        # EN: Creation of daughter tables in FWD
+        echo "Creating the connection to GeoNature for the taxonomy"
 		sudo cp data/gn2/atlas_ref_taxonomie.sql /tmp/atlas_ref_taxonomie.sql &>> log/install_db.log
         sudo sed -i "s/myuser;$/$owner_atlas;/" /tmp/atlas_ref_taxonomie.sql &>> log/install_db.log
         export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas_ref_taxonomie.sql  &>> log/install_db.log
     fi
 
-
-    echo "Création de la structure de la BDD..."
-    # Si j'utilise GeoNature ($geonature_source = True), alors je créé les tables filles en FDW connectées à la BDD de GeoNature
+    echo "Creating DB structure"
+    # FR: Si j'utilise GeoNature ($geonature_source = True), alors je créé les tables filles en FDW connectées à la BDD de GeoNature
+    # EN: If I use GeoNature ($geonature_source = True), then I create the child tables in FDW connected to the GeoNature DB
     if $geonature_source
 	then
         if test $geonature_version -eq 1
         then
-            # Creation des tables filles en FWD
-            echo "Création de la connexion a GeoNature"
+            # FR: Creation des tables filles en FWD
+            # EN: Creation of daughter tables in FWD
+            echo "Creating GeoNature connexion"
             sudo cp data/atlas_geonature.sql /tmp/atlas_geonature.sql
             sudo sed -i "s/myuser;$/$owner_atlas;/" /tmp/atlas_geonature.sql
             export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas_geonature.sql  &>> log/install_db.log
         elif test $geonature_version -eq 2
         then
-            sudo cp data/gn2/atlas_synthese.sql /tmp/atlas_synthese.sql
-            sudo sed -i "s/myuser;$/$owner_atlas;/" /tmp/atlas_synthese.sql
-            export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas_synthese.sql  &>> log/install_db.log
+            sudo cp data/gn2/atlas_synthese_extended.sql /tmp/atlas_synthese_extended.sql
+            sudo sed -i "s/myuser;$/$owner_atlas;/" /tmp/atlas_synthese_extended.sql
+            export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas_synthese_extended.sql  &>> log/install_db.log
         else
-            echo "Version de geonature $geonature_version non supportée"
+            echo "Version of geonature $geonature_version unsupported"
         fi
-    # Sinon je créé une table synthese.syntheseff avec 2 observations exemple
-	else
-		echo "Création de la table exemple syntheseff"
+    # FR: Sinon je créé une table synthese.syntheseff avec 2 observations exemple
+    # EN: Otherwise I created a table synthese.syntheseff with 2 observations example
+    else
+		echo "Creating syntheseff example table"
 		sudo -n -u postgres -s psql -d $db_name -c "CREATE TABLE synthese.syntheseff
 			(
 			  id_synthese serial PRIMARY KEY,
@@ -329,15 +355,16 @@ then
         sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE synthese.syntheseff OWNER TO "$owner_atlas";"
 	fi
 
-    # Creation des Vues Matérialisées (et remplacement éventuel des valeurs en dur par les paramètres)
-    echo "Création des vues materialisées"
-    sudo cp data/atlas.sql /tmp/atlas.sql
-    sudo sed -i "s/WHERE id_attribut IN (100, 101, 102, 103);$/WHERE id_attribut  IN ($attr_desc, $attr_commentaire, $attr_milieu, $attr_chorologie);/" /tmp/atlas.sql
-    sudo sed -i "s/date - 15$/date - $time/" /tmp/atlas.sql
-    sudo sed -i "s/date + 15$/date - $time/" /tmp/atlas.sql
+    # FR: Creation des Vues Matérialisées (et remplacement éventuel des valeurs en dur par les paramètres)
+    # EN: Creation of Materialized Views (and possible replacement of hard values by parameters)
+    echo "----- Creating materialized views ------"
+    sudo cp -r data/atlas /tmp
 
+    sudo sed -i "s/date - 15$/date - $time/" /tmp/atlas/atlas.vm_taxons_plus_observes.sql
+    sudo sed -i "s/date + 15$/date - $time/" /tmp/atlas/atlas.vm_taxons_plus_observes.sql
 
-    #customisation de l'altitude
+    # FR: customisation de l'altitude
+    # EN: customisation of altitude
     insert=""
     for i in "${!altitudes[@]}"
     do
@@ -411,7 +438,7 @@ then
     # EN: Creation of the materialized view vm_meshes_observations (number of observations per mesh and per taxon)
     time_temp=$SECONDS
     echo "[$(date +'%H:%M:%S')] Creating atlas.vm_observations_mailles..."
-    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f data/atlas/atlas.vm_observations_mailles.sql  &>> log/install_db.log
+    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f data/atlas/atlas.vm_observations_mailles_extended.sql  &>> log/install_db.log
     echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
     sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.bib_taxref_rangs OWNER TO "$owner_atlas";"
@@ -421,19 +448,25 @@ then
     sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.vm_observations_mailles OWNER TO "$owner_atlas";"
     sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.vm_organisms OWNER TO "$owner_atlas";"
 
-    # Affectation de droits en lecture sur les VM à l'utilisateur de l'application ($user_pg)
+
+    # FR: Affectation de droits en lecture sur les VM à l'utilisateur de l'application ($user_pg)
+    # EN: Assign read rights on VMs to the application user ($user_pg)
     echo "Grant..."
     sudo cp data/grant.sql /tmp/grant.sql
     sudo sed -i "s/my_reader_user;$/$user_pg;/" /tmp/grant.sql
     sudo -n -u postgres -s psql -d $db_name -f /tmp/grant.sql &>> log/install_db.log
 
     # Clean file
+    echo "Cleaning files..."
     cd data/ref
     rm -f L*.shp L*.dbf L*.prj L*.sbn L*.sbx L*.shx output_clip.*
     cd ../..
+    sudo -n rm -r /tmp/atlas
     if [ -d '/tmp/taxhub' ]
     then
         rm -r /tmp/taxhub
     fi
 
+    echo "Install finished - Duration :$(($SECONDS/60))m$(($SECONDS%60))s"
 fi
+

@@ -10,6 +10,7 @@ atlas/app.py
 atlas/atlasAPI.py
 atlas/atlasRoutes.py
 atlas/utils.py
+atlas/wsgi.py
 atlas/configuration/__init__.py
 atlas/configuration/config.py
 atlas/configuration/config_parser.py
@@ -26,6 +27,7 @@ atlas/modeles/entities/vmCommunes.py
 atlas/modeles/entities/vmMedias.py
 atlas/modeles/entities/vmMois.py
 atlas/modeles/entities/vmObservations.py
+atlas/modeles/entities/vmOrganisms.py
 atlas/modeles/entities/vmSearchTaxon.py
 atlas/modeles/entities/vmTaxons.py
 atlas/modeles/entities/vmTaxref.py
@@ -39,6 +41,7 @@ atlas/modeles/repositories/vmMedias.py
 atlas/modeles/repositories/vmMoisRepository.py
 atlas/modeles/repositories/vmObservationsMaillesRepository.py
 atlas/modeles/repositories/vmObservationsRepository.py
+atlas/modeles/repositories/vmOrganismsRepository.py
 atlas/modeles/repositories/vmSearchTaxonRepository.py
 atlas/modeles/repositories/vmTaxonsMostView.py
 atlas/modeles/repositories/vmTaxonsRepository.py

@@ -23,14 +23,15 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
         s.dateobs,
         s.observateurs,
         s.altitude_retenue,
-        s.the_geom_point::geometry('POINT',3857),
+        s.the_geom_point as the_geom_point,
         s.effectif_total,
         tx.cd_ref,
-        st_asgeojson(ST_Transform(ST_SetSrid(s.the_geom_point, 3857), 4326)) as geojson_point,
-        diffusion_level
+        st_asgeojson(s.the_geom_point) as geojson_point,
+        s.diffusion_level
     FROM synthese.syntheseff s
-    LEFT JOIN atlas.vm_taxref tx ON tx.cd_nom = s.cd_nom
-    JOIN atlas.t_layer_territoire m ON ST_Intersects(m.the_geom, s.the_geom_point);
+      LEFT JOIN atlas.vm_taxref tx ON tx.cd_nom = s.cd_nom
+      LIMIT 10
+    WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_observations (id_observation);
 CREATE INDEX ON atlas.vm_observations (cd_ref);
