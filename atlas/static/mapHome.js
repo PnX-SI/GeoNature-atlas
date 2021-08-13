@@ -18,7 +18,7 @@ $(function(){
     displayMailleLayerLastObs(observations);
 
     // interaction list - map
-      $('.lastObsListItem').click(function(){
+      $('.tabEspece').click(function(){
          $(this).siblings().removeClass('bg-light');
          $(this).addClass('bg-light');
         var id_observation = $(this).attr('idSynthese');

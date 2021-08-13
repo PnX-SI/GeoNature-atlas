@@ -610,7 +610,6 @@ function find_id_observation_in_array(tab_id, id_observation) {
 }
 
 function displayMailleLayerLastObs(observations) {
-  observations.sort(compare);
   var geojsonMaille = generateGeoJsonMailleLastObs(observations);
   console.log("<displayMailleLayerLastObs>", observations);
   currentLayer = L.geoJson(geojsonMaille, {
@@ -618,7 +617,7 @@ function displayMailleLayerLastObs(observations) {
     style: styleMailleLastObs,
   });
   currentLayer.addTo(map);
-  map.fitBounds(currentLayer.getBounds());
+  //map.fitBounds(currentLayer.getBounds()); ZOOM ON LAST OBS MAILLE
 }
 
 // Legend
