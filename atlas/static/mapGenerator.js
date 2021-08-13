@@ -395,7 +395,7 @@ function displayMarkerLayerFicheEspece(
   } else {
     currentLayer.addTo(map);
   }
-  map.fitBounds(currentLayer.getBounds());
+  // map.fitBounds(currentLayer.getBounds()); ZOOM FUNCTION ON SPECIES SHEET MARKER LAYER OBSERVATIONS DISPLAY
 
   if (typeof divLegendeFicheEspece !== "undefined") {
     legend.onAdd = function (map) {
