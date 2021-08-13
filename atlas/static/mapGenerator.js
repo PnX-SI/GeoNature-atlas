@@ -283,7 +283,7 @@ function displayMailleLayerFicheEspece(observationsMaille) {
     style: styleMaille,
   });
   currentLayer.addTo(map);
-  map.fitBounds(currentLayer.getBounds());
+  // map.fitBounds(currentLayer.getBounds()); ZOOM FUNCTION ON SPECIES SHEET MAILLE OBSERVATIONS DISPLAY
 
   // ajout de la légende
   generateLegendMaille();
