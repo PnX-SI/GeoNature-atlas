@@ -133,9 +133,9 @@ def getObservationsTaxonCommuneMaille(connection, insee, cd_ref):
             extract(YEAR FROM o.dateobs) AS annee
         FROM atlas.vm_observations o
         JOIN atlas.vm_communes c
-        ON ST_INTERSECTS(o.the_geom_point, c.the_geom)
+        ON ST_INTERSECTS(st_transform(o.the_geom_point, 3857), c.the_geom)
         JOIN atlas.t_mailles_territoire t
-        ON ST_INTERSECTS(t.the_geom, o.the_geom_point)
+        ON ST_INTERSECTS(t.the_geom, st_transform(o.the_geom_point, 2154))
         WHERE o.cd_ref = :thiscdref AND c.insee = :thisInsee
         ORDER BY id_maille
     """

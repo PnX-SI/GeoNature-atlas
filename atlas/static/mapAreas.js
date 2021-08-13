@@ -7,7 +7,7 @@ var currentLayer;
 // Current observation geoJson:  type object
 var myGeoJson;
 
-// Diplay limit of the territory
+// Display limit of the territory
 var areaLayer = L.geoJson(areaInfos.areaGeoJson, {
     style: function () {
         return {
@@ -91,6 +91,7 @@ function displayObsPreciseBaseUrl(areaCode, cd_ref) {
         // $("#loadingGif").hide();
         map.removeLayer(currentLayer);
         if (configuration.AFFICHAGE_MAILLE) {
+            displayMailleLayerLastObs(observations);
         } else {
             displayMarkerLayerPointCommune(observations);
         }
@@ -126,6 +127,7 @@ function displayObsTaxon(insee, cd_ref) {
     $("#loadingGif").hide();
     map.removeLayer(currentLayer);
     if (configuration.AFFICHAGE_MAILLE) {
+      displayMailleLayerLastObs(observations);
     } else {
       displayMarkerLayerPointCommune(observations);
     }
