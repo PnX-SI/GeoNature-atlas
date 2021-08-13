@@ -105,6 +105,34 @@ function displayObsGridBaseUrl() {
     }
 }
 
+// display observation on click
+function displayObsTaxon(insee, cd_ref) {
+  $.ajax({
+    url:
+      configuration.URL_APPLICATION +
+      "/api/observations/" +
+      insee +
+      "/" +
+      cd_ref,
+    dataType: "json",
+    beforeSend: function() {
+      $("#loadingGif").show();
+      $("#loadingGif").attr(
+        "src",
+        configuration.URL_APPLICATION + "/static/images/loading.svg"
+      );
+    }
+  }).done(function(observations) {
+    $("#loadingGif").hide();
+    map.removeLayer(currentLayer);
+    if (configuration.AFFICHAGE_MAILLE) {
+    } else {
+      displayMarkerLayerPointCommune(observations);
+    }
+  });
+}
+
+
 function displayObsTaxonMaille(areaCode, cd_ref) {
     $.ajax({
         url:
@@ -135,7 +163,7 @@ function refreshObsArea() {
             .siblings()
             .removeClass("current");
         $(this).addClass("current");
-        console.log("<refreshObsArea>", $(this).attr("cdRef"));
+        console.log("<refreshObsArea>", $(this).attr("area-code"), $(this).attr("cdRef"));
         if (configuration.AFFICHAGE_MAILLE) {
             displayObsTaxonMaille($(this).attr("area-code"), $(this).attr("cdRef"));
         } else {

@@ -515,10 +515,15 @@ function displayMarkerLayerPointCommune(observationsPoint) {
     },
   });
 
-  newLayer = currentLayer;
-  currentLayer = L.markerClusterGroup();
-  currentLayer.addLayer(newLayer);
   map.addLayer(currentLayer);
+  if (typeof divLegendeFicheCommuneHome !== "undefined") {
+    legend.onAdd = function (map) {
+      var div = L.DomUtil.create("div", "info legend");
+      div.innerHTML = divLegendeFicheCommuneHome;
+      return div;
+    };
+    legend.addTo(map);
+  }
 }
 
 //  ** MAILLE ***

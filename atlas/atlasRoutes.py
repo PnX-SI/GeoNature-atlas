@@ -336,6 +336,7 @@ def ficheCommune(insee):
         observations=observations,
         observers=observers,
         DISPLAY_EYE_ON_LIST=True,
+        insee=insee
     )
 
 

@@ -2,8 +2,10 @@
     {% if configuration.INTERACTIVE_MAP_LIST %}
         <style>
             #taxonListItem:hover {
+                background-color: #cccccc;
                 cursor: pointer;
             }
+
         </style>
     {% endif %}
     <div class="bg-white border-right p-2">
@@ -16,7 +18,7 @@
     <div id="taxonList" class="d-flex align-content-stretch bg-white flex-grow-1">
         <ul class="list-group w-100">
             {% for taxon in listTaxons.taxons %}
-                <li id="taxonListItem" class="media border-bottom p-2"
+                <li id="taxonListItem" class="media border-bottom p-2" area-code="{{ insee }}"
                     cdRef="{{ taxon.cd_ref }}" {% if configuration.INTERACTIVE_MAP_LIST %}data-toggle="tooltip"
                     data-original-title="{{ _('see.repartition.on.territory') }}"{% endif %}>
                 <span class="d-none">{{ taxon.group2_inpn }}</span>
