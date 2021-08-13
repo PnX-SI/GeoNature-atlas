@@ -283,7 +283,7 @@ function displayMailleLayerFicheEspece(observationsMaille) {
     style: styleMaille,
   });
   currentLayer.addTo(map);
-  map.fitBounds(currentLayer.getBounds());
+  // map.fitBounds(currentLayer.getBounds()); ZOOM FUNCTION ON SPECIES SHEET MAILLE OBSERVATIONS DISPLAY
 
   // ajout de la légende
   generateLegendMaille();
@@ -395,7 +395,7 @@ function displayMarkerLayerFicheEspece(
   } else {
     currentLayer.addTo(map);
   }
-  map.fitBounds(currentLayer.getBounds());
+  // map.fitBounds(currentLayer.getBounds()); ZOOM FUNCTION ON SPECIES SHEET MARKER LAYER OBSERVATIONS DISPLAY
 
   if (typeof divLegendeFicheEspece !== "undefined") {
     legend.onAdd = function (map) {
@@ -515,10 +515,15 @@ function displayMarkerLayerPointCommune(observationsPoint) {
     },
   });
 
-  newLayer = currentLayer;
-  currentLayer = L.markerClusterGroup();
-  currentLayer.addLayer(newLayer);
   map.addLayer(currentLayer);
+  if (typeof divLegendeFicheCommuneHome !== "undefined") {
+    legend.onAdd = function (map) {
+      var div = L.DomUtil.create("div", "info legend");
+      div.innerHTML = divLegendeFicheCommuneHome;
+      return div;
+    };
+    legend.addTo(map);
+  }
 }
 
 //  ** MAILLE ***
