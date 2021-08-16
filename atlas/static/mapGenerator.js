@@ -120,7 +120,7 @@ function generateMap() {
   fullScreenButton = $(".leaflet-control-fullscreen");
   fullScreenButton.attr("data-placement", "right");
   fullScreenButton.attr("data-toggle", "tooltip");
-  fullScreenButton.attr("data-original-title", "Plein écran");
+  fullScreenButton.attr("data-original-title", "Fullscreen");
   $(".leaflet-control-fullscreen-button").removeAttr("title");
   
   // Add scale depending on the configuration
@@ -653,7 +653,7 @@ function generateLegende(htmlLegend) {
       );
       $(container).attr("data-placement", "right");
       $(container).attr("data-toggle", "tooltip");
-      $(container).attr("data-original-title", "Légende");
+      $(container).attr("data-original-title", "Legend");
 
       container.onclick = function () {
         if (legendActiv == false) {
