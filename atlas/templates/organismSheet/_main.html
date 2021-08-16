@@ -47,18 +47,20 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <!-- Left row -->
-        <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
-            {% include 'templates/organismSheet/identityCard.html' %}
-            {% include 'templates/organismSheet/statsInfos.html' %}
-            <!--- {% include 'templates/organismSheet/mapObs.html'%} --->
-        </div>
-        <!-- Right row -->
-        <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
-            {% include 'templates/organismSheet/topSpecies.html' %}
-            {% include 'templates/organismSheet/groupChart.html' %}
-            {% include 'templates/organismSheet/blocInfos.html' %}
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Left row -->
+            <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+                {% include 'templates/organismSheet/identityCard.html' %}
+                {% include 'templates/organismSheet/statsInfos.html' %}
+                <!--- {% include 'templates/organismSheet/mapObs.html'%} --->
+            </div>
+            <!-- Right row -->
+            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                {% include 'templates/organismSheet/topSpecies.html' %}
+                {% include 'templates/organismSheet/groupChart.html' %}
+                {% include 'templates/organismSheet/blocInfos.html' %}
+            </div>
         </div>
     </div>
 {% endblock %}

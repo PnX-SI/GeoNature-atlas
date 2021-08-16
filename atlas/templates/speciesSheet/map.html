@@ -25,8 +25,8 @@
                         {{ _('observers') if observers|length > 1 else _('observer') }}
                     </li>
                     <li id="firstObs" class="pointer">
-                        <i class="fas fa-search fa-2x" style="color: brown"></i> <br/>
-                        <b>{{ _('first.obs') }}</b><br/>{{ taxon.taxonSearch.yearmin|int }}
+                        <i class="fas fa-search fa-2x"></i> <br/>
+                        <b style="font-size: 0.95rem">{{ _('first.obs') }}</b><br/>{{ taxon.taxonSearch.yearmin|int }}
                     </li>
                     <li id="lastObs" class="pointer">
                         <i class="far fa-clock fa-2x"></i> <br/>

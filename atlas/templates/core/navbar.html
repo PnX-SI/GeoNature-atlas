@@ -31,10 +31,10 @@
                 <form method="POST" action="" id='searchFormTaxons' role="search">
                     <div class="form-group has-feedback">
                         <input id="searchTaxons" type="text" class="form-control mr-sm-2 ajax-search small-placeholder"
-                               placeholder="{{ _('search.species') }}&nbsp;&nbsp;&nbsp;" loading="false"/>
+                               placeholder="{{ _('search.species') }}&nbsp;&nbsp;&nbsp;" loading="false" style="width: 175px;"  />
 
                     </div>
-                    <input id="hiddenInputTaxons" type="hidden" name="cd_ref"/>
+                    <input id="hiddenInputTaxons" type="hidden"name="cd_ref"/>
                 </form>
 
                 <form class="form-inline my-2 my-lg-0" method="POST"
@@ -42,7 +42,7 @@
                       action=""
                       role="search">
                     <div class="form-group has-feedback">
-                        <input id="searchCommunes" type="text"
+                        <input id="searchCommunes" type="text" style="width: 175px;"
                                class="form-control mr-sm-2 ajax-search small-placeholder"
                                placeholder="{{ _('search.city') }}&nbsp;&nbsp;&nbsp;">
                     </div>
@@ -52,16 +52,23 @@
                 <!--- Languages button and dropdown displaid if MULTILINGUAL is True-->
                 {% if configuration.MULTILINGUAL %}
                 <div class="nav-item dropdown">
-
-                    <a class="nav-link dropdown-toggle" id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class=" nav-link dropdown-toggle" id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <!-- Display languages flags and name, en flag is flag-icon flag-icon-gb-->
-                        <span class="{{ 'flag-icon ' + AVAILABLE_LANGUAGES[CURRENT_LANGUAGE]['flag_icon']}}"> </span> {{ AVAILABLE_LANGUAGES[CURRENT_LANGUAGE]['name'] }}</a>
-                        <div class="dropdown-menu" aria-labelledby="dropdown09">
-                        {% for language in AVAILABLE_LANGUAGES %}
-                            <a class="dropdown-item" href="{{ url_for('main.set_language', language=language)}}">
-                                <span class="{{ 'flag-icon ' + AVAILABLE_LANGUAGES[language]['flag_icon']}}"> </span>  {{ AVAILABLE_LANGUAGES[language]['name'] }}</a>
-                        {% endfor %}
-                        </div>
+                        <container style="display: inline-flex;">
+                            <span class="{{ 'flag-icon ' + AVAILABLE_LANGUAGES[CURRENT_LANGUAGE]['flag_icon']}}" class="align-middle"></span> 
+                            <div class="d-lg-block d-sm-none">&nbsp;&nbsp;{{ AVAILABLE_LANGUAGES[CURRENT_LANGUAGE]['name'] }}</div>
+                        </container>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown09">
+                    {% for language in AVAILABLE_LANGUAGES %}
+                        <a class="dropdown-item" href="{{ url_for('main.set_language', language=language)}}">
+                            <container style="display: inline-flex;">
+                                <span class="{{ 'flag-icon ' + AVAILABLE_LANGUAGES[language]['flag_icon']}}"> </span> 
+                                <div class="d-lg-block d-sm-none">&nbsp;&nbsp;{{ AVAILABLE_LANGUAGES[language]['name'] }}</div>
+                            </container>
+                        </a>
+                    {% endfor %}
+                    </div>
                 </div>
                 {% endif %}
                 
