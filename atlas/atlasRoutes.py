@@ -308,8 +308,8 @@ def ficheCommune(insee):
     listTaxons = vmTaxonsRepository.getTaxonsCommunes(connection, insee)
     commune = vmCommunesRepository.getCommuneFromInsee(connection, insee)
     if current_app.config["AFFICHAGE_MAILLE"]:
-        observations = vmObservationsMaillesRepository.lastObservationsCommuneMaille(
-            connection, current_app.config["NB_LAST_OBS"], insee
+            observations = vmObservationsMaillesRepository.lastObservationsCommuneMaille(
+            connection, current_app.config["NB_LAST_OBS"], str(insee)
         )
     else:
         observations = vmObservationsRepository.lastObservationsCommune(
