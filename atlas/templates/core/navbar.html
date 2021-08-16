@@ -31,10 +31,10 @@
                 <form method="POST" action="" id='searchFormTaxons' role="search">
                     <div class="form-group has-feedback">
                         <input id="searchTaxons" type="text" class="form-control mr-sm-2 ajax-search small-placeholder"
-                               placeholder="{{ _('search.species') }}&nbsp;&nbsp;&nbsp;" loading="false"/>
+                               placeholder="{{ _('search.species') }}&nbsp;&nbsp;&nbsp;" loading="false" style="width: 175px;"  />
 
                     </div>
-                    <input id="hiddenInputTaxons" type="hidden" name="cd_ref"/>
+                    <input id="hiddenInputTaxons" type="hidden"name="cd_ref"/>
                 </form>
 
                 <form class="form-inline my-2 my-lg-0" method="POST"
@@ -42,7 +42,7 @@
                       action=""
                       role="search">
                     <div class="form-group has-feedback">
-                        <input id="searchCommunes" type="text"
+                        <input id="searchCommunes" type="text" style="width: 175px;"
                                class="form-control mr-sm-2 ajax-search small-placeholder"
                                placeholder="{{ _('search.city') }}&nbsp;&nbsp;&nbsp;">
                     </div>
