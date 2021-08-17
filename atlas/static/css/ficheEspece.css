@@ -1,5 +1,5 @@
 #page li a {
-  color: var(--main-color) !important;
+  color: var(--main-color);
 }
 
 #identityCard {
