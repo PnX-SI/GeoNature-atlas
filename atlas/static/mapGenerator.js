@@ -19,7 +19,7 @@ const areaBorderColor = String(
   )
 );
 
-function generateMap() {
+function generateMap(zoomHomeButton) {
   // Map initialization
   firstMapTile = L.tileLayer(configuration.MAP.FIRST_MAP.url, {
     attribution: configuration.MAP.FIRST_MAP.attribution,
@@ -40,7 +40,15 @@ function generateMap() {
     zoom: configuration.MAP.ZOOM,
     layers: [firstMapTile],
     fullscreenControl: true,
+    zoomControl: !(zoomHomeButton),
   });
+
+  if (zoomHomeButton) {
+    var zoomHome = L.Control.zoomHome();
+    zoomHome.addTo(map);
+  }
+
+
 
   // Style of territory on map
   // Uses snogylop to generate a mask
@@ -424,10 +432,14 @@ function onEachFeaturePointLastObs(feature, layer) {
     popupContent +
       "</br> <a href='" +
       configuration.URL_APPLICATION +
+      
+      language +
       "/espece/" +
       feature.properties.cd_ref +
       "'> Fiche espèce </a>"
   );
+  console.log('language = ');
+  console.log(language);
 }
 
 function onEachFeaturePointCommune(feature, layer) {

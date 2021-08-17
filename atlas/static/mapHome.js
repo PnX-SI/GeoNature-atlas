@@ -1,4 +1,6 @@
-var map = generateMap();
+var zoomHomeButton = true;
+
+var map = generateMap(zoomHomeButton);
 
 var legend = L.control({position: 'bottomright'});
 
