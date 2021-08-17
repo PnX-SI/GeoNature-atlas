@@ -32,7 +32,7 @@ OPTIONS (schema_name 'gn_meta', table_name 'cor_dataset_actor');
 
 --CRÉATION VUE MATÉRIALISÉE
 CREATE MATERIALIZED VIEW atlas.vm_organisms
-AS SELECT cd_ref, count(*) as nb_observations, bo.id_organism , nom_organism , adresse_organism , cp_organism , ville_organism , tel_organism , email_organism , url_organism ,url_logo
+AS SELECT DISTINCT cd_ref, count(*) as nb_observations, bo.id_organism , nom_organism , adresse_organism , cp_organism , ville_organism , tel_organism , email_organism , url_organism ,url_logo
    FROM utilisateurs.bib_organisms bo
      JOIN utilisateurs.cor_dataset_actor cda ON bo.id_organism =cda.id_organism 
      JOIN synthese.synthese s ON s.id_dataset =cda.id_dataset 
