@@ -27,14 +27,22 @@ CREATE FOREIGN TABLE utilisateurs.cor_dataset_actor (
     id_organism int4 OPTIONS(column_name 'id_organism') NULL,
     id_nomenclature_actor_role int4 OPTIONS(column_name 'id_nomenclature_actor_role') NULL
 )
+
+
+
 SERVER geonaturedbserver
 OPTIONS (schema_name 'gn_meta', table_name 'cor_dataset_actor');
+
+CREATE VIEW utilisateurs.reduced_cor_dataset_actor 
+AS SELECT DISTINCT id_dataset, id_organism 
+    FROM utilisateurs.cor_dataset_actor;
+
 
 --CRÉATION VUE MATÉRIALISÉE
 CREATE MATERIALIZED VIEW atlas.vm_organisms
 AS SELECT DISTINCT cd_ref, count(*) as nb_observations, bo.id_organism , nom_organism , adresse_organism , cp_organism , ville_organism , tel_organism , email_organism , url_organism ,url_logo
    FROM utilisateurs.bib_organisms bo
-     JOIN utilisateurs.cor_dataset_actor cda ON bo.id_organism =cda.id_organism 
+     JOIN utilisateurs.reduced_cor_dataset_actor cda ON bo.id_organism =cda.id_organism 
      JOIN synthese.synthese s ON s.id_dataset =cda.id_dataset 
      JOIN taxonomie.taxref t on s.cd_nom=t.cd_nom
   group by t.cd_ref, bo.id_organism, bo.nom_organism, bo.adresse_organism, bo.cp_organism, bo.ville_organism, bo.tel_organism, bo.email_organism, bo.url_organism, bo.url_logo

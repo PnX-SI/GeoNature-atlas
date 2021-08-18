@@ -710,7 +710,7 @@ function generateSliderOnMap() {
 
       sliderContainer.style.backgroundColor = "white";
       sliderContainer.style.width = "300px";
-      sliderContainer.style.height = "50px";
+      sliderContainer.style.height = "70px";
       sliderContainer.style.border = "solid white 1px";
       sliderContainer.style.cursor = "pointer";
       $(sliderContainer).css("margin-bottom", "-300px");

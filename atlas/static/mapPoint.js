@@ -49,11 +49,18 @@ $.ajax({
 
         if (configuration.MAP.ENABLE_SLIDER) {
             // Slider event
-            mySlider.on("slideStop", function () {
+            mySlider.on("change", function () {
                 sliderTouch = true;
                 years = mySlider.getValue();
                 yearMin = years[0];
                 yearMax = years[1];
+
+                $("#yearMin").html(yearMin + "&nbsp;&nbsp;&nbsp;&nbsp;");
+                $("#yearMax").html("&nbsp;&nbsp;&nbsp;&nbsp;" + yearMax);
+            });
+
+            mySlider.on("slideStop", function () {
+                sliderTouch = true;
 
                 map.removeLayer(currentLayer);
                 if (map.getZoom() >= configuration.ZOOM_LEVEL_POINT) {
@@ -106,7 +113,7 @@ $.ajax({
     } else {
         if (configuration.MAP.ENABLE_SLIDER) {
             // Slider event
-            mySlider.on("change", function () {
+            mySlider.on("slideStop", function () {
                 sliderTouch = true;
                 years = mySlider.getValue();
                 yearMin = years[0];
@@ -119,12 +126,24 @@ $.ajax({
                     yearMax,
                     sliderTouch
                 );
+
                 nbObs = 0;
-                myGeoJson.features.forEach(function (l) {
-                    nbObs += l.properties.nb_observations;
+                observationsPoint.features.forEach(function(point){
+                    if (point.properties.year >= yearMin && point.properties.year <= yearMax){
+                        nbObs +=1;
+                    }
                 });
 
                 $("#nbObs").html("Nombre d'observation(s): " + nbObs);
+            });
+
+            mySlider.on("change", function () {
+                years = mySlider.getValue();
+                yearMin = years[0];
+                yearMax = years[1];
+
+                $("#yearMin").html(yearMin + "&nbsp;&nbsp;&nbsp;&nbsp;");
+                $("#yearMax").html("&nbsp;&nbsp;&nbsp;&nbsp;" + yearMax);
             });
         }
     }
