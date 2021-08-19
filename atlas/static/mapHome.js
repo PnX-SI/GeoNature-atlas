@@ -1,4 +1,6 @@
-var map = generateMap();
+var zoomHomeButton = true;
+
+var map = generateMap(zoomHomeButton);
 
 var legend = L.control({position: 'bottomright'});
 
@@ -18,7 +20,7 @@ $(function(){
     displayMailleLayerLastObs(observations);
 
     // interaction list - map
-      $('.tabEspece').click(function(){
+      $('.lastObslistItem').click(function(){
          $(this).siblings().removeClass('bg-light');
          $(this).addClass('bg-light');
         var id_observation = $(this).attr('idSynthese');
@@ -46,7 +48,7 @@ $(function(){
     displayMarkerLayerPointLastObs(observations);
 
       // interaction list - map
-      $('.tabEspece').click(function(){
+      $('.lastObslistItem').click(function(){
          $(this).siblings().removeClass('current');
          $(this).addClass('current');
         var id_observation = $(this).attr('idSynthese');

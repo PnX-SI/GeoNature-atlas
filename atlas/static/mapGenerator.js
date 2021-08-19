@@ -19,7 +19,7 @@ const areaBorderColor = String(
   )
 );
 
-function generateMap() {
+function generateMap(zoomHomeButton) {
   // Map initialization
   firstMapTile = L.tileLayer(configuration.MAP.FIRST_MAP.url, {
     attribution: configuration.MAP.FIRST_MAP.attribution,
@@ -40,7 +40,15 @@ function generateMap() {
     zoom: configuration.MAP.ZOOM,
     layers: [firstMapTile],
     fullscreenControl: true,
+    zoomControl: !(zoomHomeButton),
   });
+
+  if (zoomHomeButton) {
+    var zoomHome = L.Control.zoomHome();
+    zoomHome.addTo(map);
+  }
+
+
 
   // Style of territory on map
   // Uses snogylop to generate a mask
@@ -424,10 +432,14 @@ function onEachFeaturePointLastObs(feature, layer) {
     popupContent +
       "</br> <a href='" +
       configuration.URL_APPLICATION +
+      
+      language +
       "/espece/" +
       feature.properties.cd_ref +
       "'> Fiche espèce </a>"
   );
+  console.log('language = ');
+  console.log(language);
 }
 
 function onEachFeaturePointCommune(feature, layer) {
@@ -698,7 +710,7 @@ function generateSliderOnMap() {
 
       sliderContainer.style.backgroundColor = "white";
       sliderContainer.style.width = "300px";
-      sliderContainer.style.height = "50px";
+      sliderContainer.style.height = "70px";
       sliderContainer.style.border = "solid white 1px";
       sliderContainer.style.cursor = "pointer";
       $(sliderContainer).css("margin-bottom", "-300px");

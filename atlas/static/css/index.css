@@ -287,6 +287,13 @@ h3.title-spaced {
   }
 }
 
+.list-group {
+  max-height: fit-content;
+  height: 100%;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+
 @media (min-width: 992px) {
   #listMap {
     padding-left: 0px;

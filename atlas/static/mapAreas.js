@@ -1,4 +1,6 @@
-var map = generateMap();
+var zoomHomeButton = false;
+
+var map = generateMap(zoomHomeButton);
 
 var legend = L.control({position: "bottomright"});
 // Current observation Layer: leaflet layer type
@@ -20,11 +22,13 @@ var areaLayer = L.geoJson(areaInfos.areaGeoJson, {
     }
 }).addTo(map);
 
+
 var bounds = L.latLngBounds([]);
 var layerBounds = areaLayer.getBounds();
 bounds.extend(layerBounds);
 map.fitBounds(bounds);
-
+map.zoom = map.getZoom();
+console.log(map.zoom);
 // Display the 'x' last observations
 // MAILLE
 if (configuration.AFFICHAGE_MAILLE) {
