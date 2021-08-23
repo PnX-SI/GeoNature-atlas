@@ -155,10 +155,21 @@ A noter aussi que si vous ne connectez pas l'atlas à une BDD GeoNature (``geona
 
 Lancez le fichier fichier d'installation de la base de données :
 
+
 ::
 
     cd /home/`whoami`/atlas
     ./install_db.sh
+
+
+/!\ Si vous avez un nombre de données supérieur à 1 million, préférez l'installation avec install_db_extended.sh /!\
+
+
+::
+
+    cd /home/`whoami`/atlas
+    ./install_db_extended.sh
+
 
 
 :notes:
@@ -167,7 +178,7 @@ Lancez le fichier fichier d'installation de la base de données :
 
 Vous pouvez alors modifier les vues, notamment ``atlas.vm_observations`` pour les adapter à votre contexte (ajouter les données partenaires, filtrer les espèces, limiter à un rang taxonomique...) ou le connecter à une autre BDD source (en important les données ou en s'y connectant en FDW).
 
-Si vous voulez adapter le contenu des vues matérialisées, vous pouvez modifier le fichier ``data/atlas.sql`` puis relancer ce script global de la BDD.
+Si vous voulez adapter le contenu des vues matérialisées, vous pouvez modifier le fichier ``data/atlas/atlas.vm_observations.sql`` puis relancer ce script global de la BDD.
 
 Si vous souhaitez uniquement recréer la vue ``atlas.vm_observations`` et les 6 autres vues qui en dépendent vous pouvez utiliser le script ``data/update_vm_observations.sql``.
 
