@@ -1,6 +1,9 @@
 --------------
 -- IMPORTANT--
 --------------
+-------------------------------
+-- PAS A JOUR. A SUPPRIMER ? --
+-------------------------------
 -- A exécuter avec l'utilisateur propriétaire de la BDD (owner_atlas dans main/configuration/settings.ini).
 -- Ce script vous permet de recréer la vue atlas.vm_observations en l'adaptant à vos besoins.
 -- Pour cela toutes les vues qui en dépendent doivent être supprimées puis recréées.
