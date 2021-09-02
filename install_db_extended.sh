@@ -322,7 +322,7 @@ then
             export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas_geonature.sql  &>> log/install_db.log
         elif test $geonature_version -eq 2
         then
-            sudo cp data/gn2/atlas_synthese_extended.sql /tmp/atlas_synthese_extended.sql
+            sudo cp data/gn2/atlas_synthese.sql /tmp/atlas_synthese_extended.sql
             sudo sed -i "s/myuser;$/$owner_atlas;/" /tmp/atlas_synthese_extended.sql
             export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas_synthese_extended.sql  &>> log/install_db.log
         else

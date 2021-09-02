@@ -24,7 +24,6 @@ $(function(){
          $(this).siblings().removeClass('bg-light');
          $(this).addClass('bg-light');
         var id_observation = $(this).attr('idSynthese');
-        console.log('idObs', id_observation)
         p = (currentLayer._layers);
         var selectLayer;
         for (var key in p) {
@@ -34,7 +33,7 @@ $(function(){
         }
 
         selectLayer.openPopup();
-        var bounds = L.latLngBounds([]);
+        var bounds = L.latLngBounds();
         var layerBounds = selectLayer.getBounds();
         bounds.extend(layerBounds);
         map.fitBounds(bounds, {
