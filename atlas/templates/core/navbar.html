@@ -52,7 +52,7 @@
                 <!--- Languages button and dropdown displaid if MULTILINGUAL is True-->
                 {% if configuration.MULTILINGUAL %}
                 <div class="nav-item dropdown">
-                    <a class=" nav-link dropdown-toggle" id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <!-- Display languages flags and name, en flag is flag-icon flag-icon-gb-->
                         <container style="display: inline-flex;">
                             <span class="{{ 'flag-icon ' + AVAILABLE_LANGUAGES[CURRENT_LANGUAGE]['flag_icon']}}" class="align-middle"></span> 
@@ -61,7 +61,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropdown09">
                     {% for language in AVAILABLE_LANGUAGES %}
-                        <a class="dropdown-item" href="{{ url_for('main.set_language', language=language)}}">
+                        <a  class="dropdown-item" href="{{ url_for('main.set_language', language=language)}}">
                             <container style="display: inline-flex;">
                                 <span class="{{ 'flag-icon ' + AVAILABLE_LANGUAGES[language]['flag_icon']}}"> </span> 
                                 <div class="d-lg-block d-sm-none">&nbsp;&nbsp;{{ AVAILABLE_LANGUAGES[language]['name'] }}</div>

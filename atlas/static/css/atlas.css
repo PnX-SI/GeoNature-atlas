@@ -22,6 +22,11 @@ main {
   margin-left: 60px;
   flex: 1;
 }
+
+#dropdown09{
+  cursor: pointer;
+}
+
 .small-placeholder::placeholder {
   font-size: 13px;
 }

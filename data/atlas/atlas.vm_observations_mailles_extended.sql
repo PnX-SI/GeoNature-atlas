@@ -8,7 +8,7 @@ c.id_area AS id_maille
 FROM ref_geo.l_areas c
 JOIN ref_geo.bib_areas_types t ON t.id_type = c.id_type
 JOIN atlas.t_layer_territoire mt ON ST_intersects(c.geom,st_transform(mt.the_geom, 2154))
-WHERE c.enable = true AND c.id_type = 27;
+WHERE c.enable = true AND t.type_code = :type_maille;
 
 CREATE UNIQUE INDEX t_mailles_territoire_id_maille_idx ON atlas.t_mailles_territoire USING btree (id_maille);
 
@@ -21,3 +21,8 @@ date_part('year', dateobs) as annee
 FROM atlas.vm_observations obs
 JOIN atlas.t_mailles_territoire m ON st_intersects(st_transform(obs.the_geom_point, 2154), m.the_geom)
 WITH DATA;
+
+create unique index on atlas.vm_observations_mailles (id_observation);
+create index on atlas.vm_observations_mailles (id_maille);
+create index on atlas.vm_observations_mailles (cd_ref);
+create index on atlas.vm_observations_mailles (geojson_maille);
