@@ -78,7 +78,7 @@ type_territoire="'PEC'"
 #### COMMUNES ####
 
 # Creer la table des communes à partir d'un shapefile ?
-# Si false, modifiez la creation de 'atlas.vm_communes' dans data/atlas.sql
+# Si false, modifiez la creation de 'atlas.vm_communes' dans data/atlas/atlas.vm_communes.sql
 import_commune_shp=true
 
 # Chemin et nom des colonnes du SHP des communes du territoire. Laisser tel quel (en modifiant uniquement MYUSERLINUX)
