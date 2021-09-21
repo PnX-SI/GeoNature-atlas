@@ -14,12 +14,12 @@ FROM synthese.syntheseff s
             -- since s.the_geom_point can be either a point or a geometry
             -- corresponding to m.the_geom, we need to use a case
             -- Intersects the geom point with a 1km mesh cell if no sensibility 
-             WHEN s.diffusion_level = 5 THEN st_intersects(s.the_geom_point, m.the_geom) AND m.id_type = (( SELECT la.id_type
+             WHEN s.diffusion_level = 5 THEN st_intersects(s.the_geom_point, st_transform(m.the_geom, 3857)) AND m.id_type = (( SELECT la.id_type
                FROM ref_geo.l_areas la
-              WHERE la.area_code::text ~~ '1km%'::text --mettre ça en paramètre ? TODO 
+              WHERE la.area_code::text ~~ '10km%'::text --mettre ça en paramètre ? TODO 
              LIMIT 1))
             -- We have no id from the syntheseff view so need to st_equals...
-            ELSE st_equals(s.the_geom_point, m.the_geom)
+            ELSE st_equals(s.the_geom_point, st_transform(m.the_geom, 3857))
         END
 WITH DATA;
 
