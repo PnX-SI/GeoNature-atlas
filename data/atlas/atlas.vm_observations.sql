@@ -7,10 +7,10 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
         s.dateobs,
         s.observateurs,
         s.altitude_retenue,
-        st_transform(s.the_geom_point, 3857) as the_geom_point,
+        st_centroid(st_transform(s.the_geom_point, 3857)) as the_geom_point,
         s.effectif_total,
         tx.cd_ref,
-        st_asgeojson(st_transform(s.the_geom_point, 4326)) as geojson_point,
+        st_asgeojson(st_transform(st_centroid(s.the_geom_point), 4326)) as geojson_point,
         s.diffusion_level
     FROM synthese.syntheseff s
       LEFT JOIN atlas.vm_taxref tx ON tx.cd_nom = s.cd_nom

@@ -77,3 +77,22 @@ def getCommunesObservationsChilds(connection, cd_ref):
         temp = {"insee": r.insee, "commune_maj": r.commune_maj}
         listCommunes.append(temp)
     return listCommunes
+
+def getCommunesObservationsChildsMailles(connection, cd_ref):
+    sql = """
+        SELECT DISTINCT (com.insee) as insee, com.commune_maj
+        FROM atlas.vm_communes com
+        JOIN atlas.vm_observations_mailles obs
+        ON st_intersects(obs.the_geom, com.the_geom)
+        WHERE obs.cd_ref in (
+                SELECT * from atlas.find_all_taxons_childs(:thiscdref)
+            )
+            OR obs.cd_ref = :thiscdref
+        ORDER BY com.commune_maj ASC
+    """
+    req = connection.execute(text(sql), thiscdref=cd_ref)
+    listCommunes = list()
+    for r in req:
+        temp = {'insee': r.insee, 'commune_maj': r.commune_maj}
+        listCommunes.append(temp)
+    return listCommunes

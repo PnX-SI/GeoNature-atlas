@@ -49,6 +49,32 @@ function generateMap(zoomHomeButton) {
   }
 
 
+  department = L.featureGroup();
+  cities = L.featureGroup();
+  tenCell = L.featureGroup();
+  oneCell = L.featureGroup();
+
+  var overlays = {
+    "Departement": department,
+    "Communes": cities,
+    "10km²": tenCell,
+    "1km²": oneCell 
+  }
+  // Add layers
+  control = L.control.layers(null, overlays)
+  
+  if (configuration.AFFICHAGE_MAILLE) {
+    control.addTo(map)
+  }
+  // Activate layers
+  Object.values(overlays).forEach(e => map.addLayer(e))
+
+  // Keep Layers in the same order as specified by the
+  // overlays variable so Departement under Commune
+  // under 10km2 under 1km2
+  map.on('overlayadd', function(e){
+    Object.values(overlays).forEach(e => e.bringToFront())
+  })
 
   // Style of territory on map
   // Uses snogylop to generate a mask
@@ -142,6 +168,8 @@ function generateMap(zoomHomeButton) {
   }
   
   return map;
+
+  
 }
 
 //****** Fonction fiche espècce ***********
@@ -170,6 +198,7 @@ function onEachFeaturePoint(feature, layer) {
 
 // popup Maille
 function onEachFeatureMaille(feature, layer) {
+
   popupContent =
     "<b>Nombre d'observation(s): </b>" +
     feature.properties.nb_observations +
@@ -177,6 +206,10 @@ function onEachFeatureMaille(feature, layer) {
     feature.properties.last_observation +
     " ";
   layer.bindPopup(popupContent);
+  
+  filterMaille(feature, layer);
+
+  zoomMaille(layer);
 }
 
 // Style maille
@@ -206,13 +239,17 @@ function styleMaille(feature) {
     fillOpacity: 0.8,
   };
 }
-
-console.log({
-  fillColor: null,
-  weight: 1,
-  color: mailleBorderColor,
-  fillOpacity: 0.8,
-});
+function zoomMaille(layer) {
+  layer.on('click', function(e){
+    bounds = e.sourceTarget.feature.geometry.coordinates;
+    bounds = bounds.map(b => {
+      return b.map(c => {
+        return c.map(d => [d[1], d[0]])
+      })
+    })
+    map.fitBounds(bounds);
+  });
+}
 
 function generateLegendMaille() {
   legend.onAdd = function (map) {
@@ -286,6 +323,7 @@ function generateGeojsonMaille(observations, yearMin, yearMax) {
 
 function displayMailleLayerFicheEspece(observationsMaille) {
   myGeoJson = observationsMaille;
+  
   currentLayer = L.geoJson(myGeoJson, {
     onEachFeature: onEachFeatureMaille,
     style: styleMaille,
@@ -304,7 +342,9 @@ function generateGeojsonGridArea(observations) {
   while (i < observations.length) {
     geometry = observations[i].geojson_maille;
     idMaille = observations[i].id_maille;
+    idType = observations[i].id_type;
     properties = {
+      id_type: idType,
       id_maille: idMaille,
       nb_observations: 1,
       last_observation: observations[i].annee,
@@ -420,6 +460,7 @@ function displayMarkerLayerFicheEspece(
 /* *** Point ****/
 
 function onEachFeaturePointLastObs(feature, layer) {
+  
   popupContent =
     "<b>Espèce: </b>" +
     feature.properties.taxon +
@@ -497,7 +538,6 @@ function displayMarkerLayerPointLastObs(observationsPoint) {
       );
     },
   });
-
   map.addLayer(currentLayer);
   if (typeof divLegendeFicheCommuneHome !== "undefined") {
     legend.onAdd = function (map) {
@@ -565,12 +605,37 @@ function printEspece(tabEspece, tabCdRef) {
 }
 
 function onEachFeatureMailleLastObs(feature, layer) {
+ 
+  // "Set" removes the duplicates. We do not want the same
+  // species in the popup => Clearer
   popupContent =
     "<b>Espèces observées dans la maille: </b> <ul> " +
-    printEspece(feature.properties.list_taxon, feature.properties.list_cdref) +
+    printEspece([... new Set(feature.properties.list_taxon)], 
+                [... new Set(feature.properties.list_cdref)]) +
     "</ul>";
-
   layer.bindPopup(popupContent);
+
+  filterMaille(feature, layer);
+
+  zoomMaille(layer);
+
+  var selected = false;
+
+  layer.on('click', function (layer) {
+    resetStyleMailles();
+    this.setStyle(styleMailleClickedOrHover(layer.target));
+    selected = true;
+  });
+  layer.on('mouseover', function (layer) {
+    this.setStyle(styleMailleClickedOrHover(layer.target));
+    selected = false;
+  });
+
+  layer.on('mouseout', function () {
+    if (!selected) {
+      this.setStyle(styleMailleLastObs());
+    }
+  });
 }
 
 function styleMailleLastObs() {
@@ -582,6 +647,60 @@ function styleMailleLastObs() {
   };
 }
 
+function styleMailleClickedOrHover(layer) {
+  var id = layer.feature.properties.id_type;
+  var fillColor = getComputedStyle(document.body).getPropertyValue('--main-color');
+  var fillOpacity = 0.5;
+
+  if ( id === 26) {
+    var fillOpacity = 0.2;
+  }
+  else if (id === 25 ) {
+    var fillOpacity = 0.4;
+  }
+  else if ( id === 27) {
+    var fillOpacity = 0.6;
+  }
+  else {
+    var fillOpacity = 0.85;
+  }
+  var options = layer.options;
+  return {
+    ...options,
+    fillColor: fillColor,
+    fillOpacity: fillOpacity
+  }
+}
+
+function resetStyleMailles() {
+  // set style for all cells
+  map.eachLayer(function(layer){
+    if (layer.feature && layer.feature.properties.id_type) {
+        layer.setStyle(styleMailleLastObs())
+    };
+  });
+}
+
+function filterMaille(feature, layer) {
+  id = feature.properties.id_type;
+  if ( id === 26) {
+    department.addLayer(layer);
+    // Need to do it there otherwise it will be
+    // in front of cities featureGroup
+    department.bringToBack();
+  }
+  else if (id === 25 ) {
+    cities.addLayer(layer);
+  }
+  else if ( id === 27) {
+    tenCell.addLayer(layer);
+  }
+  else {
+    oneCell.addLayer(layer);
+    oneCell.bringToFront();
+  }
+}
+
 function generateGeoJsonMailleLastObs(observations) {
   var i = 0;
   myGeoJson = { type: "FeatureCollection", features: [] };
@@ -589,6 +708,7 @@ function generateGeoJsonMailleLastObs(observations) {
     geometry = observations[i].geojson_maille;
     idMaille = observations[i].id_maille;
     properties = {
+      id_type: observations[i].id_type,
       id_maille: idMaille,
       list_taxon: [observations[i].taxon],
       list_cdref: [observations[i].cd_ref],
@@ -628,6 +748,8 @@ function displayMailleLayerLastObs(observations) {
     onEachFeature: onEachFeatureMailleLastObs,
     style: styleMailleLastObs,
   });
+  // Very important otherwise currentLayer cannot be removed by
+  // mapCommune.js 
   currentLayer.addTo(map);
   //map.fitBounds(currentLayer.getBounds()); ZOOM ON LAST OBS MAILLE
 }

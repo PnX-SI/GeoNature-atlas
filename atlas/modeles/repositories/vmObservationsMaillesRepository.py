@@ -18,10 +18,11 @@ def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
             func.count(VmObservationsMailles.id_observation).label("nb_obs"),
             func.max(VmObservationsMailles.annee).label("last_observation"),
             VmObservationsMailles.id_maille,
-            VmObservationsMailles.geojson_maille,
+            VmObservationsMailles.id_type,
+            VmObservationsMailles.geojson_maille
         )
-            .group_by(VmObservationsMailles.id_maille, VmObservationsMailles.geojson_maille)
-            .filter(
+        .group_by(VmObservationsMailles.id_maille, VmObservationsMailles.geojson_maille, VmObservationsMailles.id_type)
+        .filter(
             or_(
                 VmObservationsMailles.cd_ref.in_(subquery),
                 VmObservationsMailles.cd_ref == cd_ref,
@@ -38,6 +39,7 @@ def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
                 geometry=json.loads(o.geojson_maille),
                 properties={
                     "id_maille": o.id_maille,
+                    "id_type": o.id_type,
                     "nb_observations": o.nb_obs,
                     "last_observation": o.last_observation,
                 },
@@ -74,6 +76,7 @@ def lastObservationsMailles(connection, mylimit, idPhoto):
         temp = {
             "id_observation": o.id_observation,
             "id_maille": o.id_maille,
+            "id_type": o.id_type,
             "cd_ref": o.cd_ref,
             "dateobs": str(o.dateobs),
             "altitude_retenue": o.altitude_retenue,
@@ -89,24 +92,19 @@ def lastObservationsMailles(connection, mylimit, idPhoto):
 
 def lastObservationsCommuneMaille(connection, mylimit, insee):
     sql = """
-    WITH last_obs AS (
         SELECT
             obs.cd_ref, obs.dateobs, t.lb_nom,
-            t.nom_vern, obs.the_geom_point AS l_geom
-        FROM atlas.vm_observations obs
+            t.nom_vern, obs.the_geom as l_geom,
+            obs.geojson_maille, obs.id_maille,
+            obs.id_type
+        FROM atlas.vm_observations_mailles obs
         JOIN atlas.vm_communes c
-        ON ST_Intersects(obs.the_geom_point, c.the_geom)
+        ON ST_Intersects(obs.the_geom, c.the_geom)
         JOIN atlas.vm_taxons t
         ON  obs.cd_ref = t.cd_ref
         WHERE c.insee = :thisInsee
         ORDER BY obs.dateobs DESC
         LIMIT :thislimit
-    )
-    SELECT l.lb_nom, l.nom_vern, l.cd_ref, m.id_maille, m.geojson_maille
-    FROM atlas.t_mailles_territoire m
-    JOIN last_obs  l
-    ON st_intersects(st_transform(l.l_geom, 2154), m.the_geom)
-    GROUP BY l.lb_nom, l.cd_ref, m.id_maille, l.nom_vern, m.geojson_maille
     """
     observations = connection.execute(text(sql), thisInsee=insee, thislimit=mylimit)
     obsList = list()
@@ -117,9 +115,11 @@ def lastObservationsCommuneMaille(connection, mylimit, insee):
             taxon = o.lb_nom
         temp = {
             "cd_ref": o.cd_ref,
+            "dateobs": o.dateobs,
             "taxon": taxon,
             "geojson_maille": json.loads(o.geojson_maille),
             "id_maille": o.id_maille,
+            "id_type": o.id_type,
         }
         obsList.append(temp)
     return obsList
@@ -128,14 +128,12 @@ def lastObservationsCommuneMaille(connection, mylimit, insee):
 # Use for API
 def getObservationsTaxonCommuneMaille(connection, insee, cd_ref):
     sql = """
-        SELECT
-            o.cd_ref, t.id_maille, t.geojson_maille,
-            extract(YEAR FROM o.dateobs) AS annee
-        FROM atlas.vm_observations o
+     SELECT
+            o.cd_ref, o.id_maille, o.id_type, o.geojson_maille, o.the_geom,
+            extract(YEAR FROM o.dateobs) as annee
+        FROM atlas.vm_observations_mailles o
         JOIN atlas.vm_communes c
-        ON ST_INTERSECTS(st_transform(o.the_geom_point, 3857), c.the_geom)
-        JOIN atlas.t_mailles_territoire t
-        ON ST_INTERSECTS(t.the_geom, st_transform(o.the_geom_point, 2154))
+        ON ST_INTERSECTS(o.the_geom, c.the_geom)
         WHERE o.cd_ref = :thiscdref AND c.insee = :thisInsee
         ORDER BY id_maille
     """
@@ -144,6 +142,7 @@ def getObservationsTaxonCommuneMaille(connection, insee, cd_ref):
     for o in observations:
         temp = {
             "id_maille": o.id_maille,
+            "id_type": o.id_type,
             "nb_observations": 1,
             "annee": o.annee,
             "geojson_maille": json.loads(o.geojson_maille),
