@@ -272,6 +272,5 @@ $(".INPNgroup").click(function() {
 });
 
 $(".lb-link").click(function() {
-  // console.log("click");
   location.href = $(this).attr("href");
 });

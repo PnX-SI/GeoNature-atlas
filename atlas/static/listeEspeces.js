@@ -7,7 +7,6 @@ $('[data-toggle="tooltip"]').tooltip();
 $(document).ready(function(){
   $("#taxonInput").on("keyup", function() {
     var value = $(this).val().toLowerCase();
-    console.log(value);
     $("#taxonList li").filter(function() {
       $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
     });
