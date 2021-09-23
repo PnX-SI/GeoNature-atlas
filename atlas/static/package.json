@@ -34,7 +34,8 @@
     "leaflet.zoomhome": "^1.0.0",
     "lightbox2": "^2.8.2",
     "popper.js": "^1.16.0",
-    "raphael": "^2.2.0"
+    "raphael": "^2.2.0",
+    "slick": "^1.12.2"
   },
   "devDependencies": {
     "jest": "^27.0.6"
