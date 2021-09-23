@@ -32,8 +32,7 @@ atlas/static/custom/images/accueil-intro.jpg
 static/custom/images/favicon.ico
 atlas/static/custom/images/logo_patrimonial.png
 
-static/custom/templates/bandeaulogoshome.html
-
+atlas/static/custom/templates/bandeaulogoshome.html
 atlas/static/custom/templates/presentation.html
 atlas/static/custom/templates/footer.html
 atlas/static/custom/templates/introduction.html
