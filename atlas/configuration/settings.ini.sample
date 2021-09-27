@@ -29,11 +29,6 @@ owner_atlas_pass=monpassachanger
 
 # GeoNature-atlas est-il connecté à une BDD GeoNature ?
 geonature_source=true
-# Version de GeoNature utilisée 1 ou 2
-geonature_version=2
-# Est-ce que l'atlas utilise une BDD GeoNature distante (en FDW) ou non (local) ?
-# true : base de données distante
-geonature_fdw=true
 
 ################################################
 ##### CONNEXION A LA BDD GEONATURE SOURCE ######
