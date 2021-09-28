@@ -1,6 +1,7 @@
 CREATE TABLE synthese.syntheseff(
     id_synthese serial PRIMARY KEY,
     id_organism integer DEFAULT 2, 
+    id_dataset integer,
     cd_nom integer,
     insee character(5),
     dateobs date NOT NULL DEFAULT now(),

@@ -18,7 +18,7 @@ AS SELECT DISTINCT  cd_ref,
                     url_logo
     FROM utilisateurs.bib_organismes bo
         JOIN utilisateurs.reduced_cor_dataset_actor cda ON bo.id_organisme=cda.id_organism
-        JOIN synthese.synthese s ON s.id_dataset =cda.id_dataset 
+        JOIN synthese.syntheseff s ON s.id_dataset =cda.id_dataset 
         JOIN taxonomie.taxref t on s.cd_nom=t.cd_nom
     group by t.cd_ref, bo.id_organisme, bo.nom_organisme, bo.adresse_organisme, bo.cp_organisme, bo.ville_organisme, bo.tel_organisme, bo.email_organisme, bo.url_organisme, bo.url_logo
     with data;

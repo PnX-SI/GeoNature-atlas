@@ -15,6 +15,7 @@ WITH areas AS (
  ),  obs_data AS (
 	SELECT s.id_synthese,
 	    s.cd_nom,
+		s.id_dataset,
 	    s.date_min AS dateobs,
 	    s.observers AS observateurs,
 	    (s.altitude_min + s.altitude_max) / 2 AS altitude_retenue,
@@ -36,6 +37,7 @@ WITH areas AS (
 		AND st.cd_nomenclature = 'Pr'-- seulement les données présentes (status_observation = )
 )
  SELECT d.id_synthese,
+    d.id_dataset,
     d.cd_nom,
     d.dateobs,
     d.observateurs,
