@@ -45,6 +45,8 @@ data/ref/territoire.prj
 data/ref/territoire.shp
 data/ref/territoire.shx
 
+data/ref/L93*
+
 # Pycharm
 .idea/
 
