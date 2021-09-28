@@ -422,13 +422,15 @@ if ! database_exists $db_name
         export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_organisms.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
-        echo "[$(date +'%H:%M:%S')] Creating atlas.t_mailles_territoire..."
-        time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host \
-        -f data/atlas/atlas.t_mailles_territoire.sql \
-        -v type_maille=$type_maille &>> log/install_db.log
-        echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
-
+        if $use_ref_geo_gn2
+        then
+            echo "[$(date +'%H:%M:%S')] Creating atlas.t_mailles_territoire..."
+            time_temp=$SECONDS
+            export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host \
+            -f data/atlas/atlas.t_mailles_territoire.sql \
+            -v type_maille=$type_maille &>> log/install_db.log
+            echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
+        fi
         # FR: Création de la vue matérialisée vm_mailles_observations (nombre d'observations par maille et par taxon)
         # EN: Creation of the materialized view vm_meshes_observations (number of observations per mesh and per taxon)
         echo "[$(date +'%H:%M:%S')] Creating atlas.vm_observations_mailles..."

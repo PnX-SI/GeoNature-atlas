@@ -1,7 +1,7 @@
-DROP MATERIALIZED VIEW atlas.t_mailles_territoire;
+DROP TABLE IF EXISTS atlas.t_mailles_territoire;
 
 -- MV for having only meshs of the territory
-CREATE MATERIALIZED VIEW atlas.t_mailles_territoire
+CREATE TABLE atlas.t_mailles_territoire
 AS SELECT c.geom AS the_geom,
 st_asgeojson(st_transform(c.geom, 4326)) AS geojson_maille,
 c.id_area AS id_maille
