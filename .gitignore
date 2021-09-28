@@ -46,6 +46,7 @@ data/ref/territoire.shp
 data/ref/territoire.shx
 
 data/ref/L93*
+data/ref/mailles*
 
 # Pycharm
 .idea/

@@ -185,6 +185,7 @@ if ! database_exists $db_name
                                                                 SELECT m.geom AS the_geom, ST_AsGeoJSON(st_transform(m.geom, 4326)) as geojson_maille
                                                                 FROM atlas.t_mailles_"$taillemaille" m, atlas.t_layer_territoire t
                                                                 WHERE ST_Intersects(m.geom, t.the_geom);
+                                                                
                                                                 CREATE INDEX index_gist_t_mailles_territoire
                                                                 ON atlas.t_mailles_territoire
                                                                 USING gist (the_geom);

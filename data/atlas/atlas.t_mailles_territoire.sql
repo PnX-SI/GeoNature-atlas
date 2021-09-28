@@ -2,7 +2,8 @@ DROP TABLE IF EXISTS atlas.t_mailles_territoire;
 
 -- MV for having only meshs of the territory
 CREATE TABLE atlas.t_mailles_territoire
-AS SELECT c.geom AS the_geom,
+AS SELECT 
+st_transform(c.geom, 4326) AS the_geom,
 st_asgeojson(st_transform(c.geom, 4326)) AS geojson_maille,
 c.id_area AS id_maille
 FROM ref_geo.l_areas c
