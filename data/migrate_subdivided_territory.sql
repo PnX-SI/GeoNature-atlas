@@ -13,11 +13,11 @@ AS
 	SELECT
 		random() AS gid,
 		1 AS territory_layer_id,
-		st_subdivide(st_transform(d.st_union, 3857), 255) AS geom
+		st_subdivide(st_transform(d.st_union, 4326), 255) AS geom
 	FROM d
 WITH DATA;
 
-CREATE MATERIALIZED VIEW atlas.vm_organisms
+CREATE MATERIALIZED VIEW atlas.vm_cor_taxon_organism
 AS SELECT cd_ref, count(*) as nb_observations, id_organism , nom_organism , adresse_organism , cp_organism , ville_organism , tel_organism , email_organism , url_organism ,url_logo
    FROM utilisateurs.bib_organisms bo
      JOIN utilisateurs.cor_dataset_actor cda ON bo.id_organism =cda.id_organism 

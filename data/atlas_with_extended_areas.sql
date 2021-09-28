@@ -26,7 +26,7 @@ SELECT
   , a.area_code                              AS area_code
   , a.area_name                              AS area_name
   , a.id_type                                AS id_type
-  , st_transform(a.geom, 3857)               AS the_geom
+  , st_transform(a.geom, 4326)               AS the_geom
   , st_asgeojson(st_transform(a.geom, 4326)) AS area_geojson
 FROM
     ref_geo.l_areas a

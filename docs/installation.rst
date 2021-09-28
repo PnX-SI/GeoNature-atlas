@@ -139,7 +139,7 @@ L'application se base entièrement sur des vues matérialisées. Par défaut, ce
 
 .. image :: images/geonature-atlas-schema-02.jpg
 
-Cela laisse donc la possibilité de la connecter à une autre BDD en adaptant la vue ``atlas.vm_observations`` dans ``data/atlas.sql`` (en respectant impérativement les noms de champs).
+Cela laisse donc la possibilité de la connecter à une autre BDD en adaptant la vue ``atlas.vm_observations`` dans ``data/atlas/atlas.vm_observations.sql`` (en respectant impérativement les noms de champs).
 
 .. image :: images/geonature-atlas-schema-01.jpg
 
