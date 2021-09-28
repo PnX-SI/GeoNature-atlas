@@ -14,17 +14,17 @@ CREATE TABLE synthese.syntheseff(
 
 INSERT INTO synthese.syntheseff
 (cd_nom, insee, observateurs, altitude_retenue, the_geom_point, effectif_total, diffusion_level)
-VALUES (67111, 05122, 'Mon observateur', 1254, '0101000020110F0000B19F3DEA8636264124CB9EB2D66A5541', 3, 5);
+VALUES (67111, 05122, 'Mon observateur', 1254, ST_SetSRID( ST_Point( 6, 42.315), 4326), 3, 5);
 INSERT INTO synthese.syntheseff
 (cd_nom, insee, observateurs, altitude_retenue, the_geom_point, effectif_total, diffusion_level)
-VALUES (67111, 05122, 'Mon observateur 3', 940, '0101000020110F00001F548906D05E25413391E5EE2B795541', 2, 5);
+VALUES (67111, 05122, 'Mon observateur 3', 940, ST_SetSRID( ST_Point( 6.1, 42.315), 4326), 2, 5);
 
 
 CREATE TABLE gn_meta.cor_dataset_actor (
     id_cda int4 NULL, -- id cadre d'acquisition (inutilisé aujourd'huit)
     id_dataset int4 NOT NULL,
     id_role int4  NULL,
-    id_organism int4 NULL,
+    id_organism int4 NULL
 );
 
 CREATE TABLE utilisateurs.bib_organismes (
@@ -37,5 +37,5 @@ CREATE TABLE utilisateurs.bib_organismes (
     tel_organisme varchar(14) NULL,
     email_organisme varchar(100)  NULL,
     url_organisme varchar(255) NULL,
-    url_logo varchar(255) NULL,
+    url_logo varchar(255) NULL
 );

@@ -19,7 +19,8 @@ if [ ! -d 'log' ]
 fi
 
 . atlas/configuration/settings.ini
-sudo cp -r data/atlas /tmp
+sudo mkdir /tmp/atlas
+sudo cp data/atlas/* /tmp/atlas/
 
 function print_time () {
     echo $(date +'%H:%M:%S')
@@ -305,9 +306,9 @@ if ! database_exists $db_name
                 # FR: Creation des tables filles en FWD
                 # EN: Creation of daughter tables in FWD
                 echo "Creating the connection to GeoNature for the taxonomy"
-                sudo cp data/gn2/atlas_ref_taxonomie.sql /tmp/atlas_ref_taxonomie.sql &>> log/install_db.log
-                sudo sed -i "s/myuser;$/$owner_atlas;/" /tmp/atlas_ref_taxonomie.sql &>> log/install_db.log
-                export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas_ref_taxonomie.sql  &>> log/install_db.log
+                sudo cp data/gn2/atlas_ref_taxonomie.sql /tmp/atlas/atlas_ref_taxonomie.sql &>> log/install_db.log
+                sudo sed -i "s/myuser;$/$owner_atlas;/" /tmp/atlas/atlas_ref_taxonomie.sql &>> log/install_db.log
+                export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/atlas_ref_taxonomie.sql  &>> log/install_db.log
         fi
 
         echo "Creating DB structure"
@@ -315,14 +316,14 @@ if ! database_exists $db_name
         # EN: If I use GeoNature ($geonature_source = True), then I create the child tables in FDW connected to the GeoNature DB
         if $geonature_source
             then
-                sudo cp data/gn2/atlas_synthese.sql /tmp/atlas_synthese_extended.sql
-                sudo sed -i "s/myuser;$/$owner_atlas;/" /tmp/atlas_synthese_extended.sql
-                export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas_synthese_extended.sql  &>> log/install_db.log
+                sudo cp data/gn2/atlas_synthese.sql /tmp/atlas/atlas_synthese_extended.sql
+                sudo sed -i "s/myuser;$/$owner_atlas;/" /tmp/atlas/atlas_synthese_extended.sql
+                export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/atlas_synthese_extended.sql  &>> log/install_db.log
         # FR: Sinon je créé une table synthese.syntheseff avec 2 observations exemple
         # EN: Otherwise I created a table synthese.syntheseff with 2 observations example
         else 
             echo "Creating syntheseff example table"
-            sudo -n -u postgres -s psql -d $db_name -f /tmp/without_geonature.sql &>> log/install_db.log
+            sudo -n -u postgres -s psql -d $db_name -f /tmp/atlas/without_geonature.sql &>> log/install_db.log
             sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE synthese.syntheseff OWNER TO "$owner_atlas";"
         fi
 
@@ -432,9 +433,9 @@ if ! database_exists $db_name
         # FR: Affectation de droits en lecture sur les VM à l'utilisateur de l'application ($user_pg)
         # EN: Assign read rights on VMs to the application user ($user_pg)
         echo "Grant..."
-        sudo cp data/grant.sql /tmp/grant.sql
-        sudo sed -i "s/my_reader_user;$/$user_pg;/" /tmp/grant.sql
-        sudo -n -u postgres -s psql -d $db_name -f /tmp/grant.sql &>> log/install_db.log
+        sudo cp data/grant.sql /tmp/atlas/grant.sql
+        sudo sed -i "s/my_reader_user;$/$user_pg;/" /tmp/atlas/grant.sql
+        sudo -n -u postgres -s psql -d $db_name -f /tmp/atlas/grant.sql &>> log/install_db.log
 
         # Clean file
         echo "Cleaning files..."
