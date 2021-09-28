@@ -27,12 +27,26 @@ owner_atlas=geonatadmin
 # Password du propriétaire de la BDD
 owner_atlas_pass=monpassachanger
 
-# GeoNature-atlas est-il connecté à une BDD GeoNature ?
+#################################################
+##### Configuration de GN-atlas avec un GN ######
+#################################################
+
+# GeoNature-atlas est-il connecté à une BDD GeoNature ? Si oui, renseignez true
 geonature_source=true
+
+# L'atlas est-il en lien avec le référentiel géographique de GeoNature (ref_geo) ?
+# ATTENTION : Doit être égal à false si geonature_source=false
+use_ref_geo_gn2=true
+
+# Souhaitez-vous installer le schéma taxonomie de TaxHub dans la BDD de GeoNature-atlas ? 
+# false si vous souhaitez utiliser celui de GeoNature en FDW
+# ATTENTION : Doit être true si geonature_source=false
+install_taxonomie=false
 
 ################################################
 ##### CONNEXION A LA BDD GEONATURE SOURCE ######
 ################################################
+
 # Necessaire uniquement si on veut se connecter à la BDD source GeoNature en foreign data wrapper
 # Si vous n'utilisez pas GeoNature, vous pouvez vous inspirer du fichier data/atlas_geonature.sql
 # pour vous connecter à une autre BDD mère
@@ -52,14 +66,9 @@ atlas_source_user=geonatatlas
 # Pass de l'utilisateur atlas dans la BDD GeoNature source (lecture seule)
 atlas_source_pass=monpassachanger
 
-
 #############################
 ### Données GEOGRAPHIQUES ###
 #############################
-
-# L'atlas est-il en lien avec le référentiel géographique de GeoNature v2 (ref_geo) ?
-# Doit être égal à false si geonature_source=false
-use_ref_geo_gn2=true
 
 ########### Si ref_geo = true ############
 
@@ -107,10 +116,6 @@ altitudes=(0 500 1000 1500 2000 2500 3000 3500 4000)
 ############################
 ### Données TAXONOMIQUES ###
 ############################
-
-# Installer le schéma taxonomie de TaxHub dans la BDD de GeoNature-atlas ? 
-# Doit être true si geonature_source=false
-install_taxonomie=false
 
 # Version de TaxHub à utiliser pour installer le schéma taxonomie
 # GeoNature-atlas 1.4.0 est compatible avec les versions de Taxhub superieur ou égale à 1.3.2
