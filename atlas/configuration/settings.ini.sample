@@ -58,6 +58,7 @@ atlas_source_pass=monpassachanger
 #############################
 
 # L'atlas est-il en lien avec le référentiel géographique de GeoNature v2 (ref_geo) ?
+# Doit être égal à false si geonature_source=false
 use_ref_geo_gn2=true
 
 ########### Si ref_geo = true ############
@@ -107,7 +108,8 @@ altitudes=(0 500 1000 1500 2000 2500 3000 3500 4000)
 ### Données TAXONOMIQUES ###
 ############################
 
-# Installer le schéma taxonomie de TaxHub dans la BDD de GeoNature-atlas ? (false si geonature_source=true car le schéma taxonomie est installé en FDW)
+# Installer le schéma taxonomie de TaxHub dans la BDD de GeoNature-atlas ? 
+# Doit être true si geonature_source=false
 install_taxonomie=false
 
 # Version de TaxHub à utiliser pour installer le schéma taxonomie
