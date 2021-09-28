@@ -19,6 +19,7 @@ if [ ! -d 'log' ]
 fi
 
 . atlas/configuration/settings.ini
+sudo cp -r data/atlas /tmp
 
 function print_time () {
     echo $(date +'%H:%M:%S')
@@ -328,7 +329,6 @@ if ! database_exists $db_name
         # FR: Creation des Vues Matérialisées (et remplacement éventuel des valeurs en dur par les paramètres)
         # EN: Creation of Materialized Views (and possible replacement of hard values by parameters)
         echo "----- Creating materialized views ------"
-        sudo cp -r data/atlas /tmp
 
         sudo sed -i "s/date - 15$/date - $time/" /tmp/atlas/atlas.vm_taxons_plus_observes.sql
         sudo sed -i "s/date + 15$/date - $time/" /tmp/atlas/atlas.vm_taxons_plus_observes.sql
