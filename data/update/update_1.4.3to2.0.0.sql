@@ -1,10 +1,26 @@
---Réduction de la table utilisateurs.cor_dataset_actor pour sélectionner tous les organismes pour chaque jeu de données 
+-- Schéma utilisateurs necessaire pour ajouter la dimension organisme à l'atlas
+
+IMPORT FOREIGN SCHEMA utilisateurs
+LIMIT TO (utilisateurs.bib_organismes)
+FROM SERVER geonaturedbserver INTO utilisateurs;
+
+GRANT SELECT ON TABLE utilisateurs.bib_organismes TO my_reader_user;
+
+IMPORT FOREIGN SCHEMA gn_meta
+LIMIT TO (gn_meta.cor_dataset_actor)
+FROM SERVER geonaturedbserver INTO gn_meta;
+
+GRANT SELECT ON TABLE gn_meta.cor_dataset_actor TO my_reader_user;
+
+--Réduction de la table utilisateurs.cor_dataset_actor pour sélectionner tous les organismes pour chaque jeu de données
 CREATE VIEW utilisateurs.reduced_cor_dataset_actor 
 AS SELECT DISTINCT id_dataset, id_organism 
     FROM gn_meta.cor_dataset_actor;
 
+GRANT SELECT ON TABLE utilisateurs.reduced_cor_dataset_actor TO my_reader_user;
+
 --CRÉATION VUE MATÉRIALISÉE
-CREATE MATERIALIZED VIEW atlas.vm_organisms
+CREATE MATERIALIZED VIEW atlas.vm_cor_taxon_organism
 AS SELECT DISTINCT  cd_ref, 
                     count(*) as nb_observations, 
                     bo.id_organisme as id_organism,
@@ -21,4 +37,6 @@ AS SELECT DISTINCT  cd_ref,
         JOIN synthese.synthese s ON s.id_dataset =cda.id_dataset 
         JOIN taxonomie.taxref t on s.cd_nom=t.cd_nom
     group by t.cd_ref, bo.id_organisme, bo.nom_organisme, bo.adresse_organisme, bo.cp_organisme, bo.ville_organisme, bo.tel_organisme, bo.email_organisme, bo.url_organisme, bo.url_logo
-    with data;
+    with data; 
+
+GRANT SELECT ON TABLE atlas.vm_cor_taxon_organism TO my_reader_user;

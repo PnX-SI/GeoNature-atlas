@@ -10,7 +10,7 @@ metadata = MetaData()
 
 class VmOrganisms(Base):
     __table__=Table(
-        'vm_organisms',
+        'vm_cor_taxon_organism',
         metadata,
         Column('nb_observations', Integer),
         Column('id_organism', Integer, primary_key=True, unique =True),

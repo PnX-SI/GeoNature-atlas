@@ -10,7 +10,7 @@ def statOrganism (connection,id_organism):
     sql = """SELECT count(DISTINCT cd_ref) AS nb_taxons, SUM(nb_observations) AS nb_obs,
     nom_organism, url_organism, url_logo, adresse_organism, cp_organism, ville_organism,
     tel_organism, email_organism
-    FROM atlas.vm_organisms o
+    FROM atlas.vm_cor_taxon_organism o
     WHERE o.id_organism = :thisidorganism
     GROUP BY nom_organism, url_organism, url_logo, adresse_organism, cp_organism, ville_organism,
     tel_organism, email_organism"""
@@ -36,7 +36,7 @@ def statOrganism (connection,id_organism):
 def topObsOrganism(connection, id_organism):
     #Stats avancées organism
     sql = """SELECT cd_ref, nb_observations as nb_obs 
-    FROM atlas.vm_organisms o
+    FROM atlas.vm_cor_taxon_organism o
     WHERE o.id_organism = :thisidorganism
     ORDER BY nb_observations DESC
     LIMIT 3
@@ -56,7 +56,7 @@ def topObsOrganism(connection, id_organism):
 def getListOrganism(connection,cd_ref):
     # Fiche espèce : Liste des organisms pour un taxon
     sql = """SELECT nb_observations, id_organism, nom_organism, url_organism, url_logo
-    FROM atlas.vm_organisms o 
+    FROM atlas.vm_cor_taxon_organism o 
     WHERE cd_ref = :thiscdref
     ORDER BY nb_observations DESC"""
     req = connection.execute(text(sql), thiscdref=cd_ref)
@@ -75,7 +75,7 @@ def getListOrganism(connection,cd_ref):
 def getTaxonRepartitionOrganism(connection, id_organism):
     #Fiche organism : réparition du type d'observations
     sql="""SELECT  SUM(o.nb_observations) as nb_obs_group, g.group2_inpn
-    FROM atlas.vm_organisms o
+    FROM atlas.vm_cor_taxon_organism o
     JOIN atlas.vm_taxref g on g.cd_nom=o.cd_ref
     WHERE o.id_organism = :thisidorganism
    	GROUP BY g.group2_inpn, o.id_organism

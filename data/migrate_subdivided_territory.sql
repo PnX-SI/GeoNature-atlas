@@ -17,7 +17,7 @@ AS
 	FROM d
 WITH DATA;
 
-CREATE MATERIALIZED VIEW atlas.vm_organisms
+CREATE MATERIALIZED VIEW atlas.vm_cor_taxon_organism
 AS SELECT cd_ref, count(*) as nb_observations, id_organism , nom_organism , adresse_organism , cp_organism , ville_organism , tel_organism , email_organism , url_organism ,url_logo
    FROM utilisateurs.bib_organisms bo
      JOIN utilisateurs.cor_dataset_actor cda ON bo.id_organism =cda.id_organism 

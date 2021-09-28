@@ -417,9 +417,9 @@ if ! database_exists $db_name
         export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_taxons_plus_observes.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
-        echo "[$(date +'%H:%M:%S')] Creating atlas.vm_organisms..."
+        echo "[$(date +'%H:%M:%S')] Creating atlas.vm_cor_taxon_organism..."
         time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_organisms.sql  &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_cor_taxon_organism.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
         if $use_ref_geo_gn2
@@ -444,7 +444,7 @@ if ! database_exists $db_name
         sudo -u postgres -s psql -d $db_name -c "ALTER FUNCTION atlas.find_all_taxons_childs(integer) OWNER TO "$owner_atlas";"
         sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_mailles_territoire OWNER TO "$owner_atlas";"
         sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.vm_observations_mailles OWNER TO "$owner_atlas";"
-        sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.vm_organisms OWNER TO "$owner_atlas";"
+        sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.vm_cor_taxon_organism OWNER TO "$owner_atlas";"
 
 
         # FR: Affectation de droits en lecture sur les VM à l'utilisateur de l'application ($user_pg)
