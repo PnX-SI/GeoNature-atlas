@@ -9,6 +9,5 @@ JOIN atlas.t_mailles_territoire m ON st_intersects(st_transform(obs.the_geom_poi
 WITH DATA;
 
 create unique index on atlas.vm_observations_mailles (id_observation);
-create unique index on atlas.vm_observations_mailles (id_maille);
-create unique index on atlas.vm_observations_mailles (cd_ref);
-create unique index on atlas.vm_observations_mailles (geojson_maille);
+create index on atlas.vm_observations_mailles (id_maille);
+create index on atlas.vm_observations_mailles (cd_ref);
