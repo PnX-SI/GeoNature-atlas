@@ -185,7 +185,7 @@ if ! database_exists $db_name
                                                                 SELECT m.geom AS the_geom, ST_AsGeoJSON(st_transform(m.geom, 4326)) as geojson_maille
                                                                 FROM atlas.t_mailles_"$taillemaille" m, atlas.t_layer_territoire t
                                                                 WHERE ST_Intersects(m.geom, t.the_geom);
-                                                                
+
                                                                 CREATE INDEX index_gist_t_mailles_territoire
                                                                 ON atlas.t_mailles_territoire
                                                                 USING gist (the_geom);
@@ -321,26 +321,7 @@ if ! database_exists $db_name
         # EN: Otherwise I created a table synthese.syntheseff with 2 observations example
         else 
             echo "Creating syntheseff example table"
-            sudo -n -u postgres -s psql -d $db_name -c "CREATE TABLE synthese.syntheseff
-                (
-                id_synthese serial PRIMARY KEY,
-                id_organism integer DEFAULT 2, 
-                cd_nom integer,
-                insee character(5),
-                dateobs date NOT NULL DEFAULT now(),
-                observateurs character varying(255),
-                altitude_retenue integer,
-                supprime boolean DEFAULT false,
-                the_geom_point geometry('POINT',4326),
-                effectif_total integer,
-                diffusion_level integer
-                );
-                INSERT INTO synthese.syntheseff
-                (cd_nom, insee, observateurs, altitude_retenue, the_geom_point, effectif_total, diffusion_level)
-                VALUES (67111, 05122, 'Mon observateur', 1254, '0101000020110F0000B19F3DEA8636264124CB9EB2D66A5541', 3, 5);
-                INSERT INTO synthese.syntheseff
-                (cd_nom, insee, observateurs, altitude_retenue, the_geom_point, effectif_total, diffusion_level)
-                VALUES (67111, 05122, 'Mon observateur 3', 940, '0101000020110F00001F548906D05E25413391E5EE2B795541', 2, 5);" &>> log/install_db.log
+            sudo -n -u postgres -s psql -d $db_name -f /tmp/without_geonature.sql &>> log/install_db.log
             sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE synthese.syntheseff OWNER TO "$owner_atlas";"
         fi
 
