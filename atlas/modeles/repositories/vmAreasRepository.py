@@ -50,50 +50,6 @@ def get_id_area(session, type_code, area_code):
         current_app.logger.error("<get_id_area> error {}".format(e))
 
 
-def get_area_info(session, id_area):
-    req = (
-        session.query(
-            VmAreas.id_area,
-            VmAreas.area_name,
-            VmAreas.area_code,
-            VmBibAreasTypes.type_name,
-            VmBibAreasTypes.type_code,
-            VmAreas.area_geojson.label("geosjonArea"),
-            case(
-                [
-                    (
-                        func.st_npoints(VmAreas.the_geom)
-                        > current_app.config["SIMPLIFY_AREA_GEOM_TRESHOLD"],
-                        func.st_asgeojson(
-                            func.st_transform(
-                                func.st_simplifypreservetopology(
-                                    VmAreas.the_geom,
-                                    current_app.config["SIMPLIFY_AREA_GEOM_TOLERANCE"],
-                                ),
-                                4326,
-                            )
-                        ),
-                    ),
-                ],
-                else_=func.st_asgeojson(func.st_transform(VmAreas.the_geom, 4326)),
-            ).label("geom"),
-        )
-        .join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type)
-        .filter(VmAreas.id_area == id_area)
-    )
-    print(req)
-    result = req.one()
-    r = {}
-    r["idArea"] = result.id_area
-    r["areaName"] = result.area_name
-    r["areaCode"] = result.area_code
-    r["typeName"] = result.type_name
-    r["typeCode"] = result.type_code
-    r["areaGeoJson"] = ast.literal_eval(result.geom)
-
-    return r
-
-
 def last_observations_area_maille(session, myLimit, idArea):
     q_last_obs = (
         session.query(
