@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-12 10:53+0200\n"
+"POT-Creation-Date: 2021-09-28 09:41+0200\n"
 "PO-Revision-Date: 2021-07-19 09:53+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
@@ -17,30 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
-
-#: static/custom/templates/introduction.html:6
-msgid "welcome.message"
-msgstr "Benvenuti nell'atlante della fauna e della flora di"
-
-#: static/custom/templates/introduction.html:8
-msgid "home.introduction.message"
-msgstr ""
-"L'atlante ALCOTRA è il risultato di una collaborazione transfrontaliera "
-"franco-italiana\"Frutto dell'azione WP4.2 del progetto COBIODIV incluso "
-"nel PITEM Biodiv'ALP, questo atlante è stato realizzato dal team IS del "
-"Parco Nazionale degli Ecrins e da Natural Solutions. <br/><br/>Questo "
-"atlante ti fornisce le osservazioni di species selvatiche fatte nell'area"
-" ALCOTRA. I dati provengono da diverse strutture presentate di seguito, "
-"ognuna con la propria scheda di presentazione. <br/><br/>"
-
-#: static/custom/templates/introduction.html:11
-#: templates/speciesSheet/blocInfos.html:17
-msgid "read.more"
-msgstr "Saperne di più"
-
-#: static/custom/templates/presentation.html:11
-msgid "My custom presentation"
-msgstr "La mia presentazione personalizzata"
 
 #: templates/areaSheet/_main.html:6
 msgid "municipality.of"
@@ -66,43 +42,44 @@ msgstr "Guarda la scheda species"
 msgid "search.other.zones.type"
 msgstr "Cerca per altro tipo di zone"
 
-#: templates/core/listTaxons.html:12
+#: templates/core/listTaxons.html:14
 msgid "filter.species"
 msgstr "Filtrare le species"
 
-#: templates/core/listTaxons.html:21
-msgid "see.repartition.on.territory"
-msgstr "Vedi ripartizione sul territorio"
+#: templates/core/listTaxons.html:23
+#, fuzzy
+msgid "display.municipality.obs"
+msgstr "Comune di"
 
-#: templates/core/listTaxons.html:80 templates/core/statHierarchy.html:5
-#: templates/home/globalStats.html:13 templates/home/lastObs.html:7
+#: templates/core/listTaxons.html:81 templates/core/statHierarchy.html:7
+#: templates/home/globalStats.html:12
 #: templates/organismSheet/topSpecies.html:60
 #: templates/speciesSheet/map.html:15
 msgid "observation"
 msgstr "Osservazione"
 
-#: templates/core/listTaxons.html:81 templates/core/statHierarchy.html:5
-#: templates/core/tabTaxons.html:19 templates/home/globalStats.html:13
-#: templates/home/lastObs.html:7 templates/organismSheet/statsInfos.html:11
+#: templates/core/listTaxons.html:82 templates/core/statHierarchy.html:7
+#: templates/core/tabTaxons.html:19 templates/home/globalStats.html:12
+#: templates/organismSheet/statsInfos.html:11
 #: templates/organismSheet/topSpecies.html:60
 #: templates/speciesSheet/identityCard.html:131
 #: templates/speciesSheet/map.html:15
 msgid "observations"
 msgstr "Osservazioni"
 
-#: templates/core/listTaxons.html:82
+#: templates/core/listTaxons.html:83
 msgid "last.obs.in"
 msgstr "Ultime osservazioni "
 
-#: templates/core/listTaxons.html:86 templates/core/tabTaxons.html:85
-#: templates/home/lastObs.html:42 templates/organismSheet/topSpecies.html:65
+#: templates/core/listTaxons.html:87 templates/core/tabTaxons.html:85
+#: templates/organismSheet/topSpecies.html:65
 #: templates/speciesSheet/identityCard.html:173
 msgid "check.species.sheet"
 msgstr "Vedere la scheda delle specie"
 
-#: templates/core/listTaxons.html:87 templates/home/lastObs.html:43
-#: templates/home/mostViewNow.html:33 templates/home/newSpecies.html:35
-#: templates/home/taxoRank.html:57 templates/organismSheet/topSpecies.html:66
+#: templates/core/listTaxons.html:88 templates/home/mostViewNow.html:33
+#: templates/home/newSpecies.html:35 templates/home/taxoRank.html:57
+#: templates/organismSheet/topSpecies.html:66
 msgid "species.sheet"
 msgstr "Scheda specie"
 
@@ -110,12 +87,12 @@ msgstr "Scheda specie"
 msgid "loading"
 msgstr "Caricamento in corso..."
 
-#: templates/core/navbar.html:34 templates/home/globalStats.html:29
+#: templates/core/navbar.html:34 templates/home/globalStats.html:28
 #: templates/photoGalery/_main.html:76
 msgid "search.species"
 msgstr "Cerca per species"
 
-#: templates/core/navbar.html:47 templates/home/globalStats.html:48
+#: templates/core/navbar.html:47 templates/home/globalStats.html:47
 msgid "search.city"
 msgstr "Ricerca per comune"
 
@@ -123,22 +100,22 @@ msgstr "Ricerca per comune"
 msgid "back.to.home"
 msgstr "Tornare a casa"
 
-#: templates/core/sideBar.html:20 templates/home/globalStats.html:60
+#: templates/core/sideBar.html:20 templates/home/globalStats.html:59
 #: templates/photoGalery/_main.html:5 templates/photoGalery/_main.html:50
 msgid "gallery.title"
 msgstr "Galleria di foto"
 
-#: templates/core/statHierarchy.html:9 templates/home/globalStats.html:22
+#: templates/core/statHierarchy.html:12 templates/home/globalStats.html:21
 #: templates/home/taxoRank.html:28 templates/organismSheet/statsInfos.html:21
 msgid "species"
 msgstr "Contanti"
 
-#: templates/core/statHierarchy.html:12 templates/speciesSheet/map.html:25
+#: templates/core/statHierarchy.html:17 templates/speciesSheet/map.html:25
 #: templates/speciesSheet/otherInformations.html:29
 msgid "observers"
 msgstr "Osservatori"
 
-#: templates/core/statHierarchy.html:12 templates/speciesSheet/map.html:25
+#: templates/core/statHierarchy.html:17 templates/speciesSheet/map.html:25
 #: templates/speciesSheet/otherInformations.html:29
 msgid "observer"
 msgstr "Osservatori"
@@ -177,41 +154,33 @@ msgstr "Questo taxon ha uno status di protezione"
 msgid "display.city.infos"
 msgstr "Visualizza le informazioni del comune"
 
-#: templates/home/globalStats.html:5
+#: templates/home/globalStats.html:4
 msgid "home.insomefigures"
 msgstr "In pochi numeri"
 
-#: templates/home/globalStats.html:14
+#: templates/home/globalStats.html:13
 msgid "home.seelatestobs"
 msgstr "Guarda le ultime osservazioni"
 
-#: templates/home/globalStats.html:40 templates/speciesSheet/map.html:20
+#: templates/home/globalStats.html:39 templates/speciesSheet/map.html:20
 #: templates/speciesSheet/otherInformations.html:10
 #: templates/speciesSheet/otherInformations.html:14
 msgid "municipalities"
 msgstr "Comuni"
 
-#: templates/home/globalStats.html:40 templates/speciesSheet/map.html:20
+#: templates/home/globalStats.html:39 templates/speciesSheet/map.html:20
 #: templates/speciesSheet/otherInformations.html:10
 #: templates/speciesSheet/otherInformations.html:14
 msgid "municipality"
 msgstr "Comune"
 
-#: templates/home/globalStats.html:59
+#: templates/home/globalStats.html:58
 msgid "photos"
 msgstr "Immagini"
 
-#: templates/home/globalStats.html:59
+#: templates/home/globalStats.html:58
 msgid "photo"
 msgstr "Foto"
-
-#: templates/home/lastObs.html:6
-msgid "last.obs.since"
-msgstr "Ultime osservazioni negli ultimi"
-
-#: templates/home/lastObs.html:6
-msgid "days"
-msgstr "giorni"
 
 #: templates/home/mostViewNow.html:5
 msgid "see.at.the.moment"
@@ -288,6 +257,10 @@ msgstr "Informazioni sulle species"
 #: templates/speciesSheet/otherInformations.html:69
 msgid "description"
 msgstr "Descrizione"
+
+#: templates/speciesSheet/blocInfos.html:17
+msgid "read.more"
+msgstr "Saperne di più"
 
 #: templates/speciesSheet/blocInfos.html:19
 msgid "environment"
@@ -375,4 +348,32 @@ msgstr "Scheda delle species per taxon"
 
 #~ msgid "last.7.days.obs"
 #~ msgstr "Osservazioni degli ultimi 7 giorni"
+
+#~ msgid "welcome.message"
+#~ msgstr "Benvenuti nell'atlante della fauna e della flora di"
+
+#~ msgid "home.introduction.message"
+#~ msgstr ""
+#~ "L'atlante ALCOTRA è il risultato di "
+#~ "una collaborazione transfrontaliera franco-"
+#~ "italiana\"Frutto dell'azione WP4.2 del "
+#~ "progetto COBIODIV incluso nel PITEM "
+#~ "Biodiv'ALP, questo atlante è stato "
+#~ "realizzato dal team IS del Parco "
+#~ "Nazionale degli Ecrins e da Natural "
+#~ "Solutions. <br/><br/>Questo atlante ti "
+#~ "fornisce le osservazioni di species "
+#~ "selvatiche fatte nell'area ALCOTRA. I "
+#~ "dati provengono da diverse strutture "
+#~ "presentate di seguito, ognuna con la "
+#~ "propria scheda di presentazione. <br/><br/>"
+
+#~ msgid "see.repartition.on.territory"
+#~ msgstr "Vedi ripartizione sul territorio"
+
+#~ msgid "last.obs.since"
+#~ msgstr "Ultime osservazioni negli ultimi"
+
+#~ msgid "days"
+#~ msgstr "giorni"
 
