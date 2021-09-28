@@ -18,5 +18,5 @@ class TGrid(Base):
     __table_args__ = {"schema": "atlas"}
 
     id_maille = Column(Integer, primary_key=True)
-    the_geom = Column(Geometry(geometry_type="MULTIPOLYGON", srid=3857))
+    the_geom = Column(Geometry(geometry_type="MULTIPOLYGON", srid=4326))
     geosjon_maille = Column(Text)

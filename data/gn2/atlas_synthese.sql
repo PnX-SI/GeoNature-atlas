@@ -6,7 +6,7 @@ WITH areas AS (
           sa.id_synthese, 
           sa.id_area, 
           a.centroid, 
-          st_transform(centroid, 3857) as centroid_3857, 
+          st_transform(centroid, 4326) as centroid_4326, 
           t.type_code
 	FROM synthese.cor_area_synthese sa
 	JOIN ref_geo.l_areas a ON sa.id_area = a.id_area
@@ -20,12 +20,12 @@ WITH areas AS (
 	    (s.altitude_min + s.altitude_max) / 2 AS altitude_retenue,
 	    CASE
 		WHEN dl.cd_nomenclature = '1' THEN
-			(SELECT centroid_3857 FROM areas a WHERE a.id_synthese = s.id_synthese AND type_code = 'COM' LIMIT 1)
+			(SELECT centroid_4326 FROM areas a WHERE a.id_synthese = s.id_synthese AND type_code = 'COM' LIMIT 1)
 		WHEN dl.cd_nomenclature = '2' THEN
-			(SELECT centroid_3857 FROM areas a WHERE a.id_synthese = s.id_synthese AND type_code = 'M10' LIMIT 1)
+			(SELECT centroid_4326 FROM areas a WHERE a.id_synthese = s.id_synthese AND type_code = 'M10' LIMIT 1)
 		WHEN dl.cd_nomenclature = '3' THEN
-			(SELECT centroid_3857 FROM areas a WHERE a.id_synthese = s.id_synthese AND type_code = 'DEP' LIMIT 1)
-		ELSE st_transform(s.the_geom_point, 3857)
+			(SELECT centroid_4326 FROM areas a WHERE a.id_synthese = s.id_synthese AND type_code = 'DEP' LIMIT 1)
+		ELSE st_transform(s.the_geom_point, 4326)
 	    END AS the_geom_point,
 	    s.count_min AS effectif_total,
 	    dl.cd_nomenclature::int as diffusion_level

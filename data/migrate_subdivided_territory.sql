@@ -13,7 +13,7 @@ AS
 	SELECT
 		random() AS gid,
 		1 AS territory_layer_id,
-		st_subdivide(st_transform(d.st_union, 3857), 255) AS geom
+		st_subdivide(st_transform(d.st_union, 4326), 255) AS geom
 	FROM d
 WITH DATA;
 

@@ -14,7 +14,7 @@ END$$;
 CREATE MATERIALIZED VIEW atlas.l_communes AS
  SELECT c.area_code as insee,
     c.area_name as commune_maj,
-    st_transform(c.geom, 3857) as the_geom,
+    st_transform(c.geom, 4326) as the_geom,
     st_asgeojson(st_transform(c.geom, 4326)) AS commune_geojson
    FROM ref_geo.l_areas c
    JOIN ref_geo.li_municipalities m ON c.id_area = m.id_area
@@ -47,7 +47,7 @@ EXCEPTION WHEN others THEN
 END$$;
 
 CREATE MATERIALIZED VIEW atlas.t_mailles_territoire AS
-SELECT st_transform(c.geom, 3857)::geometry('MultiPolygon',3857) as the_geom,
+SELECT st_transform(c.geom, 4326)::geometry('MultiPolygon',4326) as the_geom,
     st_asgeojson(st_transform(c.geom, 4326)) AS geojson_maille,
     id_area as id_maille
 FROM ref_geo.l_areas c
@@ -88,7 +88,7 @@ SELECT
  st_area(st_union)/10000 as surf_ha,
  st_area(st_union)/1000000 as surf_km2,
  ST_Perimeter(st_union)/1000 as perim_km,
- st_transform(st_union, 3857) as  the_geom
+ st_transform(st_union, 4326) as  the_geom
 FROM d;
 
 CREATE INDEX index_gist_t_layer_territoire_the_geom

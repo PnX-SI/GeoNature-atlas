@@ -133,9 +133,9 @@ if ! database_exists $db_name
             # FR: Import du shape des limites du territoire ($limit_shp) dans la BDD / atlas.t_layer_territoire    
             # EN: Import of the shape of the territory limits ($limit_shp) in the BDD / atlas.t_layer_territory
 
-            ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 data/ref/emprise_territoire_3857.shp $limit_shp
-            sudo -u postgres -s shp2pgsql -W "LATIN1" -s 3857 -D -I ./data/ref/emprise_territoire_3857.shp atlas.t_layer_territoire | sudo -n -u postgres -s psql -d $db_name  &>> log/install_db.log
-            rm data/ref/emprise_territoire_3857.*
+            ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 data/ref/emprise_territoire_4326.shp $limit_shp
+            sudo -u postgres -s shp2pgsql -W "LATIN1" -s 4326 -D -I ./data/ref/emprise_territoire_4326.shp atlas.t_layer_territoire | sudo -n -u postgres -s psql -d $db_name  &>> log/install_db.log
+            rm data/ref/emprise_territoire_4326.*
             sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_layer_territoire OWNER TO "$owner_atlas";"
             # FR: Creation de l'index GIST sur la couche territoire atlas.t_layer_territoire
             # EN: Creation of the GIST index on the territory layer atlas.t_layer_territory
@@ -145,14 +145,14 @@ if ! database_exists $db_name
             # EN: Import of the shape of the communes ($communes_shp) in the DB (if parameter import_commune_shp = TRUE) / atlas.l_communes
             if $import_commune_shp
                 then
-                    ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 ./data/ref/communes_3857.shp $communes_shp
-                    sudo -u postgres -s shp2pgsql -W "LATIN1" -s 3857 -D -I ./data/ref/communes_3857.shp atlas.l_communes | sudo -n -u postgres -s psql -d $db_name  &>> log/install_db.log
+                    ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 ./data/ref/communes_4326.shp $communes_shp
+                    sudo -u postgres -s shp2pgsql -W "LATIN1" -s 4326 -D -I ./data/ref/communes_4326.shp atlas.l_communes | sudo -n -u postgres -s psql -d $db_name  &>> log/install_db.log
                     sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes RENAME COLUMN "$colonne_nom_commune" TO commune_maj;"  &>> log/install_db.log
                     sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes RENAME COLUMN "$colonne_insee" TO insee;"  &>> log/install_db.log
                     sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes RENAME COLUMN geom TO the_geom;"  &>> log/install_db.log
                     sudo -u postgres -s psql -d $db_name -c "CREATE INDEX index_gist_t_layers_communes ON atlas.l_communes USING gist (the_geom);"  &>> log/install_db.log
                     sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes OWNER TO "$owner_atlas";"
-                    rm ./data/ref/communes_3857.*
+                    rm ./data/ref/communes_4326.*
             fi
 
             # FR: Mise en place des mailles
@@ -169,12 +169,12 @@ if ! database_exists $db_name
                     unzip L93_1K.zip
                     unzip L93_5K.zip
                     unzip L93_10K.zip
-                    # Je les reprojete les SHP en 3857 et les renomme
-                    ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 ./mailles_1.shp L93_1x1.shp
-                    ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 ./mailles_5.shp L93_5K.shp
-                    ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 ./mailles_10.shp L93_10K.shp
+                    # Je les reprojete les SHP en 4326 et les renomme
+                    ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 ./mailles_1.shp L93_1x1.shp
+                    ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 ./mailles_5.shp L93_5K.shp
+                    ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 ./mailles_10.shp L93_10K.shp
                     # J'importe dans la BDD le SHP des mailles à l'échelle définie en parametre ($taillemaille)
-                    sudo -n -u postgres -s shp2pgsql -W "LATIN1" -s 3857 -D -I mailles_$taillemaille.shp atlas.t_mailles_$taillemaille | sudo -n -u postgres -s psql -d $db_name  &>> ../../log/install_db.log
+                    sudo -n -u postgres -s shp2pgsql -W "LATIN1" -s 4326 -D -I mailles_$taillemaille.shp atlas.t_mailles_$taillemaille | sudo -n -u postgres -s psql -d $db_name  &>> ../../log/install_db.log
                     sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_mailles_"$taillemaille" OWNER TO "$owner_atlas";"
                     rm mailles_1.* mailles_5.* mailles_10.*
 
@@ -195,8 +195,8 @@ if ! database_exists $db_name
             # FR: Sinon j'utilise un SHP des mailles fournies par l'utilisateur
             # EN: Otherwise I use a SHP of user supplied meshes
             else
-                ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:3857 custom_mailles_3857.shp $chemin_custom_maille
-                sudo -u postgres -s shp2pgsql -W "LATIN1" -s 3857 -D -I custom_mailles_3857.shp atlas.t_mailles_custom | sudo -n -u postgres -s psql -d $db_name  &>> log/install_db.log
+                ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 custom_mailles_4326.shp $chemin_custom_maille
+                sudo -u postgres -s shp2pgsql -W "LATIN1" -s 4326 -D -I custom_mailles_4326.shp atlas.t_mailles_custom | sudo -n -u postgres -s psql -d $db_name  &>> log/install_db.log
 
                 sudo -u postgres -s psql -d $db_name -c "CREATE TABLE atlas.t_mailles_territoire as
                                                     SELECT m.geom AS the_geom, ST_AsGeoJSON(st_transform(m.geom, 4326)) as geojson_maille
@@ -217,7 +217,7 @@ if ! database_exists $db_name
         # FR: Conversion des limites du territoire en json
         # EN: Conversion of territory boundaries to json
         rm  -f ./atlas/static/custom/territoire.json
-        ogr2ogr -f "GeoJSON" -t_srs "EPSG:4326" -s_srs "EPSG:3857" ./atlas/static/custom/territoire.json \
+        ogr2ogr -f "GeoJSON" -t_srs "EPSG:4326" -s_srs "EPSG:4326" ./atlas/static/custom/territoire.json \
             PG:"host=$db_host user=$owner_atlas dbname=$db_name port=$db_port password=$owner_atlas_pass" "atlas.t_layer_territoire"
 
 
@@ -330,7 +330,7 @@ if ! database_exists $db_name
                 observateurs character varying(255),
                 altitude_retenue integer,
                 supprime boolean DEFAULT false,
-                the_geom_point geometry('POINT',3857),
+                the_geom_point geometry('POINT',4326),
                 effectif_total integer,
                 diffusion_level integer
                 );
