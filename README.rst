@@ -40,6 +40,10 @@ Atlas en ligne utilisant GeoNature-atlas :
 - `Société Herpétologique de France <https://atlas.lashf.org>`_
 - `Picardie Nature <https://clicnat.fr>`_
 - `Métropole clermontoise <https://atlas.cbiodiv.org>`_
+- `PNR Forêt d'Orient <https://biodiversite.pnr-foret-orient.fr/>`_
+- `Archipel des Mascareignes <https://obs.maeoproject.org/>`_
+
+Archipel des Mascareignes
 
 Technologies
 ------------
