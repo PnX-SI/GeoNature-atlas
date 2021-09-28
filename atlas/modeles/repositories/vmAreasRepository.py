@@ -85,7 +85,7 @@ def last_observations_area_maille(session, myLimit, idArea):
             q_last_obs.c.lb_nom,
             q_last_obs.c.cd_ref,
             q_last_obs.c.nom_vern,
-            func.st_asgeojson(func.st_transform(TGrid.the_geom, 4326)).label(
+            func.st_asgeojson(TGrid.the_geom).label(
                 "geojson_maille"
             ),
         )
@@ -237,7 +237,7 @@ def get_areas_grid_observations_by_cdnom(session, id_area, cd_nom):
         session.query(
             TGrid.id_maille,
             func.extract("year", VmObservations.dateobs).label("annee"),
-            func.st_asgeojson(func.st_transform(TGrid.the_geom, 4326)).label(
+            func.st_asgeojson(TGrid.the_geom, 4326).label(
                 "geojson_maille"
             ),
         )
