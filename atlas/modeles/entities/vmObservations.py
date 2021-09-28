@@ -27,7 +27,7 @@ class VmObservations(Base):
         Column("observateurs", String(255)),
         Column("altitude_retenue", Integer, index=True),
         Column("cd_ref", Integer, index=True),
-        Column("the_geom_point", Geometry(geometry_type="POINT", srid=3857)),
+        Column("the_geom_point", Geometry(geometry_type="POINT", srid=4326)),
         Column("geojson_point", Text),
         Column("diffusion_level"),
         schema="atlas",

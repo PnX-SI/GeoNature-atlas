@@ -33,8 +33,6 @@ from atlas.modeles.repositories import (
     vmTaxonsMostView,
 )
 
-if current_app.config["EXTENDED_AREAS"]:
-    from atlas.modeles.repositories import vmAreasRepository
 
 # Adding functions for multilingual url process if MULTILINGUAL = True
 if config.MULTILINGUAL:
@@ -62,8 +60,6 @@ def global_variables():
     db_session = utils.loadSession()
     values = {}
 
-    if current_app.config["EXTENDED_AREAS"]:
-        values["areas_type_search"] = vmAreasRepository.area_types(db_session)
     db_session.close()
     return values
 
@@ -316,11 +312,7 @@ def ficheCommune(insee):
             connection, current_app.config["NB_LAST_OBS"], insee
         )
 
-    if current_app.config["EXTENDED_AREAS"]:
-        id_area = vmAreasRepository.get_id_area(session, "COM", insee)
-        surroundingAreas = vmAreasRepository.get_surrounding_areas(session, id_area)
-    else:
-        surroundingAreas = []
+    surroundingAreas = []
 
     observers = vmObservationsRepository.getObserversCommunes(connection, insee)
 
@@ -498,41 +490,3 @@ if config.MULTILINGUAL:
         print(url_redirection)
         return redirect(url_redirection)
 
-if current_app.config["EXTENDED_AREAS"]:
-
-    @main.route("/area/<type_code>/<area_code>", methods=["GET", "POST"])
-    def areaSheet(type_code, area_code):
-        session = utils.loadSession()
-        connection = utils.engine.connect()
-        id_area = vmAreasRepository.get_id_area(session, type_code, area_code)
-        listTaxons = vmAreasRepository.get_area_taxa(session, id_area)
-        area = vmAreasRepository.get_area_info(session, id_area)
-        if current_app.config["AFFICHAGE_MAILLE"]:
-            observations = vmAreasRepository.last_observations_area_maille(
-                session, current_app.config["NB_LAST_OBS"], id_area
-            )
-        else:
-            observations = vmAreasRepository.last_observations_area_maille(
-                session, current_app.config["NB_LAST_OBS"], id_area
-            )
-
-        observers = vmAreasRepository.get_observers_area(session, id_area)
-        surroundingAreas = vmAreasRepository.get_surrounding_areas(session, id_area)
-        session.close()
-        connection.close()
-
-        return render_template(
-            "templates/areaSheet/_main.html",
-            sheetType="area",
-            surroundingAreas=surroundingAreas,
-            listTaxons=listTaxons,
-            areaInfos=area,
-            observations=observations,
-            observers=observers,
-            DISPLAY_EYE_ON_LIST=True,
-        )
-
-
-# @main.route("/test", methods=["GET", "POST"])
-# def test():
-#    return render_template("templates/test.html")
