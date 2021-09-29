@@ -2,6 +2,15 @@
 CHANGELOG
 =========
 
+1.5.0 (unreleased)
+------------------
+
+Voir https://github.com/PnX-SI/GeoNature-atlas/compare/develop
+
+**🚀 Nouveautés**
+
+* Multilingue activable (``MULTILINGUAL``), documenté (docs/multilingual.rst) mais non optimisé pour le référencement (#175 par @TheMagicia et @corentinlange)
+
 1.4.2 (2020-11-25)
 ------------------
 
