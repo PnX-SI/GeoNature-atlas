@@ -24,15 +24,15 @@ msgstr "Municipality of "
 
 #: templates/areaSheet/_main.html:71
 msgid "last.obs.municipality"
-msgstr "Last observations in the municipality of"
+msgstr "Latest observations in the municipality of"
 
 #: templates/areaSheet/_main.html:74
 msgid "last.obs.zone"
-msgstr "Last observations in the zone"
+msgstr "Latest observations in the zone"
 
 #: templates/areaSheet/surrounding_areas.html:10
 msgid "associate.zone"
-msgstr "Associate zones"
+msgstr "Associated areas"
 
 #: templates/areaSheet/surrounding_areas.html:23
 msgid "check.area.sheet"
@@ -40,7 +40,7 @@ msgstr "Check area sheet"
 
 #: templates/core/extended_areas_search.html:13
 msgid "search.other.zones.type"
-msgstr "Search other zone type"
+msgstr "Search other area type"
 
 #: templates/core/listTaxons.html:14
 msgid "filter.species"
@@ -69,7 +69,7 @@ msgstr "Observations"
 
 #: templates/core/listTaxons.html:83
 msgid "last.obs.in"
-msgstr "Last observations within"
+msgstr "Latest observations within"
 
 #: templates/core/listTaxons.html:87 templates/core/tabTaxons.html:85
 #: templates/organismSheet/topSpecies.html:65
@@ -138,7 +138,7 @@ msgstr "Observation(s) number"
 
 #: templates/core/tabTaxons.html:17 templates/speciesSheet/map.html:33
 msgid "last.obs"
-msgstr "Last observations"
+msgstr "Latest observation"
 
 #: templates/core/tabTaxons.html:21
 #: templates/speciesSheet/identityCard.html:132
@@ -152,7 +152,7 @@ msgstr "This taxon has a protected status"
 
 #: templates/core/tabTaxons.html:80
 msgid "display.city.infos"
-msgstr "Display municipality informations"
+msgstr "Display municipality information"
 
 #: templates/home/globalStats.html:4
 msgid "home.insomefigures"
@@ -202,7 +202,7 @@ msgstr "Species to discover"
 
 #: templates/organismSheet/blocInfos.html:4
 msgid "other.informations"
-msgstr "Autres informations"
+msgstr "Other information"
 
 #: templates/organismSheet/groupChart.html:3
 msgid "part.graph"
@@ -307,7 +307,7 @@ msgstr "Protection"
 
 #: templates/speciesSheet/map.html:29
 msgid "first.obs"
-msgstr "First Observations"
+msgstr "First observation"
 
 #: templates/speciesSheet/otherInformations.html:22
 msgid "organisms"
@@ -327,7 +327,7 @@ msgstr "Date"
 
 #: templates/speciesSheet/otherInformations.html:144
 msgid "check.organism.sheet"
-msgstr "Check organism sheet"
+msgstr "View organism sheet"
 
 #: templates/speciesSheet/otherInformations.html:145
 msgid "organism.sheet"
@@ -335,7 +335,7 @@ msgstr "Organism sheet"
 
 #: templates/taxoRankSheet/_main.html:47
 msgid "species.obs.for.tax"
-msgstr "Osservazioni specifiche per questo taxon"
+msgstr "Specific observations for this taxon"
 
 #~ msgid "welcome.message"
 #~ msgstr "Welcome to the fauna and flora atlas"
@@ -360,11 +360,10 @@ msgstr "Osservazioni specifiche per questo taxon"
 #~ msgstr "My custom presentation"
 
 #~ msgid "see.repartition.on.territory"
-#~ msgstr "See repartition on territory"
+#~ msgstr "Display observation on territory"
 
 #~ msgid "last.obs.since"
-#~ msgstr "Last observations in the last"
+#~ msgstr "Latest observations in the last"
 
 #~ msgid "days"
 #~ msgstr "days"
-
