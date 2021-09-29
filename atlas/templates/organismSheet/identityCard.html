@@ -2,16 +2,20 @@
 	<div class="card mt-4" id="identityCard">
 		<div class="row" id="rowIdentity">
 			<!-- Logo -->
+			{% if url_logo != none %}
 			<div class="imgWrapper  left">
+				
 				<span class="fas fa-search" id="zoomPhotos"></span>
 				<a href="{{ url_organism }}" data-lightbox="imageSet">
-					{% if url_logo != none %}
+					
 					<img id="mainImg" 
 					src='{{ url_logo }}'
 					style="width: 200px;">
-					{% endif %}
+					
 				</a>
+				
 			</div>
+			{% endif %}
 			<div class="left col-9  ">
 			<h1>
 				<strong>{{ nom_organism }}</strong>
