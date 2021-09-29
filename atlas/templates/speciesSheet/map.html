@@ -1,0 +1,39 @@
+{% block mapCard %}
+    <div class="card mt-4" id="mapPanel mt-4">
+        <div class="row">
+            <div class="col-sm-10" id="mapContainer">
+                <div id="map">
+                    <img id="loadingGif" src="">
+                    {% include 'templates/core/loaderSpinner.html' %}
+                </div>
+            </div>
+            <div class="col-sm-2" id="mapStat">
+                <ul>
+                    <li>
+                        <i class="fas fa-search fa-2x"></i> </br>
+                        <b>{{ taxon.taxonSearch.nb_obs | pretty }}</b></br>
+                        {{ _('observations') if taxon.taxonSearch.nb_obs > 1 else _('observation') }}
+                    </li>
+                    <li>
+                        <i class="fas fa-map-signs fa-2x"></i> <br/>
+                        <b>{{ communes|length|pretty }}</b><br/>
+                        {{ _('municipalities') if communes|length > 1 else _('municipality') }}
+                    </li>
+                    <li>
+                        <i class="fas fa-users fa-2x"></i> <br/>
+                        <b>{{ observers|length|pretty }}</b> <br/>
+                        {{ _('observers') if observers|length > 1 else _('observer') }}
+                    </li>
+                    <li id="firstObs" class="pointer">
+                        <i class="fas fa-search fa-2x"></i> <br/>
+                        <b style="font-size: 0.95rem">{{ _('first.obs') }}</b><br/>{{ taxon.taxonSearch.yearmin|int }}
+                    </li>
+                    <li id="lastObs" class="pointer">
+                        <i class="far fa-clock fa-2x"></i> <br/>
+                        <b>{{ _('last.obs') }}</b><br/>{{ taxon.taxonSearch.yearmax|int }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,10 +1,7 @@
 # coding: utf-8
-from sqlalchemy import BigInteger, Boolean, Column, ForeignKey, Integer, String
 from geoalchemy2 import Geometry
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, String
 from sqlalchemy.ext.declarative import declarative_base
-
-
 
 Base = declarative_base()
 metadata = Base.metadata

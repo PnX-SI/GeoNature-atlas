@@ -1,0 +1,12 @@
+{% extends "templates/core/layout.html" %}
+
+
+{% block title %}
+<title>Présentation de l'atlas | {{configuration.NOM_APPLICATION}} - {{configuration.STRUCTURE}}</title>
+{% endblock %}
+
+
+{% block content %}
+<!-- AJOUTER MON CONTENU HTML ici -->
+<h3> Ma présentation personnalisée</h3>
+{% endblock %}

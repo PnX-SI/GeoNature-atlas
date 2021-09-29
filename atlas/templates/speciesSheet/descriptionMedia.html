@@ -1,0 +1,19 @@
+{% block descriptionMedia %}
+    <div>
+        {% if media.licence %}
+            <span>{{ media.licence }}</span>
+        {% endif %}
+        {% if media.source %}
+            <span>({{ media.source }})</span>
+        {% endif %}
+    </div>
+    <div>
+        {% if media.author %}
+            <div><u>{{ _('author') }}</u>: {{ media.author|safe }}</div>
+        {% endif %}
+
+        {% if media.description %}
+            <div><u>{{ _('description') }}</u>: {{ media.description|safe }}</div>
+        {% endif %}
+    </div>
+{% endblock %}

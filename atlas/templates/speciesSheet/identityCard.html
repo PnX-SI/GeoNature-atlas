@@ -1,0 +1,214 @@
+{% block identityCard %}
+    <div class="card mt-4" id="identityCard">
+        <div class="row" id="rowIdentity">
+            {% if firstPhoto != None %}
+                <!-- Si il y a une photo principale -->
+                <div class="col-12 col-sm-6" id="imgCol">
+                    <div class="imgWrapper">
+                        <span class="fas fa-search" id="zoomPhotos"></span>
+                        <a href="{{ firstPhoto.path }}" data-lightbox="imageSet"
+                           data-title="{{ firstPhoto.title }} &copy; {{ firstPhoto.author }}"
+                        >
+                            {% if configuration.REDIMENSIONNEMENT_IMAGE %}
+                                {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+firstPhoto.id_media|string+'?h=500' %}
+                            {% else %}
+                                {% set img_path = firstPhoto.path %}
+                            {% endif %}
+                            <img id="mainImg" src="{{ img_path }}"
+                                 style="width:100%;"
+                                 alt="{{ firstPhoto.title }} &copy; {{ firstPhoto.author|striptags }}">
+                            <p class="imgDescription main">{{ firstPhoto.title }}
+                                {% if firstPhoto.description %}
+                                    - {{ firstPhoto.description }}
+                                {% endif %}
+                                &copy; {{ firstPhoto.author|striptags }}
+                                {% if firstPhoto.licence %}
+                                    - {{ firstPhoto.licence }}
+                                {% endif %}
+                                {% if firstPhoto.source %}
+                                    - {{ firstPhoto.source }}
+                                {% endif %}
+
+                            </p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="taxonIdentity">
+            {% else %}
+                <!-- Si pas de photo, alors le premier bloc occupe toute la largeur -->
+                <div class="col-sm-12" id="taxonIdentity">
+            {% endif %}
+            <div id="groupLogoCol">
+                <a href="{{ url_for('main.ficheGroupe', groupe=taxon.taxonSearch.groupAccent ) }}">
+                    <img src="{{ url_for('static', filename='images/picto_'+ taxon.taxonSearch.group2_inpn| replace(" ", "_")|urlencode+'.png') }}"
+                         alt="{{ taxon.taxonSearch.group2_inpn }}" data-toggle="tooltip"
+                         data-original-title="{{ taxon.taxonSearch.group2_inpn }}" data-placement="right">
+                </a>
+            </div>
+            <div id="taxonName">
+                {% if taxon.taxonSearch.nom_vern != None %}
+                    <h4 class="strong"> {{ taxon.taxonSearch.nom_vern }} </h4>
+                    <h4><i>{{ taxon.taxonSearch.nom_complet_html|safe }} </i></h4>
+                {% else %}
+                    <h4 class="strong"><i>{{ taxon.taxonSearch.nom_complet_html|safe }} </i></h4>
+                {% endif %}
+                {% if taxon.taxonSearch.protection == 'oui' %}
+                    <br/>
+                    <a href="https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.taxonSearch.cd_ref }}/tab/statut"
+                       target="_blank">
+                        <img class="caractEspece" width="100px"
+                             src="{{ url_for('static', filename='images/logo_protection.png') }}"
+                             data-toggle="tooltip"
+                             data-original-title="{{ _('this.taxon.has.a.protected.status') }}"
+                             data-placement="right"></a>
+                {% endif %}
+                {% if configuration.DISPLAY_PATRIMONIALITE and taxon.taxonSearch.patrimonial in configuration.PATRIMONIALITE.config %}
+                    <img
+                            class="caractEspece"
+                            width="130px"
+                            src="{{ url_for('static', filename=configuration.PATRIMONIALITE.config[taxon.taxonSearch.patrimonial].icon) }}"
+                            data-toggle="tooltip"
+                            data-original-title="{{ configuration.PATRIMONIALITE.config[taxon.taxonSearch.patrimonial].text }}"
+                            data-placement="right">
+                {% endif %}
+
+                <div id="taxonomy">
+                    {% for taxon in taxonomyHierarchy %}
+                        {{ taxon.nom_rang }} :
+                        <i>
+                            {% if ( taxon.tri_rang >= configuration.LIMIT_FICHE_LISTE_HIERARCHY) %}
+                                <a href="{{ url_for('main.ficheEspece', cd_ref = taxon.cd_ref) }}">{{ taxon.lb_nom }}</a>
+                            {% else %}
+                                <a href="{{ url_for('main.ficheRangTaxonomie', cd_ref = taxon.cd_ref) }}">{{ taxon.lb_nom }}</a>
+
+                            {% endif %}
+                        </i>
+                        {% if not loop.last %}
+                            <span class="fas fa-chevron-right"> </span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <div id="inpnLink">
+                    <a href='https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.taxonSearch.cd_ref }}' target="_blank">
+                        <img width="90px" src="{{ url_for('static', filename='images/logo_inpn.png') }}"
+                             data-toggle="tooltip" data-original-title="{{ _('check.species.sheet.inpn') }}"
+                             data-placement="right">
+                    </a>
+                </div>
+
+                {% if taxon.listTaxonsChild|length > 0 %}
+                    <!-- Button trigger modal -->
+                    <button class="btn btn-default" data-toggle="modal" data-target="#myModal"
+                            style="margin-top: 10px;">
+                        <b> {{ taxon.listTaxonsChild | length }} </b> taxon(s) inférieur(s) agrégé(s) sur cette
+                        fiche
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close"><span
+                                            aria-hidden="true">&times;</span></button>
+                                    <h3 class="modal-title" id="myModalLabel">Taxon(s) agrégé(s) sur cette
+                                        fiche</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th> {{ _('common.name') }}</th>
+                                            <th> {{ _('scientific.name') }}</th>
+                                            {% if configuration.PROTECTION %}
+                                                <th> {{ _('protection') }}</th>
+                                            {% endif %}
+                                            {% if configuration.DISPLAY_PATRIMONIALITE %}
+                                                <th>{{ configuration.PATRIMONIALITE.label }}</th>
+                                            {% endif %}
+                                            <th>{{ _('observations') }}</th>
+                                            <th> {{ _('sheet') }}</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for child in taxon.listTaxonsChild %}
+                                            <a href="{{ url_for('main.ficheEspece', cd_ref = child.cd_ref) }}">
+                                                <tr>
+                                                    <td>
+                                                        {% if child.nom_vern != None %}
+                                                            {{ child.nom_vern }}
+                                                        {% else %}
+                                                            -
+                                                            </td>
+                                                        {% endif %}
+                                                    <td> {{ child.lb_nom }} </td>
+                                                    <td>
+                                                        {% if child.protection != None %}
+                                                            <a href="https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.taxonSearch.cd_ref }}/tab/statut"
+                                                               target="_blank">
+                                                                <img class="caractEspece" width="130px"
+                                                                     src="{{ url_for('static', filename='images/logo_protection.png') }}"
+                                                                     data-toggle="tooltip"
+                                                                     data-original-title="{{ _('this.taxon.has.a.protected.status') }}"
+                                                                     data-placement="right"></a>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if config.DISPLAY_PATRIMONIALITE and child.patrimonial in configuration.PATRIMONIALITE.config %}
+                                                            <img
+                                                                    class="caractEspece" width="130px"
+                                                                    src="{{ url_for('static', filename=configuration.PATRIMONIALITE.config[child.patrimonial].icon) }}"
+                                                                    data-toggle="tooltip"
+                                                                    data-original-title="{{ configuration.PATRIMONIALITE.config[child.patrimonial].text }}"
+                                                                    data-placement="right"
+                                                            >
+                                                        {% endif %}
+                                                    </td>
+                                                    <td> {{ child.nb_obs | pretty }} </td>
+                                                    <td>
+                                                        <a href="{{ url_for('main.ficheEspece', cd_ref = child.cd_ref) }}">
+                                                            <span id="ficheGlyficon" data-toggle="tooltip"
+                                                                  data-original-title="{{ _('check.species.sheet')}}"
+                                                                  data-placement="right"
+                                                                  class="fas fa-list"></span>
+                                                        </a>
+                                                    </td>
+
+                                                </tr>
+                                            </a>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    {#                            <h5 id="buttonChild"> <b>{{taxon.listTaxonsChild|length }}</b> taxon(s) agrégé(s) sur cette fiche: <span class="fas fa-chevron-right"></span>#}
+                    {#    						</h5>#}
+                    {#                            <div hidden="hidden" id="childList">#}
+                    {#                                        {% for child in taxon.listTaxonsChild %}#}
+                    {#                                         <i>#}
+                    {#                                            {% if ( child.tri_rang >= configuration.LIMIT_FICHE_LISTE_HIERARCHY) %}#}
+                    {#                                                <a href = "{{url_for('main.ficheEspece', cd_ref = child.cd_ref) }}">#}
+                    {#                        {{child.lb_nom}}</a>#}
+                    {#                                            {% else %}#}
+                    {#                                                <a href = "#}
+                    {#                        {{url_for('main.ficheRangTaxonomie', cd_ref = child.cd_ref) }}">{{child.lb_nom}} </a>#}
+                    {#{% endif %}#}
+                    {#                                            </i>#}
+                    {#                                            {% if not loop.last %}#}
+                    {#                                              ,#}
+                    {#                                        {% endif %}#}
+                    {#                                    {% endfor %}#}
+                    {#                            </div>#}
+                {% endif %}
+            </div>
+            </div>
+            </div>
+        </div>
+{% endblock %}

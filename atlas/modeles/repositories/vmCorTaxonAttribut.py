@@ -1,11 +1,10 @@
-
 # -*- coding:utf-8 -*-
 
 from sqlalchemy.sql import text
 
 
 def getAttributesTaxon(
-    connection, cd_ref, attrDesc, attrComment, attrMilieu, attrChoro
+        connection, cd_ref, attrDesc, attrComment, attrMilieu, attrChoro
 ):
     sql = """
         SELECT *
@@ -34,7 +33,7 @@ def getAttributesTaxon(
         elif r.id_attribut == attrComment:
             descTaxon['commentaire'] = r.valeur_attribut
         elif r.id_attribut == attrMilieu:
-            descTaxon['milieu'] = r.valeur_attribut.replace("&" , " | ")
+            descTaxon['milieu'] = r.valeur_attribut.replace("&", " | ")
         elif r.id_attribut == attrChoro:
             descTaxon['chorologie'] = r.valeur_attribut
     return descTaxon

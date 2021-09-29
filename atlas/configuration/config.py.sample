@@ -21,6 +21,56 @@ NOM_APPLICATION = "Nom de l application"
 # ex "/atlas" pour une URL: http://mon-domaine/atlas OU "" si l'application est accessible à la racine du domaine
 URL_APPLICATION = "/atlas"
 
+#################################
+#################################
+###### Modules activation #######
+#################################
+#################################
+
+# Organism module : organism's sheet + organism participation on species sheet
+ORGANISM_MODULE = False
+
+###########################
+###### Multilingual #######
+###########################
+
+# Default language
+BABEL_DEFAULT_LOCALE = 'fr'
+
+#Activate or deactivate multilingual
+MULTILINGUAL = True
+
+###########################
+# If multilingual is activated configure under
+
+# Available languages 
+# Don't delete even if you uninstall MULTILINGUAL
+# You need to add your own default language(BABEL_DEFAULT_LOCALE) here if it's not present 
+# Check documentation for adding another language
+LANGUAGES = {
+    'en': {
+        'name' : 'English',
+        'flag_icon' : 'flag-icon-gb',
+        'months' : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] 
+        },
+    'fr': {
+        'name' : 'Français',
+        'flag_icon' : 'flag-icon-fr',
+        'months' : ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Decembre'] 
+        },
+    'it': {
+        'name' : 'Italiano',
+        'flag_icon' : 'flag-icon-it',
+        'months' : ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'] 
+        }
+}
+
+# Domain name for multilingual SEO
+DOMAIN_NAME = 'http://example.com'
+
+#  Else, multilingual is deactivated
+###########################
+
 ###########################
 ###### Cartographie #######
 ###########################
@@ -45,3 +95,9 @@ MAP = {
     'BORDERS_WEIGHT': 3,
     'ENABLE_SLIDER': True
 }
+
+###########################
+#### Security  Config #####
+###########################
+
+SECRET_KEY = 'INSERT_A_RANDOM_SECRET_KEY'

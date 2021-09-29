@@ -1,0 +1,335 @@
+# Translations template for PROJECT.
+# Copyright (C) 2021 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2021-09-28 09:41+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: templates/areaSheet/_main.html:6
+msgid "municipality.of"
+msgstr ""
+
+#: templates/areaSheet/_main.html:71
+msgid "last.obs.municipality"
+msgstr ""
+
+#: templates/areaSheet/_main.html:74
+msgid "last.obs.zone"
+msgstr ""
+
+#: templates/areaSheet/surrounding_areas.html:10
+msgid "associate.zone"
+msgstr ""
+
+#: templates/areaSheet/surrounding_areas.html:23
+msgid "check.area.sheet"
+msgstr ""
+
+#: templates/core/extended_areas_search.html:13
+msgid "search.other.zones.type"
+msgstr ""
+
+#: templates/core/listTaxons.html:14
+msgid "filter.species"
+msgstr ""
+
+#: templates/core/listTaxons.html:23
+msgid "display.municipality.obs"
+msgstr ""
+
+#: templates/core/listTaxons.html:81 templates/core/statHierarchy.html:7
+#: templates/home/globalStats.html:12
+#: templates/organismSheet/topSpecies.html:60
+#: templates/speciesSheet/map.html:15
+msgid "observation"
+msgstr ""
+
+#: templates/core/listTaxons.html:82 templates/core/statHierarchy.html:7
+#: templates/core/tabTaxons.html:19 templates/home/globalStats.html:12
+#: templates/organismSheet/statsInfos.html:11
+#: templates/organismSheet/topSpecies.html:60
+#: templates/speciesSheet/identityCard.html:131
+#: templates/speciesSheet/map.html:15
+msgid "observations"
+msgstr ""
+
+#: templates/core/listTaxons.html:83
+msgid "last.obs.in"
+msgstr ""
+
+#: templates/core/listTaxons.html:87 templates/core/tabTaxons.html:85
+#: templates/organismSheet/topSpecies.html:65
+#: templates/speciesSheet/identityCard.html:173
+msgid "check.species.sheet"
+msgstr ""
+
+#: templates/core/listTaxons.html:88 templates/home/mostViewNow.html:33
+#: templates/home/newSpecies.html:35 templates/home/taxoRank.html:57
+#: templates/organismSheet/topSpecies.html:66
+msgid "species.sheet"
+msgstr ""
+
+#: templates/core/loaderSpinner.html:3
+msgid "loading"
+msgstr ""
+
+#: templates/core/navbar.html:34 templates/home/globalStats.html:28
+#: templates/photoGalery/_main.html:76
+msgid "search.species"
+msgstr ""
+
+#: templates/core/navbar.html:47 templates/home/globalStats.html:47
+msgid "search.city"
+msgstr ""
+
+#: templates/core/sideBar.html:3
+msgid "back.to.home"
+msgstr ""
+
+#: templates/core/sideBar.html:20 templates/home/globalStats.html:59
+#: templates/photoGalery/_main.html:5 templates/photoGalery/_main.html:50
+msgid "gallery.title"
+msgstr ""
+
+#: templates/core/statHierarchy.html:12 templates/home/globalStats.html:21
+#: templates/home/taxoRank.html:28 templates/organismSheet/statsInfos.html:21
+msgid "species"
+msgstr ""
+
+#: templates/core/statHierarchy.html:17 templates/speciesSheet/map.html:25
+#: templates/speciesSheet/otherInformations.html:29
+msgid "observers"
+msgstr ""
+
+#: templates/core/statHierarchy.html:17 templates/speciesSheet/map.html:25
+#: templates/speciesSheet/otherInformations.html:29
+msgid "observer"
+msgstr ""
+
+#: templates/core/tabTaxons.html:7
+msgid "group"
+msgstr ""
+
+#: templates/core/tabTaxons.html:8 templates/speciesSheet/identityCard.html:124
+msgid "scientific.name"
+msgstr ""
+
+#: templates/core/tabTaxons.html:9 templates/speciesSheet/identityCard.html:123
+msgid "common.name"
+msgstr ""
+
+#: templates/core/tabTaxons.html:16
+msgid "obs.number.s"
+msgstr ""
+
+#: templates/core/tabTaxons.html:17 templates/speciesSheet/map.html:33
+msgid "last.obs"
+msgstr ""
+
+#: templates/core/tabTaxons.html:21
+#: templates/speciesSheet/identityCard.html:132
+msgid "sheet"
+msgstr ""
+
+#: templates/core/tabTaxons.html:60 templates/speciesSheet/identityCard.html:62
+#: templates/speciesSheet/identityCard.html:154
+msgid "this.taxon.has.a.protected.status"
+msgstr ""
+
+#: templates/core/tabTaxons.html:80
+msgid "display.city.infos"
+msgstr ""
+
+#: templates/home/globalStats.html:4
+msgid "home.insomefigures"
+msgstr ""
+
+#: templates/home/globalStats.html:13
+msgid "home.seelatestobs"
+msgstr ""
+
+#: templates/home/globalStats.html:39 templates/speciesSheet/map.html:20
+#: templates/speciesSheet/otherInformations.html:10
+#: templates/speciesSheet/otherInformations.html:14
+msgid "municipalities"
+msgstr ""
+
+#: templates/home/globalStats.html:39 templates/speciesSheet/map.html:20
+#: templates/speciesSheet/otherInformations.html:10
+#: templates/speciesSheet/otherInformations.html:14
+msgid "municipality"
+msgstr ""
+
+#: templates/home/globalStats.html:58
+msgid "photos"
+msgstr ""
+
+#: templates/home/globalStats.html:58
+msgid "photo"
+msgstr ""
+
+#: templates/home/mostViewNow.html:5
+msgid "see.at.the.moment"
+msgstr ""
+
+#: templates/home/mostViewNow.html:7
+msgid "species.most.obs.last.15.days"
+msgstr ""
+
+#: templates/home/newSpecies.html:8
+msgid "new.species.observed"
+msgstr ""
+
+#: templates/home/taxoRank.html:8
+msgid "species.to.discover"
+msgstr ""
+
+#: templates/organismSheet/blocInfos.html:4
+msgid "other.informations"
+msgstr ""
+
+#: templates/organismSheet/groupChart.html:3
+msgid "part.graph"
+msgstr ""
+
+#: templates/organismSheet/identityCard.html:19
+msgid "Région/département rattaché"
+msgstr ""
+
+#: templates/organismSheet/identityCard.html:20
+msgid "Téléphone"
+msgstr ""
+
+#: templates/organismSheet/mapObs.html:5
+msgid "map.observations"
+msgstr ""
+
+#: templates/organismSheet/statsInfos.html:4
+msgid "organism.stats"
+msgstr ""
+
+#: templates/organismSheet/statsInfos.html:16
+msgid "atlas.participation"
+msgstr ""
+
+#: templates/organismSheet/topSpecies.html:5
+msgid "top.species"
+msgstr ""
+
+#: templates/organismSheet/topSpecies.html:61
+msgid "from.organism.observations"
+msgstr ""
+
+#: templates/photoGalery/_main.html:64
+msgid "all.groups.tooltip"
+msgstr ""
+
+#: templates/photoGalery/_main.html:65
+msgid "all.groups"
+msgstr ""
+
+#: templates/speciesSheet/audioVideo.html:7
+msgid "Video"
+msgstr ""
+
+#: templates/speciesSheet/blocInfos.html:11
+msgid "species.infos"
+msgstr ""
+
+#: templates/speciesSheet/blocInfos.html:14
+#: templates/speciesSheet/descriptionMedia.html:16
+#: templates/speciesSheet/otherInformations.html:69
+msgid "description"
+msgstr ""
+
+#: templates/speciesSheet/blocInfos.html:17
+msgid "read.more"
+msgstr ""
+
+#: templates/speciesSheet/blocInfos.html:19
+msgid "environment"
+msgstr ""
+
+#: templates/speciesSheet/blocInfos.html:20
+msgid "repartition"
+msgstr ""
+
+#: templates/speciesSheet/blocInfos.html:21
+msgid "synonyms"
+msgstr ""
+
+#: templates/speciesSheet/blocInfos.html:27
+#: templates/speciesSheet/blocInfos.html:39
+#: templates/speciesSheet/blocInfos.html:46
+msgid "not.resigned.for.the.moment"
+msgstr ""
+
+#: templates/speciesSheet/blocInfos.html:53
+msgid "no.synonym.for.this.taxon"
+msgstr ""
+
+#: templates/speciesSheet/charts.html:3
+msgid "alt.classes.obs"
+msgstr ""
+
+#: templates/speciesSheet/charts.html:7
+msgid "monthly.obs"
+msgstr ""
+
+#: templates/speciesSheet/descriptionMedia.html:12
+#: templates/speciesSheet/otherInformations.html:42
+msgid "author"
+msgstr ""
+
+#: templates/speciesSheet/identityCard.html:95
+msgid "check.species.sheet.inpn"
+msgstr ""
+
+#: templates/speciesSheet/identityCard.html:126
+msgid "protection"
+msgstr ""
+
+#: templates/speciesSheet/map.html:29
+msgid "first.obs"
+msgstr ""
+
+#: templates/speciesSheet/otherInformations.html:22
+msgid "organisms"
+msgstr ""
+
+#: templates/speciesSheet/otherInformations.html:22
+msgid "organism"
+msgstr ""
+
+#: templates/speciesSheet/otherInformations.html:41
+msgid "title"
+msgstr ""
+
+#: templates/speciesSheet/otherInformations.html:71
+msgid "date"
+msgstr ""
+
+#: templates/speciesSheet/otherInformations.html:144
+msgid "check.organism.sheet"
+msgstr ""
+
+#: templates/speciesSheet/otherInformations.html:145
+msgid "organism.sheet"
+msgstr ""
+
+#: templates/taxoRankSheet/_main.html:47
+msgid "species.obs.for.tax"
+msgstr ""
+

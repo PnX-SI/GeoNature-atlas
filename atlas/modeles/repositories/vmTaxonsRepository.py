@@ -1,13 +1,9 @@
-
 # -*- coding:utf-8 -*-
 
 from flask import current_app
-
-import unicodedata
-
 from sqlalchemy.sql import text
-from .. import utils
 
+from atlas.modeles import utils
 
 
 # With distinct the result in a array not an object, 0: lb_nom, 1: nom_vern
@@ -89,7 +85,7 @@ def getINPNgroupPhotos(connection):
     sql = """
         SELECT DISTINCT count(*) AS nb_photos, group2_inpn
         FROM atlas.vm_taxons T
-        JOIN atlas.vm_medias M on M.cd_ref = T.cd_ref
+        JOIN atlas.vm_medias M ON M.cd_ref = T.cd_ref
         GROUP BY group2_inpn
         ORDER BY nb_photos DESC
     """
@@ -122,7 +118,7 @@ def getTaxonsGroup(connection, groupe):
     tabTaxons = list()
     nbObsTotal = 0
     for r in req:
-        nbObsTotal = nbObsTotal+r.nb_obs
+        nbObsTotal = nbObsTotal + r.nb_obs
         temp = {
             'nom_complet_html': r.nom_complet_html,
             'nb_obs': r.nb_obs,
@@ -145,7 +141,7 @@ def getAllINPNgroup(connection):
         SELECT SUM(nb_obs) AS som_obs, group2_inpn
         FROM atlas.vm_taxons
         GROUP BY group2_inpn
-        ORDER by som_obs DESC
+        ORDER BY som_obs DESC
     """
     req = connection.execute(text(sql))
     groupList = list()

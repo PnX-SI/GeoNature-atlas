@@ -1,0 +1,434 @@
+.panel-default > .panel-heading {
+  border-color: transparent !important;
+}
+
+.my-shadow {
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+h4.title-spaced {
+  margin-top: 0px;
+}
+.center {
+  text-align: center;
+}
+#overlay {
+  /* position: absolute; */
+  padding: 10px;
+  color: white;
+}
+
+.back-img {
+  padding: 0px;
+  margin-top: -20px;
+  background-size: contain;
+  background-attachment: fixed;
+  height: 60vh;
+  background-repeat: no-repeat;
+}
+
+#presentation-text {
+  font-size: 15px;
+}
+
+.btn-intro {
+  font-size: 20px;
+  border-radius: 0px;
+  letter-spacing: 0.1rem;
+  font-weight: 600;
+  padding: 0.8rem;
+  transition: all 0.2s;
+}
+
+.btn-success {
+  color: #fff;
+  background-color: var(--main-color);
+  border-color: var(--main-color);
+}
+
+.btn-success:hover {
+  background-color: var(--second-color);
+  border-color: var(--second-color);
+}
+
+h4 {
+  font-size: 20px;
+}
+
+.padding-sm {
+  padding-top: 5px;
+  padding-left: 5px;
+  padding-bottom: 5px;
+}
+
+.large {
+  font-size: 3rem;
+}
+
+.muted {
+  color: grey;
+}
+
+/*.text-muted {*/
+/*  text-transform: uppercase;*/
+/*  font-weight: 700;*/
+/*  font-size: 1.5rem;*/
+/*}*/
+
+.title-spaced {
+  letter-spacing: 0.025em;
+  line-height: 38px;
+}
+
+.textIntroduction {
+  padding-left: 30px;
+}
+
+#textIntroduction {
+  padding-left: 30px;
+  /* position: absolute; */
+  color: white;
+}
+
+.textIntroduction a {
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+h3.title-spaced {
+  margin-bottom: 0px !important;
+  margin-top: 0px !important;
+}
+
+/* Bandeau de logos (slider slick) en page accueil */
+
+.slidepartenaireindex {
+  width: 280px;
+}
+
+.slidepartenaireindex img {
+  max-height: 80px;
+  margin: auto;
+}
+
+.slick-prev::before,
+.slick-next::before {
+  color: #1e1b0c;
+}
+
+/*Stat block*/
+
+.stat-object {
+  min-height: 200px;
+  padding: 0px;
+}
+
+.stat-object .form-control {
+  width: 100%;
+}
+
+.stat-thumbnail {
+  text-align: center;
+  background-color: rgb(255, 255, 255);
+  margin-bottom: 0px;
+  border-radius: 0px;
+  padding: 10px;
+}
+
+.stat-thumbnail span {
+  font-size: 40px;
+}
+
+.panel-heading h3 {
+  margin: 0px;
+}
+
+#searchTaxonsStat,
+#searchCommunesStat {
+  background-position: right center;
+  background-repeat: no-repeat;
+  background-size: 25px 25px;
+  background-position-x: calc(100% - 25px);
+  outline: none;
+}
+
+.addon {
+  position: absolute;
+  margin-left: 5px;
+  display: flex;
+  align-items: center;
+  z-index: 100;
+  font-size: 20px !important;
+  color: grey;
+  padding-top: px;
+  margin-top: 9px;
+}
+
+.addon-navbar {
+  position: absolute;
+  margin-left: 5px;
+  display: flex;
+  align-items: center;
+  z-index: 100;
+  font-size: 20px !important;
+  color: grey;
+  padding-top: px;
+  margin-top: 9px;
+}
+
+/*Custom Stat Block*/
+
+.center-input {
+  width: 80%;
+  margin: 0 auto;
+}
+.stat-custom-panel {
+  padding: 10px;
+}
+
+.stat-custom-panel span {
+  font-size: 15px;
+}
+
+.statMedias {
+  text-align: center;
+  float: left;
+  width: 100%;
+}
+
+.thumbnail-stat-medias {
+  padding: 0px;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+.thumbnail-caption-medias {
+  padding-top: 5px;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.col-stat-medias {
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.zoom-wrapper a:link {
+  text-decoration: none;
+}
+
+.zoom-wrapper {
+  overflow: hidden;
+}
+
+.img-custom-medias {
+  /* Override atlas.css class */
+  height: 150px;
+}
+
+@media (max-width: 992px) {
+  .img-custom-medias {
+    height: 400px;
+  }
+}
+
+.stat-medias-hovereffet {
+  display: none;
+  position: absolute;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  padding: 6px;
+  width: 100%;
+}
+
+.zoom-wrapper:hover .stat-medias-hovereffet {
+  display: block;
+}
+
+.overlay-obs {
+  color: #fff;
+  text-align: center;
+  position: relative;
+  top: 100px;
+  font-size: 13px;
+  background: rgba(0, 0, 0, 0.6);
+  -webkit-transform: translatey(-100px);
+  -ms-transform: translatey(-100px);
+  transform: translatey(-100px);
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  padding: 10px;
+  text-decoration: none;
+  margin-top: 10px;
+}
+
+.zoom-wrapper:hover .img-custom-medias {
+  -ms-transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+.stat-object a {
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+/* END Stat Block */
+
+/* Latest observations */
+
+#DernieresObservations {
+  clear: both;
+}
+
+#map {
+  width: 100%;
+  height: 600px;
+}
+
+@media (min-width: 992px) {
+  #blocMap {
+    padding-right: 0px;
+  }
+}
+
+.list-group {
+  max-height: fit-content;
+  height: 100%;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (min-width: 992px) {
+  #listMap {
+    padding-left: 0px;
+  }
+}
+
+.pictoImg {
+  width: 100%;
+  background-position: center center;
+  height: 60px;
+  min-width: 60px;
+}
+
+.picto-img-no-resize {
+  background-size: cover;
+}
+
+.pictoImgSmall {
+  height: 60px;
+}
+
+.pictoImgMedium {
+  height: 250px;
+}
+
+#lastObsList {
+  display: block;
+  max-height: 600px;
+  overflow-y: scroll;
+  background: white;
+}
+
+.lastObslistItem:hover {
+  background-color: var(--light);
+  cursor: pointer;
+}
+
+.lastObslistItem .lastObslistItemIcon {
+  width: 80px;
+  height: 40px;
+  background-position: center;
+  align: center;
+  object-fit: contain;
+}
+
+.lastObslistItem .lastObslistItemImage {
+  width: 80px;
+  height: 80px;
+  background-position: center;
+  object-fit: cover;
+  background-color: var(--light);
+}
+
+.lastObslistItem.current {
+  background-color: #e6e6e6;
+  font-weight: bold;
+}
+
+/*.singleTaxon {
+  cursor: pointer;
+}*/
+
+.tabEspece:hover {
+  background-color: #cccccc;
+}
+
+.tabEspece.current {
+  background-color: #e6e6e6;
+  font-weight: bold;
+}
+
+td.singleTaxon.name {
+  width: 50%;
+}
+
+td.singleTaxon.img {
+  width: 15%;
+  text-align: center;
+}
+
+td.singleTaxon.date {
+  width: 30%;
+}
+
+td.singleTaxon.detail {
+  width: 1%;
+}
+
+.singleTaxon .glyphicon {
+  color: #333333;
+  font-size: 1.5em;
+}
+
+/* END Latest observations */
+
+/*// BLOCK actual species */
+
+#mostViewNow {
+  clear: both;
+}
+
+.default-logo {
+  margin: 0 auto;
+  padding-bottom: 100px;
+  padding-top: 100px;
+}
+
+.thumbnail-row {
+  margin: 0px;
+  margin-top: 10px;
+}
+
+.thumbnail-col {
+  /* padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px; */
+  padding: 0px;
+}
+
+.higlight {
+  font-size: 20px;
+}
+
+.helpTip {
+  color: #333333;
+  font-size: 16px;
+  top: -5px;
+  left: 3px;
+}

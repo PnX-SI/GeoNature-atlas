@@ -1,15 +1,13 @@
 import json
-
 from datetime import datetime
-from geojson import Feature, FeatureCollection
+
 from flask import current_app
-from sqlalchemy import MetaData
+from geojson import Feature, FeatureCollection
 from sqlalchemy.sql import text, func, or_
 
-from atlas.modeles.entities.vmObservations import VmObservations
 from atlas.modeles import utils
 from atlas.utils import engine, GenericTable
-
+from atlas.modeles.repositories import vmMedias
 
 currentYear = datetime.now().year
 cached_vm_observation = None
@@ -59,10 +57,10 @@ def searchObservationsChilds(session, cd_ref):
 
 
 def firstObservationChild(connection, cd_ref):
-    sql = """SELECT min(taxons.yearmin) as yearmin 
+    sql = """SELECT min(taxons.yearmin) AS yearmin 
     FROM atlas.vm_taxons taxons 
     JOIN atlas.vm_taxref taxref ON taxref.cd_ref=taxons.cd_ref 
-    WHERE taxons.cd_ref in ( 
+    WHERE taxons.cd_ref IN ( 
     SELECT * FROM atlas.find_all_taxons_childs(:thiscdref) 
     )OR taxons.cd_ref = :thiscdref"""
     req = connection.execute(text(sql), thiscdref=cd_ref)
@@ -74,7 +72,7 @@ def lastObservations(connection, mylimit, idPhoto):
     sql = """
     SELECT obs.*,
         COALESCE(split_part(tax.nom_vern, ',', 1) || ' | ', '')
-            || tax.lb_nom as taxon,
+            || tax.lb_nom AS taxon,
         tax.group2_inpn,
         medias.url, medias.chemin, medias.id_media
     FROM atlas.vm_observations obs
@@ -102,7 +100,7 @@ def lastObservations(connection, mylimit, idPhoto):
 def lastObservationsCommune(connection, mylimit, insee):
     sql = """SELECT o.*,
             COALESCE(split_part(tax.nom_vern, ',', 1) || ' | ', '')
-                || tax.lb_nom as taxon
+                || tax.lb_nom AS taxon
     FROM atlas.vm_observations o
     JOIN atlas.vm_communes c ON ST_Intersects(o.the_geom_point, c.the_geom)
     JOIN atlas.vm_taxons tax ON  o.cd_ref = tax.cd_ref
@@ -124,7 +122,7 @@ def getObservationTaxonCommune(connection, insee, cd_ref):
     sql = """
         SELECT o.*,
             COALESCE(split_part(tax.nom_vern, ',', 1) || ' | ', '')
-                || tax.lb_nom as taxon,
+                || tax.lb_nom AS taxon,
         o.observateurs
         FROM (
             SELECT * FROM atlas.vm_observations o
@@ -174,9 +172,9 @@ def observersParser(req):
 
 def getObservers(connection, cd_ref):
     sql = """
-    SELECT distinct observateurs
+    SELECT DISTINCT observateurs
     FROM atlas.vm_observations
-    WHERE cd_ref in (
+    WHERE cd_ref IN (
             SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
         )
         OR cd_ref = :thiscdref
@@ -187,10 +185,10 @@ def getObservers(connection, cd_ref):
 
 def getGroupeObservers(connection, groupe):
     sql = """
-        SELECT distinct observateurs
+        SELECT DISTINCT observateurs
         FROM atlas.vm_observations
-        WHERE cd_ref in (
-            SELECT cd_ref from atlas.vm_taxons WHERE group2_inpn = :thisgroupe
+        WHERE cd_ref IN (
+            SELECT cd_ref FROM atlas.vm_taxons WHERE group2_inpn = :thisgroupe
         )
     """
     req = connection.execute(text(sql), thisgroupe=groupe)
@@ -199,7 +197,7 @@ def getGroupeObservers(connection, groupe):
 
 def getObserversCommunes(connection, insee):
     sql = """
-        SELECT distinct observateurs
+        SELECT DISTINCT observateurs
         FROM atlas.vm_observations
         WHERE insee = :thisInsee
     """
@@ -209,7 +207,6 @@ def getObserversCommunes(connection, insee):
 
 def statIndex(connection):
     result = {"nbTotalObs": None, "nbTotalTaxons": None, "town": None, "photo": None}
-
     sql = "SELECT COUNT(*) AS count \
     FROM atlas.vm_observations "
     req = connection.execute(text(sql))
@@ -300,3 +297,29 @@ def genericStatMedias(connection, tab):
         return None
     else:
         return tabStat
+
+def getLastDiscoveries(connection):
+    sql="""
+    SELECT date(min(dateobs)), vo.cd_ref, vt.lb_nom, vt.nom_vern, m.id_media, m.chemin, m.url, vt.group2_inpn
+    FROM atlas.vm_observations vo 
+    JOIN atlas.vm_taxref vt ON vo.cd_ref = vt.cd_nom 
+    LEFT JOIN atlas.vm_medias m ON m.cd_ref=vo.cd_ref and m.id_type = :thisidtype
+    WHERE id_rang='ES'
+    GROUP BY vo.cd_ref, vt.lb_nom, vt.nom_vern, m.id_media, m.chemin, m.url, vt.group2_inpn
+    ORDER BY min(dateobs) DESC
+    LIMIT 6
+    """
+    req = connection.execute(text(sql), thisidtype=current_app.config["ATTR_MAIN_PHOTO"])
+    lastDiscoveriesList= list()
+    for r in req :
+        temp = {
+            'date':r.date,
+            'cd_ref':r.cd_ref,
+            'nom_vern':r.nom_vern,
+            'lb_nom':r.lb_nom,
+            'id_media':r.id_media,
+            'group2_inpn': r.group2_inpn,
+            'media_path': r.chemin if r.chemin is not None else r.url
+        }
+        lastDiscoveriesList.append(temp)
+    return lastDiscoveriesList

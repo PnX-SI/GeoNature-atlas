@@ -2,10 +2,9 @@
 
 
 from flask import current_app
-from .. import utils
-
-
 from sqlalchemy.sql import text
+
+from atlas.modeles import utils
 
 
 def _format_media(r):
@@ -86,18 +85,18 @@ def switchMedia(row):
         current_app.config[
             "ATTR_YOUTUBE"
         ]: "<iframe width='100%' height='315' src='https://www.youtube.com/embed/"  # noqa
-        + row.url
-        + "' frameborder='0' allowfullscreen></iframe>",
+           + row.url
+           + "' frameborder='0' allowfullscreen></iframe>",
         current_app.config[
             "ATTR_DAILYMOTION"
         ]: "<iframe frameborder='0' width='100%' height='315' src='//www.dailymotion.com/embed/video/"  # noqa
-        + row.url
-        + "' allowfullscreen></iframe>",
+           + row.url
+           + "' allowfullscreen></iframe>",
         current_app.config[
             "ATTR_VIMEO"
         ]: "<iframe src='https://player.vimeo.com/video/"  # noqa
-        + row.url
-        + "?color=ffffff&title=0&byline=0&portrait=0' width='640' height='360'\
+           + row.url
+           + "?color=ffffff&title=0&byline=0&portrait=0' width='640' height='360'\
         frameborder='0' webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>",  # noqa
     }
 
@@ -106,7 +105,7 @@ def getVideo_and_audio(connection, cd_ref, id5, id6, id7, id8, id9):
     sql = """
         SELECT *
         FROM atlas.vm_medias
-        WHERE id_type in (:id5, :id6, :id7, :id8, :id9) AND cd_ref = :thiscdref
+        WHERE id_type IN (:id5, :id6, :id7, :id8, :id9) AND cd_ref = :thiscdref
         ORDER BY date_media DESC
     """
     req = connection.execute(
@@ -137,7 +136,7 @@ def getLinks_and_articles(connection, cd_ref, id3, id4):
     sql = """
         SELECT *
         FROM atlas.vm_medias
-        WHERE id_type in (:id3, :id4) AND cd_ref = :thiscdref
+        WHERE id_type IN (:id3, :id4) AND cd_ref = :thiscdref
         ORDER BY date_media DESC
     """
     req = connection.execute(text(sql), thiscdref=cd_ref, id3=id3, id4=id4)
@@ -188,4 +187,3 @@ def getPhotosGalleryByGroup(connection, id1, id2, INPNgroup):
         photo["nb_obs"] = r.nb_obs
         tab_photos.append(photo)
     return tab_photos
-

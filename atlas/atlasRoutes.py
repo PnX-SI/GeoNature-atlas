@@ -1,8 +1,26 @@
 # -*- coding:utf-8 -*-
+from urllib.parse import urlparse
+from urllib.parse import urlunparse
 
-from flask import render_template, redirect, abort, current_app
-from .configuration import config
-from .modeles.repositories import (
+from datetime import datetime, timedelta
+
+from flask import Blueprint, g
+from flask import (
+    render_template,
+    redirect,
+    abort,
+    current_app,
+    make_response,
+    request,
+    url_for,
+    session
+)
+
+from atlas import utils
+from atlas.configuration import config
+from atlas.modeles.entities import vmTaxons, vmCommunes
+from atlas.modeles.repositories import (
+    vmOrganismsRepository,
     vmTaxonsRepository,
     vmObservationsRepository,
     vmAltitudesRepository,
@@ -14,16 +32,40 @@ from .modeles.repositories import (
     vmCorTaxonAttribut,
     vmTaxonsMostView,
 )
-from . import utils
 
-from flask import Blueprint
 
-main = Blueprint("main", __name__)
+# Adding functions for multilingual url process if MULTILINGUAL = True
+if config.MULTILINGUAL:
+    main = Blueprint("main", __name__, url_prefix='/<lang_code>')
 
+    @main.url_defaults
+    def add_language_code(endpoint, values):
+        if 'language' not in session:
+            session['language'] = config.BABEL_DEFAULT_LOCALE
+        g.lang_code=session['language']
+        values.setdefault('lang_code', g.lang_code )
+
+    @main.url_value_preprocessor
+    def pull_lang_code(endpoint, values):
+        g.lang_code = values.pop('lang_code')
+
+else:
+    main = Blueprint("main", __name__)
+
+index_bp = Blueprint("index_bp", __name__)
+
+
+@main.context_processor
+def global_variables():
+    db_session = utils.loadSession()
+    values = {}
+
+    db_session.close()
+    return values
 
 @main.route(
     "/espece/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>",
-    methods=["GET", "POST"],
+    methods=["GET", "POST"]
 )
 def especeMedias(image):
     return redirect(
@@ -31,6 +73,50 @@ def especeMedias(image):
         + current_app.config["REMOTE_MEDIAS_PATH"]
         + image
     )
+
+# Activating organisms sheets routes
+if config.ORGANISM_MODULE:
+    @main.route("/organism/<int:id_organism>", methods=["GET", "POST"])
+    def ficheOrganism(id_organism):
+        db_session = utils.loadSession()
+        connection = utils.engine.connect()
+
+        infos_organism = vmOrganismsRepository.statOrganism(connection, id_organism)
+    
+        stat = vmObservationsRepository.statIndex(connection)
+        
+        mostObsTaxs=vmOrganismsRepository.topObsOrganism(connection, id_organism)
+
+        top_taxons=list()
+        photos=list()
+
+        for taxons in mostObsTaxs:
+            top_taxons.append(vmTaxrefRepository.searchEspece(connection, taxons['cd_ref']))
+            photos.append(vmMedias.getFirstPhoto(connection, taxons['cd_ref'], current_app.config["ATTR_MAIN_PHOTO"]))
+
+        stats_group=vmOrganismsRepository.getTaxonRepartitionOrganism(connection, id_organism)
+
+        connection.close()
+        db_session.close()
+        
+        return render_template( 
+            "templates/organismSheet/_main.html",
+            nom_organism = infos_organism['nom_organism'],
+            adresse_organism = infos_organism['adresse_organism'],
+            cp_organism = infos_organism['cp_organism'],
+            ville_organism = infos_organism['ville_organism'],
+            tel_organism = infos_organism['tel_organism'],
+            url_organism = infos_organism['url_organism'],
+            url_logo = infos_organism['url_logo'],
+            nb_taxons = infos_organism['nb_taxons'],
+            nb_obs = infos_organism['nb_obs'],
+
+            stat = stat,
+            mostObsTaxs = mostObsTaxs,
+            top_taxons = top_taxons,
+            photos = photos,
+            stats_group = stats_group
+        )
 
 
 @main.route(
@@ -79,50 +165,73 @@ def indexMedias(image):
         + image
     )
 
+@index_bp.route("/", methods=["GET", "POST"])
+def index():
+    return redirect(url_for("main.index"))
 
 @main.route("/", methods=["GET", "POST"])
 def index():
     session = utils.loadSession()
     connection = utils.engine.connect()
-
-    if current_app.config["AFFICHAGE_MAILLE"]:
-        observations = vmObservationsMaillesRepository.lastObservationsMailles(
-            connection,
-            current_app.config["NB_DAY_LAST_OBS"],
-            current_app.config["ATTR_MAIN_PHOTO"],
-        )
+    if current_app.config["AFFICHAGE_DERNIERES_OBS"]:
+        if current_app.config["AFFICHAGE_MAILLE"]:
+            current_app.logger.debug("start AFFICHAGE_MAILLE")
+            observations = vmObservationsMaillesRepository.lastObservationsMailles(
+                connection,
+                str(current_app.config["NB_DAY_LAST_OBS"]) + ' day',
+                current_app.config["ATTR_MAIN_PHOTO"],
+            )
+            current_app.logger.debug("end AFFICHAGE_MAILLE")
+        else:
+            current_app.logger.debug("start AFFICHAGE_PRECIS")
+            observations = vmObservationsRepository.lastObservations(
+                connection,
+                str(current_app.config["NB_DAY_LAST_OBS"]) + ' day',
+                current_app.config["ATTR_MAIN_PHOTO"],
+            )
+            current_app.logger.debug("end AFFICHAGE_PRECIS")
     else:
-        observations = vmObservationsRepository.lastObservations(
-            connection,
-            current_app.config["NB_DAY_LAST_OBS"],
-            current_app.config["ATTR_MAIN_PHOTO"],
-        )
+        observations = []
 
+    current_app.logger.debug("start mostViewTaxon")
     mostViewTaxon = vmTaxonsMostView.mostViewTaxon(connection)
+    current_app.logger.debug("end mostViewTaxon")
     stat = vmObservationsRepository.statIndex(connection)
-    customStat = vmObservationsRepository.genericStat(
-        connection, current_app.config["RANG_STAT"]
-    )
-    customStatMedias = vmObservationsRepository.genericStatMedias(
-        connection, current_app.config["RANG_STAT"]
-    )
+    current_app.logger.debug("start customStat")
+
+    if current_app.config["AFFICHAGE_RANG_STAT"]:
+        customStat = vmObservationsRepository.genericStat(
+            connection, current_app.config["RANG_STAT"]
+        )
+        current_app.logger.debug("end customStat")
+        current_app.logger.debug("start customStatMedia")
+        customStatMedias = vmObservationsRepository.genericStatMedias(
+            connection, current_app.config["RANG_STAT"]
+        )
+        current_app.logger.debug("end customStatMedia")
+    else:
+        customStat = []
+        customStatMedias = []
+
+    lastDiscoveries=vmObservationsRepository.getLastDiscoveries(connection)
 
     connection.close()
     session.close()
 
     return render_template(
-        "templates/index.html",
+        "templates/home/_main.html",
         observations=observations,
         mostViewTaxon=mostViewTaxon,
         stat=stat,
         customStat=customStat,
         customStatMedias=customStatMedias,
+        lastDiscoveries=lastDiscoveries,
     )
 
 
 @main.route("/espece/<int:cd_ref>", methods=["GET", "POST"])
 def ficheEspece(cd_ref):
-    session = utils.loadSession()
+    db_session = utils.loadSession()
     connection = utils.engine.connect()
 
     cd_ref = int(cd_ref)
@@ -131,7 +240,7 @@ def ficheEspece(cd_ref):
     months = vmMoisRepository.getMonthlyObservationsChilds(connection, cd_ref)
     synonyme = vmTaxrefRepository.getSynonymy(connection, cd_ref)
     communes = vmCommunesRepository.getCommunesObservationsChilds(connection, cd_ref)
-    taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
+    taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(db_session, cd_ref)
     firstPhoto = vmMedias.getFirstPhoto(
         connection, cd_ref, current_app.config["ATTR_MAIN_PHOTO"]
     )
@@ -163,11 +272,14 @@ def ficheEspece(cd_ref):
     )
     observers = vmObservationsRepository.getObservers(connection, cd_ref)
 
+    organisms = vmOrganismsRepository.getListOrganism(connection, cd_ref)
+
+
     connection.close()
-    session.close()
+    db_session.close()
 
     return render_template(
-        "templates/ficheEspece.html",
+        "templates/speciesSheet/_main.html",
         taxon=taxon,
         listeTaxonsSearch=[],
         observations=[],
@@ -183,6 +295,7 @@ def ficheEspece(cd_ref):
         articles=articles,
         taxonDescription=taxonDescription,
         observers=observers,
+        organisms=organisms
     )
 
 
@@ -194,13 +307,15 @@ def ficheCommune(insee):
     listTaxons = vmTaxonsRepository.getTaxonsCommunes(connection, insee)
     commune = vmCommunesRepository.getCommuneFromInsee(connection, insee)
     if current_app.config["AFFICHAGE_MAILLE"]:
-        observations = vmObservationsMaillesRepository.lastObservationsCommuneMaille(
-            connection, current_app.config["NB_LAST_OBS"], insee
+            observations = vmObservationsMaillesRepository.lastObservationsCommuneMaille(
+            connection, current_app.config["NB_LAST_OBS"], str(insee)
         )
     else:
         observations = vmObservationsRepository.lastObservationsCommune(
             connection, current_app.config["NB_LAST_OBS"], insee
         )
+
+    surroundingAreas = []
 
     observers = vmObservationsRepository.getObserversCommunes(connection, insee)
 
@@ -208,12 +323,15 @@ def ficheCommune(insee):
     connection.close()
 
     return render_template(
-        "templates/ficheCommune.html",
+        "templates/areaSheet/_main.html",
+        sheetType="commune",
+        surroundingAreas=surroundingAreas,
         listTaxons=listTaxons,
-        referenciel=commune,
+        areaInfos=commune,
         observations=observations,
         observers=observers,
         DISPLAY_EYE_ON_LIST=True,
+        insee=insee
     )
 
 
@@ -231,7 +349,7 @@ def ficheRangTaxonomie(cd_ref):
     session.close()
 
     return render_template(
-        "templates/ficheRangTaxonomique.html",
+        "templates/taxoRankSheet/_main.html",
         listTaxons=listTaxons,
         referenciel=referenciel,
         taxonomyHierarchy=taxonomyHierarchy,
@@ -253,7 +371,7 @@ def ficheGroupe(groupe):
     connection.close()
 
     return render_template(
-        "templates/ficheGroupe.html",
+        "templates/groupSheet/_main.html",
         listTaxons=listTaxons,
         referenciel=groupe,
         groups=groups,
@@ -271,7 +389,7 @@ def photos():
 
     session.close()
     connection.close()
-    return render_template("templates/galeriePhotos.html", groups=groups)
+    return render_template("templates/photoGalery/_main.html", groups=groups)
 
 
 @main.route("/<page>", methods=["GET", "POST"])
@@ -282,4 +400,94 @@ def get_staticpages(page):
     static_page = current_app.config["STATIC_PAGES"][page]
     session.close()
     return render_template(static_page["template"])
+
+
+@main.route("/sitemap.xml", methods=["GET"])
+def sitemap():
+    """Generate sitemap.xml iterating over static and dynamic routes to make a list of urls and date modified"""
+    pages = []
+    ten_days_ago = datetime.now() - timedelta(days=10)
+    session = utils.loadSession()
+    connection = utils.engine.connect()
+    url_root = request.url_root
+    if url_root[-1] == "/":
+        url_root = url_root[:-1]
+    for rule in current_app.url_map.iter_rules():
+        # check for a 'GET' request and that the length of arguments is = 0 and if you have an admin area that the rule does not start with '/admin'
+        if (
+            "GET" in rule.methods
+            and len(rule.arguments) == 0
+            and not rule.rule.startswith("/api")
+        ):
+            pages.append([url_root + rule.rule, ten_days_ago])
+
+    # get dynamic routes for blog
+    species = session.query(vmTaxons.VmTaxons).order_by(vmTaxons.VmTaxons.cd_ref).all()
+    for species in species:
+        url = url_root + url_for("main.ficheEspece", cd_ref=species.cd_ref)
+        modified_time = ten_days_ago
+        pages.append([url, modified_time])
+
+    municipalities = (
+        session.query(vmCommunes.VmCommunes).order_by(vmCommunes.VmCommunes.insee).all()
+    )
+    for municipalitie in municipalities:
+        url = url_root + url_for("main.ficheCommune", insee=municipalitie.insee)
+        modified_time = ten_days_ago
+        pages.append([url, modified_time])
+
+    sitemap_template = render_template(
+        "templates/sitemap.xml",
+        pages=pages,
+        url_root=url_root,
+        last_modified=ten_days_ago,
+    )
+    response = make_response(sitemap_template)
+    response.headers["Content-Type"] = "application/xml"
+    return response
+
+
+@main.route("/robots.txt", methods=["GET"])
+def robots():
+    robots_template = render_template("templates/robots.txt")
+    response = make_response(robots_template)
+    response.headers["Content-type"] = "text/plain"
+    return response
+
+#Changing language
+if config.MULTILINGUAL:
+    @main.route('/language/<language>', methods=["GET", "POST"])
+    def set_language(language=None):
+        print('LANGUE : ' + language)
+        session['language'] = language
+
+        is_language_id = False
+        actual_lang_id = config.BABEL_DEFAULT_LOCALE
+        url_redirection = request.referrer
+        url_parsed = urlparse(request.referrer)
+
+        #Check if there is already a language in url
+        for lang_id in config.LANGUAGES.keys():
+            if url_parsed.path.find(('/') + lang_id +('/')) != -1:
+                actual_lang_id = lang_id
+                is_language_id=True
+                break
+
+        #If they're  language_id -> replacing it with new one
+        if is_language_id:
+            url_parsed = url_parsed._replace(path=url_parsed.path.replace('/' + actual_lang_id + '/', '/' + language + '/'))
+            print('/' + actual_lang_id + '/')
+            print('/' + language + '/')
+            print(url_parsed)
+        #If they're no language_id -> adding it to url
+        else:
+            #If there's not '/' at the end of index url
+            if  url_parsed.path[len(url_parsed.path)-1] != '/' : 
+                url_parsed = url_parsed._replace(path=url_parsed.path + '/' + language + '/')  
+            #If there's '/' at the end of index url
+            else:   
+                url_parsed = url_parsed._replace(path=url_parsed.path + language + '/')   
+        
+        url_redirection = urlunparse(url_parsed)
+        return redirect(url_redirection)
 

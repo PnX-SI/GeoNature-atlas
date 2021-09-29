@@ -6,6 +6,7 @@ from marshmallow import (
     validates_schema,
 )
 from marshmallow.validate import OneOf, Regexp
+import os
 
 
 MAP_1 = {
@@ -46,17 +47,30 @@ class MapConfig(Schema):
     BORDERS_COLOR = fields.String(missing="#000000")
     BORDERS_WEIGHT = fields.Integer(missing=3)
     ENABLE_SLIDER = fields.Boolean(missing=True)
-
+    ENABLE_SCALE = fields.Boolean(missing=True)
+    MASK_STYLE = fields.Dict(
+        missing={
+                "fill": False,
+                "fillColor": '#020202',
+                "fillOpacity": 0.3
+                })
 
 class AtlasConfig(Schema):
     modeDebug = fields.Boolean(missing=False)
+    SECRET_KEY = fields.String(required=True)
     STRUCTURE = fields.String(missing="Nom de la structure")
     NOM_APPLICATION = fields.String(missing="Nom de l'application")
+    CUSTOM_LOGO_LINK = fields.String(missing="")
+    DOMAIN_NAME = fields.String(missing="")
     URL_APPLICATION = fields.String(missing="")
+    BABEL_DEFAULT_LOCALE = fields.String(missing="")
+    MULTILINGUAL = fields.Boolean(missing=True)
     ID_GOOGLE_ANALYTICS = fields.String(missing="UA-xxxxxxx-xx")
+    ORGANISM_MODULE = fields.Boolean(missing="False")
     GLOSSAIRE = fields.Boolean(missing=False)
     IGNAPIKEY = fields.String(missing="")
     AFFICHAGE_INTRODUCTION = fields.Boolean(missing=True)
+    AFFICHAGE_LOGOS_HOME = fields.Boolean(missing=True)
     AFFICHAGE_FOOTER = fields.Boolean(missing=False)
     AFFICHAGE_STAT_GLOBALES = fields.Boolean(missing=True)
     AFFICHAGE_DERNIERES_OBS = fields.Boolean(missing=True)
@@ -109,7 +123,7 @@ class AtlasConfig(Schema):
         missing={
             "presentation": {
                 "title": "Présentation de l'atlas",
-                "picto": "glyphicon-question-sign",
+                "picto": "fa-question-circle",
                 "order": 0,
                 "template": "static/custom/templates/presentation.html",
             }
@@ -119,7 +133,7 @@ class AtlasConfig(Schema):
     AFFICHAGE_MAILLE = fields.Boolean(missing=False)
     ZOOM_LEVEL_POINT = fields.Integer(missing=11)
     LIMIT_CLUSTER_POINT = fields.Integer(missing=1000)
-    NB_DAY_LAST_OBS = fields.String(missing="7 day")
+    NB_DAY_LAST_OBS = fields.String(missing="7")
     NB_LAST_OBS = fields.Integer(missing=100)
     TEXT_LAST_OBS = fields.String(
         missing="Les observations des agents ces 7 derniers jours |"
@@ -127,13 +141,16 @@ class AtlasConfig(Schema):
     TYPE_DE_REPRESENTATION_MAILLE = fields.String(
         validate=OneOf(["LAST_OBS", "NB_OBS"])
     )
-
+    ANONYMIZE = fields.Boolean(missing=False)
     MAP = fields.Nested(MapConfig, missing=dict())
+    SIMPLIFY_AREA_GEOM_TRESHOLD = fields.Integer(missing=0)
+    SIMPLIFY_AREA_GEOM_TOLERANCE = fields.Integer(missing=0)
     # Specify how communes are ordered
     #   if true by length else by name
     ORDER_COMMUNES_BYLENGTH = fields.Boolean(missing=False)
     # coupe le nom_vernaculaire à la 1ere virgule sur les fiches espèces
     SPLIT_NOM_VERN = fields.Integer(missing=True)
+    INTERACTIVE_MAP_LIST = fields.Boolean(missing=True)
 
     @validates_schema
     def validate_url_taxhub(self, data):
@@ -146,4 +163,3 @@ class AtlasConfig(Schema):
                     "Le champ TAXHUB_URL doit être rempli si REDIMENSIONNEMENT_IMAGE = True"
                 }
             )
-

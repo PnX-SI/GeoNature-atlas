@@ -1,0 +1,7 @@
+{% block assets_footer %}
+    <script>
+        var configuration = {{configuration|tojson}};
+    </script>
+    <!-- main JS -->
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+{% endblock %}
