@@ -132,8 +132,6 @@
         }
         ;
 
-        console.log('typeData', typeData);
-
         var polygonLayerToCentroid = function (geoJson) {
             geoJson;
             if (geoJson.features) {
@@ -189,7 +187,6 @@
                 async getTaxa(query) {
                     const res = await fetch(taxaApiUrl.replace(':query', query) + '&limit=20');
                     const suggestions = await res.json();
-                    console.log(suggestions);
                     this.taxa = suggestions;
                 },
                 resetItems: function () {
@@ -214,7 +211,6 @@
                     if (medias.length > 0) {
                         idMedia = medias[0].id_media;
                         mediaUrl = configuration.REMOTE_MEDIAS_URL + '/api/tmedias/thumbnail/' + idMedia + '?h=80&v=80';
-                        console.log('mediaUrl', mediaUrl);
                         return mediaUrl
                     }
                 },
@@ -224,7 +220,6 @@
                     var layer = [];
                     for (var i = 0; i < arrayLength; i++) {
                         var layerCustomStyle = customStyle[i];
-                        console.log(layerCustomStyle);
                         $.ajax({
                             url:
                                 configuration.URL_APPLICATION +
@@ -237,7 +232,6 @@
                             // $("#loadingGif").hide();
                             {#map.removeLayer(currentLayer);#}
 
-                            console.log('obs', geoJsonDatas);
                             if (configuration.AFFICHAGE_MAILLE) {
                                 var geoJsonDatas = observations['maille'];
                                 polygonLayerToCentroid(geoJsonDatas);
@@ -273,7 +267,6 @@
                         }
                     }).done(function (observations) {
                         var geoJsonDatas = observations;
-                        console.log('obs', geoJsonDatas);
                         if (observations['features'][0]['geometry']['type'] != 'point') {
                             polygonLayerToCentroid(geoJsonDatas);
                         }
@@ -291,7 +284,6 @@
                             radius = radius + 2;
                         }
                         layerGroup.addLayer(layer);
-                        console.log('layerGroup', layerGroup.getLayers());
                         map.fitBounds(layerGroup.getBounds());
                     });
                     $("#loaderSpinner").hide();
@@ -312,7 +304,6 @@
                     if (val && this.items.length < 3) {
                         var self = this;
                         var color = getRandomColor();
-                        console.log('selectedTaxa', this.selectedTaxa);
                         fetch(configuration.TAXHUB_URL + '/api/taxref/' + this.selectedTaxa.value)
                             .then(function (response) {
                                 return response.json();
@@ -327,7 +318,6 @@
                                     media: media,
                                     marker_color: color
                                 };
-                                console.log('newItem', newItem);
 
                                 self.items.push(newItem);
                                 self.addMapDatas(newItem.cd_nom, color);

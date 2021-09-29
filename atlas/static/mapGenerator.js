@@ -207,13 +207,6 @@ function styleMaille(feature) {
   };
 }
 
-console.log({
-  fillColor: null,
-  weight: 1,
-  color: mailleBorderColor,
-  fillOpacity: 0.8,
-});
-
 function generateLegendMaille() {
   legend.onAdd = function (map) {
     var div = L.DomUtil.create("div", "info legend"),
@@ -438,8 +431,6 @@ function onEachFeaturePointLastObs(feature, layer) {
       feature.properties.cd_ref +
       "'> Fiche espèce </a>"
   );
-  console.log('language = ');
-  console.log(language);
 }
 
 function onEachFeaturePointCommune(feature, layer) {
@@ -623,7 +614,6 @@ function find_id_observation_in_array(tab_id, id_observation) {
 
 function displayMailleLayerLastObs(observations) {
   var geojsonMaille = generateGeoJsonMailleLastObs(observations);
-  console.log("<displayMailleLayerLastObs>", observations);
   currentLayer = L.geoJson(geojsonMaille, {
     onEachFeature: onEachFeatureMailleLastObs,
     style: styleMailleLastObs,

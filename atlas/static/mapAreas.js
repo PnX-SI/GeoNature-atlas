@@ -28,7 +28,6 @@ var layerBounds = areaLayer.getBounds();
 bounds.extend(layerBounds);
 map.fitBounds(bounds);
 map.zoom = map.getZoom();
-console.log(map.zoom);
 // Display the 'x' last observations
 // MAILLE
 if (configuration.AFFICHAGE_MAILLE) {
@@ -169,7 +168,6 @@ function refreshObsArea() {
             .siblings()
             .removeClass("current");
         $(this).addClass("current");
-        console.log("<refreshObsArea>", $(this).attr("area-code"), $(this).attr("cdRef"));
         if (configuration.AFFICHAGE_MAILLE) {
             displayObsTaxonMaille($(this).attr("area-code"), $(this).attr("cdRef"));
         } else {

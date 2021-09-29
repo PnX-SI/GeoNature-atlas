@@ -38,6 +38,12 @@
             </div>
         {% endif %}
 
+        {% if configuration.AFFICHAGE_LOGOS_HOME %}
+            <div class="mt-4">
+                {% include 'static/custom/templates/bandeaulogoshome.html' %}
+            </div>
+        {% endif %}
+
         {% if configuration.AFFICHAGE_STAT_GLOBALES %}
             <!-- Statistiques globales -->
             {% include 'templates/home/globalStats.html' %}
