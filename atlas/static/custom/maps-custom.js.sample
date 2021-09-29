@@ -4,8 +4,7 @@ var pointDisplayOptionsFicheEspece = (pointDisplayOptionsFicheCommuneHome = func
   feature
 ) {
   return {
-    fillColor: feature.properties.diffusion_level < 5 ? "#3A9D23" : "#3388ff",
-    color: feature.properties.diffusion_level < 5 ? "#3A9D23" : "#3388ff"
+    color: feature.properties.diffusion_level < 5 || feature.properties.diffusion_level != null ? "#3388ff": "#3A9D23"
   };
 });
 
