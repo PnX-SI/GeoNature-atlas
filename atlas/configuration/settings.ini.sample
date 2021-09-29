@@ -35,6 +35,7 @@ owner_atlas_pass=monpassachanger
 geonature_source=true
 
 # L'atlas est-il en lien avec le référentiel géographique de GeoNature (ref_geo) ?
+# ATTENTION : Doit être égal à true si geonature_source=true, 
 # ATTENTION : Doit être égal à false si geonature_source=false
 use_ref_geo_gn2=true
 
