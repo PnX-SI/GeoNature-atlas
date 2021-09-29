@@ -486,7 +486,5 @@ if config.MULTILINGUAL:
                 url_parsed = url_parsed._replace(path=url_parsed.path + language + '/')   
         
         url_redirection = urlunparse(url_parsed)
-
-        print(url_redirection)
         return redirect(url_redirection)
 

@@ -23,7 +23,7 @@ main {
   flex: 1;
 }
 
-#dropdown09{
+#dropdown09 {
   cursor: pointer;
 }
 
@@ -519,6 +519,12 @@ footer {
 
 .cover {
   background-size: cover;
+  background-position: center;
+}
+.no-repeat {
+  background-repeat: no-repeat;
+}
+.background-center {
   background-position: center;
 }
 
