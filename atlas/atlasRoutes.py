@@ -165,8 +165,11 @@ def indexMedias(image):
         + image
     )
 
-@main.route("/", methods=["GET", "POST"])
 @index_bp.route("/", methods=["GET", "POST"])
+def index():
+    return redirect(url_for("main.index"))
+
+@main.route("/", methods=["GET", "POST"])
 def index():
     session = utils.loadSession()
     connection = utils.engine.connect()
