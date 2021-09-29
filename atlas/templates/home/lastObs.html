@@ -37,10 +37,13 @@
                             data-src="{{ img_path }}">
                         {% endif %}
                         <div class="media-body p-2">
-                            <span class="float-right"><a href="{{ url_for('main.ficheEspece',cd_ref=obs.cd_ref) }}"
-                                    class="badge badge-primary" data-toggle="tooltip" data-placement="left"
-                                    data-original-title="Consulter la fiche espèce"><i class="fas fa-list"></i> Fiche
-                                    espèce</a></span>
+                            <span class="float-right mt-3">
+                                <a href="{{ url_for('main.ficheEspece',cd_ref=obs.cd_ref) }}"
+                                    class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="left"
+                                    data-original-title="Consulter la fiche espèce"> 
+                                    {{ _('species.sheet') }}
+                                </a>
+                            </span>
                             <p class="singleTaxon name" cdref="{{ obs.cd_ref }}"> {{ obs.taxon }}<br />
                                 {{ obs.dateobs }} </p>
                             <span class="hidden" hidden="true">{{ obs.cd_ref }}</span>

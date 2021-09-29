@@ -101,7 +101,6 @@ h3.title-spaced {
   margin-top: 0px !important;
 }
 
-
 /* Bandeau de logos (slider slick) en page accueil */
 
 .slidepartenaireindex {
@@ -109,15 +108,14 @@ h3.title-spaced {
 }
 
 .slidepartenaireindex img {
-  max-height : 80px;
+  max-height: 80px;
   margin: auto;
 }
 
-.slick-prev::before, 
+.slick-prev::before,
 .slick-next::before {
-    color: #1e1b0c;
+  color: #1e1b0c;
 }
-
 
 /*Stat block*/
 
@@ -358,10 +356,10 @@ h3.title-spaced {
   background-color: var(--light);
 }
 
-/*.lastObsList.current {
+.lastObslistItem.current {
   background-color: #e6e6e6;
   font-weight: bold;
-}*/
+}
 
 /*.singleTaxon {
   cursor: pointer;
