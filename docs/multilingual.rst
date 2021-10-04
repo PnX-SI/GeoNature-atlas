@@ -19,7 +19,7 @@ ADDING A LANGUAGE:
 =========
 
 First, go to the config.py file and add your language in the same way as the other languages already present.
-
+Activate your venv : source venv/bin/activate
 Then in your command prompt, go in your atlas path and use this commmands.
 
 
