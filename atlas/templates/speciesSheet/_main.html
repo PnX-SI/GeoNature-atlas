@@ -31,10 +31,11 @@
 {% block additionalFooterAssets %}
 <script src="{{ url_for('static', filename='node_modules/lightbox2/dist/js/lightbox.min.js') }}"></script>
 
+{{session.language}}
 <script>
     var dataset = {{ altitudes| tojson}};
     var months_value = {{ months | tojson}};
-    var months_name = {{ AVAILABLE_LANGUAGES[session.language]['months'] | tojson }};
+    var months_name = {{ AVAILABLE_LANGUAGES[CURRENT_LANGUAGE]['months'] | tojson }};
     var observationsPoint = [];
     var observationsMaille = [];
     var configuration = {{ configuration| tojson}};
@@ -66,7 +67,7 @@
                 {% include 'templates/speciesSheet/map.html' %}
                 {% include 'templates/speciesSheet/otherInformations.html' %}
             </div>
-            
+
             <!--Right row-->
             <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
                 {% if photoCarousel | length >= 1 %}
