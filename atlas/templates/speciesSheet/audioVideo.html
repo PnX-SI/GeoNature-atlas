@@ -18,8 +18,8 @@
                 {% include "templates/speciesSheet/descriptionMedia.html" %}
             {% endwith %}
             {% if videoAudio.video[0].id_type == 6 %}
-                <video controls>
-                    <source src="{{ video.path }}" type="video/mp4">
+                <video controls width="100%">
+                    <source src="{{ videoAudio.video[0].path }}" type="video/mp4">
                 </video>
             {% else %}
                 {{ videoAudio.video[0].path|safe }}
@@ -33,7 +33,7 @@
                         {% include "templates/speciesSheet/descriptionMedia.html" %}
                     {% endwith %}
                     {% if videoAudio.video[i].id_type == 6 %}
-                        <video controls>
+                        <video controls width="100%">
                             <source src="{{ videoAudio.video[i].path }}" type="video/mp4">
                         </video>
                     {% else %}
