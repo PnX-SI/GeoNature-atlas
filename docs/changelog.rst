@@ -7,9 +7,23 @@ CHANGELOG
 
 Voir https://github.com/PnX-SI/GeoNature-atlas/compare/develop
 
-**🚀 Nouveautés**
+🚀 **Nouveautés** 
 
-* Multilingue activable (``MULTILINGUAL``), documenté (docs/multilingual.rst) mais non optimisé pour le référencement (#175 par @TheMagicia et @corentinlange)
+- Ajout de la dimension organismes dans GeoNature-atlas
+     - Dimension organisme activable au choix (#325) --> mettre la variable comme por le multilingue 
+     - Affichage des organismes ayant saisit des données d'une espèce dans la fiche espèce (#315)
+     - Affichage des organismes ayant saisit des données dans une commune dans la fiche commune (#326) -->>>> PAS SUR, à voir en testant 
+     - Intégration du bandeau organisme sur la page d'accueil (PR #353, ticket pour amélioration #357)
+     
+- Multilingue activable (``MULTILINGUAL``), documenté (docs/multilingual.rst) mais non optimisé pour le référencement (#175 par @TheMagicia et @corentinlange)
+
+- Intégration de la branche Bootstrap 4 de @FREDCLOITRE 
+     - Passage à Bootstrap 4 
+     - 
+🐛 **Corrections** 
+
+⚠️ **Notes de version** 
+
 
 1.4.2 (2020-11-25)
 ------------------
