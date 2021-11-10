@@ -43,11 +43,11 @@ if config.MULTILINGUAL:
         if 'language' not in session:
             session['language'] = config.BABEL_DEFAULT_LOCALE
         g.lang_code=session['language']
-        values.setdefault('lang_code', g.lang_code )
+        values.setdefault('lang_code', session['language'] )
 
     @main.url_value_preprocessor
     def pull_lang_code(endpoint, values):
-        g.lang_code = values.pop('lang_code')
+        values.pop('lang_code')
 
 else:
     main = Blueprint("main", __name__)
@@ -55,13 +55,6 @@ else:
 index_bp = Blueprint("index_bp", __name__)
 
 
-@main.context_processor
-def global_variables():
-    db_session = utils.loadSession()
-    values = {}
-
-    db_session.close()
-    return values
 
 @main.route(
     "/espece/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>",
@@ -454,40 +447,8 @@ def robots():
     response.headers["Content-type"] = "text/plain"
     return response
 
-#Changing language
-if config.MULTILINGUAL:
-    @main.route('/language/<language>', methods=["GET", "POST"])
-    def set_language(language=None):
-        print('LANGUE : ' + language)
-        session['language'] = language
 
-        is_language_id = False
-        actual_lang_id = config.BABEL_DEFAULT_LOCALE
-        url_redirection = request.referrer
-        url_parsed = urlparse(request.referrer)
 
-        #Check if there is already a language in url
-        for lang_id in config.LANGUAGES.keys():
-            if url_parsed.path.find(('/') + lang_id +('/')) != -1:
-                actual_lang_id = lang_id
-                is_language_id=True
-                break
 
-        #If they're  language_id -> replacing it with new one
-        if is_language_id:
-            url_parsed = url_parsed._replace(path=url_parsed.path.replace('/' + actual_lang_id + '/', '/' + language + '/'))
-            print('/' + actual_lang_id + '/')
-            print('/' + language + '/')
-            print(url_parsed)
-        #If they're no language_id -> adding it to url
-        else:
-            #If there's not '/' at the end of index url
-            if  url_parsed.path[len(url_parsed.path)-1] != '/' : 
-                url_parsed = url_parsed._replace(path=url_parsed.path + '/' + language + '/')  
-            #If there's '/' at the end of index url
-            else:   
-                url_parsed = url_parsed._replace(path=url_parsed.path + language + '/')   
-        
-        url_redirection = urlunparse(url_parsed)
-        return redirect(url_redirection)
+
 

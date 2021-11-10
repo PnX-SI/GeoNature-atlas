@@ -51,19 +51,24 @@ def create_app():
     babel = Babel(app)
     
 
-    #Getting browser language
     @babel.localeselector
     def get_locale():
         # If multilinguale is activated, language return is default or the best near the user's browser language
         # Else language is defined by locale defined
         if config.MULTILINGUAL:
-            try:
-                language = session['language']
-            except KeyError:
-                language = None
-            if request.args.get('language'):
-                session['language'] = request.args.get('language')
-            return session.get('language', request.accept_languages.best_match(config.LANGUAGES.keys()))
+            request_lc = request.args.get('lc')
+            if request_lc:
+                session["language"] = request_lc
+                return request_lc
+            else:
+                if not "language" in session:
+                    print("NOT IN SESSION")
+                    best_language = request.accept_languages.best_match(config.LANGUAGES.keys())
+                    session['language'] = best_language
+                    return best_language
+                else:
+                    print("SESSION", session)
+                    return session["language"]
         else:
             return config.BABEL_DEFAULT_LOCALE
 

@@ -55,13 +55,13 @@
                     <a class="nav-link dropdown-toggle" id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <!-- Display languages flags and name, en flag is flag-icon flag-icon-gb-->
                         <container style="display: inline-flex;">
-                            <span class="{{ 'flag-icon ' + AVAILABLE_LANGUAGES[CURRENT_LANGUAGE]['flag_icon']}}" class="align-middle"></span> 
-                            <div class="d-lg-block d-sm-none">&nbsp;&nbsp;{{ AVAILABLE_LANGUAGES[CURRENT_LANGUAGE]['name'] }}</div>
+                            <span class="{{ 'flag-icon ' + AVAILABLE_LANGUAGES[session.language]['flag_icon']}}" class="align-middle"></span> 
+                            <div class="d-lg-block d-sm-none">&nbsp;&nbsp;{{ AVAILABLE_LANGUAGES[session.language]['name'] }}</div>
                         </container>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropdown09">
                     {% for language in AVAILABLE_LANGUAGES %}
-                        <a  class="dropdown-item" href="{{ url_for('main.set_language', language=language)}}">
+                        <a  class="dropdown-item" href="{{url_for(request.endpoint, lang_code=language, lc=language, **request.view_args)}}">
                             <container style="display: inline-flex;">
                                 <span class="{{ 'flag-icon ' + AVAILABLE_LANGUAGES[language]['flag_icon']}}"> </span> 
                                 <div class="d-lg-block d-sm-none">&nbsp;&nbsp;{{ AVAILABLE_LANGUAGES[language]['name'] }}</div>
