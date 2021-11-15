@@ -4,10 +4,10 @@ AS SELECT DISTINCT id_dataset, id_organism
     FROM gn_meta.cor_dataset_actor;
 
 --CRÉATION VUE MATÉRIALISÉE
-CREATE MATERIALIZED VIEW atlas.vm_cor_taxon_organism
-AS SELECT DISTINCT  t.cd_ref, 
-                    count(*) as nb_observations, 
-                    bo.id_organisme as id_organism,
+    CREATE MATERIALIZED VIEW atlas.vm_cor_taxon_organism AS
+    select sum(obs_by_dataset_and_orga.nb_obs) as nb_observations, 
+    obs_by_dataset_and_orga.cd_ref,
+                        bo.id_organisme as id_organism,
                     nom_organisme as nom_organism, 
                     adresse_organisme as adresse_organism, 
                     cp_organisme as cp_organism, 
@@ -16,9 +16,12 @@ AS SELECT DISTINCT  t.cd_ref,
                     email_organisme as email_organism, 
                     url_organisme as url_organism,
                     url_logo
-    FROM utilisateurs.bib_organismes bo
-        JOIN utilisateurs.reduced_cor_dataset_actor cda ON bo.id_organisme=cda.id_organism
-        JOIN atlas.vm_observations obs ON obs.id_dataset = cda.id_dataset 
-        JOIN taxonomie.taxref t on obs.cd_ref = t.cd_ref
-    group by t.cd_ref, bo.id_organisme, bo.nom_organisme, bo.adresse_organisme, bo.cp_organisme, bo.ville_organisme, bo.tel_organisme, bo.email_organisme, bo.url_organisme, bo.url_logo
-    with data;
+    from (
+    select rcda.id_dataset, count(obs.id_observation) as nb_obs, obs.cd_ref, rcda.id_organism 
+    from atlas.vm_observations obs
+    join utilisateurs.reduced_cor_dataset_actor rcda on obs.id_dataset = rcda.id_dataset 
+    group by rcda.id_dataset, obs.cd_ref, rcda.id_organism 
+   	) AS obs_by_dataset_and_orga
+   	join utilisateurs.bib_organismes bo on bo.id_organisme = obs_by_dataset_and_orga.id_organism
+    group by obs_by_dataset_and_orga.cd_ref, bo.id_organisme, bo.nom_organisme, bo.adresse_organisme, bo.cp_organisme, bo.ville_organisme, 
+    bo.tel_organisme, bo.email_organisme, bo.url_organisme, bo.url_logo;
