@@ -1,11 +1,9 @@
 {% block identityCard %}
 	<div class="card mt-4" id="identityCard">
-		<div class="row" id="rowIdentity">
+		<div class=" card-body row" id="rowIdentity">
 			<!-- Logo -->
 			{% if url_logo != none %}
-			<div class="imgWrapper  left">
-				
-				<span class="fas fa-search" id="zoomPhotos"></span>
+			<div class="imgWrapper  left">				
 				<a href="{{ url_organism }}" data-lightbox="imageSet">
 					
 					<img id="mainImg" 
@@ -20,7 +18,7 @@
 			<h1>
 				<strong>{{ nom_organism }}</strong>
 			</h1>
-				<br><b>{{ _('Région/département rattaché') }}</b> : {{ adresse_organism}} {{ cp_organism }}
+				<br><b>{{ _('Adresse') }}</b> : {{ adresse_organism}} {{ cp_organism }}
 				<br><b>{{ _('Téléphone') }}</b> : {{ tel_organism }}
 			</div>
 		</div>

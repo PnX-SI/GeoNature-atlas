@@ -517,6 +517,14 @@ footer {
   -ms-transition: 0.3s ease-in-out;
 }
 
+.italic {
+  font-style: italic;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
 .cover {
   background-size: cover;
   background-position: center;

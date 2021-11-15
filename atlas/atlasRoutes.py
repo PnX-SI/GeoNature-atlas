@@ -78,16 +78,15 @@ if config.ORGANISM_MODULE:
     
         stat = vmObservationsRepository.statIndex(connection)
         
-        mostObsTaxs=vmOrganismsRepository.topObsOrganism(connection, id_organism)
-
-        top_taxons=list()
-        photos=list()
-
-        for taxons in mostObsTaxs:
-            top_taxons.append(vmTaxrefRepository.searchEspece(connection, taxons['cd_ref']))
-            photos.append(vmMedias.getFirstPhoto(connection, taxons['cd_ref'], current_app.config["ATTR_MAIN_PHOTO"]))
-
-        stats_group=vmOrganismsRepository.getTaxonRepartitionOrganism(connection, id_organism)
+        mostObsTaxs = vmOrganismsRepository.topObsOrganism(connection, id_organism)
+        update_most_obs_taxons = []
+        for taxon in mostObsTaxs:
+            taxon_info = vmTaxrefRepository.searchEspece(connection, taxon['cd_ref'])
+            photo = vmMedias.getFirstPhoto(connection, taxon['cd_ref'], current_app.config["ATTR_MAIN_PHOTO"])
+            taxon = {**taxon, **taxon_info["taxonSearch"]}
+            taxon["photo"] = photo
+            update_most_obs_taxons.append(taxon)
+        stats_group = vmOrganismsRepository.getTaxonRepartitionOrganism(connection, id_organism)
 
         connection.close()
         db_session.close()
@@ -103,12 +102,9 @@ if config.ORGANISM_MODULE:
             url_logo = infos_organism['url_logo'],
             nb_taxons = infos_organism['nb_taxons'],
             nb_obs = infos_organism['nb_obs'],
-
             stat = stat,
-            mostObsTaxs = mostObsTaxs,
-            top_taxons = top_taxons,
-            photos = photos,
-            stats_group = stats_group
+            mostObsTaxs=update_most_obs_taxons,
+            stats_group=stats_group
         )
 
 
