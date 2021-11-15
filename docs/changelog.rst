@@ -9,7 +9,7 @@ Voir https://github.com/PnX-SI/GeoNature-atlas/compare/develop
 
 🚀 **Nouveautés** 
 
-- Ajout de la dimension organismes dans GeoNature-atlas
+- Ajout de la dimension organismes dans GeoNature-atlas (@corentinlange repris par Théo)
      - Dimension organisme activable au choix (#325) --> mettre la variable comme por le multilingue 
      - Affichage des organismes ayant saisit des données d'une espèce dans la fiche espèce (#315)
      - Affichage des organismes ayant saisit des données dans une commune dans la fiche commune (#326) -->>>> PAS SUR, à voir en testant 
@@ -18,20 +18,25 @@ Voir https://github.com/PnX-SI/GeoNature-atlas/compare/develop
      
 - Multilingue activable (``MULTILINGUAL``), documenté (docs/multilingual.rst) mais non optimisé pour le référencement (#175 par @TheMagicia et @corentinlange)
 
-- Intégration de la branche Bootstrap 4 de @FREDCLOITRE 
-     - Passage à Bootstrap 4 
-     - 
-     
-- Ajout de la fonctionnalité "Nouvelles espèces observées" : dernières espèces découvertes (première observation d'une espèce) sur le territoire
+- Intégration de la branche Bootstrap 4 de @lpofredc contenant de nombreux commit (#233)
+    
+- Ajout de la fonctionnalité "Nouvelles espèces observées" : dernières espèces découvertes (première observation d'une espèce) sur le territoire (#85) par @MathildeLeclerc
     
 - Amélioration de l'experience développeur : 
-     - Installation découpée 
-     - NPM
-
+     - Installation découpée #332 et #349 (@corentinlange)
+     - NPM #310 (@corentinlange)
+     - Mise en place de la structure de tests Backend (avec Pytest) et Frontend (avec Jest) : #316. 
 
 🐛 **Corrections** 
 
+- Retrait des "-n" dans le fichier d'installation : #318 (https://github.com/PnX-SI/GeoNature-atlas/pull/318/commits/3185a526bd68e4252a879cfc2b89ff4f54ab22b5)
+
+
 ⚠️ **Notes de version** 
+- Pour une première installation, suivez : 
+- Si vous mettez à jour l'atlas à partir d'une instance déjà existante, il vous faut relancer l'install_db.sh. Ainsi vos ajustements au niveau de la vue initiale syntheseff doivent être reportés. Ensuite, suivez la procédure classique de mise à jour de l'application
+
+
 
 
 1.4.2 (2020-11-25)
