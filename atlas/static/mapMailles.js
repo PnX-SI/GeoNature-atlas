@@ -87,6 +87,8 @@ $.ajax({
       });
 
       $("#nbObs").html("Nombre d'observation(s): " + nbObs);
+      $("#yearMin").html(yearMin + "&nbsp;&nbsp;&nbsp;&nbsp;");
+      $("#yearMax").html("&nbsp;&nbsp;&nbsp;&nbsp;" + yearMax);
     });
   });
 
