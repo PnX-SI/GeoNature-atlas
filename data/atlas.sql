@@ -370,24 +370,29 @@ CREATE MATERIALIZED VIEW atlas.vm_cor_taxon_attribut AS
 CREATE UNIQUE INDEX ON atlas.vm_cor_taxon_attribut (cd_ref,id_attribut);
 
 -- 12 taxons les plus observés sur la période en cours (par défaut -15 jours +15 jours toutes années confondues)
+-- modification : pour avoir plus de taxons, avec sélection aléatoire (+rafraichissement avec tache cron), et affichage que si photo
 
 CREATE MATERIALIZED VIEW atlas.vm_taxons_plus_observes AS
-SELECT count(*) AS nb_obs,
-  obs.cd_ref,
-  tax.lb_nom,
-  tax.group2_inpn,
-  tax.nom_vern,
-  m.id_media,
-  m.url,
-  m.chemin,
-  m.id_type
- FROM atlas.vm_observations obs
-   JOIN atlas.vm_taxons tax ON tax.cd_ref = obs.cd_ref
-   LEFT JOIN atlas.vm_medias m ON m.cd_ref = obs.cd_ref AND m.id_type = 1
-WHERE date_part('day'::text, obs.dateobs) >= date_part('day'::text, 'now'::text::date - 15) AND date_part('month'::text, obs.dateobs) = date_part('month'::text, 'now'::text::date - 15) OR date_part('day'::text, obs.dateobs) <= date_part('day'::text, 'now'::text::date + 15) AND date_part('month'::text, obs.dateobs) = date_part('day'::text, 'now'::text::date + 15)
-GROUP BY obs.cd_ref, tax.lb_nom, tax.nom_vern, m.url, m.chemin, tax.group2_inpn, m.id_type, m.id_media
-ORDER BY (count(*)) DESC
-LIMIT 12;
+SELECT * 
+	from (SELECT count(*) AS nb_obs,
+          obs.cd_ref,
+  	  tax.lb_nom,
+  	  tax.group2_inpn,
+  	  tax.nom_vern,
+  	  m.id_media,
+  	  m.url,
+  	  m.chemin,
+ 	  m.id_type
+ 	  FROM atlas.vm_observations obs
+ 	    JOIN atlas.vm_taxons tax ON tax.cd_ref = obs.cd_ref
+ 	    LEFT JOIN atlas.vm_medias m ON m.cd_ref = obs.cd_ref AND m.id_type = 1
+	 WHERE date_part('day'::text, obs.dateobs) >= date_part('day'::text, 'now'::text::date - 15) AND date_part('month'::text, obs.dateobs) = date_part('month'::text, 'now'::text::date - 15) OR date_part('day'::text, obs.dateobs) <= date_part('day'::text, 'now'::text::date + 15) AND date_part('month'::text, obs.dateobs) = date_part('day'::text, 'now'::text::date + 15)
+ 	 GROUP BY obs.cd_ref, tax.lb_nom, tax.nom_vern, m.url, m.chemin, tax.group2_inpn, m.id_type, m.id_media
+ 	 ORDER BY (count(*)) desc
+ 	LIMIT 36) as selection
+ WHERE selection.id_media IS NOT NULL
+ ORDER BY (random()) desc
+ LIMIT 12;
 -- DROP INDEX atlas.vm_taxons_plus_observes_cd_ref_idx;
 
 CREATE UNIQUE INDEX vm_taxons_plus_observes_cd_ref_idx
