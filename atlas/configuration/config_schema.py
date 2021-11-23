@@ -138,9 +138,6 @@ class AtlasConfig(Schema):
     TEXT_LAST_OBS = fields.String(
         missing="Les observations des agents ces 7 derniers jours |"
     )
-    TYPE_DE_REPRESENTATION_MAILLE = fields.String(
-        validate=OneOf(["LAST_OBS", "NB_OBS"])
-    )
     ANONYMIZE = fields.Boolean(missing=False)
     MAP = fields.Nested(MapConfig, missing=dict())
     SIMPLIFY_AREA_GEOM_TRESHOLD = fields.Integer(missing=0)
