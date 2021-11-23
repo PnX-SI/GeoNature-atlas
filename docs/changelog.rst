@@ -33,6 +33,7 @@ Voir https://github.com/PnX-SI/GeoNature-atlas/compare/develop
 
 
 ⚠️ **Notes de version** 
+
 - Pour une première installation, suivez : 
 - Si vous mettez à jour l'atlas à partir d'une instance déjà existante, il vous faut relancer l'install_db.sh. Ainsi vos ajustements au niveau de la vue initiale syntheseff doivent être reportés. Ensuite, suivez la procédure classique de mise à jour de l'application
 
