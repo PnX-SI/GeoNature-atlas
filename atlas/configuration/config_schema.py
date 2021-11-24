@@ -140,11 +140,6 @@ class AtlasConfig(Schema):
     )
     ANONYMIZE = fields.Boolean(missing=False)
     MAP = fields.Nested(MapConfig, missing=dict())
-    SIMPLIFY_AREA_GEOM_TRESHOLD = fields.Integer(missing=0)
-    SIMPLIFY_AREA_GEOM_TOLERANCE = fields.Integer(missing=0)
-    # Specify how communes are ordered
-    #   if true by length else by name
-    ORDER_COMMUNES_BYLENGTH = fields.Boolean(missing=False)
     # coupe le nom_vernaculaire à la 1ere virgule sur les fiches espèces
     SPLIT_NOM_VERN = fields.Integer(missing=True)
     INTERACTIVE_MAP_LIST = fields.Boolean(missing=True)
