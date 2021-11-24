@@ -49,11 +49,9 @@ class MapConfig(Schema):
     ENABLE_SLIDER = fields.Boolean(missing=True)
     ENABLE_SCALE = fields.Boolean(missing=True)
     MASK_STYLE = fields.Dict(
-        missing={
-                "fill": False,
-                "fillColor": '#020202',
-                "fillOpacity": 0.3
-                })
+        missing={"fill": False, "fillColor": "#020202", "fillOpacity": 0.3}
+    )
+
 
 class AtlasConfig(Schema):
     modeDebug = fields.Boolean(missing=False)
@@ -147,7 +145,7 @@ class AtlasConfig(Schema):
     @validates_schema
     def validate_url_taxhub(self, data):
         """
-            TAXHHUB_URL doit être rempli si REDIMENSIONNEMENT_IMAGE = True
+        TAXHHUB_URL doit être rempli si REDIMENSIONNEMENT_IMAGE = True
         """
         if data["REDIMENSIONNEMENT_IMAGE"] and data["TAXHUB_URL"] is None:
             raise ValidationError(
