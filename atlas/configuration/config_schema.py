@@ -4,9 +4,9 @@ from marshmallow import (
     validates_schema,
     ValidationError,
     validates_schema,
+    EXCLUDE
 )
-from marshmallow.validate import OneOf, Regexp
-import os
+from marshmallow.validate import Regexp
 
 
 MAP_1 = {
@@ -20,94 +20,114 @@ MAP_2 = {
     "attribution": "&copy OpenStreetMap-contributors, SRTM | Style: &copy OpenTopoMap (CC-BY-SA)",
 }
 
+LANGUAGES = {
+    'en': {
+        'name' : 'English',
+        'flag_icon' : 'flag-icon-gb',
+        'months' : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] 
+        },
+    'fr': {
+        'name' : 'Français',
+        'flag_icon' : 'flag-icon-fr',
+        'months' : ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Decembre'] 
+        },
+    'it': {
+        'name' : 'Italiano',
+        'flag_icon' : 'flag-icon-it',
+        'months' : ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'] 
+        }
+}
+
 
 class SecretSchemaConf(Schema):
+    class Meta:
+        unknown = EXCLUDE
     database_connection = fields.String(
         required=True,
         validate=Regexp(
             "^postgresql:\/\/.*:.*@[^:]+:\w+\/\w+$",
-            0,
-            """Database uri is invalid ex:
-             postgresql://monuser:monpass@server:port/db_name""",
+            error="Database uri is invalid ex: postgresql://monuser:monpass@server:port/db_name",
         ),
     )
-    GUNICORN_PORT = fields.Integer(missing=8080)
+    GUNICORN_PORT = fields.Integer(load_default=8080)
+    modeDebug = fields.Boolean(load_default=False)
+    SECRET_KEY = fields.String(required=True)
 
 
 class MapConfig(Schema):
-    LAT_LONG = fields.List(fields.Float(), missing=[44.7952, 6.2287])
-    MIN_ZOOM = fields.Integer(missing=1)
+    LAT_LONG = fields.List(fields.Float(), load_default=[44.7952, 6.2287])
+    MIN_ZOOM = fields.Integer(load_default=1)
     MAX_BOUNDS = fields.List(
-        fields.List(fields.Float()), missing=[[-180, -90], [180, 90]]
+        fields.List(fields.Float()), load_default=[[-180, -90], [180, 90]]
     )
-    FIRST_MAP = fields.Dict(missing=MAP_1)
-    SECOND_MAP = fields.Dict(missing=MAP_2)
-    ZOOM = fields.Integer(missing=10)
-    STEP = fields.Integer(missing=1)
-    BORDERS_COLOR = fields.String(missing="#000000")
-    BORDERS_WEIGHT = fields.Integer(missing=3)
-    ENABLE_SLIDER = fields.Boolean(missing=True)
-    ENABLE_SCALE = fields.Boolean(missing=True)
+    FIRST_MAP = fields.Dict(load_default=MAP_1)
+    SECOND_MAP = fields.Dict(load_default=MAP_2)
+    ZOOM = fields.Integer(load_default=10)
+    STEP = fields.Integer(load_default=1)
+    BORDERS_COLOR = fields.String(load_default="#000000")
+    BORDERS_WEIGHT = fields.Integer(load_default=3)
+    ENABLE_SLIDER = fields.Boolean(load_default=True)
+    ENABLE_SCALE = fields.Boolean(load_default=True)
     MASK_STYLE = fields.Dict(
-        missing={"fill": False, "fillColor": "#020202", "fillOpacity": 0.3}
+        load_default={"fill": False, "fillColor": "#020202", "fillOpacity": 0.3}
     )
 
 
 class AtlasConfig(Schema):
-    modeDebug = fields.Boolean(missing=False)
-    SECRET_KEY = fields.String(required=True)
-    STRUCTURE = fields.String(missing="Nom de la structure")
-    NOM_APPLICATION = fields.String(missing="Nom de l'application")
-    CUSTOM_LOGO_LINK = fields.String(missing="")
-    DOMAIN_NAME = fields.String(missing="")
-    URL_APPLICATION = fields.String(missing="")
-    BABEL_DEFAULT_LOCALE = fields.String(missing="")
-    MULTILINGUAL = fields.Boolean(missing=True)
-    ID_GOOGLE_ANALYTICS = fields.String(missing="UA-xxxxxxx-xx")
-    ORGANISM_MODULE = fields.Boolean(missing="False")
-    GLOSSAIRE = fields.Boolean(missing=False)
-    IGNAPIKEY = fields.String(missing="")
-    AFFICHAGE_INTRODUCTION = fields.Boolean(missing=True)
-    AFFICHAGE_LOGOS_HOME = fields.Boolean(missing=True)
-    AFFICHAGE_FOOTER = fields.Boolean(missing=False)
-    AFFICHAGE_STAT_GLOBALES = fields.Boolean(missing=True)
-    AFFICHAGE_DERNIERES_OBS = fields.Boolean(missing=True)
-    AFFICHAGE_EN_CE_MOMENT = fields.Boolean(missing=True)
-    AFFICHAGE_RANG_STAT = fields.Boolean(missing=True)
+    class Meta:
+        unknown = EXCLUDE
+    STRUCTURE = fields.String(load_default="Nom de la structure")
+    NOM_APPLICATION = fields.String(load_default="Nom de l'application")
+    CUSTOM_LOGO_LINK = fields.String(load_default="")
+    DOMAIN_NAME = fields.String(load_default="")
+    URL_APPLICATION = fields.String(load_default="")
+    BABEL_DEFAULT_LOCALE = fields.String(load_default="fr")
+    MULTILINGUAL = fields.Boolean(load_default=True)
+    ID_GOOGLE_ANALYTICS = fields.String(load_default="UA-xxxxxxx-xx")
+    ORGANISM_MODULE = fields.Boolean(load_default="False")
+    GLOSSAIRE = fields.Boolean(load_default=False)
+    IGNAPIKEY = fields.String(load_default="")
+    AFFICHAGE_INTRODUCTION = fields.Boolean(load_default=True)
+    AFFICHAGE_LOGOS_HOME = fields.Boolean(load_default=True)
+    AFFICHAGE_FOOTER = fields.Boolean(load_default=False)
+    AFFICHAGE_STAT_GLOBALES = fields.Boolean(load_default=True)
+    AFFICHAGE_DERNIERES_OBS = fields.Boolean(load_default=True)
+    AFFICHAGE_EN_CE_MOMENT = fields.Boolean(load_default=True)
+    AFFICHAGE_RANG_STAT = fields.Boolean(load_default=True)
     RANG_STAT = fields.List(
         fields.Dict,
-        missing=[
+        load_default=[
             {"phylum": ["Arthropoda", "Mollusca"]},
             {"phylum": ["Chordata"]},
             {"regne": ["Plantae"]},
         ],
     )
     RANG_STAT_FR = fields.List(
-        fields.String, missing=["Faune invertébrée", "Faune vertébrée", "Flore"]
+        fields.String, load_default=["Faune invertébrée", "Faune vertébrée", "Flore"]
     )
-    LIMIT_RANG_TAXONOMIQUE_HIERARCHIE = fields.Integer(missing=13)
-    LIMIT_FICHE_LISTE_HIERARCHY = fields.Integer(missing=28)
-    REMOTE_MEDIAS_URL = fields.String(missing="http://mondomaine.fr/taxhub/")
-    REMOTE_MEDIAS_PATH = fields.String(missing="static/medias/")
-    REDIMENSIONNEMENT_IMAGE = fields.Boolean(missing=False)
-    TAXHUB_URL = fields.String(required=False, missing=None)
-    ATTR_DESC = fields.Integer(missing=100)
-    ATTR_COMMENTAIRE = fields.Integer(missing=101)
-    ATTR_MILIEU = fields.Integer(missing=102)
-    ATTR_CHOROLOGIE = fields.Integer(missing=103)
-    ATTR_MAIN_PHOTO = fields.Integer(missing=1)
-    ATTR_OTHER_PHOTO = fields.Integer(missing=2)
-    ATTR_LIEN = fields.Integer(missing=3)
-    ATTR_PDF = fields.Integer(missing=4)
-    ATTR_AUDIO = fields.Integer(missing=5)
-    ATTR_VIDEO_HEBERGEE = fields.Integer(missing=6)
-    ATTR_YOUTUBE = fields.Integer(missing=7)
-    ATTR_DAILYMOTION = fields.Integer(missing=8)
-    ATTR_VIMEO = fields.Integer(missing=9)
-    PROTECTION = fields.Boolean(missing=False)
-    DISPLAY_PATRIMONIALITE = fields.Boolean(missing=False)
+    LIMIT_RANG_TAXONOMIQUE_HIERARCHIE = fields.Integer(load_default=13)
+    LIMIT_FICHE_LISTE_HIERARCHY = fields.Integer(load_default=28)
+    REMOTE_MEDIAS_URL = fields.String(load_default="http://mondomaine.fr/taxhub/")
+    REMOTE_MEDIAS_PATH = fields.String(load_default="static/medias/")
+    REDIMENSIONNEMENT_IMAGE = fields.Boolean(load_default=False)
+    TAXHUB_URL = fields.String(required=False, load_default=None)
+    ATTR_DESC = fields.Integer(load_default=100)
+    ATTR_COMMENTAIRE = fields.Integer(load_default=101)
+    ATTR_MILIEU = fields.Integer(load_default=102)
+    ATTR_CHOROLOGIE = fields.Integer(load_default=103)
+    ATTR_MAIN_PHOTO = fields.Integer(load_default=1)
+    ATTR_OTHER_PHOTO = fields.Integer(load_default=2)
+    ATTR_LIEN = fields.Integer(load_default=3)
+    ATTR_PDF = fields.Integer(load_default=4)
+    ATTR_AUDIO = fields.Integer(load_default=5)
+    ATTR_VIDEO_HEBERGEE = fields.Integer(load_default=6)
+    ATTR_YOUTUBE = fields.Integer(load_default=7)
+    ATTR_DAILYMOTION = fields.Integer(load_default=8)
+    ATTR_VIMEO = fields.Integer(load_default=9)
+    PROTECTION = fields.Boolean(load_default=False)
+    DISPLAY_PATRIMONIALITE = fields.Boolean(load_default=False)
     PATRIMONIALITE = fields.Dict(
-        missing={
+        load_default={
             "label": "Patrimonial",
             "config": {
                 "oui": {
@@ -118,7 +138,7 @@ class AtlasConfig(Schema):
         }
     )
     STATIC_PAGES = fields.Dict(
-        missing={
+        load_default={
             "presentation": {
                 "title": "Présentation de l'atlas",
                 "picto": "fa-question-circle",
@@ -128,22 +148,23 @@ class AtlasConfig(Schema):
         }
     )
 
-    AFFICHAGE_MAILLE = fields.Boolean(missing=False)
-    ZOOM_LEVEL_POINT = fields.Integer(missing=11)
-    LIMIT_CLUSTER_POINT = fields.Integer(missing=1000)
-    NB_DAY_LAST_OBS = fields.String(missing="7")
-    NB_LAST_OBS = fields.Integer(missing=100)
+    AFFICHAGE_MAILLE = fields.Boolean(load_default=False)
+    ZOOM_LEVEL_POINT = fields.Integer(load_default=11)
+    LIMIT_CLUSTER_POINT = fields.Integer(load_default=1000)
+    NB_DAY_LAST_OBS = fields.String(load_default="7")
+    NB_LAST_OBS = fields.Integer(load_default=100)
     TEXT_LAST_OBS = fields.String(
-        missing="Les observations des agents ces 7 derniers jours |"
+        load_default="Les observations des agents ces 7 derniers jours |"
     )
-    ANONYMIZE = fields.Boolean(missing=False)
-    MAP = fields.Nested(MapConfig, missing=dict())
+    ANONYMIZE = fields.Boolean(load_default=False)
+    MAP = fields.Nested(MapConfig, load_default=dict())
     # coupe le nom_vernaculaire à la 1ere virgule sur les fiches espèces
-    SPLIT_NOM_VERN = fields.Integer(missing=True)
-    INTERACTIVE_MAP_LIST = fields.Boolean(missing=True)
+    SPLIT_NOM_VERN = fields.Integer(load_default=True)
+    INTERACTIVE_MAP_LIST = fields.Boolean(load_default=True)
+    AVAILABLE_LANGUAGES = fields.Dict(load_default=LANGUAGES)
 
     @validates_schema
-    def validate_url_taxhub(self, data):
+    def validate_url_taxhub(self, data, **kwargs):
         """
         TAXHHUB_URL doit être rempli si REDIMENSIONNEMENT_IMAGE = True
         """

@@ -27,6 +27,8 @@ Voir https://github.com/PnX-SI/GeoNature-atlas/compare/develop
      - NPM #310 (@corentinlange)
      - Mise en place de la structure de tests Backend (avec Pytest) et Frontend (avec Jest) : #316. 
 
+- Remplacement de supervisor par systemd 
+
 🐛 **Corrections** 
 
 - Retrait des "-n" dans le fichier d'installation : #318 (https://github.com/PnX-SI/GeoNature-atlas/pull/318/commits/3185a526bd68e4252a879cfc2b89ff4f54ab22b5)
@@ -34,8 +36,10 @@ Voir https://github.com/PnX-SI/GeoNature-atlas/compare/develop
 
 ⚠️ **Notes de version** 
 
-- Si vous mettez à jour l'atlas à partir d'une instance déjà existante, il vous faut relancer l'install_db.sh. Ainsi vos ajustements au niveau de la vue initiale syntheseff doivent être reportés. Ensuite, suivez la procédure classique de mise à jour de l'application
-
+- Ajouter la variable `SECRET_KEY` au fichier config.py (utilisé pour chiffrer la session), et remplissez là avec une chaine de texte aléatoire.
+- Si vous mettez à jour l'atlas à partir d'une instance déjà existante, il vous faut relancer l'install_db.sh. Ainsi vos ajustements au niveau de la vue initiale syntheseff doivent être reportés. Ensuite, suivez la procédure classique de mise à jour de l'application.
+- Le nom du service systemd est désormais `geonature atlas`
+- Les logs sont désormais dans ``/var/log/geonature-atlas.log``. Vous pouvez supprimer le répertoire `log` à la racine de l'atlas qui est obselète.
 
 
 

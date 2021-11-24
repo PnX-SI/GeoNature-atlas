@@ -77,7 +77,6 @@ Le script ``install_env.sh`` va automatiquement installer les outils nécessaire
 - PostGIS
 - Apache 2
 - Python 3 et GDAL
-- Supervisor
 
 Lancer le script :
 
@@ -212,7 +211,7 @@ Le fichier de configuration central de l'application est ``atlas/configuration/c
 - Renseignez l'URL de l'application à partir de la racine du serveur WEB ('/atlas' ou '' par exemple)
 - Renseignez les autres paramètres selon votre contexte
 
-Après chaque modification de la configuration, relancer la commande ``sudo supervisorctl restart atlas`` pour qu'elles soient appliquées.
+Après chaque modification de la configuration, relancer la commande ``sudo systemctl restart geonature-atlas`` pour qu'elles soient appliquées.
 
 Customisation de l'application
 ==============================
@@ -277,7 +276,7 @@ Si l'atlas est associé à un domaine, ajoutez cette ligne au début du fichier 
 
 :notes:
 
-    En cas d'erreur, les logs serveurs ne sont pas au niveau d'Apache (serveur proxy) mais de Gunicorn (serveur HTTP) dans ``/home/`whoami`/log/errors_atlas.log``
+    En cas d'erreur, les logs serveurs ne sont pas au niveau d'Apache (serveur proxy) mais de Gunicorn (serveur HTTP) dans ``/var/log/geonature-atlas.log``
 
 
 Mise à jour de l'application

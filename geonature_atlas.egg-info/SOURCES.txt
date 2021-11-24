@@ -9,6 +9,7 @@ atlas/__init__.py
 atlas/app.py
 atlas/atlasAPI.py
 atlas/atlasRoutes.py
+atlas/env.py
 atlas/utils.py
 atlas/wsgi.py
 atlas/configuration/__init__.py

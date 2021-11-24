@@ -17,7 +17,7 @@ from flask import (
 )
 
 from atlas import utils
-from atlas.configuration import config
+from atlas.env import config 
 from atlas.modeles.entities import vmTaxons, vmCommunes
 from atlas.modeles.repositories import (
     vmOrganismsRepository,
@@ -35,13 +35,13 @@ from atlas.modeles.repositories import (
 
 
 # Adding functions for multilingual url process if MULTILINGUAL = True
-if config.MULTILINGUAL:
+if config["MULTILINGUAL"]:
     main = Blueprint("main", __name__, url_prefix='/<lang_code>')
 
     @main.url_defaults
     def add_language_code(endpoint, values):
-        if 'language' not in session:
-            session['language'] = config.BABEL_DEFAULT_LOCALE
+        if 'language' not in session or session["language"] == "":
+            session['language'] = config["BABEL_DEFAULT_LOCALE"]
         g.lang_code=session['language']
         values.setdefault('lang_code', session['language'] )
 
@@ -68,7 +68,7 @@ def especeMedias(image):
     )
 
 # Activating organisms sheets routes
-if config.ORGANISM_MODULE:
+if config["ORGANISM_MODULE"]:
     @main.route("/organism/<int:id_organism>", methods=["GET", "POST"])
     def ficheOrganism(id_organism):
         db_session = utils.loadSession()

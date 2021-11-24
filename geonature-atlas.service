@@ -8,12 +8,12 @@ User=${USER}
 Group=${USER}
 WorkingDirectory=${BASE_DIR}/
 Environment=GUNICORN_PROC_NAME=geonature-atlas
-Environment=GUNICORN_NUM_WORKERS=4
+Environment=GUNICORN_NUM_WORKERS=${gun_num_workers}
 Environment=GUNICORN_HOST=127.0.0.1
-Environment=GUNICORN_PORT=8080
+Environment=GUNICORN_PORT=${gun_port}
 Environment=GUNICORN_TIMEOUT=30
 EnvironmentFile=-${BASE_DIR}/environ
-ExecStart=${BASE_DIR}/venv/bin/gunicorn initAtlas:app \
+ExecStart=${BASE_DIR}/venv/bin/gunicorn atlas.wsgi:app \
                 --name "${GUNICORN_PROC_NAME}" --workers "${GUNICORN_NUM_WORKERS}" \
                 --bind "${GUNICORN_HOST}:${GUNICORN_PORT}" --timeout="${GUNICORN_TIMEOUT}"
 ExecReload=/bin/kill -s HUP $MAINPID

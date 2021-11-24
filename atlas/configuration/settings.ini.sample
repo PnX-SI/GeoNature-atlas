@@ -141,11 +141,6 @@ time=15
 
 # Ne modifier que si vous savez ce que vous faites
 
-#######################
-### Supervisor settings
-#######################
-
-app_name=atlas
 
 #####################
 ### Gunicorn settings

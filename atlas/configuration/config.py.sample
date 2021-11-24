@@ -19,7 +19,7 @@ NOM_APPLICATION = "Nom de l application"
 
 # URL de l'application depuis la racine du domaine
 # ex "/atlas" pour une URL: http://mon-domaine/atlas OU "" si l'application est accessible à la racine du domaine
-URL_APPLICATION = "/atlas"
+URL_APPLICATION = ""
 
 #################################
 #################################

@@ -4,11 +4,6 @@ if [ "$(id -u)" == "0" ]; then
    exit 1
 fi
 
-if [ ! -d 'log' ]
-  then
-      mkdir log
-      touch log/errors_atlas.log
-fi
 
 if [ ! -f ./atlas/configuration/settings.ini ]; then
   cp ./atlas/configuration/settings.ini.sample ./atlas/configuration/settings.ini
@@ -22,7 +17,7 @@ if [ "$(id -u)" == "0" ]; then
 fi
 
 echo "Stopping application..."
-sudo -s supervisorctl stop atlas
+sudo systemctl stop geonature-atlas
 
 echo "Creating and activating Virtual env..."
 
@@ -34,7 +29,9 @@ fi
 
 virtualenv -p $python_executable $venv_dir
 
+set -a
 . $venv_dir/bin/activate
+set +a
 
 echo "Installing requirements..."
 pip install -r requirements.txt
@@ -56,12 +53,13 @@ sed -i "s/GUNICORN_PORT = .*$/GUNICORN_PORT = '${gun_port}'/g" ./atlas/configura
 
 
 echo "Launching application..."
-DIR=$(readlink -e "${0%/*}")
-sudo -s cp  atlas-service.conf /etc/supervisor/conf.d/
-sudo -s sed -i "s%APP_PATH%${DIR}%" /etc/supervisor/conf.d/atlas-service.conf
+export BASE_DIR=$(readlink -e "${0%/*}")
+envsubst '${USER} ${BASE_DIR} ${gun_num_workers} ${gun_port}' < geonature-atlas.service | sudo tee /etc/systemd/system/geonature-atlas.service || exit 1
+sudo systemctl daemon-reload || exit 1
+sudo systemctl enable geonature-atlas || exit 1
+sudo systemctl start geonature-atlas || exit 1
 
-sudo -s supervisorctl reread
-sudo -s supervisorctl reload
+
 
 echo "Creating custom images folder if it doesnt already exist"
 if [ ! -d ./atlas/static/custom/images/ ]; then

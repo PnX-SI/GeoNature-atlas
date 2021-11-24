@@ -58,7 +58,6 @@ sudo apt-get install -y python-gdal
 sudo apt-get install -y gdal-bin
 
 sudo apt-get install -y python3-virtualenv virtualenv
-sudo apt-get install -y supervisor
 
 # install nvm
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
