@@ -56,7 +56,7 @@
                     {% include 'templates/areaSheet/surrounding_areas.html' %}
                 {% endif %}
                 {% if sheetType =='commune' %}
-                    <h4><b>Commune de {{ areaInfos.areaName }}</b></h4>
+                    <h4><b> {{ _('municipality.of') }} {{ areaInfos.areaName }}</b></h4>
                 {% else %}
                     <h4><b>{{ areaInfos.typeName }} - {{ areaInfos.areaName }}</b></h4>
                 {% endif %}
