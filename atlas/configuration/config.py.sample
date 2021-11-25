@@ -39,7 +39,7 @@ ORGANISM_MODULE = False
 ###########################
 
 # Activate multilingual
-MULTILINGUAL = True
+MULTILINGUAL = False
 
 # Default language
 BABEL_DEFAULT_LOCALE = 'fr'
