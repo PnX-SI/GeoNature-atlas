@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-09-28 09:41+0200\n"
+"POT-Creation-Date: 2021-11-25 17:31+0100\n"
 "PO-Revision-Date: 2021-07-12 12:12+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,15 +18,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: templates/areaSheet/_main.html:6
+#: templates/areaSheet/_main.html:6 templates/areaSheet/_main.html:59
 msgid "municipality.of"
 msgstr "Municipality of "
 
-#: templates/areaSheet/_main.html:71
+#: templates/areaSheet/_main.html:70
 msgid "last.obs.municipality"
 msgstr "Latest observations in the municipality of"
 
-#: templates/areaSheet/_main.html:74
+#: templates/areaSheet/_main.html:73
 msgid "last.obs.zone"
 msgstr "Latest observations in the zone"
 
@@ -53,7 +53,7 @@ msgstr "Municipality of "
 
 #: templates/core/listTaxons.html:81 templates/core/statHierarchy.html:7
 #: templates/home/globalStats.html:12
-#: templates/organismSheet/topSpecies.html:60
+#: templates/organismSheet/topSpecies.html:61
 #: templates/speciesSheet/map.html:15
 msgid "observation"
 msgstr "Observation"
@@ -61,9 +61,10 @@ msgstr "Observation"
 #: templates/core/listTaxons.html:82 templates/core/statHierarchy.html:7
 #: templates/core/tabTaxons.html:19 templates/home/globalStats.html:12
 #: templates/organismSheet/statsInfos.html:11
-#: templates/organismSheet/topSpecies.html:60
+#: templates/organismSheet/topSpecies.html:61
 #: templates/speciesSheet/identityCard.html:131
 #: templates/speciesSheet/map.html:15
+#: templates/speciesSheet/otherInformations.html:137
 msgid "observations"
 msgstr "Observations"
 
@@ -72,14 +73,14 @@ msgid "last.obs.in"
 msgstr "Latest observations within"
 
 #: templates/core/listTaxons.html:87 templates/core/tabTaxons.html:85
-#: templates/organismSheet/topSpecies.html:65
+#: templates/organismSheet/topSpecies.html:66
 #: templates/speciesSheet/identityCard.html:173
 msgid "check.species.sheet"
 msgstr "Check species sheet"
 
-#: templates/core/listTaxons.html:88 templates/home/mostViewNow.html:33
-#: templates/home/newSpecies.html:35 templates/home/taxoRank.html:57
-#: templates/organismSheet/topSpecies.html:66
+#: templates/core/listTaxons.html:88 templates/home/lastObs.html:44
+#: templates/home/mostViewNow.html:33 templates/home/newSpecies.html:45
+#: templates/home/taxoRank.html:57 templates/organismSheet/topSpecies.html:67
 msgid "species.sheet"
 msgstr "Species sheet"
 
@@ -192,7 +193,7 @@ msgstr ""
 "Most common species observed in the 15 days before and after today, all "
 "years combined"
 
-#: templates/home/newSpecies.html:8
+#: templates/home/newSpecies.html:10
 msgid "new.species.observed"
 msgstr "New species observed"
 
@@ -208,11 +209,11 @@ msgstr "Other information"
 msgid "part.graph"
 msgstr "Distribution of observations by family"
 
-#: templates/organismSheet/identityCard.html:19
-msgid "Région/département rattaché"
-msgstr "Attached region/department"
+#: templates/organismSheet/identityCard.html:21
+msgid "Adresse"
+msgstr ""
 
-#: templates/organismSheet/identityCard.html:20
+#: templates/organismSheet/identityCard.html:22
 msgid "Téléphone"
 msgstr "Phone"
 
@@ -232,7 +233,7 @@ msgstr "Atlas participation"
 msgid "top.species"
 msgstr "Most observed species"
 
-#: templates/organismSheet/topSpecies.html:61
+#: templates/organismSheet/topSpecies.html:62
 msgid "from.organism.observations"
 msgstr "of the organism's observations"
 
@@ -325,6 +326,14 @@ msgstr "Title"
 msgid "date"
 msgstr "Date"
 
+#: templates/speciesSheet/otherInformations.html:137
+msgid "organism.participation"
+msgstr "Participation to "
+
+#: templates/speciesSheet/otherInformations.html:138
+msgid "organism.prospection"
+msgstr "Proportion of prospecting assistance"
+
 #: templates/speciesSheet/otherInformations.html:144
 msgid "check.organism.sheet"
 msgstr "View organism sheet"
@@ -333,51 +342,9 @@ msgstr "View organism sheet"
 msgid "organism.sheet"
 msgstr "Organism sheet"
 
-#: templates/speciesSheet/otherInformations.html
-msgid "organism.participation"
-msgstr "Participation to "
-
-#: templates/speciesSheet/otherInformations.html
-msgid "organism.prospection"
-msgstr "Proportion of prospecting assistance"
-
 #: templates/taxoRankSheet/_main.html:47
 msgid "species.obs.for.tax"
 msgstr "Specific observations for this taxon"
-
-msgid "welcome.message"
-msgstr "Welcome to the fauna and flora atlas"
-
-msgid "welcome.from1"
-msgstr "from"
-
-msgid "welcome.from2"
-msgstr "from"
-
-msgid "welcome.from3"
-msgstr "from"
-
-msgid "welcome.from4"
-msgstr "from"
-
-msgid "welcome.from5"
-msgstr "from"
-
-msgid "home.introduction.message"
-msgstr ""
-"This atlas provides you with the whole"
-"wild species observed in the territory."
-"Each new observation feeds in real time"
-"the sheets of each species you consult,"
-"in a desire to share and enrich"
-"knowledge about biodiversity. <br/> <br/>"
-"This atlas presents observations"
-"carried out under different scientific protocols."
-"This is not an exhaustive inventory"
-"nor a complete distribution of species in the territory."
-
-msgid "home.partners"
-msgstr "Partners"
 
 #~ msgid "My custom presentation"
 #~ msgstr "My custom presentation"
@@ -390,3 +357,42 @@ msgstr "Partners"
 
 #~ msgid "days"
 #~ msgstr "days"
+
+#~ msgid "Région/département rattaché"
+#~ msgstr "Attached region/department"
+
+#~ msgid "welcome.message"
+#~ msgstr "Welcome to the fauna and flora atlas"
+
+#~ msgid "welcome.from1"
+#~ msgstr "from"
+
+#~ msgid "welcome.from2"
+#~ msgstr "from"
+
+#~ msgid "welcome.from3"
+#~ msgstr "from"
+
+#~ msgid "welcome.from4"
+#~ msgstr "from"
+
+#~ msgid "welcome.from5"
+#~ msgstr "from"
+
+#~ msgid "home.introduction.message"
+#~ msgstr ""
+#~ "This atlas provides you with the "
+#~ "wholewild species observed in the "
+#~ "territory.Each new observation feeds in "
+#~ "real timethe sheets of each species "
+#~ "you consult,in a desire to share "
+#~ "and enrichknowledge about biodiversity. <br/>"
+#~ " <br/>This atlas presents observationscarried "
+#~ "out under different scientific protocols.This"
+#~ " is not an exhaustive inventorynor a"
+#~ " complete distribution of species in "
+#~ "the territory."
+
+#~ msgid "home.partners"
+#~ msgstr "Partners"
+

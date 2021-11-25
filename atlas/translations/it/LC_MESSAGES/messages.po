@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-09-28 09:41+0200\n"
+"POT-Creation-Date: 2021-11-25 17:31+0100\n"
 "PO-Revision-Date: 2021-07-19 09:53+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
@@ -18,15 +18,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: templates/areaSheet/_main.html:6
+#: templates/areaSheet/_main.html:6 templates/areaSheet/_main.html:59
 msgid "municipality.of"
 msgstr "Comune di"
 
-#: templates/areaSheet/_main.html:71
+#: templates/areaSheet/_main.html:70
 msgid "last.obs.municipality"
 msgstr "ultime osservazioni del comune di"
 
-#: templates/areaSheet/_main.html:74
+#: templates/areaSheet/_main.html:73
 msgid "last.obs.zone"
 msgstr "Ultime osservazioni: "
 
@@ -53,7 +53,7 @@ msgstr "Comune di"
 
 #: templates/core/listTaxons.html:81 templates/core/statHierarchy.html:7
 #: templates/home/globalStats.html:12
-#: templates/organismSheet/topSpecies.html:60
+#: templates/organismSheet/topSpecies.html:61
 #: templates/speciesSheet/map.html:15
 msgid "observation"
 msgstr "Osservazione"
@@ -61,9 +61,10 @@ msgstr "Osservazione"
 #: templates/core/listTaxons.html:82 templates/core/statHierarchy.html:7
 #: templates/core/tabTaxons.html:19 templates/home/globalStats.html:12
 #: templates/organismSheet/statsInfos.html:11
-#: templates/organismSheet/topSpecies.html:60
+#: templates/organismSheet/topSpecies.html:61
 #: templates/speciesSheet/identityCard.html:131
 #: templates/speciesSheet/map.html:15
+#: templates/speciesSheet/otherInformations.html:137
 msgid "observations"
 msgstr "Osservazioni"
 
@@ -72,14 +73,14 @@ msgid "last.obs.in"
 msgstr "Ultime osservazioni "
 
 #: templates/core/listTaxons.html:87 templates/core/tabTaxons.html:85
-#: templates/organismSheet/topSpecies.html:65
+#: templates/organismSheet/topSpecies.html:66
 #: templates/speciesSheet/identityCard.html:173
 msgid "check.species.sheet"
 msgstr "Vedere la scheda delle specie"
 
-#: templates/core/listTaxons.html:88 templates/home/mostViewNow.html:33
-#: templates/home/newSpecies.html:35 templates/home/taxoRank.html:57
-#: templates/organismSheet/topSpecies.html:66
+#: templates/core/listTaxons.html:88 templates/home/lastObs.html:44
+#: templates/home/mostViewNow.html:33 templates/home/newSpecies.html:45
+#: templates/home/taxoRank.html:57 templates/organismSheet/topSpecies.html:67
 msgid "species.sheet"
 msgstr "Scheda specie"
 
@@ -192,7 +193,7 @@ msgstr ""
 "Specie più osservate nei 15 giorni prima e dopo oggi, tutti gli anni "
 "combinati"
 
-#: templates/home/newSpecies.html:8
+#: templates/home/newSpecies.html:10
 msgid "new.species.observed"
 msgstr "Nuove species scoperte"
 
@@ -208,11 +209,11 @@ msgstr "Altre informazioni"
 msgid "part.graph"
 msgstr "Distribuzione delle osservazioni per famiglia"
 
-#: templates/organismSheet/identityCard.html:19
-msgid "Région/département rattaché"
-msgstr "Regione/reparto allegato"
+#: templates/organismSheet/identityCard.html:21
+msgid "Adresse"
+msgstr ""
 
-#: templates/organismSheet/identityCard.html:20
+#: templates/organismSheet/identityCard.html:22
 msgid "Téléphone"
 msgstr "Telefono"
 
@@ -232,7 +233,7 @@ msgstr "Partecipazione dell'Atlante"
 msgid "top.species"
 msgstr "Specie più comunemente osservate"
 
-#: templates/organismSheet/topSpecies.html:61
+#: templates/organismSheet/topSpecies.html:62
 msgid "from.organism.observations"
 msgstr "delle osservazioni dell'organizzazione"
 
@@ -325,6 +326,14 @@ msgstr "Titolo"
 msgid "date"
 msgstr "Datato"
 
+#: templates/speciesSheet/otherInformations.html:137
+msgid "organism.participation"
+msgstr "Partecipazione a"
+
+#: templates/speciesSheet/otherInformations.html:138
+msgid "organism.prospection"
+msgstr "Percentuale di assistenza alla prospezione"
+
 #: templates/speciesSheet/otherInformations.html:144
 msgid "check.organism.sheet"
 msgstr "Vedere il foglio delle species"
@@ -332,14 +341,6 @@ msgstr "Vedere il foglio delle species"
 #: templates/speciesSheet/otherInformations.html:145
 msgid "organism.sheet"
 msgstr "Scheda organismo"
-
-#: templates/speciesSheet/otherInformations.html
-msgid "organism.participation"
-msgstr "Partecipazione a"
-
-#: templates/speciesSheet/otherInformations.html
-msgid "organism.prospection"
-msgstr "Percentuale di assistenza alla prospezione"
 
 #: templates/taxoRankSheet/_main.html:47
 msgid "species.obs.for.tax"
@@ -357,40 +358,6 @@ msgstr "Scheda delle species per taxon"
 #~ msgid "last.7.days.obs"
 #~ msgstr "Osservazioni degli ultimi 7 giorni"
 
-msgid "welcome.message"
-msgstr "Benvenuti nell'atlante della fauna e della flora"
-
-msgid "welcome.from1"
-msgstr "di"
-
-msgid "welcome.from2"
-msgstr "di"
-
-msgid "welcome.from3"
-msgstr "di"
-
-msgid "welcome.from4"
-msgstr "del'"
-
-msgid "welcome.from5"
-msgstr "del"
-
-msgid "home.introduction.message"
-msgstr ""
-"Questo atlante ti fornisce il tutto"
-"specie selvatiche osservate nel territorio".
-"Ogni nuova osservazione si alimenta in tempo reale"
-"i registri di ogni specie che consulti",
-"nel desiderio di condividere e arricchire"
-"conoscenza sulla biodiversità. <br/> <br/>"
-"Questo atlante ti presenta delle osservazioni"
-"effettuata secondo diversi protocolli scientifici".
-"Questo non è un inventario esaustivo"
-"né di una distribuzione completa delle specie nel territorio".
-
-msgid "home.partners"
-msgstr "Partner"
-
 #~ msgid "see.repartition.on.territory"
 #~ msgstr "Vedi ripartizione sul territorio"
 
@@ -399,4 +366,43 @@ msgstr "Partner"
 
 #~ msgid "days"
 #~ msgstr "giorni"
+
+#~ msgid "Région/département rattaché"
+#~ msgstr "Regione/reparto allegato"
+
+#~ msgid "welcome.message"
+#~ msgstr "Benvenuti nell'atlante della fauna e della flora"
+
+#~ msgid "welcome.from1"
+#~ msgstr "di"
+
+#~ msgid "welcome.from2"
+#~ msgstr "di"
+
+#~ msgid "welcome.from3"
+#~ msgstr "di"
+
+#~ msgid "welcome.from4"
+#~ msgstr "del'"
+
+#~ msgid "welcome.from5"
+#~ msgstr "del"
+
+#~ msgid "home.introduction.message"
+#~ msgstr ""
+#~ "Questo atlante ti fornisce il "
+#~ "tuttospecie selvatiche osservate nel "
+#~ "territorio\"Ogni nuova osservazione si "
+#~ "alimenta in tempo realei registri di "
+#~ "ogni specie che consulti\"nel desiderio "
+#~ "di condividere e arricchireconoscenza sulla"
+#~ " biodiversità. <br/> <br/>Questo atlante ti"
+#~ " presenta delle osservazionieffettuata secondo"
+#~ " diversi protocolli scientifici\"Questo non "
+#~ "è un inventario esaustivoné di una "
+#~ "distribuzione completa delle specie nel "
+#~ "territorio\""
+
+#~ msgid "home.partners"
+#~ msgstr "Partner"
 

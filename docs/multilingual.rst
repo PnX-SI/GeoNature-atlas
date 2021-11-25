@@ -102,7 +102,7 @@ AJOUTER DES CHAÎNES DE CARACTÈRES
     pybabel update -i messages.pot -d translations
 
     # Pour compiler les traductions | créer un fichier .mo
-    pybabel compile -d traductions
+    pybabel compile -d translations
     
 MODIFICATION D'UNE CHAÎNE DE CARACTÈRES DÉJÀ PRÉSENTE DANS LES FICHIERS .PO
 ===========================================================================
@@ -112,4 +112,4 @@ Modifier les fichiers ``.po`` souhaités dans le dossier ``atlas/translations/``
 ::
 
     # Pour compiler les traductions | créer un fichier .mo
-    pybabel compile -d traductions
+    pybabel compile -d translations
