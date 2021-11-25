@@ -3,9 +3,11 @@
 		<div class="row">
 			<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 textIntroduction">
 				<h1>
-					Bienvenue sur l'atlas de la faune et de la flore du {{configuration.STRUCTURE}}
+					{{ _('welcome.message') }} {{ _('welcome.from1') }} {{configuration.STRUCTURE}}
 				</h1>
-
+				<p>
+					{{ _('home.introduction.message') }}
+				</p>
 				<p>
 					<a href="{{url_for('main.get_staticpages', page='presentation') }}" class="btn btn-default">En
 						savoir plus</a>
