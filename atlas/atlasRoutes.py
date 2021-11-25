@@ -50,7 +50,6 @@ if config["MULTILINGUAL"]:
 
     @main.before_request
     def redirect_default_language():
-        print("BEFORE REQUEST")
         if g.lang_code is None:
             if "language" in session:
                 default_lang_code = session["language"]
@@ -61,6 +60,8 @@ if config["MULTILINGUAL"]:
             view_args = request.view_args
             view_args["lang_code"] = default_lang_code
             return redirect(url_for(request.endpoint, **view_args))
+        else:
+            session["language"] = g.lang_code
 
 
 @main.route(
