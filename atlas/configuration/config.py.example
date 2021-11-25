@@ -1,5 +1,9 @@
 # -*- coding:utf-8 -*-
 
+#########################################
+## Exemple de fichier de configuration ##
+#########################################
+
 # Mettre l'application en mode debug ou pas
 modeDebug = False
 
@@ -46,10 +50,9 @@ MULTILINGUAL = False
 # Default language
 BABEL_DEFAULT_LOCALE = 'fr'
 
-###########################
-# If multilingual is activated, set value below
-
-# Available languages
+# Available languages 
+# Don't delete, even if you disable MULTILINGUAL
+# You need to add your own default language (BABEL_DEFAULT_LOCALE) here if it's not present 
 # Check documentation to add another language
 LANGUAGES = {
     'en': {
@@ -69,7 +72,11 @@ LANGUAGES = {
         }
 }
 
-###########################
+#####################
+#####################
+### Configuration ###
+#####################
+#####################
 
 # Code de suivi des statistiques Google Analytics (si AFFICHAGE_FOOTER = True)
 ID_GOOGLE_ANALYTICS = "UA-xxxxxxx-xx"
@@ -253,7 +260,9 @@ STATIC_PAGES = {
 }
 
 ###########################
+###########################
 #### Security  Config #####
+###########################
 ###########################
 
 SECRET_KEY = '282799166744079489444397'
