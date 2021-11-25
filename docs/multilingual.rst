@@ -50,6 +50,8 @@ ADDING STRINGS
 MODIFYING A STRING ALREADY IN .PO FILES
 =======================================
 
+Edit the ``.po`` file to change, then compile the translation files to generate to ``.mo`` files.
+
 ::
 
     # To compile translations | create .mo file
@@ -104,6 +106,8 @@ AJOUTER DES CHAÎNES DE CARACTÈRES
     
 MODIFICATION D'UNE CHAÎNE DE CARACTÈRES DÉJÀ PRÉSENTE DANS LES FICHIERS .PO
 ===========================================================================
+
+Modifier les fichiers ``.po`` souhaités dans le dossier ``atlas/translations/``, ensuite compilez les fichiers de traductions pour générer les fichiers ``.mo``.
 
 ::
 
