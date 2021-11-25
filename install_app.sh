@@ -86,6 +86,10 @@ fi
 if [ ! -f ./atlas/static/custom/templates/mentions-legales.html ]; then
   cp ./atlas/static/custom/templates/mentions-legales.html.sample ./atlas/static/custom/templates/mentions-legales.html
 fi
+if [ ! -f ./atlas/static/custom/templates/bandeaulogoshome.html ]; then
+  cp ./atlas/static/custom/templates/bandeaulogoshome.html.sample ./atlas/static/custom/templates/bandeaulogoshome.html
+fi
+
 if [ ! -f ./atlas/static/custom/custom.css ]; then
   cp ./atlas/static/custom/custom.css.sample ./atlas/static/custom/custom.css
 fi
@@ -107,3 +111,6 @@ fi
 if [ ! -f ./atlas/static/custom/maps-custom.js ]; then
   cp ./atlas/static/custom/maps-custom.js.sample ./atlas/static/custom/maps-custom.js
 fi
+
+
+
