@@ -9,7 +9,9 @@ if [ ! -f ./atlas/configuration/settings.ini ]; then
   cp ./atlas/configuration/settings.ini.sample ./atlas/configuration/settings.ini
 fi
 
+set -a
 . atlas/configuration/settings.ini
+set +a
 
 if [ "$(id -u)" == "0" ]; then
    echo -e "\e[91m\e[1mThis script should NOT be run as root but your user needs sudo rights\e[0m" >&2
@@ -29,9 +31,9 @@ fi
 
 virtualenv -p $python_executable $venv_dir
 
-set -a
+
 . $venv_dir/bin/activate
-set +a
+
 
 echo "Installing requirements..."
 pip install -r requirements.txt
