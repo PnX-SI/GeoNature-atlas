@@ -332,6 +332,14 @@ msgstr "Voir la fiche organisme"
 msgid "organism.sheet"
 msgstr "Fiche organisme"
 
+#: templates/speciesSheet/otherInformations.html
+msgid "organism.participation"
+msgstr "Participation à "
+
+#: templates/speciesSheet/otherInformations.html
+msgid "organism.prospection"
+msgstr "Part d'aide à la prospection"
+
 #: templates/taxoRankSheet/_main.html:47
 msgid "species.obs.for.tax"
 msgstr "Observation pour le taxon"
@@ -366,6 +374,9 @@ msgstr ""
 "réalisées dans le cadre de différents protocoles scientifiques. "
 "Il ne s'agit pas d'un inventaire exhaustif "
 "ni d'une répartition complète des espèces sur le territoire."
+
+msgid "home.partners"
+msgstr "Partenaires"
 
 #~ msgid "My custom presentation"
 #~ msgstr "Ma présentation personnalisée"
