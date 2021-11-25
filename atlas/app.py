@@ -82,18 +82,6 @@ def create_app():
         def pretty(val):
             return format_number(val)
 
-        @app.context_processor
-        def inject_conf_var():
-            return dict(
-                **config,
-                CURRENT_LANGUAGE=session.get(
-                    "language",
-                    request.accept_languages.best_match(
-                        config["AVAILABLE_LANGUAGES"].keys()
-                    ),
-                )
-            )
-
     return app
 
 

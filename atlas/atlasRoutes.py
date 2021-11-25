@@ -50,12 +50,13 @@ if config["MULTILINGUAL"]:
 
     @main.before_request
     def redirect_default_language():
+        print("BEFORE REQUEST")
         if g.lang_code is None:
             if "language" in session:
                 default_lang_code = session["language"]
             else:
                 default_lang_code = request.accept_languages.best_match(
-                    config["AVAILABLE_LANGUAGES"].keys()
+                    config["AVAILABLE_LANGUAGES"].keys(), config["BABEL_DEFAULT_LOCALE"]
                 )
             view_args = request.view_args
             view_args["lang_code"] = default_lang_code

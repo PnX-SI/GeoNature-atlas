@@ -1,7 +1,7 @@
 {% block navbar %}
 {% if configuration.MULTILINGUAL %}
 <script type="text/javascript"> 
-    var language = '{{ '/' + CURRENT_LANGUAGE }}'; 
+    var language = '{{ '/' + g.lang_code }}'; 
 </script>
 {% else %}
 <script type="text/javascript"> 
@@ -48,23 +48,22 @@
                     </div>
                     <input id="hiddenInputCommunes" type="hidden" name="insee">
                 </form>
-
                 <!--- Languages button and dropdown displaid if MULTILINGUAL is True-->
                 {% if configuration.MULTILINGUAL %}
                 <div class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <!-- Display languages flags and name, en flag is flag-icon flag-icon-gb-->
                         <container style="display: inline-flex;">
-                            <span class="{{ 'flag-icon ' + AVAILABLE_LANGUAGES[session.language]['flag_icon']}}" class="align-middle"></span> 
-                            <div class="d-lg-block d-sm-none">&nbsp;&nbsp;{{ AVAILABLE_LANGUAGES[session.language]['name'] }}</div>
+                            <span class="{{ 'flag-icon ' + configuration.AVAILABLE_LANGUAGES[session.language]['flag_icon']}}" class="align-middle"></span> 
+                            <div class="d-lg-block d-sm-none">&nbsp;&nbsp;{{ configuration.AVAILABLE_LANGUAGES[session.language]['name'] }}</div>
                         </container>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropdown09">
-                    {% for language in AVAILABLE_LANGUAGES %}
+                    {% for language in configuration.AVAILABLE_LANGUAGES %}
                         <a  class="dropdown-item" href="{{url_for(request.endpoint, lang_code=language, **request.view_args)}}">
                             <container style="display: inline-flex;">
-                                <span class="{{ 'flag-icon ' + AVAILABLE_LANGUAGES[language]['flag_icon']}}"> </span> 
-                                <div class="d-lg-block d-sm-none">&nbsp;&nbsp;{{ AVAILABLE_LANGUAGES[language]['name'] }}</div>
+                                <span class="{{ 'flag-icon ' + configuration.AVAILABLE_LANGUAGES[language]['flag_icon']}}"> </span> 
+                                <div class="d-lg-block d-sm-none">&nbsp;&nbsp;{{ configuration.AVAILABLE_LANGUAGES[language]['name'] }}</div>
                             </container>
                         </a>
                     {% endfor %}
