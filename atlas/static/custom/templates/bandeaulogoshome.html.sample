@@ -4,10 +4,10 @@
 						<div class="panel-heading padding-sm ">
 							<strong><h3 class="title-spaced"><span class="glyphicon glyphicon-link"></span> {{ _('home.partners') }}</h3></strong>
 						</div>
-						<div class="panel-body">
+						<div class="panel-body" style="background-color: white;">
 							<div class="row" style="padding: 1%;">
 
-								<div class="container">
+								<div class="container-fluid" style="padding: 0px 2% 0px 2%;">
 								  <section class="partner-logos slidepartenaireindexr">
 
 								    <!--Logo 1-->
