@@ -4,7 +4,7 @@ from marshmallow import (
     validates_schema,
     ValidationError,
     validates_schema,
-    EXCLUDE
+    EXCLUDE,
 )
 from marshmallow.validate import Regexp
 
@@ -21,27 +21,67 @@ MAP_2 = {
 }
 
 LANGUAGES = {
-    'en': {
-        'name' : 'English',
-        'flag_icon' : 'flag-icon-gb',
-        'months' : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] 
-        },
-    'fr': {
-        'name' : 'Français',
-        'flag_icon' : 'flag-icon-fr',
-        'months' : ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Decembre'] 
-        },
-    'it': {
-        'name' : 'Italiano',
-        'flag_icon' : 'flag-icon-it',
-        'months' : ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'] 
-        }
+    "en": {
+        "name": "English",
+        "flag_icon": "flag-icon-gb",
+        "months": [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+        ],
+    },
+    "fr": {
+        "name": "Français",
+        "flag_icon": "flag-icon-fr",
+        "months": [
+            "Janvier",
+            "Février",
+            "Mars",
+            "Avril",
+            "Mai",
+            "Juin",
+            "Juillet",
+            "Août",
+            "Septembre",
+            "Octobre",
+            "Novembre",
+            "Decembre",
+        ],
+    },
+    "it": {
+        "name": "Italiano",
+        "flag_icon": "flag-icon-it",
+        "months": [
+            "Gennaio",
+            "Febbraio",
+            "Marzo",
+            "Aprile",
+            "Maggio",
+            "Giugno",
+            "Luglio",
+            "Agosto",
+            "Settembre",
+            "Ottobre",
+            "Novembre",
+            "Dicembre",
+        ],
+    },
 }
 
 
 class SecretSchemaConf(Schema):
     class Meta:
         unknown = EXCLUDE
+
     database_connection = fields.String(
         required=True,
         validate=Regexp(
@@ -76,10 +116,10 @@ class MapConfig(Schema):
 class AtlasConfig(Schema):
     class Meta:
         unknown = EXCLUDE
+
     STRUCTURE = fields.String(load_default="Nom de la structure")
     NOM_APPLICATION = fields.String(load_default="Nom de l'application")
     CUSTOM_LOGO_LINK = fields.String(load_default="")
-    DOMAIN_NAME = fields.String(load_default="")
     URL_APPLICATION = fields.String(load_default="")
     BABEL_DEFAULT_LOCALE = fields.String(load_default="fr")
     MULTILINGUAL = fields.Boolean(load_default=True)

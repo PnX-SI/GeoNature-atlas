@@ -65,8 +65,6 @@ LANGUAGES = {
         }
 }
 
-# Domain name for multilingual SEO
-DOMAIN_NAME = 'http://example.com'
 
 #  Else, multilingual is deactivated
 ###########################
