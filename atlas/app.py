@@ -70,12 +70,13 @@ def create_app():
     with app.app_context() as context:
         from atlas.atlasRoutes import main as main_blueprint
 
+        app.register_blueprint(main_blueprint, url_prefix='/<lang_code')
         app.register_blueprint(main_blueprint)
 
         from atlas.atlasAPI import api
 
-        from atlas.atlasRoutes import index_bp
-        app.register_blueprint(index_bp)
+        #from atlas.atlasRoutes import index_bp
+        #app.register_blueprint(index_bp)
 
         app.register_blueprint(api, url_prefix="/api")
         compress.init_app(app)

@@ -36,7 +36,7 @@ from atlas.modeles.repositories import (
 
 # Adding functions for multilingual url process if MULTILINGUAL = True
 if config["MULTILINGUAL"]:
-    main = Blueprint("main", __name__, url_prefix='/<lang_code>')
+    main = Blueprint("main", __name__)#, url_prefix='/<lang_code>')
 
     @main.url_defaults
     def add_language_code(endpoint, values):
@@ -52,7 +52,7 @@ if config["MULTILINGUAL"]:
 else:
     main = Blueprint("main", __name__)
 
-index_bp = Blueprint("index_bp", __name__)
+#index_bp = Blueprint("index_bp", __name__)
 
 
 
@@ -154,9 +154,9 @@ def indexMedias(image):
         + image
     )
 
-@index_bp.route("/", methods=["GET", "POST"])
-def index():
-    return redirect(url_for("main.index"))
+#@index_bp.route("/", methods=["GET", "POST"])
+#def index():
+#    return redirect(url_for("main.index"))
 
 @main.route("/", methods=["GET", "POST"])
 def index():
