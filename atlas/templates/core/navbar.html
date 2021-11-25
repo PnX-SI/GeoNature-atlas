@@ -61,7 +61,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropdown09">
                     {% for language in AVAILABLE_LANGUAGES %}
-                        <a  class="dropdown-item" href="{{url_for(request.endpoint, lang_code=language, lc=language, **request.view_args)}}">
+                        <a  class="dropdown-item" href="{{url_for(request.endpoint, lang_code=language, **request.view_args)}}">
                             <container style="display: inline-flex;">
                                 <span class="{{ 'flag-icon ' + AVAILABLE_LANGUAGES[language]['flag_icon']}}"> </span> 
                                 <div class="d-lg-block d-sm-none">&nbsp;&nbsp;{{ AVAILABLE_LANGUAGES[language]['name'] }}</div>

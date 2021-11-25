@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, request, session, redirect, url_for
+from flask import Flask, request, session, redirect, url_for, g
 from flask_compress import Compress
 from flask_sqlalchemy import SQLAlchemy
 from flask_babel import Babel, format_date, gettext, ngettext, get_locale
@@ -12,6 +12,7 @@ db = SQLAlchemy()
 compress = Compress()
 
 APP_DIR = os.path.abspath(os.path.dirname(__file__))
+
 
 class ReverseProxied(object):
     def __init__(self, app, script_name=None, scheme=None, server=None):
@@ -38,45 +39,33 @@ class ReverseProxied(object):
 
 def create_app():
     """
-        renvoie une instance de l'app Flask
+    renvoie une instance de l'app Flask
     """
     app = Flask(__name__, template_folder=APP_DIR)
     # push the config in app config at 'PUBLIC' key
     app.config.update(config)
     babel = Babel(app)
-    
 
     @babel.localeselector
     def get_locale():
-        # If multilinguale is activated, language return is default or the best near the user's browser language
-        # Else language is defined by locale defined
+        # if MULTILINGUAL, valid language is in g via before_request_hook
         if config["MULTILINGUAL"]:
-            request_lc = request.args.get('lc')
-            if request_lc:
-                session["language"] = request_lc
-                return request_lc
-            else:
-                if not "language" in session:
-                    best_language = request.accept_languages.best_match(config["AVAILABLE_LANGUAGES"].keys())
-                    session['language'] = best_language
-                    return best_language
-                else:
-                    return session["language"]
-        else:
-            return config["BABEL_DEFAULT_LOCALE"]
+            return g.lang_code
+        return config["BABEL_DEFAULT_LOCALE"]
 
     app.debug = secret_conf["modeDebug"]
     app.config["SECRET_KEY"] = secret_conf["SECRET_KEY"]
     with app.app_context() as context:
         from atlas.atlasRoutes import main as main_blueprint
 
-        app.register_blueprint(main_blueprint, url_prefix='/<lang_code')
+        if config["MULTILINGUAL"]:
+            app.register_blueprint(main_blueprint, url_prefix="/<lang_code>")
         app.register_blueprint(main_blueprint)
 
         from atlas.atlasAPI import api
 
-        #from atlas.atlasRoutes import index_bp
-        #app.register_blueprint(index_bp)
+        # from atlas.atlasRoutes import index_bp
+        # app.register_blueprint(index_bp)
 
         app.register_blueprint(api, url_prefix="/api")
         compress.init_app(app)
@@ -96,10 +85,14 @@ def create_app():
         @app.context_processor
         def inject_conf_var():
             return dict(
-                        **config,
-                        CURRENT_LANGUAGE=session.get('language',request.accept_languages.best_match(config["AVAILABLE_LANGUAGES"].keys()))
-                    )
-        
+                **config,
+                CURRENT_LANGUAGE=session.get(
+                    "language",
+                    request.accept_languages.best_match(
+                        config["AVAILABLE_LANGUAGES"].keys()
+                    ),
+                )
+            )
 
     return app
 
@@ -108,5 +101,7 @@ if __name__ == "__main__":
     # validation de la configuration secrète
     app = create_app()
     app.run(
-        host="0.0.0.0", port=secret_conf["GUNICORN_PORT"], debug=secret_conf["modeDebug"]
+        host="0.0.0.0",
+        port=secret_conf["GUNICORN_PORT"],
+        debug=secret_conf["modeDebug"],
     )

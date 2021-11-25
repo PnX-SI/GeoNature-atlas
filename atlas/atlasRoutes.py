@@ -13,11 +13,11 @@ from flask import (
     make_response,
     request,
     url_for,
-    session
+    session,
 )
 
 from atlas import utils
-from atlas.env import config 
+from atlas.env import config
 from atlas.modeles.entities import vmTaxons, vmCommunes
 from atlas.modeles.repositories import (
     vmOrganismsRepository,
@@ -35,46 +35,36 @@ from atlas.modeles.repositories import (
 
 
 # Adding functions for multilingual url process if MULTILINGUAL = True
+main = Blueprint("main", __name__)  # , url_prefix='/<lang_code>')
 if config["MULTILINGUAL"]:
-    main = Blueprint("main", __name__)#, url_prefix='/<lang_code>')
 
     @main.url_defaults
     def add_language_code(endpoint, values):
-        #if 'language' not in session or session["language"] == "":
-        #    session['language'] = config["BABEL_DEFAULT_LOCALE"]
-        #g.lang_code=session['language']
-        #values.setdefault('lang_code', session['language'] )
-        if 'lang_code' in values:
+        if "lang_code" in values:
             return
-        values['lang_code'] = g.lang_code
+        values["lang_code"] = g.lang_code
 
     @main.url_value_preprocessor
     def pull_lang_code(endpoint, values):
-        g.lang_code = values.pop('lang_code', None)
+        g.lang_code = values.pop("lang_code", None)
 
     @main.before_request
     def redirect_default_language():
         if g.lang_code is None:
-            view_args = request.view_args
-            if 'language' in session:
-                default_lang_code = session['language']
+            if "language" in session:
+                default_lang_code = session["language"]
             else:
-                default_lang_code = best_match…
-            view_args['lang_code'] = default_lang_code
+                default_lang_code = request.accept_languages.best_match(
+                    config["AVAILABLE_LANGUAGES"].keys()
+                )
+            view_args = request.view_args
+            view_args["lang_code"] = default_lang_code
             return redirect(url_for(request.endpoint, **view_args))
-        else:
-            session['language'] = default_lang_code
-
-else:
-    main = Blueprint("main", __name__)
-
-#index_bp = Blueprint("index_bp", __name__)
-
 
 
 @main.route(
     "/espece/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>",
-    methods=["GET", "POST"]
+    methods=["GET", "POST"],
 )
 def especeMedias(image):
     return redirect(
@@ -83,44 +73,50 @@ def especeMedias(image):
         + image
     )
 
+
 # Activating organisms sheets routes
 if config["ORGANISM_MODULE"]:
+
     @main.route("/organism/<int:id_organism>", methods=["GET", "POST"])
     def ficheOrganism(id_organism):
         db_session = utils.loadSession()
         connection = utils.engine.connect()
 
         infos_organism = vmOrganismsRepository.statOrganism(connection, id_organism)
-    
+
         stat = vmObservationsRepository.statIndex(connection)
-        
+
         mostObsTaxs = vmOrganismsRepository.topObsOrganism(connection, id_organism)
         update_most_obs_taxons = []
         for taxon in mostObsTaxs:
-            taxon_info = vmTaxrefRepository.searchEspece(connection, taxon['cd_ref'])
-            photo = vmMedias.getFirstPhoto(connection, taxon['cd_ref'], current_app.config["ATTR_MAIN_PHOTO"])
+            taxon_info = vmTaxrefRepository.searchEspece(connection, taxon["cd_ref"])
+            photo = vmMedias.getFirstPhoto(
+                connection, taxon["cd_ref"], current_app.config["ATTR_MAIN_PHOTO"]
+            )
             taxon = {**taxon, **taxon_info["taxonSearch"]}
             taxon["photo"] = photo
             update_most_obs_taxons.append(taxon)
-        stats_group = vmOrganismsRepository.getTaxonRepartitionOrganism(connection, id_organism)
+        stats_group = vmOrganismsRepository.getTaxonRepartitionOrganism(
+            connection, id_organism
+        )
 
         connection.close()
         db_session.close()
-        
-        return render_template( 
+
+        return render_template(
             "templates/organismSheet/_main.html",
-            nom_organism = infos_organism['nom_organism'],
-            adresse_organism = infos_organism['adresse_organism'],
-            cp_organism = infos_organism['cp_organism'],
-            ville_organism = infos_organism['ville_organism'],
-            tel_organism = infos_organism['tel_organism'],
-            url_organism = infos_organism['url_organism'],
-            url_logo = infos_organism['url_logo'],
-            nb_taxons = infos_organism['nb_taxons'],
-            nb_obs = infos_organism['nb_obs'],
-            stat = stat,
+            nom_organism=infos_organism["nom_organism"],
+            adresse_organism=infos_organism["adresse_organism"],
+            cp_organism=infos_organism["cp_organism"],
+            ville_organism=infos_organism["ville_organism"],
+            tel_organism=infos_organism["tel_organism"],
+            url_organism=infos_organism["url_organism"],
+            url_logo=infos_organism["url_logo"],
+            nb_taxons=infos_organism["nb_taxons"],
+            nb_obs=infos_organism["nb_obs"],
+            stat=stat,
             mostObsTaxs=update_most_obs_taxons,
-            stats_group=stats_group
+            stats_group=stats_group,
         )
 
 
@@ -170,9 +166,11 @@ def indexMedias(image):
         + image
     )
 
-#@index_bp.route("/", methods=["GET", "POST"])
-#def index():
+
+# @index_bp.route("/", methods=["GET", "POST"])
+# def index():
 #    return redirect(url_for("main.index"))
+
 
 @main.route("/", methods=["GET", "POST"])
 def index():
@@ -183,7 +181,7 @@ def index():
             current_app.logger.debug("start AFFICHAGE_MAILLE")
             observations = vmObservationsMaillesRepository.lastObservationsMailles(
                 connection,
-                str(current_app.config["NB_DAY_LAST_OBS"]) + ' day',
+                str(current_app.config["NB_DAY_LAST_OBS"]) + " day",
                 current_app.config["ATTR_MAIN_PHOTO"],
             )
             current_app.logger.debug("end AFFICHAGE_MAILLE")
@@ -191,7 +189,7 @@ def index():
             current_app.logger.debug("start AFFICHAGE_PRECIS")
             observations = vmObservationsRepository.lastObservations(
                 connection,
-                str(current_app.config["NB_DAY_LAST_OBS"]) + ' day',
+                str(current_app.config["NB_DAY_LAST_OBS"]) + " day",
                 current_app.config["ATTR_MAIN_PHOTO"],
             )
             current_app.logger.debug("end AFFICHAGE_PRECIS")
@@ -218,7 +216,7 @@ def index():
         customStat = []
         customStatMedias = []
 
-    lastDiscoveries=vmObservationsRepository.getLastDiscoveries(connection)
+    lastDiscoveries = vmObservationsRepository.getLastDiscoveries(connection)
 
     connection.close()
     session.close()
@@ -279,7 +277,6 @@ def ficheEspece(cd_ref):
 
     organisms = vmOrganismsRepository.getListOrganism(connection, cd_ref)
 
-
     connection.close()
     db_session.close()
 
@@ -300,7 +297,7 @@ def ficheEspece(cd_ref):
         articles=articles,
         taxonDescription=taxonDescription,
         observers=observers,
-        organisms=organisms
+        organisms=organisms,
     )
 
 
@@ -312,7 +309,7 @@ def ficheCommune(insee):
     listTaxons = vmTaxonsRepository.getTaxonsCommunes(connection, insee)
     commune = vmCommunesRepository.getCommuneFromInsee(connection, insee)
     if current_app.config["AFFICHAGE_MAILLE"]:
-            observations = vmObservationsMaillesRepository.lastObservationsCommuneMaille(
+        observations = vmObservationsMaillesRepository.lastObservationsCommuneMaille(
             connection, current_app.config["NB_LAST_OBS"], str(insee)
         )
     else:
@@ -336,7 +333,7 @@ def ficheCommune(insee):
         observations=observations,
         observers=observers,
         DISPLAY_EYE_ON_LIST=True,
-        insee=insee
+        insee=insee,
     )
 
 
@@ -458,9 +455,3 @@ def robots():
     response = make_response(robots_template)
     response.headers["Content-type"] = "text/plain"
     return response
-
-
-
-
-
-
