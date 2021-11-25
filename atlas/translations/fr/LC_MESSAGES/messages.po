@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-11-25 17:31+0100\n"
+"POT-Creation-Date: 2021-11-25 17:55+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -17,6 +17,22 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
+
+#: static/custom/templates/bandeaulogoshome.html.sample:5
+msgid "home.partners"
+msgstr ""
+
+#: static/custom/templates/introduction.html.sample:6
+msgid "welcome.message"
+msgstr ""
+
+#: static/custom/templates/introduction.html.sample:6
+msgid "welcome.from1"
+msgstr ""
+
+#: static/custom/templates/introduction.html.sample:9
+msgid "home.introduction.message"
+msgstr ""
 
 #: templates/areaSheet/_main.html:6 templates/areaSheet/_main.html:59
 msgid "municipality.of"
