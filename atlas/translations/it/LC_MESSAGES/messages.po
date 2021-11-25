@@ -333,6 +333,14 @@ msgstr "Vedere il foglio delle species"
 msgid "organism.sheet"
 msgstr "Scheda organismo"
 
+#: templates/speciesSheet/otherInformations.html
+msgid "organism.participation"
+msgstr "Partecipazione a"
+
+#: templates/speciesSheet/otherInformations.html
+msgid "organism.prospection"
+msgstr "Percentuale di assistenza alla prospezione"
+
 #: templates/taxoRankSheet/_main.html:47
 msgid "species.obs.for.tax"
 msgstr "Scheda delle species per taxon"
@@ -349,24 +357,39 @@ msgstr "Scheda delle species per taxon"
 #~ msgid "last.7.days.obs"
 #~ msgstr "Osservazioni degli ultimi 7 giorni"
 
-#~ msgid "welcome.message"
-#~ msgstr "Benvenuti nell'atlante della fauna e della flora di"
+msgid "welcome.message"
+msgstr "Benvenuti nell'atlante della fauna e della flora"
 
-#~ msgid "home.introduction.message"
-#~ msgstr ""
-#~ "L'atlante ALCOTRA è il risultato di "
-#~ "una collaborazione transfrontaliera franco-"
-#~ "italiana\"Frutto dell'azione WP4.2 del "
-#~ "progetto COBIODIV incluso nel PITEM "
-#~ "Biodiv'ALP, questo atlante è stato "
-#~ "realizzato dal team IS del Parco "
-#~ "Nazionale degli Ecrins e da Natural "
-#~ "Solutions. <br/><br/>Questo atlante ti "
-#~ "fornisce le osservazioni di species "
-#~ "selvatiche fatte nell'area ALCOTRA. I "
-#~ "dati provengono da diverse strutture "
-#~ "presentate di seguito, ognuna con la "
-#~ "propria scheda di presentazione. <br/><br/>"
+msgid "welcome.from1"
+msgstr "di"
+
+msgid "welcome.from2"
+msgstr "di"
+
+msgid "welcome.from3"
+msgstr "di"
+
+msgid "welcome.from4"
+msgstr "del'"
+
+msgid "welcome.from5"
+msgstr "del"
+
+msgid "home.introduction.message"
+msgstr ""
+"Questo atlante ti fornisce il tutto"
+"specie selvatiche osservate nel territorio".
+"Ogni nuova osservazione si alimenta in tempo reale"
+"i registri di ogni specie che consulti",
+"nel desiderio di condividere e arricchire"
+"conoscenza sulla biodiversità. <br/> <br/>"
+"Questo atlante ti presenta delle osservazioni"
+"effettuata secondo diversi protocolli scientifici".
+"Questo non è un inventario esaustivo"
+"né di una distribuzione completa delle specie nel territorio".
+
+msgid "home.partners"
+msgstr "Partner"
 
 #~ msgid "see.repartition.on.territory"
 #~ msgstr "Vedi ripartizione sul territorio"
