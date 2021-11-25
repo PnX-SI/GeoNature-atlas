@@ -1,5 +1,9 @@
 # -*- coding:utf-8 -*-
 
+#########################################
+## Exemple de fichier de configuration ##
+#########################################
+
 # Mettre l'application en mode debug ou pas
 modeDebug = False
 
@@ -33,24 +37,23 @@ URL_APPLICATION = ""
 #################################
 #################################
 
-# Organism module : organism's sheet + organism participation on species sheet
+# Enable organism module : organism sheet + organism participation on species sheet
 ORGANISM_MODULE = False
 
 ###########################
 ###### Multilingual #######
 ###########################
 
-# Default language
+# Default language, also used when multilingual is disabled
 BABEL_DEFAULT_LOCALE = 'fr'
 
-#Activate or deactivate multilingual
-MULTILINGUAL = True
+# Activate multilingual
+MULTILINGUAL = False
 
-###########################
-# If multilingual is activated configure under
-
-# Available languages
-# Check documentation for adding another language
+# Available languages 
+# Don't delete, even if you disable MULTILINGUAL
+# You need to add your own default language (BABEL_DEFAULT_LOCALE) here if it's not present 
+# Check documentation to add another language
 LANGUAGES = {
     'en': {
         'name' : 'English',
@@ -69,9 +72,11 @@ LANGUAGES = {
         }
 }
 
-
-#  Else, multilingual is deactivated
-###########################
+#####################
+#####################
+### Configuration ###
+#####################
+#####################
 
 # Code de suivi des statistiques Google Analytics (si AFFICHAGE_FOOTER = True)
 ID_GOOGLE_ANALYTICS = "UA-xxxxxxx-xx"
@@ -113,8 +118,6 @@ MAP = {
                    },
     'ENABLE_SLIDER': True,
     'ENABLE_SCALE': True
-
-}
 }
 
 # Affichage des observations par maille ou point
@@ -129,10 +132,11 @@ LIMIT_CLUSTER_POINT = 1000
 
 # Carte de la page d'accueil: observations des 'x' derniers jours. Bien mettre en anglais et non accordé
 NB_DAY_LAST_OBS = '7'
+
 # Texte à afficher pour décrire la cartographie des 'dernières observations'
 TEXT_LAST_OBS = 'Les observations des agents ces 7 derniers jours |'
 
-# Carte de la fiche commune: nombre des 'x' dernières observations affichées
+# Carte de la fiche commune : nombre des 'x' dernières observations affichées
 NB_LAST_OBS=100
 
 ###########################
@@ -167,7 +171,6 @@ COLONNES_RANG_STAT = 3
 RANG_STAT = [{'phylum': ["Arthropoda", "Mollusca", "Annelida", "Cnidaria", "Platyhelminthes"]}, {'phylum': ["Chordata"]}, {'regne': ["Plantae"]}]
 RANG_STAT_FR = ['Faune invertébrée', 'Faune vertébrée', 'Flore']
 
-
 ############################
 ####### FICHE ESPECE #######
 ############################
@@ -183,6 +186,7 @@ LIMIT_FICHE_LISTE_HIERARCHY = 28
 # URL d'accès aux photos et autres médias (URL racine). Par exemple l'url d'accès à Taxhub
 # Cette url sera cachée aux utilisateurs de l'atlas
 REMOTE_MEDIAS_URL = "http://mondomaine.fr/taxhub/"
+
 # Racine du chemin des fichiers médias stockés dans le champ "chemin" de "atlas.vm_medias"
 # Seule cette partie de l'url sera visible pour les utilisateurs de l'atlas
 REMOTE_MEDIAS_PATH = "static/medias/"
@@ -190,7 +194,8 @@ REMOTE_MEDIAS_PATH = "static/medias/"
 # URL de TaxHub (pour génération à la volée des vignettes des images).
 # Si le service Taxhub n'est pas utilisé, commenter la variable
 REDIMENSIONNEMENT_IMAGE = False
-# si redimmentionnement image = True, indiquer l'URL de taxhub
+
+# si REDIMENSIONNEMENT_IMAGE = True, indiquer l'URL de TaxHub
 TAXHUB_URL = "http://mondomaine.fr/taxhub"
 
 #### ID DES ATTRIBUTS DESCRIPTIFS DES TAXONS DE LA TABLE vm_cor_taxon_attribut
@@ -210,7 +215,7 @@ ATTR_YOUTUBE = 7
 ATTR_DAILYMOTION = 8
 ATTR_VIMEO = 9
 
-# coupe le nom_vernaculaire à la 1ere virgule sur les fiches espèces
+# Coupe le nom_vernaculaire à la 1ere virgule sur les fiches espèces
 SPLIT_NOM_VERN = True
 
 ############################################
@@ -226,6 +231,7 @@ PROTECTION = True
 # Afficher ou non la colonne Patrimonialité dans les listes de taxons (basé sur le champs "patrimonial") et la customiser
 # Pour masquer cette colonne, passer uniquement le paramètre à "False"
 DISPLAY_PATRIMONIALITE = False
+
 # Pour customiser l'affichage de cette colonne (label affiché, valeurs du champs et leur affichage) :
 PATRIMONIALITE = {
     'label': "Patrimonial",
@@ -254,7 +260,9 @@ STATIC_PAGES = {
 }
 
 ###########################
+###########################
 #### Security  Config #####
+###########################
 ###########################
 
 SECRET_KEY = '282799166744079489444397'
