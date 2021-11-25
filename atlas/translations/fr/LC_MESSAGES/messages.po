@@ -24,11 +24,11 @@ msgstr "Commune de"
 
 #: templates/areaSheet/_main.html:71
 msgid "last.obs.municipality"
-msgstr "dernières observations de la commune de"
+msgstr "dernières observations dans la commune de"
 
 #: templates/areaSheet/_main.html:74
 msgid "last.obs.zone"
-msgstr "Dernière observations: "
+msgstr "Dernière observations : "
 
 #: templates/areaSheet/surrounding_areas.html:10
 msgid "associate.zone"
@@ -336,25 +336,36 @@ msgstr "Fiche organisme"
 msgid "species.obs.for.tax"
 msgstr "Observation pour le taxon"
 
-#~ msgid "welcome.message"
-#~ msgstr "Bienvenue sur l'atlas de la faune et de la flore"
+msgid "welcome.message"
+msgstr "Bienvenue sur l'atlas de la faune et de la flore"
 
-#~ msgid "home.introduction.message"
-#~ msgstr ""
-#~ "L'atlas ALCOTRA est le fruit d'une "
-#~ "collaboration transfrontalière franco-italienne. "
-#~ "Issu de l'action WP4.2 du projet "
-#~ "COBIODIV inclus dans le PITEM "
-#~ "Biodiv'ALP, cet atlas a été mis en"
-#~ " place par l'équipe SI du Parc "
-#~ "National des Ecrins et Natural "
-#~ "Solutions. <br/><br/>Cet atlas met à "
-#~ "votre disposition les observations d'espèces"
-#~ " sauvages réalisées dans la zone "
-#~ "ALCOTRA. Les données sont issues de "
-#~ "différentes structures présentées plus bas "
-#~ "et possédant chacune leur fiche de "
-#~ "présentation. <br/><br/>"
+msgid "welcome.from1"
+msgstr "du"
+
+msgid "welcome.from2"
+msgstr "de"
+
+msgid "welcome.from3"
+msgstr "d'"
+
+msgid "welcome.from4"
+msgstr "de l'"
+
+msgid "welcome.from5"
+msgstr "de la"
+
+msgid "home.introduction.message"
+msgstr ""
+"Cet atlas met à votre disposition l'ensemble "
+"des espèces sauvages observées sur le territoire. "
+"Chaque nouvelle observation alimente en temps réel "
+"les fiches de chaque espèce que vous consultez, "
+"dans une volonté de partage et d'enrichissement "
+"des connaissances sur la biodiversité.<br/><br/>"
+"Cet atlas vous présente des observations "
+"réalisées dans le cadre de différents protocoles scientifiques. "
+"Il ne s'agit pas d'un inventaire exhaustif "
+"ni d'une répartition complète des espèces sur le territoire."
 
 #~ msgid "My custom presentation"
 #~ msgstr "Ma présentation personnalisée"
