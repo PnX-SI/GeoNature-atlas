@@ -38,11 +38,11 @@ ORGANISM_MODULE = False
 ###### Multilingual #######
 ###########################
 
+# Default language, also used when multilingual is disabled
+BABEL_DEFAULT_LOCALE = 'fr'
+
 # Activate multilingual
 MULTILINGUAL = False
-
-# Default language
-BABEL_DEFAULT_LOCALE = 'fr'
 
 # Available languages 
 # Don't delete, even if you disable MULTILINGUAL
