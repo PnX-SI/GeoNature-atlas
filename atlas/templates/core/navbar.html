@@ -54,8 +54,8 @@
                     <a class="nav-link dropdown-toggle" id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <!-- Display languages flags and name, en flag is flag-icon flag-icon-gb-->
                         <container style="display: inline-flex;">
-                            <span class="{{ 'flag-icon ' + configuration.AVAILABLE_LANGUAGES[session.language]['flag_icon']}}" class="align-middle"></span> 
-                            <div class="d-lg-block d-sm-none">&nbsp;&nbsp;{{ configuration.AVAILABLE_LANGUAGES[session.language]['name'] }}</div>
+                            <span class="{{ 'flag-icon ' + configuration.AVAILABLE_LANGUAGES[g.lang_code]['flag_icon']}}" class="align-middle"></span> 
+                            <div class="d-lg-block d-sm-none">&nbsp;&nbsp;{{ configuration.AVAILABLE_LANGUAGES[g.lang_code]['name'] }}</div>
                         </container>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropdown09">
