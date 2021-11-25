@@ -7,7 +7,8 @@
             rel="alternate" 
             href="{{url_for(request.endpoint, _external=True, lang_code=configuration.BABEL_DEFAULT_LOCALE, **request.view_args)}}"
             hreflang="x-default"
-        <link rel="canonical" href="{{url_for(request.endpoint, _external=True, lang_code=configuration.BABEL_DEFAULT_LOCALE, **request.view_args)}}"
+        >
+        <link rel="canonical" href="{{url_for(request.endpoint, _external=True, lang_code=configuration.BABEL_DEFAULT_LOCALE, **request.view_args)}}">
     {% endif %}
 
     <!-- Jquery -->
