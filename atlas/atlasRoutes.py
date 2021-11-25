@@ -40,14 +40,30 @@ if config["MULTILINGUAL"]:
 
     @main.url_defaults
     def add_language_code(endpoint, values):
-        if 'language' not in session or session["language"] == "":
-            session['language'] = config["BABEL_DEFAULT_LOCALE"]
-        g.lang_code=session['language']
-        values.setdefault('lang_code', session['language'] )
+        #if 'language' not in session or session["language"] == "":
+        #    session['language'] = config["BABEL_DEFAULT_LOCALE"]
+        #g.lang_code=session['language']
+        #values.setdefault('lang_code', session['language'] )
+        if 'lang_code' in values:
+            return
+        values['lang_code'] = g.lang_code
 
     @main.url_value_preprocessor
     def pull_lang_code(endpoint, values):
-        values.pop('lang_code')
+        g.lang_code = values.pop('lang_code', None)
+
+    @main.before_request
+    def redirect_default_language():
+        if g.lang_code is None:
+            view_args = request.view_args
+            if 'language' in session:
+                default_lang_code = session['language']
+            else:
+                default_lang_code = best_match…
+            view_args['lang_code'] = default_lang_code
+            return redirect(url_for(request.endpoint, **view_args))
+        else:
+            session['language'] = default_lang_code
 
 else:
     main = Blueprint("main", __name__)
