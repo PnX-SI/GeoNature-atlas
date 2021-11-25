@@ -1,5 +1,9 @@
 # -*- coding:utf-8 -*-
 
+##############################
+## Fichier de configuration ##
+##############################
+
 # Connexion de l'application à la BDD
 # Remplacer user, monpassachanger, IPADRESSE (localhost si la BDD est sur le même serveur que l'application), 
 # eventuellement le port de la BDD et le nom de la BDD avec l'utilisateur qui a des droits de lecture sur les vues de l'atlas (user_pg dans settings.ini)
@@ -27,26 +31,23 @@ URL_APPLICATION = ""
 #################################
 #################################
 
-# Organism module : organism's sheet + organism participation on species sheet
+# Enable organism module : organism sheet + organism participation on species sheet
 ORGANISM_MODULE = False
 
 ###########################
 ###### Multilingual #######
 ###########################
 
+# Activate multilingual
+MULTILINGUAL = True
+
 # Default language
 BABEL_DEFAULT_LOCALE = 'fr'
 
-#Activate or deactivate multilingual
-MULTILINGUAL = True
-
-###########################
-# If multilingual is activated configure under
-
 # Available languages 
-# Don't delete even if you uninstall MULTILINGUAL
-# You need to add your own default language(BABEL_DEFAULT_LOCALE) here if it's not present 
-# Check documentation for adding another language
+# Don't delete, even if you disable MULTILINGUAL
+# You need to add your own default language (BABEL_DEFAULT_LOCALE) here if it's not present 
+# Check documentation to add another language
 LANGUAGES = {
     'en': {
         'name' : 'English',
@@ -65,12 +66,10 @@ LANGUAGES = {
         }
 }
 
-
-#  Else, multilingual is deactivated
 ###########################
-
 ###########################
 ###### Cartographie #######
+###########################
 ###########################
 
 # Configuration des cartes (centre du territoire, couches CARTE et ORTHO, échelle par défaut...)
@@ -95,7 +94,9 @@ MAP = {
 }
 
 ###########################
+###########################
 #### Security  Config #####
+###########################
 ###########################
 
 SECRET_KEY = 'INSERT_A_RANDOM_SECRET_KEY'
