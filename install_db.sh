@@ -331,8 +331,8 @@ if ! database_exists $db_name
         # EN: Creation of Materialized Views (and possible replacement of hard values by parameters)
         echo "----- Creating materialized views ------"
 
-        sudo sed -i "s/date - 15$/date - $time/" /tmp/atlas/atlas.vm_taxons_plus_observes.sql
-        sudo sed -i "s/date + 15$/date - $time/" /tmp/atlas/atlas.vm_taxons_plus_observes.sql
+        sudo sed -i "s/date - 15$/date - $time/" /tmp/atlas/10.atlas.vm_taxons_plus_observes.sql
+        sudo sed -i "s/date + 15$/date - $time/" /tmp/atlas/10.atlas.vm_taxons_plus_observes.sql
 
         # FR: customisation de l'altitude
         # EN: customisation of altitude
@@ -347,62 +347,62 @@ if ! database_exists $db_name
                 fi
             done
 
-        sudo sed -i "s/INSERT_ALTITUDE/${insert}/" /tmp/atlas/atlas.vm_altitudes.sql
+        sudo sed -i "s/INSERT_ALTITUDE/${insert}/" /tmp/atlas/4.atlas.vm_altitudes.sql
 
         echo "[$(date +'%H:%M:%S')] Creating atlas.vm_taxref..."
         time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_taxref.sql  &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/1.atlas.vm_taxref.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
         
         echo "[$(date +'%H:%M:%S')] Creating atlas.vm_observations..."
         time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_observations.sql  &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/2.atlas.vm_observations.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
         echo "[$(date +'%H:%M:%S')] Creating atlas.vm_taxons..."
         time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_taxons.sql  &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/3.atlas.vm_taxons.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
         echo "[$(date +'%H:%M:%S')] Creating atlas.vm_altitudes..."
         time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_altitudes.sql  &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/4.atlas.vm_altitudes.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
         echo "[$(date +'%H:%M:%S')] Creating atlas.vm_search_taxon..."
         time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_search_taxon.sql  &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/5.atlas.vm_search_taxon.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
         echo "[$(date +'%H:%M:%S')] Creating atlas.vm_mois..."
         time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_mois.sql  &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/6.atlas.vm_mois.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
         echo "[$(date +'%H:%M:%S')] Creating atlas.vm_communes..."
         time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_communes.sql  &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/7.atlas.vm_communes.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
         echo "[$(date +'%H:%M:%S')] Creating atlas.vm_medias"
         time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_medias.sql  &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/8.atlas.vm_medias.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
         echo "[$(date +'%H:%M:%S')] Creating atlas.vm_cor_taxon_attribut..."
         time_temp=$SECONDS
-        sudo sed -i "s/WHERE id_attribut IN (100, 101, 102, 103);$/WHERE id_attribut  IN ($attr_desc, $attr_commentaire, $attr_milieu, $attr_chorologie);/" /tmp/atlas/atlas.vm_cor_taxon_attribut.sql
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_cor_taxon_attribut.sql  &>> log/install_db.log
+        sudo sed -i "s/WHERE id_attribut IN (100, 101, 102, 103);$/WHERE id_attribut  IN ($attr_desc, $attr_commentaire, $attr_milieu, $attr_chorologie);/" /tmp/atlas/9.atlas.vm_cor_taxon_attribut.sql
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/9.atlas.vm_cor_taxon_attribut.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
         echo "[$(date +'%H:%M:%S')] Creating atlas.vm_taxons_plus_observes..."
         time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_taxons_plus_observes.sql  &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/10.atlas.vm_taxons_plus_observes.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
         echo "[$(date +'%H:%M:%S')] Creating atlas.vm_cor_taxon_organism..."
         time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_cor_taxon_organism.sql  &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/11.atlas.vm_cor_taxon_organism.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
         if $use_ref_geo_gn2
@@ -410,7 +410,7 @@ if ! database_exists $db_name
             echo "[$(date +'%H:%M:%S')] Creating atlas.t_mailles_territoire..."
             time_temp=$SECONDS
             export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host \
-            -f data/atlas/atlas.t_mailles_territoire.sql \
+            -f data/atlas/12.atlas.t_mailles_territoire.sql \
             -v type_maille=$type_maille &>> log/install_db.log
             echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
         fi
@@ -418,7 +418,7 @@ if ! database_exists $db_name
         # EN: Creation of the materialized view vm_meshes_observations (number of observations per mesh and per taxon)
         echo "[$(date +'%H:%M:%S')] Creating atlas.vm_observations_mailles..."
         time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.vm_observations_mailles.sql  &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/13.atlas.vm_observations_mailles.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
         sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.bib_taxref_rangs OWNER TO "$owner_atlas";"
@@ -433,9 +433,8 @@ if ! database_exists $db_name
         # FR: Affectation de droits en lecture sur les VM à l'utilisateur de l'application ($user_pg)
         # EN: Assign read rights on VMs to the application user ($user_pg)
         echo "Grant..."
-        sudo cp data/grant.sql /tmp/atlas/grant.sql
-        sudo sed -i "s/my_reader_user;$/$user_pg;/" /tmp/atlas/grant.sql
-        sudo -n -u postgres -s psql -d $db_name -f /tmp/atlas/grant.sql &>> log/install_db.log
+        sudo sed -i "s/my_reader_user;$/$user_pg;/" /tmp/atlas/14.grant.sql
+        sudo -n -u postgres -s psql -d $db_name -f /tmp/atlas/14.grant.sql &>> log/install_db.log
 
         # Clean file
         echo "Cleaning files..."
