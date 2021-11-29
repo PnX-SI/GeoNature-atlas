@@ -39,14 +39,14 @@ ORGANISM_MODULE = False
 ###########################
 
 # Default language, also used when multilingual is disabled
-BABEL_DEFAULT_LOCALE = 'fr'
+DEFAULT_LANGUAGE = 'fr'
 
 # Activate multilingual
 MULTILINGUAL = False
 
 # Available languages 
 # Don't delete, even if you disable MULTILINGUAL
-# You need to add your own default language (BABEL_DEFAULT_LOCALE) here if it's not present 
+# You need to add your own default language (DEFAULT_LANGUAGE) here if it's not present 
 # Check documentation to add another language
 LANGUAGES = {
     'en': {

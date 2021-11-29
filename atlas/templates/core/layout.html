@@ -2,7 +2,7 @@
 {% if configuration.MULTILINGUAL %}
 <html lang='{{g.lang_code}}'>
 {% else %}
-<html lang='{{configuration.BABEL_DEFAULT_LOCALE}}'>
+<html lang='{{configuration.DEFAULT_LANGUAGE}}'>
 {% endif %}
 <head>
 <base href="{{ configuration.URL_APPLICATION }}">

@@ -51,7 +51,7 @@ def create_app():
         # if MULTILINGUAL, valid language is in g via before_request_hook
         if config["MULTILINGUAL"]:
             return g.lang_code
-        return config["BABEL_DEFAULT_LOCALE"]
+        return config["DEFAULT_LANGUAGE"]
 
     app.debug = secret_conf["modeDebug"]
     app.config["SECRET_KEY"] = secret_conf["SECRET_KEY"]

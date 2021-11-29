@@ -121,7 +121,7 @@ class AtlasConfig(Schema):
     NOM_APPLICATION = fields.String(load_default="Nom de l'application")
     CUSTOM_LOGO_LINK = fields.String(load_default="")
     URL_APPLICATION = fields.String(load_default="")
-    BABEL_DEFAULT_LOCALE = fields.String(load_default="fr")
+    DEFAULT_LANGUAGE = fields.String(load_default="fr")
     MULTILINGUAL = fields.Boolean(load_default=False)
     ID_GOOGLE_ANALYTICS = fields.String(load_default="UA-xxxxxxx-xx")
     ORGANISM_MODULE = fields.Boolean(load_default="False")

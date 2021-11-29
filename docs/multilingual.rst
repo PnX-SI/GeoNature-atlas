@@ -7,7 +7,7 @@ The module used for multilingual is Flask-Babel (https://flask-babel.tkte.ch).
 
 You can activate or deactivate this module by changing ``MULTILINGUAL`` setting value (``true`` or ``false``) in your ``config.py`` file.
 
-If you do so, you have to set ``BABEL_DEFAULT_LOCALE`` with your language key. Example: ``'fr'`` for French. Make sure that your language is in listed in ``LANGUAGES`` setting in your ``config.py`` file.
+If you do so, you have to set ``DEFAULT_LANGUAGE`` with your language key. Example: ``'fr'`` for French. Make sure that your language is in listed in ``LANGUAGES`` setting in your ``config.py`` file.
 
 Here are the commands that you can use to add a language, adding text to translate, or update translations.
 
@@ -66,7 +66,7 @@ Le module utilisé pour le multilingue est Flask-Babel (https://flask-babel.tkte
 
 Vous pouvez activer ou désactiver ce module en changeant la valeur du paramètre ``MULTILINGUAL`` (``true`` ou ``false``) dans votre fichier ``config.py``.
 
-Si vous le faites, vous devez renseigner ``BABEL_DEFAULT_LOCALE`` avec votre clé de langue. Exemple ``'fr'`` pour le français. Assurez-vous que votre langue se trouve dans ``LANGUAGES`` dans votre fichier ``config.py``.
+Si vous le faites, vous devez renseigner ``DEFAULT_LANGUAGE`` avec votre clé de langue. Exemple ``'fr'`` pour le français. Assurez-vous que votre langue se trouve dans ``LANGUAGES`` dans votre fichier ``config.py``.
 
 Voici les différentes commandes que vous pouvez utiliser pour ajouter une langue, ajouter du texte à traduire, ou mettre à jour les traductions.
 
