@@ -3,7 +3,9 @@
 		<div class="row">
 			<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 textIntroduction">
 				<h1>
-					{{ _('welcome.message') }} {{ _('welcome.from1') }} {{configuration.STRUCTURE}}
+					{{ _('welcome.message') }} 
+					{{ _('welcome.from1') }} {{ _('welcome.from2') }} {{ _('welcome.from3') }} {{ _('welcome.from4') }} {{ _('welcome.from5') }} 
+					{{configuration.STRUCTURE}}
 				</h1>
 				<p>
 					{{ _('home.introduction.message') }}
