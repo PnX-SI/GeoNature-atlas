@@ -7,11 +7,15 @@ The module used for multilingual is Flask-Babel (https://flask-babel.tkte.ch).
 
 You can activate or deactivate this module by changing ``MULTILINGUAL`` setting value (``true`` or ``false``) in your ``config.py`` file.
 
-If you do so, you have to set ``DEFAULT_LANGUAGE`` with your language key. Example: ``'fr'`` for French. Make sure that your language is in listed in ``LANGUAGES`` setting in your ``config.py`` file.
+If you do so, you have to set ``DEFAULT_LANGUAGE`` with your language key. Example: ``'fr'`` for French. Make sure that your language is listed in ``LANGUAGES`` setting in your ``config.py`` file.
 
 Here are the commands that you can use to add a language, adding text to translate, or update translations.
 
 All the commands should be used in your atlas path in a command prompt.
+
+The ``atlas/messages.pot`` file is a translation template, automatically generated with browsing all .html and .sample files of the project. 
+It is used to generate and add keys in .po files of each language. 
+Once .po files have been manually updated, the final command will generate the compiled .mo files used by the application.
 
 ADDING A LANGUAGE
 =================
@@ -71,6 +75,10 @@ Si vous le faites, vous devez renseigner ``DEFAULT_LANGUAGE`` avec votre clé de
 Voici les différentes commandes que vous pouvez utiliser pour ajouter une langue, ajouter du texte à traduire, ou mettre à jour les traductions.
 
 Toutes les commandes doivent être utilisées dans le chemin de votre atlas dans une invite de commande.
+
+Le fichier ``atlas/messages.pot`` est un template de traduction, généré automatiquement en parcourant les fichiers .html et .sample du projet.
+Il est utilisé pour générer et ajouter les clés de traduction dans les fichiers .po de chaque langue.
+Une fois que les fichiers .po ont été mis à jour manuellement, la commande finale va générer les fichier .mo compilés, utilisés par l'application.
 
 AJOUTER UNE LANGUE
 ==================
