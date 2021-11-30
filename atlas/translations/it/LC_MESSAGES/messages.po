@@ -20,19 +20,31 @@ msgstr ""
 
 #: static/custom/templates/bandeaulogoshome.html.sample:5
 msgid "home.partners"
-msgstr ""
+msgstr "Partner"
 
 #: static/custom/templates/introduction.html.sample:6
 msgid "welcome.message"
-msgstr ""
+msgstr "Benvenuti nell'atlante della fauna e della flora"
 
 #: static/custom/templates/introduction.html.sample:6
 msgid "welcome.from1"
-msgstr ""
+msgstr "di"
 
 #: static/custom/templates/introduction.html.sample:9
 msgid "home.introduction.message"
 msgstr ""
+"Questo atlante ti fornisce il "
+"tuttospecie selvatiche osservate nel "
+"territorio\"Ogni nuova osservazione si "
+"alimenta in tempo realei registri di "
+"ogni specie che consulti\"nel desiderio "
+"di condividere e arricchireconoscenza sulla"
+" biodiversità. <br/> <br/>Questo atlante ti"
+" presenta delle osservazionieffettuata secondo"
+" diversi protocolli scientifici\"Questo non "
+"è un inventario esaustivoné di una "
+"distribuzione completa delle specie nel "
+"territorio\""
 
 #: templates/areaSheet/_main.html:6 templates/areaSheet/_main.html:59
 msgid "municipality.of"
@@ -362,33 +374,6 @@ msgstr "Scheda organismo"
 msgid "species.obs.for.tax"
 msgstr "Scheda delle species per taxon"
 
-#~ msgid "My custom presentation"
-#~ msgstr "La mia presentazione personalizzata"
-
-#~ msgid "last.obs.municipality"
-#~ msgstr "Ultima osservazione per comune"
-
-#~ msgid "last.obs.zone"
-#~ msgstr "Ultima osservazione per zona"
-
-#~ msgid "last.7.days.obs"
-#~ msgstr "Osservazioni degli ultimi 7 giorni"
-
-#~ msgid "see.repartition.on.territory"
-#~ msgstr "Vedi ripartizione sul territorio"
-
-#~ msgid "last.obs.since"
-#~ msgstr "Ultime osservazioni negli ultimi"
-
-#~ msgid "days"
-#~ msgstr "giorni"
-
-#~ msgid "Région/département rattaché"
-#~ msgstr "Regione/reparto allegato"
-
-#~ msgid "welcome.message"
-#~ msgstr "Benvenuti nell'atlante della fauna e della flora"
-
 #~ msgid "welcome.from1"
 #~ msgstr "di"
 
@@ -403,22 +388,3 @@ msgstr "Scheda delle species per taxon"
 
 #~ msgid "welcome.from5"
 #~ msgstr "del"
-
-#~ msgid "home.introduction.message"
-#~ msgstr ""
-#~ "Questo atlante ti fornisce il "
-#~ "tuttospecie selvatiche osservate nel "
-#~ "territorio\"Ogni nuova osservazione si "
-#~ "alimenta in tempo realei registri di "
-#~ "ogni specie che consulti\"nel desiderio "
-#~ "di condividere e arricchireconoscenza sulla"
-#~ " biodiversità. <br/> <br/>Questo atlante ti"
-#~ " presenta delle osservazionieffettuata secondo"
-#~ " diversi protocolli scientifici\"Questo non "
-#~ "è un inventario esaustivoné di una "
-#~ "distribuzione completa delle specie nel "
-#~ "territorio\""
-
-#~ msgid "home.partners"
-#~ msgstr "Partner"
-
