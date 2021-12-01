@@ -5,43 +5,94 @@ CHANGELOG
 1.5.0 (unreleased)
 ------------------
 
+TOCHECK : 
+
+- Les fichiers sitemaps.xml et robots.txt ne fonctionnent pas en multilingue ? Ou dans tous les cas ?
+- Mise à jour vers systemd
+- Ordonner les SQL
+- Vérifier FOOTER
+- Advanced search (https://github.com/PnX-SI/GeoNature-atlas/blob/develop/atlas/static/custom/templates/advanced_search.html.sample) ??
+- Ajout d'autres types de zonages (https://github.com/PnX-SI/GeoNature-atlas/pull/233#issuecomment-637097246) mais paramètre a été supprimé (https://github.com/PnX-SI/GeoNature-atlas/pull/233#pullrequestreview-422176773) ???
+- data/atlas_with_extended_areas.sql servait justement à ça (https://github.com/PnX-SI/GeoNature-atlas/pull/233/files#diff-2e6c86ac92365124b9dce6a1ec16985d1ff2d4185edead5899af28535abfebda) ?? 
+- Remarques de Marie (https://github.com/PnX-SI/GeoNature-atlas/pull/233#pullrequestreview-504652956) ?
+- Compatibilité Debian 11 ?
+- PAs de paramètre pour le nouveau bloc des nouvelles espèces (https://github.com/PnX-SI/GeoNature-atlas/blob/develop/atlas/templates/home/_main.html#L62) ???
+- t_subdivided_territory ???
+- https://github.com/PnX-SI/GeoNature-atlas/blob/develop/data/update/update_1.4.2to1.4.3.sql / 1.4.3 n'existe pas...
+
 Voir https://github.com/PnX-SI/GeoNature-atlas/compare/develop
 
 🚀 **Nouveautés** 
 
-- Ajout de la dimension organismes dans GeoNature-atlas (@corentinlange repris par Théo)
-     - Dimension organisme activable au choix (#325) --> mettre la variable comme por le multilingue 
-     - Affichage des organismes ayant saisit des données d'une espèce dans la fiche espèce (#315)
-     - Affichage des organismes ayant saisit des données dans une commune dans la fiche commune (#326) -->>>> PAS SUR, à voir en testant 
-     - Intégration du bandeau organisme sur la page d'accueil (PR #353, ticket pour amélioration #357)
-     - Ajout des fiches organismes, fiches descriptives avec logo, nom, nombre de données, espèces les plus observées et familles de taxons observés par un organisme (#. )  
-     
-- Multilingue activable (``MULTILINGUAL``), documenté (docs/multilingual.rst) mais non optimisé pour le référencement (#175 par @TheMagicia et @corentinlange)
+**Organismes (#291 par @corentinlange repris par Théo)**
+
+- Dimension organisme activable au choix (#325) --> mettre la variable comme por le multilingue 
+- Affichage des organismes ayant saisit des données d'une espèce dans la fiche espèce (#315)
+- Affichage des organismes ayant saisit des données dans une commune dans la fiche commune (#326) -->>>> PAS SUR, à voir en testant 
+- Intégration du bandeau organisme sur la page d'accueil (PR #353, ticket pour amélioration #357)
+- Ajout des fiches organismes, fiches descriptives avec logo, nom, nombre de données, espèces les plus observées et familles de taxons observés par un organisme (#. )
+
+**Multilingue**
+
+- Mise en place du multilingue (activable avec le paramètre ``MULTILINGUAL``) avec les fichiers de langue de traduction de l'interface en français, anglais et italien (#175 par @TheMagicia et @corentinlange)
+- Langue utilisée automatiquement en fonction de la langue du navigateur
+- Possibilité pour l'utilisateur de basculer sur une autre langue disponible
+- Optimisation du multilingue pour le référencement par les moteurs de recherche
+- Multilingue documenté (``docs/multilingual.rst``)
+
+**Bootstrap 4**
 
 - Intégration de la branche Bootstrap 4 de @lpofredc contenant de nombreux commit (#233)
-    
+- Mise à jour de Bootstrap version 3 à 4 (par @lpofredc)
+- Remplacement de Glyphicon par Font Awesome
+- Fix absence de la hiérarchie sur les fiches taxons
+- Très importante restructuration des templates (via includes & blocks), mutualisation des parties partagées
+- Refonte de la page commune, notamment en fixant la carte et en ne scrollant que dans la liste (#79)
+- Remplacement de morris/D3 par chartJS
+- Ajout d'un fichier sitemap.xml à la racine de l'application, autogénéré pour optimiser le référencement par les moteurs de recherche
+- Ajout d'un fichier robots.txt à la racine de l'application, autogénéré pour indiquer aux moteurs de recherche les pages qu'ils peuvent indexer ou non
+- ref_geo, n'utiliser que les zonages activés (``enable = true``)
+- Possibilité de customiser en CSS la couleur des contours des objets sur les cartes (mailles, territoire, zonages)
+- ??? Corrections de la hierarchie taxonomique (https://github.com/PnX-SI/GeoNature-atlas/pull/233/commits/e3e31457c6afffa914d132eb50cecafc70a575e1)
+- Possibilité de masquer les observateurs avec le nouveau paramètre ``ANONYMIZE``
+- Les liens dans le menu latéral peuvent être des liens externes (en remplacant la clé ``template`` par la clé ``url``)
+
+**Nouvelles espèces**
+
 - Ajout de la fonctionnalité "Nouvelles espèces observées" : dernières espèces découvertes (première observation d'une espèce) sur le territoire (#85) par @MathildeLeclerc
-    
+
+**Autre**
+
+- Possibilité d'ajouter un bandeau partenaire sur la page d'accueil (#245 par @Splendens)
+- Possibilité d'afficher l'echelle sur la carte avec le paramètre ``ENABLE_SCALE`` (#293 par @mvergez)
+- Possibilité d'ajouter un masque sur la carte en dehors du territoire avec le paramètre ``MASK_STYLE`` (#89 par @mvergez)
+- Ajout de pictos manquants (#272 par @jpm-cbna)
+
+**Développement**
+
 - Amélioration de l'experience développeur : 
-     - Installation découpée #332 et #349 (@corentinlange)
-     - NPM #310 (@corentinlange)
+     - Installation découpée (#332 et #349 par @corentinlange)
+     - Mise en place de npm pour installer les dépendances (#310 par @corentinlange)
      - Mise en place de la structure de tests Backend (avec Pytest) et Frontend (avec Jest) : #316. 
 
-- Remplacement de supervisor par systemd 
+- Remplacement de ``supervisor`` par ``systemd``
+- gunicorn: add timeout parameter (#271 par @jpm-cbna)
+- Mise à jour des dépendances
+- Ajout d'un environnement de tests (#297)
+- Réorganisation du code et packaging
 
 🐛 **Corrections** 
 
 - Retrait des "-n" dans le fichier d'installation : #318 (https://github.com/PnX-SI/GeoNature-atlas/pull/318/commits/3185a526bd68e4252a879cfc2b89ff4f54ab22b5)
-
+- Fix searchCommune API: close DB session (#277 par @jpm-cbna)
 
 ⚠️ **Notes de version** 
 
-- Ajouter la variable `SECRET_KEY` au fichier config.py (utilisé pour chiffrer la session), et remplissez là avec une chaine de texte aléatoire.
+- Ajouter la variable `SECRET_KEY` au fichier ``config.py`` (utilisée pour chiffrer la session), et remplissez-la avec une chaine de texte aléatoire.
 - Si vous mettez à jour l'atlas à partir d'une instance déjà existante, il vous faut relancer l'install_db.sh. Ainsi vos ajustements au niveau de la vue initiale syntheseff doivent être reportés. Ensuite, suivez la procédure classique de mise à jour de l'application.
-- Le nom du service systemd est désormais `geonature-atlas`
+- Le nom du service systemd est désormais ``geonature-atlas``
+- ??? Précisions pour le passage à systemd ???
 - Les logs sont désormais dans ``/var/log/geonature-atlas.log``. Vous pouvez supprimer le répertoire `log` à la racine de l'atlas qui est obselète.
-
-
 
 1.4.2 (2020-11-25)
 ------------------
