@@ -31,34 +31,30 @@ msgid "welcome.from1"
 msgstr "from"
 
 #: static/custom/templates/introduction.html.sample:7
-#, fuzzy
 msgid "welcome.from2"
 msgstr "from"
 
 #: static/custom/templates/introduction.html.sample:7
-#, fuzzy
 msgid "welcome.from3"
 msgstr "from"
 
 #: static/custom/templates/introduction.html.sample:7
-#, fuzzy
 msgid "welcome.from4"
 msgstr "from"
 
 #: static/custom/templates/introduction.html.sample:7
-#, fuzzy
 msgid "welcome.from5"
 msgstr "from"
 
 #: static/custom/templates/introduction.html.sample:11
 msgid "home.introduction.message"
 msgstr ""
-"This atlas provides you with the wholewild species observed in the "
-"territory.E ach new observation feeds in real timethe sheets of each "
-"species you consult, in a desire to share and enrichknowledge about "
-"biodiversity. <br/> <br/>This atlas presents observationscarried out "
-"under different scientific protocols.This is not an exhaustive "
-"inventorynor a complete distribution of species in the territory."
+"This atlas provides you with the whole wild species observed in the "
+"territory. Each new observation feeds in real time the sheets of each "
+"species you consult, in a desire to share and enrich knowledge about "
+"biodiversity. <br/> <br/>This atlas presents observations carried out "
+"under different scientific protocols. This is not an exhaustive "
+"inventory nor a complete distribution of species in the territory."
 
 #: templates/areaSheet/_main.html:6 templates/areaSheet/_main.html:59
 msgid "municipality.of"
@@ -89,9 +85,8 @@ msgid "filter.species"
 msgstr "Filter species"
 
 #: templates/core/listTaxons.html:23
-#, fuzzy
 msgid "display.municipality.obs"
-msgstr "Municipality of "
+msgstr "View observations on the territory"
 
 #: templates/core/listTaxons.html:81 templates/core/statHierarchy.html:7
 #: templates/home/globalStats.html:12
@@ -387,22 +382,3 @@ msgstr "Organism sheet"
 #: templates/taxoRankSheet/_main.html:47
 msgid "species.obs.for.tax"
 msgstr "Specific observations for this taxon"
-
-#~ msgid "Région/département rattaché"
-#~ msgstr "Attached region/department"
-
-#~ msgid "welcome.from1"
-#~ msgstr "from"
-
-#~ msgid "welcome.from2"
-#~ msgstr "from"
-
-#~ msgid "welcome.from3"
-#~ msgstr "from"
-
-#~ msgid "welcome.from4"
-#~ msgstr "from"
-
-#~ msgid "welcome.from5"
-#~ msgstr "from"
-
