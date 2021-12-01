@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-11-25 17:55+0100\n"
+"POT-Creation-Date: 2021-12-01 12:23+0100\n"
 "PO-Revision-Date: 2021-07-12 12:12+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: static/custom/templates/bandeaulogoshome.html.sample:5
+#: static/custom/templates/bandeaulogoshome.html:5
 msgid "home.partners"
 msgstr "Partners"
 
@@ -26,24 +26,39 @@ msgstr "Partners"
 msgid "welcome.message"
 msgstr "Welcome to the fauna and flora atlas"
 
-#: static/custom/templates/introduction.html.sample:6
+#: static/custom/templates/introduction.html.sample:7
 msgid "welcome.from1"
 msgstr "from"
 
-#: static/custom/templates/introduction.html.sample:9
+#: static/custom/templates/introduction.html.sample:7
+#, fuzzy
+msgid "welcome.from2"
+msgstr "from"
+
+#: static/custom/templates/introduction.html.sample:7
+#, fuzzy
+msgid "welcome.from3"
+msgstr "from"
+
+#: static/custom/templates/introduction.html.sample:7
+#, fuzzy
+msgid "welcome.from4"
+msgstr "from"
+
+#: static/custom/templates/introduction.html.sample:7
+#, fuzzy
+msgid "welcome.from5"
+msgstr "from"
+
+#: static/custom/templates/introduction.html.sample:11
 msgid "home.introduction.message"
 msgstr ""
-"This atlas provides you with the "
-"wholewild species observed in the "
-"territory.E ach new observation feeds in "
-"real timethe sheets of each species "
-"you consult, in a desire to share "
-"and enrichknowledge about biodiversity. <br/>"
-" <br/>This atlas presents observationscarried "
-"out under different scientific protocols.This"
-" is not an exhaustive inventorynor a"
-" complete distribution of species in "
-"the territory."
+"This atlas provides you with the wholewild species observed in the "
+"territory.E ach new observation feeds in real timethe sheets of each "
+"species you consult, in a desire to share and enrichknowledge about "
+"biodiversity. <br/> <br/>This atlas presents observationscarried out "
+"under different scientific protocols.This is not an exhaustive "
+"inventorynor a complete distribution of species in the territory."
 
 #: templates/areaSheet/_main.html:6 templates/areaSheet/_main.html:59
 msgid "municipality.of"
@@ -390,3 +405,4 @@ msgstr "Specific observations for this taxon"
 
 #~ msgid "welcome.from5"
 #~ msgstr "from"
+

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-11-25 17:55+0100\n"
+"POT-Creation-Date: 2021-12-01 12:23+0100\n"
 "PO-Revision-Date: 2021-07-19 09:53+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: static/custom/templates/bandeaulogoshome.html.sample:5
+#: static/custom/templates/bandeaulogoshome.html:5
 msgid "home.partners"
 msgstr "Partner"
 
@@ -26,25 +26,40 @@ msgstr "Partner"
 msgid "welcome.message"
 msgstr "Benvenuti nell'atlante della fauna e della flora"
 
-#: static/custom/templates/introduction.html.sample:6
+#: static/custom/templates/introduction.html.sample:7
 msgid "welcome.from1"
 msgstr "di"
 
-#: static/custom/templates/introduction.html.sample:9
+#: static/custom/templates/introduction.html.sample:7
+#, fuzzy
+msgid "welcome.from2"
+msgstr "di"
+
+#: static/custom/templates/introduction.html.sample:7
+#, fuzzy
+msgid "welcome.from3"
+msgstr "di"
+
+#: static/custom/templates/introduction.html.sample:7
+#, fuzzy
+msgid "welcome.from4"
+msgstr "di"
+
+#: static/custom/templates/introduction.html.sample:7
+#, fuzzy
+msgid "welcome.from5"
+msgstr "di"
+
+#: static/custom/templates/introduction.html.sample:11
 msgid "home.introduction.message"
 msgstr ""
-"Questo atlante ti fornisce il "
-"tuttospecie selvatiche osservate nel "
-"territorio\"Ogni nuova osservazione si "
-"alimenta in tempo realei registri di "
-"ogni specie che consulti\"nel desiderio "
-"di condividere e arricchireconoscenza sulla"
-" biodiversità. <br/> <br/>Questo atlante ti"
-" presenta delle osservazionieffettuata secondo"
-" diversi protocolli scientifici\"Questo non "
-"è un inventario esaustivoné di una "
-"distribuzione completa delle specie nel "
-"territorio\""
+"Questo atlante ti fornisce il tuttospecie selvatiche osservate nel "
+"territorio\"Ogni nuova osservazione si alimenta in tempo realei registri "
+"di ogni specie che consulti\"nel desiderio di condividere e "
+"arricchireconoscenza sulla biodiversità. <br/> <br/>Questo atlante ti "
+"presenta delle osservazionieffettuata secondo diversi protocolli "
+"scientifici\"Questo non è un inventario esaustivoné di una distribuzione "
+"completa delle specie nel territorio\""
 
 #: templates/areaSheet/_main.html:6 templates/areaSheet/_main.html:59
 msgid "municipality.of"
@@ -388,3 +403,4 @@ msgstr "Scheda delle species per taxon"
 
 #~ msgid "welcome.from5"
 #~ msgstr "del"
+
