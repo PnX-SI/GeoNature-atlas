@@ -8,7 +8,8 @@ CHANGELOG
 TOCHECK : 
 
 - Les fichiers sitemap.xml et robots.txt ne fonctionnent pas en multilingue ? Ou dans tous les cas ?
-- Robots.txt à mettre dans atlas/template, sera exposé sur URL/robots.txt / A vérifier
+- Robots.txt à mettre dans atlas/template, sera exposé sur URL/robots.txt / A vérifier / Fonctionne, à indiquer
+- Séparation dans les titles a sauté ?? 
 - Tester sans multilingue
 - Tester sans organisme
 - Vérifier FOOTER
