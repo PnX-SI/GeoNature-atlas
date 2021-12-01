@@ -31,35 +31,31 @@ msgid "welcome.from1"
 msgstr "di"
 
 #: static/custom/templates/introduction.html.sample:7
-#, fuzzy
 msgid "welcome.from2"
 msgstr "di"
 
 #: static/custom/templates/introduction.html.sample:7
-#, fuzzy
 msgid "welcome.from3"
 msgstr "di"
 
 #: static/custom/templates/introduction.html.sample:7
-#, fuzzy
 msgid "welcome.from4"
-msgstr "di"
+msgstr "del"
 
 #: static/custom/templates/introduction.html.sample:7
-#, fuzzy
 msgid "welcome.from5"
-msgstr "di"
+msgstr "del"
 
 #: static/custom/templates/introduction.html.sample:11
 msgid "home.introduction.message"
 msgstr ""
-"Questo atlante ti fornisce il tuttospecie selvatiche osservate nel "
-"territorio\"Ogni nuova osservazione si alimenta in tempo realei registri "
-"di ogni specie che consulti\"nel desiderio di condividere e "
-"arricchireconoscenza sulla biodiversità. <br/> <br/>Questo atlante ti "
-"presenta delle osservazionieffettuata secondo diversi protocolli "
-"scientifici\"Questo non è un inventario esaustivoné di una distribuzione "
-"completa delle specie nel territorio\""
+"Questo atlante ti fornisce il tutte le specie selvatiche osservate nel "
+"territorio. Ogni nuova osservazione si alimenta in tempo reale le schede "
+"di ogni specie che consulti, nel desiderio di condividere e "
+"arricchire le conoscenze sulla biodiversità. <br/> <br/>Questo atlante "
+"presenta osservazioni effettuate secondo diversi protocolli "
+"scientifici. No si tratta di un inventario esaustivo né di una distribuzione "
+"completa delle specie nel territorio."
 
 #: templates/areaSheet/_main.html:6 templates/areaSheet/_main.html:59
 msgid "municipality.of"
@@ -90,9 +86,8 @@ msgid "filter.species"
 msgstr "Filtrare le species"
 
 #: templates/core/listTaxons.html:23
-#, fuzzy
 msgid "display.municipality.obs"
-msgstr "Comune di"
+msgstr "Guarda le osservazioni sul territorio"
 
 #: templates/core/listTaxons.html:81 templates/core/statHierarchy.html:7
 #: templates/home/globalStats.html:12
@@ -388,19 +383,3 @@ msgstr "Scheda organismo"
 #: templates/taxoRankSheet/_main.html:47
 msgid "species.obs.for.tax"
 msgstr "Scheda delle species per taxon"
-
-#~ msgid "welcome.from1"
-#~ msgstr "di"
-
-#~ msgid "welcome.from2"
-#~ msgstr "di"
-
-#~ msgid "welcome.from3"
-#~ msgstr "di"
-
-#~ msgid "welcome.from4"
-#~ msgstr "del'"
-
-#~ msgid "welcome.from5"
-#~ msgstr "del"
-
