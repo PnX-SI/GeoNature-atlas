@@ -7,8 +7,9 @@ CHANGELOG
 
 TOCHECK : 
 
-- Les fichiers sitemaps.xml et robots.txt ne fonctionnent pas en multilingue ? Ou dans tous les cas ?
-- Mise à jour vers systemd
+- Les fichiers sitemap.xml et robots.txt ne fonctionnent pas en multilingue ? Ou dans tous les cas ?
+- Robots.txt à mettre dans atlas/template, sera exposé sur URL/robots.txt / A vérifier
+- Tester sans multilingue
 - Ordonner les SQL
 - Vérifier FOOTER
 - Advanced search (https://github.com/PnX-SI/GeoNature-atlas/blob/develop/atlas/static/custom/templates/advanced_search.html.sample) ??
