@@ -10,7 +10,7 @@ INSTALLATION
 Prérequis
 =========
 
-Application installable sur un serveur Debian 8, 9 ou 10 (Seul Debian 9 et 10 ont été "prouvé et testé).
+Application installable sur un serveur Debian 9, 10 et1 (seuls Debian 9 et 10 ont été prouvé et testé).
 
 Ce serveur doit aussi disposer de :
 
