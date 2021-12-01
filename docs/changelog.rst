@@ -89,6 +89,7 @@ Voir https://github.com/PnX-SI/GeoNature-atlas/compare/develop
 
 ⚠️ **Notes de version** 
 
+- Stopper le service atlas de supervisor `sudo supervisorctl stop atlas`. Supprimez également le fichier de configuration supervisor de l'atlas `sudo supervisorctl remove atlas && sudo rm /etc/supervisor/conf.d/atlas-service.conf && sudo supervisorctl reread`
 - Ajouter la variable `SECRET_KEY` au fichier ``config.py`` (utilisée pour chiffrer la session), et remplissez-la avec une chaine de texte aléatoire.
 - Si vous mettez à jour l'atlas à partir d'une instance déjà existante, il vous faut relancer l'install_db.sh. Ainsi vos ajustements au niveau de la vue initiale syntheseff doivent être reportés. Ensuite, suivez la procédure classique de mise à jour de l'application.
 - Le nom du service systemd est désormais ``geonature-atlas``
