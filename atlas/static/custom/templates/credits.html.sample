@@ -3,9 +3,11 @@
     Copyright © 2021 {{ configuration.STRUCTURE }}. Tous droits réservés.
   </p>
   <p>
-    Biodiv'Ecrins est basé sur l'outil opensource <a href="https://github.com/PnX-SI/GeoNature-atlas" target="_blank">GeoNature-atlas</a>, développé par le Parc national des Ecrins (Théo Lechemia, Gil Deluermoz et Camille Monchicourt) et une communauté de contributeurs.
+    Biodiv'Ecrins est basé sur l'outil opensource <a href="https://github.com/PnX-SI/GeoNature-atlas" target="_blank">GeoNature-atlas</a>, 
+    développé par le Parc national des Ecrins (Théo Lechemia, Gil Deluermoz et Camille Monchicourt) et une communauté de contributeurs.
     <br/>
-    Il fait partie d'un ensemble d'outils développé par le parc national et ses partenaires, pour pouvoir saisir, gérer et traiter les données des différents protocoles faune et flore : <a href="http://geonature.fr" target="_blank">http://geonature.fr</a>.
+    Il fait partie d'un ensemble d'outils développé par le parc national et ses partenaires, pour pouvoir saisir, gérer et traiter les 
+    données des différents protocoles faune et flore : <a href="https://geonature.fr" target="_blank">https://geonature.fr</a>.
   </p>
   <h3>Rédaction :</h3>
   <p>
