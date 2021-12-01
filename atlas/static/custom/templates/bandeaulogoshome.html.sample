@@ -1,0 +1,63 @@
+<!-- Carousel avec logos en page d'accueil -->
+
+					<div class="panel panel-default stat-panel">
+						<div class="panel-heading padding-sm ">
+							<strong><h3 class="title-spaced"><span class="glyphicon glyphicon-link"></span> {{ _('home.partners') }}</h3></strong>
+						</div>
+						<div class="panel-body" style="background-color: white;">
+							<div class="row" style="padding: 1%;">
+
+								<div class="container-fluid" style="padding: 0px 2% 0px 2%;">
+								  <section class="partner-logos slidepartenaireindexr">
+
+								    <!--Logo 1-->
+								    <div class="slidepartenaireindex">
+									<img src="{{url_for('static', filename='custom/images/logo-structure.png') }}">
+								    </div>
+
+								    <!--Logo 2-->
+								    <div class="slidepartenaireindex">
+									<img src="{{url_for('static', filename='custom/images/logo-structure.png') }}">
+								    </div>
+
+								    <!--Logo 3-->
+								    <div class="slidepartenaireindex">
+									<img src="{{url_for('static', filename='custom/images/logo-structure.png') }}">
+								    </div>
+
+								    <!--Logo 4-->
+								    <div class="slidepartenaireindex">
+									<img src="{{url_for('static', filename='custom/images/logo-structure.png') }}">
+								    </div>
+
+								    <!--Logo 5-->
+								    <div class="slidepartenaireindex">
+									<img src="{{url_for('static', filename='custom/images/logo-structure.png') }}">
+								    </div>
+
+								    <!--Logo 6-->
+								    <div class="slidepartenaireindex">
+									<img src="{{url_for('static', filename='custom/images/logo-structure.png') }}">
+								    </div>
+								    
+								  </section>
+
+							  	</div>
+							</div>
+						</div>
+					</div>
+
+  <script type="text/javascript">
+		$(document).ready(function(){
+		  $('.partner-logos').slick({
+		  	  infinite: true,
+		  	  dots: false,
+			  slidesToShow: 5,
+			  slidesToScroll: 1,
+			  centerMode: false,
+			  autoplay: true,
+			  autoplaySpeed: 2000,
+			});
+		});
+  </script>
+
