@@ -31,24 +31,20 @@ msgid "welcome.from1"
 msgstr "du"
 
 #: static/custom/templates/introduction.html.sample:7
-#, fuzzy
 msgid "welcome.from2"
-msgstr "du"
+msgstr "de"
 
 #: static/custom/templates/introduction.html.sample:7
-#, fuzzy
 msgid "welcome.from3"
-msgstr "du"
+msgstr "d'"
 
 #: static/custom/templates/introduction.html.sample:7
-#, fuzzy
 msgid "welcome.from4"
-msgstr "du"
+msgstr "de l'"
 
 #: static/custom/templates/introduction.html.sample:7
-#, fuzzy
 msgid "welcome.from5"
-msgstr "du"
+msgstr "de la"
 
 #: static/custom/templates/introduction.html.sample:11
 msgid "home.introduction.message"
@@ -388,19 +384,3 @@ msgstr "Fiche organisme"
 #: templates/taxoRankSheet/_main.html:47
 msgid "species.obs.for.tax"
 msgstr "Observation pour le taxon"
-
-#~ msgid "welcome.from1"
-#~ msgstr "du"
-
-#~ msgid "welcome.from2"
-#~ msgstr "de"
-
-#~ msgid "welcome.from3"
-#~ msgstr "d'"
-
-#~ msgid "welcome.from4"
-#~ msgstr "de l'"
-
-#~ msgid "welcome.from5"
-#~ msgstr "de la"
-
