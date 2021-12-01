@@ -158,6 +158,9 @@ AFFICHAGE_DERNIERES_OBS = True
 # Bloc avec espèces à voir en ce moment. Affichage True/False
 AFFICHAGE_EN_CE_MOMENT = True
 
+# Bloc dernières espèces découvertes. Affichage True/False
+AFFICHAGE_NOUVELLES_ESPECES = True
+
 ## BLOC STAT PAR RANG : Parametre pour le bloc statistique 2 de la page d'accueil (statistiques par rang remontant 2 espèces aléatoirement ayant au moins une photo)
 # Ce bloc peut être affiché ou non et peut être affiché sur 2, 3 ou 4 colonnes. Il est ainsi possible de mettre autant de blocs que souhaité (2, 3, 4, 6, 8...)
 # Mettre dans RANG_STAT le couple 'rang taxonomique' - 'nom du taxon correspondant au rang' pour avoir des statistique sur ce rang -
