@@ -1,10 +1,8 @@
 {% extends "templates/core/layout.html" %}
 
-
 {% block title %}
-Exemple de titre présentation
+{{ _('atlas.presentation') }}
 {% endblock %}
-
 
 {% block content %}
 <!-- AJOUTER MON CONTENU HTML ici -->
