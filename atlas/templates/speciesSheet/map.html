@@ -12,17 +12,17 @@
                     <li>
                         <i class="fas fa-search fa-2x"></i> </br>
                         <b>{{ taxon.taxonSearch.nb_obs | pretty }}</b></br>
-                        <span style="font-size: 0.90rem">{{ _('observations') if taxon.taxonSearch.nb_obs > 1 else _('observation') }}</span>
+                        <span style="font-size: 0.90rem">{{ _('observations') if taxon.taxonSearch.nb_obs > 1 else _('observation') |lower}}</span>
                     </li>
                     <li>
                         <i class="fas fa-map-signs fa-2x"></i> <br/>
                         <b>{{ communes|length|pretty }}</b><br/>
-                        <span style="font-size: 0.90rem">{{ _('municipalities') if communes|length > 1 else _('municipality') }}</span>
+                        <span style="font-size: 0.90rem">{{ _('municipalities') if communes|length > 1 else _('municipality') |lower}}</span>
                     </li>
                     <li>
                         <i class="fas fa-users fa-2x"></i> <br/>
                         <b>{{ observers|length|pretty }}</b> <br/>
-                        <span style="font-size: 0.90rem">{{ _('observers') if observers|length > 1 else _('observer') }}</span>
+                        <span style="font-size: 0.90rem">{{ _('observers') if observers|length > 1 else _('observer') |lower}}</span>
                     </li>
                     <li id="firstObs" class="pointer">
                         <i class="fas fa-search fa-2x"></i> <br/>
