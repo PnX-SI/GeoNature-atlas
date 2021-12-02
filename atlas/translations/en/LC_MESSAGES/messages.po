@@ -117,7 +117,7 @@ msgstr "Associated areas"
 
 #: templates/areaSheet/surrounding_areas.html:23
 msgid "check.area.sheet"
-msgstr "Check area sheet"
+msgstr "View area sheet"
 
 #: templates/core/advanced_search.html:4
 #: templates/core/advanced_search.html:382 templates/core/sideBar.html:20
@@ -150,18 +150,16 @@ msgid "asearch.max"
 msgstr "You cannot add more than 3 species"
 
 #: templates/core/advanced_search.html:392
-#, fuzzy
 msgid "asearch.search.species"
-msgstr "Search by species"
+msgstr "Search a species"
 
 #: templates/core/advanced_search.html:395
-#, fuzzy
 msgid "asearch.search.start"
-msgstr "Search by species"
+msgstr "Start typing the name of a species"
 
 #: templates/core/advanced_search.html:419
 msgid "asearch.remove.selection"
-msgstr ""
+msgstr "Remove selection"
 
 #: templates/core/advanced_search.html:427 templates/core/listTaxons.html:88
 #: templates/home/lastObs.html:44 templates/home/mostViewNow.html:33
@@ -174,7 +172,7 @@ msgstr "Species sheet"
 #: templates/core/tabTaxons.html:85 templates/organismSheet/topSpecies.html:66
 #: templates/speciesSheet/identityCard.html:173
 msgid "check.species.sheet"
-msgstr "Check species sheet"
+msgstr "View species sheet"
 
 #: templates/core/extended_areas_search.html:13
 msgid "search.other.zones.type"
@@ -310,7 +308,7 @@ msgstr "Photo"
 
 #: templates/home/mostViewNow.html:5
 msgid "see.at.the.moment"
-msgstr "See at the moment"
+msgstr "To see at the moment"
 
 #: templates/home/mostViewNow.html:7
 msgid "species.most.obs.last.15.days"
@@ -425,7 +423,7 @@ msgstr "Author"
 
 #: templates/speciesSheet/identityCard.html:95
 msgid "check.species.sheet.inpn"
-msgstr "Check species's sheet on INPN"
+msgstr "View species sheet on INPN"
 
 #: templates/speciesSheet/identityCard.html:126
 msgid "protection"
@@ -470,19 +468,3 @@ msgstr "Organism sheet"
 #: templates/taxoRankSheet/_main.html:47
 msgid "species.obs.for.tax"
 msgstr "Specific observations for this taxon"
-
-#~ msgid "welcome.from1"
-#~ msgstr "from"
-
-#~ msgid "welcome.from2"
-#~ msgstr "from"
-
-#~ msgid "welcome.from3"
-#~ msgstr "from"
-
-#~ msgid "welcome.from4"
-#~ msgstr "from"
-
-#~ msgid "welcome.from5"
-#~ msgstr "from"
-
