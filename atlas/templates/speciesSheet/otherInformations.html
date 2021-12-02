@@ -4,14 +4,14 @@
             <ul class="nav nav-tabs">
                 {% if articles | length != 0 %}
                     <li class="nav-item"><a data-toggle="tab" class="nav-link active"
-                                            href="#articles"><b>{{ articles|length }}</b> {{ 'articles' if articles|length > 1 else 'article' }}
+                         href="#articles"><b>{{ articles|length }}</b> {{ 'articles' if articles|length > 1 else 'article' }}
                     </a></li>
                     <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#communes">
-                        <b>{{ communes|length }}</b> {{ _('municipalities') if communes|length > 1 else _('municipality') }}</a>
+                        <b>{{ communes|length }}</b> {{ _('municipalities') if communes|length > 1 else _('municipality') |lower}}</a>
                     </li>
                 {% else %}
                     <li class="nav-item"><a data-toggle="tab" class="nav-link active" href="#communes">
-                        <b>{{ communes|length }}</b> {{ _('municipalities') if communes|length > 1 else _('municipality') }}</a>
+                        <b>{{ communes|length }}</b> {{ _('municipalities') if communes|length > 1 else _('municipality') |lower}}</a>
                     </li>
                 {% endif %}
                 
@@ -19,14 +19,14 @@
                     <li class="nav-item">
                         <a class="nav-link" {% if not configuration.ANONYMIZE %}data-toggle="tab"
                         href="#organisms" {% endif %}>
-                            <b>{{ organisms|length }} </b> {{ _('organisms') if organisms|length > 1 else _('organism') }}
+                            <b>{{ organisms|length }} </b> {{ _('organisms') if organisms|length > 1 else _('organism') |lower}}
                         </a>
                 </li>
                 {% endif %}
 
                 <li class="nav-item"><a class="nav-link" {% if not configuration.ANONYMIZE %}data-toggle="tab"
                                         href="#observateurs" {% endif %}>
-                    <b>{{ observers|length }} </b> {{ _('observers') if observers|length > 1 else _('observer') }}
+                    <b>{{ observers|length }} </b> {{ _('observers') if observers|length > 1 else _('observer') |lower}}
                 </a></li>
             </ul>
 
