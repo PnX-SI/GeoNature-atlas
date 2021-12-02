@@ -89,6 +89,9 @@ fi
 if [ ! -f ./atlas/static/custom/templates/bandeaulogoshome.html ]; then
   cp ./atlas/static/custom/templates/bandeaulogoshome.html.sample ./atlas/static/custom/templates/bandeaulogoshome.html
 fi
+if [ ! -f ./atlas/static/custom/templates/robots.txt ]; then
+  cp ./atlas/static/custom/templates/robots.txt.sample  ./atlas/static/custom/templates/robots.txt 
+fi
 
 if [ ! -f ./atlas/static/custom/custom.css ]; then
   cp ./atlas/static/custom/custom.css.sample ./atlas/static/custom/custom.css
