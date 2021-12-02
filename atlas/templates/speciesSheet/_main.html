@@ -1,8 +1,11 @@
 {% extends "templates/core/layout.html" %}
 
-{% block title %}{% if taxon.taxonSearch.nom_vern %} {{ taxon.taxonSearch.nom_vern }}
-- {% endif %} {{ taxon.taxonSearch.lb_nom }} | {{ configuration.NOM_APPLICATION }}
-- {{ configuration.STRUCTURE }}{% endblock %}
+{% block title %}
+    {% if taxon.taxonSearch.nom_vern %} 
+    {{ taxon.taxonSearch.nom_vern }} - 
+    {% endif %} 
+    {{ taxon.taxonSearch.lb_nom }}
+{% endblock %}
 
 {% block additionalHeaderAssets %}
 <!-- Bootstrap slider -->
