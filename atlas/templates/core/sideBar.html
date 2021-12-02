@@ -16,9 +16,16 @@
             </a>
         {% endif %}
     {% endfor %}
-
+    {% if configuration.AFFICHAGE_RECHERCHE_AVANCEE %}
+        <a href="{{ url_for('main.advanced_search') }}" data-toggle="tooltip" data-original-title="{{ _('advanced_search') }}"
+        data-placement="right">
+            <li class="sidebar-brand"><span class="fa fa-search"></span></li>
+        </a>
+    {% endif %}
     <a href="{{ url_for('main.photos') }}" data-toggle="tooltip" data-original-title="{{ _('gallery.title') }}"
        data-placement="right">
         <li class="sidebar-brand"><span class="fa fa-camera"></span></li>
     </a>
+
+
 </ul>

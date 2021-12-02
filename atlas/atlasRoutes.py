@@ -169,11 +169,6 @@ def indexMedias(image):
     )
 
 
-# @index_bp.route("/", methods=["GET", "POST"])
-# def index():
-#    return redirect(url_for("main.index"))
-
-
 @main.route("/", methods=["GET", "POST"])
 def index():
     session = utils.loadSession()
@@ -395,6 +390,10 @@ def photos():
     connection.close()
     return render_template("templates/photoGalery/_main.html", groups=groups)
 
+
+@main.route("/recherche", methods=["GET"])
+def advanced_search():
+    return render_template("templates/core/advanced_search.html", )
 
 @main.route("/<page>", methods=["GET", "POST"])
 def get_staticpages(page):

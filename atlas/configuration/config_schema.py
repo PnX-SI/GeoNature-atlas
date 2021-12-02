@@ -135,6 +135,8 @@ class AtlasConfig(Schema):
     AFFICHAGE_EN_CE_MOMENT = fields.Boolean(load_default=True)
     AFFICHAGE_RANG_STAT = fields.Boolean(load_default=True)
     AFFICHAGE_NOUVELLES_ESPECES = fields.Boolean(load_default=True)
+    AFFICHAGE_RECHERCHE_AVANCEE = fields.Boolean(load_default=False)
+
     RANG_STAT = fields.List(
         fields.Dict,
         load_default=[
