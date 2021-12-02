@@ -32,7 +32,7 @@ CHANGELOG
 
 **3. Bootstrap 4 (#233 par @lpofredc)**
 
-- Mise à jour de Bootstrap version 3 à 4
+- Mise à jour de Bootstrap version 3 à 4 (#230)
 - Remplacement de la police d'icônes Glyphicon par Font Awesome
 - Correction de l'absence de la hiérarchie sur les fiches taxons
 - Restructuration des templates (avec ``includes`` & ``blocks``) et mutualisation des parties partagées
