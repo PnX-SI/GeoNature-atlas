@@ -129,7 +129,7 @@ class AtlasConfig(Schema):
     IGNAPIKEY = fields.String(load_default="")
     AFFICHAGE_INTRODUCTION = fields.Boolean(load_default=True)
     AFFICHAGE_LOGOS_HOME = fields.Boolean(load_default=True)
-    AFFICHAGE_FOOTER = fields.Boolean(load_default=False)
+    AFFICHAGE_FOOTER = fields.Boolean(load_default=True)
     AFFICHAGE_STAT_GLOBALES = fields.Boolean(load_default=True)
     AFFICHAGE_DERNIERES_OBS = fields.Boolean(load_default=True)
     AFFICHAGE_EN_CE_MOMENT = fields.Boolean(load_default=True)

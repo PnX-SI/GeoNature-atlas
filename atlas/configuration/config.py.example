@@ -144,10 +144,10 @@ NB_LAST_OBS=100
 ###########################
 
 # Bloc d'introduction presentant l'atlas. Affichage True/False
-AFFICHAGE_INTRODUCTION = False
+AFFICHAGE_INTRODUCTION = True
 
 # Afficher le Footer sur toutes les pages (static/custom/templates/footer.html)
-AFFICHAGE_FOOTER = False
+AFFICHAGE_FOOTER = True
 
 # Bloc de statistiques globales. Affichage True/False
 AFFICHAGE_STAT_GLOBALES = True

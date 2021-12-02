@@ -4,7 +4,7 @@
 			<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 textIntroduction">
 				<h1>
 					{{ _('welcome.message') }} 
-					{{ _('welcome.from1') }} {{ _('welcome.from2') }} {{ _('welcome.from3') }} {{ _('welcome.from4') }} {{ _('welcome.from5') }} 
+					{{ _('from1') }} {{ _('from2') }} {{ _('from3') }} {{ _('from4') }} {{ _('from5') }} 
 					{{configuration.STRUCTURE}}
 				</h1>
 				<p>

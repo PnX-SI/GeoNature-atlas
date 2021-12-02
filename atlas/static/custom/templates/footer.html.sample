@@ -1,27 +1,19 @@
-<p>
-    <span class="float-right px-2" data-toggle="collapse" title="Voir le pied de page" href="#collapseFooter"
-          role="button" aria-expanded="false"
-          aria-controls="collapseFooter">
-        <a class="badge badge-default" data-toggle="tooltip" data-placement="left" title="Voir le pied de page"><i
-                class="fas fa-chevron-up"></i>
-    </a>
-
-    </span>
-    <a href="{{ url_for('index_bp.index') }}">Accueil</a> |
-    <a href="http://www.ecrins-parcnational.fr" target="_blank">Site du {{ configuration.STRUCTURE }}</a> |
+<small>
+    <a href="{{ url_for('main.index') }}">{{ _('home') }}</a> |
+    <a href="http://www.ecrins-parcnational.fr" target="_blank">{{ configuration.STRUCTURE }}</a> |
     <a data-toggle="modal" href="#"
-       data-target="#modalCredits">Conception et crédits</a> |
+       data-target="#modalCredits">{{ _('credits') }}</a> |
     <a data-toggle="modal" href="#"
-       data-target="#modalMentions">Mentions légales</a>
-<p>
+       data-target="#modalMentions">{{ _('legal') }}</a>
+</small>
 
-    <div class="clear collapse" id="collapseFooter">
-<p class="text-muted">
-    {{ configuration.NOM_APPLICATION }} - Atlas de la faune et de la flore du {{ configuration.STRUCTURE }}, 2016
+<div>
+<small class="text-muted">
+    {{ configuration.NOM_APPLICATION }} - {{ _('atlas.fauna.flora') }} {{ _('from1') }} {{ configuration.STRUCTURE }}, 2021
     <br/>
-    Réalisé avec <a href="https://github.com/PnX-SI/GeoNature-atlas" target="_blank">GeoNature-atlas</a>, développé par
-    le <a href="http://www.ecrins-parcnational.fr" target="_blank">Parc national des Ecrins</a>
-</p>
+    {{ _('powered.by') }} <a href="https://github.com/PnX-SI/GeoNature-atlas" target="_blank">GeoNature-atlas</a>, {{ _('developed.by') }}
+    <a href="http://www.ecrins-parcnational.fr" target="_blank">{{ _('ecrins.national.park') }}</a>
+</small>
 </div>
 
 <div class="modal fade text-justify" id="modalCredits">
@@ -29,7 +21,7 @@
         <div class="modal-content">
             <div class="modal-header">
 
-                <h3>Credits</h3>
+                <h3>{{ _('credits') }}</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true" class="text-white">&times;</span>
                 </button>
@@ -46,7 +38,7 @@
         <div class="modal-content">
             <div class="modal-header">
 
-                <h3>Mentions légales</h3>
+                <h3>{{ _('legal') }}</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true" class="text-white">&times;</span>
                 </button>
