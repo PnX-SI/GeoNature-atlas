@@ -25,39 +25,39 @@ msgstr "Partners"
 
 #: static/custom/templates/footer.html.sample:2 templates/home/_main.html:3
 msgid "home"
-msgstr ""
+msgstr "Home"
 
 #: static/custom/templates/footer.html.sample:5
 #: static/custom/templates/footer.html.sample:24
 msgid "credits"
-msgstr ""
+msgstr "Conception and credits"
 
 #: static/custom/templates/footer.html.sample:7
 #: static/custom/templates/footer.html.sample:41
 msgid "legal"
-msgstr ""
+msgstr "Legal mentions"
 
 #: static/custom/templates/footer.html.sample:12
 msgid "atlas.fauna.flora"
-msgstr ""
+msgstr "Faune and flora atlas"
 
 #: static/custom/templates/footer.html.sample:12
 #: static/custom/templates/introduction.html:7
 #: static/custom/templates/introduction.html.sample:7
 msgid "from1"
-msgstr ""
+msgstr "from"
 
 #: static/custom/templates/footer.html.sample:14
 msgid "powered.by"
-msgstr ""
+msgstr "Powered by"
 
 #: static/custom/templates/footer.html.sample:14
 msgid "developed.by"
-msgstr ""
+msgstr "Developed by"
 
 #: static/custom/templates/footer.html.sample:15
 msgid "ecrins.national.park"
-msgstr ""
+msgstr "the Ecrins national park"
 
 #: static/custom/templates/introduction.html:6
 #: static/custom/templates/introduction.html.sample:6
@@ -67,22 +67,22 @@ msgstr "Welcome to the fauna and flora atlas"
 #: static/custom/templates/introduction.html:7
 #: static/custom/templates/introduction.html.sample:7
 msgid "from2"
-msgstr ""
+msgstr "from"
 
 #: static/custom/templates/introduction.html:7
 #: static/custom/templates/introduction.html.sample:7
 msgid "from3"
-msgstr ""
+msgstr "from"
 
 #: static/custom/templates/introduction.html:7
 #: static/custom/templates/introduction.html.sample:7
 msgid "from4"
-msgstr ""
+msgstr "from"
 
 #: static/custom/templates/introduction.html:7
 #: static/custom/templates/introduction.html.sample:7
 msgid "from5"
-msgstr ""
+msgstr "from"
 
 #: static/custom/templates/introduction.html:11
 #: static/custom/templates/introduction.html.sample:11
@@ -96,9 +96,8 @@ msgstr ""
 " nor a complete distribution of species in the territory."
 
 #: static/custom/templates/presentation.html.sample:4
-#, fuzzy
 msgid "atlas.presentation"
-msgstr "Atlas participation"
+msgstr "Atlas presentation"
 
 #: templates/areaSheet/_main.html:6 templates/areaSheet/_main.html:59
 msgid "municipality.of"
@@ -123,33 +122,32 @@ msgstr "Check area sheet"
 #: templates/core/advanced_search.html:4
 #: templates/core/advanced_search.html:382 templates/core/sideBar.html:20
 msgid "advanced_search"
-msgstr ""
+msgstr "Advanced search"
 
 #: templates/core/advanced_search.html:350
-#, fuzzy
 msgid "information"
-msgstr "Other information"
+msgstr "Information"
 
 #: templates/core/advanced_search.html:351
 #: templates/core/advanced_search.html:361
 msgid "close"
-msgstr ""
+msgstr "Close"
 
 #: templates/core/advanced_search.html:357
-#, fuzzy
 msgid "asearch.information"
-msgstr "Other information"
+msgstr ""
+"This page allows you to superimpose the distribution of several"
+"species simultaneously. <br/> <br/> For reasons of visibility of"
+"distributions on map, the total number of species is limited to 3."
 
 #: templates/core/advanced_search.html:373
-#, fuzzy
 msgid "page.information"
-msgstr "Other information"
+msgstr "See information about this page"
 
 #: templates/core/advanced_search.html:385
 #: templates/core/advanced_search.html:408
-#, fuzzy
 msgid "asearch.max"
-msgstr "Search by municipality"
+msgstr "You cannot add more than 3 species"
 
 #: templates/core/advanced_search.html:392
 #, fuzzy
