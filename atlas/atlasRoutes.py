@@ -390,10 +390,10 @@ def photos():
     connection.close()
     return render_template("templates/photoGalery/_main.html", groups=groups)
 
-
-@main.route("/recherche", methods=["GET"])
-def advanced_search():
-    return render_template("templates/core/advanced_search.html", )
+if config["AFFICHAGE_RECHERCHE_AVANCEE"]:
+    @main.route("/recherche", methods=["GET"])
+    def advanced_search():
+        return render_template("templates/core/advanced_search.html", )
 
 @main.route("/<page>", methods=["GET", "POST"])
 def get_staticpages(page):
