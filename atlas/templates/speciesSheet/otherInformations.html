@@ -19,14 +19,14 @@
                     <li class="nav-item">
                         <a class="nav-link" {% if not configuration.ANONYMIZE %}data-toggle="tab"
                         href="#organisms" {% endif %}>
-                            <b>{{ organisms|length }} </b> {{ _('organisms') if organisms|length > 1 else _('organism') |lower}}
+                            <b>{{ organisms|length }} </b> {{ _('organisms')|lower if organisms|length > 1 else _('organism')|lower }}
                         </a>
                 </li>
                 {% endif %}
 
                 <li class="nav-item"><a class="nav-link" {% if not configuration.ANONYMIZE %}data-toggle="tab"
                                         href="#observateurs" {% endif %}>
-                    <b>{{ observers|length }} </b> {{ _('observers') if observers|length > 1 else _('observer') |lower}}
+                    <b>{{ observers|length }} </b> {{ _('observers')|lower if observers|length > 1 else _('observer')|lower }}
                 </a></li>
             </ul>
 
