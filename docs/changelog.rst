@@ -2,32 +2,17 @@
 CHANGELOG
 =========
 
-1.5.0 (unreleased)
+1.5.0 (2021-12-02)
 ------------------
-
-TOCHECK : 
-
-- Les fichiers sitemap.xml et robots.txt ne fonctionnent pas en multilingue ? Ou dans tous les cas ?
-- Robots.txt à mettre dans atlas/template, sera exposé sur URL/robots.txt / A vérifier / Fonctionne, à indiquer
-- Séparation dans les titles a sauté ?? 
-- Tester sans multilingue
-- Tester sans organisme
-- Vérifier FOOTER
-- Advanced search (https://github.com/PnX-SI/GeoNature-atlas/blob/develop/atlas/static/custom/templates/advanced_search.html.sample) ??
-- Ajout d'autres types de zonages (https://github.com/PnX-SI/GeoNature-atlas/pull/233#issuecomment-637097246) mais paramètre a été supprimé (https://github.com/PnX-SI/GeoNature-atlas/pull/233#pullrequestreview-422176773) ???
-- data/atlas_with_extended_areas.sql servait justement à ça (https://github.com/PnX-SI/GeoNature-atlas/pull/233/files#diff-2e6c86ac92365124b9dce6a1ec16985d1ff2d4185edead5899af28535abfebda) ?? 
-- Remarques de Marie (https://github.com/PnX-SI/GeoNature-atlas/pull/233#pullrequestreview-504652956) ?
-
-Voir https://github.com/PnX-SI/GeoNature-atlas/compare/develop
 
 🚀 **Nouveautés** 
 
 **1. Affichage des organismes (#291 par @corentinlange)**
 
 - Affichage des organismes activable avec le paramètre ``ORGANISM_MODULE`` (désactivé par défaut) (#325)
-- Affichage des organismes ayant saisi des données d'une espèce dans la fiche espèce (#315)
+- Affichage des organismes ayant fourni des données d'une espèce dans la fiche espèce (#315)
 - Intégration du bandeau organisme sur la page d'accueil (PR #353, ticket pour amélioration #357)
-- Ajout des fiches organismes, fiches descriptives avec logo, nom, nombre de données, espèces les plus observées et familles de taxons observés par un organisme (#291)
+- Création de fiches organismes, avec logo, nom, nombre de données, espèces les plus observées et familles de taxons observés par un organisme (#291)
 
 **2. Multilingue (#175 par @TheMagicia et @corentinlange)**
 
@@ -41,22 +26,22 @@ Voir https://github.com/PnX-SI/GeoNature-atlas/compare/develop
 **3. Bootstrap 4 (#233 par @lpofredc)**
 
 - Mise à jour de Bootstrap version 3 à 4
-- Remplacement de Glyphicon par Font Awesome
+- Remplacement de la police d'icônes Glyphicon par Font Awesome
 - Correction de l'absence de la hiérarchie sur les fiches taxons
 - Restructuration des templates (avec ``includes`` & ``blocks``) et mutualisation des parties partagées
 - Refonte de la page commune, notamment en fixant la carte et en ne scrollant que dans la liste (#79)
-- Remplacement de la librairie des graphiques morris/D3 par chartJS
-- Ajout d'un fichier ``sitemap.xml`` à la racine de l'application, autogénéré pour optimiser le référencement par les moteurs de recherche
-- Ajout d'un fichier ``robots.txt`` à la racine de l'application, autogénéré pour indiquer aux moteurs de recherche les pages qu'ils peuvent indexer ou non
-- Utilisation des zonages activés (``enable = true``) uniquement dans le ``ref_geo``
+- Remplacement de la librairie des graphiques morris/D3 par chart.js (#164)
+- Ajout d'un fichier ``sitemap.xml`` à la racine de l'application, autogénéré pour optimiser le référencement par les moteurs de recherche (#44)
+- Ajout d'un fichier ``robots.txt`` à la racine de l'application, à partir d'un template customisable, pour indiquer aux moteurs de recherche les pages qu'ils peuvent indexer ou non (#223)
+- Utilisation des zonages activés uniquement dans le ``ref_geo`` (``enable = true``)
 - Possibilité de customiser en CSS la couleur des contours des objets sur les cartes (mailles, territoire, zonages)
 - Corrections de la hierarchie taxonomique
 - Possibilité de masquer les observateurs avec le nouveau paramètre ``ANONYMIZE``
-- Les liens dans le menu latéral peuvent être des liens externes (en remplacant la clé ``template`` par la clé ``url``)
+- Possibilité que les liens dans le menu latéral peuvent être des liens externes (en remplacant la clé ``template`` par la clé ``url``)
 
 **4. Nouvelles espèces**
 
-- Ajout de la fonctionnalité "Nouvelles espèces observées" : dernières espèces découvertes (première observation d'une espèce) sur le territoire (#85 par @MathildeLeclerc)
+- Ajout d'un bloc "Nouvelles espèces observées" sur la page d'accueil, permettant d'afficher les dernières espèces découvertes (première observation d'une espèce) sur le territoire (#85 par @MathildeLeclerc)
 
 **5. Autres**
 
@@ -75,6 +60,8 @@ Voir https://github.com/PnX-SI/GeoNature-atlas/compare/develop
 - Ajout d'un paramètre de définition du timeout de gunicorn (#271 par @jpm-cbna)
 - Mise à jour des dépendances
 - Réorganisation du code et packaging
+- Ajout d'une page de recherche avancée, permettant d'afficher les observations par maille de 3 espèces en même temps, à tester et finaliser (#313 par @lpofredc)
+- Ajout de la possibilité de proposer d'autres types de zonages que les communes, à tester, génériciser et finaliser (#209 par @lpofredc)
 
 🐛 **Corrections** 
 
