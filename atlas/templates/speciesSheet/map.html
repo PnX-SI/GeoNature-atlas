@@ -12,25 +12,25 @@
                     <li>
                         <i class="fas fa-search fa-2x"></i> </br>
                         <b>{{ taxon.taxonSearch.nb_obs | pretty }}</b></br>
-                        {{ _('observations') if taxon.taxonSearch.nb_obs > 1 else _('observation') }}
+                        <span style="font-size: 0.90rem">{{ _('observations') if taxon.taxonSearch.nb_obs > 1 else _('observation') }}</span>
                     </li>
                     <li>
                         <i class="fas fa-map-signs fa-2x"></i> <br/>
                         <b>{{ communes|length|pretty }}</b><br/>
-                        {{ _('municipalities') if communes|length > 1 else _('municipality') }}
+                        <span style="font-size: 0.90rem">{{ _('municipalities') if communes|length > 1 else _('municipality') }}</span>
                     </li>
                     <li>
                         <i class="fas fa-users fa-2x"></i> <br/>
                         <b>{{ observers|length|pretty }}</b> <br/>
-                        {{ _('observers') if observers|length > 1 else _('observer') }}
+                        <span style="font-size: 0.90rem">{{ _('observers') if observers|length > 1 else _('observer') }}</span>
                     </li>
                     <li id="firstObs" class="pointer">
                         <i class="fas fa-search fa-2x"></i> <br/>
-                        <b style="font-size: 0.90rem">{{ _('first.obs') }}</b><br/>{{ taxon.taxonSearch.yearmin|int }}
+                        <span style="font-size: 0.90rem">{{ _('first.obs') }}</span><br/><b>{{ taxon.taxonSearch.yearmin|int }}</b>
                     </li>
                     <li id="lastObs" class="pointer">
                         <i class="far fa-clock fa-2x"></i> <br/>
-                        <b style="font-size: 0.90rem">{{ _('last.obs') }}</b><br/>{{ taxon.taxonSearch.yearmax|int }}
+                        <span style="font-size: 0.90rem">{{ _('last.obs') }}</span><br/><b>{{ taxon.taxonSearch.yearmax|int }}</b>
                     </li>
                 </ul>
             </div>
