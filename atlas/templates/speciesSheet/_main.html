@@ -34,7 +34,12 @@
 <script>
     var dataset = {{ altitudes| tojson}};
     var months_value = {{ months | tojson}};
+    {% if configuration.MULTILINGUAL %}
     var months_name = {{ configuration.AVAILABLE_LANGUAGES[g.lang_code]['months'] | tojson }};
+    {% else %}
+    var months_name = {{ configuration.AVAILABLE_LANGUAGES[configuration.DEFAULT_LANGUAGE]['months'] | tojson }};
+
+    {% endif %}
     var observationsPoint = [];
     var observationsMaille = [];
     var configuration = {{ configuration| tojson}};
