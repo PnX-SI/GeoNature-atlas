@@ -4,17 +4,17 @@
             <div class="col-sm center border-right">
                 <i class="fas fa-search"></i>
                 <br><strong>{{ listTaxons.nbObsTotal | pretty }}</strong>
-                <br>{{ _('observations') if listTaxons.nbObsTotal > 1 else _('observation') }}
+                <br>{{ _('observations')|lower if listTaxons.nbObsTotal > 1 else _('observation')|lower }}
             </div>
             <div class="col-sm center border-right">
                 <i class="fas fa-leaf"></i>
                 <br><strong>{{ listTaxons.taxons|length | pretty }}</strong>
-                <br>{{ _('species') if listTaxons.taxons|length > 1 else _('species') }}
+                <br>{{ _('species')|lower if listTaxons.taxons|length > 1 else _('species')|lower }}
             </div>
             <div class="col-sm center">
                 <i class="fa fa-users"></i>
                 <br><strong>{{ observers | length | pretty }}</strong>
-                <br>{{ _('observers') if observers|length > 1 else _('observer') }}
+                <br>{{ _('observers')|lower if observers|length > 1 else _('observer')|lower }}
             </div>
         </div>
     </div>
