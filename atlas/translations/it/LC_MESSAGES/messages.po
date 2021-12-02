@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-02 12:46+0100\n"
+"POT-Creation-Date: 2021-12-02 14:49+0100\n"
 "PO-Revision-Date: 2021-07-19 09:53+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
@@ -137,9 +137,9 @@ msgstr "Chiudere"
 #: templates/core/advanced_search.html:357
 msgid "asearch.information"
 msgstr ""
-"Questa pagina permette di sovrapporre la distribuzione di più"
-"contemporaneamente. <br/> <br/> Per ragioni di visibilità di"
-"distribuzioni di carte, il numero totale di contanti è limitato a 3".
+"Questa pagina permette di sovrapporre la distribuzione di "
+"piùcontemporaneamente. <br/> <br/> Per ragioni di visibilità "
+"didistribuzioni di carte, il numero totale di contanti è limitato a 3\""
 
 #: templates/core/advanced_search.html:373
 msgid "page.information"
@@ -361,13 +361,14 @@ msgstr "Specie più comunemente osservate"
 msgid "from.organism.observations"
 msgstr "delle osservazioni dell'organizzazione"
 
-#: templates/photoGalery/_main.html:64
-msgid "all.groups.tooltip"
-msgstr "Gruppo"
-
-#: templates/photoGalery/_main.html:65
+#: templates/photoGalery/_main.html:64 templates/photoGalery/_main.html:65
 msgid "all.groups"
 msgstr "Gruppo"
+
+#: templates/photoGalery/_main.html:70
+#, fuzzy
+msgid "order.photos"
+msgstr "Immagini"
 
 #: templates/speciesSheet/audioVideo.html:7
 msgid "Video"
@@ -469,3 +470,7 @@ msgstr "Scheda organismo"
 #: templates/taxoRankSheet/_main.html:47
 msgid "species.obs.for.tax"
 msgstr "Scheda delle species per taxon"
+
+#~ msgid "all.groups.tooltip"
+#~ msgstr "Gruppo"
+

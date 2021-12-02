@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-02 12:46+0100\n"
+"POT-Creation-Date: 2021-12-02 14:49+0100\n"
 "PO-Revision-Date: 2021-07-12 12:12+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -136,9 +136,9 @@ msgstr "Close"
 #: templates/core/advanced_search.html:357
 msgid "asearch.information"
 msgstr ""
-"This page allows you to superimpose the distribution of several"
-"species simultaneously. <br/> <br/> For reasons of visibility of"
-"distributions on map, the total number of species is limited to 3."
+"This page allows you to superimpose the distribution of severalspecies "
+"simultaneously. <br/> <br/> For reasons of visibility ofdistributions on "
+"map, the total number of species is limited to 3."
 
 #: templates/core/advanced_search.html:373
 msgid "page.information"
@@ -360,13 +360,14 @@ msgstr "Most observed species"
 msgid "from.organism.observations"
 msgstr "of the organism's observations"
 
-#: templates/photoGalery/_main.html:64
-msgid "all.groups.tooltip"
-msgstr "Show photos of all groups"
-
-#: templates/photoGalery/_main.html:65
+#: templates/photoGalery/_main.html:64 templates/photoGalery/_main.html:65
 msgid "all.groups"
 msgstr "All groups"
+
+#: templates/photoGalery/_main.html:70
+#, fuzzy
+msgid "order.photos"
+msgstr "Photos"
 
 #: templates/speciesSheet/audioVideo.html:7
 msgid "Video"
@@ -468,3 +469,7 @@ msgstr "Organism sheet"
 #: templates/taxoRankSheet/_main.html:47
 msgid "species.obs.for.tax"
 msgstr "Specific observations for this taxon"
+
+#~ msgid "all.groups.tooltip"
+#~ msgstr "Show photos of all groups"
+
