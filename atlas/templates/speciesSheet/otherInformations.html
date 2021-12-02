@@ -7,7 +7,7 @@
                          href="#articles"><b>{{ articles|length }}</b> {{ 'articles' if articles|length > 1 else 'article' }}
                     </a></li>
                     <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#communes">
-                        <b>{{ communes|length }}</b> {{ _('municipalities')|lower if communes|length > 1 else _('municipality')|lower }}</a>
+                        <b>{{ communes|length }}</b> {{ _('municipalities'|lower) if communes|length > 1 else _('municipality'|lower) }}</a>
                     </li>
                 {% else %}
                     <li class="nav-item"><a data-toggle="tab" class="nav-link active" href="#communes">
