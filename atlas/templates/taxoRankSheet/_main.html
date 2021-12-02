@@ -1,0 +1,71 @@
+{% extends "templates/core/layout.html" %}
+
+{% block title %}
+    {# Personnalisez ici le titre de la page (celui qui est affiché dans l'onglet du navigateur) #}
+    {{ referenciel.lb_nom }} ({{ referenciel.nom_rang }})
+{% endblock %}
+
+{% block metaTags %}
+    {# Ajoutez ici les balises méta utilisées pour le SEO #}
+{% endblock %}
+
+{% block additionalHeaderAssets %}
+    {# Ajoutez ici les assets complémentaires qui seront dans le bloc <head></head> #}
+    <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/datatables.net-bs4/css/dataTables.bootstrap4.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/datatables.net-bs4/css/dataTables.bootstrap4.css') }}"/>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-bs4/js/dataTables.bootstrap4.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/listEspeces.css') }}"/>
+{% endblock %}
+
+ff
+{% block additionalFooterAssets %}
+    {# Ajoutez ici les assets complémentaires qui seront en bas de page #}
+    <script type="text/javascript">
+        var configuration = {{configuration|tojson}};
+        //calcul du nb de colonnes pour le fonctionnement de dataTables.js
+        var nbColumn = 6;
+        {% if configuration.DISPLAY_PATRIMONIALITE %} nbColumn = nbColumn + 1;{% endif %}
+        {% if configuration.PROTECTION %} nbColumn = nbColumn + 1;{% endif %}
+        var noSordedColumns = [nbColumn - 1]; //var for dataTables js lib
+        var defaultSortedColumn = nbColumn - 3; //var for dataTables js lib
+    </script>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-bs4/js/dataTables.bootstrap4.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='node_modules/datatables.net-bs4/js/dataTables.bootstrap4.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='listeEspeces.js') }}"></script>
+{% endblock %}
+
+
+{% block content %}
+    {# Ajoutez ici coeur de la page #}
+
+    <div class="row h-100 flex-grow-1 p-0 m-0 border-bottom">
+        <div class="col-12 d-flex flex-column m-0 p-0">
+            <div class="bg-light text-center border-bottom border-right p-2">
+        <h4><b> {{ _('species.obs.for.tax') }} <i>{{ referenciel.lb_nom }}</i> ({{ referenciel.nom_rang }}) </b>        </h4>
+
+        <div id="hierarchy">
+            {% for taxon in taxonomyHierarchy %}
+                {{ taxon.nom_rang }} :
+                <i>
+                    {% if ( taxon.tri_rang >= configuration.LIMIT_FICHE_LISTE_HIERARCHY) %}
+                        <a href="{{ url_for('main.ficheEspece', cd_ref = taxon.cd_ref) }}">{{ taxon.lb_nom }}</a>
+                    {% else %}
+                        <a href="{{ url_for('main.ficheRangTaxonomie', cd_ref = taxon.cd_ref) }}">{{ taxon.lb_nom }}</a>
+
+                    {% endif %}
+                </i>
+                {% if not loop.last %}
+                    <span class="fas fa-chevron-right"> </span>
+                {% endif %}
+
+            {% endfor %}
+        </div>
+        {% include 'templates/core/statHierarchy.html' %}
+    </div>
+
+
+                {% include 'templates/core/listTaxons.html' %}
+{% endblock %}

@@ -1,0 +1,71 @@
+<!doctype html>
+{% if configuration.MULTILINGUAL %}
+<html lang='{{g.lang_code}}'>
+{% else %}
+<html lang='{{configuration.DEFAULT_LANGUAGE}}'>
+{% endif %}
+<head>
+<base href="{{ configuration.URL_APPLICATION }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}{% endblock %} | {{ configuration.NOM_APPLICATION }} - {{ configuration.STRUCTURE }}</title>
+    {% include "templates/core/assets_header.html" %}
+    <!-- Additional assets -->
+    {% block additionalHeaderAssets %}
+    {% endblock %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='custom/custom.css') }}"/>
+    {% block metaTags %}{% endblock %}
+</head>
+
+<body>
+<header id="navbar">
+    {% include "templates/core/navbar.html" %}
+</header>
+
+<sidebar id="sideBar">
+    {% include 'templates/core/sideBar.html' %}
+</sidebar>
+<main class="d-flex">
+
+    <div class="container-fluid" id="page">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div id="message">
+                        <div id="inner-message"
+                             class="alert alert-warning alert-dismissible fade show position-fixed right"
+                             role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}
+        {% endblock %}
+
+    </div>
+</main>
+
+{% if configuration.AFFICHAGE_FOOTER %}
+    <footer>
+        {% include 'static/custom/templates/footer.html' %}
+    </footer>
+{% endif %}
+
+</body>
+
+{% include "templates/core/assets_footer.html" %}
+<script>
+    {% for type in areas_type_search %}
+        $("#searchAreas{{ type.type_code.lower().capitalize() }}").focus(function () {
+            autocompleteSearch("#searchAreas{{ type.type_code.lower().capitalize() }}", "{{ type.type_code}}", 10);
+        });
+    {% endfor %}
+</script>
+{% block additionalFooterAssets %}{% endblock %}
+
+</html>

@@ -1,0 +1,12 @@
+{% block charts %}
+    <div class="card mt-4" id="graphBloc">
+        <h4 class="title-bar title-spaced center strong">{{ _('alt.classes.obs') }}</h4>
+        <div class="chart-container" style="position: relative; height:200px; width:100%">
+            <canvas id="altiChart"></canvas>
+        </div>
+        <h4 class="title-bar title-spaced center strong">{{ _('monthly.obs') }}</h4>
+        <div class="chart-container" style="position: relative; height:200px; width:100%">
+            <canvas id="monthChart"></canvas>
+        </div>
+    </div>
+{% endblock %}

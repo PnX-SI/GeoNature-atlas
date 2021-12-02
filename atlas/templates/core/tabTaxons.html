@@ -1,0 +1,94 @@
+{% block tabTaxons %}
+    <div class="table-responsive" id="tabTaxons">
+        <table class="table table-hover responsive small-header" id="myTable" style="display:none; width: 100%;">
+            <!-- Ne s'affiche que lorsque le JS est chargé -->
+            <thead>
+            <tr>
+                <th style="font-size: 12px !important;" data-priority="1">{{ _('group') }}</th>
+                <th data-priority="2">{{ _('scientific.name') }}</th>
+                <th data-priority="6">{{ _('common.name') }}</th>
+                {% if configuration.PROTECTION %}
+                    <th data-priority="7">Protection</th>
+                {% endif %}
+                {% if configuration.DISPLAY_PATRIMONIALITE %}
+                    <th data-priority="8">{{ configuration.PATRIMONIALITE.label }}</th>
+                {% endif %}
+                <th id="sorted" data-priority="4">{{ _('obs.number.s') }}</th>
+                <th data-priority="9">{{ _('last.obs') }}</th>
+                {% if DISPLAY_EYE_ON_LIST %}
+                    <th data-priority="5">{{ _('observations') }}</th>
+                {% endif %}
+                <th data-priority="3">{{ _('sheet') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for taxon in listTaxons.taxons %}
+                <tr class="taxonRow" insee="{{ referenciel.insee }}" cdRef="{{ taxon.cd_ref }}">
+                    <td>
+                        {% if taxon.path == None %}
+                            <img src="{{ url_for('static', filename='images/picto_'+ taxon.group2_inpn| replace(" ", "_") |urlencode+'.png') }}"
+                                 data-toggle="tooltip" data-original-title="{{ taxon.group2_inpn }}"
+                                 data-placement="right">
+                        {% else %}
+                            {% if configuration.REDIMENSIONNEMENT_IMAGE %}
+                                {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+taxon.id_media|string+'?h=500&w=500' %}
+                            {% else %}
+                                {% set img_path = taxon.path %}
+                            {% endif %}
+                            <div class="pictoImgList lazy" data-src="{{ img_path }}" data-toggle="tooltip"
+                                 data-original-title="{{ taxon.group2_inpn }}" data-placement="right"></div>
+                        {% endif %}
+                        <span class="d-none">{{ taxon.group2_inpn }}</span>
+                    </td>
+                    <td class="name">
+                        {{ taxon.nom_complet_html|safe }}
+                    </td>
+                    <td>
+                        {% if taxon.nom_vern == None %}
+                            -
+                        {% else %}
+                            {{ taxon.nom_vern }}
+                        {% endif %}
+                    </td>
+                    {% if configuration.PROTECTION %}
+                        <td>
+                            {% if taxon.protection_stricte == 'oui' %}
+                                <a href="https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.cd_ref }}/tab/statut"
+                                   target="_blank">
+                                    <img src="{{ url_for('static', filename='images/logo_protection.png') }}"
+                                         style="width : 40px; height: 40px" data-placement="left" data-toggle="tooltip"
+                                         data-original-title={{ _('this.taxon.has.a.protected.status') }}>
+                                </a>
+                            {% endif %}
+                        </td>
+                    {% endif %}
+                    {% if configuration.DISPLAY_PATRIMONIALITE %}
+                        <td>
+                            {% if taxon.patrimonial in configuration.PATRIMONIALITE.config %}
+                                <img src="{{ url_for('static', filename=configuration.PATRIMONIALITE.config[taxon.patrimonial].icon) }}"
+                                     style="width : 30px; height: 30px" data-placement="left" data-toggle="tooltip"
+                                     data-original-title="{{ configuration.PATRIMONIALITE.config[taxon.patrimonial].text }}"
+                                     data-placement="right">
+                            {% endif %}
+                        </td>
+                    {% endif %}
+                    <td>{{ taxon.nb_obs }}</td>
+                    <td>{{ taxon.last_obs|int }}</td>
+                    {% if DISPLAY_EYE_ON_LIST %}
+                        <td>
+                    <span class="fas fa-eye" data-toggle="tooltip"
+                          data-original-title={{ _('display.city.infos') }} data-placement="right"> </span>
+                        </td>
+                    {% endif %}
+                    <td>
+                        <a href="{{ url_for('main.ficheEspece',cd_ref=taxon.cd_ref) }}">
+                        <span class="fas fa-list" data-toggle="tooltip" data-original-title={{ _('check.species.sheet') }}
+                              data-placement="left"> </span>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

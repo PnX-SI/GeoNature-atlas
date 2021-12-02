@@ -1,0 +1,40 @@
+{% extends "templates/core/layout.html" %}
+
+    {% block title %}
+    {% endblock %}
+
+    {% block additionalHeaderAssets %}
+        <!-- ChartJS -->
+        <script src="{{ url_for('static', filename='node_modules/chart.js/dist/chart.min.js') }}"></script>
+        <!-- Lightbox -->
+        <link href="{{ url_for('static', filename='node_modules/lightbox2/dist/css/lightbox.min.css') }}" rel="stylesheet" />
+    {% endblock %}
+
+{% block additionalFooterAssets %}
+    <script>
+        var dataset = {{ stats_group| tojson}};
+        var observationsPoint = [];
+        var observationsMaille = [];
+
+    </script>
+    <script src="{{ url_for('static', filename='node_modules/lightbox2/dist/js/lightbox.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='chart_organism.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Left row -->
+            <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+                {% include 'templates/organismSheet/identityCard.html' %}
+                {% include 'templates/organismSheet/statsInfos.html' %}
+            </div>
+            <!-- Right row -->
+            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                {% include 'templates/organismSheet/topSpecies.html' %}
+                {% include 'templates/organismSheet/groupChart.html' %}
+                {% include 'templates/organismSheet/blocInfos.html' %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

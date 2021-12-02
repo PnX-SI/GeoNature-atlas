@@ -2,6 +2,83 @@
 CHANGELOG
 =========
 
+1.5.0 (2021-12-02)
+------------------
+
+🚀 **Nouveautés** 
+
+**1. Affichage des organismes (#291 par @corentinlange)**
+
+- Affichage des organismes activable avec le paramètre ``ORGANISM_MODULE`` (désactivé par défaut) (#325)
+- Affichage des organismes ayant fourni des données d'une espèce dans la fiche espèce (#315)
+- Intégration du bandeau organisme sur la page d'accueil (PR #353, ticket pour amélioration #357)
+- Création de fiches organismes, avec logo, nom, nombre de données, espèces les plus observées et familles de taxons observés par un organisme (#291)
+
+**2. Multilingue (#175 par @TheMagicia et @corentinlange)**
+
+- Mise en place du multilingue (activable avec le paramètre ``MULTILINGUAL``) avec les fichiers de langue de traduction de l'interface en français, anglais et italien
+- Langue détectée automatiquement en fonction de la langue du navigateur
+- Possibilité pour l'utilisateur de basculer sur une autre langue disponible
+- Optimisation du multilingue pour le référencement par les moteurs de recherche
+- Redirection automatique des URL sans clé de langue pour le référencement et les anciennes URL
+- Documentation (``docs/multilingual.rst``)
+
+**3. Bootstrap 4 (#233 par @lpofredc)**
+
+- Mise à jour de Bootstrap version 3 à 4
+- Remplacement de la police d'icônes Glyphicon par Font Awesome
+- Correction de l'absence de la hiérarchie sur les fiches taxons
+- Restructuration des templates (avec ``includes`` & ``blocks``) et mutualisation des parties partagées
+- Refonte de la page commune, notamment en fixant la carte et en ne scrollant que dans la liste (#79)
+- Remplacement de la librairie des graphiques morris/D3 par chart.js (#164)
+- Ajout d'un fichier ``sitemap.xml`` à la racine de l'application, autogénéré pour optimiser le référencement par les moteurs de recherche (#44)
+- Ajout d'un fichier ``robots.txt`` à la racine de l'application, à partir d'un template customisable, pour indiquer aux moteurs de recherche les pages qu'ils peuvent indexer ou non (#223)
+- Utilisation des zonages activés uniquement dans le ``ref_geo`` (``enable = true``)
+- Possibilité de customiser en CSS la couleur des contours des objets sur les cartes (mailles, territoire, zonages)
+- Corrections de la hierarchie taxonomique
+- Possibilité de masquer les observateurs avec le nouveau paramètre ``ANONYMIZE``
+- Possibilité que les liens dans le menu latéral soient des liens externes (en remplacant la clé ``template`` par la clé ``url`` au niveau du paramètre ``STATIC_PAGES``)
+
+**4. Nouvelles espèces**
+
+- Ajout d'un bloc "Nouvelles espèces observées" sur la page d'accueil, permettant d'afficher les dernières espèces découvertes (première observation d'une espèce) sur le territoire (#85 par @MathildeLeclerc)
+
+**5. Autres**
+
+- Possibilité d'ajouter un bandeau partenaire sur la page d'accueil (#245 par @Splendens)
+- Possibilité d'afficher l'echelle sur la carte avec le paramètre ``ENABLE_SCALE`` (#293 par @mvergez)
+- Possibilité d'ajouter un masque sur la carte en dehors du territoire avec le paramètre ``MASK_STYLE`` (#89 par @mvergez)
+- Ajout de pictos manquants (#272 par @jpm-cbna)
+
+**6. Développement**
+
+- Support de Debian 11
+- Installation découpée (#332 et #349 par @corentinlange)
+- Mise en place de npm pour installer les dépendances (#310 par @corentinlange)
+- Mise en place de la structure de tests Backend (avec Pytest) et Frontend (avec Jest) (#297 et #316) 
+- Remplacement de ``supervisor`` par ``systemd``
+- Ajout d'un paramètre de définition du timeout de gunicorn (#271 par @jpm-cbna)
+- Mise à jour des dépendances
+- Réorganisation du code et packaging
+- Ajout d'une page de recherche avancée, permettant d'afficher les observations par maille de 3 espèces en même temps, à tester et finaliser (#313 par @lpofredc)
+- Ajout de la possibilité de proposer d'autres types de zonages que les communes, à tester, génériciser et finaliser (#209 par @lpofredc)
+
+🐛 **Corrections** 
+
+- Retrait des ``-n`` dans le fichier d'installation (#306 par @corentinlange)
+- Correction de l'API ``searchCommune`` en fermant les sessions DB (#277 par @jpm-cbna)
+
+⚠️ **Notes de version** 
+
+Si vous mettez à jour GeoNature-atlas :
+
+- Stopper le service ``atlas`` de supervisor (``sudo supervisorctl stop atlas``). Supprimez également le fichier de configuration supervisor de l'atlas (``sudo supervisorctl remove atlas && sudo rm /etc/supervisor/conf.d/atlas-service.conf && sudo supervisorctl reread``)
+- Ajouter la variable ``SECRET_KEY`` au fichier ``config.py`` (utilisée pour chiffrer la session), et remplissez-la avec une chaine de texte aléatoire.
+- Relancer l'installation complète de la BDD car de nombreux éléments ont évolué, en lancant le script ``install_db.sh``. Si vous aviez modifié la vue ``synthese.syntheseff`` ou des vues matérialisées, vous devrez reporter ces modifications après la réinstallation de la BDD de GeoNature-atlas.
+- Suivez la procédure classique de mise à jour de l'application.
+- Le nom du service systemd est désormais ``geonature-atlas``
+- Les logs sont désormais dans ``/var/log/geonature-atlas.log``. Vous pouvez supprimer le répertoire ``log`` à la racine de l'atlas qui est obsolète.
+
 1.4.2 (2020-11-25)
 ------------------
 
@@ -20,6 +97,7 @@ CHANGELOG
 **⚠️ Notes de version**
 
 * Si vous mettez à jour l'application, exécutez le script SQL de mise à jour de la BDD : https://github.com/PnX-SI/GeoNature-atlas/blob/master/data/update_1.4.1to1.4.2.sql
+* Si vous disposiez d'un GeoNature de version inférieure à 2.5 et que vous passez à cette version, adaptez la table étrangère : ``ALTER FOREIGN TABLE synthese.synthese DROP id_nomenclature_obs_meth;``
 * Suivez la procédure classique de mise à jour : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/installation.rst#mise-%C3%A0-jour-de-lapplication
 
 1.4.1 (2019-10-09)

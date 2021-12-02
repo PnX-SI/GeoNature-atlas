@@ -1,0 +1,88 @@
+{% extends "templates/core/layout.html" %}
+
+{% block title %}
+    {# Personnalisez ici le titre de la page (celui qui est affiché dans l'onglet du navigateur) #}
+    {{ _('gallery.title') }}
+{% endblock %}
+
+{% block metaTags %}
+    {# Ajoutez ici les balises méta utilisées pour le SEO #}
+{% endblock %}
+
+{% block additionalHeaderAssets %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/lightbox2/dist/css/lightbox.css') }}"/>
+    {# Ajoutez ici les assets complémentaires qui seront dans le bloc <head></head> #}
+    <style>
+        #page {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        footer {
+            margin-top: 0;
+        }
+
+        #insertPhotos {
+            flex: 1 1 0;
+            overflow: auto;
+        }
+    </style>
+{% endblock %}
+
+
+{% block additionalFooterAssets %}
+    {# Ajoutez ici les assets complémentaires qui seront en bas de page #}
+    <script type="text/javascript">
+        var configuration = {{ configuration| tojson}};
+    </script>
+
+    <script src="{{ url_for('static', filename='node_modules/lightbox2/dist/js/lightbox.js') }}"></script>
+    <script src="{{ url_for('static', filename='galleryPhoto.js') }}"></script>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="row h-100 flex-grow-1 p-0 m-0 border-bottom">
+        <div class="col d-flex flex-column m-0 p-0">
+            <div class="bg-light text-center border-bottom border-right p-2">
+                <h1 class="title">{{ _('gallery.title') }}<span id="group"></span></h1>
+                <div id="filtresPhotos text-center">
+                    <ul class="floatParent">
+                        {% for group in groups %}
+                            <li class="floatLeft">
+                                <img class="INPNgroup"
+                                     src="{{ url_for('static', filename='images/picto_' + group.group | replace(" ", "_") +'.png') }}"
+                                     alt="{{ group.groupAccent }}" data-toggle="tooltip" data-original-
+                                     title="{{ group.groupAccent }}" data-placement="top">
+                            </li>
+                        {% endfor %}
+
+                        <li class="floatLeft bottom">
+                            <a id="allGroups" class="btn btn-default" role="button" data-toggle="tooltip"
+                               data-original-title="{{ _('all.groups') }}" data-placement="top">
+                                {{ _('all.groups') }}</a>
+                        </li>
+                        <li class="floatLeft bottom">
+                        <span id="orderPhotos" class="sortedButton">
+                            <span id="sort" class="fas fa-sort" data-toggle="tooltip"
+                                  data-original-title="{{ _('order.photos') }}"
+                                  data-placement="top"></span>
+                        </span>
+                        </li>
+                        <li class="floatLeft bottom">
+                            <input type="text" class="form-control" id="searchPhotos"
+                                   placeholder="{{ _('search.species')}}"
+                                   value="">
+                        </li>
+                    </ul>
+                </div>
+                <h3 id="nbPhotos"></h3>
+            </div>
+
+            <div id="insertPhotos" class="d-flex  flex-wrap  bg-white flex-grow-1">
+
+            </div>
+        </div>
+{% endblock %}

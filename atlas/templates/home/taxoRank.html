@@ -1,0 +1,71 @@
+{% block taxoRank %}
+    <!-- Statistiques par rang taxonomique -->
+    <div class="card mt-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="card-title title-spaced">
+                        <span class="fa fa-eye icon-color-title"></span> &nbsp;{{ _('species.to.discover') }}
+                    </h3>
+                </div>
+            </div>
+            <div class="row row-medias">
+
+                {% for i in range(customStatMedias | length) %}
+{#                    <div class="col-12 col-lg-4 stat-medias-wrapper">#}
+                                        {% if configuration.RANG_STAT | length == 2 %}
+                                            <div class="col-12 col-lg-6 stat-medias-wrapper">
+                                        {% elif configuration.RANG_STAT | length == 3 %}
+                                            <div class="col-12 col-lg-4 stat-medias-wrapper">
+                                        {% elif configuration.RANG_STAT | length == 4 %}
+                                            <div class="col-12 col-lg-3 stat-medias-wrapper">
+                                        {% endif %}
+                        <div class="statMedias">
+                            <div class="">
+                                <h4 class="title-spaced title-bar">{{ configuration.RANG_STAT_FR[i] }} </h4>
+                                <span class="higlight">{{ customStat[i].nb_obs | pretty }}</span> observations
+                                <span
+                                        class="higlight">{{ customStat[i].nb_taxons| pretty }}</span> {{ _('species') }}
+                            </div>
+                            <div class="row">
+                                {% for j in range(2) %}
+                                    {% if loop.index <= customStatMedias[i] | length %}
+                                        <div class="col-12 col-md-6 col-stat-medias">
+                                            <div class="thumbnail-stat-medias">
+                                                <div class="zoom-wrapper">
+                                                    <a href="{{ url_for('main.ficheEspece',cd_ref=customStatMedias[i][j].cd_ref) }}">
+                                                        {% if configuration.REDIMENSIONNEMENT_IMAGE %}
+                                                            <div class="img-custom-medias cover"
+                                                                 style="background-image: url({{ configuration.TAXHUB_URL }}/api/tmedias/thumbnail/{{ customStatMedias[i][j].id_media }}?h=500&w=500)"></div>
+                                                        {% else %}
+                                                            <div class="img-custom-medias cover"
+                                                                 style="background-image: url({{ customStatMedias[i][j].path }})"></div>
+                                                        {% endif %}
+                                                        <div class="stat-medias-hovereffet">
+                                                            <img src="{{ url_for('static', filename='images/eye.png') }}">
+                                                            <h2 class="overlay-obs">{{ customStatMedias[i][j].nb_obs | pretty }}
+                                                                observations</h2>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div class="thumbnail-caption-medias">
+                                                    <p> {% if customStatMedias[i][j].nom_vern != None %}
+                                                        <b>  {{ customStatMedias[i][j].nom_vern }}</b> {% endif %}
+                                                        <br/><i>{{ customStatMedias[i][j].lb_nom }}</i></p>
+                                                    <p>
+                                                        <a href="{{ url_for('main.ficheEspece',cd_ref=customStatMedias[i][j].cd_ref) }}"
+                                                           class="btn btn-default" role="button">{{ _('species.sheet') }}</a>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

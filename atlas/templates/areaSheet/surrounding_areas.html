@@ -1,0 +1,31 @@
+<button class="float-right btn btn-success btn-sm" data-toggle="modal" data-target="#surroundingAreas">
+    <i class="fas fa-list"></i>
+</button>
+<div class="modal fade" id="surroundingAreas" tabindex="-1" role="dialog"
+     aria-labelledby="surroundingAreasModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h3 class="modal-title" id="surroundingAreasLabel">{{ _('associate.zone') }}</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-white">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {#                    <form class="form-inline my-2 my-lg-0">#}
+                <ul class="list-group text-justify" id="surroundingAreasList">
+                    {% for area in surroundingAreas %}
+                        <li class="list-group-item border-0">
+                            <small>{{ area.type_name }}</small><br><b>{{ area.area_name }}</b>
+                            <span class="float-right "><a class="badge badge-info"
+                                    href="{{ url_for('main.areaSheet',type_code=area.type_code, area_code=area.area_code) }}">
+                                                                          {{ _('check.area.sheet') }}</a>
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

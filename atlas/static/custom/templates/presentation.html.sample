@@ -1,0 +1,10 @@
+{% extends "templates/core/layout.html" %}
+
+{% block title %}
+{{ _('atlas.presentation') }}
+{% endblock %}
+
+{% block content %}
+<!-- AJOUTER MON CONTENU HTML ici -->
+<h3> Ma présentation personnalisée</h3>
+{% endblock %}

@@ -1,21 +1,17 @@
 # coding: utf-8
+from geoalchemy2.types import Geometry
 from sqlalchemy import (
-    Boolean,
     Column,
     Date,
-    DateTime,
     Integer,
     MetaData,
     String,
     Table,
     Text,
 )
-from geoalchemy2.types import Geometry
-from sqlalchemy.sql.sqltypes import NullType
-from sqlalchemy.orm import mapper
 from sqlalchemy.ext.declarative import declarative_base
-from ...utils import engine
 
+from atlas.utils import engine
 
 metadata = MetaData()
 Base = declarative_base()
@@ -31,7 +27,9 @@ class VmObservations(Base):
         Column("observateurs", String(255)),
         Column("altitude_retenue", Integer, index=True),
         Column("cd_ref", Integer, index=True),
+        Column("the_geom_point", Geometry(geometry_type="POINT", srid=4326)),
         Column("geojson_point", Text),
+        Column("diffusion_level"),
         schema="atlas",
         autoload=True,
         autoload_with=engine,
@@ -49,10 +47,9 @@ class VmObservationsMailles(Base):
         Column("id_observation", Integer, primary_key=True, unique=True),
         Column("id_maille", Integer),
         Column("the_geom", Geometry),
-        Column("geojson_maille", String(1000)),
+        Column("geojson_maille", Text),
         Column("annee", String(1000)),
         schema="atlas",
         autoload=True,
         autoload_with=engine,
     )
-

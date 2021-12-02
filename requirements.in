@@ -1,0 +1,19 @@
+Click < 8.0
+dominate
+Flask-Compress
+Flask-Script
+Flask-SQLAlchemy
+Flask-Babel
+Flask<2
+GeoAlchemy2
+geojson
+gunicorn
+itsdangerous < 2.0
+Jinja2 < 3.0
+MarkupSafe
+marshmallow
+psycopg2
+SQLAlchemy
+visitor
+Werkzeug < 2.0
+

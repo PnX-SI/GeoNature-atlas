@@ -1,0 +1,453 @@
+{% extends "templates/core/layout.html" %}
+
+{% block title %}
+    {{ _('advanced_search') }}
+{% endblock %}
+
+{% block metaTags %}
+    {# Ajoutez ici les balises méta utilisées pour le SEO #}
+{% endblock %}
+
+{% block additionalHeaderAssets %}
+    {# Ajoutez ici les assets complémentaires qui seront dans le bloc <head></head> #}
+    <script src="{{ url_for('static', filename='node_modules/leaflet.markercluster/dist/leaflet.markercluster.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/leaflet.markercluster/dist/MarkerCluster.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css') }}"/>
+
+    <!-- DataTable -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/datatables/datatables.min.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/datatables/dataTables.bootstrap4.min.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/listEspeces.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/icones.css') }}"/>
+    <!-- development version, includes helpful console warnings -->
+    <script src="//cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/underscore@1.10.2/underscore.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-bootstrap-typeahead@0.2.6/dist/VueBootstrapTypeahead.umd.min.js"></script>
+    <script src="https://unpkg.com/vue-select@latest"></script>
+    <link rel="stylesheet" href="https://unpkg.com/vue-select@latest/dist/vue-select.css">
+    <!-- production version, optimized for size and speed -->
+    {#<script src="https://cdn.jsdelivr.net/npm/vue"></script>#}
+    <style>
+        .vbt-autcomplete-list {
+            max-height: 350px;
+            overflow-y: auto;
+            padding-top: 5px;
+            position: absolute;
+            z-index: 999;
+        }
+
+
+        .v-select {
+            width: 100%;
+            background-color: var(--white);
+        }
+
+        .v-select .dropdown li {
+            border-bottom: 1px solid rgba(112, 128, 144, 0.1);
+            max-width: 500px;
+        }
+
+        .v-select .dropdown li:last-child {
+            border-bottom: none;
+        }
+
+        .v-select .dropdown li a {
+            padding: 10px 20px;
+            width: 100%;
+            font-size: 1.25em;
+            color: #3c3c3c;
+        }
+
+        .v-select .dropdown-menu .active > a {
+            color: #fff;
+        }
+
+    </style>
+{% endblock %}
+
+
+
+{% block additionalFooterAssets %}
+    {# Ajoutez ici les assets complémentaires qui seront en bas de page #}
+    <script src="{{ url_for('static', filename='custom/maps-custom.js') }}"></script>
+    <script src="{{ url_for('static', filename='mapGenerator.js') }}"></script>
+    <script>
+        var url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
+
+        var map = generateMap();
+
+        var legend = L.control({position: "bottomright"});
+
+        $("#loaderSpinner").hide();
+        $(document).ready(function () {
+            $("#infoModal").modal('show');
+        });
+
+
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF'.split('');
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.round(Math.random() * 15)];
+            }
+            return color;
+        }
+
+        function slugify(string) {
+            const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;'
+            const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------'
+            const p = new RegExp(a.split('').join('|'), 'g')
+
+            return string.toString().toLowerCase()
+                .replace(/\s+/g, '-') // Replace spaces with -
+                .replace(p, c => b.charAt(a.indexOf(c))) // Replace special characters
+                .replace(/&/g, '-and-') // Replace & with 'and'
+                .replace(/[^\w\-]+/g, '') // Remove all non-word characters
+                .replace(/\-\-+/g, '-') // Replace multiple - with single -
+                .replace(/^-+/, '') // Trim - from start of text
+                .replace(/-+$/, '') // Trim - from end of text
+        };
+
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        };
+
+        function displayObsTaxonMaille(cd_ref) {
+        }
+
+        var initRadius = 4;
+        var radius = initRadius;
+
+        var geojsonMarkerOptions = {
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0
+        };
+
+        if (configuration.AFFICHAGE_MAILLE) {
+            var typeData = 'maille';
+        } else {
+            var typeData = 'point'
+        }
+        ;
+
+        var polygonLayerToCentroid = function (geoJson) {
+            geoJson;
+            if (geoJson.features) {
+                var features = geoJson.features;
+                for (var i = 0; i < geoJson.features.length; i++) {
+                    var feature = geoJson.features[i];
+                    var centroid = L.polygon(feature.geometry.coordinates).getBounds().getCenter();
+                    geoJson.features[i].geometry = {type: 'Point', coordinates: [centroid.lat, centroid.lng]};
+                }
+            }
+        };
+        var customStyle = [{color: '#33cc33', radius: 1}, {color: '#3399ff', radius: 3}, {color: '#ff0000', radius: 5}];
+
+        var currentLayer;
+        var layerGroup = L.featureGroup();
+        layerGroup.addTo(map);
+
+        const taxaApiUrl = '/api/searchTaxon?search=:query';
+
+        Vue.component('v-select', VueSelect.VueSelect);
+
+        var advancedSearch = new Vue({
+            el: '#advancedSearch',
+            components: {},
+            delimiters: ['[[', ']]'],
+            data: {
+                taxa: [],
+                taxaSearch: '',
+                selectedTaxa: null,
+                layers: [],
+                items: [],
+                options: [],
+                configuration: configuration,
+                alertLimit: false,
+            },
+            methods: {
+                onSearch(search, loading) {
+                    loading(true);
+                    this.search(loading, search, this);
+                },
+                search: _.debounce((loading, search, vm) => {
+                    fetch(
+                        taxaApiUrl.replace(':query', search) + '&limit=20'
+                    ).then(res => {
+                        res.json().then(json => (vm.options = json));
+                        loading(false);
+                    });
+                }, 350),
+                removeElement: function (index) {
+                    this.items.splice(index, 1);
+                    layerGroup.removeLayer(layerGroup.getLayers()[index]);
+                },
+                async getTaxa(query) {
+                    const res = await fetch(taxaApiUrl.replace(':query', query) + '&limit=20');
+                    const suggestions = await res.json();
+                    this.taxa = suggestions;
+                },
+                resetItems: function () {
+                    this.items = [];
+                    layerGroup.clearLayers();
+                    radius = initRadius;
+                },
+                displayAlertLimit: function () {
+                    this.alertLimit = true;
+                    setTimeout(function () {
+                        if (this.alertLimit) {
+                            this.alertLimit = false;
+                        }
+                    }, 3000);
+                }
+                ,
+                getMedias: async function (cdRef) {
+                    var mediaUrl = null;
+                    var idMedia = null;
+                    const res = await fetch(configuration.REMOTE_MEDIAS_URL + "/api/tmedias/bycdref/" + cdRef);
+                    const medias = await res.json();
+                    if (medias.length > 0) {
+                        idMedia = medias[0].id_media;
+                        mediaUrl = configuration.REMOTE_MEDIAS_URL + '/api/tmedias/thumbnail/' + idMedia + '?h=80&v=80';
+                        return mediaUrl
+                    }
+                },
+                addDatas: function (list) {
+                    $("#loaderSpinner").show();
+                    var arrayLength = list.length;
+                    var layer = [];
+                    for (var i = 0; i < arrayLength; i++) {
+                        var layerCustomStyle = customStyle[i];
+                        $.ajax({
+                            url:
+                                configuration.URL_APPLICATION +
+                                "/api/observations/" + list[i].cd_nom,
+                            dataType: "json",
+                            beforeSend: function () {
+                                $("#loaderSpinner").show();
+                            }
+                        }).done(function (observations) {
+                            // $("#loadingGif").hide();
+                            {#map.removeLayer(currentLayer);#}
+
+                            if (configuration.AFFICHAGE_MAILLE) {
+                                var geoJsonDatas = observations['maille'];
+                                polygonLayerToCentroid(geoJsonDatas);
+                            } else {
+                                var geoJsonDatas = observations['point']
+                            }
+                            var color = getRandomColor();
+
+                            layer[i] = L.geoJSON(geoJsonDatas, {
+                                pointToLayer: function (feature, latlng) {
+                                    return new L.circleMarker(latlng, geojsonMarkerOptions(layerCustomStyle));
+                                }
+                            });
+                            layer[i].addTo(map);
+                            if (geoJsonDatas.features.length > 0) {
+                                map.fitBounds(layer[i].getBounds());
+                            }
+
+                        });
+                        displayObsTaxonMaille(list[i]);
+                    }
+                    $("#loaderSpinner").hide();
+                },
+                addMapDatas: function (cd_nom, color) {
+                    $("#loaderSpinner").show();
+                    $.ajax({
+                        url:
+                            configuration.URL_APPLICATION +
+                            "/api/observations/" + cd_nom,
+                        dataType: "json",
+                        beforeSend: function () {
+                            $("#loaderSpinner").show();
+                        }
+                    }).done(function (observations) {
+                        var geoJsonDatas = observations;
+                        if (observations['features'][0]['geometry']['type'] != 'point') {
+                            polygonLayerToCentroid(geoJsonDatas);
+                        }
+                        //var color = getRandomColor();
+
+                        var layer = L.geoJSON(geoJsonDatas, {
+                            style: function (feature) {
+                                return {color: color, radius: radius};
+                            },
+                            pointToLayer: function (feature, latlng) {
+                                return L.circleMarker(latlng, geojsonMarkerOptions);
+                            }
+                        });
+                        if (configuration.AFFICHAGE_MAILLE) {
+                            radius = radius + 2;
+                        }
+                        layerGroup.addLayer(layer);
+                        map.fitBounds(layerGroup.getBounds());
+                    });
+                    $("#loaderSpinner").hide();
+                },
+                getTaxaImage: function (cd_nom) {
+
+                }
+            },
+            watch: {
+                taxaSearch: _.debounce(function (qs) {
+                    this.getTaxa(qs)
+                }, 500),
+                selectedTaxa: function (val) {
+                    if (this.items.length === 3) {
+                        this.displayAlertLimit();
+                    }
+                    ;
+                    if (val && this.items.length < 3) {
+                        var self = this;
+                        var color = getRandomColor();
+                        fetch(configuration.TAXHUB_URL + '/api/taxref/' + this.selectedTaxa.value)
+                            .then(function (response) {
+                                return response.json();
+                            })
+                            .then(function (jsonResp) {
+                                var media = '/static/images/picto_' + capitalizeFirstLetter(slugify(jsonResp.group2_inpn)) + '.png';
+                                var newItem = {
+                                    cd_nom: jsonResp.cd_nom,
+                                    nom_vern: jsonResp.nom_vern,
+                                    nom_sci: jsonResp.nom_complet,
+                                    group2_inpn: jsonResp.group2_inpn,
+                                    media: media,
+                                    marker_color: color
+                                };
+
+                                self.items.push(newItem);
+                                self.addMapDatas(newItem.cd_nom, color);
+                            });
+
+
+                    }
+                    ;
+                    this.selectedTaxa = null;
+                }
+            },
+            mounted() {
+            }
+        })
+
+
+    </script>
+{% endblock %}
+
+
+{% block content %}
+    {# Ajoutez ici coeur de la page #}
+    <div class="row h-100 flex-grow-1 p-0 m-0 border-bottom">
+        <div id="advancedSearch" class="col-sm-12 col-md-5 col-lg-4 col-xl-3 d-flex flex-column m-0 p-0">
+            <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-info" id="infoModalLabel"><i class="fas fa-info-circle "></i>
+                                {{ _('information') }}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="{{ _('close') }}">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                            {{ _('asearch.information') }}
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ _('close') }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-light border-bottom border-right p-2">
+                <div class="text-center">
+                    <span class="float-right ">
+                       <span data-toggle="modal"
+                             data-target="#infoModal">
+                           <a data-toggle="tooltip"
+                              data-target="#infoModal" data-placement="left"
+                              title="{{ _('page.information') }}">
+                            <i class="fas fa-info-circle"></i>
+                        </a>
+                           </span>
+                        <a class="text-danger" href="#" @click="resetItems" data-toggle="tooltip" data-placement="left"
+                           title="Purger la liste">
+                             <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </span>
+                    <h4><b>{{ _('advanced_search') }}</b></h4>
+                    <div v-if="alertLimit" class="alert alert-danger alert-dismissible fade show sticky-top"
+                         role="alert">
+                        {{ _('asearch.max') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="input-group w-100">
+                        <v-select label="label" v-model="selectedTaxa" :filterable="false" :options="options"
+                                  placeholder="{{ _('asearch.search.species') }}"
+                                  @search="onSearch">
+                            <template slot="no-options">
+                                {{ _('asearch.search.start') }}
+                            </template>
+                            <template slot="option" slot-scope="option">
+                                <div class="d-center" v-html="option.label">
+                                </div>
+                            </template>
+                            <template slot="selected-option" slot-scope="option">
+                                <div class="selected d-center" v-html="option.label">
+                                </div>
+                            </template>
+                        </v-select>
+                    </div>
+                    <div v-if="items.length > 3" class="text-danger">
+                        <i class="fa fa-info-circle fa-fw"></i> {{ _('asearch.max') }}
+                    </div>
+
+                </div>
+            </div>
+            <div id="list" class="bg-white flex-grow-1">
+                <ul class="list-unstyled">
+                    <li v-for="(item, key)  in items" :key="key" class="media border-bottom px-0 py-0">
+                        <img class="mr-3" v-bind:src="item.media" alt="Generic placeholder image">
+                        <div class="media-body p-2">
+                            <span class="float-right text-danger" data-toggle="tooltip" data-placement="left"
+                                  title="{{ _('asearch.remove.selection') }}" href="#"
+                                  v-on:click="removeElement(key)"><i
+                                    class="fas fa-times-circle"></i></span>
+                            <h5 class="mt-0 mb-1"><i class="far fa-circle fa-fw"
+                                                     v-bind:style="{ color: item.marker_color}"></i>[[item.nom_vern]]
+                            </h5>
+                            <span class="float-right">
+                    <a class="badge badge-primary" :href="'/espece/'+item.cd_nom" data-toggle="tooltip"
+                       title="{{ _('species.sheet') }}"
+                       data-placement="left">
+                        <i class="fas fa-list fa-fw"></i> {{ _('check.species.sheet') }}</i>
+                    </a>
+                            </span>
+                            <p class="mt-0 mb-1 text-info"><small>[[item.nom_sci]]</small></p>
+
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+        <div class="col-sm-12 col-md-7 col-lg-8 col-xl-9 d-flex flex-column m-0 p-0">
+            <div class="d-flex align-content-stretch bg-warning flex-grow-1">
+                <div class="d-flex flex-grow-1">
+
+                    <div id="map" style="height: unset;flex:1;"></div>
+                    {% include 'templates/core/loaderSpinner.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Ajoutez ici coeur de la page #}
+
+{% endblock %}

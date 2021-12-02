@@ -1,0 +1,68 @@
+{% block photoCarousel %}
+    <div class="card mt-4">
+        <div id="fixed" class="carousel slide" data-ride="carousel" data-interval="false">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                {% for i in range(photoCarousel|length) %}
+                    {% if loop.first %}
+                        <li data-target="#fixed" data-slide-to="{{ i }}" class="active"></li>
+                    {% else %}
+                        <li data-target="#fixed" data-slide-to="{{ i }}"></li>
+                    {% endif %}
+                {% endfor %}
+            </ol>
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+                {% for photo in photoCarousel %}
+                    {% if loop.first %}
+                        <div class="carousel-item active">
+                    {% else %}
+                        <div class="carousel-item">
+                    {% endif %}
+
+                {% if configuration.REDIMENSIONNEMENT_IMAGE %}
+                    {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+photo.id_media|string+'?h=500' %}
+                {% else %}
+                    {% set img_path = photo.path %}
+                {% endif %}
+                <a href="{{ photo.path }}" data-lightbox="imageSet" data-title="{{ photo.title }}
+                                {% if photo.description %}
+                                - {{ photo.description }}
+                                {% endif %}
+                                &copy; {{ photo.author }}
+                                {% if photo.licence %}
+                                - {{ photo.licence }}
+                                {% endif %}
+                                {% if photo.source %}
+                                - {{ photo.source }}
+                                {% endif %}
+                                ">
+                    <div class="slider-size" style="background-image: url({{ img_path }})"
+                         alt="{{ photo.title }} &copy; {{ photo.author|striptags }}">
+                        <div class="carousel-caption">
+                            {{ photo.title|safe }} &copy; {{ photo.author|striptags }}
+                            {% if photo.licence %}
+                                - {{ photo.licence }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+                </div>
+                {% endfor %}
+                </div>
+
+                <!-- Controls -->
+                <a class="carousel-control-prev" href="javascript:void(0)" data-slide="prev"
+                   data-target="#fixed">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="javascript:void(0)" data-slide="next"
+                   data-target="#fixed">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+{% endblock %}

@@ -1,0 +1,84 @@
+<small>
+    <a href="{{ url_for('main.index') }}">{{ _('home') }}</a> |
+    <a href="http://www.ecrins-parcnational.fr" target="_blank">{{ configuration.STRUCTURE }}</a> |
+    <a data-toggle="modal" href="#"
+       data-target="#modalCredits">{{ _('credits') }}</a> |
+    <a data-toggle="modal" href="#"
+       data-target="#modalMentions">{{ _('legal') }}</a>
+</small>
+
+<div>
+<small class="text-muted">
+    {{ configuration.NOM_APPLICATION }} - {{ _('atlas.fauna.flora') }} {{ _('from1') }} {{ configuration.STRUCTURE }}, 2021
+    <br/>
+    {{ _('powered.by') }} <a href="https://github.com/PnX-SI/GeoNature-atlas" target="_blank">GeoNature-atlas</a>, {{ _('developed.by') }}
+    <a href="http://www.ecrins-parcnational.fr" target="_blank">{{ _('ecrins.national.park') }}</a>
+</small>
+</div>
+
+<div class="modal fade text-justify" id="modalCredits">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h3>{{ _('credits') }}</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-white">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                 {% include 'static/custom/templates/credits.html' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade text-justify" id="modalMentions">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h3>{{ _('legal') }}</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-white">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% include 'static/custom/templates/mentions-legales.html' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if configuration.ID_GOOGLE_ANALYTICS != "UA-xxxxxxx-xx" %}
+    <!-- Script Google Analytics -->
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', '{{configuration.ID_GOOGLE_ANALYTICS}}', 'auto');
+        ga('send', 'pageview');
+    </script>
+{% endif %}
+
+<script>
+    var prevScrollpos = window.pageYOffset;
+    window.onscroll = function () {
+        var currentScrollPos = window.pageYOffset;
+        if (prevScrollpos > currentScrollPos) {
+            document.getElementById("collapseFooter").style.top = "-100px";
+        } else {
+            document.getElementById("collapseFooter").style.top = "0px";
+        }
+        prevScrollpos = currentScrollPos;
+    }
+</script>

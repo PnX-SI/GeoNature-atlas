@@ -1,5 +1,9 @@
 # -*- coding:utf-8 -*-
 
+#########################################
+## Exemple de fichier de configuration ##
+#########################################
+
 # Mettre l'application en mode debug ou pas
 modeDebug = False
 
@@ -26,6 +30,53 @@ NOM_APPLICATION = "Nom de l application"
 # URL de l'application depuis la racine du domaine
 # ex "/atlas" pour une URL: http://mon-domaine/atlas OU "" si l'application est accessible à la racine du domaine
 URL_APPLICATION = ""
+
+#################################
+#################################
+###### Modules activation #######
+#################################
+#################################
+
+# Enable organism module : organism sheet + organism participation on species sheet
+ORGANISM_MODULE = False
+
+###########################
+###### Multilingual #######
+###########################
+
+# Default language, also used when multilingual is disabled
+DEFAULT_LANGUAGE = 'fr'
+
+# Activate multilingual
+MULTILINGUAL = False
+
+# Available languages 
+# Don't delete, even if you disable MULTILINGUAL
+# You need to add your own default language (DEFAULT_LANGUAGE) here if it's not present 
+# Check documentation to add another language
+LANGUAGES = {
+    'en': {
+        'name' : 'English',
+        'flag_icon' : 'flag-icon-gb',
+        'months' : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] 
+        },
+    'fr': {
+        'name' : 'Français',
+        'flag_icon' : 'flag-icon-fr',
+        'months' : ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Decembre'] 
+        },
+    'it': {
+        'name' : 'Italiano',
+        'flag_icon' : 'flag-icon-it',
+        'months' : ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'] 
+        }
+}
+
+#####################
+#####################
+### Configuration ###
+#####################
+#####################
 
 # Code de suivi des statistiques Google Analytics (si AFFICHAGE_FOOTER = True)
 ID_GOOGLE_ANALYTICS = "UA-xxxxxxx-xx"
@@ -57,7 +108,16 @@ MAP = {
     'STEP': 1,
     # Couleur et épaisseur des limites du territoire
     'BORDERS_COLOR': '#000000',
-    'BORDERS_WEIGHT': 3
+    'BORDERS_WEIGHT': 3,
+    # Permet de générer un masque autour du territoire
+    # Pour activer mettre fill à True
+    'MASK_STYLE': {
+                    "fill": False,
+                    "fillColor": '#020202',
+                    "fillOpacity": 0.3
+                   },
+    'ENABLE_SLIDER': True,
+    'ENABLE_SCALE': True
 }
 
 # Affichage des observations par maille ou point
@@ -71,11 +131,12 @@ ZOOM_LEVEL_POINT = 11
 LIMIT_CLUSTER_POINT = 1000
 
 # Carte de la page d'accueil: observations des 'x' derniers jours. Bien mettre en anglais et non accordé
-NB_DAY_LAST_OBS = '7 day'
+NB_DAY_LAST_OBS = '7'
+
 # Texte à afficher pour décrire la cartographie des 'dernières observations'
 TEXT_LAST_OBS = 'Les observations des agents ces 7 derniers jours |'
 
-# Carte de la fiche commune: nombre des 'x' dernières observations affichées
+# Carte de la fiche commune : nombre des 'x' dernières observations affichées
 NB_LAST_OBS=100
 
 ###########################
@@ -83,10 +144,10 @@ NB_LAST_OBS=100
 ###########################
 
 # Bloc d'introduction presentant l'atlas. Affichage True/False
-AFFICHAGE_INTRODUCTION = False
+AFFICHAGE_INTRODUCTION = True
 
 # Afficher le Footer sur toutes les pages (static/custom/templates/footer.html)
-AFFICHAGE_FOOTER = False
+AFFICHAGE_FOOTER = True
 
 # Bloc de statistiques globales. Affichage True/False
 AFFICHAGE_STAT_GLOBALES = True
@@ -96,6 +157,9 @@ AFFICHAGE_DERNIERES_OBS = True
 
 # Bloc avec espèces à voir en ce moment. Affichage True/False
 AFFICHAGE_EN_CE_MOMENT = True
+
+# Bloc dernières espèces découvertes. Affichage True/False
+AFFICHAGE_NOUVELLES_ESPECES = True
 
 ## BLOC STAT PAR RANG : Parametre pour le bloc statistique 2 de la page d'accueil (statistiques par rang remontant 2 espèces aléatoirement ayant au moins une photo)
 # Ce bloc peut être affiché ou non et peut être affiché sur 2, 3 ou 4 colonnes. Il est ainsi possible de mettre autant de blocs que souhaité (2, 3, 4, 6, 8...)
@@ -107,9 +171,8 @@ AFFICHAGE_EN_CE_MOMENT = True
 
 AFFICHAGE_RANG_STAT = True
 COLONNES_RANG_STAT = 3
-RANG_STAT = [{'phylum': ["Arthropoda", "Mollusca", "Annelida", "Cnidaria", "Platyhelminthes"]]}, {'phylum': ["Chordata"]}, {'regne': ["Plantae"]}]
+RANG_STAT = [{'phylum': ["Arthropoda", "Mollusca", "Annelida", "Cnidaria", "Platyhelminthes"]}, {'phylum': ["Chordata"]}, {'regne': ["Plantae"]}]
 RANG_STAT_FR = ['Faune invertébrée', 'Faune vertébrée', 'Flore']
-
 
 ############################
 ####### FICHE ESPECE #######
@@ -126,6 +189,7 @@ LIMIT_FICHE_LISTE_HIERARCHY = 28
 # URL d'accès aux photos et autres médias (URL racine). Par exemple l'url d'accès à Taxhub
 # Cette url sera cachée aux utilisateurs de l'atlas
 REMOTE_MEDIAS_URL = "http://mondomaine.fr/taxhub/"
+
 # Racine du chemin des fichiers médias stockés dans le champ "chemin" de "atlas.vm_medias"
 # Seule cette partie de l'url sera visible pour les utilisateurs de l'atlas
 REMOTE_MEDIAS_PATH = "static/medias/"
@@ -133,7 +197,8 @@ REMOTE_MEDIAS_PATH = "static/medias/"
 # URL de TaxHub (pour génération à la volée des vignettes des images).
 # Si le service Taxhub n'est pas utilisé, commenter la variable
 REDIMENSIONNEMENT_IMAGE = False
-# si redimmentionnement image = True, indiquer l'URL de taxhub
+
+# si REDIMENSIONNEMENT_IMAGE = True, indiquer l'URL de TaxHub
 TAXHUB_URL = "http://mondomaine.fr/taxhub"
 
 #### ID DES ATTRIBUTS DESCRIPTIFS DES TAXONS DE LA TABLE vm_cor_taxon_attribut
@@ -153,7 +218,7 @@ ATTR_YOUTUBE = 7
 ATTR_DAILYMOTION = 8
 ATTR_VIMEO = 9
 
-# coupe le nom_vernaculaire à la 1ere virgule sur les fiches espèces
+# Coupe le nom_vernaculaire à la 1ere virgule sur les fiches espèces
 SPLIT_NOM_VERN = True
 
 ############################################
@@ -169,6 +234,7 @@ PROTECTION = True
 # Afficher ou non la colonne Patrimonialité dans les listes de taxons (basé sur le champs "patrimonial") et la customiser
 # Pour masquer cette colonne, passer uniquement le paramètre à "False"
 DISPLAY_PATRIMONIALITE = False
+
 # Pour customiser l'affichage de cette colonne (label affiché, valeurs du champs et leur affichage) :
 PATRIMONIALITE = {
     'label': "Patrimonial",
@@ -181,11 +247,25 @@ PATRIMONIALITE = {
 }
 
 #############################
+#### Lien custom du logo ####
+#############################
+
+CUSTOM_LOGO_LINK='https://monadressecustom.org'
+
+#############################
 #### Pages statistiques #####
 #############################
 
 # Permet de lister les pages statiques souhaitées et de les afficher dynamiquement dans le menu sidebar
-# Les pictos se limitent au Glyphicon proposés par Bootstrap (https://getbootstrap.com/docs/3.3/components/)
+# Les pictos se limitent à font-awesome 5)
 STATIC_PAGES = {
-    'presentation': {'title': "Présentation de l'atlas", 'picto': 'glyphicon-question-sign', 'order': 0, 'template': 'static/custom/templates/presentation.html'}
+    'presentation': {'title': "Présentation de l'atlas", 'picto': 'fa-question-circle', 'order': 0, 'template': 'static/custom/templates/presentation.html'}
 }
+
+###########################
+###########################
+#### Security  Config #####
+###########################
+###########################
+
+SECRET_KEY = '282799166744079489444397'

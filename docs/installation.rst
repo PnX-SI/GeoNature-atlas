@@ -10,7 +10,7 @@ INSTALLATION
 Prérequis
 =========
 
-Application installable sur un serveur Debian 8, 9 ou 10 (Seul Debian 9 et 10 ont été "prouvé et testé).
+Application installable sur un serveur Debian 9, 10 et1 (seuls Debian 9 et 10 ont été prouvé et testé).
 
 Ce serveur doit aussi disposer de :
 
@@ -77,7 +77,6 @@ Le script ``install_env.sh`` va automatiquement installer les outils nécessaire
 - PostGIS
 - Apache 2
 - Python 3 et GDAL
-- Supervisor
 
 Lancer le script :
 
@@ -139,7 +138,7 @@ L'application se base entièrement sur des vues matérialisées. Par défaut, ce
 
 .. image :: images/geonature-atlas-schema-02.jpg
 
-Cela laisse donc la possibilité de la connecter à une autre BDD en adaptant la vue ``atlas.vm_observations`` dans ``data/atlas.sql`` (en respectant impérativement les noms de champs).
+Cela laisse donc la possibilité de la connecter à une autre BDD en adaptant la vue ``atlas.vm_observations`` dans ``data/atlas/atlas.vm_observations.sql`` (en respectant impérativement les noms de champs).
 
 .. image :: images/geonature-atlas-schema-01.jpg
 
@@ -155,10 +154,28 @@ A noter aussi que si vous ne connectez pas l'atlas à une BDD GeoNature (``geona
 
 Lancez le fichier fichier d'installation de la base de données :
 
+
 ::
 
     cd /home/`whoami`/atlas
     ./install_db.sh
+
+/!\ Si vous avez un nombre de données supérieur à 1 million, préférez l'installation avec install_db_extended.sh /!\
+
+::
+
+    cd /home/`whoami`/atlas
+    ./install_db_extended.sh
+
+
+/!\ Si vous avez un nombre de données supérieur à 1 million, préférez l'installation avec install_db_extended.sh /!\
+
+
+::
+
+    cd /home/`whoami`/atlas
+    ./install_db_extended.sh
+
 
 
 :notes:
@@ -167,7 +184,7 @@ Lancez le fichier fichier d'installation de la base de données :
 
 Vous pouvez alors modifier les vues, notamment ``atlas.vm_observations`` pour les adapter à votre contexte (ajouter les données partenaires, filtrer les espèces, limiter à un rang taxonomique...) ou le connecter à une autre BDD source (en important les données ou en s'y connectant en FDW).
 
-Si vous voulez adapter le contenu des vues matérialisées, vous pouvez modifier le fichier ``data/atlas.sql`` puis relancer ce script global de la BDD.
+Si vous voulez adapter le contenu des vues matérialisées, vous pouvez modifier le fichier ``data/atlas/atlas.vm_observations.sql`` puis relancer ce script global de la BDD.
 
 Si vous souhaitez uniquement recréer la vue ``atlas.vm_observations`` et les 6 autres vues qui en dépendent vous pouvez utiliser le script ``data/update_vm_observations.sql``.
 
@@ -194,14 +211,14 @@ Le fichier de configuration central de l'application est ``atlas/configuration/c
 - Renseignez l'URL de l'application à partir de la racine du serveur WEB ('/atlas' ou '' par exemple)
 - Renseignez les autres paramètres selon votre contexte
 
-Après chaque modification de la configuration, relancer la commande ``sudo supervisorctl restart atlas`` pour qu'elles soient appliquées.
+Après chaque modification de la configuration, relancer la commande ``sudo systemctl restart geonature-atlas`` pour qu'elles soient appliquées.
 
 Customisation de l'application
 ==============================
 
 En plus de la configuration, vous pouvez customiser l'application en modifiant et ajoutant des fichiers dans le répertoire ``static/custom/`` (css, templates, images).
 
-L'atlas est fourni avec des variables CSS qui permettent de personnaliser facilement l'interface (changement des couleurs principales). Pour cela éditer les variables présentes dans le fichier ``static/custom/custom.css``. Les variables ``--main-color`` et ``second-color`` permettent de customiser l'atlas selon les couleurs de votre organisme.
+L'atlas est fourni avec des variables CSS qui permettent de personnaliser facilement l'interface (changement des couleurs principales). Pour cela éditer les variables présentes dans le fichier ``static/custom/custom.css``. Les variables ``--main-color`` et ``second-color`` permettent de customiser l'atlas selon les couleurs de votre organism.
 
 Vous pouvez aussi modifier ou ajouter des pages statiques de présentation, en plus de la page Présentation fournie par défaut. Pour cela, voir le paramètre ``STATIC_PAGES`` du fichier ``main/configuration/config.py``.
 
@@ -259,7 +276,7 @@ Si l'atlas est associé à un domaine, ajoutez cette ligne au début du fichier 
 
 :notes:
 
-    En cas d'erreur, les logs serveurs ne sont pas au niveau d'Apache (serveur proxy) mais de Gunicorn (serveur HTTP) dans ``/home/`whoami`/log/errors_atlas.log``
+    En cas d'erreur, les logs serveurs ne sont pas au niveau d'Apache (serveur proxy) mais de Gunicorn (serveur HTTP) dans ``/var/log/geonature-atlas.log``
 
 
 Mise à jour de l'application

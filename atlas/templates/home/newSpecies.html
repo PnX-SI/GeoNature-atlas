@@ -1,0 +1,58 @@
+{% block newSpecies %}
+<div>
+
+    <!-- Nouvelles espèces-->
+    <div class="card mt-4" id="newSpecies">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="card-title title-spaced">
+                    <span class="fa fa-bell icon-color-title"></span> &nbsp;{{ _('new.species.observed') }}
+                </h3>
+            </div>
+        </div>
+        <div class="row">
+            {% for species in lastDiscoveries %}
+            <div class="col-lg-2 col-md-4 col-sm-6 col-xs-12">
+                <div class="card my-shadow mb-2">
+                    {% if species.id_media != None %}
+                    {% if configuration.REDIMENSIONNEMENT_IMAGE %}
+                    {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+species.id_media|string+'?h=500' %}
+                    {% else %}
+                    {% set img_path = species.media_path %}
+                    {% endif %}
+                    <div class="cover" style="height: 150px; background-image: url({{img_path}})">
+                        
+                    </div>
+                    {% else %}
+                    <div 
+                    class="no-repeat background-center"
+                    style="height: 150px;
+                    background-image: url({{url_for('static', filename='images/picto_' + species.group2_inpn | replace(" ", "_") +'.png') }})"
+                    >
+                </div>
+                {% endif %}
+                <a href="{{ url_for('main.ficheEspece',cd_ref=species.cd_ref) }}">
+                </a>
+                <div class="card-body center">
+                    <p> 
+                        {% if species.nom_vern != None %}
+                        <b>  {{ species.nom_vern }}</b> 
+                        {% endif %}
+                        <br/><i>{{ species.lb_nom }}</i>
+                    </p>
+                    <a href="{{ url_for('main.ficheEspece',cd_ref=species.cd_ref) }}"
+                    class="btn btn-default" role="button">{{ _('species.sheet') }}
+                </a> 
+                
+            </div>
+            <div class="card-footer center text-muted"> 
+                {{species.date}}
+            </div>  
+        </div>
+    </div>
+    {% endfor %}
+</div>
+</div>
+</div>
+{% endblock %}

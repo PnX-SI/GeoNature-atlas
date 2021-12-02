@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 from sqlalchemy import desc, func
 
-from ..entities.vmSearchTaxon import VmSearchTaxon
+from atlas.modeles.entities.vmSearchTaxon import VmSearchTaxon
 
 
 def listeTaxons(session):
@@ -44,9 +44,9 @@ def listeTaxonsSearch(session, search, limit=50):
     search = search.replace(" ", "%")
     req = (
         req.filter(VmSearchTaxon.search_name.ilike("%" + search + "%"))
-        .order_by(desc("idx_trgm"))
-        .order_by(VmSearchTaxon.cd_ref == VmSearchTaxon.cd_nom)
-        .limit(limit)
+            .order_by(desc("idx_trgm"))
+            .order_by(VmSearchTaxon.cd_ref == VmSearchTaxon.cd_nom)
+            .limit(limit)
     )
     data = req.all()
 

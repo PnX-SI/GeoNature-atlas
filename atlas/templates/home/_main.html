@@ -1,0 +1,71 @@
+{% extends "templates/core/layout.html" %}
+
+{% block title %}{{ _('home') }}{% endblock %}
+
+{% block additionalHeaderAssets %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}"/>
+{% endblock %}
+
+{% block additionalFooterAssets %}
+    <script type="text/javascript">
+        var observations = {{observations|tojson}},
+            configuration = {{configuration|tojson}},
+            url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
+    </script>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+    <script src="{{ url_for('static', filename='custom/maps-custom.js') }}"></script>
+    <script src="{{ url_for('static', filename='mapGenerator.js') }}"></script>
+    <script src="{{ url_for('static', filename='mapHome.js') }}"></script>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+    <script>
+        // load lazy the images
+        $(".lazy").lazy();
+
+        // load lazy on scroll
+        $("#tableEspece").scroll(function () {
+            $(".lazy").lazy();
+        });
+    </script>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container-fluid">
+        <!-- Introduction -->
+        {% if configuration.AFFICHAGE_INTRODUCTION %}
+            <div class="mt-4">
+                {% include 'static/custom/templates/introduction.html' %}
+            </div>
+        {% endif %}
+
+        {% if configuration.AFFICHAGE_LOGOS_HOME %}
+            <div class="mt-4">
+                {% include 'static/custom/templates/bandeaulogoshome.html' %}
+            </div>
+        {% endif %}
+
+        {% if configuration.AFFICHAGE_STAT_GLOBALES %}
+            <!-- Statistiques globales -->
+            {% include 'templates/home/globalStats.html' %}
+        {% endif %}
+
+        {% if customStatMedias != None and configuration.AFFICHAGE_RANG_STAT %}
+            {% include 'templates/home/taxoRank.html' %}
+        {% endif %}
+
+        {% if configuration.AFFICHAGE_DERNIERES_OBS %}
+            <!-- Dernières espèces observées (Carte et liste) -->
+            {% include 'templates/home/lastObs.html' %}
+        {% endif %}
+
+        {% if configuration.AFFICHAGE_NOUVELLES_ESPECES %}
+            <!--Nouvelles espèces observées-->
+            {% include 'templates/home/newSpecies.html' %}
+        {% endif %}
+
+        {% if configuration.AFFICHAGE_EN_CE_MOMENT %}
+            <!-- ESPECES PERIODE -->
+            {% include 'templates/home/mostViewNow.html' %}
+        {% endif %}
+    </div>
+{% endblock %}

@@ -4,17 +4,14 @@ if [ "$(id -u)" == "0" ]; then
    exit 1
 fi
 
-if [ ! -d 'log' ]
-  then
-      mkdir log
-      touch log/errors_atlas.log
-fi
 
 if [ ! -f ./atlas/configuration/settings.ini ]; then
   cp ./atlas/configuration/settings.ini.sample ./atlas/configuration/settings.ini
 fi
 
+set -a
 . atlas/configuration/settings.ini
+set +a
 
 if [ "$(id -u)" == "0" ]; then
    echo -e "\e[91m\e[1mThis script should NOT be run as root but your user needs sudo rights\e[0m" >&2
@@ -22,7 +19,7 @@ if [ "$(id -u)" == "0" ]; then
 fi
 
 echo "Stopping application..."
-sudo -s supervisorctl stop atlas
+sudo systemctl stop geonature-atlas
 
 echo "Creating and activating Virtual env..."
 
@@ -34,11 +31,19 @@ fi
 
 virtualenv -p $python_executable $venv_dir
 
+
 . $venv_dir/bin/activate
+
 
 echo "Installing requirements..."
 pip install -r requirements.txt
+pip install -e .
 deactivate
+
+echo "Installing node packages"
+cd atlas/static
+npm i
+cd ../..
 
 echo "Creating configuration files if they dont already exist"
 if [ ! -f ./atlas/configuration/config.py ]; then
@@ -50,54 +55,65 @@ sed -i "s/GUNICORN_PORT = .*$/GUNICORN_PORT = '${gun_port}'/g" ./atlas/configura
 
 
 echo "Launching application..."
-DIR=$(readlink -e "${0%/*}")
-sudo -s cp  atlas-service.conf /etc/supervisor/conf.d/
-sudo -s sed -i "s%APP_PATH%${DIR}%" /etc/supervisor/conf.d/atlas-service.conf
+export BASE_DIR=$(readlink -e "${0%/*}")
+envsubst '${USER} ${BASE_DIR} ${gun_num_workers} ${gun_port}' < geonature-atlas.service | sudo tee /etc/systemd/system/geonature-atlas.service || exit 1
+sudo systemctl daemon-reload || exit 1
+sudo systemctl enable geonature-atlas || exit 1
+sudo systemctl start geonature-atlas || exit 1
 
-sudo -s supervisorctl reread
-sudo -s supervisorctl reload
+
 
 echo "Creating custom images folder if it doesnt already exist"
-if [ ! -d ./static/custom/images/ ]; then
-  mkdir -p ./static/custom/images/
+if [ ! -d ./atlas/static/custom/images/ ]; then
+  mkdir -p ./atlas/static/custom/images/
 fi
 
 
 
 echo "Creating customisation files if they dont already exist"
-if [ ! -f ./static/custom/templates/footer.html ]; then
-  cp ./static/custom/templates/footer.html.sample ./static/custom/templates/footer.html
+if [ ! -f ./atlas/static/custom/templates/footer.html ]; then
+  cp ./atlas/static/custom/templates/footer.html.sample ./atlas/static/custom/templates/footer.html
 fi
-if [ ! -f ./static/custom/templates/introduction.html ]; then
-  cp ./static/custom/templates/introduction.html.sample ./static/custom/templates/introduction.html
+if [ ! -f ./atlas/static/custom/templates/introduction.html ]; then
+  cp ./atlas/static/custom/templates/introduction.html.sample ./atlas/static/custom/templates/introduction.html
 fi
-if [ ! -f ./static/custom/templates/presentation.html ]; then
-  cp ./static/custom/templates/presentation.html.sample ./static/custom/templates/presentation.html
+if [ ! -f ./atlas/static/custom/templates/presentation.html ]; then
+  cp ./atlas/static/custom/templates/presentation.html.sample ./atlas/static/custom/templates/presentation.html
 fi
-if [ ! -f ./static/custom/templates/credits.html ]; then
-  cp ./static/custom/templates/credits.html.sample ./static/custom/templates/credits.html
+if [ ! -f ./atlas/static/custom/templates/credits.html ]; then
+  cp ./atlas/static/custom/templates/credits.html.sample ./atlas/static/custom/templates/credits.html
 fi
-if [ ! -f ./static/custom/templates/mentions-legales.html ]; then
-  cp ./static/custom/templates/mentions-legales.html.sample ./static/custom/templates/mentions-legales.html
+if [ ! -f ./atlas/static/custom/templates/mentions-legales.html ]; then
+  cp ./atlas/static/custom/templates/mentions-legales.html.sample ./atlas/static/custom/templates/mentions-legales.html
 fi
-if [ ! -f ./static/custom/custom.css ]; then
-  cp ./static/custom/custom.css.sample ./static/custom/custom.css
+if [ ! -f ./atlas/static/custom/templates/bandeaulogoshome.html ]; then
+  cp ./atlas/static/custom/templates/bandeaulogoshome.html.sample ./atlas/static/custom/templates/bandeaulogoshome.html
 fi
-if [ ! -f ./static/custom/glossaire.json ]; then
-  cp ./static/custom/glossaire.json.sample ./static/custom/glossaire.json
+if [ ! -f ./atlas/static/custom/templates/robots.txt ]; then
+  cp ./atlas/static/custom/templates/robots.txt.sample  ./atlas/static/custom/templates/robots.txt 
 fi
-if [ ! -f ./static/custom/images/favicon.ico ]; then
-  cp ./static/images/sample.favicon.ico ./static/custom/images/favicon.ico
+
+if [ ! -f ./atlas/static/custom/custom.css ]; then
+  cp ./atlas/static/custom/custom.css.sample ./atlas/static/custom/custom.css
 fi
-if [ ! -f ./static/custom/images/accueil-intro.jpg ]; then
-  cp ./static/images/sample.accueil-intro.jpg ./static/custom/images/accueil-intro.jpg
+if [ ! -f ./atlas/static/custom/glossaire.json ]; then
+  cp ./atlas/static/custom/glossaire.json.sample ./atlas/static/custom/glossaire.json
 fi
-if [ ! -f ./static/custom/images/logo-structure.png ]; then
-  cp ./static/images/sample.logo-structure.png ./static/custom/images/logo-structure.png
+if [ ! -f ./atlas/static/custom/images/favicon.ico ]; then
+  cp ./atlas/static/images/sample.favicon.ico ./atlas/static/custom/images/favicon.ico
 fi
-if [ ! -f ./static/custom/images/logo_patrimonial.png ]; then
-  cp ./static/images/sample.logo_patrimonial.png ./static/custom/images/logo_patrimonial.png
+if [ ! -f ./atlas/static/custom/images/accueil-intro.jpg ]; then
+  cp ./atlas/static/images/sample.accueil-intro.jpg ./atlas/static/custom/images/accueil-intro.jpg
 fi
-if [ ! -f ./static/custom/maps-custom.js ]; then
-  cp ./static/custom/maps-custom.js.sample ./static/custom/maps-custom.js
+if [ ! -f ./atlas/static/custom/images/logo-structure.png ]; then
+  cp ./atlas/static/images/sample.logo-structure.png ./atlas/static/custom/images/logo-structure.png
 fi
+if [ ! -f ./atlas/static/custom/images/logo_patrimonial.png ]; then
+  cp ./atlas/static/images/sample.logo_patrimonial.png ./atlas/static/custom/images/logo_patrimonial.png
+fi
+if [ ! -f ./atlas/static/custom/maps-custom.js ]; then
+  cp ./atlas/static/custom/maps-custom.js.sample ./atlas/static/custom/maps-custom.js
+fi
+
+
+

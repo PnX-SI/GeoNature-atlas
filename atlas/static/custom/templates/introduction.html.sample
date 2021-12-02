@@ -1,0 +1,25 @@
+<div class="card">
+	<div class="card-body">
+		<div class="row">
+			<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 textIntroduction">
+				<h1>
+					{{ _('welcome.message') }} 
+					{{ _('from1') }} {{ _('from2') }} {{ _('from3') }} {{ _('from4') }} {{ _('from5') }} 
+					{{configuration.STRUCTURE}}
+				</h1>
+				<p>
+					{{ _('home.introduction.message') }}
+				</p>
+				<p>
+					<a href="{{url_for('main.get_staticpages', page='presentation') }}" class="btn btn-default">En
+						savoir plus</a>
+				</p>
+			</div>
+			<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+				<img src="{{url_for('static', filename='custom/images/accueil-intro.jpg') }}" width="100%"
+					alt="{{configuration.NOM_APPLICATION}}">
+			</div>
+		</div>
+	</div>
+
+</div>

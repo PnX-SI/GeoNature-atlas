@@ -1,0 +1,26 @@
+{% block identityCard %}
+	<div class="card mt-4" id="identityCard">
+		<div class=" card-body row" id="rowIdentity">
+			<!-- Logo -->
+			{% if url_logo != none %}
+			<div class="imgWrapper  left">				
+				<a href="{{ url_organism }}" data-lightbox="imageSet">
+					
+					<img id="mainImg" 
+					src='{{ url_logo }}'
+					style="width: 200px;">
+					
+				</a>
+				
+			</div>
+			{% endif %}
+			<div class="left col-9  ">
+			<h1>
+				<strong>{{ nom_organism }}</strong>
+			</h1>
+				<br><b>{{ _('Adresse') }}</b> : {{ adresse_organism}} {{ cp_organism }}
+				<br><b>{{ _('Téléphone') }}</b> : {{ tel_organism }}
+			</div>
+		</div>
+	</div>
+{% endblock %}

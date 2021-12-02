@@ -1,0 +1,76 @@
+{% block topSpecies %}
+    <div class="card mt-4" id="mapPanel mt-4">
+        <!-- Card title-->
+        <h4 class="title-bar center mt-2">
+            <strong>{{ _('top.species') }}</strong>
+        </h4>
+        <!-- List taxons-->
+        <div id="taxonList" class="d-flex align-content-stretch bg-white flex-grow-1">
+            <ul class="list-group w-100">
+                {% for taxon in mostObsTaxs %}
+                    <li id="taxonListItem" class="media border-bottom p-2"  
+                        cdRef="{{ taxon.cd_ref }}">
+                    <div class="pictoImgList mr-2"
+                    data-placement="center" >
+                        {% if taxon["photo"]["path"] == None or not taxon["photo"]["path"]%}
+                            <img class="mx-auto d-block"
+                                 src="{{ url_for('static', filename='images/picto_'+ taxon.group2_inpn| replace(" ", "_") |urlencode+'.png') }}">
+                        {% else %}
+                            {% if configuration.REDIMENSIONNEMENT_IMAGE %}
+                                {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+ taxon.photo.id_media|string+'?h=100&w=150' %}
+                            {% else %}
+                                {% set img_path = taxon.photo.path %}
+                            {% endif %}
+                            <img class="mainImg" src="{{img_path}}"
+                                style='width:100px'>
+                        {% endif %}
+                    </div>
+                    <div class="media-body">
+                        <span class="float-right">
+                        {% if configuration.PROTECTION %}
+                            {% if taxon.protection == 'oui' %}
+                                <a  href="https://inpn.mnhn.fr/espece/cd_nom/mostObsTaxs[top_taxons.index(taxon)]['cd_ref']/tab/statut"
+                                    target="_blank">
+                                    <img src="{{ url_for('static', filename='images/logo_protection.png') }}"
+                                    style="width : 30px; height: 30px;" data-placement="left" data-toggle="tooltip"
+                                    data-original-title="{{ ('this.taxon.has.a.protected.status') }}">
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                        {% if configuration.DISPLAY_PATRIMONIALITE %}
+                            {% if taxon.patrimonial in configuration.PATRIMONIALITE.config %}
+                                <img    src="{{ url_for('static', filename=configuration.PATRIMONIALITE.config[taxon.patrimonial].icon) }}"
+                                        style="width : 30px; height: 30px" data-placement="left" data-toggle="tooltip"
+                                        data-original-title="{{ configuration.PATRIMONIALITE.config[taxon.patrimonial].text }}"
+                                        data-placement="right">
+                            {% endif %}
+                        {% endif %}
+                        </span>
+                        <h5 class="mt-0 mb-1 ">
+                            <b>{% if taxon.nom_vern == None %}
+                                -
+                            {% else %}
+                                {{ taxon.nom_vern.split(',')[0].strip() }}
+                            {% endif %}</b></h5>
+                        <h5>
+                            <span id="name italic">{{ taxon.lb_nom|safe }}</span>
+                        </h5>
+    
+                        <b>
+                            {{ taxon['nb_obs']}} </b> 
+                            {% if taxon.nb_obs == 1 %}{{_ ('observation')}}{% else %}{{_ ('observations')}}{% endif %} <br>
+                        <b>{{ "%.2f"|format(taxon['nb_obs'] / nb_obs*100) }}% </b>{{ _('from.organism.observations') }}
+                        <span class="float-right">
+                        <a class="badge badge-primary" href="{{ url_for('main.ficheEspece',cd_ref=taxon['cd_ref']) }}"
+                           data-toggle="tooltip"
+                           title="{{ _('check.species.sheet') }}" data-placement="left">
+                            <i class="fas fa-list fa-fw"></i> {{ _('species.sheet') }}</i>
+                        </a>
+                        </span>
+
+                    </div>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

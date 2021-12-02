@@ -1,0 +1,440 @@
+<!-- Réalisée à partir de https://startbootstrap.com/template-overviews/one-page-wonder/ et http://getbootstrap.com/examples/carousel/ -->
+<!DOCTYPE html>
+<html>
+   <head>
+        <meta charset="utf-8" />
+        <title>Présentation de l'atlas | {{configuration.NOM_APPLICATION}} - {{configuration.STRUCTURE}}</title>
+
+        <!-- Jquery -->
+        <script type=text/javascript src="{{url_for('static', filename='lib/jquery-1.12.4.min.js') }}"></script>
+		<script type=text/javascript src="{{url_for('static', filename='lib/jquery-ui.min.js') }}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/jquery-ui.css') }}" />
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="{{url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}"></link>
+        <script type=text/javascript src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
+
+        <!-- Atlas -->
+        <link rel="shortcut icon" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />
+        <link rel="stylesheet" href="{{url_for('static', filename='css/staticPages.css') }}" />
+        <link rel="stylesheet" href="{{url_for('static', filename='custom/custom.css') }}" />
+
+   </head>
+   <body  data-spy="scroll" data-target="#sommaire">
+    {% include 'templates/navbar.html' %}
+
+		<div id="sideBar">
+			{% include 'templates/sideBar.html' %}
+		</div>
+		<div class="container-fluid" id="page">
+
+
+            <!-- Carousel
+            ================================================== -->
+            <div id="myCarousel" class="carousel slide" data-ride="carousel" style="margin-top: -15px; margin-bottom: 0px;">
+              <!-- Indicators -->
+              <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+                <li data-target="#myCarousel" data-slide-to="3"></li>
+              </ol>
+              <div class="carousel-inner" role="listbox">
+                <div class="item active" style="background-image: url(http://biodiversite.ecrins-parcnational.fr/medias/60686_364_Hermine_blanche_en_pelage_dhiver.jpg) ; background-size: cover; background-position: center center;">
+                  <div class="container">
+                    <div class="carousel-caption">
+                      <h1>Atlas de la faune vertébrée et invertébrée</h1>
+                      <p>Découvrez plus de 300.000 observations de 2.000 espèces</p>
+					  <p><a class="btn btn-lg btn-default" href="#faune" role="button">En savoir plus</a></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="item" style="background-image: url(http://biodiversite.ecrins-parcnational.fr/medias/92486_712_Lis_de_Pompone.jpg) ; background-size: cover; background-position: center center;">
+                  <div class="container">
+                    <div class="carousel-caption">
+                      <h1>Atlas de la flore</h1>
+                      <p>Parcourez les fiches espèces des 2.000 espèces</p>
+                      <p><a class="btn btn-lg btn-default" href="#flore" role="button">En savoir plus</a></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="item" style="background-image: url({{url_for('static', filename='custom/images/01-observateurs.jpg') }}) ; background-size: cover; background-position: top center;">
+                  <div class="container">
+                    <div class="carousel-caption">
+                      <h1>40 ans d'observations scientifiques</h1>
+                      <p>Connaissance, suivi, gestion et protection de la biodiversité</p>
+                      <p><a class="btn btn-lg btn-default" href="#scientifique" role="button">En savoir plus</a></p>
+                    </div>
+                  </div>
+                </div>
+                 <div class="item" style="background-image: url({{url_for('static', filename='custom/images/02-photographes.jpg') }}) ; background-size: cover; background-position: bottom center;">
+                  <div class="container">
+                    <div class="carousel-caption">
+                      <h1>Des centaines de photos</h1>
+                      <p>Prises par les agents du parc national au quotidien</p>
+                      <p><a class="btn btn-lg btn-default" href="{{url_for('main.photos')}}" role="button">Visitez la galerie</a></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Précédent</span>
+              </a>
+              <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Suivant</span>
+              </a>
+            </div><!-- /.carousel -->
+
+
+            <nav class="navbar navbar-inverse" data-spy="affix" data-offset-top="500" id="sommaire">
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="#general">Général</a></li>
+				<li><a href="#fonctionnalites">Fonctionnalités</a></li>
+                <li><a href="#faune">Faune</a></li>
+                <li><a href="#flore">Flore</a></li>
+                <li><a href="#scientifique">Scientifique</a></li>
+                <li><a href="#opensource">Open source</a></li>
+                <li><a href="#reseaux">Réseaux</a></li>
+              </ul>
+            </nav>
+
+            <div class="container presentation">
+              <div class="col-lg-8">
+                  <!-- Texte de présentation général -->
+
+                  <h2 id="general">Biodiv'Ecrins, l'atlas de la flore et de la faune du Parc national des Ecrins</h2>
+                  <p class="lead">
+                    Le Parc national recueille des données faune et flore sur son territoire depuis plus de 40 ans. Celles-ci sont utilisées pour mieux connaître la biodiversité, suivre les évolutions de certaines espèces fragiles ou patrimoniales… Car agir intelligemment pour la sauvegarde de ce patrimoine naturel requiert de le connaître et le comprendre.
+                  </p>
+                  <p class="lead">
+                    Biodiv'Ecrins met à votre disposition l'ensemble des données collectées par le Parc national des Écrins depuis sa création en 1973.
+                  </p>
+                  <p class="lead">
+                    Chaque jour, ses agents font des observations dans le cadre de leurs missions avec un véritable souci d'enrichissement des connaissances sur la biodiversité alpine. Elles sont affichées en temps réel sur cet atlas. Vous pouvez ainsi suivre l'état des connaissances sur ce territoire.
+                  </p>
+              </div>
+              <div class="col-lg-4" style="background:#f4f4f4; border-radius: 15px; margin-top:20px; padding: 20px; text-align:left;">
+                <p>
+                    <img src="http://www.mnhn.fr/sites/mnhn.fr/files/styles/bandeau/public/thumbnails/image/grande_galerie_principale.jpg?itok=CF-gmndZ" width="100%">
+                </p>
+                <p>
+                    Inauguration de Biodiv'Ecrins le 29 novembre 2016 lors de la conférence de presse organisée par le Ministère de l'Environnement, au Musée national d'histoire naturelle (MNHN) à Paris.
+                </p>
+                <p>
+                    Ce rendez-vous est associé à la publication du premier décret d'application de la loi pour la reconquête de la biodiversité, de la nature et des paysages qui, dans son article 7, renforce la politique nationale en matière d'inventaire du patrimoine naturel et d'ouverture des données.
+                </p>
+                <p>
+                    <a href="#" target="_bank"><span class="glyphicon glyphicon-eye-open"></span> Lire l'article sur le site internet du Parc national des Ecrins</a><br/>
+                    <a href="{{url_for('static', filename='custom/images/2016-11-CPRESSE-Biodiv-Ecrins-PNE.pdf') }}" target="_bank"><span class="glyphicon glyphicon-file"></span> Télécharger le communiqué de presse</a><br/>
+                    <a href="{{url_for('static', filename='custom/images/2016-11-CP-biodiv-ecrins-images.zip') }}" target="_bank"><span class="glyphicon glyphicon-camera"></span> Télécharger les photos</a>
+				</p>
+              </div>
+              <div style="clear: both;"></div>
+
+              <hr class="featurette-divider">
+
+              <!-- Three columns of text below the carousel -->
+              <div class="row">
+                <div class="col-lg-4" id="fonctionnalites">
+                  <img class="img-circle" src="{{url_for('static', filename='custom/images/03-determination.jpg') }}" alt="Generic placeholder image" width="140" height="140">
+                  <h2>Fiches espèces</h2>
+                  <p>Retrouvez la fiche de chaque espèce avec leur carte des observations, leur répartition altitudinale et mensuelle, ainsi que des descriptions, photos, vidéos, audios et liens complémentaires</p>
+                  <p><a class="btn btn-default" href="/espece/61098" role="button">Exemple &raquo;</a></p>
+                </div><!-- /.col-lg-4 -->
+                <div class="col-lg-4">
+                  <img class="img-circle" src="{{url_for('static', filename='custom/images/04-loupe.jpg') }}" alt="Generic placeholder image" width="140" height="140">
+                  <h2>Fiches communes</h2>
+                  <p>Découvrez les espèces observées sur chaque commune du parc national et affichez leurs observations sur la carte de la commune.</p>
+                  <p><a class="btn btn-default" href="/commune/05090" role="button">Exemple &raquo;</a></p>
+                </div><!-- /.col-lg-4 -->
+                <div class="col-lg-4">
+                  <img class="img-circle" src="{{url_for('static', filename='custom/images/06-photographe.jpg') }}" alt="Generic placeholder image" width="140" height="140">
+                  <h2>Galerie photos</h2>
+                  <p>Découvrez les photographies des différentes espèces, réalisées principalement par les agents du Parc national lors de leurs missions sur le terrain.</p>
+                  <p><a class="btn btn-default" href="{{url_for('main.photos')}}" role="button">Parcourir &raquo;</a></p>
+                </div><!-- /.col-lg-4 -->
+              </div><!-- /.row -->
+
+
+              <!-- START THE FEATURETTES -->
+
+              <hr class="featurette-divider">
+
+                <!-- First Featurette -->
+                <div class="featurette" id="faune">
+                    <img class="featurette-image img-circle img-responsive pull-right" src="{{url_for('static', filename='custom/images/09-faune.jpg') }}">
+                    <h2 class="featurette-heading">Faune sauvage.<br/><span class="text-muted">Grandes et petites bêtes.</span>
+                    </h2>
+                  <p class="lead">
+                    A quelques surprises près toujours possibles, la faune des vertébrés est aujourd'hui bien identifiée dans le Parc national des Écrins.
+                    Il s'agit des mammifères, oiseaux, reptiles et amphibiens.
+                  </p>
+                  <p class="lead">
+                    Il n'en va pas de même pour la faune des invertébrés. Il s'agit de ces étranges petites bêtes que sont les insectes, les escargots, les millepattes ou encore les araignées, coléoptères et écrevisses... Une quantité d'espèces aussi impressionnante que pleine de promesses scientifiques.
+                  </p>
+                  <p class="lead">
+                  <i>
+                    « La base de données du Parc national n'est pas un inventaire.
+                    Elle rassemble des informations collectées dans le cadre de différents protocoles scientifiques avec des objectifs différents.
+                    De fait, le nombre important d'observations de bouquetins ne veut pas dire qu'il s'agit de l'espèce la plus présente dans le massif mais bien d'une espèces très suivie, notamment dans le cadre des réintroductions ! »
+                    </i>
+                  </p>
+                  <p class="lead">
+                    - Ludovic Imberdis, chargé de mission « faune » au Parc national des Écrins
+                  </p>
+                  <p class="lead">
+                    Pour en savoir plus : <a href="http://www.ecrins-parcnational.fr/thematique/faune-sauvage" target="_blank">http://www.ecrins-parcnational.fr/thematique/faune-sauvage</a>.
+                  </p>
+                </div>
+
+
+              <hr class="featurette-divider">
+
+              <div class="featurette" id="flore">
+                  <img class="featurette-image img-circle img-responsive pull-left" src="{{url_for('static', filename='custom/images/08-flore.jpg') }}">
+                  <h2 class="featurette-heading">Flore sauvage.<br/><span class="text-muted">Des espèces à tous les étages.</span>
+                  </h2>
+                  <p class="lead">
+
+                  <p class="lead">
+                    Plus de 2000 espèces de plantes sont présentées dans cet atlas.
+                    Si l'inventaire du monde végétal se poursuit dans les Écrins, le Parc national assure également le suivi d'espèces emblématiques (comme le chardon bleu et le sabot de Vénus) et participe à de nombreux programmes de recherche sur les milieux et espèces naturels de haute altitude.
+                  </p>
+                  <p class="lead">
+                    Certaines plantes présentent des histoires de vie remarquables, allant des héritières de pratiques agricoles anciennes (prairies de fauche, cultures extensives de céréales) aux exploratrices de la haute montagne.
+                  </p>
+                  <p class="lead">
+                    <i>
+                    « L'immense intérêt d'un atlas en ligne est de partager et faire vivre une connaissance exceptionnelle du monde sauvage présent dans les Ecrins.<br/>
+                    Un tel outil redonne corps au terme parfois éculé de "biodiversité", décrivant et illustrant avec élégance la foisonnante diversité des espèces observées et étudiées. »
+                    </i>
+                  </p>
+                  <p class="lead">
+                    - Cédric Dentant, botaniste, chargé de mission flore et milieux au Parc national des Écrins
+                  </p>
+                  <p class="lead">
+                    Pour en savoir plus : <a href="" target="_blank">http://www.ecrins-parcnational.fr/thematique/flore</a>.
+                  </p>
+
+              </div>
+
+				<!--
+              <hr class="featurette-divider">
+
+               <div class="featurette" id="fonctionnalites">
+                  <img class="featurette-image img-circle img-responsive pull-right" src="{{url_for('static', filename='custom/images/05-insecte.jpg') }}">
+                  <h2 class="featurette-heading">Fonctionnalités.<br/><span class="text-muted">Quelques détails.</span>
+                  </h2>
+                  <p class="lead">
+                    <b>Fiches espèces</b><br/>
+                    Chaque espèce possède sa propre fiche d'identité, avec :
+                    <ul>
+                      <li>de magnifiques photographies permettant d'identifier l'espèce</li>
+                      <li>la carte des observations sur le Parc national</li>
+                      <li>des éléments de reconnaissance de l'espèce, son milieu privilégier, sa répartition mondiale</li>
+                      <li>les périodes et altitudes d'observation</li>
+                      <li>des compléments vidéo, audio, des articles, rapports, extraits de livre pour approfondir sa connaissance de l'espèce</li>
+                    </ul><br/>
+                    Bref, un savoir dynamique à consulter sans modération !
+                  </p>
+                  <p class="lead">
+                    <b>Fiches par commune</b><br/>
+                    Pour chacune des 53 communes de l'aire d'adhésion du Parc national, découvrez les espèces observées et affichez leurs localisations, leurs statuts et toutes les informations contenues dans les fiches espèces.
+                  </p>
+                  <p class="lead">
+                    <b>Et aussi</b><br/>
+                    La possibilité de retrouver les espèces par leur nom français ou scientifique, de lister les espèces par groupe, par classe, par famille, d'en savoir plus sur le statut de chaque espèce graâce à des liens institutionnels comme ceux vers l'Inventaire National du Patrimoine Naturel (INPN) conduit par le Museum National d'Histoire Naturel (MNHN).
+                  </p>
+                  <p class="lead">
+                    <b>Galerie d'images</b>
+                    <br/>
+                    Découvrez les photographies des différentes espèces, réalisées principalement par les agents du Parc national lors de leurs missions sur le terrain.
+                  </p>
+                  <p class="lead">
+                    <i>
+                    « Les agents du Parc national des Ecrins sont des passionnés de leur métier, de ce territoire d'exception, de ses paysages, de ses vallées et de l'ensemble de ses richesses naturelles et culturelles.
+                    Pour certains, cette passion se traduit par la pratique de la photographie au cours de leur activité quotidienne, laquelle nourrit une photothèque déjà riche de plus de 70 000 images. »
+                    </i>
+                    <br/>
+                    - Pascal Saulay, chargé de mission images et multimedia au Parc national des Ecrins
+                  </p>
+                  <p class="lead">
+                    <b>En savoir plus</b><br/>
+                    Les images contribuent à faire découvrir, aimer et donc respecter ce territoire protégé et les espèces qu'il abrite...
+                    Plusieurs spécialistes interviennent pour le Parc national sur des programmes scientifiques pointus, notamment pour le projet d'inventaire généralisé des taxons (ATBI) de la réserve intégrale du Lauvitel. Ils apportent ainsi leur contribution à l'illustration de certaines espèces rares ou méconnues de la biodiversité dans les Écrins..
+                  </p>
+                </div>
+                -->
+
+              <hr class="featurette-divider">
+              <div class="featurette" id="scientifique">
+                  <img class="featurette-image img-circle img-responsive pull-right" src="{{url_for('static', filename='custom/images/07-pne-protocoles.jpg') }}">
+                  <h2 class="featurette-heading">Une stratégie scientifique.<br/><span class="text-muted">Pour la connaissance et la protection.</span>
+                  </h2>
+                  <p class="lead">
+                  La préservation des espèces, des habitats et des ressources naturelles s'appuie sur le recueil d'observations, le façonnage des connaissances et la contribution à la recherche scientifique.
+                  </p>
+                  <p class="lead">
+                    <i>
+                    Quelles espèces fréquentent le massif, comment elles interagissent, comment évoluent leurs populations, ou encore quelles sont les conséquences sur ces espèces des activités humaines du territoire ?
+                    C'est pour répondre à ce type de questions que différents protocoles scientifiques sont mis en œuvre.
+                    Un grand nombre des observations brutes liées à ces protocoles sont synthétisées dans cet atlas.
+                    </i>
+                  </p>
+                  <p class="lead">
+                    La richesse de la faune et de la flore des Écrins tient à la diversité des influences climatiques, géologiques, à l'amplitude altitudinale – s'échelonnant d'environ 800 m à 4102 m –, et aux différents modelés des reliefs du massif.
+                    Ainsi, le campagnol provençal et le lézard ocellé, espèces méridionales, sont présents dans le territoire des Ecrins au même titre que le campagnol des neiges et le lagopède alpin, relictes des dernières glaciations.
+                    La diversité des conditions écologiques convient à nombre de plantes, allant du robuste mélèze des pentes abruptes à la microscopique chlamydomonas des névés !
+                  </p>
+                  <p class="lead">
+                    Pour conserver ce patrimoine naturel d'exception, à l'origine de la création du Parc national, il convient de bien le connaître. Les différents programmes d'inventaire, de suivi ou d'études engagés sur le territoire poursuivent tous cet objectif.
+                  </p>
+                  <p class="lead">
+                    Pour en savoir plus, voir l'action du Parc national en termes de faune et de flore :<br/>
+                    <a href="http://www.ecrins-parcnational.fr/thematique/faune-sauvage" target="_blank">http://www.ecrins-parcnational.fr/thematique/faune-sauvage</a><br/>
+                    <a href="http://www.ecrins-parcnational.fr/thematique/flore" target="_blank">http://www.ecrins-parcnational.fr/thematique/flore</a>
+                  </p>
+                </div>
+
+
+              <hr class="featurette-divider">
+
+              <div class="row featurette">
+                <div class="col-md-12" id="opensource">
+                  <h2 class="featurette-heading">GeoNature-atlas.<br/><span class="text-muted">Dans la constellation de l'opensource.</span></h2>
+                  <p class="lead">
+                    Biodiv'Ecrins utilise l'outil <a href="https://github.com/PnX-SI/GeoNature-atlas" target="_blank">GeoNature-atlas</a> développé par le Parc national des Écrins et publié sous licence libre. Il est ainsi transférable librement à d'autres structures qui souhaitent partager leurs observations naturalistes en se basant sur les référentiels nationaux de l'INPN.
+                  </p>
+				  <p class="lead">
+					<span class="glyphicon glyphicon-download"></span> <i>Téléchargez la <a href="https://github.com/PnX-SI/GeoNature-atlas/raw/master/docs/2016-09-GeoNature-atlas-PRESENTATION.pdf">fiche de présentation de GeoNature-atlas</a> pour en savoir plus.</a></i>
+				  </p>
+                  <p class="lead">
+                    Il fait partie d'un ensemble d'outils développé par le Parc national et ses partenaires, pour pouvoir saisir, gérer et traiter les données des différents protocoles (<a href="http://geonature.fr" target="_blank">http://geonature.fr</a>).
+                  </p>
+                  <p class="lead">
+                    <img src="http://geonature.fr/img/schema-geonature-01.png" width="80%">
+                  </p>
+                  <p class="lead">
+                    <i>
+                    « Nos outils sont pensés, dès le départ, pour pouvoir être déployés par d’autres structures dans des contextes différents.
+                    Pour cela, l’accent est mis sur des développements génériques et sur la publication de l’outil sous licence libre pour en faciliter l’utilisation par d’autres ».
+                    </i>
+                  </p>
+                  <p class="lead">
+                    - Camille Monchicourt, responsable du système d’informations au Parc national des Ecrins
+                  </p>
+                  <p class="lead">
+                    En effet le Parc national des Ecrins a entrepris depuis une dizaine d'années, de migrer son système d'informations vers des outils open source. <br/>
+                    Les logiciels libres (dont le code source est ouvert, accessible et modifiable par qui le souhaite) permettent une plus grande modularité et interopérabilité des outils et des données, en plus de faciliter la mutualisation et de réduire les coûts liés aux licences.
+                  </p>
+                  <p class="lead">
+                    C'est pourquoi le parc national a aussi souhaité que les outils qu'il développe pour ses propres besoins soient eux-aussi publiés sous licence libre.<br/>
+                    En 2011, le Parc national des Ecrins a conçu et publié sous licence libre l'application <a href="http://geotrek.fr" target="_blank">Geotrek</a> pour gérer et valoriser les sentiers. Elle est aujourd'hui utilisée par une quarantaine de structures en France qui l'ont faite évoluer à leur tour, entrainant ainsi d'importantes mutualisations des ressources publiques.<br/>
+                    Pour en savoir plus, lire <a href="http://www.ecrins-parcnational.fr/actualite/geotrek-avenement-communaute-utilisateurs" target="_blank">"Geotrek, l’avènement d'une communauté d'utilisateurs"</a>.
+                  </p>
+                  <p class="lead">
+                    <i>* Un logiciel Opensource est un programme informatique dont le code source est distribué sous une licence dite « libre », permettant à quiconque de lire, modifier ou redistribuer ce logiciel.</i>
+                  </p>
+                </div>
+              </div>
+
+              <hr class="featurette-divider">
+
+
+              <div class="row featurette">
+                <div class="col-md-12" id="reseaux">
+                  <h2 class="featurette-heading">Réseaux d'observateurs.<br/><span class="text-muted">Faisceaux de connaissances.</span></h2>
+                  <p class="lead">
+                    Le Parc national fait partie d'un réseau de collecte de données naturalistes.
+                    Il contribue ainsi à enrichir des bases de données thématiques mises à disposition tant des spécialistes que du public.
+                  </p>
+                  <p class="lead">
+                    En multipliant les conventions d'échanges, le Parc national valorise et élargit l'utilisation des données acquises par ses agents.
+                  </p>
+                  <p class="lead">
+                    Selon les sites internet, il est possible de CONSULTER les informations, de TÉLÉCHARGER des synthèses voire de PARTICIPER aux observations.
+                  </p>
+                  <p class="lead">
+                    <img src="http://geonature.fr/img/schema-chaine-travail.png" width="100%">
+                  </p>
+                  <p class="lead">
+                    <a href="https://inpn.mnhn.fr" target="_blank">Inventaire National du Patrimoine Naturel (INPN)</a>
+                  </p>
+                  <p class="lead">
+                    Sur le site consacré à l'INPN (Muséum national d'histoire naturelle), on retrouve plus de 300 000 données sur la faune du Parc national des Écrins parmi les 30 millions collectées sur l'ensemble du territoire national et agglomérées dans cet inventaire national.
+                    <br/>
+                    Le Muséum national utilise ces informations pour réaliser des synthèses aux échelles nationales et internationales.
+                    <br/>
+                    Cette démarche permet d'inscrire les enjeux environnementaux dans les politiques nationales et européennes.
+                  </p>
+                  <p class="lead">
+                    Pour en savoir plus, lire <a href="http://www.ecrins-parcnational.fr/actualite/les-observations-du-parc-national-sont-en-ligne" target="_blank">Les observations du Parc national sont en ligne</a>.
+                  </p>
+                  <p class="lead">
+                    <b>Pour télécharger des données organisées</b>
+                  </p>
+                  <p class="lead">
+                    <a href="http://www.silene.eu" target="_blank">SILENE PACA</a>
+                  </p>
+                  <p class="lead">
+                    Silene, plate-forme SINP (Système d'information sur la nature et les paysages), est le portail de données de la région Provence-Alpes-Côte d'Azur. <br/>
+                    Sur ce site qui permet de saisir et de consulter une masse de données très importante, des synthèses des patrimoines flore et faune de la région par commune et par maille sont disponibles.
+                  </p>
+                  <p class="lead">
+                    Voir aussi l'homologue pour la région Rhône-Alpes: <a href="http://www.pifh.fr/" target="_blank">Le pôle d'information flore et habitats (PIFH)</a>.
+                  </p>
+                  <p class="lead">
+                    <a href="http://www.cbn-alpin.fr" target="_blank">Conservatoire botanique national alpin (CBNA)</a>
+                  </p>
+                  <p class="lead">
+                    Le site du Conservatoire botanique national alpin offre pour toute son aire d'agrément (Alpes et Ain : 04-05-01) les données relatives à la flore et aux habitats.
+                    Le Parc en est un contributeur important.
+                  </p>
+                  <p class="lead">
+                    Voir aussi le <a href="http://siflore.fcbn.fr" target="_blank">SI Flore national</a> et <a href="http://www.tela-botanica.org/site:botanique" target="_blank">Tela Botanica</a>.
+                  </p>
+                  <p class="lead">
+                    <b>Pour participer !</b>
+                  </p>
+                  <p class="lead">
+                    Chacun peut, s'il le souhaite, devenir contributeur en transmettant ses observations de mammifères, mais aussi d'autres espèces, sur différentes plateformes naturalistes et notamment, pour les Écrins, sur les deux sites participatifs de la LPO.
+                    <br/>
+                    <a href="http://www.faune-paca.org" target="_blank">faune-paca.org</a> et <a href="http://www.faune-isere.org" target="_blank">faune-isere.org</a>
+                  </p>
+                  <p class="lead">
+                    C'est aussi une façon de compléter les connaissances du Parc national puisqu'il existe une <a href="http://www.ecrins-parcnational.fr/actualite/donnees-partagees-entre-parc-national-lpo-paca" target="_blank">convention d'échanges de données avec la LPO</a>.
+                    <br/>
+                    C'est également le cas avec avec le <a href="http://www.gcprovence.org/" target="_blank">Groupe chiroptères de Provence</a>.
+                  </p>
+                  <p class="lead">
+                    Pour la flore, un atlas en ligne pour le département des Hautes-Alpes accueille également les contributions : <a href="http://www.bdflore05.org" target="_blank">bdflore05.org</a>.
+                    De même que pour la faune, une convention a été engagée et vit activement pour régulièrement échanger les données d'observation.
+                    <br/>Côté Isère, l'association Gentiana anime un inventaire permanent de la flore du département : <a href="http://www.gentiana.org/site:flore" target="_blank">gentiana.org</a>.
+                  </p>
+                </div>
+              </div>
+
+              <hr class="featurette-divider">
+
+              <!-- /END THE FEATURETTES -->
+
+            </div>
+
+
+        </div>
+
+		{% if configuration.AFFICHAGE_FOOTER %}
+			{% include 'static/custom/templates/footer.html' %}
+		{% endif %}
+
+        <script type="text/javascript">
+        var configuration = {{configuration|tojson}};
+        </script>
+
+        <script src="{{url_for('static', filename='main.js') }}"></script>
+
+   </body>
+</html>

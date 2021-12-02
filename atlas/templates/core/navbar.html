@@ -1,0 +1,82 @@
+{% block navbar %}
+{% if configuration.MULTILINGUAL %}
+<script type="text/javascript"> 
+    var language = '{{ '/' + g.lang_code }}'; 
+</script>
+{% else %}
+<script type="text/javascript"> 
+    var language = '' ;
+</script>
+{% endif %}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.1.0/css/flag-icon.min.css" rel="stylesheet">
+    <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light" role="navigation">
+        <a class="navbar-brand" {% if configuration.CUSTOM_LOGO_LINK %}href="{{ configuration.CUSTOM_LOGO_LINK }}"
+           target="_blank"{% else %}href="{{ url_for('main.index') }}"{% endif %}>
+            <img class="logoStructure" src="{{ url_for('static', filename='custom/images/logo-structure.png') }}"/>
+        </a>
+        <a class="navbar-brand titreAppli" href="{{ url_for('main.index') }}">{{ configuration.NOM_APPLICATION }}</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="navbar-nav mr-auto">
+            </div>
+            <div class="form-inline my-2 my-lg-0">
+                <div class="mr-sm-2">
+                    <i class="fas fa-search form-control-feedback"></i>
+                </div>
+                <form method="POST" action="" id='searchFormTaxons' role="search">
+                    <div class="form-group has-feedback">
+                        <input id="searchTaxons" type="text" class="form-control mr-sm-2 ajax-search small-placeholder"
+                               placeholder="{{ _('search.species') }}&nbsp;&nbsp;&nbsp;" loading="false" style="width: 175px;"  />
+
+                    </div>
+                    <input id="hiddenInputTaxons" type="hidden"name="cd_ref"/>
+                </form>
+
+                <form class="form-inline my-2 my-lg-0" method="POST"
+                      onsubmit="completeAction('#searchFormCommunes', hiddenInputCommunes)" id='searchFormCommunes'
+                      action=""
+                      role="search">
+                    <div class="form-group has-feedback">
+                        <input id="searchCommunes" type="text" style="width: 175px;"
+                               class="form-control mr-sm-2 ajax-search small-placeholder"
+                               placeholder="{{ _('search.city') }}&nbsp;&nbsp;&nbsp;">
+                    </div>
+                    <input id="hiddenInputCommunes" type="hidden" name="insee">
+                </form>
+                <!--- Languages button and dropdown displaid if MULTILINGUAL is True-->
+                {% if configuration.MULTILINGUAL %}
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <!-- Display languages flags and name, en flag is flag-icon flag-icon-gb-->
+                        <container style="display: inline-flex;">
+                            <span class="{{ 'flag-icon ' + configuration.AVAILABLE_LANGUAGES[g.lang_code]['flag_icon']}}" class="align-middle"></span> 
+                            <div class="d-lg-block d-sm-none">&nbsp;&nbsp;{{ configuration.AVAILABLE_LANGUAGES[g.lang_code]['name'] }}</div>
+                        </container>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown09">
+                    {% for language in configuration.AVAILABLE_LANGUAGES %}
+                        <a  class="dropdown-item" href="{{url_for(request.endpoint, lang_code=language, **request.view_args)}}">
+                            <container style="display: inline-flex;">
+                                <span class="{{ 'flag-icon ' + configuration.AVAILABLE_LANGUAGES[language]['flag_icon']}}"> </span> 
+                                <div class="d-lg-block d-sm-none">&nbsp;&nbsp;{{ configuration.AVAILABLE_LANGUAGES[language]['name'] }}</div>
+                            </container>
+                        </a>
+                    {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if configuration.EXTENDED_AREAS %}
+                    {% include 'templates/core/extended_areas_search.html' %}
+                {% endif %}
+            </div>
+        </div>
+
+    </nav>
+
+{% endblock %}

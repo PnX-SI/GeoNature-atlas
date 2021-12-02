@@ -1,0 +1,41 @@
+{% block assets_header %}
+    {% if configuration.MULTILINGUAL %}
+        {% for language in configuration.AVAILABLE_LANGUAGES %}
+        <link rel="alternate" hreflang="{{ language }}" href="{{url_for(request.endpoint, lang_code=language, _external=True, **request.view_args)}}">
+        {% endfor %}
+        <link 
+            rel="alternate" 
+            href="{{url_for(request.endpoint, _external=True, lang_code=configuration.DEFAULT_LANGUAGE, **request.view_args)}}"
+            hreflang="x-default"
+        >
+        <link rel="canonical" href="{{url_for(request.endpoint, _external=True, lang_code=configuration.DEFAULT_LANGUAGE, **request.view_args)}}">
+    {% endif %}
+
+    <!-- Jquery -->
+    <script type=text/javascript src="{{url_for('static', filename='node_modules/jquery/dist/jquery.min.js') }}"></script>
+    <script type=text/javascript src="{{url_for('static', filename='node_modules/jquery-ui-dist/jquery-ui.min.js') }}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='node_modules/jquery-lazy/jquery.lazy.min.js') }}"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='node_modules/jquery-ui-dist/jquery-ui.css') }}" />
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{{url_for('static', filename='node_modules/bootstrap/dist/css/bootstrap.min.css') }}"/>
+    <script type=text/javascript src="{{url_for('static', filename='node_modules/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+    <!-- Leaflet -->
+    <script src="{{url_for('static', filename='node_modules/leaflet/dist/leaflet.js') }}"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='node_modules/leaflet/dist/leaflet.css') }}" />
+   
+    <script src="{{url_for('static', filename='node_modules/leaflet.zoomhome/dist/leaflet.zoomhome.js') }}"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='node_modules/leaflet.zoomhome/src/css/leaflet.zoomhome.css') }}" />
+
+    <script src="{{url_for('static', filename='node_modules/leaflet-fullscreen/dist/Leaflet.fullscreen.min.js') }}"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='node_modules/leaflet-fullscreen/dist/leaflet.fullscreen.css') }}" />
+    <!-- Slick -->
+    <script src="{{url_for('static', filename='node_modules/slick-carousel/slick/slick.min.js') }}"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='node_modules/slick-carousel/slick/slick-theme.css') }}" />
+    <link rel="stylesheet" href="{{url_for('static', filename='node_modules/slick-carousel/slick/slick.css') }}" />
+    <!-- fontawesome -->
+    <script src="{{url_for('static', filename='node_modules/@fortawesome/fontawesome-free/js/all.min.js') }}"></script>
+    <!-- CSS Application -->
+    <link rel="SHORTCUT ICON" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />
+
+    {% endblock %}

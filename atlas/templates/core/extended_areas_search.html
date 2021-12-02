@@ -1,0 +1,44 @@
+{% block extended_areas_search %}
+
+    <button class="btn btn-success" data-toggle="modal" data-target="#advancedSearchModal"><i
+            class="fas fa-search-location"></i></button>
+
+
+    <div class="modal fade" id="advancedSearchModal" tabindex="-1" role="dialog"
+         aria-labelledby="advancedSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <h3 class="modal-title" id="exampleModalLabel">{{ _('search.other.zones.type') }}</h3>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" class="text-white">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {#                    <form class="form-inline my-2 my-lg-0">#}
+                    <div class="row">
+                        {% for type in areas_type_search %}
+                            {% if type.type_code.lower() != 'com' %}
+                                <div class="col col-md-6 col-sm-12">
+                                    <form class="form-group" method="POST"
+                                          onsubmit="completeAction('#searchForm{{ type.type_code.lower().capitalize() }}', hiddenInput{{ type.type_code.lower().capitalize() }})"
+                                          id='searchForm{{ type.type_code.lower().capitalize() }}' action=""
+                                          role="search">
+                                        <label for="searchFormLabel{{ type.type_code.lower().capitalize() }}" class="col-form-label"><b>{{ type.type_name }}</b></label>
+                                        <input id="searchAreas{{ type.type_code.lower().capitalize() }}" type="text"
+                                               class="form-control ajax-search w-100"
+                                               placeholder="{{ type.type_name }}">
+                                        <input id="hiddenInput{{ type.type_code.lower().capitalize() }}" type="hidden"
+                                               name="areaCode">
+                                    </form>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

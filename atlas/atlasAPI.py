@@ -1,16 +1,15 @@
 # -*- coding:utf-8 -*-
 
 from flask import jsonify, Blueprint, request, current_app
-from werkzeug.wrappers import Response
-from . import utils
-from .modeles.repositories import (
+
+from atlas import utils
+from atlas.modeles.repositories import (
     vmSearchTaxonRepository,
     vmObservationsRepository,
     vmObservationsMaillesRepository,
     vmMedias,
     vmCommunesRepository,
 )
-from .configuration import config
 
 api = Blueprint("api", __name__)
 
@@ -31,6 +30,7 @@ def searchCommuneAPI():
     search = request.args.get("search", "")
     limit = request.args.get("limit", 50)
     results = vmCommunesRepository.getCommunesSearch(session, search, limit)
+    session.close()
     return jsonify(results)
 
 if not current_app.config['AFFICHAGE_MAILLE']:
@@ -70,6 +70,8 @@ def getObservationsMailleAPI(cd_ref, year_min=None, year_max=None):
     return jsonify(observations)
 
 
+
+
 if not current_app.config['AFFICHAGE_MAILLE']:
     @api.route("/observationsPoint/<int:cd_ref>", methods=["GET"])
     def getObservationsPointAPI(cd_ref):
@@ -77,6 +79,29 @@ if not current_app.config['AFFICHAGE_MAILLE']:
         observations = vmObservationsRepository.searchObservationsChilds(session, cd_ref)
         session.close()
         return jsonify(observations)
+
+
+
+@api.route("/observations/<int:cd_ref>", methods=["GET"])
+def getObservationsGenericApi(cd_ref: int):
+    """[summary]
+
+    Args:
+        cd_ref (int): [description]
+
+    Returns:
+        [type]: [description]
+    """
+    session = utils.loadSession()
+    observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(
+        session,
+        cd_ref,
+        year_min=request.args.get("year_min"),
+        year_max=request.args.get("year_max"),
+    ) if current_app.config['AFFICHAGE_MAILLE'] else vmObservationsRepository.searchObservationsChilds(session, cd_ref)
+    session.close()
+    return jsonify(observations)
+    
 
 if not current_app.config['AFFICHAGE_MAILLE']:
     @api.route("/observations/<insee>/<int:cd_ref>", methods=["GET"])

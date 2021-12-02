@@ -1,0 +1,31 @@
+<ul id="sidebar_menu" class="sidebar-nav">
+    <a href="{{ url_for('main.index') }}" id="menu-toggle" data-toggle="tooltip"
+       data-original-title="{{ _('back.to.home') }}" data-placement="right">
+        <li class="sidebar-brand"><span id="main_icon" class="fa fa-home"></span></li>
+    </a>
+    {% for page_key, page_values in configuration.STATIC_PAGES.items()|sort(attribute='1.order') %}
+        {% if 'url' in page_values %}
+            <a href="{{ page_values.url }}" target="_blank" data-toggle="tooltip"
+               data-original-title="{{ page_values.title }}" data-placement="right">
+                <li class="sidebar-brand"><span class="fas {{ page_values.picto }}"></span></li>
+            </a>
+        {% else %}
+            <a href="{{ url_for('main.get_staticpages', page=page_key) }}" data-toggle="tooltip"
+               data-original-title="{{ page_values.title }}" data-placement="right">
+                <li class="sidebar-brand"><span class="fas {{ page_values.picto }}"></span></li>
+            </a>
+        {% endif %}
+    {% endfor %}
+    {% if configuration.AFFICHAGE_RECHERCHE_AVANCEE %}
+        <a href="{{ url_for('main.advanced_search') }}" data-toggle="tooltip" data-original-title="{{ _('advanced_search') }}"
+        data-placement="right">
+            <li class="sidebar-brand"><span class="fa fa-search"></span></li>
+        </a>
+    {% endif %}
+    <a href="{{ url_for('main.photos') }}" data-toggle="tooltip" data-original-title="{{ _('gallery.title') }}"
+       data-placement="right">
+        <li class="sidebar-brand"><span class="fa fa-camera"></span></li>
+    </a>
+
+
+</ul>
