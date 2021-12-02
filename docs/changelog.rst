@@ -2,6 +2,13 @@
 CHANGELOG
 =========
 
+1.5.1 (unreleased)
+------------------
+
+🐛 **Corrections** 
+
+- 
+
 1.5.0 (2021-12-02)
 ------------------
 
@@ -11,7 +18,7 @@ CHANGELOG
 
 - Affichage des organismes activable avec le paramètre ``ORGANISM_MODULE`` (désactivé par défaut) (#325)
 - Affichage des organismes ayant fourni des données d'une espèce dans la fiche espèce (#315)
-- Intégration du bandeau organisme sur la page d'accueil (PR #353, ticket pour amélioration #357)
+- Intégration du bandeau organisme sur la page d'accueil (#353)
 - Création de fiches organismes, avec logo, nom, nombre de données, espèces les plus observées et familles de taxons observés par un organisme (#291)
 
 **2. Multilingue (#175 par @TheMagicia et @corentinlange)**
@@ -35,7 +42,7 @@ CHANGELOG
 - Ajout d'un fichier ``robots.txt`` à la racine de l'application, à partir d'un template customisable, pour indiquer aux moteurs de recherche les pages qu'ils peuvent indexer ou non (#223)
 - Utilisation des zonages activés uniquement dans le ``ref_geo`` (``enable = true``)
 - Possibilité de customiser en CSS la couleur des contours des objets sur les cartes (mailles, territoire, zonages)
-- Corrections de la hierarchie taxonomique
+- Corrections de la hiérarchie taxonomique
 - Possibilité de masquer les observateurs avec le nouveau paramètre ``ANONYMIZE``
 - Possibilité que les liens dans le menu latéral soient des liens externes (en remplacant la clé ``template`` par la clé ``url`` au niveau du paramètre ``STATIC_PAGES``)
 
