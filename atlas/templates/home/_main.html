@@ -1,6 +1,6 @@
 {% extends "templates/core/layout.html" %}
 
-{% block title %}Accueil{% endblock %}
+{% block title %}{{ _('home') }}{% endblock %}
 
 {% block additionalHeaderAssets %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}"/>
