@@ -53,11 +53,11 @@ msgstr "Realizzato da"
 
 #: static/custom/templates/footer.html.sample:14
 msgid "developed.by"
-msgstr "sviluppato da"
+msgstr "sviluppato da il"
 
 #: static/custom/templates/footer.html.sample:15
 msgid "ecrins.national.park"
-msgstr "il Parco Nazionale degli Ecrins"
+msgstr "Parco Nazionale degli Ecrins"
 
 #: static/custom/templates/introduction.html:6
 #: static/custom/templates/introduction.html.sample:6
@@ -137,9 +137,9 @@ msgstr "Chiudere"
 #: templates/core/advanced_search.html:357
 msgid "asearch.information"
 msgstr ""
-"Questa pagina permette di sovrapporre la distribuzione di "
-"piùcontemporaneamente. <br/> <br/> Per ragioni di visibilità "
-"didistribuzioni di carte, il numero totale di contanti è limitato a 3\""
+"Questa pagina consente di sovrapporre la distribuzione di"
+"più specie contemporaneamente. <br/> <br/> Per motivi di visibilità"
+"distribuzioni di carte, il numero totale di contanti è limitato a 3".
 
 #: templates/core/advanced_search.html:373
 msgid "page.information"
@@ -366,9 +366,8 @@ msgid "all.groups"
 msgstr "Gruppo"
 
 #: templates/photoGalery/_main.html:70
-#, fuzzy
 msgid "order.photos"
-msgstr "Immagini"
+msgstr "Ordina le foto per numero di osservazioni"
 
 #: templates/speciesSheet/audioVideo.html:7
 msgid "Video"
@@ -470,7 +469,3 @@ msgstr "Scheda organismo"
 #: templates/taxoRankSheet/_main.html:47
 msgid "species.obs.for.tax"
 msgstr "Scheda delle species per taxon"
-
-#~ msgid "all.groups.tooltip"
-#~ msgstr "Gruppo"
-
