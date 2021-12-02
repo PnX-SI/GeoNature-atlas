@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-02 15:27+0100\n"
+"POT-Creation-Date: 2021-12-02 15:28+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -138,9 +138,9 @@ msgstr "Fermer"
 #: templates/core/advanced_search.html:357
 msgid "asearch.information"
 msgstr ""
-"Cette page vous permet de superposer la répartition de "
-"plusieurs espèces simultanément.<br/><br/>Pour des raisons de visibilité "
-"des répartitions sur carte, le nombre d'espèces total est limité à 3."
+"Cette page vous permet de superposer la répartition de plusieurs espèces "
+"simultanément.<br/><br/>Pour des raisons de visibilité des répartitions "
+"sur carte, le nombre d'espèces total est limité à 3."
 
 #: templates/core/advanced_search.html:373
 msgid "page.information"
@@ -470,3 +470,4 @@ msgstr "Fiche organisme"
 #: templates/taxoRankSheet/_main.html:47
 msgid "species.obs.for.tax"
 msgstr "Observation pour le taxon"
+
