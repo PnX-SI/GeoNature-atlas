@@ -37,7 +37,7 @@ CHANGELOG
 - Possibilité de customiser en CSS la couleur des contours des objets sur les cartes (mailles, territoire, zonages)
 - Corrections de la hierarchie taxonomique
 - Possibilité de masquer les observateurs avec le nouveau paramètre ``ANONYMIZE``
-- Possibilité que les liens dans le menu latéral peuvent être des liens externes (en remplacant la clé ``template`` par la clé ``url``)
+- Possibilité que les liens dans le menu latéral soient des liens externes (en remplacant la clé ``template`` par la clé ``url`` au niveau du paramètre ``STATIC_PAGES``)
 
 **4. Nouvelles espèces**
 
