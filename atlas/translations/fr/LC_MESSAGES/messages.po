@@ -53,11 +53,11 @@ msgstr "Réalisé avec"
 
 #: static/custom/templates/footer.html.sample:14
 msgid "developed.by"
-msgstr "développé par"
+msgstr "développé par le"
 
 #: static/custom/templates/footer.html.sample:15
 msgid "ecrins.national.park"
-msgstr "le Parc national des Écrins"
+msgstr "Parc national des Écrins"
 
 #: static/custom/templates/introduction.html:6
 #: static/custom/templates/introduction.html.sample:6
@@ -138,7 +138,7 @@ msgstr "Fermer"
 #: templates/core/advanced_search.html:357
 msgid "asearch.information"
 msgstr ""
-"Cette page vous permet d'effectuer de superposer la répartition de "
+"Cette page vous permet de superposer la répartition de "
 "plusieurs espèces simultanément.<br/><br/>Pour des raisons de visibilité "
 "des répartitions sur carte, le nombre d'espèces total est limité à 3."
 
@@ -367,9 +367,8 @@ msgid "all.groups"
 msgstr "Tous les groupes"
 
 #: templates/photoGalery/_main.html:70
-#, fuzzy
 msgid "order.photos"
-msgstr "Photos"
+msgstr "Trier les photos par nombre d'observations"
 
 #: templates/speciesSheet/audioVideo.html:7
 msgid "Video"
@@ -471,7 +470,3 @@ msgstr "Fiche organisme"
 #: templates/taxoRankSheet/_main.html:47
 msgid "species.obs.for.tax"
 msgstr "Observation pour le taxon"
-
-#~ msgid "all.groups.tooltip"
-#~ msgstr "Tous les groupes"
-
