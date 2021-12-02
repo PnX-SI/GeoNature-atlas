@@ -149,7 +149,7 @@ msgstr "Voir les informations sur cette page"
 #: templates/core/advanced_search.html:385
 #: templates/core/advanced_search.html:408
 msgid "asearch.max"
-msgstr "Vous ne pouvez pas ajouter plus de 3 taxons"
+msgstr "Vous ne pouvez pas ajouter plus de 3 espèces"
 
 #: templates/core/advanced_search.html:392
 msgid "asearch.search.species"
