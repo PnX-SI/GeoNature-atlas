@@ -18,7 +18,7 @@ CHANGELOG
 
 - Affichage des organismes activable avec le paramètre ``ORGANISM_MODULE`` (désactivé par défaut) (#325)
 - Affichage des organismes ayant fourni des données d'une espèce dans la fiche espèce (#315)
-- Intégration du bandeau organisme sur la page d'accueil (#353)
+- Intégration du bandeau organisme sur la page d'accueil (#245 par @Splendens)
 - Création de fiches organismes, avec logo, nom, nombre de données, espèces les plus observées et familles de taxons observés par un organisme (#291)
 
 **2. Multilingue (#175 par @TheMagicia et @corentinlange)**
@@ -52,7 +52,6 @@ CHANGELOG
 
 **5. Autres**
 
-- Possibilité d'ajouter un bandeau partenaire sur la page d'accueil (#245 par @Splendens)
 - Possibilité d'afficher l'echelle sur la carte avec le paramètre ``ENABLE_SCALE`` (#293 par @mvergez)
 - Possibilité d'ajouter un masque sur la carte en dehors du territoire avec le paramètre ``MASK_STYLE`` (#89 par @mvergez)
 - Ajout de pictos manquants (#272 par @jpm-cbna)
