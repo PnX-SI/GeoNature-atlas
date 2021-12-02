@@ -30,7 +30,7 @@ msgstr "Accueil"
 #: static/custom/templates/footer.html.sample:5
 #: static/custom/templates/footer.html.sample:24
 msgid "credits"
-msgstr "Conception et crédits "
+msgstr "Conception et crédits"
 
 #: static/custom/templates/footer.html.sample:7
 #: static/custom/templates/footer.html.sample:41
