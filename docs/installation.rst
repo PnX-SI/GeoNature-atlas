@@ -168,15 +168,6 @@ Lancez le fichier fichier d'installation de la base de données :
     ./install_db_extended.sh
 
 
-/!\ Si vous avez un nombre de données supérieur à 1 million, préférez l'installation avec install_db_extended.sh /!\
-
-
-::
-
-    cd /home/`whoami`/atlas
-    ./install_db_extended.sh
-
-
 
 :notes:
 
@@ -376,7 +367,7 @@ Connectez-vous en SSH sur le serveur hébergeant la BDD source, puis éditez la 
 
 ::
 
-    sudo nano /etc/postgresql/9.6/main/pg_hba.conf
+    sudo nano /etc/postgresql/[MY_VERSION_NUMBER]/main/pg_hba.conf
 
 Rajouter cette ligne à la fin du fichier (en remplacant IP_DE_LA_BDD_ATLAS par son adresse IP) :
 
