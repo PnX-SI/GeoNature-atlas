@@ -160,14 +160,6 @@ Lancez le fichier fichier d'installation de la base de données :
     cd /home/`whoami`/atlas
     ./install_db.sh
 
-/!\ Si vous avez un nombre de données supérieur à 1 million, préférez l'installation avec install_db_extended.sh /!\
-
-::
-
-    cd /home/`whoami`/atlas
-    ./install_db_extended.sh
-
-
 
 :notes:
 
