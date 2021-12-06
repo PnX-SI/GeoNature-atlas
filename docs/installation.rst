@@ -333,7 +333,7 @@ Pour écouter toutes les IP, éditez le fichier ``postgresql.conf`` :
 
 ::
 
-    sudo nano /etc/postgresql/9.6/main/postgresql.conf
+    sudo nano /etc/postgresql/*/main/postgresql.conf
 
 Remplacez ``listen_adress = 'localhost'`` par  ``listen_adress = '*'``. Ne pas oublier de décommenter la ligne (enlever le ``#``).
 
@@ -341,7 +341,7 @@ Pour définir les IP qui peuvent se connecter au serveur PostgreSQL, éditez le 
 
 ::
 
-    sudo nano /etc/postgresql/9.6/main/pg_hba.conf
+    sudo nano /etc/postgresql/*/main/pg_hba.conf
 
 Si vous souhaitez définir des IP qui peuvent se connecter à la BDD, sous la ligne ``# IPv4 local connections:``, rajouter :
 
@@ -367,7 +367,7 @@ Connectez-vous en SSH sur le serveur hébergeant la BDD source, puis éditez la 
 
 ::
 
-    sudo nano /etc/postgresql/[MY_VERSION_NUMBER]/main/pg_hba.conf
+    sudo nano /etc/postgresql/*/main/pg_hba.conf
 
 Rajouter cette ligne à la fin du fichier (en remplacant IP_DE_LA_BDD_ATLAS par son adresse IP) :
 
