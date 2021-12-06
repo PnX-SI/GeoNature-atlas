@@ -4,6 +4,10 @@ if [ "$(id -u)" == "0" ]; then
    exit 1
 fi
 
+# Make nvm available
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 if [ ! -f ./atlas/configuration/settings.ini ]; then
   cp ./atlas/configuration/settings.ini.sample ./atlas/configuration/settings.ini
@@ -42,6 +46,7 @@ deactivate
 
 echo "Installing node packages"
 cd atlas/static
+nvm use
 npm i
 cd ../..
 
