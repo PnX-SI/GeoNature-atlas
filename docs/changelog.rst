@@ -2,12 +2,21 @@
 CHANGELOG
 =========
 
-1.5.1 (unreleased)
+1.5.1 (2021-12-06)
 ------------------
 
 🐛 **Corrections** 
 
-- Télécharger NVM : 
+- Ajout de l'utilisation de ``nvm`` dans le script ``install_app.sh`` (par @gildeluermoz)
+- Nettoyage de la documentation (par @gildeluermoz)
+- Mise à jour de la version du schéma ``taxonomie`` pour une installation sans GeoNature (par @gildeluermoz)
+
+⚠️ **Notes de version** 
+
+Si vous mettez à jour GeoNature-atlas :
+
+- Vous pouvez passer directement à cette version, mais en suivant les notes de versions intermédiaires
+- Télécharger et installer ``nvm`` : 
 
 ::
 
@@ -15,9 +24,7 @@ CHANGELOG
 
     export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-
-⚠️ **Notes de version** 
-
+- Suivez la procédure classique de mise à jour de l'application.
 
 1.5.0 (2021-12-02)
 ------------------
