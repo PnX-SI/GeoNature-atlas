@@ -109,8 +109,8 @@ NOTES :
     psql
     CREATE USER geonatatlas WITH ENCRYPTED PASSWORD 'monpassachanger';
     \c geonature2db
-    GRANT USAGE ON SCHEMA gn_synthese, ref_geo, ref_nomenclatures, taxonomie TO geonatatlas;
-    GRANT SELECT ON ALL TABLES IN SCHEMA gn_synthese, ref_geo, ref_nomenclatures, taxonomie TO geonatatlas;
+    GRANT USAGE ON SCHEMA gn_synthese, ref_geo, ref_nomenclatures, taxonomie, utilisateurs, gn_meta TO geonatatlas;
+    GRANT SELECT ON ALL TABLES IN SCHEMA gn_synthese, ref_geo, ref_nomenclatures, taxonomie, utilisateurs, gn_meta TO geonatatlas;
     \q
     exit
 
