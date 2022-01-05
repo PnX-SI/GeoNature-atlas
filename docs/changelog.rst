@@ -97,7 +97,15 @@ Si vous mettez à jour GeoNature-atlas :
 
 - Stopper le service ``atlas`` de supervisor (``sudo supervisorctl stop atlas``). Supprimez également le fichier de configuration supervisor de l'atlas (``sudo supervisorctl remove atlas && sudo rm /etc/supervisor/conf.d/atlas-service.conf && sudo supervisorctl reread``)
 - Ajouter la variable ``SECRET_KEY`` au fichier ``config.py`` (utilisée pour chiffrer la session), et remplissez-la avec une chaine de texte aléatoire.
-- Relancer l'installation complète de la BDD car de nombreux éléments ont évolué, en lancant le script ``install_db.sh``. Si vous aviez modifié la vue ``synthese.syntheseff`` ou des vues matérialisées, vous devrez reporter ces modifications après la réinstallation de la BDD de GeoNature-atlas.
+- Relancer l'installation complète de la BDD car de nombreux éléments ont évolué, en lancant le script ``install_db.sh``, après avoir passé le paramètre ``drop_apps_db`` à ``true`` dans le fichier ``settings.ini``. Cela va complètement supprimer et recréer votre BDD de GeoNature-atlas. Si vous aviez modifié la vue ``synthese.syntheseff`` ou des vues matérialisées, vous devrez reporter ces modifications après la réinstallation de la BDD de GeoNature-atlas.
+  
+  Si votre GeoNature-atlas est connecté à une BDD GeoNature distante, vous devez au préalable étendre les droits de lecture de l'utilisateur PostgreSQL utilisé pour lire les données au niveau de cette BDD GeoNature source (https://github.com/PnX-SI/GeoNature-atlas/blob/master/atlas/configuration/settings.ini.sample#L65) : 
+
+  ::
+
+      GRANT USAGE ON SCHEMA utilisateurs, gn_meta TO geonatatlas;
+      GRANT SELECT ON ALL TABLES IN SCHEMA utilisateurs, gn_meta TO geonatatlas;
+
 - Suivez la procédure classique de mise à jour de l'application.
 - Le nom du service systemd est désormais ``geonature-atlas``
 - Les logs sont désormais dans ``/var/log/geonature-atlas.log``. Vous pouvez supprimer le répertoire ``log`` à la racine de l'atlas qui est obsolète.
