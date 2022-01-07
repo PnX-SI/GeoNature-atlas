@@ -87,18 +87,18 @@ def lastObservationsMailles(connection, mylimit, idPhoto):
     return obsList
 
 
-def lastObservationsCommuneMaille(connection, mylimit, insee):
+def lastObservationsGeoEntryMaille(connection, mylimit, geo_entry_id):
     sql = """
     WITH last_obs AS (
         SELECT
             obs.cd_ref, obs.dateobs, t.lb_nom,
             t.nom_vern, obs.the_geom_point AS l_geom
         FROM atlas.vm_observations obs
-        JOIN atlas.vm_communes c
-        ON ST_Intersects(obs.the_geom_point, c.the_geom)
+        JOIN atlas.vm_geo_entry e
+        ON ST_Intersects(obs.the_geom_point, e.the_geom)
         JOIN atlas.vm_taxons t
         ON  obs.cd_ref = t.cd_ref
-        WHERE c.insee = :thisInsee
+        WHERE e.geo_entry_id = :thisGeoEntryId
         ORDER BY obs.dateobs DESC
         LIMIT :thislimit
     )
@@ -108,7 +108,7 @@ def lastObservationsCommuneMaille(connection, mylimit, insee):
     ON st_intersects(m.the_geom, l.l_geom)
     GROUP BY l.lb_nom, l.cd_ref, m.id_maille, l.nom_vern, m.geojson_maille
     """
-    observations = connection.execute(text(sql), thisInsee=insee, thislimit=mylimit)
+    observations = connection.execute(text(sql), thisGeoEntryId=geo_entry_id, thislimit=mylimit)
     obsList = list()
     for o in observations:
         if o.nom_vern:
@@ -126,20 +126,20 @@ def lastObservationsCommuneMaille(connection, mylimit, insee):
 
 
 # Use for API
-def getObservationsTaxonCommuneMaille(connection, insee, cd_ref):
+def getObservationsTaxonGeoEntryMaille(connection, geo_entry_id, cd_ref):
     sql = """
         SELECT
             o.cd_ref, t.id_maille, t.geojson_maille,
             extract(YEAR FROM o.dateobs) AS annee
         FROM atlas.vm_observations o
-        JOIN atlas.vm_communes c
-        ON ST_INTERSECTS(o.the_geom_point, c.the_geom)
+        JOIN atlas.vm_geo_entry e
+        ON ST_INTERSECTS(o.the_geom_point, e.the_geom)
         JOIN atlas.t_mailles_territoire t
         ON ST_INTERSECTS(t.the_geom, o.the_geom_point)
-        WHERE o.cd_ref = :thiscdref AND c.insee = :thisInsee
+        WHERE o.cd_ref = :thiscdref AND e.geo_entry_id = :thisGeoEntryId
         ORDER BY id_maille
     """
-    observations = connection.execute(text(sql), thisInsee=insee, thiscdref=cd_ref)
+    observations = connection.execute(text(sql), thisGeoEntryId=geo_entry_id, thiscdref=cd_ref)
     tabObs = list()
     for o in observations:
         temp = {

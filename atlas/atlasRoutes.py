@@ -18,7 +18,7 @@ from flask import (
 
 from atlas import utils
 from atlas.env import config
-from atlas.modeles.entities import vmTaxons, vmCommunes
+from atlas.modeles.entities import vmTaxons, vmGeoEntry
 from atlas.modeles.repositories import (
     vmOrganismsRepository,
     vmTaxonsRepository,
@@ -26,7 +26,7 @@ from atlas.modeles.repositories import (
     vmAltitudesRepository,
     vmMoisRepository,
     vmTaxrefRepository,
-    vmCommunesRepository,
+    vmGeoEntryRepository,
     vmObservationsMaillesRepository,
     vmMedias,
     vmCorTaxonAttribut,
@@ -123,10 +123,10 @@ if config["ORGANISM_MODULE"]:
 
 
 @main.route(
-    "/commune/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>",
+    "/geoentry/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>",
     methods=["GET", "POST"],
 )
-def communeMedias(image):
+def geoentryMedias(image):
     return redirect(
         current_app.config["REMOTE_MEDIAS_URL"]
         + current_app.config["REMOTE_MEDIAS_PATH"]
@@ -239,7 +239,7 @@ def ficheEspece(cd_ref):
     altitudes = vmAltitudesRepository.getAltitudesChilds(connection, cd_ref)
     months = vmMoisRepository.getMonthlyObservationsChilds(connection, cd_ref)
     synonyme = vmTaxrefRepository.getSynonymy(connection, cd_ref)
-    communes = vmCommunesRepository.getCommunesObservationsChilds(connection, cd_ref)
+    geoentries = vmGeoEntryRepository.getGeoEntryObservationsChilds(connection, cd_ref)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(db_session, cd_ref)
     firstPhoto = vmMedias.getFirstPhoto(
         connection, cd_ref, current_app.config["ATTR_MAIN_PHOTO"]
@@ -286,7 +286,7 @@ def ficheEspece(cd_ref):
         altitudes=altitudes,
         months=months,
         synonyme=synonyme,
-        communes=communes,
+        geoentries=geoentries,
         taxonomyHierarchy=taxonomyHierarchy,
         firstPhoto=firstPhoto,
         photoCarousel=photoCarousel,
@@ -298,39 +298,39 @@ def ficheEspece(cd_ref):
     )
 
 
-@main.route("/commune/<insee>", methods=["GET", "POST"])
-def ficheCommune(insee):
+@main.route("/geoentry/<geo_entry_id>", methods=["GET", "POST"])
+def ficheGeoEntry(geo_entry_id):
     session = utils.loadSession()
     connection = utils.engine.connect()
 
-    listTaxons = vmTaxonsRepository.getTaxonsCommunes(connection, insee)
-    commune = vmCommunesRepository.getCommuneFromInsee(connection, insee)
+    listTaxons = vmTaxonsRepository.getTaxonsGeoEntry(connection, geo_entry_id)
+    geoentry = vmGeoEntryRepository.getGeoEntryFromId(connection, geo_entry_id)
     if current_app.config["AFFICHAGE_MAILLE"]:
-        observations = vmObservationsMaillesRepository.lastObservationsCommuneMaille(
-            connection, current_app.config["NB_LAST_OBS"], str(insee)
+        observations = vmObservationsMaillesRepository.astObservationsGeoEntryMaille(
+            connection, current_app.config["NB_LAST_OBS"], str(geo_entry_id)
         )
     else:
-        observations = vmObservationsRepository.lastObservationsCommune(
-            connection, current_app.config["NB_LAST_OBS"], insee
+        observations = vmObservationsRepository.lastObservationsGeoEntry(
+            connection, current_app.config["NB_LAST_OBS"], geo_entry_id
         )
 
     surroundingAreas = []
 
-    observers = vmObservationsRepository.getObserversCommunes(connection, insee)
+    observers = vmObservationsRepository.getObserversGeoEntry(connection, geo_entry_id)
 
     session.close()
     connection.close()
 
     return render_template(
         "templates/areaSheet/_main.html",
-        sheetType="commune",
+        sheetType="geoentry",
         surroundingAreas=surroundingAreas,
         listTaxons=listTaxons,
-        areaInfos=commune,
+        areaInfos=geoentry,
         observations=observations,
         observers=observers,
         DISPLAY_EYE_ON_LIST=True,
-        insee=insee,
+        geo_entry_id=geo_entry_id,
     )
 
 
@@ -431,11 +431,11 @@ def sitemap():
         modified_time = ten_days_ago
         pages.append([url, modified_time])
 
-    municipalities = (
-        session.query(vmCommunes.VmCommunes).order_by(vmCommunes.VmCommunes.insee).all()
+    geoentries = (
+        session.query(vmGeoEntry.VmGeoEntry).order_by(vmGeoEntry.VmGeoEntry.geo_entry_id).all()
     )
-    for municipalitie in municipalities:
-        url = url_root + url_for("main.ficheCommune", insee=municipalitie.insee)
+    for geoentrie in geoentries:
+        url = url_root + url_for("main.ficheGeoEntry", geo_entry_id=geoentrie.geo_entry_id)
         modified_time = ten_days_ago
         pages.append([url, modified_time])
 

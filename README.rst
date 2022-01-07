@@ -7,7 +7,7 @@ Atlas WEB dynamique Faune-Flore basé sur les données présentes dans la synth�
 
 Utilisé pour Biodiv'Ecrins, l'atlas de faune et de la flore du Parc national des Ecrins (http://biodiversite.ecrins-parcnational.fr).
 
-Il permet de générer dynamiquement des fiches espèces avec des données calculées automatiquement (cartes de répartition, répartition altitudinale et phénologique, communes, secteurs, observateurs...) ainsi que des données saisies pour chaque espèce (photos, description...). 
+Il permet de générer dynamiquement des fiches espèces avec des données calculées automatiquement (cartes de répartition, répartition altitudinale et phénologique, entrée géographique, secteurs, observateurs...) ainsi que des données saisies pour chaque espèce (photos, description...). 
 
 L'outil a été développé de manière générique pour pouvoir être déployé sur d'autres BDD que GeoNature (SERENA, SICEN, INPN, fichier CSV, etc).
 

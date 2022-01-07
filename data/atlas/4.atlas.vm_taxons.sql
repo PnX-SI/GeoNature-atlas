@@ -35,8 +35,8 @@ CREATE MATERIALIZED VIEW atlas.vm_taxons AS
             pat.valeur_attribut AS patrimonial,
             pr.valeur_attribut  AS protection_stricte
            FROM tx_ref n
-             LEFT JOIN taxonomie.cor_taxon_attribut pat ON pat.cd_ref = n.cd_ref AND pat.id_attribut = 1
-             LEFT JOIN taxonomie.cor_taxon_attribut pr ON pr.cd_ref = n.cd_ref AND pr.id_attribut = 2
+             LEFT JOIN atlas.vm_cor_taxon_attribut pat ON pat.cd_ref = n.cd_ref AND pat.id_attribut = 1
+             LEFT JOIN atlas.vm_cor_taxon_attribut pr ON pr.cd_ref = n.cd_ref AND pr.id_attribut = 2
           WHERE n.cd_ref IN ( SELECT obs_min_taxons.cd_ref
                    FROM obs_min_taxons)
         )

@@ -8,7 +8,7 @@ from atlas.modeles.repositories import (
     vmObservationsRepository,
     vmObservationsMaillesRepository,
     vmMedias,
-    vmCommunesRepository,
+    vmGeoEntryRepository
 )
 
 api = Blueprint("api", __name__)
@@ -24,12 +24,12 @@ def searchTaxonAPI():
     return jsonify(results)
 
 
-@api.route("/searchCommune", methods=["GET"])
-def searchCommuneAPI():
+@api.route("/searchGeoEntry", methods=["GET"])
+def searchGeoEntryAPI():
     session = utils.loadSession()
     search = request.args.get("search", "")
     limit = request.args.get("limit", 50)
-    results = vmCommunesRepository.getCommunesSearch(session, search, limit)
+    results = vmGeoEntryRepository.getGeoEntrySearch(session, search, limit)
     session.close()
     return jsonify(results)
 
@@ -104,21 +104,21 @@ def getObservationsGenericApi(cd_ref: int):
     
 
 if not current_app.config['AFFICHAGE_MAILLE']:
-    @api.route("/observations/<insee>/<int:cd_ref>", methods=["GET"])
-    def getObservationsCommuneTaxonAPI(insee, cd_ref):
+    @api.route("/observations/<geo_entry_id>/<int:cd_ref>", methods=["GET"])
+    def getObservationsGeoEntryTaxonAPI(geo_entry_id, cd_ref):
         connection = utils.engine.connect()
-        observations = vmObservationsRepository.getObservationTaxonCommune(
-            connection, insee, cd_ref
+        observations = vmObservationsRepository.getObservationTaxonGeoEntry(
+            connection, geo_entry_id, cd_ref
         )
         connection.close()
         return jsonify(observations)
 
 
-@api.route("/observationsMaille/<insee>/<int:cd_ref>", methods=["GET"])
-def getObservationsCommuneTaxonMailleAPI(insee, cd_ref):
+@api.route("/observationsMaille/<geo_entry_id>/<int:cd_ref>", methods=["GET"])
+def getObservationsGeoEntryTaxonMailleAPI(geo_entry_id, cd_ref):
     connection = utils.engine.connect()
-    observations = vmObservationsMaillesRepository.getObservationsTaxonCommuneMaille(
-        connection, insee, cd_ref
+    observations = vmObservationsMaillesRepository.getObservationsTaxonGeoEntryMaille(
+        connection, geo_entry_id, cd_ref
     )
     connection.close()
     return jsonify(observations)

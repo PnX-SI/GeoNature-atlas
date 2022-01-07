@@ -76,22 +76,26 @@ atlas_source_pass=monpassachanger
 # Voir la colonne type_code de la table ref_geo.bib_areas_type
 # Indiquer le code des entités géographiques du ref_geo qui correspondent respectivement aux mailles et aux limites de votre territoire
 # Les données doivent préalablement être présentes dans le ref_geo
+# type_code de l'entrée geographique principale (permet de consulter les observations pour chacune des entités géeographique : par ex : par commune)
+type_geo_entry="'COM'"
+# type code pour l'affichage des observations par maille
 type_maille="'M1'"
+# type code correspondant à votre territoire
 type_territoire="'PEC'"
 
 ########### Si ref_geo = False #############
 
-#### COMMUNES ####
+#### ENTREE GEOGRAPHIQUE ####
 
-# Creer la table des communes à partir d'un shapefile ?
-# Si false, modifiez la creation de 'atlas.vm_communes' dans data/atlas/atlas.vm_communes.sql
-import_commune_shp=true
+# Creer la table de l'entrée geographique à partir d'un shapefile ?
+# Si false, modifiez la creation de 'atlas.vm_geo_entry' dans data/gn2/atlas_ref_geo.sql
+import_geo_entry_shp=true
 
-# Chemin et nom des colonnes du SHP des communes du territoire. Laisser tel quel (en modifiant uniquement MYUSERLINUX)
+# Chemin et nom des colonnes du SHP de l'entrée géographique. Laisser tel quel (en modifiant uniquement MYUSERLINUX)
 # pour utiliser les communes du PnEcrins par défaut
-communes_shp=/home/`whoami`/atlas/data/ref/communes.shp
-colonne_insee=insee
-colonne_nom_commune=nom_com
+geo_entry_shp=/home/`whoami`/atlas/data/ref/geo_entry.shp
+id_column=geo_entry_id
+name_column=geo_entry_name
 
 #### TERRITOIRE ####
 

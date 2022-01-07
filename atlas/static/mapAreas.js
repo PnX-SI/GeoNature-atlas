@@ -65,7 +65,7 @@ htmlLegend = configuration.AFFICHAGE_MAILLE
 generateLegende(htmlLegend);
 
 function displayObsPreciseBaseUrl() {
-    if (sheetType === 'commune') {
+    if (sheetType === 'geoentry') {
         return configuration.URL_APPLICATION + "/api/observations/" + areaInfos.areaCode
     } else {
         return configuration.URL_APPLICATION + "/api/observations/area/" + areaInfos.id_area
@@ -96,13 +96,13 @@ function displayObsPreciseBaseUrl(areaCode, cd_ref) {
         if (configuration.AFFICHAGE_MAILLE) {
             displayMailleLayerLastObs(observations);
         } else {
-            displayMarkerLayerPointCommune(observations);
+            displayMarkerLayerPointGeoEntry(observations);
         }
     });
 }
 
 function displayObsGridBaseUrl() {
-    if (sheetType === 'commune') {
+    if (sheetType === 'geoentry') {
         return configuration.URL_APPLICATION + "/api/observationsMaille/"
     } else {
         return configuration.URL_APPLICATION + "/api/observationsMaille/area/"
@@ -110,12 +110,12 @@ function displayObsGridBaseUrl() {
 }
 
 // display observation on click
-function displayObsTaxon(insee, cd_ref) {
+function displayObsTaxon(geo_entry_id, cd_ref) {
   $.ajax({
     url:
       configuration.URL_APPLICATION +
       "/api/observations/" +
-      insee +
+      geo_entry_id +
       "/" +
       cd_ref,
     dataType: "json",
@@ -132,7 +132,7 @@ function displayObsTaxon(insee, cd_ref) {
     if (configuration.AFFICHAGE_MAILLE) {
       displayMailleLayerLastObs(observations);
     } else {
-      displayMarkerLayerPointCommune(observations);
+      displayMarkerLayerPointGeoEntry(observations);
     }
   });
 }

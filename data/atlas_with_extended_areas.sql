@@ -15,11 +15,11 @@ CREATE INDEX ON atlas.vm_bib_areas_types(id_type);
 CREATE INDEX ON atlas.vm_bib_areas_types(type_code);
 CREATE INDEX ON atlas.vm_bib_areas_types(type_name);
 
--- Suppression si temporaire des communes la table existe
+-- Suppression si temporaire la table vm_l_areas existe
 DROP MATERIALIZED VIEW IF EXISTS atlas.vm_l_areas;
 
 
--- création de la vm l_areas à partir des communes du ref_geo
+-- création de la vm l_areas à partir de certains types du ref_geo
 CREATE MATERIALIZED VIEW atlas.vm_l_areas AS
 SELECT
     a.id_area                                AS id_area

@@ -29,7 +29,7 @@ DROP MATERIALIZED VIEW atlas.vm_observations;
 -- Materialized View: atlas.vm_observations
 CREATE MATERIALIZED VIEW atlas.vm_observations AS
     SELECT s.id_synthese AS id_observation,
-        s.insee,
+        s.geo_entry_id,
         s.dateobs,
         s.observateurs,
         s.altitude_retenue,
@@ -44,7 +44,7 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
 
 create unique index on atlas.vm_observations (id_observation);
 create index on atlas.vm_observations (cd_ref);
-create index on atlas.vm_observations (insee);
+create index on atlas.vm_observations (geo_entry_id);
 create index on atlas.vm_observations (altitude_retenue);
 create index on atlas.vm_observations (dateobs);
 CREATE INDEX index_gist_vm_observations_the_geom_point ON atlas.vm_observations USING gist (the_geom_point);

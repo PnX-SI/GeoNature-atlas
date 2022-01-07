@@ -40,10 +40,10 @@ atlas/static/custom/templates/credits.html
 atlas/static/custom/templates/mentions-legales.html
 
 data/ref/emprise_territoire.*
-data/ref/communes.dbf
-data/ref/communes.prj
-data/ref/communes.shp
-data/ref/communes.shx
+data/ref/geo_entry.dbf
+data/ref/geo_entry.prj
+data/ref/geo_entry.shp
+data/ref/geo_entry.shx
 
 data/ref/territoire.dbf
 data/ref/territoire.prj

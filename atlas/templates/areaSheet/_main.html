@@ -2,7 +2,7 @@
 
 {% block title %}
     {# Personnalisez ici le titre de la page (celui qui est affiché dans l'onglet du navigateur) #}
-    {% if sheetType =='commune' %}
+    {% if sheetType =='geoentry' %}
         {{ _('municipality.of') }} {{ areaInfos.areaName }}
     {% else %}
         {{ areaInfos.typeName }} - {{ areaInfos.areaName }}
@@ -33,9 +33,9 @@
         var observations = {{observations|tojson}};
         var areaInfos = {{ areaInfos | tojson }};
         var sheetType = {{ sheetType|tojson }};
-        var communeArea = false;
-        if (sheetType === 'commune') {
-            var communeArea = true;
+        var geoentryArea = false;
+        if (sheetType === 'geoentry') {
+            var geoentryArea = true;
         }
         ;
         var url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
@@ -55,7 +55,7 @@
                 {% if configuration.EXTENDED_AREAS %}
                     {% include 'templates/areaSheet/surrounding_areas.html' %}
                 {% endif %}
-                {% if sheetType =='commune' %}
+                {% if sheetType =='geoentry' %}
                     <h4><b> {{ _('municipality.of') }} {{ areaInfos.areaName }}</b></h4>
                 {% else %}
                     <h4><b>{{ areaInfos.typeName }} - {{ areaInfos.areaName }}</b></h4>
@@ -66,7 +66,7 @@
         </div>
         <div class="col-12 col-xl-8 col-lg-7 col-md-6 d-flex flex-column m-0 p-0">
             <div class="bg-light p-2">
-                {% if sheetType =='commune' %}
+                {% if sheetType =='geoentry' %}
                     <h5 id="titleMap"><i class="fa fa-map"></i> {{ configuration.NB_LAST_OBS }} {{ _('last.obs.municipality') }}
                         <i>{{ areaInfos.areaName }}</i></h5>
                 {% else %}

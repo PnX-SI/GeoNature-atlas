@@ -36,17 +36,17 @@
                     <i class="fas fa-map-signs fa-3x blue"></i>
                     <h1 class="large text-muted">{{ stat.town | pretty }}</h1>
                     <h4 class="text-muted  text-uppercase font-weight-bold">
-                        {{ _('municipalities') if stat.town > 1 else _('municipality') }}</h4>
-                    <form method="POST" onsubmit="completeAction('#searchFormCommunesStat', hiddenInputCommunesStat)"
-                        id='searchFormCommunesStat' action="" class="navbar-form center-input" role="search">
+                        {{ _('geoentries') if stat.town > 1 else _('municipality') }}</h4>
+                    <form method="POST" onsubmit="completeAction('#searchFormGeoEntryStat', hiddenInputGeoEntryStat)"
+                        id='searchFormGeoEntryStat' action="" class="navbar-form center-input" role="search">
                         <div class="form-group has-feedback">
                             <span class="addon">
                                 <i class="fas fa-search" aria-hidden="true"></i>
                             </span>
-                            <input id="searchCommunesStat" type="text" class="form-control"
-                                placeholder="{{ _('search.city') }}&nbsp;&nbsp;&nbsp;">
+                            <input id="searchGeoEntryStat" type="text" class="form-control"
+                                placeholder="{{ _('search.geo') }}&nbsp;&nbsp;&nbsp;">
                         </div>
-                        <input id="hiddenInputCommunesStat" type="hidden" name="insee">
+                        <input id="hiddenInputGeoEntryStat" type="hidden" name="geo_entry_id">
                     </form>
                 </div>
             </div>

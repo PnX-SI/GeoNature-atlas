@@ -136,6 +136,7 @@ class AtlasConfig(Schema):
     AFFICHAGE_RANG_STAT = fields.Boolean(load_default=True)
     AFFICHAGE_NOUVELLES_ESPECES = fields.Boolean(load_default=True)
     AFFICHAGE_RECHERCHE_AVANCEE = fields.Boolean(load_default=False)
+    MAIN_GEO_ENTRY_NAME = fields.String(load_default="geoentry")
 
     RANG_STAT = fields.List(
         fields.Dict,

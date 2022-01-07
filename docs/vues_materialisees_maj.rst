@@ -50,7 +50,7 @@ Les champs de cette table sont ``cd_nom``, ``id_statut``, ``id_habitat``, ``id_r
 
 - ``atlas.vm_phenologies`` qui renvoie le nombre d'observations pour chaque mois et chaque taxon.
 
-- ``atlas.vm_communes`` qui renvoie les communes du territoire. A adapter si on n'a pas importé les communes dans ``atlas.l_communes``
+- ``atlas.vm_geo_entry`` qui renvoie les entités géographique de l'entrée geographique principale de l'atlas pour le territoire.
 
 - ``atlas.vm_medias`` qui renvoie tous les médias des taxons, sur la base du schéma ``taxonomie`` de TaxHub
 
@@ -82,7 +82,7 @@ En se basant sur ``saisie.saisie_observation`` de SICEN (en l'important dans la 
 
     CREATE MATERIALIZED VIEW atlas.vm_observations AS
      SELECT s.id_obs AS id_observation,
-        s.code_insee AS insee,
+        s.code_insee AS geo_entry_id,
         s.date_obs AS dateobs,
         REPLACE (md.liste_nom_auteur(observateur), ' & ', ', ') AS observateurs,
         s.elevation AS altitude_retenue,
@@ -159,6 +159,6 @@ Ajouter la ligne suivante en prenant soin de mettre à jour les paramètres de c
 
 Pour enregistrer et sortir : ``Ctrl + O``, ENTER puis ``Ctrl + X``
 
-Cette fonction rafraichit toutes les vues materialisées présentes dans le schéma ``atlas`` et ne tient pas compte de l'ordre du rafraichissement. Cette opération peut-être assez longue dans le cas où le réferentiel géographique est volumineux alors que celui-ci est relativement stable (peu de MAJ des communes ou du territoire). 
+Cette fonction rafraichit toutes les vues materialisées présentes dans le schéma ``atlas`` et ne tient pas compte de l'ordre du rafraichissement. Cette opération peut-être assez longue dans le cas où le réferentiel géographique est volumineux alors que celui-ci est relativement stable (peu de MAJ de l'entrée geographique ou du territoire). 
 
 Dans ce cas, préferez un rafraichisement automatique uniquement des données : fonction ``atlas.refresh_materialized_view_data()``. Pour rafraichir les données géographiques, lancer ponctuellement la fonction ``atlas.refresh_materialized_view_ref_geo()``.

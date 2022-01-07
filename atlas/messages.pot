@@ -207,7 +207,7 @@ msgid "search.species"
 msgstr ""
 
 #: templates/core/navbar.html:47 templates/home/globalStats.html:47
-msgid "search.city"
+msgid "search.geo"
 msgstr ""
 
 #: templates/core/sideBar.html:3
@@ -279,13 +279,13 @@ msgstr ""
 #: templates/home/globalStats.html:39 templates/speciesSheet/map.html:20
 #: templates/speciesSheet/otherInformations.html:10
 #: templates/speciesSheet/otherInformations.html:14
-msgid "municipalities"
+msgid "geoentries"
 msgstr ""
 
 #: templates/home/globalStats.html:39 templates/speciesSheet/map.html:20
 #: templates/speciesSheet/otherInformations.html:10
 #: templates/speciesSheet/otherInformations.html:14
-msgid "municipality"
+msgid "geoentry"
 msgstr ""
 
 #: templates/home/globalStats.html:58

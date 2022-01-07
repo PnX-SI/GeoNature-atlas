@@ -6,12 +6,12 @@
                     <li class="nav-item"><a data-toggle="tab" class="nav-link active"
                          href="#articles"><b>{{ articles|length }}</b> {{ 'articles' if articles|length > 1 else 'article' }}
                     </a></li>
-                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#communes">
-                        <b>{{ communes|length }}</b> {{ _('municipalities')|lower if communes|length > 1 else _('municipality')|lower }}</a>
+                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#geoentries">
+                        <b>{{ geoentries|length }}</b> {{ _('geoentries')|lower if geoentries|length > 1 else _('municipality')|lower }}</a>
                     </li>
                 {% else %}
-                    <li class="nav-item"><a data-toggle="tab" class="nav-link active" href="#communes">
-                        <b>{{ communes|length }}</b> {{ _('municipalities')|lower if communes|length > 1 else _('municipality')|lower }}</a>
+                    <li class="nav-item"><a data-toggle="tab" class="nav-link active" href="#geoentries">
+                        <b>{{ geoentries|length }}</b> {{ _('geoentries')|lower if geoentries|length > 1 else _('municipality')|lower }}</a>
                     </li>
                 {% endif %}
                 
@@ -80,13 +80,13 @@
                     </div>
                 {% endif %}
                 {% if articles | length != 0 %}
-                    <div id="communes" class="tab-pane fade">
+                    <div id="geoentries" class="tab-pane fade">
                 {% else %}
-                    <div id="communes" class="tab-pane fade show active">
+                    <div id="geoentries" class="tab-pane fade show active">
                 {% endif %}
                 <p>
-                    {% for com in communes %}
-                        <a href="{{ url_for('main.ficheCommune', insee = com.insee) }}">{{ com.commune_maj }}</a>
+                    {% for e in geoentries %}
+                        <a href="{{ url_for('main.ficheGeoEntry', geo_entry_id = e.geo_entry_id) }}">{{ e.geo_entry_name }}</a>
                         {% if not loop.last %}
                             -
                         {% endif %}

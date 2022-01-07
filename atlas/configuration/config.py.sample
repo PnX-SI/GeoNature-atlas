@@ -21,6 +21,12 @@ STRUCTURE = "Nom de la structure"
 # Nom de l'application
 NOM_APPLICATION = "Nom de l application"
 
+# Code de l'entrée geographique principale dans 'ref_geo.bib_area_type'
+MAIN_GEO_ENTRY_CODE = "COM"
+
+# Intitulé de l'entrée géographique principale
+MAIN_GEO_ENTRY_NAME = "commune"
+
 # URL de l'application depuis la racine du domaine
 # ex "/atlas" pour une URL: http://mon-domaine/atlas OU "" si l'application est accessible à la racine du domaine
 URL_APPLICATION = ""

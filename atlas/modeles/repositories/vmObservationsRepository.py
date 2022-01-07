@@ -97,17 +97,17 @@ def lastObservations(connection, mylimit, idPhoto):
     return obsList
 
 
-def lastObservationsCommune(connection, mylimit, insee):
+def lastObservationsGeoEntry(connection, mylimit, geo_entry_id):
     sql = """SELECT o.*,
             COALESCE(split_part(tax.nom_vern, ',', 1) || ' | ', '')
                 || tax.lb_nom AS taxon
     FROM atlas.vm_observations o
-    JOIN atlas.vm_communes c ON ST_Intersects(o.the_geom_point, c.the_geom)
+    JOIN atlas.vm_geo_entry e ON ST_Intersects(o.the_geom_point, e.the_geom)
     JOIN atlas.vm_taxons tax ON  o.cd_ref = tax.cd_ref
-    WHERE c.insee = :thisInsee
+    WHERE e.geo_entry_id = :thisGeoEntryId
     ORDER BY o.dateobs DESC
     LIMIT 100"""
-    observations = connection.execute(text(sql), thisInsee=insee)
+    observations = connection.execute(text(sql), thisGeoEntryId=geo_entry_id)
     obsList = list()
     for o in observations:
         temp = dict(o)
@@ -118,7 +118,7 @@ def lastObservationsCommune(connection, mylimit, insee):
     return obsList
 
 
-def getObservationTaxonCommune(connection, insee, cd_ref):
+def getObservationTaxonGeoEntry(connection, geo_entry_id, cd_ref):
     sql = """
         SELECT o.*,
             COALESCE(split_part(tax.nom_vern, ',', 1) || ' | ', '')
@@ -126,7 +126,7 @@ def getObservationTaxonCommune(connection, insee, cd_ref):
         o.observateurs
         FROM (
             SELECT * FROM atlas.vm_observations o
-            WHERE o.insee = :thisInsee AND o.cd_ref = :thiscdref
+            WHERE o.geo_entry_id = :thisGeoEntryId AND o.cd_ref = :thiscdref
         )  o
         JOIN (
             SELECT nom_vern, lb_nom, cd_ref
@@ -135,7 +135,7 @@ def getObservationTaxonCommune(connection, insee, cd_ref):
         ) tax ON tax.cd_ref = tax.cd_ref
     """
 
-    observations = connection.execute(text(sql), thiscdref=cd_ref, thisInsee=insee)
+    observations = connection.execute(text(sql), thiscdref=cd_ref, thisGeoEntryId=geo_entry_id)
     obsList = list()
     for o in observations:
         temp = dict(o)
@@ -195,13 +195,13 @@ def getGroupeObservers(connection, groupe):
     return observersParser(req)
 
 
-def getObserversCommunes(connection, insee):
+def getObserversGeoEntry(connection, geo_entry_id):
     sql = """
         SELECT DISTINCT observateurs
         FROM atlas.vm_observations
-        WHERE insee = :thisInsee
+        WHERE geo_entry_id = :thisGeoEntryId
     """
-    req = connection.execute(text(sql), thisInsee=insee)
+    req = connection.execute(text(sql), thisGeoEntryId=geo_entry_id)
     return observersParser(req)
 
 
@@ -214,7 +214,7 @@ def statIndex(connection):
         result["nbTotalObs"] = r.count
 
     sql = "SELECT COUNT(*) AS count\
-    FROM atlas.vm_communes"
+    FROM atlas.vm_geo_entry"
     req = connection.execute(text(sql))
     for r in req:
         result["town"] = r.count

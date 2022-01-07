@@ -408,7 +408,7 @@ function displayMarkerLayerFicheEspece(
   }
 }
 
-// ***************Fonction lastObservations: mapHome et mapCommune*****************
+// ***************Fonction lastObservations: mapHome et mapGeoEntry*****************
 
 /* *** Point ****/
 
@@ -433,7 +433,7 @@ function onEachFeaturePointLastObs(feature, layer) {
   );
 }
 
-function onEachFeaturePointCommune(feature, layer) {
+function onEachFeaturePointGeoEntry(feature, layer) {
   popupContent =
     "<b>Espèce: </b>" +
     feature.properties.taxon +
@@ -473,8 +473,8 @@ function generateGeojsonPointLastObs(observationsPoint) {
 
 function displayMarkerLayerPointLastObs(observationsPoint) {
   myGeoJson = generateGeojsonPointLastObs(observationsPoint);
-  if (typeof pointDisplayOptionsFicheCommuneHome == "undefined") {
-    pointDisplayOptionsFicheCommuneHome = function (feature) {
+  if (typeof pointDisplayOptionsFicheGeoEntryHome == "undefined") {
+    pointDisplayOptionsFicheGeoEntryHome = function (feature) {
       return {};
     };
   }
@@ -484,45 +484,45 @@ function displayMarkerLayerPointLastObs(observationsPoint) {
     pointToLayer: function (feature, latlng) {
       return L.circleMarker(
         latlng,
-        pointDisplayOptionsFicheCommuneHome(feature)
+        pointDisplayOptionsFicheGeoEntryHome(feature)
       );
     },
   });
 
   map.addLayer(currentLayer);
-  if (typeof divLegendeFicheCommuneHome !== "undefined") {
+  if (typeof divLegendeFicheGeoEntryHome !== "undefined") {
     legend.onAdd = function (map) {
       var div = L.DomUtil.create("div", "info legend");
-      div.innerHTML = divLegendeFicheCommuneHome;
+      div.innerHTML = divLegendeFicheGeoEntryHome;
       return div;
     };
     legend.addTo(map);
   }
 }
 
-function displayMarkerLayerPointCommune(observationsPoint) {
+function displayMarkerLayerPointGeoEntry(observationsPoint) {
   myGeoJson = generateGeojsonPointLastObs(observationsPoint);
-  if (typeof pointDisplayOptionsFicheCommuneHome == "undefined") {
-    pointDisplayOptionsFicheCommuneHome = function (feature) {
+  if (typeof pointDisplayOptionsFicheGeoEntryHome == "undefined") {
+    pointDisplayOptionsFicheGeoEntryHome = function (feature) {
       return {};
     };
   }
 
   currentLayer = L.geoJson(myGeoJson, {
-    onEachFeature: onEachFeaturePointCommune,
+    onEachFeature: onEachFeaturePointGeoEntry,
     pointToLayer: function (feature, latlng) {
       return L.circleMarker(
         latlng,
-        pointDisplayOptionsFicheCommuneHome(feature)
+        pointDisplayOptionsFicheGeoEntryHome(feature)
       );
     },
   });
 
   map.addLayer(currentLayer);
-  if (typeof divLegendeFicheCommuneHome !== "undefined") {
+  if (typeof divLegendeFicheGeoEntryHome !== "undefined") {
     legend.onAdd = function (map) {
       var div = L.DomUtil.create("div", "info legend");
-      div.innerHTML = divLegendeFicheCommuneHome;
+      div.innerHTML = divLegendeFicheGeoEntryHome;
       return div;
     };
     legend.addTo(map);

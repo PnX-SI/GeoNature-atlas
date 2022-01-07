@@ -22,7 +22,7 @@ class VmObservations(Base):
         "vm_observations",
         metadata,
         Column("id_observation", Integer, primary_key=True, unique=True),
-        Column("insee", String(5), index=True),
+        Column("geo_entry_id", String(255), index=True),
         Column("dateobs", Date, index=True),
         Column("observateurs", String(255)),
         Column("altitude_retenue", Integer, index=True),

@@ -21,10 +21,10 @@ atlas/modeles/utils.py
 atlas/modeles/entities/__init__.py
 atlas/modeles/entities/synthese.py
 atlas/modeles/entities/tBibTaxrefRang.py
-atlas/modeles/entities/tCommunes.py
+atlas/modeles/entities/GeoEntries.py
 atlas/modeles/entities/tGrid.py
 atlas/modeles/entities/vmAreas.py
-atlas/modeles/entities/vmCommunes.py
+atlas/modeles/entities/vmGeoEntry.py
 atlas/modeles/entities/vmMedias.py
 atlas/modeles/entities/vmMois.py
 atlas/modeles/entities/vmObservations.py
@@ -33,10 +33,10 @@ atlas/modeles/entities/vmSearchTaxon.py
 atlas/modeles/entities/vmTaxons.py
 atlas/modeles/entities/vmTaxref.py
 atlas/modeles/repositories/__init__.py
-atlas/modeles/repositories/tCommunesRepository.py
+atlas/modeles/repositories/GeoEntriesRepository.py
 atlas/modeles/repositories/vmAltitudesRepository.py
 atlas/modeles/repositories/vmAreasRepository.py
-atlas/modeles/repositories/vmCommunesRepository.py
+atlas/modeles/repositories/vmGeoEntryRepository.py
 atlas/modeles/repositories/vmCorTaxonAttribut.py
 atlas/modeles/repositories/vmMedias.py
 atlas/modeles/repositories/vmMoisRepository.py

@@ -219,8 +219,8 @@ msgid "search.species"
 msgstr "Recherche par espèce"
 
 #: templates/core/navbar.html:47 templates/home/globalStats.html:47
-msgid "search.city"
-msgstr "Recherche par commune"
+msgid "search.geo"
+msgstr "Recherche géographique"
 
 #: templates/core/sideBar.html:3
 msgid "back.to.home"
@@ -291,14 +291,14 @@ msgstr "Voir les dernières observations"
 #: templates/home/globalStats.html:39 templates/speciesSheet/map.html:20
 #: templates/speciesSheet/otherInformations.html:10
 #: templates/speciesSheet/otherInformations.html:14
-msgid "municipalities"
-msgstr "Communes"
+msgid "geoentries"
+msgstr "communes"
 
 #: templates/home/globalStats.html:39 templates/speciesSheet/map.html:20
 #: templates/speciesSheet/otherInformations.html:10
 #: templates/speciesSheet/otherInformations.html:14
-msgid "municipality"
-msgstr "Commune"
+msgid "geoentry"
+msgstr "commune"
 
 #: templates/home/globalStats.html:58
 msgid "photos"

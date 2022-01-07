@@ -136,7 +136,7 @@ NB_DAY_LAST_OBS = '7'
 # Texte à afficher pour décrire la cartographie des 'dernières observations'
 TEXT_LAST_OBS = 'Les observations des agents ces 7 derniers jours |'
 
-# Carte de la fiche commune : nombre des 'x' dernières observations affichées
+# Carte de la fiche de l'entrée géographique : nombre des 'x' dernières observations affichées
 NB_LAST_OBS=100
 
 ###########################

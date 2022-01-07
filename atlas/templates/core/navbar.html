@@ -38,15 +38,15 @@
                 </form>
 
                 <form class="form-inline my-2 my-lg-0" method="POST"
-                      onsubmit="completeAction('#searchFormCommunes', hiddenInputCommunes)" id='searchFormCommunes'
+                      onsubmit="completeAction('#searchFormGeoEntry', hiddenInputGeoEntry)" id='searchFormGeoEntry'
                       action=""
                       role="search">
                     <div class="form-group has-feedback">
-                        <input id="searchCommunes" type="text" style="width: 175px;"
+                        <input id="searchGeoEntry" type="text" style="width: 175px;"
                                class="form-control mr-sm-2 ajax-search small-placeholder"
-                               placeholder="{{ _('search.city') }}&nbsp;&nbsp;&nbsp;">
+                               placeholder="{{ _('search.geo') }} &nbsp;&nbsp;&nbsp;">
                     </div>
-                    <input id="hiddenInputCommunes" type="hidden" name="insee">
+                    <input id="hiddenInputGeoEntry" type="hidden" name="geo_entry_id">
                 </form>
                 <!--- Languages button and dropdown displaid if MULTILINGUAL is True-->
                 {% if configuration.MULTILINGUAL %}

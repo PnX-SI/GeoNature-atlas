@@ -29,8 +29,7 @@ then
   sudo rm -rf $venv_dir
 fi
 
-virtualenv -p $python_executable $venv_dir
-
+python3 -m venv $venv_dir
 
 . $venv_dir/bin/activate
 

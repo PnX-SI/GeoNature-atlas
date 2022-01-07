@@ -130,31 +130,32 @@ if ! database_exists $db_name
                 export PGPASSWORD=$owner_atlas_pass; psql -d $db_name -U $owner_atlas -h $db_host -p $db_port \
                     -v type_maille=$type_maille \
                     -v type_territoire=$type_territoire \
+                    -v type_geo_entry=$type_geo_entry \
                     -f data/gn2/atlas_ref_geo.sql &>> log/install_db.log
         else
             # FR: Import du shape des limites du territoire ($limit_shp) dans la BDD / atlas.t_layer_territoire    
             # EN: Import of the shape of the territory limits ($limit_shp) in the BDD / atlas.t_layer_territory
 
-            ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 data/ref/emprise_territoire_4326.shp $limit_shp
-            sudo -u postgres -s shp2pgsql -W "LATIN1" -s 4326 -D -I ./data/ref/emprise_territoire_4326.shp atlas.t_layer_territoire | sudo -n -u postgres -s psql -d $db_name  &>> log/install_db.log
-            rm data/ref/emprise_territoire_4326.*
+            ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 data/ref/territoire.shp $limit_shp
+            sudo -u postgres -s shp2pgsql -W "LATIN1" -s 4326 -D -I ./data/ref/territoire.shp atlas.t_layer_territoire | sudo -n -u postgres -s psql -d $db_name  &>> log/install_db.log
+            # rm data/ref/territoire.*
             sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_layer_territoire OWNER TO "$owner_atlas";"
             # FR: Creation de l'index GIST sur la couche territoire atlas.t_layer_territoire
             # EN: Creation of the GIST index on the territory layer atlas.t_layer_territory
             sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_layer_territoire RENAME COLUMN geom TO the_geom; CREATE INDEX index_gist_t_layer_territoire ON atlas.t_layer_territoire USING gist(the_geom); "  &>> log/install_db.log
 
-            # FR: Import du shape des communes ($communes_shp) dans la BDD (si parametre import_commune_shp = TRUE) / atlas.l_communes
-            # EN: Import of the shape of the communes ($communes_shp) in the DB (if parameter import_commune_shp = TRUE) / atlas.l_communes
-            if $import_commune_shp
+            # FR: Import du shape de l'entrée géograpique ($geo_entry) dans la BDD (si parametre import_geo_entry_shp = TRUE) / atlas.vm_geo_entry
+            # EN: Import of the shape of the geographical entry ($geo_entry) in the DB (if parameter import_geo_entry = TRUE) / atlas.vm_geo_entry
+            if $import_geo_entry_shp
                 then
-                    ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 ./data/ref/communes_4326.shp $communes_shp
-                    sudo -u postgres -s shp2pgsql -W "LATIN1" -s 4326 -D -I ./data/ref/communes_4326.shp atlas.l_communes | sudo -n -u postgres -s psql -d $db_name  &>> log/install_db.log
-                    sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes RENAME COLUMN "$colonne_nom_commune" TO commune_maj;"  &>> log/install_db.log
-                    sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes RENAME COLUMN "$colonne_insee" TO insee;"  &>> log/install_db.log
-                    sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes RENAME COLUMN geom TO the_geom;"  &>> log/install_db.log
-                    sudo -u postgres -s psql -d $db_name -c "CREATE INDEX index_gist_t_layers_communes ON atlas.l_communes USING gist (the_geom);"  &>> log/install_db.log
-                    sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes OWNER TO "$owner_atlas";"
-                    rm ./data/ref/communes_4326.*
+                    ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 ./data/ref/geo_entry.shp $geo_entry
+                    sudo -u postgres -s shp2pgsql -W "LATIN1" -s 4326 -D -I ./data/ref/geo_entry.shp atlas.vm_geo_entry | sudo -n -u postgres -s psql -d $db_name  &>> log/install_db.log
+                    sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.vm_geo_entry RENAME COLUMN "$name_column" TO geo_entry_id;"  &>> log/install_db.log
+                    sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.vm_geo_entry RENAME COLUMN "$id_column" TO geo_entry_id;"  &>> log/install_db.log
+                    sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.vm_geo_entry RENAME COLUMN geom TO the_geom;"  &>> log/install_db.log
+                    sudo -u postgres -s psql -d $db_name -c "CREATE INDEX index_gist_t_geo_entry ON atlas.vm_geo_entry USING gist (the_geom);"  &>> log/install_db.log
+                    sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.vm_geo_entry OWNER TO "$owner_atlas";"
+                    # rm ./data/ref/geo_entry.*
             fi
 
             # FR: Mise en place des mailles
@@ -347,52 +348,47 @@ if ! database_exists $db_name
                 fi
             done
 
-        sudo sed -i "s/INSERT_ALTITUDE/${insert}/" /tmp/atlas/4.atlas.vm_altitudes.sql
+        sudo sed -i "s/INSERT_ALTITUDE/${insert}/" /tmp/atlas/5.atlas.vm_altitudes.sql
 
         echo "[$(date +'%H:%M:%S')] Creating atlas.vm_taxref..."
         time_temp=$SECONDS
         export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/1.atlas.vm_taxref.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
         
+        echo "[$(date +'%H:%M:%S')] Creating atlas.vm_cor_taxon_attribut..."
+        time_temp=$SECONDS
+        sudo sed -i "s/WHERE id_attribut IN (100, 101, 102, 103);$/WHERE id_attribut  IN ($attr_desc, $attr_commentaire, $attr_milieu, $attr_chorologie);/" /tmp/atlas/2.atlas.vm_cor_taxon_attribut.sql
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/2.atlas.vm_cor_taxon_attribut.sql  &>> log/install_db.log
+        echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
+        
         echo "[$(date +'%H:%M:%S')] Creating atlas.vm_observations..."
         time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/2.atlas.vm_observations.sql  &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/3.atlas.vm_observations.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
         echo "[$(date +'%H:%M:%S')] Creating atlas.vm_taxons..."
         time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/3.atlas.vm_taxons.sql  &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/4.atlas.vm_taxons.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
         echo "[$(date +'%H:%M:%S')] Creating atlas.vm_altitudes..."
         time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/4.atlas.vm_altitudes.sql  &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/5.atlas.vm_altitudes.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
         echo "[$(date +'%H:%M:%S')] Creating atlas.vm_search_taxon..."
         time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/5.atlas.vm_search_taxon.sql  &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/6.atlas.vm_search_taxon.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
         echo "[$(date +'%H:%M:%S')] Creating atlas.vm_mois..."
         time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/6.atlas.vm_mois.sql  &>> log/install_db.log
-        echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
-
-        echo "[$(date +'%H:%M:%S')] Creating atlas.vm_communes..."
-        time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/7.atlas.vm_communes.sql  &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/7.atlas.vm_mois.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
         echo "[$(date +'%H:%M:%S')] Creating atlas.vm_medias"
         time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/8.atlas.vm_medias.sql  &>> log/install_db.log
-        echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
-
-        echo "[$(date +'%H:%M:%S')] Creating atlas.vm_cor_taxon_attribut..."
-        time_temp=$SECONDS
-        sudo sed -i "s/WHERE id_attribut IN (100, 101, 102, 103);$/WHERE id_attribut  IN ($attr_desc, $attr_commentaire, $attr_milieu, $attr_chorologie);/" /tmp/atlas/9.atlas.vm_cor_taxon_attribut.sql
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/9.atlas.vm_cor_taxon_attribut.sql  &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/9.atlas.vm_medias.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
         echo "[$(date +'%H:%M:%S')] Creating atlas.vm_taxons_plus_observes..."

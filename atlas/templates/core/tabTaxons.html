@@ -23,7 +23,7 @@
             </thead>
             <tbody>
             {% for taxon in listTaxons.taxons %}
-                <tr class="taxonRow" insee="{{ referenciel.insee }}" cdRef="{{ taxon.cd_ref }}">
+                <tr class="taxonRow" geo_entry_id="{{ referenciel.geo_entry_id }}" cdRef="{{ taxon.cd_ref }}">
                     <td>
                         {% if taxon.path == None %}
                             <img src="{{ url_for('static', filename='images/picto_'+ taxon.group2_inpn| replace(" ", "_") |urlencode+'.png') }}"
