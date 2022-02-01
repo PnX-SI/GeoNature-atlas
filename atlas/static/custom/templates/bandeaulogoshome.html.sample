@@ -48,6 +48,7 @@
 						</div>
 					</div>
 
+
   <script type="text/javascript">
 		$(document).ready(function(){
 		  $('.partner-logos').slick({
@@ -57,9 +58,30 @@
 			  slidesToScroll: 1,
 			  centerMode: false,
 			  autoplay: true,
-			  autoplaySpeed: 2000,
+  			  autoplaySpeed: 2000,
+				responsive: [
+				    {
+				      breakpoint: 1024,
+				      settings: {
+				        slidesToShow: 3
+				      }
+				    },
+				    {
+				      breakpoint: 600,
+				      settings: {
+				        slidesToShow: 2
+				      }
+				    },
+				    {
+				      breakpoint: 480,
+				      settings: {
+				        slidesToShow: 1				   
+				      }
+				    }
+				  ]
 			});
 		});
   </script>
+
   
 {% endblock %}
