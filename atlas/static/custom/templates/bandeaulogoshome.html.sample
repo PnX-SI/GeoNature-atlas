@@ -1,8 +1,9 @@
+{% block logohome %}
 <!-- Carousel avec logos en page d'accueil -->
 
-					<div class="panel panel-default stat-panel">
-						<div class="panel-heading padding-sm ">
-							<strong><h3 class="title-spaced"><span class="glyphicon glyphicon-link"></span> {{ _('home.partners') }}</h3></strong>
+					<div class="card mt-4">
+  					  <div class="card-body">
+    					    <h3 class="card-title"><i class="fas fa-handshake icon-color-title">&nbsp;</i> {{ _('home.partners') }}</h3>
 						</div>
 						<div class="panel-body" style="background-color: white;">
 							<div class="row" style="padding: 1%;">
@@ -60,4 +61,5 @@
 			});
 		});
   </script>
-
+  
+{% endblock %}
