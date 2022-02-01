@@ -19,7 +19,7 @@
                             {% if configuration.REDIMENSIONNEMENT_IMAGE %}
                                 {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+ taxon.photo.id_media|string+'?h=100&w=150' %}
                             {% else %}
-                                {% set img_path = taxon.photo.path %}
+                                {% set img_path = configuration.REMOTE_MEDIAS_URL+taxon.photo.path %}
                             {% endif %}
                             <img class="mainImg" src="{{img_path}}"
                                 style='width:100px'>
