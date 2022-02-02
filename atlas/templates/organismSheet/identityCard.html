@@ -20,6 +20,9 @@
 				<br><b>{{ _('Adresse') }}</b> : {{ adresse_organism}}, {{ cp_organism }} {{ ville_organism }}
 				<br><b>{{ _('Téléphone') }}</b> : {{ tel_organism }}
 				<br><b>{{ _('Email') }}</b> : {{ email_organism }}
+				{% if url_organism|length > 9 %}
+					<br><b>{{ _('Site') }}</b> : <a href="{{ url_organism }}" target="_blank">{{ url_organism }}</a>
+				{% endif %}
 			</div>
 		</div>
 	</div>
