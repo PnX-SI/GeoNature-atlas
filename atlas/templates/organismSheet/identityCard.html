@@ -3,15 +3,14 @@
 		<div class=" card-body row" id="rowIdentity">
 			<!-- Logo -->
 			{% if url_logo != none %}
-			<div class="imgWrapper  left">				
-				<a href="{{ url_organism }}" data-lightbox="imageSet">
-					
-					<img id="mainImg" 
-					src='{{ url_logo }}'
-					style="width: 200px;">
-					
+			<div class="imgWrapper left">
+				{% if url_organism|length > 9 %}
+				<a href="{{ url_organism }}" target="_blank">
+					<img id="mainImg" src='{{ url_logo }}' style="width: 200px;">
 				</a>
-				
+				{% else %}
+					<img id="mainImg" src='{{ url_logo }}' style="width: 200px;">
+				{% endif %}
 			</div>
 			{% endif %}
 			<div class="left col-9  ">
