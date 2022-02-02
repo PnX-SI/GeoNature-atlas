@@ -54,11 +54,15 @@ def topObsOrganism(connection, id_organism):
 
 
 def getListOrganism(connection,cd_ref):
-    # Fiche espèce : Liste des organisms pour un taxon
-    sql = """SELECT nb_observations, id_organism, nom_organism, url_organism, url_logo
-    FROM atlas.vm_cor_taxon_organism o 
-    WHERE cd_ref = :thiscdref
-    ORDER BY nb_observations DESC"""
+    # Fiche espèce : Liste des organismes pour un taxon
+    sql = """SELECT SUM(nb_observations) AS nb_observations, id_organism, nom_organism, url_organism, url_logo
+             FROM atlas.vm_cor_taxon_organism o 
+             WHERE cd_ref in (
+                SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
+                )
+                OR cd_ref = :thiscdref
+             GROUP by id_organism, nom_organism, url_organism, url_logo            
+             ORDER BY nb_observations DESC"""
     req = connection.execute(text(sql), thiscdref=cd_ref)
     ListOrganism=list()
     for r in req:
