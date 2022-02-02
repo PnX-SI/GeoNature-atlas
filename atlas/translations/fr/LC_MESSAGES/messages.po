@@ -332,7 +332,7 @@ msgstr "Autres informations"
 
 #: templates/organismSheet/groupChart.html:3
 msgid "part.graph"
-msgstr "Répartition des observations par famille"
+msgstr "Répartition des observations par groupe"
 
 #: templates/organismSheet/identityCard.html:21
 msgid "Adresse"
@@ -437,7 +437,7 @@ msgstr "Première observation"
 
 #: templates/speciesSheet/otherInformations.html:22
 msgid "organisms"
-msgstr "Organisms"
+msgstr "Organismes"
 
 #: templates/speciesSheet/otherInformations.html:22
 msgid "organism"

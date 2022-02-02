@@ -330,7 +330,7 @@ msgstr "Other information"
 
 #: templates/organismSheet/groupChart.html:3
 msgid "part.graph"
-msgstr "Distribution of observations by family"
+msgstr "Distribution of observations by group"
 
 #: templates/organismSheet/identityCard.html:21
 msgid "Adresse"
