@@ -48,7 +48,7 @@
                 {% include 'templates/core/statHierarchy.html' %}
             </div>
 
-            <div id="allGroups" class="bg-white border-bottom p-2">>
+            <div id="allGroups" class="bg-white border-bottom p-2">
                 {% for group in groups %}
                     <li class="floatLeft">
                         <a href="{{ url_for('main.ficheGroupe', groupe=group.groupAccent ) }}">
