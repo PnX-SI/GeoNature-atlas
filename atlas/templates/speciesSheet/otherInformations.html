@@ -118,13 +118,15 @@
                                     <span class="float-right"></span>
                                     <div class="pictoImgList mr-2" data-toggle="tooltip" data-original-title="{{ taxon.group2_inpn }}"
                                     data-placement="right">
-                                        <a href="{{ o['url_organism'] }}" target="_blank">
-                                            {% if o['url_logo']!= None %}
-                                            <img class="mx-auto d-block"
-                                            src="{{ o['url_logo'] }}" style='width:100px'
-                                            >
+                                        {% if o['url_logo']!= None %}
+                                            {% if o['url_organism']|length > 9 %}
+                                            <a href="{{ o['url_organism'] }}" target="_blank">
+                                                <img class="mx-auto d-block" src="{{ o['url_logo'] }}" style='width:100px'>
+                                            </a>
+                                            {% else %}
+                                                <img class="mx-auto d-block" src="{{ o['url_logo'] }}" style='width:100px'>
                                             {% endif %}
-                                        </a>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 
