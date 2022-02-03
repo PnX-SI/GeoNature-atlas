@@ -10,11 +10,11 @@ def mostViewTaxon(connection):
     req = connection.execute(text(sql))
     tabTax = list()
     for r in req:
-        if r.nom_vern != None:
+        if r.nom_vern is not None:
             nom_verna = r.nom_vern.split(',')
-            taxonName = nom_verna[0]+' | ' + r.lb_nom
+            taxonName = nom_verna[0] + " | " + "<i>" + r.lb_nom + "</i>"
         else:
-            taxonName = r.lb_nom
+            taxonName = "<i>" + r.lb_nom + "</i>"
         temp = {
             'cd_ref': r.cd_ref,
             'taxonName': taxonName,

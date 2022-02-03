@@ -29,7 +29,7 @@
                                 {% endif %}
                             {% endif %}
                             <div class="overlay">
-                                <h2>{{ tax.taxonName }}</h2>
+                                <h2>{{ tax.taxonName|safe }}</h2>
                                 <a class="info" href="{{ url_for('main.ficheEspece', cd_nom=tax.cd_ref) }}">{{ _('species.sheet') }}</a>
                             </div>
                         </div>
