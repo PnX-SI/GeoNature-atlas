@@ -35,7 +35,7 @@ def statOrganism (connection,id_organism):
 
 def topObsOrganism(connection, id_organism):
     #Stats avancées organism
-    sql = """SELECT cd_ref, nb_observations as nb_obs 
+    sql = """SELECT cd_ref, nb_observations as nb_obs_taxon 
     FROM atlas.vm_cor_taxon_organism o
     WHERE o.id_organism = :thisidorganism
     ORDER BY nb_observations DESC
@@ -46,7 +46,7 @@ def topObsOrganism(connection, id_organism):
     for r in req:
         temp={
             'cd_ref':r.cd_ref,
-            'nb_obs':r.nb_obs,
+            'nb_obs_taxon':r.nb_obs_taxon,
         }
         topSpecies.append(temp)
     return topSpecies
