@@ -53,11 +53,11 @@
                                 {{ taxon.nom_vern.split(',')[0].strip() }}
                             {% endif %}</b></h5>
                         <h5>
-                            <span id="name italic">{{ taxon.lb_nom|safe }}</span>
+                            <i>{{ taxon.lb_nom|safe }}</i>
                         </h5>
 
                         <b>
-                            {{ taxon['nb_obs']}} </b>
+                            {{ taxon['nb_obs_taxon']}} </b>
                             {% if taxon.nb_obs == 1 %}{{_ ('observation')}}{% else %}{{_ ('observations')}}{% endif %} <br>
                         <b>{{ "%.2f"|format(taxon['nb_obs'] / nb_obs*100) }}% </b>{{ _('from.organism.observations') }}
                         <span class="float-right">
