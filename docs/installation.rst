@@ -109,8 +109,8 @@ NOTES :
     psql
     CREATE USER geonatatlas WITH ENCRYPTED PASSWORD 'monpassachanger';
     \c geonature2db
-    GRANT USAGE ON SCHEMA gn_synthese, ref_geo, ref_nomenclatures, taxonomie TO geonatatlas;
-    GRANT SELECT ON ALL TABLES IN SCHEMA gn_synthese, ref_geo, ref_nomenclatures, taxonomie TO geonatatlas;
+    GRANT USAGE ON SCHEMA gn_synthese, ref_geo, ref_nomenclatures, taxonomie, utilisateurs, gn_meta TO geonatatlas;
+    GRANT SELECT ON ALL TABLES IN SCHEMA gn_synthese, ref_geo, ref_nomenclatures, taxonomie, utilisateurs, gn_meta TO geonatatlas;
     \q
     exit
 
@@ -159,23 +159,6 @@ Lancez le fichier fichier d'installation de la base de données :
 
     cd /home/`whoami`/atlas
     ./install_db.sh
-
-/!\ Si vous avez un nombre de données supérieur à 1 million, préférez l'installation avec install_db_extended.sh /!\
-
-::
-
-    cd /home/`whoami`/atlas
-    ./install_db_extended.sh
-
-
-/!\ Si vous avez un nombre de données supérieur à 1 million, préférez l'installation avec install_db_extended.sh /!\
-
-
-::
-
-    cd /home/`whoami`/atlas
-    ./install_db_extended.sh
-
 
 
 :notes:
@@ -342,7 +325,7 @@ Pour écouter toutes les IP, éditez le fichier ``postgresql.conf`` :
 
 ::
 
-    sudo nano /etc/postgresql/9.6/main/postgresql.conf
+    sudo nano /etc/postgresql/*/main/postgresql.conf
 
 Remplacez ``listen_adress = 'localhost'`` par  ``listen_adress = '*'``. Ne pas oublier de décommenter la ligne (enlever le ``#``).
 
@@ -350,7 +333,7 @@ Pour définir les IP qui peuvent se connecter au serveur PostgreSQL, éditez le 
 
 ::
 
-    sudo nano /etc/postgresql/9.6/main/pg_hba.conf
+    sudo nano /etc/postgresql/*/main/pg_hba.conf
 
 Si vous souhaitez définir des IP qui peuvent se connecter à la BDD, sous la ligne ``# IPv4 local connections:``, rajouter :
 
@@ -376,7 +359,7 @@ Connectez-vous en SSH sur le serveur hébergeant la BDD source, puis éditez la 
 
 ::
 
-    sudo nano /etc/postgresql/9.6/main/pg_hba.conf
+    sudo nano /etc/postgresql/*/main/pg_hba.conf
 
 Rajouter cette ligne à la fin du fichier (en remplacant IP_DE_LA_BDD_ATLAS par son adresse IP) :
 

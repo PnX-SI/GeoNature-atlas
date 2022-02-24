@@ -2,6 +2,30 @@
 CHANGELOG
 =========
 
+1.5.1 (2021-12-06)
+------------------
+
+🐛 **Corrections** 
+
+- Ajout de l'utilisation de ``nvm`` dans le script ``install_app.sh`` (par @gildeluermoz)
+- Nettoyage de la documentation (par @gildeluermoz)
+- Mise à jour de la version du schéma ``taxonomie`` pour une installation sans GeoNature (par @gildeluermoz)
+
+⚠️ **Notes de version** 
+
+Si vous mettez à jour GeoNature-atlas :
+
+- Vous pouvez passer directement à cette version, mais en suivant les notes de versions intermédiaires
+- Télécharger et installer ``nvm`` : 
+
+::
+
+    wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+
+    export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+- Suivez la procédure classique de mise à jour de l'application.
+
 1.5.0 (2021-12-02)
 ------------------
 
@@ -11,7 +35,7 @@ CHANGELOG
 
 - Affichage des organismes activable avec le paramètre ``ORGANISM_MODULE`` (désactivé par défaut) (#325)
 - Affichage des organismes ayant fourni des données d'une espèce dans la fiche espèce (#315)
-- Intégration du bandeau organisme sur la page d'accueil (PR #353, ticket pour amélioration #357)
+- Intégration du bandeau organisme sur la page d'accueil (#245 par @Splendens)
 - Création de fiches organismes, avec logo, nom, nombre de données, espèces les plus observées et familles de taxons observés par un organisme (#291)
 
 **2. Multilingue (#175 par @TheMagicia et @corentinlange)**
@@ -25,7 +49,7 @@ CHANGELOG
 
 **3. Bootstrap 4 (#233 par @lpofredc)**
 
-- Mise à jour de Bootstrap version 3 à 4
+- Mise à jour de Bootstrap version 3 à 4 (#230)
 - Remplacement de la police d'icônes Glyphicon par Font Awesome
 - Correction de l'absence de la hiérarchie sur les fiches taxons
 - Restructuration des templates (avec ``includes`` & ``blocks``) et mutualisation des parties partagées
@@ -35,7 +59,7 @@ CHANGELOG
 - Ajout d'un fichier ``robots.txt`` à la racine de l'application, à partir d'un template customisable, pour indiquer aux moteurs de recherche les pages qu'ils peuvent indexer ou non (#223)
 - Utilisation des zonages activés uniquement dans le ``ref_geo`` (``enable = true``)
 - Possibilité de customiser en CSS la couleur des contours des objets sur les cartes (mailles, territoire, zonages)
-- Corrections de la hierarchie taxonomique
+- Corrections de la hiérarchie taxonomique
 - Possibilité de masquer les observateurs avec le nouveau paramètre ``ANONYMIZE``
 - Possibilité que les liens dans le menu latéral soient des liens externes (en remplacant la clé ``template`` par la clé ``url`` au niveau du paramètre ``STATIC_PAGES``)
 
@@ -45,7 +69,6 @@ CHANGELOG
 
 **5. Autres**
 
-- Possibilité d'ajouter un bandeau partenaire sur la page d'accueil (#245 par @Splendens)
 - Possibilité d'afficher l'echelle sur la carte avec le paramètre ``ENABLE_SCALE`` (#293 par @mvergez)
 - Possibilité d'ajouter un masque sur la carte en dehors du territoire avec le paramètre ``MASK_STYLE`` (#89 par @mvergez)
 - Ajout de pictos manquants (#272 par @jpm-cbna)
@@ -74,7 +97,15 @@ Si vous mettez à jour GeoNature-atlas :
 
 - Stopper le service ``atlas`` de supervisor (``sudo supervisorctl stop atlas``). Supprimez également le fichier de configuration supervisor de l'atlas (``sudo supervisorctl remove atlas && sudo rm /etc/supervisor/conf.d/atlas-service.conf && sudo supervisorctl reread``)
 - Ajouter la variable ``SECRET_KEY`` au fichier ``config.py`` (utilisée pour chiffrer la session), et remplissez-la avec une chaine de texte aléatoire.
-- Relancer l'installation complète de la BDD car de nombreux éléments ont évolué, en lancant le script ``install_db.sh``. Si vous aviez modifié la vue ``synthese.syntheseff`` ou des vues matérialisées, vous devrez reporter ces modifications après la réinstallation de la BDD de GeoNature-atlas.
+- Relancer l'installation complète de la BDD car de nombreux éléments ont évolué, en lancant le script ``install_db.sh``, après avoir passé le paramètre ``drop_apps_db`` à ``true`` dans le fichier ``settings.ini``. Cela va complètement supprimer et recréer votre BDD de GeoNature-atlas. Si vous aviez modifié la vue ``synthese.syntheseff`` ou des vues matérialisées, vous devrez reporter ces modifications après la réinstallation de la BDD de GeoNature-atlas.
+  
+  Si votre GeoNature-atlas est connecté à une BDD GeoNature distante, vous devez au préalable étendre les droits de lecture de l'utilisateur PostgreSQL utilisé pour lire les données au niveau de cette BDD GeoNature source (https://github.com/PnX-SI/GeoNature-atlas/blob/master/atlas/configuration/settings.ini.sample#L65) : 
+
+  ::
+
+      GRANT USAGE ON SCHEMA utilisateurs, gn_meta TO geonatatlas;
+      GRANT SELECT ON ALL TABLES IN SCHEMA utilisateurs, gn_meta TO geonatatlas;
+
 - Suivez la procédure classique de mise à jour de l'application.
 - Le nom du service systemd est désormais ``geonature-atlas``
 - Les logs sont désormais dans ``/var/log/geonature-atlas.log``. Vous pouvez supprimer le répertoire ``log`` à la racine de l'atlas qui est obsolète.
