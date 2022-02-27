@@ -33,6 +33,13 @@ def searchGeoEntryAPI():
     session.close()
     return jsonify(results)
 
+@api.route("/getAllGeoEntry", methods=["GET"])
+def getAllGeoEntryAPI():
+    session = utils.loadSession()
+    results = vmGeoEntryRepository.getAllGeoEntry(session)
+    session.close()
+    return jsonify(results)
+
 if not current_app.config['AFFICHAGE_MAILLE']:
     @api.route("/observationsMailleAndPoint/<int:cd_ref>", methods=["GET"])
     def getObservationsMailleAndPointAPI(cd_ref):

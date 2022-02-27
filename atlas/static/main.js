@@ -81,20 +81,36 @@ autocompleteSearch = function(inputID, urlDestination, nbProposal) {
 };
 
 // Generate the autocompletion with the list of item, the input id and the form id
-$("#searchTaxons").focus(function() {
+$("#searchTaxons").on("focus", function() {
   autocompleteSearch("#searchTaxons", "espece", 20);
 });
-$("#searchTaxonsStat").focus(function() {
+$("#searchTaxonsStat").on("focus", function() {
   autocompleteSearch("#searchTaxonsStat", "espece", 10);
 });
 
-$("#searchGeoEntry").focus(function() {
+$("#searchGeoEntry").on("focus", function() {
   autocompleteSearch("#searchGeoEntry", "geoentry", 20);
-});
-$("#searchGeoEntryStat").focus(function() {
-  autocompleteSearch("#searchGeoEntryStat", "geoentry", 10);
+  var options = {};
+  options.url = "atlas/api/getAllGeoEntry";
+  options.type = "GET";
+  // options.data = { "criteria": $("#searchGeoEntry").val() };
+  options.dataType = "json";
+  options.success = function (data) {
+      $("#geoList").empty();
+      for(var i=0;i<data.length;i++)
+      {
+          $("#geoList").append("<option value='"+ data[i].label + "'</option>");
+      }
+  };
+  $.ajax(options);
 });
 
+$("#searchGeoEntryStat").on("focus", function() {
+  autocompleteSearch("#searchGeoEntryStat", "geoentry", 10);
+});
+// $("#searchGeoEntry").on("click", function () {
+  
+// });
 
 // child list display
 var childList = $("#childList");
