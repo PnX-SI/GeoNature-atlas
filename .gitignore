@@ -1,6 +1,7 @@
 *.pyc
 .htpasswd
 log/*
+geonature_atlas.egg-info/
 atlas/static/conf/custom.js
 atlas/debug.py
 robots.txt
