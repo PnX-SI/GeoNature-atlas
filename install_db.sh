@@ -429,12 +429,21 @@ if ! database_exists $db_name
         sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.vm_observations_mailles OWNER TO "$owner_atlas";"
         sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.vm_cor_taxon_organism OWNER TO "$owner_atlas";"
 
+        echo "[$(date +'%H:%M:%S')] Creating atlas.vm_stats..."
+        time_temp=$SECONDS
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/14.atlas.vm_stats.sql  &>> log/install_db.log
+        echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
+
+        echo "[$(date +'%H:%M:%S')] Creating atlas.t_cache..."
+        time_temp=$SECONDS
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/15.atlas.t_cache.sql  &>> log/install_db.log
+        echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
         # FR: Affectation de droits en lecture sur les VM à l'utilisateur de l'application ($user_pg)
         # EN: Assign read rights on VMs to the application user ($user_pg)
         echo "Grant..."
-        sudo sed -i "s/my_reader_user;$/$user_pg;/" /tmp/atlas/14.grant.sql
-        sudo -n -u postgres -s psql -d $db_name -f /tmp/atlas/14.grant.sql &>> log/install_db.log
+        sudo sed -i "s/my_reader_user;$/$user_pg;/" /tmp/atlas/16.grant.sql
+        sudo -n -u postgres -s psql -d $db_name -f /tmp/atlas/16.grant.sql &>> log/install_db.log
 
         # Clean file
         echo "Cleaning files..."

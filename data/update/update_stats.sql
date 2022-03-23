@@ -1,6 +1,40 @@
---Fonction pour rafraichir toutes les vues matérialisées d'un schéma
+BEGIN;
 
---USAGE : SELECT RefreshAllMaterializedViews('atlas');
+
+-- Table: atlas.t_cache
+DROP TABLE IF EXISTS atlas.t_cache;
+
+CREATE TABLE atlas.t_cache (
+  label VARCHAR(250) NOT NULL PRIMARY KEY,
+  cache TEXT NOT NULL,
+  meta_create_date TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+GRANT SELECT, UPDATE, INSERT ON TABLE atlas.t_cache TO geonatatlas;
+
+
+-- Materialized View: atlas.vm_stats
+DROP MATERIALIZED VIEW IF EXISTS atlas.vm_stats;
+
+CREATE MATERIALIZED VIEW atlas.vm_stats AS
+    SELECT 'observations' AS label, COUNT(*) AS result FROM atlas.vm_observations
+    UNION
+    SELECT 'municipalities' AS label, COUNT(*) AS result FROM atlas.vm_communes
+    UNION
+    SELECT 'taxons' AS label, COUNT(DISTINCT cd_ref) AS result FROM atlas.vm_taxons
+    UNION
+    SELECT 'pictures' AS label, COUNT (DISTINCT id_media) AS result
+    FROM atlas.vm_medias AS m
+        JOIN atlas.vm_taxons AS t ON ( t.cd_ref = m.cd_ref )
+    WHERE id_type IN (1, 2)
+WITH DATA ;
+
+CREATE UNIQUE INDEX ON atlas.vm_stats (label);
+
+
+GRANT SELECT ON TABLE atlas.vm_stats TO geonatatlas;
+
+
 CREATE OR REPLACE FUNCTION RefreshAllMaterializedViews(schema_arg TEXT DEFAULT 'public')
 RETURNS INT AS $$
 DECLARE
@@ -21,10 +55,13 @@ BEGIN
 END
 $$ LANGUAGE plpgsql;
 
+
 -- Rafraichissement des vues contenant les données de l'atlas
 CREATE OR REPLACE FUNCTION atlas.refresh_materialized_view_data()
 RETURNS VOID AS $$
 BEGIN
+
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_cor_synthese_area;
 
   REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_observations;
   REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_observations_mailles;
@@ -43,3 +80,5 @@ BEGIN
   TRUNCATE atlas.t_cache ;
 END
 $$ LANGUAGE plpgsql;
+
+COMMIT;
