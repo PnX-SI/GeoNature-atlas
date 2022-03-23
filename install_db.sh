@@ -3,7 +3,7 @@ SECONDS=0
 
 # FR: S'assurer que le script n'est pas lancer en root (utilisation de whoami)
 # EN: Make sure the script is not runn with root (use whoami)
-if [ "$(id -u)" == "0" ]; 
+if [ "$(id -u)" == "0" ];
     then
         echo -e "\e[91m\e[1mThis script should NOT be run as root\e[0m" >&2
         exit 1
@@ -88,14 +88,14 @@ if ! database_exists $db_name
         sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgis;"  &>> log/install_db.log
         sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog; COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';"  &>> log/install_db.log
         sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;" &>> log/install_db.log
-        
+
         # FR: Si j'utilise GeoNature ($geonature_source = True), alors je créé les connexions en FWD à la BDD GeoNature
         # EN: If I use GeoNature ($geonature_source = True), then I create the connections in FWD to the GeoNature DB
         if $geonature_source
             then
                 echo "Adding FDW and connection to the GeoNature parent DB"
                 sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgres_fdw;"  &>> log/install_db.log
-                sudo -u postgres -s psql -d $db_name -c "CREATE SERVER geonaturedbserver FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$db_source_host', dbname '$db_source_name', port '$db_source_port');"  &>> log/install_db.log
+                sudo -u postgres -s psql -d $db_name -c "CREATE SERVER geonaturedbserver FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$db_source_host', dbname '$db_source_name', port '$db_source_port', fetch_size '$db_source_fetch_size');"  &>> log/install_db.log
                 sudo -u postgres -s psql -d $db_name -c "ALTER SERVER geonaturedbserver OWNER TO $owner_atlas;"  &>> log/install_db.log
                 sudo -u postgres -s psql -d $db_name -c "CREATE USER MAPPING FOR $owner_atlas SERVER geonaturedbserver OPTIONS (user '$atlas_source_user', password '$atlas_source_pass') ;"  &>> log/install_db.log
         fi
@@ -106,16 +106,16 @@ if ! database_exists $db_name
         sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA synthese AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
         sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA utilisateurs AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
         sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA gn_meta AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
-        
+
         if [ $install_taxonomie = "false" ] # Pourquoi ce if ? TODO
             then
                 sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA taxonomie AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
         fi
 
-        if $geonature_source 
+        if $geonature_source
             then
                 echo "Creating FDW from GN2"
-                echo "--------------------" &>> log/install_db.log #en double non? TODO 
+                echo "--------------------" &>> log/install_db.log #en double non? TODO
                 echo "Creating FDW from GN2" &>> log/install_db.log
                 echo "--------------------" &>> log/install_db.log
                 export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f data/gn2/atlas_gn2.sql  &>> log/install_db.log
@@ -132,7 +132,7 @@ if ! database_exists $db_name
                     -v type_territoire=$type_territoire \
                     -f data/gn2/atlas_ref_geo.sql &>> log/install_db.log
         else
-            # FR: Import du shape des limites du territoire ($limit_shp) dans la BDD / atlas.t_layer_territoire    
+            # FR: Import du shape des limites du territoire ($limit_shp) dans la BDD / atlas.t_layer_territoire
             # EN: Import of the shape of the territory limits ($limit_shp) in the BDD / atlas.t_layer_territory
 
             ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 data/ref/emprise_territoire_4326.shp $limit_shp
@@ -213,7 +213,7 @@ if ! database_exists $db_name
                                                     ALTER TABLE atlas.t_mailles_territoire
                                                     ADD PRIMARY KEY (id_maille);"  &>> log/install_db.log
             fi
-            
+
             sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_mailles_territoire OWNER TO "$owner_atlas";"
         fi
 
@@ -321,7 +321,7 @@ if ! database_exists $db_name
                 export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/atlas_synthese_extended.sql  &>> log/install_db.log
         # FR: Sinon je créé une table synthese.syntheseff avec 2 observations exemple
         # EN: Otherwise I created a table synthese.syntheseff with 2 observations example
-        else 
+        else
             echo "Creating syntheseff example table"
             sudo -n -u postgres -s psql -d $db_name -f /tmp/atlas/without_geonature.sql &>> log/install_db.log
             sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE synthese.syntheseff OWNER TO "$owner_atlas";"
@@ -353,7 +353,7 @@ if ! database_exists $db_name
         time_temp=$SECONDS
         export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/1.atlas.vm_taxref.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
-        
+
         echo "[$(date +'%H:%M:%S')] Creating atlas.vm_observations..."
         time_temp=$SECONDS
         export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/2.atlas.vm_observations.sql  &>> log/install_db.log
