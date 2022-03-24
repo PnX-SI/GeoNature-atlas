@@ -80,13 +80,3 @@ def create_app():
             return format_number(val)
 
     return app
-
-
-if __name__ == "__main__":
-    # validation de la configuration secrète
-    app = create_app()
-    app.run(
-        host="0.0.0.0",
-        port=secret_conf["GUNICORN_PORT"],
-        debug=secret_conf["modeDebug"],
-    )
