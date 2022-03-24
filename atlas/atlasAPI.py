@@ -10,6 +10,7 @@ from atlas.modeles.repositories import (
     vmMedias,
     vmCommunesRepository,
 )
+from atlas.env import cache
 
 api = Blueprint("api", __name__)
 
@@ -148,14 +149,18 @@ def getPhotosGallery():
     connection.close()
     return jsonify(photos)
 
-
-@api.route("/tes", methods=["GET"])
-def test():
+@api.route("/main_stat", methods=["GET"])
+@cache.cached()
+def main_stat():
     connection = utils.engine.connect()
-    photos = vmMedias.getPhotosGallery(
-        connection,
-        current_app.config["ATTR_MAIN_PHOTO"],
-        current_app.config["ATTR_OTHER_PHOTO"],
+    return vmObservationsRepository.statIndex(connection)
+
+@api.route("/rank_stat", methods=["GET"])
+@cache.cached()
+def rank_stat():
+    connection = utils.engine.connect()
+    return jsonify(
+            vmObservationsRepository.genericStat(
+            connection, current_app.config["RANG_STAT"]
+        )
     )
-    connection.close()
-    return jsonify(photos)

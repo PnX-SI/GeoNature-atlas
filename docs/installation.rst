@@ -42,7 +42,7 @@ Adapter à votre version d'OS (ici Debian 9 Stretch) :
 
 
 **2. Récupérez la dernière version (X.Y.Z à remplacer par le numéro de version) de GeoNature-atlas (https://github.com/PnX-SI/GeoNature-atlas/releases)**
-	
+
 Ces opérations doivent être faites avec l'utilisateur courant (autre que ``root``), ``whoami`` dans l'exemple :
 
 ::
@@ -87,7 +87,7 @@ Lancer le script :
 
 **4. Installation de la base de données**
 
-Faites une copie du modèle de fichier de configuration de la BDD et de son installation automatique ``atlas/configuration/settings.ini.sample`` puis modifiez-le. 
+Faites une copie du modèle de fichier de configuration de la BDD et de son installation automatique ``atlas/configuration/settings.ini.sample`` puis modifiez-le.
 
 ::
 
@@ -95,7 +95,7 @@ Faites une copie du modèle de fichier de configuration de la BDD et de son inst
     cp settings.ini.sample settings.ini
     nano settings.ini
 
-NOTES : 
+NOTES :
 
 * Suivez bien les indications en commentaire dans ce fichier.
 
@@ -115,9 +115,9 @@ NOTES :
     exit
 
 * GeoNature-atlas fonctionne avec des données géographiques qui doivent être fournies en amont (mailles, limite de territoire, limite de communes). Vous avez la possibilité de récupérer ces données directement depuis le référentiel géographique de GeoNature si les données y sont présentes (``use_ref_geo_gn2=true``); ou de fournir des fichiers shapefiles (à mettre dans le répertoire ``data/ref``)
-        
-**Attention** si ``use_ref_geo_gn2=true``. Par défaut le ``ref_geo`` contient l'ensemble des communes de France, ce qui ralentit fortement l'installation lorsqu'on construit la vue matérialisée ``vm_communes`` (qui intersecte les communes avec les limites du territoire). 
-    
+
+**Attention** si ``use_ref_geo_gn2=true``. Par défaut le ``ref_geo`` contient l'ensemble des communes de France, ce qui ralentit fortement l'installation lorsqu'on construit la vue matérialisée ``vm_communes`` (qui intersecte les communes avec les limites du territoire).
+
 Pour accelérer l'installation, vous pouvez "désactiver" certaines communes du ``ref_geo``, dont vous ne vous servez pas. Voir l'exemple de requête ci-dessous :
 
 ::
@@ -196,6 +196,8 @@ Le fichier de configuration central de l'application est ``atlas/configuration/c
 
 Après chaque modification de la configuration, relancer la commande ``sudo systemctl restart geonature-atlas`` pour qu'elles soient appliquées.
 
+Pour améliorer les performances, le calcul des statistiques de la page d'accueil (statistiquess globale et statistique par rangs taxonomiques) sont mis en cache après leur premier chargement. Par defaut le cache dure 1h, il est possible de modifier ce paramètre via la variable `CACHE_TIMEOUT` (en seconde). Si on souhaite vider le cache, il est aussi possible de redémarrer l'application.
+
 Customisation de l'application
 ==============================
 
@@ -243,7 +245,7 @@ Si l'atlas est associé à un domaine, ajoutez cette ligne au début du fichier 
     ServerName mondomaine.fr
 
 * Activer les modules et redémarrer Apache :
- 
+
 ::
 
     sudo a2enmod proxy
@@ -272,7 +274,7 @@ Mise à jour de l'application
     cd /home/`whoami`
 
     wget https://github.com/PnX-SI/GeoNature-atlas/archive/X.Y.Z.zip
-    unzip X.Y.Z 
+    unzip X.Y.Z
     rm X.Y.Z
 
 - Renommer l'ancienne version de l'atlas puis la nouvelle version.
@@ -340,3 +342,5 @@ Développement
 Des données sont renvoyées aux templates par l'ORM, d'autres le sont sous forme d'API (fichiers JSON chargés en AJAX) pour charger certaines pages plus rapidement (observations sur les fiches espèces et auto-complétion de la recherche) :
 
 Pour en savoir plus, consultez le document `<vues_materialisees_maj.rst>`_ ainsi que le rapport de stage de Théo Lechemia (https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/2016-09-30-rapport_stage_Theo-Lechemia.pdf) ou sa présentation (https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/2016-09-soutenance-Theo-Lechemia.pdf)
+
+
