@@ -23,9 +23,16 @@
                         <div class="statMedias">
                             <div class="">
                                 <h4 class="title-spaced title-bar">{{ configuration.RANG_STAT_FR[i] }} </h4>
-                                <span class="higlight">{{ customStat[i].nb_obs | pretty }}</span> observations
-                                <span
-                                        class="higlight">{{ customStat[i].nb_taxons| pretty }}</span> {{ _('species') }}
+                                <span class="higlight" id="rankNbObs{{i}}">
+                                    <div class="spinner-border" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </span> observations
+                                <span class="higlight" id="rankNbTax{{i}}">
+                                    <div class="spinner-border" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </span> {{ _('species') }}
                             </div>
                             <div class="row">
                                 {% for j in range(2) %}

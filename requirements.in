@@ -1,6 +1,7 @@
 Click < 8.0
 dominate
 Flask-Compress
+Flask-Caching
 Flask-Script
 Flask-SQLAlchemy
 Flask-Babel

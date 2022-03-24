@@ -90,7 +90,6 @@ ID_GOOGLE_ANALYTICS = "UA-xxxxxxx-xx"
 # Utiliser et afficher le glossaire (static/custom/glossaire.json.sample)
 GLOSSAIRE = False
 
-
 ###########################
 ###### Cartographie #######
 ###########################
