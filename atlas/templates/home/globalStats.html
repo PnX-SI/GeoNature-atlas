@@ -10,7 +10,9 @@
                     <h1 class="large text-muted">{{ stat.nbTotalObs | pretty }}</h1>
                     <h4 class="text-muted text-uppercase font-weight-bold">
                         {{ _('observations') if stat.nbTotalObs > 1 else _('observation') }}</h4>
-                    <p><a id="localScroll" href="#DernieresObservations" class="btn btn-default" role="button"> {{ _('home.seelatestobs') }}</a></p>
+                    {% if configuration.AFFICHAGE_DERNIERES_OBS %}
+                        <p><a id="localScroll" href="#DernieresObservations" class="btn btn-default" role="button"> {{ _('home.seelatestobs') }}</a></p>
+                    {% endif %}
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 col-xs-12 stat-object">
