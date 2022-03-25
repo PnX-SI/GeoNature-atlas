@@ -202,7 +202,7 @@ class AtlasConfig(Schema):
     ANONYMIZE = fields.Boolean(load_default=False)
     MAP = fields.Nested(MapConfig, load_default=dict())
     # coupe le nom_vernaculaire à la 1ere virgule sur les fiches espèces
-    SPLIT_NOM_VERN = fields.Integer(load_default=True)
+    SPLIT_NOM_VERN = fields.Boolean(load_default=True)
     INTERACTIVE_MAP_LIST = fields.Boolean(load_default=True)
     AVAILABLE_LANGUAGES = fields.Dict(load_default=LANGUAGES)
 
