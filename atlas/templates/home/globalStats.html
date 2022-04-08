@@ -37,14 +37,17 @@
                     <h1 class="large text-muted">{{ stat.town | pretty }}</h1>
                     <h4 class="text-muted  text-uppercase font-weight-bold">
                         {{ _('geoentries') if stat.town > 1 else _('municipality') }}</h4>
-                    <form method="POST" onsubmit="completeAction('#searchFormGeoEntryStat', hiddenInputGeoEntryStat)"
-                        id='searchFormGeoEntryStat' action="" class="navbar-form center-input" role="search">
+                    <form class="navbar-form center-input" method="POST" 
+                        onsubmit="completeAction('#searchFormGeoEntry', hiddenInputGeoEntryStat)"
+                        id='searchFormGeoEntryStat' action=""  role="search">
                         <div class="form-group has-feedback">
                             <span class="addon">
                                 <i class="fas fa-search" aria-hidden="true"></i>
                             </span>
-                            <input id="searchGeoEntryStat" type="text" class="form-control"
-                                placeholder="{{ _('search.geo') }}&nbsp;&nbsp;&nbsp;">
+                            <datalist id="geoListSearch"></datalist>
+                            <input id="searchGeoEntryStat" type="search" class="form-control"
+                                placeholder="{{ _('search.geo') }}&nbsp;&nbsp;&nbsp;"
+                                list="geoListSearch">
                         </div>
                         <input id="hiddenInputGeoEntryStat" type="hidden" name="geo_entry_id">
                     </form>

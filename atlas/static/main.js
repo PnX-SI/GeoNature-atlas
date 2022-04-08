@@ -105,12 +105,22 @@ $("#searchGeoEntry").on("focus", function() {
   $.ajax(options);
 });
 
-$("#searchGeoEntryStat").on("focus", function() {
-  autocompleteSearch("#searchGeoEntryStat", "geoentry", 10);
+$("#searchGeoEntryStat").focus(function() {
+  autocompleteSearch("#searchGeoEntryStat", "geoentry", 20);
+  var options = {};
+  options.url = "/api/getAllGeoEntry";
+  options.type = "GET";
+  // options.data = { "criteria": $("#searchGeoEntryStat").val() };
+  options.dataType = "json";
+  options.success = function (data) {
+      $("#geoListSearch").empty();
+      for(var i=0;i<data.length;i++)
+      {
+          $("#geoListSearch").append("<option value='"+ data[i].label + "'</option>");
+      }
+  };
+  $.ajax(options);
 });
-// $("#searchGeoEntry").on("click", function () {
-  
-// });
 
 // child list display
 var childList = $("#childList");
