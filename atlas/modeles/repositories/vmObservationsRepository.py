@@ -208,7 +208,7 @@ def getObserversGeoEntry(connection, geo_entry_id):
 def statIndex(connection):
     result = {"nbTotalObs": None, "nbTotalTaxons": None, "town": None, "photo": None}
     sql = "SELECT COUNT(*) AS count \
-    FROM atlas.vm_observations "
+    FROM (SELECT DISTINCT id_observation FROM atlas.vm_observations) a"
     req = connection.execute(text(sql))
     for r in req:
         result["nbTotalObs"] = r.count
