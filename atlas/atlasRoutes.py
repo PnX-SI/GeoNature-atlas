@@ -173,6 +173,7 @@ def indexMedias(image):
 def index():
     session = utils.loadSession()
     connection = utils.engine.connect()
+
     if current_app.config["AFFICHAGE_DERNIERES_OBS"]:
         if current_app.config["AFFICHAGE_MAILLE"]:
             current_app.logger.debug("start AFFICHAGE_MAILLE")
@@ -193,13 +194,20 @@ def index():
     else:
         observations = []
 
-    current_app.logger.debug("start mostViewTaxon")
-    mostViewTaxon = vmTaxonsMostView.mostViewTaxon(connection)
-    current_app.logger.debug("end mostViewTaxon")
-    stat = vmObservationsRepository.statIndex(connection)
-    current_app.logger.debug("start customStat")
+    if current_app.config["AFFICHAGE_EN_CE_MOMENT"]:
+        current_app.logger.debug("start mostViewTaxon")
+        mostViewTaxon = vmTaxonsMostView.mostViewTaxon(connection)
+        current_app.logger.debug("end mostViewTaxon")
+    else:
+        mostViewTaxon = []
+
+    if current_app.config["AFFICHAGE_STAT_GLOBALES"]:
+        stat = vmObservationsRepository.statIndex(connection)
+    else:
+        stat = []
 
     if current_app.config["AFFICHAGE_RANG_STAT"]:
+        current_app.logger.debug("start customStat")
         customStat = vmObservationsRepository.genericStat(
             connection, current_app.config["RANG_STAT"]
         )
@@ -213,7 +221,10 @@ def index():
         customStat = []
         customStatMedias = []
 
-    lastDiscoveries = vmObservationsRepository.getLastDiscoveries(connection)
+    if current_app.config["AFFICHAGE_NOUVELLES_ESPECES"]:
+        lastDiscoveries = vmObservationsRepository.getLastDiscoveries(connection)
+    else:
+        lastDiscoveries = []
 
     connection.close()
     session.close()
