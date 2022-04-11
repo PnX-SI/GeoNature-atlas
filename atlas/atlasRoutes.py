@@ -201,24 +201,13 @@ def index():
     else:
         mostViewTaxon = []
 
-    if current_app.config["AFFICHAGE_STAT_GLOBALES"]:
-        stat = vmObservationsRepository.statIndex(connection)
-    else:
-        stat = []
-
     if current_app.config["AFFICHAGE_RANG_STAT"]:
-        current_app.logger.debug("start customStat")
-        customStat = vmObservationsRepository.genericStat(
-            connection, current_app.config["RANG_STAT"]
-        )
-        current_app.logger.debug("end customStat")
         current_app.logger.debug("start customStatMedia")
         customStatMedias = vmObservationsRepository.genericStatMedias(
             connection, current_app.config["RANG_STAT"]
         )
         current_app.logger.debug("end customStatMedia")
     else:
-        customStat = []
         customStatMedias = []
 
     if current_app.config["AFFICHAGE_NOUVELLES_ESPECES"]:
@@ -233,8 +222,6 @@ def index():
         "templates/home/_main.html",
         observations=observations,
         mostViewTaxon=mostViewTaxon,
-        stat=stat,
-        customStat=customStat,
         customStatMedias=customStatMedias,
         lastDiscoveries=lastDiscoveries,
     )
