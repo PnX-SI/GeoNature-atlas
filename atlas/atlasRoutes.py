@@ -317,7 +317,7 @@ def ficheGeoEntry(geo_entry_id):
     listTaxons = vmTaxonsRepository.getTaxonsGeoEntry(connection, geo_entry_id)
     geoentry = vmGeoEntryRepository.getGeoEntryFromId(connection, geo_entry_id)
     if current_app.config["AFFICHAGE_MAILLE"]:
-        observations = vmObservationsMaillesRepository.astObservationsGeoEntryMaille(
+        observations = vmObservationsMaillesRepository.lastObservationsGeoEntryMaille(
             connection, current_app.config["NB_LAST_OBS"], str(geo_entry_id)
         )
     else:
