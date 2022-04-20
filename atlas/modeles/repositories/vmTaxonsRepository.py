@@ -11,7 +11,7 @@ def getTaxonsGeoEntry(connection, geo_entry_id):
     sql = """
         SELECT DISTINCT
             o.cd_ref, max(date_part('year'::text, o.dateobs)) as last_obs,
-            COUNT(o.id_observation) AS nb_obs, t.nom_complet_html, t.nom_vern,
+            COUNT(DISTINCT o.id_observation) AS nb_obs, t.nom_complet_html, t.nom_vern,
             t.group2_inpn, t.patrimonial, t.protection_stricte,
             m.url, m.chemin, m.id_media
         FROM atlas.vm_observations o
