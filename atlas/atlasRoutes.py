@@ -276,10 +276,7 @@ def ficheEspece(cd_ref):
     taxonDescription = vmCorTaxonAttribut.getAttributesTaxon(
         connection,
         cd_ref,
-        current_app.config["ATTR_DESC"],
-        current_app.config["ATTR_COMMENTAIRE"],
-        current_app.config["ATTR_MILIEU"],
-        current_app.config["ATTR_CHOROLOGIE"],
+        current_app.config["DISPLAYED_ATTR"],
     )
     observers = vmObservationsRepository.getObservers(connection, cd_ref)
 
