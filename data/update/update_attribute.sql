@@ -36,5 +36,6 @@ GRANT SELECT ON TABLE atlas.vm_taxon_attribute TO geonatatlas;
 
 -- TODO: adapt taxonomie.bib_attributs owner if it's not default "geonatatlas"
 -- TOOD: adapt if necessary "ba.nom_attribut IN ('atlas_description', 'atlas_commentaire', 'atlas_milieu', 'atlas_chorologie')"
+-- TODO: add markdown package : pip install markdown
 
 COMMIT;
