@@ -95,13 +95,10 @@ class SecretSchemaConf(Schema):
     CACHE_TIMEOUT = fields.Number(load_default=3600)
 
 
-
 class MapConfig(Schema):
     LAT_LONG = fields.List(fields.Float(), load_default=[44.7952, 6.2287])
     MIN_ZOOM = fields.Integer(load_default=1)
-    MAX_BOUNDS = fields.List(
-        fields.List(fields.Float()), load_default=[[-180, -90], [180, 90]]
-    )
+    MAX_BOUNDS = fields.List(fields.List(fields.Float()), load_default=[[-180, -90], [180, 90]])
     FIRST_MAP = fields.Dict(load_default=MAP_1)
     SECOND_MAP = fields.Dict(load_default=MAP_2)
     ZOOM = fields.Integer(load_default=10)
@@ -156,10 +153,10 @@ class AtlasConfig(Schema):
     REMOTE_MEDIAS_PATH = fields.String(load_default="static/medias/")
     REDIMENSIONNEMENT_IMAGE = fields.Boolean(load_default=False)
     TAXHUB_URL = fields.String(required=False, load_default=None)
-    ATTR_DESC = fields.Integer(load_default=100)
-    ATTR_COMMENTAIRE = fields.Integer(load_default=101)
-    ATTR_MILIEU = fields.Integer(load_default=102)
-    ATTR_CHOROLOGIE = fields.Integer(load_default=103)
+    DISPLAYED_ATTR = fields.List(
+        fields.String(),
+        load_default=["atlas_description", "atlas_commentaire", "atlas_milieu", "atlas_chorologie"],
+    )
     ATTR_MAIN_PHOTO = fields.Integer(load_default=1)
     ATTR_OTHER_PHOTO = fields.Integer(load_default=2)
     ATTR_LIEN = fields.Integer(load_default=3)
@@ -198,9 +195,7 @@ class AtlasConfig(Schema):
     LIMIT_CLUSTER_POINT = fields.Integer(load_default=1000)
     NB_DAY_LAST_OBS = fields.String(load_default="7")
     NB_LAST_OBS = fields.Integer(load_default=100)
-    TEXT_LAST_OBS = fields.String(
-        load_default="Les observations des agents ces 7 derniers jours |"
-    )
+    TEXT_LAST_OBS = fields.String(load_default="Les observations des agents ces 7 derniers jours |")
     ANONYMIZE = fields.Boolean(load_default=False)
     MAP = fields.Nested(MapConfig, load_default=dict())
     # coupe le nom_vernaculaire à la 1ere virgule sur les fiches espèces
@@ -215,7 +210,5 @@ class AtlasConfig(Schema):
         """
         if data["REDIMENSIONNEMENT_IMAGE"] and data["TAXHUB_URL"] is None:
             raise ValidationError(
-                {
-                    "Le champ TAXHUB_URL doit être rempli si REDIMENSIONNEMENT_IMAGE = True"
-                }
+                {"Le champ TAXHUB_URL doit être rempli si REDIMENSIONNEMENT_IMAGE = True"}
             )
