@@ -7,6 +7,10 @@ Flask
 GeoAlchemy2
 geojson
 gunicorn
+itsdangerous
+Jinja2
+markdown
+MarkupSafe
 marshmallow
 psycopg2
 SQLAlchemy
