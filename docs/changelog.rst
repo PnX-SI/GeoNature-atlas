@@ -13,17 +13,15 @@ CHANGELOG
 - Ajout du support de Debian 12. Suppression du support de Debian 9 et 10 (#582 par @juggler31, @marcantoinedupre, @submarcos)
 - Ajout de tests automatisés pour tester l'installation des dépendances Python (#582 par @juggler31)
 - Nettoyage et simplification des scripts d'installation
-
-  - Suppression du support des installations sans TaxHub (#582 par @amandine-sahl)
-  - Suppression des installations sans ``ref_geo`` (par @TheoLechemia)
-
+- Suppression du support des installations sans TaxHub (#582 par @amandine-sahl)
+- Suppression des installations sans ``ref_geo`` (par @TheoLechemia)
 - Refonte de l'intégration d'outils de suivi de fréquentation (Google analytics, Matomo ou autre) en lien avec la mise en conformité RGPD (#527 @juggler31, #499 par @andriacap)
 - Ajout de la librairie Orejime pour recueillir le consentement de l'utilisateur sur l'utilisation des cookies (#527 @juggler31)
 - Ajout de la possibilité d'ajouter un lien dans le pied de page (footer) vers une modale précisant la politique des données personnelles, activable ou non avec le paramètre ``AFFICHAGE_RGPD`` (#527 par @juggler31)
 - Ajout du support des cd_nom négatifs sur les fiches espèces et les API (#616 par @andriacap)
 - Ajout des paramètres ``AFFICHAGE_GRAPH_PHENOLOGIE`` et ``AFFICHAGE_GRAPH_ALTITUDES`` pour afficher/masquer les graphiques de phénologie et d'altitude sur les fiches espèces (#568 par @gildeluermoz)
 - Affichage des dates au format "court" et selon la langue du navigateur (#512 et #631 par @geobrun et @xavyeah39)
-- Possibilité de personnaliser les attributs TaxHub du bloc "Informations espèce" sur les fiches espèces (#412 par @jpm-cbna)
+- Possibilité de personnaliser les attributs TaxHub du bloc "Informations espèce" sur les fiches espèces (#412 par @jpm-cbna) - rajouter ole paramètre `taxhub_displayed_attr` dans le settings.ini si vous réinstaller la BDD
 - Ajout de la possibilité d'ajouter un lien externe et d'utiliser un picto sous forme d'image dans la barre de navigation latérale (#520 par @geobrun)
 - Compactage des informations dans les blocs de bas de page sur les fiches espèce (#601 par @bruhnild)
 - Amélioration du responsive design (#609 par @bruhnild)
