@@ -41,7 +41,7 @@ function database_exists () {
 }
 
 function test_settings() {
-    fields=('owner_atlas' 'user_pg' 'altitudes' 'time' 'attr_desc' 'attr_commentaire' 'attr_milieu' 'attr_chorologie' 'db_source_fetch_size')
+    fields=('owner_atlas' 'user_pg' 'altitudes' 'time' 'taxhub_displayed_attr')
     echo "Checking the validity of settings.ini"
     for i in "${!fields[@]}"
     do
@@ -92,13 +92,13 @@ if ! database_exists $db_name
 fi
 
 # Test si la base de donnée contient déja des schéma qui indique que la BDD atlas a déjà été installée
-schema_already_exists=$(psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -t -c "SELECT count(*) FROM information_schema.schemata WHERE schema_name in ('atlas', 'gn_meta', 'synthese');")
+# schema_already_exists=$(psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -t -c "SELECT count(*) FROM information_schema.schemata WHERE schema_name in ('atlas', 'gn_meta', 'synthese');")
 
 
-if [[ $schema_already_exists > 0 ]]; then
-    echo "La base de donnée semble déjà contenir une installation de l'atlas... on s'arrête là"
-    exit 1
-fi
+# if [[ $schema_already_exists > 0 ]]; then
+#     echo "La base de donnée semble déjà contenir une installation de l'atlas... on s'arrête là"
+#     exit 1
+# fi
 
 
 
@@ -190,9 +190,6 @@ for i in "${!altitudes[@]}"
     done
 
 sudo sed -i "s/INSERT_ALTITUDE/${insert}/" /tmp/atlas/4.atlas.vm_altitudes.sql
-sudo sed -i "s/WHERE id_attribut IN (100, 101, 102, 103);$/WHERE id_attribut  IN ($attr_desc, $attr_commentaire, $attr_milieu, $attr_chorologie);/" /tmp/atlas/9.atlas.vm_cor_taxon_attribut.sql
-
-
 # FR: Execution des scripts sql de création des vm de l'atlas
 # EN: Run sql scripts : build atlas vm
 scripts_sql=(
@@ -213,10 +210,11 @@ for script in "${scripts_sql[@]}"
 do
     echo "[$(date +'%H:%M:%S')] Creating ${script}..."
     time_temp=$SECONDS
-    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/${script}  &>> log/install_db.log
+    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port \
+        -v taxhub_displayed_attr=${taxhub_displayed_attr} \
+        -f /tmp/atlas/${script} &>> log/install_db.log
     echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 done
-
 
 echo "[$(date +'%H:%M:%S')] Creating atlas.vm_mailles_territoire..."
 time_temp=$SECONDS

@@ -172,10 +172,15 @@ class AtlasConfig(Schema):
     REMOTE_MEDIAS_URL = fields.String(load_default="http://mondomaine.fr/taxhub/")
     REDIMENSIONNEMENT_IMAGE = fields.Boolean(load_default=True)
     TAXHUB_URL = fields.String(required=False, load_default=None)
-    ATTR_DESC = fields.Integer(load_default=100)
-    ATTR_COMMENTAIRE = fields.Integer(load_default=101)
-    ATTR_MILIEU = fields.Integer(load_default=102)
-    ATTR_CHOROLOGIE = fields.Integer(load_default=103)
+    TAXHUB_DISPLAYED_ATTR = fields.List(
+        fields.String(),
+        load_default=[
+            "atlas_description",
+            "atlas_commentaire",
+            "atlas_milieu",
+            "atlas_chorologie",
+        ],
+    )
     ATTR_MAIN_PHOTO = fields.Integer(load_default=1)
     ATTR_OTHER_PHOTO = fields.Integer(load_default=2)
     ATTR_LIEN = fields.Integer(load_default=3)

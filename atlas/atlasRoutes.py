@@ -212,13 +212,10 @@ def ficheEspece(cd_nom):
     articles = vmMedias.getLinks_and_articles(
         connection, cd_ref, current_app.config["ATTR_LIEN"], current_app.config["ATTR_PDF"]
     )
-    taxonDescription = vmCorTaxonAttribut.getAttributesTaxon(
+    taxonAttrs = vmCorTaxonAttribut.getAttributesTaxon(
         connection,
         cd_ref,
-        current_app.config["ATTR_DESC"],
-        current_app.config["ATTR_COMMENTAIRE"],
-        current_app.config["ATTR_MILIEU"],
-        current_app.config["ATTR_CHOROLOGIE"],
+        current_app.config["TAXHUB_DISPLAYED_ATTR"],
     )
     observers = vmObservationsRepository.getObservers(connection, cd_ref)
 
@@ -242,7 +239,7 @@ def ficheEspece(cd_nom):
         photoCarousel=photoCarousel,
         videoAudio=videoAudio,
         articles=articles,
-        taxonDescription=taxonDescription,
+        taxonAttrs=taxonAttrs,
         observers=observers,
         organisms=organisms,
     )

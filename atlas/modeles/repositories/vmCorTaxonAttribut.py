@@ -1,37 +1,28 @@
 # -*- coding:utf-8 -*-
 
+# import markdown
+
 from sqlalchemy.sql import text
 
-# from markdown import markdown
 
-
-def getAttributesTaxon(connection, cd_ref, attrDesc, attrComment, attrMilieu, attrChoro):
+def getAttributesTaxon(connection, cd_ref, displayed_attr):
     sql = """
         SELECT *
         FROM atlas.vm_cor_taxon_attribut
-        WHERE id_attribut IN (:thisattrDesc, :thisattrComment, :thisattrMilieu, :thisattrChoro)
-        AND cd_ref = :thiscdref
+        WHERE code = ANY(:displayedAttr)
+            AND cd_ref = :cd_ref
     """
-    req = connection.execute(
+    results = connection.execute(
         text(sql),
-        {
-            "thiscdref": cd_ref,
-            "thisattrDesc": attrDesc,
-            "thisattrComment": attrComment,
-            "thisattrMilieu": attrMilieu,
-            "thisattrChoro": attrChoro,
-        },
+        {"cd_ref": cd_ref, "displayedAttr": displayed_attr},
     )
-
-    descTaxon = {"description": None, "commentaire": None, "milieu": None, "chorologie": None}
-    for r in req:
-        html_value = r.valeur_attribut
-        if r.id_attribut == attrDesc:
-            descTaxon["description"] = html_value
-        elif r.id_attribut == attrComment:
-            descTaxon["commentaire"] = html_value
-        elif r.id_attribut == attrMilieu:
-            descTaxon["milieu"] = r.valeur_attribut.replace("&", " | ")
-        elif r.id_attribut == attrChoro:
-            descTaxon["chorologie"] = html_value
-    return descTaxon
+    desc_taxon = []
+    for row in results:
+        desc_taxon.append({"code": row.code, "title": row.title, "value": row.value})
+    # must do it twice because results in a cursor, when you loop over it, items disapear !
+    ordered_attr = []
+    for att_code in displayed_attr:
+        for attr in desc_taxon:
+            if attr["code"] == att_code:
+                ordered_attr.append(attr)
+    return ordered_attr
