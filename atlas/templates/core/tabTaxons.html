@@ -81,7 +81,7 @@
                         </td>
                     {% endif %}
                     <td>
-                        <a href="{{ url_for('main.ficheEspece',cd_ref=taxon.cd_ref) }}">
+                        <a href="{{ url_for('main.ficheEspece', cd_nom=taxon.cd_ref) }}">
                         <span class="fas fa-list" data-toggle="tooltip" data-original-title={{ _('check.species.sheet') }}
                               data-placement="left"> </span>
                         </a>

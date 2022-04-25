@@ -227,12 +227,19 @@ def index():
     )
 
 
-@main.route("/espece/<int:cd_ref>", methods=["GET", "POST"])
-def ficheEspece(cd_ref):
+@main.route("/espece/<int:cd_nom>", methods=["GET", "POST"])
+def ficheEspece(cd_nom):
     db_session = utils.loadSession()
     connection = utils.engine.connect()
 
-    cd_ref = int(cd_ref)
+    # Get cd_ref from cd_nom
+    cd_ref = vmTaxrefRepository.get_cd_ref(connection, cd_nom)
+
+    # Redirect to cd_ref if cd_nom is a synonym
+    if cd_ref != cd_nom:
+        return redirect(url_for(request.endpoint, cd_nom=cd_ref))
+
+    # Get data to render template
     taxon = vmTaxrefRepository.searchEspece(connection, cd_ref)
     altitudes = vmAltitudesRepository.getAltitudesChilds(connection, cd_ref)
     months = vmMoisRepository.getMonthlyObservationsChilds(connection, cd_ref)
@@ -422,7 +429,7 @@ def sitemap():
     # get dynamic routes for blog
     species = session.query(vmTaxons.VmTaxons).order_by(vmTaxons.VmTaxons.cd_ref).all()
     for species in species:
-        url = url_root + url_for("main.ficheEspece", cd_ref=species.cd_ref)
+        url = url_root + url_for("main.ficheEspece", cd_nom=species.cd_ref)
         modified_time = ten_days_ago
         pages.append([url, modified_time])
 
