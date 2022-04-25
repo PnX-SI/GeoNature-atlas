@@ -77,7 +77,7 @@
                         {{ taxon.nom_rang }} :
                         <i>
                             {% if ( taxon.tri_rang >= configuration.LIMIT_FICHE_LISTE_HIERARCHY) %}
-                                <a href="{{ url_for('main.ficheEspece', cd_ref = taxon.cd_ref) }}">{{ taxon.lb_nom }}</a>
+                                <a href="{{ url_for('main.ficheEspece', cd_nom=taxon.cd_ref) }}">{{ taxon.lb_nom }}</a>
                             {% else %}
                                 <a href="{{ url_for('main.ficheRangTaxonomie', cd_ref = taxon.cd_ref) }}">{{ taxon.lb_nom }}</a>
 
@@ -134,7 +134,7 @@
                                         </thead>
                                         <tbody>
                                         {% for child in taxon.listTaxonsChild %}
-                                            <a href="{{ url_for('main.ficheEspece', cd_ref = child.cd_ref) }}">
+                                            <a href="{{ url_for('main.ficheEspece', cd_nom=child.cd_ref) }}">
                                                 <tr>
                                                     <td>
                                                         {% if child.nom_vern != None %}
@@ -168,7 +168,7 @@
                                                     </td>
                                                     <td> {{ child.nb_obs | pretty }} </td>
                                                     <td>
-                                                        <a href="{{ url_for('main.ficheEspece', cd_ref = child.cd_ref) }}">
+                                                        <a href="{{ url_for('main.ficheEspece', cd_nom=child.cd_ref) }}">
                                                             <span id="ficheGlyficon" data-toggle="tooltip"
                                                                   data-original-title="{{ _('check.species.sheet')}}"
                                                                   data-placement="right"
@@ -194,7 +194,7 @@
                     {#                                        {% for child in taxon.listTaxonsChild %}#}
                     {#                                         <i>#}
                     {#                                            {% if ( child.tri_rang >= configuration.LIMIT_FICHE_LISTE_HIERARCHY) %}#}
-                    {#                                                <a href = "{{url_for('main.ficheEspece', cd_ref = child.cd_ref) }}">#}
+                    {#                                                <a href = "{{url_for('main.ficheEspece', cd_nom=child.cd_ref) }}">#}
                     {#                        {{child.lb_nom}}</a>#}
                     {#                                            {% else %}#}
                     {#                                                <a href = "#}
