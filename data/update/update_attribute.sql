@@ -31,11 +31,33 @@ CREATE MATERIALIZED VIEW atlas.vm_taxon_attribute AS
 
 CREATE UNIQUE INDEX ON atlas.vm_taxon_attribute (cd_ref, code);
 
+
 ALTER MATERIALIZED VIEW atlas.vm_taxon_attribute OWNER TO geonatatlas;
 GRANT SELECT ON TABLE atlas.vm_taxon_attribute TO geonatatlas;
 
+
+CREATE OR REPLACE FUNCTION atlas.refresh_materialized_view_data()
+RETURNS VOID AS $$
+BEGIN
+
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_observations;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_observations_mailles;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_mois;
+
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_altitudes;
+
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_taxons;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_taxon_attribute;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_search_taxon;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_medias;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_taxons_plus_observes;
+
+END
+$$ LANGUAGE plpgsql;
+
+
 -- TODO: adapt taxonomie.bib_attributs owner if it's not default "geonatatlas"
--- TOOD: adapt if necessary "ba.nom_attribut IN ('atlas_description', 'atlas_commentaire', 'atlas_milieu', 'atlas_chorologie')"
+-- TODO: adapt if necessary "ba.nom_attribut IN ('atlas_description', 'atlas_commentaire', 'atlas_milieu', 'atlas_chorologie')"
 -- TODO: add markdown package : pip install markdown
 
 COMMIT;

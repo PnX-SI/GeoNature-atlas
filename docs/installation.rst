@@ -327,6 +327,24 @@ Voir https://github.com/PnX-SI/Ressources-techniques/blob/master/PostgreSQL/acce
 Développement
 =============
 
+**Installer les dépendances de dev**
+
+::
+
+    source venv/bin/activate
+    pip install -r requirements-dev.txt
+
+**Lancement de l'application**
+
+Depuis la racine du dépôt:
+
+::
+
+    source venv/bin/activate
+    flask run
+
+Pour changer le port de l'application, désampler le fichier `atlas/.flaskenv.sample`` et éditer la variable `FLASK_RUN_PORT`
+
 **Technologies**
 
 .. image :: images/dev-technologies.png

@@ -24,7 +24,7 @@ GRANT SELECT ON TABLE synthese.vm_cor_synthese_area TO my_reader_user
 GRANT SELECT ON TABLE atlas.vm_altitudes TO my_reader_user;
 GRANT SELECT ON TABLE atlas.vm_communes TO my_reader_user;
 GRANT SELECT ON TABLE atlas.vm_observations TO my_reader_user;
-GRANT SELECT ON TABLE atlas.vm_cor_taxon_attribut TO my_reader_user;
+GRANT SELECT ON TABLE atlas.vm_taxon_attribute TO my_reader_user;
 GRANT SELECT ON TABLE atlas.vm_medias TO my_reader_user;
 GRANT SELECT ON TABLE atlas.vm_observations TO my_reader_user;
 GRANT SELECT ON TABLE atlas.vm_observations_mailles TO my_reader_user;

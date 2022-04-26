@@ -94,7 +94,6 @@ class SecretSchemaConf(Schema):
     SECRET_KEY = fields.String(required=True)
     CACHE_TIMEOUT = fields.Number(load_default=3600)
 
-
 class MapConfig(Schema):
     LAT_LONG = fields.List(fields.Float(), load_default=[44.7952, 6.2287])
     MIN_ZOOM = fields.Integer(load_default=1)
