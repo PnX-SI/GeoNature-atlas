@@ -38,9 +38,9 @@
                         {% endif %}
                         <div class="media-body p-2">
                             <span class="float-right mt-3">
-                                <a href="{{ url_for('main.ficheEspece',cd_ref=obs.cd_ref) }}"
+                                <a href="{{ url_for('main.ficheEspece', cd_nom=obs.cd_ref) }}"
                                     class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="left"
-                                    data-original-title="Consulter la fiche espèce"> 
+                                    data-original-title="Consulter la fiche espèce">
                                     {{ _('species.sheet') }}
                                 </a>
                             </span>
