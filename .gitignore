@@ -8,6 +8,7 @@ robots.txt
 .htaccess
 venv/*
 venv3/*
+.flaskenv
 
 atlas/configuration/config.py
 atlas/configuration/settings.ini
@@ -17,8 +18,7 @@ atlas/static/territoire.json
 atlas/static/images/ancien
 atlas/static/node_modules
 atlas/static/territoire.json
-atlas/static/images/ancie
-n
+atlas/static/images/ancien
 atlas/static/custom/territoire.json
 atlas/static/custom/glossaire.json
 atlas/static/custom/custom.css
