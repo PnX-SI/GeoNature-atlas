@@ -471,3 +471,6 @@ msgstr "Fiche organisme"
 msgid "species.obs.for.tax"
 msgstr "Observation pour le taxon"
 
+#: atlas/modeles/repositories/vmSearchTaxonRepository.py:57
+msgid "specy.not.find"
+msgstr "Espèce non observée ou inexistante"

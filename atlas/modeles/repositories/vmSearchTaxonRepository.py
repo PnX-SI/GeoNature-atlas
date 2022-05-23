@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
 from sqlalchemy import desc, func
+from flask_babel import gettext
+
 
 from atlas.modeles.entities.vmSearchTaxon import VmSearchTaxon
 
@@ -48,6 +50,9 @@ def listeTaxonsSearch(session, search, limit=50):
             .order_by(VmSearchTaxon.cd_ref == VmSearchTaxon.cd_nom)
             .limit(limit)
     )
-    data = req.all()
+    if len(req.all()) > 0:
+        data = req.all()
+    else:
+        data = [[gettext("specy.not.find"), "nothing"]]
 
     return [{"label": d[0], "value": d[1]} for d in data]

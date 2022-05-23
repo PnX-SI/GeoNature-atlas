@@ -469,3 +469,6 @@ msgstr "Organism sheet"
 msgid "species.obs.for.tax"
 msgstr "Specific observations for this taxon"
 
+#: atlas/modeles/repositories/vmSearchTaxonRepository.py:57
+msgid "specy.not.find"
+msgstr "species not observed or non-existent"

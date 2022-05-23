@@ -470,3 +470,6 @@ msgstr "Scheda organismo"
 msgid "species.obs.for.tax"
 msgstr "Scheda delle species per taxon"
 
+#: atlas/modeles/repositories/vmSearchTaxonRepository.py:57
+msgid "specy.not.find"
+msgstr "specie non osservate o inesistenti"

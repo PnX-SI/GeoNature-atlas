@@ -61,7 +61,8 @@ autocompleteSearch = function(inputID, urlDestination, nbProposal) {
       $(inputID).val(ui.item.label);
       var url = ui.item.value;
       if (urlDestination == "espece") {
-        location.href = configuration.URL_APPLICATION + language  + "/espece/" + url;
+        if (url == "nothing") {return false;}
+        else {location.href = configuration.URL_APPLICATION + language  + "/espece/" + url;}
       } else if (urlDestination == "geoentry") {
         location.href = configuration.URL_APPLICATION + language  + "/geoentry/" + url;
       } else {

@@ -7,11 +7,11 @@
                          href="#articles"><b>{{ articles|length }}</b> {{ 'articles' if articles|length > 1 else 'article' }}
                     </a></li>
                     <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#geoentries">
-                        <b>{{ geoentries|length }}</b> {{ _('geoentries')|lower if geoentries|length > 1 else _('municipality')|lower }}</a>
+                        <b>{{ geoentries|length }}</b> {{ _('geoentries')|lower if geoentries|length > 1 else _('geoentry')|lower }}</a>
                     </li>
                 {% else %}
                     <li class="nav-item"><a data-toggle="tab" class="nav-link active" href="#geoentries">
-                        <b>{{ geoentries|length }}</b> {{ _('geoentries')|lower if geoentries|length > 1 else _('municipality')|lower }}</a>
+                        <b>{{ geoentries|length }}</b> {{ _('geoentries')|lower if geoentries|length > 1 else _('geoentry')|lower }}</a>
                     </li>
                 {% endif %}
                 
@@ -32,7 +32,7 @@
 
            
             <div class="tab-content" style="width:100%;">
-                 <!-- municipality tab-->
+                 <!-- geoentry tab-->
                 {% if articles | length != 0 %}
                     <div id="articles" class="tab-pane fade show active">
                         <table class="table table-striped">

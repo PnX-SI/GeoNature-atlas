@@ -38,7 +38,7 @@
                     <i class="fas fa-map-signs fa-3x blue"></i>
                     <h1 class="large text-muted">{{ stat.town | pretty }}</h1>
                     <h4 class="text-muted  text-uppercase font-weight-bold">
-                        {{ _('geoentries') if stat.town > 1 else _('municipality') }}</h4>
+                        {{ _('geoentries') if stat.town > 1 else _('geoentry') }}</h4>
                     <form class="navbar-form center-input" method="POST" 
                         onsubmit="completeAction('#searchFormGeoEntry', hiddenInputGeoEntryStat)"
                         id='searchFormGeoEntryStat' action=""  role="search">
