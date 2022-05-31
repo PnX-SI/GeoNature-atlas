@@ -15,6 +15,13 @@ CHANGELOG
 - Page principale (Affichage par maille) scroll sur la liste des taxons #451 (par @mvergez)
 
 
+1.5.2 (unreleased)
+------------------
+
+🐛 **Corrections**
+
+- modification de ``atlas.t_maille_territoire`` pour les cas ou le srid est différent de 2154
+
 1.5.1 (2021-12-06)
 ------------------
 
