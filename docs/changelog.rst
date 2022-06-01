@@ -10,6 +10,16 @@ CHANGELOG
 - Corrections affichage des organismes #384 (par @Splendens)
 - Affichage de lb_nom en italique #387 (par @Splendens)
 
+1.5.2 (unreleased)
+------------------
+
+- Ajout de | safe pour ne pas afficher les ``<i>`` des titre de media dans la carte d'ID d'un taxon
+
+🐛 **Corrections**
+
+- Ajout de l'utilisation de ``nvm`` dans le script ``install_app.sh`` (par @gildeluermoz)
+
+
 1.5.1 (2021-12-06)
 ------------------
 
