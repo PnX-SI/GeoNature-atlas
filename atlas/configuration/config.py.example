@@ -15,6 +15,9 @@ database_connection = "postgresql://user:monpassachanger@IPADRESSE:5432/database
 # Port sur lequel tourne le serveur gunicorn
 GUNICORN_PORT = 8080
 
+# Recharger automatiquement les templates
+TEMPLATES_AUTO_RELOAD = False
+
 #################################
 #################################
 ### Customisation application ###
