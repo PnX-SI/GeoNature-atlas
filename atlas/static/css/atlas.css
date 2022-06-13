@@ -655,7 +655,7 @@ footer {
 }
 
 .overlay-link:hover {
-  color: #007bff;
+  color: var(--blue);
 }
 
 .overlay-intro-image {
