@@ -654,6 +654,10 @@ footer {
   color: #fff;
 }
 
+.overlay-link:hover {
+  color: #007bff;
+}
+
 .overlay-intro-image {
   color: #fff;
   text-align: center;
