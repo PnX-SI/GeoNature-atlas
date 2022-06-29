@@ -15,7 +15,7 @@
                     </li>
                 {% endif %}
                 
-                {% if config.ORGANISM_MODULE %}
+                {% if configuration.ORGANISM_MODULE %}
                     <li class="nav-item">
                         <a class="nav-link" {% if not configuration.ANONYMIZE %}data-toggle="tab"
                         href="#organisms" {% endif %}>
@@ -24,10 +24,12 @@
                 </li>
                 {% endif %}
 
-                <li class="nav-item"><a class="nav-link" {% if not configuration.ANONYMIZE %}data-toggle="tab"
-                                        href="#observateurs" {% endif %}>
-                    <b>{{ observers|length }} </b> {{ _('observers')|lower if observers|length > 1 else _('observer')|lower }}
-                </a></li>
+                {% if configuration.OBSERVER_MODULE %}
+                    <li class="nav-item"><a class="nav-link" {% if not configuration.ANONYMIZE %}data-toggle="tab"
+                                            href="#observateurs" {% endif %}>
+                        <b>{{ observers|length }} </b> {{ _('observers')|lower if observers|length > 1 else _('observer')|lower }}
+                    </a></li>
+                {% endif %}
             </ul>
 
            
@@ -95,7 +97,7 @@
                 </div>
 
                 <!--- oberservers tab-->
-                {% if not configuration.ANONYMIZE %}
+                {% if not configuration.ANONYMIZE and configuration.OBSERVER_MODULE %}
                     <div id="observateurs" class="tab-pane fade">
                         {% for o in observers %}
                             {{ o }}

@@ -40,6 +40,9 @@ URL_APPLICATION = ""
 # Enable organism module : organism sheet + organism participation on species sheet
 ORGANISM_MODULE = False
 
+# Shows the names of the observers in the species sheet
+OBSERVER_MODULE = True
+
 ###########################
 ###### Multilingual #######
 ###########################
