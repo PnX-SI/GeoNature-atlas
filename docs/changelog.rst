@@ -11,7 +11,8 @@ CHANGELOG
 
 ⚠️ **Notes de version** 
 
-- Suppression du paramètre `ANONYMIZE` au profit de `ORGANISM_MODULE` et `OBSERVER_MODULE`
+- Suppression du paramètre `ANONYMIZE` au profit de `ORGANISM_MODULE` et `OBSERVER_MODULE` qui permettent 
+  d'anonymiser indépendamment les organismes et les observateurs
 
 1.5.1 (2021-12-06)
 ------------------
