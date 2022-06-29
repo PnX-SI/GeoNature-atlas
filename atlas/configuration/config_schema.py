@@ -200,7 +200,6 @@ class AtlasConfig(Schema):
     TEXT_LAST_OBS = fields.String(
         load_default="Les observations des agents ces 7 derniers jours |"
     )
-    ANONYMIZE = fields.Boolean(load_default=False)
     MAP = fields.Nested(MapConfig, load_default=dict())
     # coupe le nom_vernaculaire à la 1ere virgule sur les fiches espèces
     SPLIT_NOM_VERN = fields.Boolean(load_default=True)
