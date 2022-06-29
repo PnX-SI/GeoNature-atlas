@@ -2,6 +2,17 @@
 CHANGELOG
 =========
 
+1.5.2 (2022-XX-XX)
+------------------
+
+🚀 **Nouveautés** 
+
+- Ajout du paramètre `OBSERVER_MODULE` permettant de masquer les observateurs des fiches espèces
+
+⚠️ **Notes de version** 
+
+- Suppression du paramètre `ANONYMIZE` au profit de `ORGANISM_MODULE` et `OBSERVER_MODULE`
+
 1.5.1 (2021-12-06)
 ------------------
 
