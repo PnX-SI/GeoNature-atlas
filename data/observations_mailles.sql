@@ -16,7 +16,7 @@ CREATE MATERIALIZED VIEW atlas.vm_observations_mailles AS
             -- since s.the_geom_point can be either a point or a geometry
             -- corresponding to m.the_geom, we need to use a case
             -- Intersects the geom point with a 1km mesh cell if no sensibility 
-             WHEN s.diffusion_level = 5 THEN st_intersects(s.the_geom_point, m.the_geom) AND m.id_type = (( SELECT la.id_type
+             WHEN s.sensitivity = 5 THEN st_intersects(s.the_geom_point, m.the_geom) AND m.id_type = (( SELECT la.id_type
                FROM ref_geo.l_areas la
               WHERE la.area_code::text ~~ '1km%'::text
              LIMIT 1))

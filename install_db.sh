@@ -316,13 +316,13 @@ then
 			  supprime boolean DEFAULT false,
 			  the_geom_point geometry('POINT',3857),
 			  effectif_total integer,
-              diffusion_level integer
+              sensitivity integer
 			);
 			INSERT INTO synthese.syntheseff
-			  (cd_nom, insee, observateurs, altitude_retenue, the_geom_point, effectif_total, diffusion_level)
+			  (cd_nom, insee, observateurs, altitude_retenue, the_geom_point, effectif_total, sensitivity)
 			  VALUES (67111, 05122, 'Mon observateur', 1254, '0101000020110F0000B19F3DEA8636264124CB9EB2D66A5541', 3, 5);
 			INSERT INTO synthese.syntheseff
-			  (cd_nom, insee, observateurs, altitude_retenue, the_geom_point, effectif_total, diffusion_level)
+			  (cd_nom, insee, observateurs, altitude_retenue, the_geom_point, effectif_total, sensitivity)
 			  VALUES (67111, 05122, 'Mon observateur 3', 940, '0101000020110F00001F548906D05E25413391E5EE2B795541', 2, 5);" &>> log/install_db.log
         sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE synthese.syntheseff OWNER TO "$owner_atlas";"
 	fi
@@ -359,7 +359,7 @@ then
 
     echo "Creation de la VM des observations de chaque taxon par mailles..."
     # Création de la vue matérialisée vm_mailles_observations (nombre d'observations par maille et par taxon)
-    sudo -n -u postgres -s psql -d $db_name -f data/observations_mailles.sql  &>> log/install_db.log
+    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f data/observations_mailles.sql  &>> log/install_db.log
     sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.vm_observations_mailles OWNER TO "$owner_atlas";"
 
     # Affectation de droits en lecture sur les VM à l'utilisateur de l'application ($user_pg)

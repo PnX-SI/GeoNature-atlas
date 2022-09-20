@@ -18,26 +18,26 @@ AS WITH areas AS (
             s.observers AS observateurs,
             (s.altitude_min + s.altitude_max) / 2 AS altitude_retenue,
                 CASE
-                    WHEN dl.cd_nomenclature::text = '1'::text THEN ( SELECT a.geom
+                    WHEN sensi.cd_nomenclature::text = '1'::text THEN ( SELECT a.geom
                        FROM areas a
-                      WHERE a.id_synthese = s.id_synthese AND a.type_code::text = 'COM'::text
+                      WHERE a.id_synthese = s.id_synthese AND a.type_code::text = 'M1'::text
                      LIMIT 1)
-                    WHEN dl.cd_nomenclature::text = '2'::text THEN ( SELECT a.geom
+                    WHEN sensi.cd_nomenclature::text = '2'::text THEN ( SELECT a.geom
+                       FROM areas a
+                      WHERE a.id_synthese = s.id_synthese AND a.type_code::text = 'M5'::text
+                     LIMIT 1)
+                    WHEN sensi.cd_nomenclature::text = '3'::text THEN ( SELECT a.geom
                        FROM areas a
                       WHERE a.id_synthese = s.id_synthese AND a.type_code::text = 'M10'::text
-                     LIMIT 1)
-                    WHEN dl.cd_nomenclature::text = '3'::text THEN ( SELECT a.geom
-                       FROM areas a
-                      WHERE a.id_synthese = s.id_synthese AND a.type_code::text = 'DEP'::text
                      LIMIT 1)
                     ELSE st_transform(s.the_geom_point, 3857)
                 END AS the_geom_point,
             s.count_min AS effectif_total,
-            dl.cd_nomenclature::integer AS diffusion_level
+            sensi.cd_nomenclature::integer AS sensitivity
            FROM synthese.synthese s
-             LEFT JOIN synthese.t_nomenclatures dl ON s.id_nomenclature_diffusion_level = dl.id_nomenclature
+             LEFT JOIN synthese.t_nomenclatures sensi ON s.id_nomenclature_sensitivity = sensi.id_nomenclature
              LEFT JOIN synthese.t_nomenclatures st ON s.id_nomenclature_observation_status = st.id_nomenclature
-          WHERE (NOT dl.cd_nomenclature::text = '4'::text OR s.id_nomenclature_diffusion_level IS NULL) AND st.cd_nomenclature::text = 'Pr'::text
+          WHERE (NOT sensi.cd_nomenclature::text = '4'::text OR s.id_nomenclature_sensitivity IS NULL) AND st.cd_nomenclature::text = 'Pr'::text
         )
  SELECT d.id_synthese,
     d.cd_nom,
@@ -47,6 +47,6 @@ AS WITH areas AS (
     d.the_geom_point,
     d.effectif_total,
     c.insee,
-    d.diffusion_level
+    d.sensitivity
    FROM obs_data d
      LEFT JOIN atlas.l_communes c ON st_within(d.the_geom_point, c.the_geom);

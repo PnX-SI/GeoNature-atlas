@@ -2,6 +2,41 @@
 --###Communes
 --################################
 
+DO $$
+BEGIN
+	DROP TABLE atlas.t_layer_territoire;
+EXCEPTION WHEN others THEN
+	RAISE NOTICE 'view atlas.t_layer_territoire does not exist';
+END$$;
+
+
+CREATE MATERIALIZED VIEW atlas.t_layer_territoire AS
+WITH d AS (
+	SELECT st_union(geom) , b.type_name
+	FROM ref_geo.l_areas l
+	JOIN ref_geo.bib_areas_types b USING(id_type)
+	WHERE REPLACE(b.type_code, ' ', '_') = :type_territoire
+	GROUP BY b.type_name
+)
+SELECT
+ 1::int as gid,
+ type_name as nom,
+ st_area(st_union)/10000 as surf_ha,
+ st_area(st_union)/1000000 as surf_km2,
+ ST_Perimeter(st_union)/1000 as perim_km,
+ st_transform(st_union, 3857) as  the_geom
+FROM d;
+
+CREATE INDEX index_gist_t_layer_territoire_the_geom
+  ON atlas.t_layer_territoire
+  USING gist
+  (the_geom);
+  
+CREATE UNIQUE INDEX t_layer_territoire_gid_idx
+  ON atlas.t_layer_territoire
+  USING btree (gid);
+
+
 -- Suppression si temporaire des communes la table existe
 DO $$
 BEGIN
@@ -53,52 +88,11 @@ SELECT st_transform(c.geom, 3857)::geometry('MultiPolygon',3857) as the_geom,
     id_type
 FROM ref_geo.l_areas c
   -- See if st_intersects is the right function (st_within ?)
-  JOIN atlas.t_layer_territoire tlt ON st_intersects(tlt.the_geom, st_transform(c.geom, 3857))
+  JOIN atlas.t_layer_territoire tlt ON st_intersects(tlt.the_geom, st_transform(c.geom, 3857));
 
 CREATE UNIQUE INDEX t_mailles_territoire_id_maille_idx
   ON atlas.t_mailles_territoire
   USING btree (id_maille);
-
-
---################################
---################################
---###Territoires
---################################
---################################
-
-DO $$
-BEGIN
-	DROP TABLE atlas.t_layer_territoire;
-EXCEPTION WHEN others THEN
-	RAISE NOTICE 'view atlas.t_layer_territoire does not exist';
-END$$;
-
-
-CREATE MATERIALIZED VIEW atlas.t_layer_territoire AS
-WITH d AS (
-	SELECT st_union(geom) , b.type_name
-	FROM ref_geo.l_areas l
-	JOIN ref_geo.bib_areas_types b USING(id_type)
-	WHERE REPLACE(b.type_code, ' ', '_') = :type_territoire
-	GROUP BY b.type_name
-)
-SELECT
- 1::int as gid,
- type_name as nom,
- st_area(st_union)/10000 as surf_ha,
- st_area(st_union)/1000000 as surf_km2,
- ST_Perimeter(st_union)/1000 as perim_km,
- st_transform(st_union, 3857) as  the_geom
-FROM d;
-
-CREATE INDEX index_gist_t_layer_territoire_the_geom
-  ON atlas.t_layer_territoire
-  USING gist
-  (the_geom);
-  
-CREATE UNIQUE INDEX t_layer_territoire_gid_idx
-  ON atlas.t_layer_territoire
-  USING btree (gid);
 
 
 -- Rafraichissement des vues contenant les données de l'atlas
