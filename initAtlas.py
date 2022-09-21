@@ -1,6 +1,6 @@
 import os
 import sys
-from flask import Flask, render_template
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 from werkzeug.serving import run_simple

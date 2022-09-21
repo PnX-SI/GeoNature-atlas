@@ -74,26 +74,6 @@ CREATE UNIQUE INDEX l_communes_insee_idx
 --################################
 --################################
 
-DO $$
-BEGIN
-	DROP TABLE atlas.t_mailles_territoire;
-EXCEPTION WHEN others THEN
-	RAISE NOTICE 'view atlas.t_mailles_territoire does not exist';
-END$$;
-
-CREATE MATERIALIZED VIEW atlas.t_mailles_territoire AS
-SELECT st_transform(c.geom, 3857)::geometry('MultiPolygon',3857) as the_geom,
-    st_asgeojson(st_transform(c.geom, 4326)) AS geojson_maille,
-    id_area as id_maille,
-    id_type
-FROM ref_geo.l_areas c
-  -- See if st_intersects is the right function (st_within ?)
-  JOIN atlas.t_layer_territoire tlt ON st_intersects(tlt.the_geom, st_transform(c.geom, 3857));
-
-CREATE UNIQUE INDEX t_mailles_territoire_id_maille_idx
-  ON atlas.t_mailles_territoire
-  USING btree (id_maille);
-
 
 -- Rafraichissement des vues contenant les données de l'atlas
 CREATE OR REPLACE FUNCTION atlas.refresh_materialized_view_ref_geo()
@@ -101,7 +81,6 @@ RETURNS VOID AS $$
 BEGIN
 
   REFRESH MATERIALIZED VIEW atlas.t_layer_territoire;
-  REFRESH MATERIALIZED VIEW atlas.t_mailles_territoire;
   REFRESH MATERIALIZED VIEW atlas.l_communes;
   REFRESH MATERIALIZED VIEW atlas.vm_communes;
 

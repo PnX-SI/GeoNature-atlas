@@ -17,10 +17,10 @@ def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
             func.count(VmObservationsMailles.id_observation).label("nb_obs"),
             func.max(VmObservationsMailles.annee).label("last_observation"),
             VmObservationsMailles.id_maille,
-            VmObservationsMailles.id_type,
+            VmObservationsMailles.type_code,
             VmObservationsMailles.geojson_maille
         )
-        .group_by(VmObservationsMailles.id_maille, VmObservationsMailles.geojson_maille, VmObservationsMailles.id_type)
+        .group_by(VmObservationsMailles.id_maille, VmObservationsMailles.geojson_maille, VmObservationsMailles.type_code)
         .filter(
             or_(
                 VmObservationsMailles.cd_ref.in_(subquery),
@@ -38,7 +38,7 @@ def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
                 geometry=json.loads(o.geojson_maille),
                 properties={
                     "id_maille": o.id_maille,
-                    "id_type": o.id_type,
+                    "type_code": o.type_code,
                     "nb_observations": o.nb_obs,
                     "last_observation": o.last_observation,
                 },
@@ -75,7 +75,7 @@ def lastObservationsMailles(connection, mylimit, idPhoto):
         temp = {
             "id_observation": o.id_observation,
             "id_maille": o.id_maille,
-            "id_type": o.id_type,
+            "type_code": o.type_code,
             "cd_ref": o.cd_ref,
             "dateobs": str(o.dateobs),
             "altitude_retenue": o.altitude_retenue,
@@ -95,7 +95,7 @@ def lastObservationsCommuneMaille(connection, mylimit, insee):
             obs.cd_ref, obs.dateobs, t.lb_nom,
             t.nom_vern, obs.the_geom as l_geom,
             obs.geojson_maille, obs.id_maille,
-            obs.id_type
+            obs.type_code
         FROM atlas.vm_observations_mailles obs
         JOIN atlas.vm_communes c
         ON ST_Intersects(obs.the_geom, c.the_geom)
@@ -118,7 +118,7 @@ def lastObservationsCommuneMaille(connection, mylimit, insee):
             "taxon": taxon,
             "geojson_maille": json.loads(o.geojson_maille),
             "id_maille": o.id_maille,
-            "id_type": o.id_type,
+            "type_code": o.type_code,
         }
         obsList.append(temp)
     return obsList

@@ -14,23 +14,67 @@ CREATE INDEX ON atlas.vm_taxref (nom_complet);
 CREATE INDEX ON atlas.vm_taxref (nom_valide);
 
 
+CREATE MATERIALIZED VIEW atlas.vm_cor_area_synthese
+TABLESPACE pg_default
+AS SELECT sa.id_synthese,
+    sa.id_area,
+    a.centroid,
+    st_transform(a.geom, 4326) AS geom,
+    st_asgeojson(st_transform(a.geom, 4326)) AS geojson_4326,
+    st_transform(a.centroid, 4326) AS centroid_4326,
+    t.type_code,
+    sensi.cd_nomenclature,
+        CASE
+            WHEN sensi.cd_nomenclature::text = '1'::text AND t.type_code::text = 'M1'::text THEN true
+            WHEN sensi.cd_nomenclature::text = '2'::text AND t.type_code::text = 'M5'::text THEN true
+            WHEN sensi.cd_nomenclature::text = '3'::text AND t.type_code::text = 'M10'::text THEN true
+            WHEN (sensi.cd_nomenclature::text = '0'::TEXT OR sensi.cd_nomenclature::text IS NULL) AND t.type_code::text = 'M5'::text THEN true
+            ELSE false
+        END AS is_blurred_geom
+   FROM synthese.synthese s
+     JOIN synthese.cor_area_synthese sa ON sa.id_synthese = s.id_synthese
+     JOIN ref_geo.l_areas a ON sa.id_area = a.id_area
+     JOIN ref_geo.bib_areas_types t ON a.id_type = t.id_type
+     LEFT JOIN synthese.t_nomenclatures sensi ON s.id_nomenclature_sensitivity = sensi.id_nomenclature
+  WHERE (t.type_code::text = ANY (ARRAY['M1'::character varying, 'M5'::character varying, 'M10'::character varying]::text[]))
+  AND (NOT sensi.cd_nomenclature::text = '4'::TEXT OR sensi.cd_nomenclature IS NULL )
+WITH DATA;
 --Toutes les observations
 
 --DROP materialized view atlas.vm_observations;
-CREATE MATERIALIZED VIEW atlas.vm_observations AS
-    SELECT s.id_synthese AS id_observation,
-        s.insee,
-        s.dateobs,
-        s.observateurs,
-        s.altitude_retenue,
-        st_centroid(s.the_geom_point) as the_geom_point,
-        s.effectif_total,
-        tx.cd_ref,
-        st_asgeojson(ST_Transform(ST_SetSrid(st_centroid(s.the_geom_point), 3857), 4326)) as geojson_point,
-        s.diffusion_level
-    FROM synthese.syntheseff s
-    LEFT JOIN atlas.vm_taxref tx ON tx.cd_nom = s.cd_nom
-    JOIN atlas.t_layer_territoire m ON ST_Intersects(s.the_geom_point, m.the_geom);
+
+ CREATE MATERIALIZED VIEW atlas.vm_observations AS
+    WITH centroid AS (
+		SELECT st_centroid(st_union(cor.geom)) AS geom_point, s.id_synthese 
+		FROM synthese.synthese s
+		JOIN atlas.vm_cor_area_synthese cor ON cor.id_synthese = s.id_synthese
+		WHERE cor.id_synthese = s.id_synthese AND cor.is_blurred_geom IS TRUE 
+		GROUP BY s.id_synthese
+	)
+	SELECT s.id_synthese AS id_observation,
+	    com.insee ,
+	    s.date_min AS dateobs,
+	    (s.altitude_min + s.altitude_max) / 2 AS altitude_retenue,
+	    s.observers AS observateurs,
+	    tx.cd_ref,
+	    s.id_dataset,
+	    c.geom_point,
+	    CASE 
+	    	  WHEN sensi.cd_nomenclature = '0' THEN st_transform(s.the_geom_point, 3857)
+	    	  ELSE st_transform(c.geom_point, 3857)
+	    END AS the_geom_point,
+	        CASE 
+	    	  WHEN sensi.cd_nomenclature = '0' THEN st_asgeojson(st_transform(s.the_geom_point, 4326))
+	    	  ELSE st_asgeojson(st_transform(c.geom_point, 4326))
+	    END AS geojson_point,
+	    sensi.cd_nomenclature AS cd_sensitivity
+	   FROM synthese.synthese s
+	     JOIN atlas.vm_taxref tx ON tx.cd_nom = s.cd_nom
+	     LEFT JOIN synthese.t_nomenclatures sensi ON s.id_nomenclature_sensitivity = sensi.id_nomenclature
+	     JOIN centroid c ON c.id_synthese = s.id_synthese 
+	     JOIN atlas.l_communes com ON st_intersects(st_transform(s.the_geom_point, 3857), com.the_geom)
+	    ;
+
 
 CREATE UNIQUE INDEX ON atlas.vm_observations (id_observation);
 CREATE INDEX ON atlas.vm_observations (cd_ref);
