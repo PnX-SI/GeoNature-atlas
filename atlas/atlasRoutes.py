@@ -205,8 +205,7 @@ def ficheCommune(insee):
             connection, current_app.config["NB_LAST_OBS"], insee
         )
     
-    # listTaxons = vmTaxonsRepository.getTaxonsCommunes(connection, insee)
-    listTaxons = vmTaxonsRepository.get_taxons_from_obs(connection, observations)
+    listTaxons = vmTaxonsRepository.getTaxonsCommunes(connection, insee)
 
     observers = vmObservationsRepository.getObserversCommunes(connection, insee)
 

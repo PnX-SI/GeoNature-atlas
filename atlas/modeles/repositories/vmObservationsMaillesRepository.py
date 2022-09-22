@@ -128,7 +128,7 @@ def lastObservationsCommuneMaille(connection, mylimit, insee):
 def getObservationsTaxonCommuneMaille(connection, insee, cd_ref):
     sql = """
      SELECT
-            o.cd_ref, o.id_maille, o.id_type, o.geojson_maille, o.the_geom,
+            o.cd_ref, o.id_maille, o.type_code, o.geojson_maille, o.the_geom,
             extract(YEAR FROM o.dateobs) as annee
         FROM atlas.vm_observations_mailles o
         JOIN atlas.vm_communes c
@@ -141,7 +141,7 @@ def getObservationsTaxonCommuneMaille(connection, insee, cd_ref):
     for o in observations:
         temp = {
             "id_maille": o.id_maille,
-            "id_type": o.id_type,
+            "type_code": o.type_code,
             "nb_observations": 1,
             "annee": o.annee,
             "geojson_maille": json.loads(o.geojson_maille),

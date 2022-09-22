@@ -6,7 +6,7 @@ from flask import current_app
 from sqlalchemy.sql import text
 from .. import utils
 
-
+#FIXME : cette fonction n'a pas d'utilité
 def get_taxons_from_obs(connection, observations: dict):
     """
     Gets infos on taxons present in the observations
