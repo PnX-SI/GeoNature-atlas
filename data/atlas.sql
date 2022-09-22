@@ -28,7 +28,7 @@ AS SELECT sa.id_synthese,
             WHEN sensi.cd_nomenclature::text = '1'::text AND t.type_code::text = 'M1'::text THEN true
             WHEN sensi.cd_nomenclature::text = '2'::text AND t.type_code::text = 'M5'::text THEN true
             WHEN sensi.cd_nomenclature::text = '3'::text AND t.type_code::text = 'M10'::text THEN true
-            WHEN (sensi.cd_nomenclature::text = '0'::TEXT OR sensi.cd_nomenclature::text IS NULL) AND t.type_code::text = 'M5'::text THEN true
+            WHEN (sensi.cd_nomenclature::text = '0'::TEXT OR sensi.cd_nomenclature::text IS NULL) AND t.type_code::text = :default_maille::text THEN true
             ELSE false
         END AS is_blurred_geom
    FROM synthese.synthese s
