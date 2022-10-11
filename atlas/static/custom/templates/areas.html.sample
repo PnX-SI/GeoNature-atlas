@@ -1,0 +1,141 @@
+{% extends "templates/core/layout.html" %} {% block title %} {{
+_('atlas.presentation') }} {% endblock %} {% block additionalHeaderAssets %}
+<script src="{{ url_for('static', filename='mapGenerator.js') }}"></script>
+{% endblock %} {% block content %}
+<div class="d-flex h-100 flex-column border-bottom">
+  <div class="bg-light p-2">
+    <h1>Zones</h1>
+  </div>
+  <div class="d-flex h-100">
+    <div class="row h-100 flex-grow-1 p-0 m-0 border-bottom bg-warning">
+      <div class="col-12 d-flex flex-column m-0 p-0">
+        <div class="d-flex align-content-stretch bg-warning flex-grow-1">
+          <div class="d-flex flex-grow-1">
+            <div id="map" style="height: unset; flex: 1"></div>
+            <div
+              id="loaderSpinner"
+              class="spinner-grow text-primary"
+              style="width: 3rem; height: 3rem"
+              role="status"
+            >
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %} {% block additionalFooterAssets %}
+
+<script>
+  const url_limit_territory = "/static/custom/territoire.json";
+
+  const map = generateMap();
+
+  var legend = L.control({ position: "bottomright" });
+
+  $("#loaderSpinner").hide();
+  $(document).ready(function () {
+    $("#infoModal").modal("show");
+  });
+
+  geomUrl = "/api/area/geom";
+
+  const data = $.ajax({
+    url: geomUrl,
+    dataType: "json",
+    async: false,
+  }).responseJSON;
+
+  const areaTypes = Array.from(
+    new Set(data.features.map((item) => item.properties.type_name))
+  );
+  const featureGroups = generateLayerControl(areaTypes);
+
+  const areasLayer = new L.GeoJSON(false, {
+    onEachFeature: onEachFeature,
+    style: style,
+  });
+
+  const colors = areaTypes.map((area, i) => {
+    return {
+      type_name: area,
+      color: selectColor(i, 5),
+    };
+  });
+
+  handleJson(data);
+
+  function selectColor(colorNum, colors) {
+    if (colors < 1) colors = 1; // defaults to one color - avoid divide by zero
+    return "hsl(" + ((colorNum * (360 / colors)) % 360) + ",100%,50%)";
+  }
+
+  function onEachFeature(feature, layer) {
+    // does this feature have a property named popupContent?
+    if (feature.properties && feature.properties.area_name) {
+      layer.bindPopup(`<p class="text-center"><h5> 
+            (${feature.properties.type_name}) ${feature.properties.area_name}</h5><br> 
+            <a class="btn btn-info btn-block text-light" href="/area/${feature.properties.id_area}">
+                Voir les espèces associées</a></p>`);
+
+      const featureGroup = featureGroups[feature.properties.type_name];
+      featureGroup.addLayer(layer);
+    }
+  }
+
+  function style(feature) {
+    return colors.filter(
+      (color) => color.type_name == feature.properties.type_name
+    )[0];
+  }
+
+  function handleJson(data) {
+    areasLayer.addData(data);
+    areasLayer.addTo(map);
+    areasLayer.bringToBack();
+    map.fitBounds(areasLayer.getBounds());
+    generateLegend(legend, areaTypes);
+    legend.addTo(map);
+  }
+
+  function generateLegend(legend, areaTypes) {
+    legend.onAdd = function (map) {
+      var div = L.DomUtil.create("div", "info legend");
+      categories = areaTypes.map((item, i) => {
+        return {
+          lib: item,
+          color: colors.filter((color) => color.type_name == item)[0].color,
+        };
+      });
+      (labels = ["<h5>Légende</h5>"]), (categories = categories);
+
+      for (var i = 0; i < categories.length; i++) {
+        div.innerHTML += labels.push(
+          '<p><i class="circle" style="background:' +
+            categories[i].color +
+            '"></i> ' +
+            categories[i].lib +
+            "</p>"
+        );
+      }
+      div.innerHTML = labels.join("");
+      return div;
+    };
+  }
+
+  function generateLayerControl(areaTypes) {
+    var featureGroups = {};
+    areaTypes.forEach((type) => {
+      const featureGroup = L.featureGroup();
+      map.addLayer(featureGroup);
+      featureGroups[type] = featureGroup;
+    });
+    control = L.control.layers(null, featureGroups);
+    control.addTo(map);
+    return featureGroups;
+  }
+</script>
+{% endblock %}
