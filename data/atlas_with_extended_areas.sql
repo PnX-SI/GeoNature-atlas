@@ -8,8 +8,6 @@ DROP MATERIALIZED VIEW IF EXISTS atlas.vm_bib_areas_types CASCADE;
 CREATE MATERIALIZED VIEW atlas.vm_bib_areas_types AS
 SELECT t.id_type, t.type_code, t.type_name, t.type_desc
 FROM ref_geo.bib_areas_types t
-WHERE
-    type_code IN ('M10', 'COM', 'ZNIEFF1', 'ZNIEFF2');
 
 CREATE INDEX ON atlas.vm_bib_areas_types(id_type);
 CREATE INDEX ON atlas.vm_bib_areas_types(type_code);
@@ -53,10 +51,11 @@ CREATE INDEX vm_l_areas_area_name_idx
 DROP MATERIALIZED VIEW IF EXISTS atlas.vm_cor_area_observation;
 
 CREATE MATERIALIZED VIEW atlas.vm_cor_area_observation AS
-SELECT cas.id_synthese AS id_observation, cas.id_area
-FROM
-    synthese.cor_area_synthese cas
-        JOIN atlas.vm_l_areas la ON cas.id_area = la.id_area;
+SELECT s.id_synthese AS id_observation,
+    la.id_area
+   FROM synthese.syntheseff s
+     JOIN atlas.vm_l_areas la ON st_intersects(s.the_geom_point, la.the_geom)
+WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_cor_area_observation(id_observation, id_area);
 
