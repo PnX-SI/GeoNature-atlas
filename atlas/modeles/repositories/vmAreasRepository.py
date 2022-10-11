@@ -171,9 +171,10 @@ def get_observers_area(session, id_area):
 def search_area_by_type(session, search=None, type_code=None, limit=50):
     query = (
         session.query(
+            VmAreas.id_area,
             VmBibAreasTypes.type_name,
             VmAreas.area_code,
-            func.concat(VmAreas.area_name, " - [code <i>", VmAreas.area_code, "</i>]"),
+            func.concat("(", VmBibAreasTypes.type_name, ") ", VmAreas.area_name),
         )
         .join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type)
         
@@ -191,7 +192,7 @@ def search_area_by_type(session, search=None, type_code=None, limit=50):
 
     areaList = []
     for r in query.all():
-        temp = {"type_name": r.type_name, "label": r[2], "value": r.area_code}
+        temp = {"type_name": r.type_name, "label": r[-1], "value": r.id_area}
         areaList.append(temp)
     return areaList
 

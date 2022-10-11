@@ -9,36 +9,32 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-
-                    <h3 class="modal-title" id="exampleModalLabel">{{ _('search.other.zones.type') }}</h3>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true" class="text-white">&times;</span>
-                    </button>
+                    <h3 class="modal-title">Rechercher d'autres types de zonages</h3>
                 </div>
                 <div class="modal-body">
-                    {#                    <form class="form-inline my-2 my-lg-0">#}
                     <div class="row">
-                        {% for type in areas_type_search %}
-                            {% if type.type_code.lower() != 'com' %}
-                                <div class="col col-md-6 col-sm-12">
-                                    <form class="form-group" method="POST"
-                                          onsubmit="completeAction('#searchForm{{ type.type_code.lower().capitalize() }}', hiddenInput{{ type.type_code.lower().capitalize() }})"
-                                          id='searchForm{{ type.type_code.lower().capitalize() }}' action=""
-                                          role="search">
-                                        <label for="searchFormLabel{{ type.type_code.lower().capitalize() }}" class="col-form-label"><b>{{ type.type_name }}</b></label>
-                                        <input id="searchAreas{{ type.type_code.lower().capitalize() }}" type="text"
-                                               class="form-control ajax-search w-100"
-                                               placeholder="{{ type.type_name }}">
-                                        <input id="hiddenInput{{ type.type_code.lower().capitalize() }}" type="hidden"
-                                               name="areaCode">
-                                    </form>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
+                        <form class="form-inline my-2 my-lg-0 ml-2" method="POST"
+                        onsubmit="completeAction('#searchFormAreas', hiddenInputAreas)" id='searchFormAreas'
+                        action=""
+                        role="search">
+                      <div class="form-group has-feedback">
+                          <input id="searchAreas" type="text" style="width: 175px;"
+                                 class="form-control mr-sm-2 ajax-search small-placeholder"
+                                 placeholder="{{ _('search.city') }}&nbsp;&nbsp;&nbsp;">
+                      </div>
+                      <input id="hiddenInputAreas" type="hidden" name="search">
+                        </form>
                     </div>
-                    </form>
                 </div>
             </div>
         </div>
     </div>
+{% endblock %}
+{% block additionalFooterAssets %}
+<script>
+$("#searchAreas").focus(function() {
+  autocompleteSearch("#searchAreas", "", 10);
+});
+
+</script>
 {% endblock %}

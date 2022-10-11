@@ -33,7 +33,7 @@ autocompleteSearch = function(inputID, urlDestination, nbProposal) {
         searchUrl = "/api/searchCommune";
       }
       else {
-        searchUrl = "/api/searchArea/"+urlDestination;
+        searchUrl = "/api/area";
       }
       $(inputID)
         .attr("loading", "true")
@@ -94,7 +94,6 @@ $("#searchCommunes").focus(function() {
 $("#searchCommunesStat").focus(function() {
   autocompleteSearch("#searchCommunesStat", "commune", 10);
 });
-
 
 // child list display
 var childList = $("#childList");
