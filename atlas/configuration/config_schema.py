@@ -112,6 +112,11 @@ class MapConfig(Schema):
         load_default={"fill": False, "fillColor": "#020202", "fillOpacity": 0.3}
     )
 
+class GeoStat(Schema):
+    NAME = fields.String()
+    TYPE = fields.String()
+    PICTO = fields.String()
+
 
 class AtlasConfig(Schema):
     class Meta:
@@ -131,6 +136,7 @@ class AtlasConfig(Schema):
     AFFICHAGE_LOGOS_HOME = fields.Boolean(load_default=True)
     AFFICHAGE_FOOTER = fields.Boolean(load_default=True)
     AFFICHAGE_STAT_GLOBALES = fields.Boolean(load_default=True)
+    GLOBAL_GEO_STATS = fields.List(fields.Nested(GeoStat), load_default=[])
     AFFICHAGE_DERNIERES_OBS = fields.Boolean(load_default=True)
     AFFICHAGE_EN_CE_MOMENT = fields.Boolean(load_default=True)
     AFFICHAGE_RANG_STAT = fields.Boolean(load_default=True)

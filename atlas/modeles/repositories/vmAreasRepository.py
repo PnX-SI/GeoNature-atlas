@@ -389,3 +389,14 @@ def get_surrounding_areas(session, id_area):
     )
 
     return query.all()
+
+
+def stats(session, type_codes):
+    sums = []
+    for type_code in type_codes:
+        sums.append(func.sum(case((VmBibAreasTypes.type_code == type_code, 1), else_=0)).label(type_code))
+
+    query = (
+        session.query(*sums)
+        .join(VmAreas, VmBibAreasTypes.id_type == VmAreas.id_type))
+    return query.first()._asdict()

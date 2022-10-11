@@ -23,7 +23,7 @@ if (window.innerWidth <= 800 && presentationText) {
   presentationText.hidden = true;
 }
 
-autocompleteSearch = function(inputID, urlDestination, nbProposal) {
+autocompleteSearch = function(inputID, urlDestination, nbProposal, type) {
   $(inputID).autocomplete({
     source: function(request, response) {
       var searchUrl;
@@ -45,7 +45,7 @@ autocompleteSearch = function(inputID, urlDestination, nbProposal) {
         );
       $.get(
         configuration.URL_APPLICATION + searchUrl,
-        { search: request.term, limit: nbProposal },
+        { search: request.term, limit: nbProposal, type: type },
         function(results) {
           response(results.slice(0, nbProposal));
           $(inputID)

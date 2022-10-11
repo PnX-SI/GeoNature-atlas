@@ -205,7 +205,11 @@ def index():
     if current_app.config["AFFICHAGE_STAT_GLOBALES"]:
         stat = vmObservationsRepository.statIndex(connection)
     else:
-        stat = []
+        stat = {}
+
+    if current_app.config["GLOBAL_GEO_STATS"]:
+        area_types = [geo["TYPE"] for geo in current_app.config["GLOBAL_GEO_STATS"]]
+        stat['geo'] = vmAreasRepository.stats(session, area_types)
 
     if current_app.config["AFFICHAGE_RANG_STAT"]:
         current_app.logger.debug("start customStat")
