@@ -54,14 +54,6 @@ def get_areas_geom():
     return jsonify(results)
 
 
-@api.route("/area/types", methods=["GET"])
-def get_area_types():
-    session = utils.loadSession()
-    result = vmAreasRepository.area_types(session)
-    session.close()
-    return jsonify(result)
-
-
 if not current_app.config['AFFICHAGE_MAILLE']:
     @api.route("/observationsMailleAndPoint/<int:cd_ref>", methods=["GET"])
     def getObservationsMailleAndPointAPI(cd_ref):
