@@ -209,6 +209,8 @@ class AtlasConfig(Schema):
     # (no need to restart the atlas service when updating templates)
     # Defaults to False to have the best performance in production
     TEMPLATES_AUTO_RELOAD = fields.Boolean(load_default=False)
+    # Enable the search on other areas
+    EXTENDED_AREAS = fields.Boolean(load_default=False)
 
     @validates_schema
     def validate_url_taxhub(self, data, **kwargs):
