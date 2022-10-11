@@ -9,6 +9,7 @@ from atlas.modeles.repositories import (
     vmObservationsMaillesRepository,
     vmMedias,
     vmCommunesRepository,
+    vmAreasRepository,
 )
 
 api = Blueprint("api", __name__)
@@ -32,6 +33,34 @@ def searchCommuneAPI():
     results = vmCommunesRepository.getCommunesSearch(session, search, limit)
     session.close()
     return jsonify(results)
+
+
+@api.route("/area", methods=["GET"])
+def search_area():
+    session = utils.loadSession()
+    search = request.args.get("search")
+    type_code = request.args.get("type")
+    limit = request.args.get("limit", 50)
+    results = vmAreasRepository.search_area_by_type(session=session, search=search, type_code=type_code, limit=limit)
+    session.close()
+    return jsonify(results)
+
+
+@api.route("/area/geom", methods=["GET"])
+def get_areas_geom():
+    session = utils.loadSession()
+    results = vmAreasRepository.get_areas_geometries(session=session)
+    session.close()
+    return jsonify(results)
+
+
+@api.route("/area/types", methods=["GET"])
+def get_area_types():
+    session = utils.loadSession()
+    result = vmAreasRepository.area_types(session)
+    session.close()
+    return jsonify(result)
+
 
 if not current_app.config['AFFICHAGE_MAILLE']:
     @api.route("/observationsMailleAndPoint/<int:cd_ref>", methods=["GET"])
