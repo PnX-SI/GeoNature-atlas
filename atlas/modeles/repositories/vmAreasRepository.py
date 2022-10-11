@@ -5,6 +5,7 @@ import json
 from datetime import datetime
 
 from flask import current_app
+from geojson import Feature, FeatureCollection
 from sqlalchemy import or_, and_, case
 from sqlalchemy.sql.expression import func
 
@@ -28,7 +29,7 @@ def area_types(session):
         VmBibAreasTypes.type_name,
         VmBibAreasTypes.type_desc,
     )
-    return query.all()
+    return [q._asdict() for q in query.all()]
 
 
 def get_id_area(session, type_code, area_code):
@@ -48,6 +49,25 @@ def get_id_area(session, type_code, area_code):
         return result.id_area
     except Exception as e:
         current_app.logger.error("<get_id_area> error {}".format(e))
+
+
+def get_area_from_id(session, id_area):
+    query = (
+        session.query(
+            VmAreas.area_name, 
+            VmAreas.area_code, 
+            VmAreas.area_geojson, 
+            VmBibAreasTypes.type_name)
+        .filter(VmAreas.id_area==id_area)
+        .join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type))
+
+    result = query.first()
+    return {
+            "areaName": result.area_name,
+            "areaCode": str(result.area_code),
+            "areaGeoJson": json.loads(result.area_geojson),
+            "typeName": result.type_name
+        }
 
 
 def last_observations_area_maille(session, myLimit, idArea):
@@ -128,7 +148,7 @@ def last_observations_area_maille(session, myLimit, idArea):
     return obsList
 
 
-def get_observers_area(session, idArea):
+def get_observers_area(session, id_area):
     q_list_observers = (
         session.query(
             func.trim(
@@ -139,7 +159,7 @@ def get_observers_area(session, idArea):
             VmCorAreaObservation,
             VmObservations.id_observation == VmCorAreaObservation.id_observation,
         )
-        .filter(VmCorAreaObservation.id_area == idArea)
+        .filter(VmCorAreaObservation.id_area == id_area)
     ).subquery()
 
     query = session.query(q_list_observers.c.observateurs).group_by(
@@ -148,38 +168,72 @@ def get_observers_area(session, idArea):
     return query.all()
 
 
-def search_area_by_type(session, search, type_code, limit=50):
+def search_area_by_type(session, search=None, type_code=None, limit=50):
     query = (
         session.query(
+            VmBibAreasTypes.type_name,
             VmAreas.area_code,
             func.concat(VmAreas.area_name, " - [code <i>", VmAreas.area_code, "</i>]"),
         )
         .join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type)
-        .filter(
-            and_(VmBibAreasTypes.type_code == type_code),
-            (
-                or_(
-                    VmAreas.area_name.ilike("%" + search + "%"),
-                    VmAreas.area_code.ilike("%" + search + "%"),
-                )
-            ),
-        )
+        
     )
-    print(limit)
+    if type_code is not None:
+        query = query.filter(VmBibAreasTypes.type_code == type_code)
+    if search is not None:
+        search = search.lower()
+        query = query.filter(or_(
+                    VmAreas.area_name.ilike("%" + search + "%"),
+                    VmAreas.area_code.ilike("%" + search + "%")))
+    
     query = query.limit(limit)
     current_app.logger.debug("<search_area_by_type> query {}".format(query))
 
-    areaList = list()
+    areaList = []
     for r in query.all():
-        temp = {"label": r[1], "value": r[0]}
+        temp = {"type_name": r.type_name, "label": r[2], "value": r.area_code}
         areaList.append(temp)
     return areaList
 
 
-def get_areas_observations(session, id_area):
+def get_areas_geometries(session, type_code=None, limit=50):
+    query = (
+        session.query(
+            VmAreas.area_name,
+            VmAreas.id_area,
+            VmAreas.area_geojson,
+            VmAreas.area_code,
+            VmBibAreasTypes.type_code,
+            VmBibAreasTypes.type_name
+        )
+        .join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type)
+    )
+    if type_code is not None:
+        query = query.filter(VmBibAreasTypes.type_code == type_code)
+    query = query.limit(limit)
+    return FeatureCollection(
+        [
+            Feature(
+                id=r.id_area,
+                geometry=json.loads(r.area_geojson),
+                properties={
+                    "id_area": r.id_area,
+                    "area_name": r.area_name,
+                    "area_code": r.area_code,
+                    "type_code": r.type_code,
+                    "type_name": r.type_name
+                },
+            )
+            for r in query.all()
+        ]
+    )
+
+
+def get_areas_observations(session, limit, id_area):
     query = (
         session.query(
             VmObservations.id_observation,
+            VmObservations.diffusion_level,
             VmTaxref.nom_vern,
             VmTaxref.lb_nom,
             VmTaxref.group2_inpn,
@@ -193,11 +247,11 @@ def get_areas_observations(session, id_area):
             VmObservations.id_observation == VmCorAreaObservation.id_observation,
         )
         .filter(VmCorAreaObservation.id_area == id_area)
-    ).all()
+    ).limit(limit).all()
     result = []
     for r in query:
         temp = r._asdict()
-        temp["geometry"] = json.loads(r.geometry or "{}")
+        temp["geojson_point"] = json.loads(r.geometry or "{}")
         temp["dateobs"] = str(r.dateobs)
         temp["group2_inpn"] = utils.deleteAccent(r.group2_inpn)
         result.append(temp)
