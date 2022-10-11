@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-02 15:28+0100\n"
+"POT-Creation-Date: 2022-10-11 15:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -176,9 +176,13 @@ msgstr "Fiche espèce"
 msgid "check.species.sheet"
 msgstr "Voir la fiche espèce"
 
-#: templates/core/extended_areas_search.html:13
+#: templates/core/extended_areas_search.html:12
 msgid "search.other.zones.type"
 msgstr "Recherche par autre type de zones"
+
+#: templates/core/extended_areas_search.html:23
+msgid "search"
+msgstr "Recherche"
 
 #: templates/core/listTaxons.html:14
 msgid "filter.species"
@@ -213,12 +217,12 @@ msgstr "Dernière observation en "
 msgid "loading"
 msgstr "Chargement..."
 
-#: templates/core/navbar.html:34 templates/home/globalStats.html:28
+#: templates/core/navbar.html:34 templates/home/globalStats.html:30
 #: templates/photoGalery/_main.html:76
 msgid "search.species"
 msgstr "Recherche par espèce"
 
-#: templates/core/navbar.html:47 templates/home/globalStats.html:47
+#: templates/core/navbar.html:47 templates/home/globalStats.html:49
 msgid "search.city"
 msgstr "Recherche par commune"
 
@@ -226,12 +230,12 @@ msgstr "Recherche par commune"
 msgid "back.to.home"
 msgstr "Retour à l'accueil"
 
-#: templates/core/sideBar.html:25 templates/home/globalStats.html:59
+#: templates/core/sideBar.html:25 templates/home/globalStats.html:61
 #: templates/photoGalery/_main.html:5 templates/photoGalery/_main.html:50
 msgid "gallery.title"
 msgstr "Galerie photos"
 
-#: templates/core/statHierarchy.html:12 templates/home/globalStats.html:21
+#: templates/core/statHierarchy.html:12 templates/home/globalStats.html:23
 #: templates/home/taxoRank.html:28 templates/organismSheet/statsInfos.html:21
 msgid "species"
 msgstr "Espèces"
@@ -280,31 +284,35 @@ msgstr "Ce taxon a un statut de protection"
 msgid "display.city.infos"
 msgstr "Afficher les informations de la commune"
 
+#: templates/home/geoStats.html:22
+msgid "search.for"
+msgstr "Recherche par"
+
 #: templates/home/globalStats.html:4
 msgid "home.insomefigures"
 msgstr "En quelques chiffres"
 
-#: templates/home/globalStats.html:13
+#: templates/home/globalStats.html:14
 msgid "home.seelatestobs"
 msgstr "Voir les dernières observations"
 
-#: templates/home/globalStats.html:39 templates/speciesSheet/map.html:20
+#: templates/home/globalStats.html:41 templates/speciesSheet/map.html:20
 #: templates/speciesSheet/otherInformations.html:10
 #: templates/speciesSheet/otherInformations.html:14
 msgid "municipalities"
 msgstr "Communes"
 
-#: templates/home/globalStats.html:39 templates/speciesSheet/map.html:20
+#: templates/home/globalStats.html:41 templates/speciesSheet/map.html:20
 #: templates/speciesSheet/otherInformations.html:10
 #: templates/speciesSheet/otherInformations.html:14
 msgid "municipality"
 msgstr "Commune"
 
-#: templates/home/globalStats.html:58
+#: templates/home/globalStats.html:60
 msgid "photos"
 msgstr "Photos"
 
-#: templates/home/globalStats.html:58
+#: templates/home/globalStats.html:60
 msgid "photo"
 msgstr "Photo"
 

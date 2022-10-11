@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-02 15:28+0100\n"
+"POT-Creation-Date: 2022-10-11 15:29+0200\n"
 "PO-Revision-Date: 2021-07-19 09:53+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
@@ -175,9 +175,14 @@ msgstr "Scheda specie"
 msgid "check.species.sheet"
 msgstr "Vedere la scheda delle specie"
 
-#: templates/core/extended_areas_search.html:13
+#: templates/core/extended_areas_search.html:12
 msgid "search.other.zones.type"
 msgstr "Cerca per altro tipo di zone"
+
+#: templates/core/extended_areas_search.html:23
+#, fuzzy
+msgid "search"
+msgstr "Ricerca per comune"
 
 #: templates/core/listTaxons.html:14
 msgid "filter.species"
@@ -212,12 +217,12 @@ msgstr "Ultime osservazioni "
 msgid "loading"
 msgstr "Caricamento in corso..."
 
-#: templates/core/navbar.html:34 templates/home/globalStats.html:28
+#: templates/core/navbar.html:34 templates/home/globalStats.html:30
 #: templates/photoGalery/_main.html:76
 msgid "search.species"
 msgstr "Cerca per species"
 
-#: templates/core/navbar.html:47 templates/home/globalStats.html:47
+#: templates/core/navbar.html:47 templates/home/globalStats.html:49
 msgid "search.city"
 msgstr "Ricerca per comune"
 
@@ -225,12 +230,12 @@ msgstr "Ricerca per comune"
 msgid "back.to.home"
 msgstr "Tornare a Home"
 
-#: templates/core/sideBar.html:25 templates/home/globalStats.html:59
+#: templates/core/sideBar.html:25 templates/home/globalStats.html:61
 #: templates/photoGalery/_main.html:5 templates/photoGalery/_main.html:50
 msgid "gallery.title"
 msgstr "Galleria di foto"
 
-#: templates/core/statHierarchy.html:12 templates/home/globalStats.html:21
+#: templates/core/statHierarchy.html:12 templates/home/globalStats.html:23
 #: templates/home/taxoRank.html:28 templates/organismSheet/statsInfos.html:21
 msgid "species"
 msgstr "Contanti"
@@ -279,31 +284,36 @@ msgstr "Questo taxon ha uno status di protezione"
 msgid "display.city.infos"
 msgstr "Visualizza le informazioni del comune"
 
+#: templates/home/geoStats.html:22
+#, fuzzy
+msgid "search.for"
+msgstr ""
+
 #: templates/home/globalStats.html:4
 msgid "home.insomefigures"
 msgstr "In pochi numeri"
 
-#: templates/home/globalStats.html:13
+#: templates/home/globalStats.html:14
 msgid "home.seelatestobs"
 msgstr "Guarda le ultime osservazioni"
 
-#: templates/home/globalStats.html:39 templates/speciesSheet/map.html:20
+#: templates/home/globalStats.html:41 templates/speciesSheet/map.html:20
 #: templates/speciesSheet/otherInformations.html:10
 #: templates/speciesSheet/otherInformations.html:14
 msgid "municipalities"
 msgstr "Comuni"
 
-#: templates/home/globalStats.html:39 templates/speciesSheet/map.html:20
+#: templates/home/globalStats.html:41 templates/speciesSheet/map.html:20
 #: templates/speciesSheet/otherInformations.html:10
 #: templates/speciesSheet/otherInformations.html:14
 msgid "municipality"
 msgstr "Comune"
 
-#: templates/home/globalStats.html:58
+#: templates/home/globalStats.html:60
 msgid "photos"
 msgstr "Immagini"
 
-#: templates/home/globalStats.html:58
+#: templates/home/globalStats.html:60
 msgid "photo"
 msgstr "Foto"
 

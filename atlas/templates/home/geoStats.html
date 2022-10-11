@@ -1,7 +1,7 @@
 {% block geoStats %} 
 {% for geo in configuration.GLOBAL_GEO_STATS %}
 <div class="col-lg-3 col-md-6 col-xs-12 stat-object">
-  <div class="stat-thumbnail">
+  <div class="stat-thumbnail border-right">
     <i class="{{ geo.PICTO }}"></i>
     <h1 class="large text-muted">{{ stat.geo[geo.TYPE] | pretty }}</h1>
     <h4 class="text-muted text-uppercase font-weight-bold">{{ geo.NAME }}</h4>
@@ -19,15 +19,15 @@
           id="{{geo.TYPE}}"
           type="text"
           class="form-control"
-          placeholder="{{ _('search.city') }}&nbsp;&nbsp;&nbsp;"
+          placeholder="{{ _('search.for') }} {{ geo.NAME }}"
         />
       </div>
       <input id="hiddenInputAreas" type="hidden" name="search" />
     </form>
   </div>
 </div>
-{% endfor %} 
-{% endblock %} 
+{% endfor %}
+{% endblock %}
 
 {% block additionalFooterAssets %}
 <script>
