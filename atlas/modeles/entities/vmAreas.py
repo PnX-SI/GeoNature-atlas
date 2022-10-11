@@ -47,16 +47,11 @@ class VmCorAreaObservation(Base):
     __table__ = Table(
         "vm_cor_area_observation",
         metadata,
-        Column("id_observation", Integer()),
+        Column("id_observation", Integer(), primary_key=True),
         Column("id_area", Integer()),
         schema="atlas",
         autoload=True,
         autoload_with=engine,
         extend_existing=True,
-        primary_key=False,
     )
-    __mapper_args__ = {"primary_key": [__table__.c.id_observation, __table__.c.id_area]}
-    observation = relationship(
-        "VmObservations", foreign_keys=[__table__.c.id_observation]
-    )
-    area = relationship("VmAreas", foreign_keys=[__table__.c.id_area])
+
