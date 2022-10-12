@@ -60,7 +60,9 @@ def get_areas_geom():
     """
     session = utils.loadSession()
     limit = request.args.get("limit", 50)
+    type_code = request.args.get("type")
     results = vmAreasRepository.get_areas_geometries(session=session,
+                                                     type_code=type_code,
                                                      filter_area_codes=current_app.config['AREAS_LIST'],
                                                      limit=limit)
     session.close()
