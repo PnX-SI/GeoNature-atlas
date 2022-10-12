@@ -398,9 +398,17 @@ def get_surrounding_areas(session, id_area):
         id_area (int): the id of the area
     """
     subquery = (
-        session.query(VmAreas.the_geom).filter(VmAreas.id_area == id_area).subquery()
+        session.query(VmAreas.id_type, VmAreas.the_geom).filter(VmAreas.id_area == id_area).subquery()
     )
-
+    # Only way to get rid of a strange warning : vmAreasRepository.py:416: SAWarning: SELECT statement has a cartesian 
+    #    product between  FROM element(s) "anon_1" and FROM element "atlas.vm_l_areas".  
+    #    Apply join condition(s) between each element to resolve.
+    # Is to add a join(subquery...) and select VmAreas.id_type in the subquery...
+    # TODO: find a better way...
+    #   Original query :
+    #       select id_area, area_name, area_code, type_code, type_name from atlas.vm_l_areas vla 
+    #       where id_area <> :id_area 
+    #       and st_intersects(vla.the_geom, st_buffer((select the_geom from atlas.vm_l_areas where id_area=:id_area),0))
     query = (
         session.query(
             VmAreas.id_area,
@@ -410,6 +418,7 @@ def get_surrounding_areas(session, id_area):
             VmBibAreasTypes.type_name,
         )
         .join(VmBibAreasTypes, VmAreas.id_type == VmBibAreasTypes.id_type)
+        .join(subquery, subquery.c.id_type == VmBibAreasTypes.id_type)
         .filter(and_(VmAreas != id_area, VmAreas.the_geom.st_intersects(subquery.c.the_geom.st_buffer(0))))
     )
 
