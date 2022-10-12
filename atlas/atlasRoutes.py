@@ -359,6 +359,9 @@ def ficheCommune(insee):
 
 @main.route("/area/<id_area>", methods=["GET", "POST"])
 def area_sheet(id_area):
+    """
+    Generates the AreaSheet html
+    """
     session = utils.loadSession()
 
     listTaxons = vmAreasRepository.get_area_taxa(session, id_area=id_area)

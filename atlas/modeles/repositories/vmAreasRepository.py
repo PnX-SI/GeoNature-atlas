@@ -22,36 +22,10 @@ from atlas.modeles.entities.vmTaxons import VmTaxons
 from atlas.modeles.entities.vmTaxref import VmTaxref
 
 
-def area_types(session):
-    query = session.query(
-        VmBibAreasTypes.id_type,
-        VmBibAreasTypes.type_code,
-        VmBibAreasTypes.type_name,
-        VmBibAreasTypes.type_desc,
-    )
-    return [q._asdict() for q in query.all()]
-
-
-def get_id_area(session, type_code, area_code):
-    try:
-        query = (
-            session.query(VmAreas.id_area)
-            .join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type)
-            .filter(
-                and_(
-                    VmAreas.area_code.ilike(area_code),
-                    VmBibAreasTypes.type_code.ilike(type_code),
-                )
-            )
-        )
-        current_app.logger.debug("<get_id_area> query: {}".format(query))
-        result = query.one()
-        return result.id_area
-    except Exception as e:
-        current_app.logger.error("<get_id_area> error {}".format(e))
-
-
 def get_area_from_id(session, id_area):
+    """
+    Get area info from an id
+    """
     query = (
         session.query(
             VmAreas.id_area,
@@ -73,13 +47,11 @@ def get_area_from_id(session, id_area):
 
 
 def last_observations_area_maille(session, myLimit, idArea):
+    """
+    Gets the last observations for a specific area
+    """
     q_last_obs = (
         session.query(
-            # VmObservations.cd_ref.label("cd_ref"),
-            # VmObservations.dateobs.label("dateobs"),
-            # VmTaxons.lb_nom.label("lb_nom"),
-            # VmTaxons.nom_vern.label("nom_vern"),
-            # VmObservations.the_geom_point.label("the_geom_point"),
             VmObservations.cd_ref,
             VmObservations.dateobs,
             VmTaxons.lb_nom,
@@ -171,6 +143,15 @@ def get_observers_area(session, id_area):
 
 
 def search_area_by_type(session, search=None, type_code=None, filter_area_codes=[], limit=50):
+    """
+    Filter out the areas by the provided params:
+
+    Args:
+        session: the db session
+        search (str): to be able to filter against the name and the area_code
+        filter_area_codes (list): to exclude area codes
+        limit (int): restricts the number of objects returns 
+    """
     query = (
         session.query(
             VmAreas.id_area,
@@ -201,6 +182,18 @@ def search_area_by_type(session, search=None, type_code=None, filter_area_codes=
 
 
 def get_areas_geometries(session, type_code=None, filter_area_codes=[], limit=50):
+    """
+    Returns a Feature collection of all the areas
+
+    Args:
+        session: the db session
+        type_code (str): filter out by a type_code
+        filter_area_codes (list): ignores the codes provided in this list
+        limit (int): restricts the number of objects returns
+    
+    Returns:
+        FeatureCollection: the geometries as geosjon
+    """
     query = (
         session.query(
             VmAreas.area_name,
@@ -236,6 +229,10 @@ def get_areas_geometries(session, type_code=None, filter_area_codes=[], limit=50
 
 
 def get_areas_observations(session, limit, id_area):
+    """
+    For a provided area_code and cd_ref, computes the observations in
+    this area
+    """
     query = (
         session.query(
             VmObservations.id_observation,
@@ -265,6 +262,10 @@ def get_areas_observations(session, limit, id_area):
 
 
 def get_areas_observations_by_cd_ref(session, area_code, cd_ref):
+    """
+    For a provided area_code and cd_ref, computes grid observations in
+    this area
+    """
     req = (
         session.query(
             VmObservations.id_observation,
@@ -294,6 +295,10 @@ def get_areas_observations_by_cd_ref(session, area_code, cd_ref):
 
 
 def get_areas_grid_observations_by_cd_ref(session, area_code, cd_ref):
+    """
+    For a provided area_code and cd_ref, computes the observations in
+    this area
+    """
     query = (
         session.query(
             TGrid.id_maille,
@@ -325,6 +330,13 @@ def get_areas_grid_observations_by_cd_ref(session, area_code, cd_ref):
 
 
 def get_area_taxa(session, id_area):
+    """
+    Returns the list of taxa observed in the area defined by id_area
+
+    Args:
+        session: the db session
+        id_area (int): the id of the area
+    """
     query = (
         session.query(
             VmTaxons.cd_ref,
@@ -378,6 +390,13 @@ def get_area_taxa(session, id_area):
 
 
 def get_surrounding_areas(session, id_area):
+    """
+    Returns the areas around the given id_area
+
+    Args:
+        session: the db session
+        id_area (int): the id of the area
+    """
     subquery = (
         session.query(VmAreas.the_geom).filter(VmAreas.id_area == id_area).subquery()
     )
@@ -398,8 +417,16 @@ def get_surrounding_areas(session, id_area):
 
 
 def stats(session, type_codes):
+    """
+    Return the total number of area for each type_code provided
+
+    Args:
+        session: the db session
+        type_codes (list): list of strings of each type code
+    """
     sums = []
     for type_code in type_codes:
+        # Use a case to be able to select a sum of each type
         sums.append(func.sum(case((VmBibAreasTypes.type_code == type_code, 1), else_=0)).label(type_code))
 
     query = (

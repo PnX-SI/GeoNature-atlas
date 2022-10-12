@@ -37,26 +37,32 @@ def searchCommuneAPI():
 
 @api.route("/area", methods=["GET"])
 def search_area():
+    """
+    Enables to filter areas on their name or code
+    """
     session = utils.loadSession()
     search = request.args.get("search")
     type_code = request.args.get("type")
     limit = request.args.get("limit", 50)
     results = vmAreasRepository.search_area_by_type(session=session, 
                                                     search=search, 
-                                                    type_code=type_code, 
+                                                    type_code=type_code,
                                                     filter_area_codes=current_app.config['AREAS_LIST'],
-     limit=limit)
+                                                    limit=limit)
     session.close()
     return jsonify(results)
 
 
 @api.route("/area/geom", methods=["GET"])
 def get_areas_geom():
+    """
+    Returns the geometries of areas
+    """
     session = utils.loadSession()
     limit = request.args.get("limit", 50)
-    results = vmAreasRepository.get_areas_geometries(session=session, 
-                                                     filter_area_codes=current_app.config['AREAS_LIST'], 
-    limit=limit)
+    results = vmAreasRepository.get_areas_geometries(session=session,
+                                                     filter_area_codes=current_app.config['AREAS_LIST'],
+                                                     limit=limit)
     session.close()
     return jsonify(results)
 
@@ -135,6 +141,7 @@ if not current_app.config['AFFICHAGE_MAILLE']:
     @api.route("/observations/<area_code>/<int:cd_ref>", methods=["GET"])
     def getObservationsCommuneTaxonAPI(area_code, cd_ref):
         session = utils.loadSession()
+        # Use generic area function to get every type of area
         observations = vmAreasRepository.get_areas_observations_by_cd_ref(
             session, area_code, cd_ref
         )
@@ -145,6 +152,7 @@ if not current_app.config['AFFICHAGE_MAILLE']:
 @api.route("/observationsMaille/<area_code>/<int:cd_ref>", methods=["GET"])
 def getObservationsCommuneTaxonMailleAPI(area_code, cd_ref):
     session = utils.loadSession()
+    # Use generic area function to get every type of area
     observations = vmAreasRepository.get_areas_grid_observations_by_cd_ref(
         session, area_code, cd_ref
     )
