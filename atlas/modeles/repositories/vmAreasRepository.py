@@ -22,7 +22,7 @@ from atlas.modeles.entities.vmTaxons import VmTaxons
 from atlas.modeles.entities.vmTaxref import VmTaxref
 
 
-def filter_by_type_codes(query, type_codes = []):
+def filter_by_type_codes(query, type_codes=[]):
     if len(type_codes) > 0:
         query = query.filter(VmBibAreasTypes.type_code.in_(type_codes))
     return query
@@ -35,21 +35,23 @@ def get_area_from_id(session, id_area):
     query = (
         session.query(
             VmAreas.id_area,
-            VmAreas.area_name, 
-            VmAreas.area_code, 
-            VmAreas.area_geojson, 
-            VmBibAreasTypes.type_name)
-        .filter(VmAreas.id_area==id_area)
-        .join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type))
+            VmAreas.area_name,
+            VmAreas.area_code,
+            VmAreas.area_geojson,
+            VmBibAreasTypes.type_name,
+        )
+        .filter(VmAreas.id_area == id_area)
+        .join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type)
+    )
 
     result = query.first()
     return {
-            "areaId": result.id_area,
-            "areaName": result.area_name,
-            "areaCode": str(result.area_code),
-            "areaGeoJson": json.loads(result.area_geojson),
-            "typeName": result.type_name
-        }
+        "areaId": result.id_area,
+        "areaName": result.area_name,
+        "areaCode": str(result.area_code),
+        "areaGeoJson": json.loads(result.area_geojson),
+        "typeName": result.type_name,
+    }
 
 
 def last_observations_area_maille(session, myLimit, idArea):
@@ -85,9 +87,7 @@ def last_observations_area_maille(session, myLimit, idArea):
             q_last_obs.c.lb_nom,
             q_last_obs.c.cd_ref,
             q_last_obs.c.nom_vern,
-            func.st_asgeojson(TGrid.the_geom).label(
-                "geojson_maille"
-            ),
+            func.st_asgeojson(TGrid.the_geom).label("geojson_maille"),
         )
         .join(q_last_obs, q_last_obs.c.the_geom_point.st_intersects(TGrid.the_geom))
         .group_by(
@@ -122,18 +122,16 @@ def last_observations_area_maille(session, myLimit, idArea):
             "id_maille": o.id_maille,
         }
         obsList.append(temp)
-    current_app.logger.debug(
-        "<last_observations_area_maille> end loop: {}".format(datetime.now())
-    )
+    current_app.logger.debug("<last_observations_area_maille> end loop: {}".format(datetime.now()))
     return obsList
 
 
 def get_observers_area(session, id_area):
     q_list_observers = (
         session.query(
-            func.trim(
-                func.unnest(func.string_to_array(VmObservations.observateurs, ","))
-            ).label("observateurs")
+            func.trim(func.unnest(func.string_to_array(VmObservations.observateurs, ","))).label(
+                "observateurs"
+            )
         )
         .join(
             VmCorAreaObservation,
@@ -156,26 +154,25 @@ def search_area_by_type(session, search=None, type_code=None, filter_type_codes=
         session: the db session
         search (str): to be able to filter against the name and the area_code
         filter_type_codes (list): to exclude area codes
-        limit (int): restricts the number of objects returns 
+        limit (int): restricts the number of objects returns
     """
-    query = (
-        session.query(
-            VmAreas.id_area,
-            VmBibAreasTypes.type_name,
-            VmAreas.area_code,
-            func.concat("(", VmBibAreasTypes.type_name, ") ", VmAreas.area_name),
-        )
-        .join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type)
-        
-    )
+    query = session.query(
+        VmAreas.id_area,
+        VmBibAreasTypes.type_name,
+        VmAreas.area_code,
+        func.concat("(", VmBibAreasTypes.type_name, ") ", VmAreas.area_name),
+    ).join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type)
     if type_code is not None:
         filter_type_codes.append(type_code)
     if search is not None:
         search = search.lower()
-        query = query.filter(or_(
-                    VmAreas.area_name.ilike("%" + search + "%"),
-                    VmAreas.area_code.ilike("%" + search + "%")))
-    
+        query = query.filter(
+            or_(
+                VmAreas.area_name.ilike("%" + search + "%"),
+                VmAreas.area_code.ilike("%" + search + "%"),
+            )
+        )
+
     query = filter_by_type_codes(query, type_codes=filter_type_codes)
 
     query = query.limit(limit)
@@ -197,21 +194,18 @@ def get_areas_geometries(session, type_code=None, filter_type_codes=[], limit=50
         type_code (str): filter out by a type_code
         filter_type_codes (list): ignores the codes provided in this list
         limit (int): restricts the number of objects returns
-    
+
     Returns:
         FeatureCollection: the geometries as geojson
     """
-    query = (
-        session.query(
-            VmAreas.area_name,
-            VmAreas.id_area,
-            VmAreas.area_geojson,
-            VmAreas.area_code,
-            VmBibAreasTypes.type_code,
-            VmBibAreasTypes.type_name
-        )
-        .join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type)
-    )
+    query = session.query(
+        VmAreas.area_name,
+        VmAreas.id_area,
+        VmAreas.area_geojson,
+        VmAreas.area_code,
+        VmBibAreasTypes.type_code,
+        VmBibAreasTypes.type_name,
+    ).join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type)
     if type_code is not None:
         filter_type_codes.append(type_code)
 
@@ -228,7 +222,7 @@ def get_areas_geometries(session, type_code=None, filter_type_codes=[], limit=50
                     "area_name": r.area_name,
                     "area_code": r.area_code,
                     "type_code": r.type_code,
-                    "type_name": r.type_name
+                    "type_name": r.type_name,
                 },
             )
             for r in query.all()
@@ -242,23 +236,27 @@ def get_areas_observations(session, limit, id_area):
     this area
     """
     query = (
-        session.query(
-            VmObservations.id_observation,
-            VmObservations.diffusion_level,
-            VmTaxref.nom_vern,
-            VmTaxref.lb_nom,
-            VmTaxref.group2_inpn,
-            VmObservations.dateobs,
-            VmObservations.observateurs,
-            func.st_asgeojson(VmObservations.the_geom_point).label("geometry"),
+        (
+            session.query(
+                VmObservations.id_observation,
+                VmObservations.diffusion_level,
+                VmTaxref.nom_vern,
+                VmTaxref.lb_nom,
+                VmTaxref.group2_inpn,
+                VmObservations.dateobs,
+                VmObservations.observateurs,
+                func.st_asgeojson(VmObservations.the_geom_point).label("geometry"),
+            )
+            .join(VmTaxref, VmTaxref.cd_nom == VmObservations.cd_ref)
+            .join(
+                VmCorAreaObservation,
+                VmObservations.id_observation == VmCorAreaObservation.id_observation,
+            )
+            .filter(VmCorAreaObservation.id_area == id_area)
         )
-        .join(VmTaxref, VmTaxref.cd_nom == VmObservations.cd_ref)
-        .join(
-            VmCorAreaObservation,
-            VmObservations.id_observation == VmCorAreaObservation.id_observation,
-        )
-        .filter(VmCorAreaObservation.id_area == id_area)
-    ).limit(limit).all()
+        .limit(limit)
+        .all()
+    )
     result = []
     for r in query:
         temp = r._asdict()
@@ -311,9 +309,7 @@ def get_areas_grid_observations_by_cd_ref(session, area_code, cd_ref):
         session.query(
             TGrid.id_maille,
             func.extract("year", VmObservations.dateobs).label("annee"),
-            func.st_asgeojson(TGrid.the_geom, 4326).label(
-                "geojson_maille"
-            ),
+            func.st_asgeojson(TGrid.the_geom, 4326).label("geojson_maille"),
         )
         .join(VmAreas, VmAreas.the_geom.st_intersects(VmObservations.the_geom_point))
         .join(TGrid, TGrid.the_geom.st_intersects(VmObservations.the_geom_point))
@@ -321,9 +317,7 @@ def get_areas_grid_observations_by_cd_ref(session, area_code, cd_ref):
         .order_by(TGrid.id_maille)
     )
 
-    current_app.logger.debug(
-        "<get_areas_grid_observations_by_cdnom> QUERY: {}".format(query)
-    )
+    current_app.logger.debug("<get_areas_grid_observations_by_cdnom> QUERY: {}".format(query))
     tabObs = list()
     for o in query.all():
         temp = {
@@ -406,7 +400,9 @@ def get_surrounding_areas(session, id_area, filter_type_codes=[]):
         id_area (int): the id of the area
     """
     subquery = (
-        session.query(VmAreas.id_type, VmAreas.the_geom).filter(VmAreas.id_area == id_area).subquery()
+        session.query(VmAreas.id_type, VmAreas.the_geom)
+        .filter(VmAreas.id_area == id_area)
+        .subquery()
     )
 
     query = (
@@ -418,7 +414,12 @@ def get_surrounding_areas(session, id_area, filter_type_codes=[]):
             VmBibAreasTypes.type_name,
         )
         .join(VmBibAreasTypes, VmAreas.id_type == VmBibAreasTypes.id_type)
-        .filter(and_(VmAreas != id_area, VmAreas.the_geom.st_intersects(subquery.c.the_geom.st_buffer(0))))
+        .filter(
+            and_(
+                VmAreas != id_area,
+                VmAreas.the_geom.st_intersects(subquery.c.the_geom.st_buffer(0)),
+            )
+        )
     )
 
     query = filter_by_type_codes(query, type_codes=filter_type_codes)
@@ -436,9 +437,9 @@ def stats(session, type_codes):
     sums = []
     for type_code in type_codes:
         # Use a case to be able to select a sum of each type
-        sums.append(func.sum(case((VmBibAreasTypes.type_code == type_code, 1), else_=0)).label(type_code))
+        sums.append(
+            func.sum(case((VmBibAreasTypes.type_code == type_code, 1), else_=0)).label(type_code)
+        )
 
-    query = (
-        session.query(*sums)
-        .join(VmAreas, VmBibAreasTypes.id_type == VmAreas.id_type))
+    query = session.query(*sums).join(VmAreas, VmBibAreasTypes.id_type == VmAreas.id_type)
     return query.first()._asdict()
