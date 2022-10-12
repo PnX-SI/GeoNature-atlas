@@ -102,11 +102,7 @@ function displayObsPreciseBaseUrl(areaCode, cd_ref) {
 }
 
 function displayObsGridBaseUrl() {
-    if (sheetType === 'commune') {
-        return configuration.URL_APPLICATION + "/api/observationsMaille/"
-    } else {
-        return configuration.URL_APPLICATION + "/api/observationsMaille/area/"
-    }
+  return configuration.URL_APPLICATION + "/api/observationsMaille/"
 }
 
 // display observation on click

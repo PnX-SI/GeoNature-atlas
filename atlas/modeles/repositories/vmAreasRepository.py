@@ -54,6 +54,7 @@ def get_id_area(session, type_code, area_code):
 def get_area_from_id(session, id_area):
     query = (
         session.query(
+            VmAreas.id_area,
             VmAreas.area_name, 
             VmAreas.area_code, 
             VmAreas.area_geojson, 
@@ -63,6 +64,7 @@ def get_area_from_id(session, id_area):
 
     result = query.first()
     return {
+            "areaId": result.id_area,
             "areaName": result.area_name,
             "areaCode": str(result.area_code),
             "areaGeoJson": json.loads(result.area_geojson),
@@ -168,7 +170,7 @@ def get_observers_area(session, id_area):
     return query.all()
 
 
-def search_area_by_type(session, search=None, type_code=None, limit=50):
+def search_area_by_type(session, search=None, type_code=None, filter_area_codes=[], limit=50):
     query = (
         session.query(
             VmAreas.id_area,
@@ -186,7 +188,8 @@ def search_area_by_type(session, search=None, type_code=None, limit=50):
         query = query.filter(or_(
                     VmAreas.area_name.ilike("%" + search + "%"),
                     VmAreas.area_code.ilike("%" + search + "%")))
-    
+    if len(filter_area_codes) > 0:
+        query = query.filter(VmBibAreasTypes.type_code.in_(filter_area_codes))
     query = query.limit(limit)
     current_app.logger.debug("<search_area_by_type> query {}".format(query))
 
@@ -197,7 +200,7 @@ def search_area_by_type(session, search=None, type_code=None, limit=50):
     return areaList
 
 
-def get_areas_geometries(session, type_code=None, limit=50):
+def get_areas_geometries(session, type_code=None, filter_area_codes=[], limit=50):
     query = (
         session.query(
             VmAreas.area_name,
@@ -211,6 +214,8 @@ def get_areas_geometries(session, type_code=None, limit=50):
     )
     if type_code is not None:
         query = query.filter(VmBibAreasTypes.type_code == type_code)
+    if len(filter_area_codes) > 0:
+        query = query.filter(VmBibAreasTypes.type_code.in_(filter_area_codes))
     query = query.limit(limit)
     return FeatureCollection(
         [
@@ -259,7 +264,7 @@ def get_areas_observations(session, limit, id_area):
     return result
 
 
-def get_areas_observations_by_cdnom(session, id_area):
+def get_areas_observations_by_cd_ref(session, area_code, cd_ref):
     req = (
         session.query(
             VmObservations.id_observation,
@@ -275,19 +280,20 @@ def get_areas_observations_by_cdnom(session, id_area):
             VmCorAreaObservation,
             VmObservations.id_observation == VmCorAreaObservation.id_observation,
         )
-        .filter(VmCorAreaObservation.id_area == id_area)
+        .join(VmAreas, VmAreas.id_area == VmCorAreaObservation.id_area)
+        .filter(VmAreas.area_code == area_code, VmObservations.cd_ref == cd_ref)
     ).all()
     result = []
     for r in req:
         temp = r._asdict()
-        temp["geometry"] = json.loads(r.geometry or "{}")
+        temp["geojson_point"] = json.loads(r.geometry or "{}")
         temp["dateobs"] = str(r.dateobs)
         temp["group2_inpn"] = utils.deleteAccent(r.group2_inpn)
         result.append(temp)
     return result
 
 
-def get_areas_grid_observations_by_cdnom(session, id_area, cd_nom):
+def get_areas_grid_observations_by_cd_ref(session, area_code, cd_ref):
     query = (
         session.query(
             TGrid.id_maille,
@@ -298,7 +304,7 @@ def get_areas_grid_observations_by_cdnom(session, id_area, cd_nom):
         )
         .join(VmAreas, VmAreas.the_geom.st_intersects(VmObservations.the_geom_point))
         .join(TGrid, TGrid.the_geom.st_intersects(VmObservations.the_geom_point))
-        .filter(and_(VmObservations.cd_ref == cd_nom, VmAreas.area_code == id_area))
+        .filter(and_(VmObservations.cd_ref == cd_ref, VmAreas.area_code == area_code))
         .order_by(TGrid.id_maille)
     )
 
@@ -385,7 +391,7 @@ def get_surrounding_areas(session, id_area):
             VmBibAreasTypes.type_name,
         )
         .join(VmBibAreasTypes, VmAreas.id_type == VmBibAreasTypes.id_type)
-        .filter(and_(VmAreas.the_geom.st_intersects(subquery.c.the_geom.st_buffer(0)), VmAreas != id_area))
+        .filter(and_(VmAreas != id_area, VmAreas.the_geom.st_intersects(subquery.c.the_geom.st_buffer(0))))
     )
 
     return query.all()

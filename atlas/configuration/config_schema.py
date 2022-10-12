@@ -217,6 +217,8 @@ class AtlasConfig(Schema):
     TEMPLATES_AUTO_RELOAD = fields.Boolean(load_default=False)
     # Enable the search on other areas
     EXTENDED_AREAS = fields.Boolean(load_default=False)
+    # Restricts the search (/area) and the /area/geom API 
+    AREAS_LIST = fields.List(fields.String, load_default=[])
 
     @validates_schema
     def validate_url_taxhub(self, data, **kwargs):

@@ -41,7 +41,11 @@ def search_area():
     search = request.args.get("search")
     type_code = request.args.get("type")
     limit = request.args.get("limit", 50)
-    results = vmAreasRepository.search_area_by_type(session=session, search=search, type_code=type_code, limit=limit)
+    results = vmAreasRepository.search_area_by_type(session=session, 
+                                                    search=search, 
+                                                    type_code=type_code, 
+                                                    filter_area_codes=current_app.config['AREAS_LIST'],
+     limit=limit)
     session.close()
     return jsonify(results)
 
@@ -49,7 +53,10 @@ def search_area():
 @api.route("/area/geom", methods=["GET"])
 def get_areas_geom():
     session = utils.loadSession()
-    results = vmAreasRepository.get_areas_geometries(session=session)
+    limit = request.args.get("limit", 50)
+    results = vmAreasRepository.get_areas_geometries(session=session, 
+                                                     filter_area_codes=current_app.config['AREAS_LIST'], 
+    limit=limit)
     session.close()
     return jsonify(results)
 
@@ -125,23 +132,23 @@ def getObservationsGenericApi(cd_ref: int):
     
 
 if not current_app.config['AFFICHAGE_MAILLE']:
-    @api.route("/observations/<insee>/<int:cd_ref>", methods=["GET"])
-    def getObservationsCommuneTaxonAPI(insee, cd_ref):
-        connection = utils.engine.connect()
-        observations = vmObservationsRepository.getObservationTaxonCommune(
-            connection, insee, cd_ref
+    @api.route("/observations/<area_code>/<int:cd_ref>", methods=["GET"])
+    def getObservationsCommuneTaxonAPI(area_code, cd_ref):
+        session = utils.loadSession()
+        observations = vmAreasRepository.get_areas_observations_by_cd_ref(
+            session, area_code, cd_ref
         )
-        connection.close()
+        session.close()
         return jsonify(observations)
 
 
-@api.route("/observationsMaille/<insee>/<int:cd_ref>", methods=["GET"])
-def getObservationsCommuneTaxonMailleAPI(insee, cd_ref):
-    connection = utils.engine.connect()
-    observations = vmObservationsMaillesRepository.getObservationsTaxonCommuneMaille(
-        connection, insee, cd_ref
+@api.route("/observationsMaille/<area_code>/<int:cd_ref>", methods=["GET"])
+def getObservationsCommuneTaxonMailleAPI(area_code, cd_ref):
+    session = utils.loadSession()
+    observations = vmAreasRepository.get_areas_grid_observations_by_cd_ref(
+        session, area_code, cd_ref
     )
-    connection.close()
+    session.close()
     return jsonify(observations)
 
 
