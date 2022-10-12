@@ -22,6 +22,12 @@ from atlas.modeles.entities.vmTaxons import VmTaxons
 from atlas.modeles.entities.vmTaxref import VmTaxref
 
 
+def filter_by_type_codes(query, type_codes = []):
+    if len(type_codes) > 0:
+        query = query.filter(VmBibAreasTypes.type_code.in_(type_codes))
+    return query
+
+
 def get_area_from_id(session, id_area):
     """
     Get area info from an id
@@ -142,14 +148,14 @@ def get_observers_area(session, id_area):
     return query.all()
 
 
-def search_area_by_type(session, search=None, type_code=None, filter_area_codes=[], limit=50):
+def search_area_by_type(session, search=None, type_code=None, filter_type_codes=[], limit=50):
     """
     Filter out the areas by the provided params:
 
     Args:
         session: the db session
         search (str): to be able to filter against the name and the area_code
-        filter_area_codes (list): to exclude area codes
+        filter_type_codes (list): to exclude area codes
         limit (int): restricts the number of objects returns 
     """
     query = (
@@ -163,14 +169,15 @@ def search_area_by_type(session, search=None, type_code=None, filter_area_codes=
         
     )
     if type_code is not None:
-        query = query.filter(VmBibAreasTypes.type_code == type_code)
+        filter_type_codes.append(type_code)
     if search is not None:
         search = search.lower()
         query = query.filter(or_(
                     VmAreas.area_name.ilike("%" + search + "%"),
                     VmAreas.area_code.ilike("%" + search + "%")))
-    if len(filter_area_codes) > 0:
-        query = query.filter(VmBibAreasTypes.type_code.in_(filter_area_codes))
+    
+    query = filter_by_type_codes(query, type_codes=filter_type_codes)
+
     query = query.limit(limit)
     current_app.logger.debug("<search_area_by_type> query {}".format(query))
 
@@ -181,18 +188,18 @@ def search_area_by_type(session, search=None, type_code=None, filter_area_codes=
     return areaList
 
 
-def get_areas_geometries(session, type_code=None, filter_area_codes=[], limit=50):
+def get_areas_geometries(session, type_code=None, filter_type_codes=[], limit=50):
     """
     Returns a Feature collection of all the areas
 
     Args:
         session: the db session
         type_code (str): filter out by a type_code
-        filter_area_codes (list): ignores the codes provided in this list
+        filter_type_codes (list): ignores the codes provided in this list
         limit (int): restricts the number of objects returns
     
     Returns:
-        FeatureCollection: the geometries as geosjon
+        FeatureCollection: the geometries as geojson
     """
     query = (
         session.query(
@@ -206,9 +213,10 @@ def get_areas_geometries(session, type_code=None, filter_area_codes=[], limit=50
         .join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type)
     )
     if type_code is not None:
-        query = query.filter(VmBibAreasTypes.type_code == type_code)
-    if len(filter_area_codes) > 0:
-        query = query.filter(VmBibAreasTypes.type_code.in_(filter_area_codes))
+        filter_type_codes.append(type_code)
+
+    query = filter_by_type_codes(query, type_codes=filter_type_codes)
+
     query = query.limit(limit)
     return FeatureCollection(
         [
@@ -389,7 +397,7 @@ def get_area_taxa(session, id_area):
     return {"taxons": result, "nbObsTotal": nbObsTotal}
 
 
-def get_surrounding_areas(session, id_area):
+def get_surrounding_areas(session, id_area, filter_type_codes=[]):
     """
     Returns the areas around the given id_area
 
@@ -400,15 +408,7 @@ def get_surrounding_areas(session, id_area):
     subquery = (
         session.query(VmAreas.id_type, VmAreas.the_geom).filter(VmAreas.id_area == id_area).subquery()
     )
-    # Only way to get rid of a strange warning : vmAreasRepository.py:416: SAWarning: SELECT statement has a cartesian 
-    #    product between  FROM element(s) "anon_1" and FROM element "atlas.vm_l_areas".  
-    #    Apply join condition(s) between each element to resolve.
-    # Is to add a join(subquery...) and select VmAreas.id_type in the subquery...
-    # TODO: find a better way...
-    #   Original query :
-    #       select id_area, area_name, area_code, type_code, type_name from atlas.vm_l_areas vla 
-    #       where id_area <> :id_area 
-    #       and st_intersects(vla.the_geom, st_buffer((select the_geom from atlas.vm_l_areas where id_area=:id_area),0))
+
     query = (
         session.query(
             VmAreas.id_area,
@@ -418,10 +418,10 @@ def get_surrounding_areas(session, id_area):
             VmBibAreasTypes.type_name,
         )
         .join(VmBibAreasTypes, VmAreas.id_type == VmBibAreasTypes.id_type)
-        .join(subquery, subquery.c.id_type == VmBibAreasTypes.id_type)
         .filter(and_(VmAreas != id_area, VmAreas.the_geom.st_intersects(subquery.c.the_geom.st_buffer(0))))
     )
 
+    query = filter_by_type_codes(query, type_codes=filter_type_codes)
     return query.all()
 
 

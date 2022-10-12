@@ -47,7 +47,7 @@ def search_area():
     results = vmAreasRepository.search_area_by_type(session=session, 
                                                     search=search, 
                                                     type_code=type_code,
-                                                    filter_area_codes=current_app.config['AREAS_LIST'],
+                                                    filter_type_codes=current_app.config['AREAS_LIST'],
                                                     limit=limit)
     session.close()
     return jsonify(results)
@@ -63,7 +63,7 @@ def get_areas_geom():
     type_code = request.args.get("type")
     results = vmAreasRepository.get_areas_geometries(session=session,
                                                      type_code=type_code,
-                                                     filter_area_codes=current_app.config['AREAS_LIST'],
+                                                     filter_type_codes=current_app.config['AREAS_LIST'],
                                                      limit=limit)
     session.close()
     return jsonify(results)

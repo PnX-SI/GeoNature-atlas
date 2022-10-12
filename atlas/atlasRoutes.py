@@ -375,7 +375,9 @@ def area_sheet(id_area):
             session, current_app.config["NB_LAST_OBS"], id_area
         )
 
-    surroundingAreas = vmAreasRepository.get_surrounding_areas(session=session, id_area=id_area)
+    surroundingAreas = vmAreasRepository.get_surrounding_areas(session=session, 
+                                                               id_area=id_area, 
+                                                               filter_type_codes=current_app.config['AREAS_LIST'])
 
     observers = vmAreasRepository.get_observers_area(session, id_area=id_area)
 
