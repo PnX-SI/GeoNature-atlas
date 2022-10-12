@@ -357,7 +357,7 @@ def ficheCommune(insee):
     )
 
 
-@main.route("/area/<id_area>", methods=["GET", "POST"])
+@main.route("/area/<id_area>", methods=["GET"])
 def area_sheet(id_area):
     """
     Generates the AreaSheet html
