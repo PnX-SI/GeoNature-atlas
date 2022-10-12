@@ -30,9 +30,11 @@ FROM
     ref_geo.l_areas a
         JOIN atlas.vm_bib_areas_types t
              ON t.id_type = a.id_type
+        JOIN atlas.t_layer_territoire tlt 
+             ON st_intersects(st_transform(a.geom, 4326) , tlt.the_geom)
 WHERE
     enable = TRUE AND
-    type_code IN ('M10', 'COM', 'ZNIEFF1', 'ZNIEFF2')
+    t.type_code NOT IN ('M1', 'M5', 'M10', 'COM')
 WITH DATA;
 
 CREATE UNIQUE INDEX vm_l_areas_id_area_idx
