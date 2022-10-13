@@ -7,11 +7,11 @@ CHANGELOG
 
 🚀 **Nouveautés** 
 
-- Ajout du paramètre `OBSERVER_MODULE` permettant de masquer les observateurs des fiches espèces
+- Ajout du paramètre `DISPLAY_OBSERVERS` permettant de masquer les observateurs des fiches espèces
 
 ⚠️ **Notes de version** 
 
-- Suppression du paramètre `ANONYMIZE` au profit de `ORGANISM_MODULE` et `OBSERVER_MODULE` qui permettent 
+- Suppression du paramètre `ANONYMIZE` au profit de `ORGANISM_MODULE` et `DISPLAY_OBSERVERS` qui permettent 
   d'anonymiser indépendamment les organismes et les observateurs
 
 1.5.1 (2021-12-06)

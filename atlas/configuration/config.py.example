@@ -41,7 +41,7 @@ URL_APPLICATION = ""
 ORGANISM_MODULE = False
 
 # Shows the names of the observers in the species sheet
-OBSERVER_MODULE = True
+DISPLAY_OBSERVERS = True
 
 ###########################
 ###### Multilingual #######

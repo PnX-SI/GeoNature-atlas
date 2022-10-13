@@ -125,7 +125,7 @@ class AtlasConfig(Schema):
     MULTILINGUAL = fields.Boolean(load_default=False)
     ID_GOOGLE_ANALYTICS = fields.String(load_default="UA-xxxxxxx-xx")
     ORGANISM_MODULE = fields.Boolean(load_default=False)
-    OBSERVER_MODULE = fields.Boolean(load_default=True)
+    DISPLAY_OBSERVERS = fields.Boolean(load_default=True)
     GLOSSAIRE = fields.Boolean(load_default=False)
     IGNAPIKEY = fields.String(load_default="")
     AFFICHAGE_INTRODUCTION = fields.Boolean(load_default=True)

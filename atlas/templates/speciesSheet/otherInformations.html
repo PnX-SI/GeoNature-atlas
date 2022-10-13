@@ -23,7 +23,7 @@
                 </li>
                 {% endif %}
 
-                {% if configuration.OBSERVER_MODULE %}
+                {% if configuration.DISPLAY_OBSERVERS %}
                     <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#observateurs">
                         <b>{{ observers|length }} </b> {{ _('observers')|lower if observers|length > 1 else _('observer')|lower }}
                     </a></li>
@@ -95,7 +95,7 @@
                 </div>
 
                 <!--- oberservers tab-->
-                {% if configuration.OBSERVER_MODULE %}
+                {% if configuration.DISPLAY_OBSERVERS %}
                     <div id="observateurs" class="tab-pane fade">
                         {% for o in observers %}
                             {{ o }}
