@@ -416,7 +416,7 @@ def get_surrounding_areas(session, id_area, filter_type_codes=[]):
         .join(VmBibAreasTypes, VmAreas.id_type == VmBibAreasTypes.id_type)
         .filter(
             and_(
-                VmAreas != id_area,
+                VmAreas.id_area != id_area,
                 VmAreas.the_geom.st_intersects(subquery.c.the_geom.st_buffer(0)),
             )
         )
