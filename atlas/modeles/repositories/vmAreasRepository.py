@@ -162,8 +162,7 @@ def search_area_by_type(session, search=None, type_code=None, filter_type_codes=
         VmAreas.area_code,
         func.concat("(", VmBibAreasTypes.type_name, ") ", VmAreas.area_name),
     ).join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type)
-    if type_code is not None:
-        filter_type_codes.append(type_code)
+
     if search is not None:
         search = search.lower()
         query = query.filter(
@@ -173,11 +172,13 @@ def search_area_by_type(session, search=None, type_code=None, filter_type_codes=
             )
         )
 
-    query = filter_by_type_codes(query, type_codes=filter_type_codes)
+    if type_code is not None:
+        query = filter_by_type_codes(query, type_codes=[type_code])
+    else:
+        query = filter_by_type_codes(query, type_codes=filter_type_codes)
 
     query = query.limit(limit)
     current_app.logger.debug("<search_area_by_type> query {}".format(query))
-
     areaList = []
     for r in query.all():
         temp = {"type_name": r.type_name, "label": r[-1], "value": r.id_area}
