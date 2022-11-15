@@ -16,9 +16,9 @@
                 {#                    <form class="form-inline my-2 my-lg-0">#}
                 <ul class="list-group text-justify" id="surroundingAreasList">
                     {% for area in surroundingAreas %}
-                        <li class="list-group-item border-0">
+                        <li id="taxonListItem" class="list-group-item border-0">
                             <small>{{ area.type_name }}</small><br><b>{{ area.area_name }}</b>
-                            <span class="float-right "><a class="badge badge-info"
+                            <span class="float-right "><a class="badge badge-primary"
                                     href="{{ url_for('main.area_sheet',id_area=area.id_area) }}">
                                                                           {{ _('check.area.sheet') }}</a>
                             </span>
