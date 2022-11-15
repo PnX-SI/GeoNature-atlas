@@ -1,7 +1,8 @@
 $(".lazy").lazy({
           effect: "fadeIn",
           effectTime: 2000,
-          threshold: 0
+          threshold: 0,
+          appendScroll: $("#taxonList")
         });
 $('[data-toggle="tooltip"]').tooltip();
 $(document).ready(function(){
