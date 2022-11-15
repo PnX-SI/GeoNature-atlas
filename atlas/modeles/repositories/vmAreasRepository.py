@@ -212,7 +212,7 @@ def get_areas_geometries(session, type_code=None, filter_type_codes=[], limit=50
 
     query = filter_by_type_codes(query, type_codes=filter_type_codes)
 
-    query = query.limit(limit)
+    query = query.order_by(VmBibAreasTypes.type_code).limit(limit)
     return FeatureCollection(
         [
             Feature(
