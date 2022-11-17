@@ -60,10 +60,3 @@ SELECT o.id_observation,
 WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_cor_area_observation(id_observation, id_area);
-
-GRANT SELECT ON TABLE atlas.vm_bib_areas_types TO my_reader_user;
-GRANT SELECT ON TABLE atlas.vm_l_areas TO my_reader_user;
-GRANT SELECT ON TABLE atlas.vm_cor_area_observation TO my_reader_user;
-
-
-

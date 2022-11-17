@@ -416,7 +416,7 @@ if ! database_exists $db_name
 
             echo "[$(date +'%H:%M:%S')] Creating atlas.vm_l_areas, atlas.vm_bib_areas_types, atlas.vm_cor_area_observation ..."
             export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host \
-            -f data/atlas_with_extended_areas.sql &>> log/install_db.log
+            -f atlas/14.atlas.vm_cor_area_observation.sql &>> log/install_db.log
             echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
         fi
         # FR: Création de la vue matérialisée vm_mailles_observations (nombre d'observations par maille et par taxon)
