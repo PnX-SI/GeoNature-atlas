@@ -32,7 +32,7 @@ Atlas en ligne utilisant GeoNature-atlas :
 - `PN du Mercantour <http://biodiversite.mercantour-parcnational.fr>`_
 - `PN de la Vanoise <http://biodiversite.vanoise-parcnational.fr>`_
 - `PN des Ecrins <http://biodiversite.ecrins-parcnational.fr>`_ 
-- `PNR Normandie Maine <http://observatoire.parc-naturel-normandie-maine.fr/atlas>`_
+- `PNR Normandie Maine <https://biodiversite.parc-naturel-normandie-maine.fr>`_
 - `CEN des Pays de la Loire <http://www.biodiv-paysdelaloire.fr>`_
 - `Atlas du Languedoc-Roussillon <https://atlas.libellules-et-papillons-lr.org>`_
 - `LPO Auvergne-Rhône-Alpes <https://carto.fauneauvergnerhonealpes.org>`_
