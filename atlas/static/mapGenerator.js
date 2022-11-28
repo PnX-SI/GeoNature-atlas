@@ -213,6 +213,10 @@ function styleMaille(feature) {
 }
 
 function generateLegendMaille() {
+  // check if contour already exists
+  if (L.DomUtil.get("contour-legend")) {
+    return
+  }
   legend.onAdd = function (map) {
     var div = L.DomUtil.create("div", "info legend"),
       grades = [0, 1, 2, 5, 10, 20, 50, 100],
@@ -228,6 +232,8 @@ function generateLegendMaille() {
           (grades[i + 1] ? "&ndash;" + grades[i + 1] + "<br>" : "+")
       );
     }
+    // Add id to get it above
+    div.id = "contour-legend"
     div.innerHTML = labels.join("<br>");
 
     return div;
