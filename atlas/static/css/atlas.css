@@ -304,6 +304,11 @@ li.sidebar-brand {
   padding: 5px;
 }
 
+.species-grid-popup {
+  max-height: 120px;
+  overflow-y: auto;
+}
+
 /* END Legend MAPS */
 
 input.ajax-search {

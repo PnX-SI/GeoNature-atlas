@@ -556,10 +556,11 @@ function printEspece(tabEspece, tabCdRef) {
 }
 
 function onEachFeatureMailleLastObs(feature, layer) {
+  // Add class to be able to scroll the species list
   popupContent =
-    "<b>Espèces observées dans la maille: </b> <ul> " +
+    "<b>Espèces observées dans la maille: </b> <div class=\"species-grid-popup\"><ul> " +
     printEspece(feature.properties.list_taxon, feature.properties.list_cdref) +
-    "</ul>";
+    "</ul></div>";
 
   layer.bindPopup(popupContent);
 }
@@ -574,6 +575,9 @@ function styleMailleLastObs() {
 }
 
 function generateGeoJsonMailleLastObs(observations) {
+  // sort it because at each change of idMaille, the 
+  // list_taxon is reset so not all species are displayed
+  observations = observations.sort((a,b) => compare(a, b))
   var i = 0;
   myGeoJson = { type: "FeatureCollection", features: [] };
   while (i < observations.length) {
