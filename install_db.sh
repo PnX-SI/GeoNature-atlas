@@ -40,7 +40,7 @@ function database_exists () {
 }
 
 function test_settings() {
-    fields=('owner_atlas' 'user_pg' 'altitudes' 'time' 'attr_desc' 'attr_commentaire' 'attr_milieu' 'attr_chorologie')
+    fields=('owner_atlas' 'user_pg' 'altitudes' 'time' 'displayed_attr')
     echo "Checking the validity of settings.ini"
     for i in "${!fields[@]}"
     do
