@@ -21,6 +21,10 @@ CHANGELOG
 - Harmonisation de l'affichage du picto group2_inpn #424, #425, #426, #427, #429 (par @MissT)
 - Afficage en double de la légende quand le slider était touché #452 (par @mvergez)
 
+🐛 **Optimisations**
+
+- Optimisation de la requête de sélection des "Nouvelles espèces observées" #455 (par @andriacap)
+
 ⚠️ **Notes de version**
 
 - Suppression du paramètre `ANONYMIZE` au profit de `ORGANISM_MODULE` et `DISPLAY_OBSERVERS` qui permettent
