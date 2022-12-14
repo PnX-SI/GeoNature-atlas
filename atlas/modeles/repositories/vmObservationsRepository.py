@@ -300,13 +300,16 @@ def genericStatMedias(connection, tab):
 
 def getLastDiscoveries(connection):
     sql="""
-    SELECT date(min(dateobs)), vo.cd_ref, vt.lb_nom, vt.nom_vern, m.id_media, m.chemin, m.url, vt.group2_inpn
-    FROM atlas.vm_observations vo 
-    JOIN atlas.vm_taxref vt ON vo.cd_ref = vt.cd_nom 
-    LEFT JOIN atlas.vm_medias m ON m.cd_ref=vo.cd_ref and m.id_type = :thisidtype
+    with t as (SELECT date(min(vo.dateobs)) date, vo.cd_ref
+    FROM atlas.vm_observations vo
+    GROUP BY vo.cd_ref
+    ORDER BY date desc)
+    select t.*, vt.lb_nom, vt.nom_vern, m.id_media, m.chemin, m.url, vt.group2_inpn
+    from t 
+    JOIN atlas.vm_taxref vt ON t.cd_ref = vt.cd_nom 
+    LEFT JOIN atlas.vm_medias m ON m.cd_ref=t.cd_ref and m.id_type = :thisidtype
     WHERE id_rang='ES'
-    GROUP BY vo.cd_ref, vt.lb_nom, vt.nom_vern, m.id_media, m.chemin, m.url, vt.group2_inpn
-    ORDER BY min(dateobs) DESC
+    order by t.date desc
     LIMIT 6
     """
     req = connection.execute(text(sql), thisidtype=current_app.config["ATTR_MAIN_PHOTO"])
