@@ -17,6 +17,9 @@ JOIN atlas.vm_cor_area_synthese cor ON cor.id_synthese = obs.id_observation AND 
 
 create index on atlas.vm_observations_mailles (id_maille);
 create index on atlas.vm_observations_mailles (cd_ref);
+
+CREATE UNIQUE INDEX i_vm_observations_mailles ON atlas.vm_observations_mailles USING btree (id_observation, id_maille );
+
 -- create index on atlas.vm_observations_mailles (geojson_maille);
 -- This line produces this error :
 -- SQL Error [54000]: ERROR: index row requires 8400 bytes, maximum size is 8191

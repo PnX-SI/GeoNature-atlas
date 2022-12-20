@@ -39,6 +39,8 @@ AS SELECT sa.id_synthese,
   WHERE (t.type_code::text = ANY (ARRAY['M1'::character varying, 'M5'::character varying, 'M10'::character varying]::text[]))
   AND (NOT sensi.cd_nomenclature::text = '4'::TEXT OR sensi.cd_nomenclature IS NULL )
 WITH DATA;
+CREATE UNIQUE INDEX i_vm_cor_area_synthese ON atlas.vm_cor_area_synthese USING btree (id_synthese, id_area );
+
 --Toutes les observations
 
 --DROP materialized view atlas.vm_observations;
@@ -498,6 +500,7 @@ CREATE OR REPLACE FUNCTION atlas.refresh_materialized_view_data()
 RETURNS VOID AS $$
 BEGIN
 
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_cor_area_synthese;
   REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_observations;
   REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_observations_mailles;
   REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_mois;
