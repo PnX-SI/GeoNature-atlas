@@ -97,8 +97,8 @@ limit_shp=/home/`whoami`/atlas/data/ref/territoire.shp
 # Mon territoire se situe en métropole ? Dans ce cas, on utilise les mailles fournies par l'INPN
 metropole=true
 
-# Choisissez alors la taille de vos mailles à utiliser (en km) / Valeurs possibles 1, 5 ou 10
-taillemaille=5
+# Choisissez alors la taille de vos mailles à utiliser (en km) / Valeurs possibles M1, M5 ou M10
+taillemaille=M5
 
 # Si 'metropole=false', rajoutez dans le dossier /data/ref un SHP des mailles de votre territoire et renseignez son chemin
 chemin_custom_maille=/home/`whoami`/atlas/data/ref/custom_maille.shp
