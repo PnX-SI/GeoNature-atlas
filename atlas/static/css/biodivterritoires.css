@@ -1,0 +1,13 @@
+.modal-full-frame {
+    top: 0 !important;
+    z-index: 2000;
+}
+.modal-full-frame .modal-dialog {
+    margin: 7vh 4vw;
+}
+.modal-full-frame .modal-dialog .modal-content {
+    height: auto;
+    min-height: 86vh;
+    width: auto;
+    min-width: 92vw;
+}
