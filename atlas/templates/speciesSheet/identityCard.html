@@ -17,9 +17,10 @@
                             <img id="mainImg" src="{{ img_path }}"
                                  style="width:100%;"
                                  alt="{{ firstPhoto.title }} &copy; {{ firstPhoto.author|striptags }}">
-                            <p class="imgDescription main">{{ firstPhoto.title }}
+                            <p class="imgDescription main">
+                                {{ firstPhoto.title }}<br />
                                 {% if firstPhoto.description %}
-                                    - {{ firstPhoto.description }}
+                                    {{ firstPhoto.description }}<br />
                                 {% endif %}
                                 &copy; {{ firstPhoto.author|striptags }}
                                 {% if firstPhoto.licence %}
@@ -28,7 +29,6 @@
                                 {% if firstPhoto.source %}
                                     - {{ firstPhoto.source }}
                                 {% endif %}
-
                             </p>
                         </a>
                     </div>

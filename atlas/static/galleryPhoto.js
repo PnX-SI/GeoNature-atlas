@@ -10,7 +10,7 @@ function formatPhotoAttribut(attribut) {
 
 // populate HTML with the selected photos
 function generateHtmlPhoto(photos, redimentionnement, taxhub_url) {
-  window.lightbox.enable();
+  lightbox.enable();
 
   if (clearHtml) {
     if (photos.length == 0) {
@@ -40,42 +40,32 @@ function generateHtmlPhoto(photos, redimentionnement, taxhub_url) {
           photo.id_media +
           "?h=500&w=500";
       }
-      onePhoto =
-        "\
-				<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece '> \
-				  <div class='zoom-wrapper' > \
-				 		<a href='" +
-        photo.path +
-        "' data-lightbox='imageSet' data-title='" +
-        photo.title +
-        " - " +
-        photo.description +
-        " &copy; " +
-        photo.author +
-        " - " +
-        photo.licence +
-        " " +
-        photo.source +
-        "' cdRef='" +
-        photo.cd_ref +
-        "'>\
-						<div class='img-custom-medias' style='background-image:url(" +
-        photo_url +
-        ")' alt='" +
-        photo.name +
-        "'> </div> \
-						<div class='stat-medias-hovereffet'> \
-					  <h2 class='overlay-obs'>" +
-        photo.name +
-        " </br> </br>" +
-        photo.nb_obs +
-        " observations </h2>  \
-						<img src='" +
-        configuration.URL_APPLICATION +
-        "/static/images/eye.png'></div> </a> </div> \
-					</div> \
-				</div>\
-			";
+      let subject = `${photo.title}<br/>`;
+      let description = photo.description ? `${photo.description}<br/>` : '';
+      let author = photo.author ? `&copy; ${photo.author} - ` : '';
+      let licence = `${photo.licence} ${photo.source}`;
+      onePhoto = `
+				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece ">
+				  <div class="zoom-wrapper" >
+				 		<a
+              href="${photo.path}"
+              data-lightbox="imageSet"
+              data-title="${subject} ${description} ${author} ${licence}"
+              data-alt="${photo.cd_ref}"
+            >
+						  <div
+                class="img-custom-medias"
+                style="background-image:url('${photo_url}')"
+                alt="${photo.name}"
+              ></div>
+						  <div class="stat-medias-hovereffet">
+					      <h2 class="overlay-obs">${photo.name}</br> </br>${photo.nb_obs} observations</h2>
+						    <img src="${configuration.URL_APPLICATION}/static/images/eye.png">
+              </div>
+            </a>
+          </div>
+				</div>
+			</div>`;
 
       htmlPhoto += onePhoto;
     });
@@ -84,7 +74,7 @@ function generateHtmlPhoto(photos, redimentionnement, taxhub_url) {
 }
 
 function scrollEvent(photos) {
-  $(window).scroll(function() {
+  $(window).on("scroll", function() {
     clearHtml = false;
     if (
       $(window).scrollTop() + $(window).height() >=
@@ -153,7 +143,20 @@ function sufflePhotosEvent(photos) {
   });
 }
 
-$(document).ready(function() {
+jQuery(function () {
+  lightbox.option({
+    "albumLabel": "Image %1 sur %2",
+    "wrapAround": true,
+  })
+  $("#lightbox .lb-next").after('<a class="lb-link" href="#"> Fiche espèce </a>');
+
+  $("#lightbox .lb-link").on("click", function() {
+    let cdRef = $("#lightbox .lb-image").attr("alt");
+    let url = `${configuration.URL_APPLICATION}/espece/${cdRef}`;
+    $(this).attr("href", url);
+    location.href = url;
+  });
+
   $.ajax({
     url: configuration.URL_APPLICATION + "/api/photosGallery",
     dataType: "json",
@@ -171,7 +174,7 @@ $(document).ready(function() {
     orderPhotosEvent(photos);
     sufflePhotosEvent(photos);
 
-    $("#allGroups").click(function() {
+    $("#allGroups").on("click", function() {
       $("#searchPhotos").val("");
       $("body").off("click");
       orderPhotosEvent(photos);
@@ -233,7 +236,7 @@ $(document).ready(function() {
   });
 });
 
-$(".INPNgroup").click(function() {
+$(".INPNgroup").on("click", function() {
   $("#searchPhotos").val("");
   compteurJson = 0;
   clearHtml = true;
@@ -269,8 +272,4 @@ $(".INPNgroup").click(function() {
     orderPhotosEvent(photos);
     sufflePhotosEvent();
   });
-});
-
-$(".lb-link").click(function() {
-  location.href = $(this).attr("href");
 });
