@@ -23,7 +23,7 @@ if (window.innerWidth <= 800 && presentationText) {
   presentationText.hidden = true;
 }
 
-autocompleteSearch = function(inputID, urlDestination, nbProposal) {
+autocompleteSearch = function(inputID, urlDestination, nbProposal, type) {
   $(inputID).autocomplete({
     source: function(request, response) {
       var searchUrl;
@@ -33,7 +33,7 @@ autocompleteSearch = function(inputID, urlDestination, nbProposal) {
         searchUrl = "/api/searchCommune";
       }
       else {
-        searchUrl = "/api/searchArea/"+urlDestination;
+        searchUrl = "/api/area";
       }
       $(inputID)
         .attr("loading", "true")
@@ -45,7 +45,7 @@ autocompleteSearch = function(inputID, urlDestination, nbProposal) {
         );
       $.get(
         configuration.URL_APPLICATION + searchUrl,
-        { search: request.term, limit: nbProposal },
+        { search: request.term, limit: nbProposal, type: type },
         function(results) {
           response(results.slice(0, nbProposal));
           $(inputID)
@@ -94,7 +94,6 @@ $("#searchCommunes").focus(function() {
 $("#searchCommunesStat").focus(function() {
   autocompleteSearch("#searchCommunesStat", "commune", 10);
 });
-
 
 // child list display
 var childList = $("#childList");

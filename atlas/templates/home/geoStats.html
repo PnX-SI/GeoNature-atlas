@@ -1,0 +1,40 @@
+{% block geoStats %} 
+{% for geo in configuration.GLOBAL_GEO_STATS %}
+<div class="col-lg-3 col-md-6 col-xs-12 stat-object">
+  <div class="stat-thumbnail border-right">
+    <i class="fas {{ geo.PICTO }} fa-3x blue"></i>
+    <h1 class="large text-muted">{{ stat.geo[geo.TYPE] | pretty }}</h1>
+    <h4 class="text-muted text-uppercase font-weight-bold">{{ geo.NAME }}</h4>
+    <form
+      class="navbar-form center-input"
+      method="POST"
+      action=""
+      role="search"
+    >
+      <div class="form-group has-feedback">
+        <span class="addon">
+            <i class="fas fa-search" aria-hidden="true"></i>
+        </span>
+        <input
+          id="{{geo.TYPE}}"
+          type="text"
+          class="form-control"
+          placeholder="{{ _('search.for') }} {{ geo.NAME }}"
+        />
+      </div>
+      <input id="hiddenInputAreas" type="hidden" name="search" />
+    </form>
+  </div>
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block additionalFooterAssets %}
+<script>
+  {% for geo in configuration.GLOBAL_GEO_STATS %}
+      $("#{{geo.TYPE}}").focus(function() {
+      autocompleteSearch("#{{geo.TYPE}}", "", 10, "{{geo.TYPE}}");
+      });
+  {% endfor %}
+</script>
+{% endblock %}

@@ -20,6 +20,7 @@ from atlas import utils
 from atlas.env import config
 from atlas.modeles.entities import vmTaxons, vmCommunes
 from atlas.modeles.repositories import (
+    vmAreasRepository,
     vmOrganismsRepository,
     vmTaxonsRepository,
     vmObservationsRepository,
@@ -204,7 +205,11 @@ def index():
     if current_app.config["AFFICHAGE_STAT_GLOBALES"]:
         stat = vmObservationsRepository.statIndex(connection)
     else:
-        stat = []
+        stat = {}
+
+    if current_app.config["GLOBAL_GEO_STATS"]:
+        area_types = [geo["TYPE"] for geo in current_app.config["GLOBAL_GEO_STATS"]]
+        stat['geo'] = vmAreasRepository.stats(session, area_types)
 
     if current_app.config["AFFICHAGE_RANG_STAT"]:
         current_app.logger.debug("start customStat")
@@ -349,6 +354,45 @@ def ficheCommune(insee):
         observers=observers,
         DISPLAY_EYE_ON_LIST=True,
         insee=insee,
+    )
+
+
+@main.route("/area/<id_area>", methods=["GET"])
+def area_sheet(id_area):
+    """
+    Generates the AreaSheet html
+    """
+    session = utils.loadSession()
+
+    listTaxons = vmAreasRepository.get_area_taxa(session, id_area=id_area)
+    area = vmAreasRepository.get_area_from_id(session, id_area=id_area)
+    if current_app.config["AFFICHAGE_MAILLE"]:
+        observations = vmAreasRepository.last_observations_area_maille(
+            session, current_app.config["NB_LAST_OBS"], id_area
+        )
+    else:
+        observations = vmAreasRepository.get_areas_observations(
+            session, current_app.config["NB_LAST_OBS"], id_area
+        )
+
+    surroundingAreas = vmAreasRepository.get_surrounding_areas(session=session, 
+                                                               id_area=id_area, 
+                                                               filter_type_codes=current_app.config['AREAS_LIST'])
+
+    observers = vmAreasRepository.get_observers_area(session, id_area=id_area)
+
+    session.close()
+
+    return render_template(
+        "templates/areaSheet/_main.html",
+        sheetType="area",
+        surroundingAreas=surroundingAreas,
+        listTaxons=listTaxons,
+        areaInfos=area,
+        observations=observations,
+        observers=observers,
+        DISPLAY_EYE_ON_LIST=True,
+        insee=id_area,
     )
 
 

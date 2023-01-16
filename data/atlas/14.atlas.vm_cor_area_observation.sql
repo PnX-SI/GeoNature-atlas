@@ -7,9 +7,7 @@ DROP MATERIALIZED VIEW IF EXISTS atlas.vm_bib_areas_types CASCADE;
 
 CREATE MATERIALIZED VIEW atlas.vm_bib_areas_types AS
 SELECT t.id_type, t.type_code, t.type_name, t.type_desc
-FROM ref_geo.bib_areas_types t
-WHERE
-    type_code IN ('M10', 'COM', 'ZNIEFF1', 'ZNIEFF2');
+FROM ref_geo.bib_areas_types t;
 
 CREATE INDEX ON atlas.vm_bib_areas_types(id_type);
 CREATE INDEX ON atlas.vm_bib_areas_types(type_code);
@@ -32,9 +30,11 @@ FROM
     ref_geo.l_areas a
         JOIN atlas.vm_bib_areas_types t
              ON t.id_type = a.id_type
+        JOIN atlas.t_layer_territoire tlt 
+             ON st_intersects(st_transform(a.geom, 4326) , tlt.the_geom)
 WHERE
     enable = TRUE AND
-    type_code IN ('M10', 'COM', 'ZNIEFF1', 'ZNIEFF2')
+    t.type_code NOT IN ('M1', 'M5', 'M10', 'COM')
 WITH DATA;
 
 CREATE UNIQUE INDEX vm_l_areas_id_area_idx
@@ -53,16 +53,10 @@ CREATE INDEX vm_l_areas_area_name_idx
 DROP MATERIALIZED VIEW IF EXISTS atlas.vm_cor_area_observation;
 
 CREATE MATERIALIZED VIEW atlas.vm_cor_area_observation AS
-SELECT cas.id_synthese AS id_observation, cas.id_area
-FROM
-    synthese.cor_area_synthese cas
-        JOIN atlas.vm_l_areas la ON cas.id_area = la.id_area;
+SELECT o.id_observation,
+    la.id_area
+   FROM atlas.vm_observations o
+     JOIN atlas.vm_l_areas la ON st_intersects(o.the_geom_point, la.the_geom)
+WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_cor_area_observation(id_observation, id_area);
-
-GRANT SELECT ON TABLE atlas.vm_bib_areas_types TO my_reader_user;
-GRANT SELECT ON TABLE atlas.vm_l_areas TO my_reader_user;
-GRANT SELECT ON TABLE atlas.vm_cor_area_observation TO my_reader_user;
-
-
-
