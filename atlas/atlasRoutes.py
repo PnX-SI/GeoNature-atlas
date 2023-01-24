@@ -240,7 +240,7 @@ def index():
     )
 
 
-@main.route("/espece/<int:cd_nom>", methods=["GET", "POST"])
+@main.route("/espece/<int(signed=True):cd_nom>", methods=["GET", "POST"])
 def ficheEspece(cd_nom):
     db_session = utils.loadSession()
     connection = utils.engine.connect()
@@ -352,7 +352,7 @@ def ficheCommune(insee):
     )
 
 
-@main.route("/liste/<cd_ref>", methods=["GET", "POST"])
+@main.route("/liste/<int(signed=True):cd_ref>", methods=["GET", "POST"])
 def ficheRangTaxonomie(cd_ref):
     session = utils.loadSession()
     connection = utils.engine.connect()
