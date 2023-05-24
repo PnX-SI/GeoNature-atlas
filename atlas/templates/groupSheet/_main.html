@@ -43,12 +43,12 @@
 
     <div class="row h-100 flex-grow-1 p-0 m-0 border-bottom">
         <div class="col-12 d-flex flex-column m-0 p-0">
-            <div class="bg-light text-center border-bottom border-right p-2">
+            <div class="bg-color text-center border-bottom border-right p-2">
                 <h1> Les {{ referenciel }} </h1>
                 {% include 'templates/core/statHierarchy.html' %}
             </div>
 
-            <div id="allGroups" class="bg-white border-bottom p-2">
+            <div id="allGroups" class="bg-color border-bottom p-2">
                 {% for group in groups %}
                     <li class="floatLeft">
                         <a href="{{ url_for('main.ficheGroupe', groupe=group.groupAccent ) }}">
