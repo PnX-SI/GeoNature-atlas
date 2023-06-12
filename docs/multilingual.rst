@@ -85,8 +85,6 @@ AJOUTER UNE LANGUE
 
 Tout d'abord, allez dans le fichier ``config.py`` et ajoutez votre langue de la même manière que les autres langues déjà disponibles.
 
-Activez le venv : source venv/bin/activate
-
 Ensuite, dans votre invite de commande, allez dans le chemin de votre atlas et utilisez les commandes suivantes.
 
 ::
