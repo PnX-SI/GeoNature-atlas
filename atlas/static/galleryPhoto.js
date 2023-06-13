@@ -84,11 +84,11 @@ function generateHtmlPhoto(photos, redimentionnement, taxhub_url) {
 }
 
 function scrollEvent(photos) {
-  $(window).scroll(function() {
+  $("#insertPhotos").scroll(function() {
     clearHtml = false;
     if (
-      $(window).scrollTop() + $(window).height() >=
-      $(document).height() * 0.8
+      $("#insertPhotos").scrollTop() + $("#insertPhotos").height() >=
+      $("#insertPhotos")[0].scrollHeight
     ) {
       generateHtmlPhoto(
         photos,
@@ -123,7 +123,7 @@ function orderPhotosEvent(photos) {
       configuration.REDIMENSIONNEMENT_IMAGE,
       configuration.TAXHUB_URL
     );
-    $(window).off("scroll");
+    $("#insertPhotos").off("scroll");
     scrollEvent(sortedPhotos);
   });
 }
@@ -148,7 +148,7 @@ function sufflePhotosEvent(photos) {
       configuration.REDIMENSIONNEMENT_IMAGE,
       configuration.TAXHUB_URL
     );
-    $(window).off("scroll");
+    $("#insertPhotos").off("scroll");
     scrollEvent(photos);
   });
 }
@@ -178,7 +178,7 @@ $(document).ready(function() {
       sufflePhotosEvent(photos);
       clearHtml = true;
       compteurJson = 0;
-      $(window).off("scroll");
+      $("#insertPhotos").off("scroll");
       generateHtmlPhoto(
         photos,
         configuration.REDIMENSIONNEMENT_IMAGE,
@@ -191,7 +191,7 @@ $(document).ready(function() {
 
     // search a photo by the name of the species
     $("#searchPhotos").on("keyup", function() {
-      $(window).off("scroll");
+      $("#insertPhotos").off("scroll");
       $("body").off("click");
       $("#group").html("");
       keyString = this.value;
@@ -238,7 +238,7 @@ $(".INPNgroup").click(function() {
   compteurJson = 0;
   clearHtml = true;
   group = $(this).attr("alt");
-  $(window).off("scroll");
+  $("#insertPhotos").off("scroll");
   $("#page").off("click");
   span = $("#orderPhotos").find("span");
   $(span).attr("class", "fas fa-sort");
