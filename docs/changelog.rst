@@ -12,6 +12,7 @@ CHANGELOG
 - Affichage html du titre du media principale dans la fiche descriptive d'un taxon #420 (par @joelclems)
 - Correction du scroll infini de la gallerie photo #430 (par @mvergez)
 - Lien vers la fiche d'un taxon depuis la gallerie photo #432 (par @mvergez)
+- Page principale (Affichage par maille) scroll sur la liste des taxons #451 (par @mvergez)
 
 
 1.5.1 (2021-12-06)
