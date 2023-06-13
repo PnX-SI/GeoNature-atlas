@@ -77,9 +77,9 @@
                         {{ taxon.nom_rang }} :
                         <i>
                             {% if ( taxon.tri_rang >= configuration.LIMIT_FICHE_LISTE_HIERARCHY) %}
-                                <a href="{{ url_for('main.ficheEspece', cd_nom=taxon.cd_ref) }}">{{ taxon.lb_nom }}</a>
+                                <a href="{{ url_for('main.ficheEspece', cd_nom=taxon.cd_ref) }}"><i>{{ taxon.lb_nom }}</i></a>
                             {% else %}
-                                <a href="{{ url_for('main.ficheRangTaxonomie', cd_ref = taxon.cd_ref) }}">{{ taxon.lb_nom }}</a>
+                                <a href="{{ url_for('main.ficheRangTaxonomie', cd_ref = taxon.cd_ref) }}"><i>{{ taxon.lb_nom }}</i></a>
 
                             {% endif %}
                         </i>
@@ -143,7 +143,7 @@
                                                             -
                                                             </td>
                                                         {% endif %}
-                                                    <td> {{ child.lb_nom }} </td>
+                                                    <td><i>{{ child.lb_nom }}</i></td>
                                                     <td>
                                                         {% if child.protection != None %}
                                                             <a href="https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.taxonSearch.cd_ref }}/tab/statut"

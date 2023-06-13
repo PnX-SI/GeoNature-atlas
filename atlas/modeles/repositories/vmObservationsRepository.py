@@ -57,11 +57,11 @@ def searchObservationsChilds(session, cd_ref):
 
 
 def firstObservationChild(connection, cd_ref):
-    sql = """SELECT min(taxons.yearmin) AS yearmin 
-    FROM atlas.vm_taxons taxons 
-    JOIN atlas.vm_taxref taxref ON taxref.cd_ref=taxons.cd_ref 
-    WHERE taxons.cd_ref IN ( 
-    SELECT * FROM atlas.find_all_taxons_childs(:thiscdref) 
+    sql = """SELECT min(taxons.yearmin) AS yearmin
+    FROM atlas.vm_taxons taxons
+    JOIN atlas.vm_taxref taxref ON taxref.cd_ref=taxons.cd_ref
+    WHERE taxons.cd_ref IN (
+    SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
     )OR taxons.cd_ref = :thiscdref"""
     req = connection.execute(text(sql), thiscdref=cd_ref)
     for r in req:
@@ -71,8 +71,12 @@ def firstObservationChild(connection, cd_ref):
 def lastObservations(connection, mylimit, idPhoto):
     sql = """
     SELECT obs.*,
-        COALESCE(split_part(tax.nom_vern, ',', 1) || ' | ', '')
-            || tax.lb_nom AS taxon,
+            CONCAT(
+                split_part(tax.nom_vern, ',', 1) || ' | ',
+                '<i>',
+                tax.lb_nom,
+                '</i>'
+            ) AS taxon,
         tax.group2_inpn,
         medias.url, medias.chemin, medias.id_media
     FROM atlas.vm_observations obs
@@ -99,8 +103,12 @@ def lastObservations(connection, mylimit, idPhoto):
 
 def lastObservationsCommune(connection, mylimit, insee):
     sql = """SELECT o.*,
-            COALESCE(split_part(tax.nom_vern, ',', 1) || ' | ', '')
-                || tax.lb_nom AS taxon
+            CONCAT(
+                split_part(tax.nom_vern, ',', 1) || ' | ',
+                '<i>',
+                tax.lb_nom,
+                '</i>'
+            ) AS taxon
     FROM atlas.vm_observations o
     JOIN atlas.vm_communes c ON ST_Intersects(o.the_geom_point, c.the_geom)
     JOIN atlas.vm_taxons tax ON  o.cd_ref = tax.cd_ref
@@ -301,8 +309,8 @@ def genericStatMedias(connection, tab):
 def getLastDiscoveries(connection):
     sql="""
     SELECT date(min(dateobs)), vo.cd_ref, vt.lb_nom, vt.nom_vern, m.id_media, m.chemin, m.url, vt.group2_inpn
-    FROM atlas.vm_observations vo 
-    JOIN atlas.vm_taxref vt ON vo.cd_ref = vt.cd_nom 
+    FROM atlas.vm_observations vo
+    JOIN atlas.vm_taxref vt ON vo.cd_ref = vt.cd_nom
     LEFT JOIN atlas.vm_medias m ON m.cd_ref=vo.cd_ref and m.id_type = :thisidtype
     WHERE id_rang='ES'
     GROUP BY vo.cd_ref, vt.lb_nom, vt.nom_vern, m.id_media, m.chemin, m.url, vt.group2_inpn

@@ -44,7 +44,7 @@
                                     {{ _('species.sheet') }}
                                 </a>
                             </span>
-                            <p class="singleTaxon name" cdref="{{ obs.cd_ref }}"> {{ obs.taxon }}<br />
+                            <p class="singleTaxon name" cdref="{{ obs.cd_ref }}">{{ obs.taxon|safe }}<br />
                                 {{ obs.dateobs }} </p>
                             <span class="hidden" hidden="true">{{ obs.cd_ref }}</span>
                             </tr>

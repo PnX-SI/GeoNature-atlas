@@ -68,9 +68,9 @@ def lastObservationsMailles(connection, mylimit, idPhoto):
     for o in observations:
         if o.nom_vern:
             inter = o.nom_vern.split(",")
-            taxon = inter[0] + " | " + o.lb_nom
+            taxon = inter[0] + " | <i>" + o.lb_nom + "</i>"
         else:
-            taxon = o.lb_nom
+            taxon = "<i>" + o.lb_nom + "</i>"
         temp = {
             "id_observation": o.id_observation,
             "id_maille": o.id_maille,
@@ -112,9 +112,9 @@ def lastObservationsCommuneMaille(connection, mylimit, insee):
     obsList = list()
     for o in observations:
         if o.nom_vern:
-            taxon = o.nom_vern + " | " + o.lb_nom
+            taxon = o.nom_vern + " | " + "<i>" + o.lb_nom + "</i>"
         else:
-            taxon = o.lb_nom
+            taxon = "<i>" + o.lb_nom + "</i>"
         temp = {
             "cd_ref": o.cd_ref,
             "taxon": taxon,

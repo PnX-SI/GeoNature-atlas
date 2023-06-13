@@ -51,6 +51,7 @@ def get_id_area(session, type_code, area_code):
 
 
 def last_observations_area_maille(session, myLimit, idArea):
+    """ Fonction a priori non utilisée à supprimer """
     q_last_obs = (
         session.query(
             # VmObservations.cd_ref.label("cd_ref"),
@@ -112,9 +113,9 @@ def last_observations_area_maille(session, myLimit, idArea):
     obsList = list()
     for o in result:
         if o.nom_vern:
-            taxon = o.nom_vern + " | " + o.lb_nom
+            taxon = o.nom_vern + " | </i>" + o.lb_nom + "</i>"
         else:
-            taxon = o.lb_nom
+            taxon = "</i>" + o.lb_nom + "</i>"
         temp = {
             "cd_ref": o.cd_ref,
             "taxon": taxon,
