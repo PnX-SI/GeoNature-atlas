@@ -9,6 +9,8 @@ CHANGELOG
 - Corrections linguistiques #383 (par @Splendens)
 - Corrections affichage des organismes #384 (par @Splendens)
 - Affichage de lb_nom en italique #387 (par @Splendens)
+- Affichage html du titre du media principal dans la fiche descriptive d'un taxon #420 (par @joelclems)
+
 
 1.5.1 (2021-12-06)
 ------------------
