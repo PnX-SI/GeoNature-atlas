@@ -114,6 +114,7 @@ if config["ORGANISM_MODULE"]:
             tel_organism=infos_organism["tel_organism"],
             url_organism=infos_organism["url_organism"],
             url_logo=infos_organism["url_logo"],
+            email_organism=infos_organism["email_organism"],
             nb_taxons=infos_organism["nb_taxons"],
             nb_obs=infos_organism["nb_obs"],
             stat=stat,

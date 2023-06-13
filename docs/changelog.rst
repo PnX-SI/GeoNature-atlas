@@ -6,6 +6,7 @@ CHANGELOG
 
 🐛 **Corrections**
 - Corrections linguistiques #383 (par @Splendens)
+- Corrections affichage des organismes #384 (par @Splendens)
 
 1.5.1 (2021-12-06)
 ------------------
