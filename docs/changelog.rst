@@ -13,6 +13,7 @@ CHANGELOG
 - Correction du scroll infini de la gallerie photo #430 (par @mvergez)
 - Lien vers la fiche d'un taxon depuis la gallerie photo #432 (par @mvergez)
 - Page principale (Affichage par maille) scroll sur la liste des taxons #451 (par @mvergez)
+- Prise en compte des cas ou le srid est différent de 2154 #417 (par @joelclems)
 
 
 1.5.1 (2021-12-06)
