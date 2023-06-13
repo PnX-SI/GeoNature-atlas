@@ -650,6 +650,14 @@ footer {
   margin-top: 10px;
 }
 
+.overlay-link {
+  color: #fff;
+}
+
+.overlay-link:hover {
+  color: var(--blue);
+}
+
 .overlay-intro-image {
   color: #fff;
   text-align: center;

@@ -40,43 +40,23 @@ function generateHtmlPhoto(photos, redimentionnement, taxhub_url) {
           photo.id_media +
           "?h=500&w=500";
       }
-      onePhoto =
-        "\
-				<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece '> \
-				  <div class='zoom-wrapper' > \
-				 		<a href='" +
-        photo.path +
-        "' data-lightbox='imageSet' data-title='" +
-        photo.title +
-        " - " +
-        photo.description +
-        " &copy; " +
-        photo.author +
-        " - " +
-        photo.licence +
-        " " +
-        photo.source +
-        "' cdRef='" +
-        photo.cd_ref +
-        "'>\
-						<div class='img-custom-medias' style='background-image:url(" +
-        photo_url +
-        ")' alt='" +
-        photo.name +
-        "'> </div> \
-						<div class='stat-medias-hovereffet'> \
-					  <h2 class='overlay-obs'>" +
-        photo.name +
-        " </br> </br>" +
-        photo.nb_obs +
-        " observations </h2>  \
-						<img src='" +
-        configuration.URL_APPLICATION +
-        "/static/images/eye.png'></div> </a> </div> \
-					</div> \
-				</div>\
-			";
-
+      onePhoto = `
+      <div class='col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece '>
+        <div class='zoom-wrapper' >
+          <a href='${photo.path}' data-lightbox='imageSet' data-title='${photo.title} - ${photo.description}
+                   &copy; ${photo.author} - ${photo.licence} ${photo.source} cdRef='${photo.cd_ref}'>
+            <div class='img-custom-medias' style='background-image:url(${photo_url})' alt='${photo.name}'></div>
+            <div class='stat-medias-hovereffet'>
+              <h2 class='overlay-obs'><a class='overlay-link' href="/espece/${photo.cd_ref}">${photo.name}</a>
+              </br>
+              </br> ${photo.nb_obs} observations </h2>
+                <img src='${configuration.URL_APPLICATION}/static/images/eye.png'>
+            </div>
+          </a>
+          </div>
+        </div>
+      </div>
+    `;
       htmlPhoto += onePhoto;
     });
   }

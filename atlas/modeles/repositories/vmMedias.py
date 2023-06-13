@@ -165,11 +165,11 @@ def getPhotosGallery(connection, id1, id2):
     req = connection.execute(text(sql), thisID1=id1, thisID2=id2)
     tab_photos = []
     for r in req:
-        if r.nom_vern is not None:
+        if r.nom_vern:
             nom_verna = r.nom_vern.split(",")
-            taxonName = nom_verna[0] + " | " + r.lb_nom
+            taxonName = nom_verna[0] + " | <i>" + r.lb_nom + "</i>"
         else:
-            taxonName = r.lb_nom
+            taxonName = "<i>" + r.lb_nom + "</i>"
 
         photo = _format_media(r)
         photo["name"] = taxonName
@@ -189,12 +189,13 @@ def getPhotosGalleryByGroup(connection, id1, id2, INPNgroup):
     tab_photos = []
     for r in req:
         photo = _format_media(r)
-        if r.nom_vern is not None:
+        if r.nom_vern:
             nom_verna = r.nom_vern.split(",")
-            taxon_name = nom_verna[0] + " | " + r.lb_nom
+            taxonName = nom_verna[0] + " | <i>" + r.lb_nom + "</i>"
         else:
-            taxon_name = r.lb_nom
-        photo["name"] = taxon_name
+            taxonName = "<i>" + r.lb_nom + "</i>"
+
+        photo["name"] = taxonName
         photo["nb_obs"] = r.nb_obs
         tab_photos.append(photo)
     return tab_photos
