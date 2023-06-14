@@ -144,6 +144,12 @@ function generateMap(zoomHomeButton) {
   return map;
 }
 
+function observersTxt(feature) {
+  return configuration.DISPLAY_OBSERVERS
+    ? `</br><b> Observateurs(s): </b> ${feature.properties.observateurs}`
+    : ""
+}
+
 //****** Fonction fiche espècce ***********
 
 // Popup Point
@@ -153,8 +159,7 @@ function onEachFeaturePoint(feature, layer) {
     feature.properties.dateobs +
     "</br><b>Altitude: </b>" +
     feature.properties.altitude_retenue +
-    "</br><b>Observateurs: </b>" +
-    feature.properties.observateurs;
+    observersTxt(feature)
 
   // verifie si le champs effectif est rempli
   if (feature.properties.effectif_total != undefined) {
@@ -441,8 +446,7 @@ function onEachFeaturePointCommune(feature, layer) {
     feature.properties.dateobs +
     "</br><b>Altitude: </b>" +
     feature.properties.altitude_retenue +
-    "</br><b> Observateurs(s): </b>" +
-    feature.properties.observateurs;
+    observersTxt(feature)
 
   layer.bindPopup(
     popupContent +

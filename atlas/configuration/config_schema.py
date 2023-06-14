@@ -124,7 +124,8 @@ class AtlasConfig(Schema):
     DEFAULT_LANGUAGE = fields.String(load_default="fr")
     MULTILINGUAL = fields.Boolean(load_default=False)
     ID_GOOGLE_ANALYTICS = fields.String(load_default="UA-xxxxxxx-xx")
-    ORGANISM_MODULE = fields.Boolean(load_default="False")
+    ORGANISM_MODULE = fields.Boolean(load_default=False)
+    DISPLAY_OBSERVERS = fields.Boolean(load_default=True)
     GLOSSAIRE = fields.Boolean(load_default=False)
     IGNAPIKEY = fields.String(load_default="")
     AFFICHAGE_INTRODUCTION = fields.Boolean(load_default=True)
@@ -199,7 +200,6 @@ class AtlasConfig(Schema):
     TEXT_LAST_OBS = fields.String(
         load_default="Les observations des agents ces 7 derniers jours |"
     )
-    ANONYMIZE = fields.Boolean(load_default=False)
     MAP = fields.Nested(MapConfig, load_default=dict())
     # coupe le nom_vernaculaire à la 1ere virgule sur les fiches espèces
     SPLIT_NOM_VERN = fields.Boolean(load_default=True)
