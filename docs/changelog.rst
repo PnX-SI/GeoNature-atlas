@@ -4,6 +4,10 @@ CHANGELOG
 1.6.0 (unrelease)
 -----------------
 
+🚀 **Nouveautés**
+
+- Ajout du paramètre `DISPLAY_OBSERVERS` permettant de masquer les observateurs des fiches espèces (#439 par @mvergez)
+
 🐛 **Corrections**
 
 - Corrections linguistiques #383 (par @Splendens)
@@ -15,6 +19,10 @@ CHANGELOG
 - Page principale (Affichage par maille) scroll sur la liste des taxons #451 (par @mvergez)
 - Prise en compte des cas ou le srid est différent de 2154 #417 (par @joelclems)
 
+⚠️ **Notes de version**
+
+- Suppression du paramètre `ANONYMIZE` au profit de `ORGANISM_MODULE` et `DISPLAY_OBSERVERS` qui permettent
+  d'anonymiser indépendamment les organismes et les observateurs
 
 1.5.1 (2021-12-06)
 ------------------
