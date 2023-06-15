@@ -215,32 +215,40 @@ def getObserversCommunes(connection, insee):
 
 def statIndex(connection):
     result = {"nbTotalObs": None, "nbTotalTaxons": None, "town": None, "photo": None}
-    sql = "SELECT COUNT(*) AS count \
-    FROM atlas.vm_observations "
+    sql = """
+        SELECT COUNT(*) AS count
+        FROM atlas.vm_observations;
+    """
     req = connection.execute(text(sql))
     for r in req:
         result["nbTotalObs"] = r.count
 
-    sql = "SELECT COUNT(*) AS count\
-    FROM atlas.vm_communes"
+    sql = """
+        SELECT COUNT(*) AS count
+        FROM atlas.vm_communes
+    """
     req = connection.execute(text(sql))
     for r in req:
         result["town"] = r.count
 
-    sql = "SELECT COUNT(DISTINCT cd_ref) AS count \
-    FROM atlas.vm_taxons"
+    sql = """
+        SELECT COUNT(DISTINCT cd_ref) AS count
+        FROM atlas.vm_taxons
+    """
     connection.execute(text(sql))
     req = connection.execute(text(sql))
     for r in req:
         result["nbTotalTaxons"] = r.count
 
-    sql = "SELECT COUNT (DISTINCT id_media) AS count \
-    FROM atlas.vm_medias m \
-    JOIN atlas.vm_taxons t ON t.cd_ref = m.cd_ref \
-    WHERE id_type IN (:idType1, :id_type2)"
+    sql = """
+        SELECT COUNT (DISTINCT id_media) AS count
+        FROM atlas.vm_medias m
+        JOIN atlas.vm_taxons t ON t.cd_ref = m.cd_ref
+        WHERE id_type IN (:id_type1, :id_type2)
+    """
     req = connection.execute(
         text(sql),
-        idType1=current_app.config["ATTR_MAIN_PHOTO"],
+        id_type1=current_app.config["ATTR_MAIN_PHOTO"],
         id_type2=current_app.config["ATTR_OTHER_PHOTO"],
     )
     for r in req:

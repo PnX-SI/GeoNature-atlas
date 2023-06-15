@@ -25,12 +25,14 @@ CHANGELOG
 🐛 **Optimisations**
 
 - Optimisation de la requête de sélection des "Nouvelles espèces observées" #455 (par @andriacap)
+- Mise en cache des statistiques de la page d'accueil #400 (par @TheoLechemia)
 
 ⚠️ **Notes de version**
 
 * Si vous mettez à jour l'application, exécutez le script SQL de mise à jour de la BDD : https://github.com/PnX-SI/GeoNature-atlas/blob/master/data/update_1.5.2to1.6.0.sql
 - Suppression du paramètre `ANONYMIZE` au profit de `ORGANISM_MODULE` et `DISPLAY_OBSERVERS` qui permettent
   d'anonymiser indépendamment les organismes et les observateurs
+- Suivez la procédure classique de mise à jour de l'application.
 
 1.5.1 (2021-12-06)
 ------------------
