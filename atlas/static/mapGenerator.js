@@ -130,17 +130,17 @@ function generateMap(zoomHomeButton) {
   fullScreenButton.attr("data-toggle", "tooltip");
   fullScreenButton.attr("data-original-title", "Fullscreen");
   $(".leaflet-control-fullscreen-button").removeAttr("title");
-  
+
   // Add scale depending on the configuration
   if (configuration.MAP.ENABLE_SCALE) {
     L.control.scale(
       {
-        imperial: false, 
+        imperial: false,
         position: 'bottomright'
       }
       ).addTo(map);
   }
-  
+
   return map;
 }
 
@@ -224,12 +224,11 @@ function generateLegendMaille() {
 
     // loop through our density intervals and generate a label with a colored square for each interval
     for (var i = 0; i < grades.length; i++) {
+      grade_n1 = grades[i + 1] ? `&ndash; ${grades[i + 1] } <br>` : "+"
       labels.push(
-        '<i style="background:' +
-          getColor(grades[i] + 1) +
-          '"></i> ' +
-          grades[i] +
-          (grades[i + 1] ? "&ndash;" + grades[i + 1] + "<br>" : "+")
+        `<i style="background: ${getColor(grades[i] + 1)}"></i>
+          ${grades[i]}${grade_n1}
+        `
       );
     }
     // Add id to get it above
@@ -436,7 +435,7 @@ function onEachFeaturePointLastObs(feature, layer) {
     popupContent +
       "</br> <a href='" +
       configuration.URL_APPLICATION +
-      
+
       language +
       "/espece/" +
       feature.properties.cd_ref +
@@ -585,7 +584,7 @@ function styleMailleLastObs() {
 }
 
 function generateGeoJsonMailleLastObs(observations) {
-  // sort it because at each change of idMaille, the 
+  // sort it because at each change of idMaille, the
   // list_taxon is reset so not all species are displayed
   observations = observations.sort((a,b) => compare(a, b))
   var i = 0;
