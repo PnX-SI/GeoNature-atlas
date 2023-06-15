@@ -20,6 +20,7 @@ CHANGELOG
 - Prise en compte des cas ou le srid est différent de 2154 #417 (par @joelclems)
 - Harmonisation de l'affichage du picto group2_inpn #424, #425, #426, #427, #429 (par @MissT)
 - Afficage en double de la légende quand le slider était touché #452 (par @mvergez)
+- Exclusion des médias supprimés dans la vue vm_medias #458 (par @jpm-cbna)
 
 🐛 **Optimisations**
 
@@ -27,6 +28,7 @@ CHANGELOG
 
 ⚠️ **Notes de version**
 
+* Si vous mettez à jour l'application, exécutez le script SQL de mise à jour de la BDD : https://github.com/PnX-SI/GeoNature-atlas/blob/master/data/update_1.5.2to1.6.0.sql
 - Suppression du paramètre `ANONYMIZE` au profit de `ORGANISM_MODULE` et `DISPLAY_OBSERVERS` qui permettent
   d'anonymiser indépendamment les organismes et les observateurs
 

@@ -13,6 +13,6 @@ CREATE MATERIALIZED VIEW atlas.vm_medias AS
       t_medias.licence,
       t_medias.source
    FROM taxonomie.t_medias
-   WHERE t_medias.supprime <> true ;
+WHERE NOT t_medias.supprime = true;
 
 CREATE UNIQUE INDEX ON atlas.vm_medias(id_media);
