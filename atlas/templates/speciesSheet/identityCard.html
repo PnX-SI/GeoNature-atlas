@@ -40,9 +40,11 @@
             {% endif %}
             <div id="groupLogoCol">
                 <a href="{{ url_for('main.ficheGroupe', groupe=taxon.taxonSearch.groupAccent ) }}">
-                    <img src="{{ url_for('static', filename='images/picto_'+ taxon.taxonSearch.group2_inpn| replace(" ", "_")|urlencode+'.png') }}"
-                         alt="{{ taxon.taxonSearch.group2_inpn }}" data-toggle="tooltip"
-                         data-original-title="{{ taxon.taxonSearch.group2_inpn }}" data-placement="right" height="50" width="auto">
+                    <img
+                        class="INPNgroup"
+                        src="{{ url_for('static', filename='images/picto_'+ taxon.taxonSearch.group2_inpn| replace(" ", "_")|urlencode+'.png') }}"
+                        alt="{{ taxon.taxonSearch.group2_inpn }}" data-toggle="tooltip"
+                        data-original-title="{{ taxon.taxonSearch.group2_inpn }}" data-placement="right">
                 </a>
             </div>
             <div id="taxonName">

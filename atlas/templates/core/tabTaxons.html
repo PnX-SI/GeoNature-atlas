@@ -26,9 +26,11 @@
                 <tr class="taxonRow" insee="{{ referenciel.insee }}" cdRef="{{ taxon.cd_ref }}">
                     <td>
                         {% if taxon.path == None %}
-                            <img src="{{ url_for('static', filename='images/picto_'+ taxon.group2_inpn| replace(" ", "_") |urlencode+'.png') }}"
-                                 data-toggle="tooltip" data-original-title="{{ taxon.group2_inpn }}"
-                                 data-placement="right" height="50" width="auto">
+                            <img
+                                class="INPNgroup"
+                                src="{{ url_for('static', filename='images/picto_'+ taxon.group2_inpn| replace(" ", "_") |urlencode+'.png') }}"
+                                data-toggle="tooltip" data-original-title="{{ taxon.group2_inpn }}"
+                                data-placement="right" >
                         {% else %}
                             {% if configuration.REDIMENSIONNEMENT_IMAGE %}
                                 {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+taxon.id_media|string+'?h=500&w=500' %}
