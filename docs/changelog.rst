@@ -19,6 +19,7 @@ CHANGELOG
 - Page principale (Affichage par maille) scroll sur la liste des taxons #451 (par @mvergez)
 - Prise en compte des cas ou le srid est différent de 2154 #417 (par @joelclems)
 - Harmonisation de l'affichage du picto group2_inpn #424, #425, #426, #427, #429 (par @MissT)
+- Afficage en double de la légende quand le slider était touché #452 (par @mvergez)
 
 ⚠️ **Notes de version**
 
