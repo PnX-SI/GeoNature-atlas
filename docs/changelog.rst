@@ -18,6 +18,7 @@ CHANGELOG
 - Lien vers la fiche d'un taxon depuis la gallerie photo #432 (par @mvergez)
 - Page principale (Affichage par maille) scroll sur la liste des taxons #451 (par @mvergez)
 - Prise en compte des cas ou le srid est différent de 2154 #417 (par @joelclems)
+- Harmonisation de l'affichage du picto group2_inpn #424, #425, #426, #427, #429 (par @MissT)
 
 ⚠️ **Notes de version**
 
