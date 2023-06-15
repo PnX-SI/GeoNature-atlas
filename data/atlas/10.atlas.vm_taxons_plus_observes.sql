@@ -11,8 +11,8 @@ SELECT count(*) AS nb_obs,
   m.chemin,
   m.id_type
  FROM atlas.vm_observations obs
-   JOIN atlas.vm_taxons tax ON tax.cd_ref = obs.cd_ref
-   LEFT JOIN atlas.vm_medias m ON m.cd_ref = obs.cd_ref AND m.id_type = 1
+JOIN atlas.vm_taxons tax ON tax.cd_ref = obs.cd_ref
+LEFT JOIN atlas.vm_medias m ON m.cd_ref = obs.cd_ref AND m.id_type = 1
 WHERE date_part('day'::text, obs.dateobs) >= date_part('day'::text, 'now'::text::date - 15) AND date_part('month'::text, obs.dateobs) = date_part('month'::text, 'now'::text::date - 15) OR date_part('day'::text, obs.dateobs) <= date_part('day'::text, 'now'::text::date + 15) AND date_part('month'::text, obs.dateobs) = date_part('day'::text, 'now'::text::date + 15)
 GROUP BY obs.cd_ref, tax.lb_nom, tax.nom_vern, m.url, m.chemin, tax.group2_inpn, m.id_type, m.id_media
 ORDER BY (count(*)) DESC
