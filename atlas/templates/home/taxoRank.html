@@ -6,6 +6,9 @@
                 <div class="col-lg-12">
                     <h3 class="card-title title-spaced">
                         <span class="fa fa-eye icon-color-title"></span> &nbsp;{{ _('species.to.discover') }}
+                        <div id="rankstat-spinner" class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
                     </h3>
                 </div>
             </div>
@@ -24,14 +27,8 @@
                             <div class="">
                                 <h4 class="title-spaced title-bar">{{ configuration.RANG_STAT_FR[i] }} </h4>
                                 <span class="higlight" id="rankNbObs{{i}}">
-                                    <div class="spinner-border" role="status">
-                                        <span class="sr-only">Loading...</span>
-                                    </div>
                                 </span> observations
                                 <span class="higlight" id="rankNbTax{{i}}">
-                                    <div class="spinner-border" role="status">
-                                        <span class="sr-only">Loading...</span>
-                                    </div>
                                 </span> {{ _('species') }}
                             </div>
                             <div class="row">

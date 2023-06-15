@@ -8,6 +8,8 @@ if (configuration.AFFICHAGE_STAT_GLOBALES) {
         $("#nbTaxons").html(stat.nbTotalTaxons.toLocaleString());
         $("#nbTown").html(stat.town.toLocaleString());
         $("#nbPictures").html(stat.photo.toLocaleString());
+        $("#nbPictures").html(stat.photo.toLocaleString());
+        $("#mainstat-spinner").hide();
     })
 }
 
@@ -22,5 +24,6 @@ if (configuration.AFFICHAGE_RANG_STAT) {
             $("#rankNbObs"+index).html(element.nb_obs.toLocaleString());
             $("#rankNbTax"+index).html(element.nb_taxons.toLocaleString());
         })
+        $("#rankstat-spinner").hide();
     })
 }
