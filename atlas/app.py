@@ -5,7 +5,7 @@ from flask_compress import Compress
 from flask_sqlalchemy import SQLAlchemy
 from flask_babel import Babel, format_date, gettext, ngettext, get_locale
 
-from atlas.env import config, secret_conf
+from atlas.env import config, secret_conf, cache
 from atlas.utils import format_number
 
 db = SQLAlchemy()
@@ -66,6 +66,8 @@ def create_app():
 
         app.register_blueprint(api, url_prefix="/api")
         compress.init_app(app)
+
+        cache.init_app(app)
 
         app.wsgi_app = ReverseProxied(
             app.wsgi_app, script_name=config["URL_APPLICATION"]

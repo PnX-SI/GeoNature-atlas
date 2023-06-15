@@ -702,3 +702,7 @@ footer {
   border-radius: 2px;
   border-left: 5px solid var(--main-color);
 }
+
+.spinner-border {
+  animation-duration: 3s;
+}

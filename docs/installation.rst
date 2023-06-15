@@ -196,6 +196,8 @@ Le fichier de configuration central de l'application est ``atlas/configuration/c
 
 Après chaque modification de la configuration, relancer la commande ``sudo systemctl restart geonature-atlas`` pour qu'elles soient appliquées.
 
+Pour améliorer les performances, le calcul des statistiques de la page d'accueil (statistiquess globale et statistique par rangs taxonomiques) sont mis en cache après leur premier chargement. Par defaut le cache dure 1h, il est possible de modifier ce paramètre via la variable `CACHE_TIMEOUT` (en seconde). Si on souhaite vider le cache, il est aussi possible de redémarrer l'application.
+
 Customisation de l'application
 ==============================
 
@@ -358,3 +360,5 @@ Pour changer le port de l'application, désampler le fichier `atlas/.flaskenv.sa
 Des données sont renvoyées aux templates par l'ORM, d'autres le sont sous forme d'API (fichiers JSON chargés en AJAX) pour charger certaines pages plus rapidement (observations sur les fiches espèces et auto-complétion de la recherche) :
 
 Pour en savoir plus, consultez le document `<vues_materialisees_maj.rst>`_ ainsi que le rapport de stage de Théo Lechemia (https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/2016-09-30-rapport_stage_Theo-Lechemia.pdf) ou sa présentation (https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/2016-09-soutenance-Theo-Lechemia.pdf)
+
+
