@@ -26,6 +26,7 @@ CHANGELOG
 
 - Optimisation de la requête de sélection des "Nouvelles espèces observées" #455 (par @andriacap)
 - Mise en cache des statistiques de la page d'accueil #400 (par @TheoLechemia)
+- Optimisation et ajout d'index sur la vue `atlas.vm_cor_taxon_organism` #464 (par @jpm-cbna)
 
 ⚠️ **Notes de version**
 
