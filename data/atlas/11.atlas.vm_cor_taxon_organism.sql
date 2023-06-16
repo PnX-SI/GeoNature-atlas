@@ -14,7 +14,7 @@ SELECT obs_by_dataset_and_orga.nb_obs AS nb_observations,
     url_logo
 FROM (
         SELECT
-            COUNT(obs.id_observation) AS nb_obs,
+            COUNT(DISTINCT obs.id_observation) AS nb_obs,
             obs.cd_ref,
             rcda.id_organism
         FROM atlas.vm_observations AS obs
