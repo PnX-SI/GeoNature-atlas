@@ -136,7 +136,7 @@ if ! database_exists $db_name
             # EN: Import of the shape of the territory limits ($limit_shp) in the BDD / atlas.t_layer_territory
 
             ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 data/ref/emprise_territoire_4326.shp $limit_shp
-            sudo -u postgres -s shp2pgsql -W "LATIN1" -s 4326 -D -I ./data/ref/emprise_territoire_4326.shp atlas.t_layer_territoire | sudo -n -u postgres -s psql -d $db_name  &>> log/install_db.log
+            sudo -u postgres -s shp2pgsql -W "LATIN1" -s 4326 -D -I ./data/ref/emprise_territoire_4326.shp atlas.t_layer_territoire | sudo -n -u postgres -s psql -d $db_name &>> log/install_db.log
             rm data/ref/emprise_territoire_4326.*
             sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_layer_territoire OWNER TO "$owner_atlas";"
             # FR: Creation de l'index GIST sur la couche territoire atlas.t_layer_territoire
@@ -148,7 +148,7 @@ if ! database_exists $db_name
             if $import_commune_shp
                 then
                     ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 ./data/ref/communes_4326.shp $communes_shp
-                    sudo -u postgres -s shp2pgsql -W "LATIN1" -s 4326 -D -I ./data/ref/communes_4326.shp atlas.l_communes | sudo -n -u postgres -s psql -d $db_name  &>> log/install_db.log
+                    sudo -u postgres -s shp2pgsql -W "LATIN1" -s 4326 -D -I ./data/ref/communes_4326.shp atlas.l_communes | sudo -n -u postgres -s psql -d $db_name &>> log/install_db.log
                     sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes RENAME COLUMN "$colonne_nom_commune" TO commune_maj;"  &>> log/install_db.log
                     sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes RENAME COLUMN "$colonne_insee" TO insee;"  &>> log/install_db.log
                     sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes RENAME COLUMN geom TO the_geom;"  &>> log/install_db.log
@@ -176,7 +176,7 @@ if ! database_exists $db_name
                     ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 ./mailles_5.shp L93_5K.shp
                     ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 ./mailles_10.shp L93_10K.shp
                     # J'importe dans la BDD le SHP des mailles à l'échelle définie en parametre ($taillemaille)
-                    sudo -n -u postgres -s shp2pgsql -W "LATIN1" -s 4326 -D -I mailles_$taillemaille.shp atlas.t_mailles_$taillemaille | sudo -n -u postgres -s psql -d $db_name  &>> ../../log/install_db.log
+                    sudo -n -u postgres -s shp2pgsql -W "LATIN1" -s 4326 -D -I mailles_$taillemaille.shp atlas.t_mailles_$taillemaille | sudo -n -u postgres -s psql -d $db_name &>> ../../log/install_db.log
                     sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_mailles_"$taillemaille" OWNER TO "$owner_atlas";"
                     rm mailles_1.* mailles_5.* mailles_10.*
 
@@ -407,7 +407,7 @@ if ! database_exists $db_name
 
         echo "[$(date +'%H:%M:%S')] Creating function refresh vm..."
         time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/atlas.refresh_materialized_view_data.sql  &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/atlas.refresh_materialized_view_data.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
         if $use_ref_geo_gn2
