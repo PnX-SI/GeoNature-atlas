@@ -21,6 +21,7 @@ CHANGELOG
 - Harmonisation de l'affichage du picto group2_inpn #424, #425, #426, #427, #429 (par @MissT)
 - Afficage en double de la légende quand le slider était touché #452 (par @mvergez)
 - Exclusion des médias supprimés dans la vue vm_medias #458 (par @jpm-cbna)
+- Specification du port de base de données dans le script `install_db.sh` #422 (par @geobrun)
 
 🐛 **Optimisations**
 
