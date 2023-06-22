@@ -31,7 +31,7 @@ CREATE OR REPLACE FUNCTION atlas.get_blurring_centroid_geom_by_code(code CHARACT
  IMMUTABLE
 AS $function$
 	-- Function which return the centroid for a sensitivity or diffusion_level code and a synthese id
-	DECLARE centroid geometry;
+	DECLARE centroid public.geometry;
 
 	BEGIN
 		SELECT INTO centroid csa.centroid_4326
