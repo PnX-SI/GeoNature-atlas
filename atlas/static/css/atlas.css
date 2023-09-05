@@ -170,6 +170,37 @@ a {
   height: 60px;
 }
 
+/* Navbar search fied */
+
+.navbar .navbar-collapse .input-group {
+  border: solid 1px var(--main-color);
+  border-radius: 4px;
+  background-color: var(--background-color);
+}
+
+.navbar .navbar-collapse .input-group i {
+  color : var(--main-color);
+}
+
+.navbar .navbar-collapse .input-group input, .navbar .navbar-collapse .input-group button, .navbar .navbar-collapse .input-group input:focus {
+  border : none;
+  box-shadow : none !important;
+  background-color: var(--background-color) !important;
+  color : var(--text-color) !important;
+}
+
+/* Navbar dropdown */
+
+.navbar .input-group .dropdown-menu.show {
+  right: 0 !important;
+  left: inherit !important;
+  float: right !important;
+}
+
+.navbar .input-group .dropdown-menu .dropdown-item:active {
+  background-color: var(--main-color) !important;
+}
+
 .logoStructure {
   height: 60px;
   max-height: 60px;

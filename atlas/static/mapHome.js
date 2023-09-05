@@ -21,8 +21,8 @@ $(function(){
 
     // interaction list - map
       $('.lastObslistItem').click(function(){
-         $(this).siblings().removeClass('bg-light');
-         $(this).addClass('bg-light');
+         $(this).siblings().removeClass('bg-color');
+         $(this).addClass('bg-color');
         var id_observation = $(this).attr('idSynthese');
         p = (currentLayer._layers);
         var selectLayer;

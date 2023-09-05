@@ -151,11 +151,13 @@ h3.title-spaced {
   background-size: 25px 25px;
   background-position-x: calc(100% - 25px);
   outline: none;
+  padding-left: 35px;
+  text-align: left;
 }
 
 .addon {
   position: absolute;
-  margin-left: 5px;
+  margin-left: 8px;
   display: flex;
   align-items: center;
   z-index: 100;
@@ -180,7 +182,7 @@ h3.title-spaced {
 /*Custom Stat Block*/
 
 .center-input {
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
 }
 .stat-custom-panel {
