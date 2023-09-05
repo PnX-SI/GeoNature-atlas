@@ -1,6 +1,8 @@
 :root {
   --main-color: #c3b528;
   --second-color: #5a7526;
+  --text-color : #272727;
+  --text-contrast : #fff;
   --map-maille-border-color: #ddd;
   --map-maille-lastobs-border-color: #c218d0;
   --map-territory-border-color: #333;
@@ -8,19 +10,27 @@
   --map-area-border-color: var(--second-color);
   --scrollbarBG: #cfd8dc;
   --thumbBG: var(--main-color);
+  --background-color : #fff;
+  --background-contrast : #333;
+  --background-body : #e3e7e8;
 }
 
 body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #e3e7e8;
+  background-color: var(--background-body);
+  color: var(--text-color);
 }
 
 main {
   margin-top: 60px;
   margin-left: 60px;
   flex: 1;
+}
+
+.bg-color {
+  background-color: var(--background-color);
 }
 
 #dropdown09 {
@@ -35,12 +45,16 @@ main {
   color: var(--icon-color-title);
 }
 
+.card {
+  background-color: var(--background-color);
+}
+
 .panel {
   border-radius: 0px !important;
 }
 
 .panel-heading {
-  background-color: white !important;
+  background-color: var(--background-color) !important;
 }
 
 /* PRESENTATION affix navbar */
@@ -125,14 +139,14 @@ a {
 }
 
 .btn.btn-default {
-  color: white;
+  color: var(--text-color);
   border-color: var(--main-color);
   background-color: var(--main-color) !important;
 }
 
 .btn.btn-default:hover {
-  background-color: white !important;
-  color: black;
+  background-color: var(--text-color) !important;
+  color: var(--text-contrast);
   border-color: var(--main-color);
 }
 
@@ -148,12 +162,43 @@ a {
 /* Navbar */
 
 .navbar {
-  background-color: white !important;
+  background-color: var(--background-color) !important;
   margin-bottom: 0px;
   border-radius: 0px;
   border-bottom: 1px solid var(--main-color);
   z-index: 1999;
   height: 60px;
+}
+
+/* Navbar search fied */
+
+.navbar .navbar-collapse .input-group {
+  border: solid 1px var(--main-color);
+  border-radius: 4px;
+  background-color: var(--background-color);
+}
+
+.navbar .navbar-collapse .input-group i {
+  color : var(--main-color);
+}
+
+.navbar .navbar-collapse .input-group input, .navbar .navbar-collapse .input-group button, .navbar .navbar-collapse .input-group input:focus {
+  border : none;
+  box-shadow : none !important;
+  background-color: var(--background-color) !important;
+  color : var(--text-color) !important;
+}
+
+/* Navbar dropdown */
+
+.navbar .input-group .dropdown-menu.show {
+  right: 0 !important;
+  left: inherit !important;
+  float: right !important;
+}
+
+.navbar .input-group .dropdown-menu .dropdown-item:active {
+  background-color: var(--main-color) !important;
 }
 
 .logoStructure {
@@ -167,11 +212,12 @@ a {
   font-size: 18px;
   line-height: 30px;
   padding-right: 20px;
+  color: var(--text-color) !important;
 }
 
 @media (max-width: 760px) {
   .navbar-collapse {
-    background-color: #333;
+    background-color: var(--background-contrast);
   }
 
   main h1 {
@@ -213,7 +259,7 @@ sidebar {
   position: fixed;
   padding-top: 60px;
   width: 60px;
-  background-color: #333333;
+  background-color: var(--background-contrast);
   height: calc(100vh);
   z-index: 1998;
   flex: 1;
@@ -231,7 +277,7 @@ sidebar {
   height: 60px !important;
   min-height: 60px;
   line-height: 60px;
-  color: white;
+  color: var(--text-contrast);
   cursor: pointer;
   text-align: center;
   border-bottom: 1px solid var(--main-color);
@@ -242,7 +288,7 @@ sidebar {
 }
 
 #sidebar_menu a {
-  color: white;
+  color: var(--text-color);
   text-decoration: none;
 }
 
@@ -257,7 +303,7 @@ li.sidebar-brand {
 
 #sidebar-wrapper a:hover {
   cursor: pointer;
-  color: black;
+  color: var(--text-contrast);
 }
 
 /* END sidebar */
@@ -279,8 +325,8 @@ li.sidebar-brand {
 .legend {
   line-height: 10px;
   font-size: 14px;
-  color: #555;
-  background-color: white;
+  color: var(--text-contrast);
+  background-color: var(--background-color);
   opacity: 0.7;
   padding: 5px;
   border-radius: 4px;
@@ -377,7 +423,7 @@ input {
 }
 
 .hovereffect h2 {
-  color: #fff;
+  color: var(--text-color);
   text-align: center;
   position: relative;
   font-size: 17px;
@@ -393,8 +439,8 @@ input {
 .hovereffect a.info {
   text-decoration: none;
   display: inline-block;
-  color: #fff;
-  border: 1px solid #fff;
+  color: var(--text-color);
+  border: 1px solid var(--text-color);
   border-radius: 10px;
   background-color: transparent;
   opacity: 0;
@@ -406,7 +452,7 @@ input {
 }
 
 .hovereffect a.info:hover {
-  box-shadow: 0 0 5px #fff;
+  box-shadow: 0 0 5px var(--text-color);
 }
 
 .hovereffect:hover .img-responsive-logo {
@@ -443,8 +489,12 @@ footer {
   margin-left: 60px;
   padding-top: 10px;
   margin-bottom: 0px;
-  background-color: var(--light);
+  background-color: var(--background-body);
   margin-top: 10px;
+}
+
+footer a {
+  color: var(--second-color)
 }
 
 .credits {
@@ -488,6 +538,10 @@ footer {
 
 .thumbnail-stat-medias .stat-medias-hovereffet img {
   left: 0%;
+}
+
+.stat-thumbnail {
+  background-color: var(--background-color) !important;
 }
 
 /*.overlay-obs {*/
@@ -610,7 +664,7 @@ footer {
 }
 
 .btn-success {
-  color: #fff;
+  color: var(--text-color);
   background-color: var(--main-color);
   border-color: var(--main-color);
 }
@@ -634,12 +688,12 @@ footer {
 }
 
 .overlay-obs {
-  color: #fff;
+  color: var(--text-color);
   text-align: center;
   position: relative;
   top: 100px;
   font-size: 13px;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.5);
   -webkit-transform: translatey(-100px);
   -ms-transform: translatey(-100px);
   transform: translatey(-100px);
@@ -651,20 +705,20 @@ footer {
 }
 
 .overlay-intro-image {
-  color: #fff;
+  color: var(--text-color);
   text-align: center;
   position: relative;
   top: 100%;
   float: left;
   font-size: 13px;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.5);
   padding: 10px;
   text-decoration: none;
 }
 
 .modal-header {
   background-color: var(--main-color);
-  color: white;
+  color: var(--text-color);
   padding: 0.5rem 0.5rem;
 }
 
@@ -680,8 +734,8 @@ footer {
 
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
-  background: white;
-  color: #333;
+  background: var(--text-color);
+  color: var(--text-contrast);
   box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
   border-radius: 2px;
   border-left: 5px solid var(--main-color);

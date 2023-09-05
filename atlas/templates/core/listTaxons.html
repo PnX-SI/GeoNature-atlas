@@ -8,14 +8,14 @@
 
         </style>
     {% endif %}
-    <div class="bg-white border-right p-2">
+    <div class="bg-color border-right p-2">
 
         <div class="col">
             <input id="taxonInput" type="text" class="form-control  form-control-sm" placeholder="{{ _('filter.species') }}">
         </div>
 
     </div>
-    <div id="taxonList" class="d-flex align-content-stretch bg-white flex-grow-1">
+    <div id="taxonList" class="d-flex align-content-stretch bg-color flex-grow-1">
         <ul class="list-group w-100">
             {% for taxon in listTaxons.taxons %}
                 <li id="taxonListItem" class="media border-bottom p-2" area-code="{{ insee }}"

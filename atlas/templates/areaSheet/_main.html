@@ -51,7 +51,7 @@
     {# Ajoutez ici coeur de la page #}
     <div class="row h-100 flex-grow-1 p-0 m-0 border-bottom">
         <div class="col-12 col-xl-4 col-lg-5 col-md-6 d-flex flex-column m-0 p-0">
-            <div class="bg-light text-center border-bottom border-right p-2">
+            <div class="bg-color text-center border-bottom border-right p-2">
                 {% if configuration.EXTENDED_AREAS %}
                     {% include 'templates/areaSheet/surrounding_areas.html' %}
                 {% endif %}
@@ -65,7 +65,7 @@
             {% include 'templates/core/listTaxons.html' %}
         </div>
         <div class="col-12 col-xl-8 col-lg-7 col-md-6 d-flex flex-column m-0 p-0">
-            <div class="bg-light p-2">
+            <div class="bg-color p-2">
                 {% if sheetType =='commune' %}
                     <h5 id="titleMap"><i class="fa fa-map"></i> {{ configuration.NB_LAST_OBS }} {{ _('last.obs.municipality') }}
                         <i>{{ areaInfos.areaName }}</i></h5>
