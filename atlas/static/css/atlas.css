@@ -35,6 +35,7 @@ main {
   color: var(--icon-color-title);
 }
 
+
 .panel {
   border-radius: 0px !important;
 }
@@ -304,6 +305,11 @@ li.sidebar-brand {
   padding: 5px;
 }
 
+.species-grid-popup {
+  max-height: 120px;
+  overflow-y: auto;
+}
+
 /* END Legend MAPS */
 
 input.ajax-search {
@@ -457,6 +463,8 @@ footer {
 
 .INPNgroup {
   cursor: pointer;
+  height: 50px;
+    width: auto;
 }
 
 .INPNgroup img {
@@ -650,6 +658,14 @@ footer {
   margin-top: 10px;
 }
 
+.overlay-link {
+  color: #fff;
+}
+
+.overlay-link:hover {
+  color: var(--blue);
+}
+
 .overlay-intro-image {
   color: #fff;
   text-align: center;
@@ -685,4 +701,8 @@ footer {
   box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
   border-radius: 2px;
   border-left: 5px solid var(--main-color);
+}
+
+.spinner-border {
+  animation-duration: 3s;
 }

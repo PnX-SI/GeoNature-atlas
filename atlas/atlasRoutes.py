@@ -114,6 +114,7 @@ if config["ORGANISM_MODULE"]:
             tel_organism=infos_organism["tel_organism"],
             url_organism=infos_organism["url_organism"],
             url_logo=infos_organism["url_logo"],
+            email_organism=infos_organism["email_organism"],
             nb_taxons=infos_organism["nb_taxons"],
             nb_obs=infos_organism["nb_obs"],
             stat=stat,
@@ -201,24 +202,13 @@ def index():
     else:
         mostViewTaxon = []
 
-    if current_app.config["AFFICHAGE_STAT_GLOBALES"]:
-        stat = vmObservationsRepository.statIndex(connection)
-    else:
-        stat = []
-
     if current_app.config["AFFICHAGE_RANG_STAT"]:
-        current_app.logger.debug("start customStat")
-        customStat = vmObservationsRepository.genericStat(
-            connection, current_app.config["RANG_STAT"]
-        )
-        current_app.logger.debug("end customStat")
         current_app.logger.debug("start customStatMedia")
         customStatMedias = vmObservationsRepository.genericStatMedias(
             connection, current_app.config["RANG_STAT"]
         )
         current_app.logger.debug("end customStatMedia")
     else:
-        customStat = []
         customStatMedias = []
 
     if current_app.config["AFFICHAGE_NOUVELLES_ESPECES"]:
@@ -233,8 +223,6 @@ def index():
         "templates/home/_main.html",
         observations=observations,
         mostViewTaxon=mostViewTaxon,
-        stat=stat,
-        customStat=customStat,
         customStatMedias=customStatMedias,
         lastDiscoveries=lastDiscoveries,
     )

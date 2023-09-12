@@ -17,7 +17,7 @@
                             <img id="mainImg" src="{{ img_path }}"
                                  style="width:100%;"
                                  alt="{{ firstPhoto.title }} &copy; {{ firstPhoto.author|striptags }}">
-                            <p class="imgDescription main">{{ firstPhoto.title }}
+                            <p class="imgDescription main">{{ firstPhoto.title | safe}}
                                 {% if firstPhoto.description %}
                                     - {{ firstPhoto.description }}
                                 {% endif %}
@@ -40,9 +40,11 @@
             {% endif %}
             <div id="groupLogoCol">
                 <a href="{{ url_for('main.ficheGroupe', groupe=taxon.taxonSearch.groupAccent ) }}">
-                    <img src="{{ url_for('static', filename='images/picto_'+ taxon.taxonSearch.group2_inpn| replace(" ", "_")|urlencode+'.png') }}"
-                         alt="{{ taxon.taxonSearch.group2_inpn }}" data-toggle="tooltip"
-                         data-original-title="{{ taxon.taxonSearch.group2_inpn }}" data-placement="right">
+                    <img
+                        class="INPNgroup"
+                        src="{{ url_for('static', filename='images/picto_'+ taxon.taxonSearch.group2_inpn| replace(" ", "_")|urlencode+'.png') }}"
+                        alt="{{ taxon.taxonSearch.group2_inpn }}" data-toggle="tooltip"
+                        data-original-title="{{ taxon.taxonSearch.group2_inpn }}" data-placement="right">
                 </a>
             </div>
             <div id="taxonName">
@@ -77,9 +79,9 @@
                         {{ taxon.nom_rang }} :
                         <i>
                             {% if ( taxon.tri_rang >= configuration.LIMIT_FICHE_LISTE_HIERARCHY) %}
-                                <a href="{{ url_for('main.ficheEspece', cd_nom=taxon.cd_ref) }}">{{ taxon.lb_nom }}</a>
+                                <a href="{{ url_for('main.ficheEspece', cd_nom=taxon.cd_ref) }}"><i>{{ taxon.lb_nom }}</i></a>
                             {% else %}
-                                <a href="{{ url_for('main.ficheRangTaxonomie', cd_ref = taxon.cd_ref) }}">{{ taxon.lb_nom }}</a>
+                                <a href="{{ url_for('main.ficheRangTaxonomie', cd_ref = taxon.cd_ref) }}"><i>{{ taxon.lb_nom }}</i></a>
 
                             {% endif %}
                         </i>
@@ -143,7 +145,7 @@
                                                             -
                                                             </td>
                                                         {% endif %}
-                                                    <td> {{ child.lb_nom }} </td>
+                                                    <td><i>{{ child.lb_nom }}</i></td>
                                                     <td>
                                                         {% if child.protection != None %}
                                                             <a href="https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.taxonSearch.cd_ref }}/tab/statut"

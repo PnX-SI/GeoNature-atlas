@@ -43,6 +43,9 @@ URL_APPLICATION = ""
 # Enable organism module : organism sheet + organism participation on species sheet
 ORGANISM_MODULE = False
 
+# Shows the names of the observers in the species sheet
+DISPLAY_OBSERVERS = True
+
 ###########################
 ###### Multilingual #######
 ###########################
@@ -86,7 +89,6 @@ ID_GOOGLE_ANALYTICS = "UA-xxxxxxx-xx"
 
 # Utiliser et afficher le glossaire (static/custom/glossaire.json.sample)
 GLOSSAIRE = False
-
 
 ###########################
 ###### Cartographie #######

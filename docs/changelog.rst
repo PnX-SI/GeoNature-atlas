@@ -1,11 +1,50 @@
 =========
 CHANGELOG
 =========
-1.6.0 (unrelease)
------------------
+
+1.6.0 (unreleased)
+------------------
+
+🚀 **Nouveautés**
+
+- Ajout du paramètre ``DISPLAY_OBSERVERS`` permettant de masquer les observateurs des fiches espèces (#439 par @mvergez)
 
 🐛 **Corrections**
-- Corrections linguistiques #383 (par @Splendens)
+
+- Corrections linguistiques (#383 par @Splendens)
+- Harmonisation et correction des fiches organismes (#382, #384 par @Splendens)
+- Correction de l'affichage des pictos des groupes 2 INPN quand leur nom contient un accent (#380 par @Splendens)
+- Amélioration de l'affichage des logos des organismes sur la page d'accueil (#381 par @Splendens)
+- Affichage de lb_nom en italique (#387 par @Splendens)
+- Affichage HTML du titre du média principal dans les fiches espèce (#420 par @joelclems)
+- Correction du scroll infini de la gallerie photo (#430 par @mvergez)
+- Amélioration du lien vers la fiche d'un taxon depuis la galerie photo (#432 par @mvergez)
+- Correction de l'affichage de la liste des taxons sur les fiches communes (#445 par @mvergez)
+- Prise en compte des cas où le SRID est différent de 2154 lors de la création de ``atlas.t_mailles_territoire`` (#417 par @joelclems)
+- Harmonisation de l'affichage du picto group2_inpn (#424, #425, #426, #427, #429 par @MissT)
+- Affichage en double de la légende quand le slider était touché (#452 par @mvergez)
+- Exclusion des médias supprimés dans la vue ``vm_medias`` (#458 par @jpm-cbna)
+- Spécification du port de base de données dans le script ``install_db.sh`` (#422 par @geobrun)
+- Correction des photos lors du scroll dans les fiches des communes (#448 par @mvergez)
+- Support des cd_ref négatifs 
+
+🐛 **Optimisations**
+
+- Optimisation de la requête de sélection des "Nouvelles espèces observées" (#455 par @andriacap)
+- Mise en cache des statistiques de la page d'accueil (#400 par @TheoLechemia)
+- Optimisation et ajout d'index sur la vue ``atlas.vm_cor_taxon_organism`` (#463 par @jpm-cbna)
+- Redirection des URL des fiches espèces des synonymes vers les noms de référence (#388 par @jpm-cbna)
+- Suppression des requêtes inutiles sur la page d'accueil (#275 par @jpm-cbna)
+- Nettoyage et optimisation du code (#395, #407, #396, #394 par @jpm-cbna)
+- Ajout du paramètre permettant de recharger automatiquement les templates (#431 par @mvergez)
+
+⚠️ **Notes de version**
+
+Si vous mettez à jour GeoNature-atlas : 
+
+- Exécutez le script SQL de mise à jour de la BDD : https://github.com/PnX-SI/GeoNature-atlas/blob/master/data/update_1.5.2to1.6.0.sql
+- Suppression du paramètre ``ANONYMIZE`` au profit de ``ORGANISM_MODULE`` et ``DISPLAY_OBSERVERS`` qui permettent d'anonymiser indépendamment les organismes et les observateurs
+- Suivez la procédure classique de mise à jour de l'application
 
 1.5.1 (2021-12-06)
 ------------------

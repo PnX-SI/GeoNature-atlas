@@ -25,8 +25,7 @@
                 <div class="pictoImgList mr-2" data-toggle="tooltip" data-original-title="{{ taxon.group2_inpn }}"
                      data-placement="right">
                     {% if taxon.path == None %}
-
-                        <img class="mx-auto d-block"
+                        <img class="mx-auto d-block INPNgroup"
                              src="{{ url_for('static', filename='images/picto_'+ taxon.group2_inpn| replace(" ", "_") |urlencode+'.png') }}">
 
                     {% else %}
