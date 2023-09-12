@@ -1,6 +1,7 @@
 {% extends "templates/core/layout.html" %}
 
     {% block title %}
+    {{ nom_organism }}
     {% endblock %}
 
     {% block additionalHeaderAssets %}
@@ -33,7 +34,8 @@
             <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
                 {% include 'templates/organismSheet/topSpecies.html' %}
                 {% include 'templates/organismSheet/groupChart.html' %}
-                {% include 'templates/organismSheet/blocInfos.html' %}
+                <!--TODO : faire remontées des infos 'autres'-->
+                {#% include 'templates/organismSheet/blocInfos.html' %#}
             </div>
         </div>
     </div>

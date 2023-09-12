@@ -130,18 +130,24 @@ function generateMap(zoomHomeButton) {
   fullScreenButton.attr("data-toggle", "tooltip");
   fullScreenButton.attr("data-original-title", "Fullscreen");
   $(".leaflet-control-fullscreen-button").removeAttr("title");
-  
+
   // Add scale depending on the configuration
   if (configuration.MAP.ENABLE_SCALE) {
     L.control.scale(
       {
-        imperial: false, 
+        imperial: false,
         position: 'bottomright'
       }
       ).addTo(map);
   }
-  
+
   return map;
+}
+
+function observersTxt(feature) {
+  return configuration.DISPLAY_OBSERVERS
+    ? `</br><b> Observateurs(s): </b> ${feature.properties.observateurs}`
+    : ""
 }
 
 //****** Fonction fiche espècce ***********
@@ -153,8 +159,7 @@ function onEachFeaturePoint(feature, layer) {
     feature.properties.dateobs +
     "</br><b>Altitude: </b>" +
     feature.properties.altitude_retenue +
-    "</br><b>Observateurs: </b>" +
-    feature.properties.observateurs;
+    observersTxt(feature)
 
   // verifie si le champs effectif est rempli
   if (feature.properties.effectif_total != undefined) {
@@ -208,6 +213,10 @@ function styleMaille(feature) {
 }
 
 function generateLegendMaille() {
+  // check if contour already exists
+  if (L.DomUtil.get("contour-legend")) {
+    return
+  }
   legend.onAdd = function (map) {
     var div = L.DomUtil.create("div", "info legend"),
       grades = [0, 1, 2, 5, 10, 20, 50, 100],
@@ -215,14 +224,15 @@ function generateLegendMaille() {
 
     // loop through our density intervals and generate a label with a colored square for each interval
     for (var i = 0; i < grades.length; i++) {
+      grade_n1 = grades[i + 1] ? `&ndash; ${grades[i + 1] } <br>` : "+"
       labels.push(
-        '<i style="background:' +
-          getColor(grades[i] + 1) +
-          '"></i> ' +
-          grades[i] +
-          (grades[i + 1] ? "&ndash;" + grades[i + 1] + "<br>" : "+")
+        `<i style="background: ${getColor(grades[i] + 1)}"></i>
+          ${grades[i]}${grade_n1}
+        `
       );
     }
+    // Add id to get it above
+    div.id = "contour-legend"
     div.innerHTML = labels.join("<br>");
 
     return div;
@@ -425,7 +435,7 @@ function onEachFeaturePointLastObs(feature, layer) {
     popupContent +
       "</br> <a href='" +
       configuration.URL_APPLICATION +
-      
+
       language +
       "/espece/" +
       feature.properties.cd_ref +
@@ -441,8 +451,7 @@ function onEachFeaturePointCommune(feature, layer) {
     feature.properties.dateobs +
     "</br><b>Altitude: </b>" +
     feature.properties.altitude_retenue +
-    "</br><b> Observateurs(s): </b>" +
-    feature.properties.observateurs;
+    observersTxt(feature)
 
   layer.bindPopup(
     popupContent +
@@ -556,10 +565,11 @@ function printEspece(tabEspece, tabCdRef) {
 }
 
 function onEachFeatureMailleLastObs(feature, layer) {
+  // Add class to be able to scroll the species list
   popupContent =
-    "<b>Espèces observées dans la maille: </b> <ul> " +
+    "<b>Espèces observées dans la maille: </b> <div class=\"species-grid-popup\"><ul> " +
     printEspece(feature.properties.list_taxon, feature.properties.list_cdref) +
-    "</ul>";
+    "</ul></div>";
 
   layer.bindPopup(popupContent);
 }
@@ -574,6 +584,9 @@ function styleMailleLastObs() {
 }
 
 function generateGeoJsonMailleLastObs(observations) {
+  // sort it because at each change of idMaille, the
+  // list_taxon is reset so not all species are displayed
+  observations = observations.sort((a,b) => compare(a, b))
   var i = 0;
   myGeoJson = { type: "FeatureCollection", features: [] };
   while (i < observations.length) {

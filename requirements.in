@@ -1,6 +1,7 @@
 Click < 8.0
 dominate
 Flask-Compress
+Flask-Caching
 Flask-Script
 Flask-SQLAlchemy
 Flask-Babel
@@ -12,6 +13,7 @@ itsdangerous < 2.0
 Jinja2 < 3.0
 MarkupSafe
 marshmallow
+python-dotenv
 psycopg2
 SQLAlchemy
 visitor

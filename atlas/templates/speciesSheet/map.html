@@ -23,6 +23,11 @@
                         <i class="fas fa-users fa-2x"></i> <br/>
                         <b>{{ observers|length|pretty }}</b> <br/>
                         <span style="font-size: 0.90rem">{{ _('observers')|lower if observers|length > 1 else _('observer')|lower }}</span>
+                        {% if configuration.ORGANISM_MODULE %}
+                        <br/>
+                        <b>{{ organisms|length }} </b> <br/>
+                        <span style="font-size: 0.90rem">{{ _('organisms')|lower if organisms|length > 1 else _('organism')|lower }}</span>
+                        {% endif %}
                     </li>
                     <li id="firstObs" class="pointer">
                         <i class="fas fa-search fa-2x"></i> <br/>

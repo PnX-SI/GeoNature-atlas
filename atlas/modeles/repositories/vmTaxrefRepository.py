@@ -155,3 +155,13 @@ def getAllTaxonomy(session, cd_ref):
         tabTaxon.insert(0, temp)
         taxon = getTaxon(session, taxon.cd_taxsup)  # on avance
     return tabTaxon
+
+def get_cd_ref(connection, cd_nom):
+    sql = """
+        SELECT cd_ref
+        FROM atlas.vm_taxref AS t
+        WHERE t.cd_nom = :cdNom
+    """
+    results = connection.execute(text(sql), cdNom=cd_nom)
+    row = results.fetchone()
+    return row.cd_ref

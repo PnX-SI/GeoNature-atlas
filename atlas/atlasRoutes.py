@@ -114,6 +114,7 @@ if config["ORGANISM_MODULE"]:
             tel_organism=infos_organism["tel_organism"],
             url_organism=infos_organism["url_organism"],
             url_logo=infos_organism["url_logo"],
+            email_organism=infos_organism["email_organism"],
             nb_taxons=infos_organism["nb_taxons"],
             nb_obs=infos_organism["nb_obs"],
             stat=stat,
@@ -173,6 +174,7 @@ def indexMedias(image):
 def index():
     session = utils.loadSession()
     connection = utils.engine.connect()
+
     if current_app.config["AFFICHAGE_DERNIERES_OBS"]:
         if current_app.config["AFFICHAGE_MAILLE"]:
             current_app.logger.debug("start AFFICHAGE_MAILLE")
@@ -193,27 +195,26 @@ def index():
     else:
         observations = []
 
-    current_app.logger.debug("start mostViewTaxon")
-    mostViewTaxon = vmTaxonsMostView.mostViewTaxon(connection)
-    current_app.logger.debug("end mostViewTaxon")
-    stat = vmObservationsRepository.statIndex(connection)
-    current_app.logger.debug("start customStat")
+    if current_app.config["AFFICHAGE_EN_CE_MOMENT"]:
+        current_app.logger.debug("start mostViewTaxon")
+        mostViewTaxon = vmTaxonsMostView.mostViewTaxon(connection)
+        current_app.logger.debug("end mostViewTaxon")
+    else:
+        mostViewTaxon = []
 
     if current_app.config["AFFICHAGE_RANG_STAT"]:
-        customStat = vmObservationsRepository.genericStat(
-            connection, current_app.config["RANG_STAT"]
-        )
-        current_app.logger.debug("end customStat")
         current_app.logger.debug("start customStatMedia")
         customStatMedias = vmObservationsRepository.genericStatMedias(
             connection, current_app.config["RANG_STAT"]
         )
         current_app.logger.debug("end customStatMedia")
     else:
-        customStat = []
         customStatMedias = []
 
-    lastDiscoveries = vmObservationsRepository.getLastDiscoveries(connection)
+    if current_app.config["AFFICHAGE_NOUVELLES_ESPECES"]:
+        lastDiscoveries = vmObservationsRepository.getLastDiscoveries(connection)
+    else:
+        lastDiscoveries = []
 
     connection.close()
     session.close()
@@ -222,19 +223,24 @@ def index():
         "templates/home/_main.html",
         observations=observations,
         mostViewTaxon=mostViewTaxon,
-        stat=stat,
-        customStat=customStat,
         customStatMedias=customStatMedias,
         lastDiscoveries=lastDiscoveries,
     )
 
 
-@main.route("/espece/<int:cd_ref>", methods=["GET", "POST"])
-def ficheEspece(cd_ref):
+@main.route("/espece/<int(signed=True):cd_nom>", methods=["GET", "POST"])
+def ficheEspece(cd_nom):
     db_session = utils.loadSession()
     connection = utils.engine.connect()
 
-    cd_ref = int(cd_ref)
+    # Get cd_ref from cd_nom
+    cd_ref = vmTaxrefRepository.get_cd_ref(connection, cd_nom)
+
+    # Redirect to cd_ref if cd_nom is a synonym. Redirection is better for SEO.
+    if cd_ref != cd_nom:
+        return redirect(url_for(request.endpoint, cd_nom=cd_ref))
+
+    # Get data to render template
     taxon = vmTaxrefRepository.searchEspece(connection, cd_ref)
     altitudes = vmAltitudesRepository.getAltitudesChilds(connection, cd_ref)
     months = vmMoisRepository.getMonthlyObservationsChilds(connection, cd_ref)
@@ -334,7 +340,7 @@ def ficheCommune(insee):
     )
 
 
-@main.route("/liste/<cd_ref>", methods=["GET", "POST"])
+@main.route("/liste/<int(signed=True):cd_ref>", methods=["GET", "POST"])
 def ficheRangTaxonomie(cd_ref):
     session = utils.loadSession()
     connection = utils.engine.connect()
@@ -427,7 +433,7 @@ def sitemap():
     # get dynamic routes for blog
     species = session.query(vmTaxons.VmTaxons).order_by(vmTaxons.VmTaxons.cd_ref).all()
     for species in species:
-        url = url_root + url_for("main.ficheEspece", cd_ref=species.cd_ref)
+        url = url_root + url_for("main.ficheEspece", cd_nom=species.cd_ref)
         modified_time = ten_days_ago
         pages.append([url, modified_time])
 

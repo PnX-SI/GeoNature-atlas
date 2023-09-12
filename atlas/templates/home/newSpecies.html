@@ -22,33 +22,33 @@
                     {% set img_path = species.media_path %}
                     {% endif %}
                     <div class="cover" style="height: 150px; background-image: url({{img_path}})">
-                        
+
                     </div>
                     {% else %}
-                    <div 
+                    <div
                     class="no-repeat background-center"
                     style="height: 150px;
                     background-image: url({{url_for('static', filename='images/picto_' + species.group2_inpn | replace(" ", "_") +'.png') }})"
                     >
                 </div>
                 {% endif %}
-                <a href="{{ url_for('main.ficheEspece',cd_ref=species.cd_ref) }}">
+                <a href="{{ url_for('main.ficheEspece', cd_nom=species.cd_ref) }}">
                 </a>
                 <div class="card-body center">
-                    <p> 
+                    <p>
                         {% if species.nom_vern != None %}
-                        <b>  {{ species.nom_vern }}</b> 
+                        <b>  {{ species.nom_vern }}</b>
                         {% endif %}
                         <br/><i>{{ species.lb_nom }}</i>
                     </p>
-                    <a href="{{ url_for('main.ficheEspece',cd_ref=species.cd_ref) }}"
+                    <a href="{{ url_for('main.ficheEspece', cd_nom=species.cd_ref) }}"
                     class="btn btn-default" role="button">{{ _('species.sheet') }}
-                </a> 
-                
+                </a>
+
             </div>
-            <div class="card-footer center text-muted"> 
+            <div class="card-footer center text-muted">
                 {{species.date}}
-            </div>  
+            </div>
         </div>
     </div>
     {% endfor %}

@@ -8,12 +8,15 @@
 modeDebug = False
 
 # Connexion de l'application à la BDD
-# Remplacer user, monpassachanger, IPADRESSE (localhost si la BDD est sur le même serveur que l'application), 
+# Remplacer user, monpassachanger, IPADRESSE (localhost si la BDD est sur le même serveur que l'application),
 # eventuellement le port de la BDD et le nom de la BDD avec l'utilisateur qui a des droits de lecture sur les vues de l'atlas (user_pg dans settings.ini)
 database_connection = "postgresql://user:monpassachanger@IPADRESSE:5432/databaseName"
 
 # Port sur lequel tourne le serveur gunicorn
 GUNICORN_PORT = 8080
+
+# Recharger automatiquement les templates
+TEMPLATES_AUTO_RELOAD = False
 
 #################################
 #################################
@@ -40,6 +43,9 @@ URL_APPLICATION = ""
 # Enable organism module : organism sheet + organism participation on species sheet
 ORGANISM_MODULE = False
 
+# Shows the names of the observers in the species sheet
+DISPLAY_OBSERVERS = True
+
 ###########################
 ###### Multilingual #######
 ###########################
@@ -50,25 +56,25 @@ DEFAULT_LANGUAGE = 'fr'
 # Activate multilingual
 MULTILINGUAL = False
 
-# Available languages 
+# Available languages
 # Don't delete, even if you disable MULTILINGUAL
-# You need to add your own default language (DEFAULT_LANGUAGE) here if it's not present 
+# You need to add your own default language (DEFAULT_LANGUAGE) here if it's not present
 # Check documentation to add another language
 LANGUAGES = {
     'en': {
         'name' : 'English',
         'flag_icon' : 'flag-icon-gb',
-        'months' : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] 
+        'months' : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
         },
     'fr': {
         'name' : 'Français',
         'flag_icon' : 'flag-icon-fr',
-        'months' : ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Decembre'] 
+        'months' : ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Decembre']
         },
     'it': {
         'name' : 'Italiano',
         'flag_icon' : 'flag-icon-it',
-        'months' : ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'] 
+        'months' : ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre']
         }
 }
 

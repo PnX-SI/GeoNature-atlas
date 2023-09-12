@@ -35,7 +35,7 @@ def statOrganism (connection,id_organism):
 
 def topObsOrganism(connection, id_organism):
     #Stats avancées organism
-    sql = """SELECT cd_ref, nb_observations as nb_obs 
+    sql = """SELECT cd_ref, nb_observations as nb_obs_taxon 
     FROM atlas.vm_cor_taxon_organism o
     WHERE o.id_organism = :thisidorganism
     ORDER BY nb_observations DESC
@@ -46,7 +46,7 @@ def topObsOrganism(connection, id_organism):
     for r in req:
         temp={
             'cd_ref':r.cd_ref,
-            'nb_obs':r.nb_obs,
+            'nb_obs_taxon':r.nb_obs_taxon,
         }
         topSpecies.append(temp)
     return topSpecies
@@ -54,11 +54,15 @@ def topObsOrganism(connection, id_organism):
 
 
 def getListOrganism(connection,cd_ref):
-    # Fiche espèce : Liste des organisms pour un taxon
-    sql = """SELECT nb_observations, id_organism, nom_organism, url_organism, url_logo
-    FROM atlas.vm_cor_taxon_organism o 
-    WHERE cd_ref = :thiscdref
-    ORDER BY nb_observations DESC"""
+    # Fiche espèce : Liste des organismes pour un taxon
+    sql = """SELECT SUM(nb_observations) AS nb_observations, id_organism, nom_organism, url_organism, url_logo
+             FROM atlas.vm_cor_taxon_organism o 
+             WHERE cd_ref in (
+                SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
+                )
+                OR cd_ref = :thiscdref
+             GROUP by id_organism, nom_organism, url_organism, url_logo            
+             ORDER BY nb_observations DESC"""
     req = connection.execute(text(sql), thiscdref=cd_ref)
     ListOrganism=list()
     for r in req:
