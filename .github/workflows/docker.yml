@@ -21,7 +21,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ghcr.io/pnx-si/taxhub
+          images: ghcr.io/pnx-si/geonature-atlas
           tags: |
             type=ref,event=branch
             type=ref,event=tag
