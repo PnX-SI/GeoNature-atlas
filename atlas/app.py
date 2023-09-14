@@ -46,7 +46,7 @@ def create_app():
         from atlas.atlasRoutes import main as main_blueprint
 
         if app.config["MULTILINGUAL"]:
-            app.register_blueprint(main_blueprint, url_prefix="/<lang_code>")
+            app.register_blueprint(main_blueprint, url_prefix="/<lang_code>", name="multi_lg")
         app.register_blueprint(main_blueprint)
 
         from atlas.atlasAPI import api
