@@ -8,16 +8,19 @@ CHANGELOG
 🚀 **Nouveautés**
 
 - Ajout du paramètre ``DISPLAY_OBSERVERS`` permettant de masquer les observateurs des fiches espèces (#439 par @mvergez)
-- [Docker] Ajout d'un fichier ``Dockerfile`` permettant de dockeriser GeoNature-atlas
-- [Docker] Ajout de scripts ``docker_startup.sh`` et ``docker_install_atlas_schema.sh`` (sera joué au démarrage du container si la variable d'environnement ``ATLAS_INSTALL_SCHEMA`` est à  ``true```)
-- Possibilité de définir le chemin vers le fichier de config avec ``ATLAS_SETTINGS`` (par défaut ``atlas/configuration/config.py``)
-- Possibilité de définir le chemin vers le dossier des templates avec ``ATLAS_TEMPLATE_FOLDER``(par défaut ``.``)
-- Possibilité de définir le chemin vers le dossier des templates avec ``ATLAS_STATIC_FOLDER``(par défaut ``atlas/static``)
-- Gestion du proxy avec ``ProxyFix``
+- [Docker] Ajout d'un fichier ``Dockerfile`` permettant de dockeriser GeoNature-atlas (#470)
+- [Docker] Ajout d'une Github action publiant automatiquement les images Docker de GeoNature-atlas
+- [Docker] Ajout de scripts ``docker_startup.sh`` et ``docker_install_atlas_schema.sh`` (sera joué au démarrage du container si la variable d'environnement ``ATLAS_INSTALL_SCHEMA`` est à  ``true``) (#470)
+- Possibilité de définir le chemin vers le fichier de config avec ``ATLAS_SETTINGS`` (par défaut ``atlas/configuration/config.py``) (#470)
+- Possibilité de définir le chemin vers le dossier des templates avec ``ATLAS_TEMPLATE_FOLDER``(par défaut ``.``) (#470)
+- Possibilité de définir le chemin vers le dossier des templates avec ``ATLAS_STATIC_FOLDER``(par défaut ``atlas/static``) (#470)
+- Gestion du proxy avec ``ProxyFix`` (#470)
+- Mise à jour de Flask en version 2 et de nombreuses dépendances Python (#470)
 
 🐛 **Corrections**
 
 - Corrections linguistiques (#383 par @Splendens)
+- Correction d'une traduction (#433 par @mvergez)
 - Harmonisation et correction des fiches organismes (#382, #384 par @Splendens)
 - Correction de l'affichage des pictos des groupes 2 INPN quand leur nom contient un accent (#380 par @Splendens)
 - Amélioration de l'affichage des logos des organismes sur la page d'accueil (#381 par @Splendens)
@@ -34,8 +37,8 @@ CHANGELOG
 - Spécification du port de base de données dans le script ``install_db.sh`` (#422 par @geobrun)
 - Correction des photos lors du scroll dans les fiches des communes (#448 par @mvergez)
 - Support des cd_ref négatifs
-- Affichage cartographique sur la page recherche avancé
-
+- Affichage cartographique sur la page "Recherche avancée" (#486)
+- Correction du lien vers les fiches espèces dans la galerie photo (#459 par @jpm-cbna)
 
 🐛 **Optimisations**
 
