@@ -266,7 +266,7 @@
                         }
                     }).done(function (observations) {
                         var geoJsonDatas = observations;
-                        if (observations['features'][0]['geometry']['type'] != 'point') {
+                        if ((observations['features'][0]['geometry']['type']).toLowerCase() != 'point') {
                             polygonLayerToCentroid(geoJsonDatas);
                         }
                         //var color = getRandomColor();
