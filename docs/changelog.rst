@@ -34,6 +34,8 @@ CHANGELOG
 - Spécification du port de base de données dans le script ``install_db.sh`` (#422 par @geobrun)
 - Correction des photos lors du scroll dans les fiches des communes (#448 par @mvergez)
 - Support des cd_ref négatifs
+- Affichage cartographique sur la page recherche avancé
+
 
 🐛 **Optimisations**
 
@@ -47,7 +49,7 @@ CHANGELOG
 
 ⚠️ **Notes de version**
 
-Si vous mettez à jour GeoNature-atlas : 
+Si vous mettez à jour GeoNature-atlas :
 
 - Exécutez le script SQL de mise à jour de la BDD : https://github.com/PnX-SI/GeoNature-atlas/blob/master/data/update_1.5.2to1.6.0.sql
 - Suppression du paramètre ``ANONYMIZE`` au profit de ``ORGANISM_MODULE`` et ``DISPLAY_OBSERVERS`` qui permettent d'afficher ou non indépendamment les organismes et les observateurs
