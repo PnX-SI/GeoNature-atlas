@@ -40,13 +40,18 @@ if current_app.config["MULTILINGUAL"]:
 
     @main.url_defaults
     def add_language_code(endpoint, values):
-        if "lang_code" in values:
+        if 'lang_code' in values or not g.get('lang_code', None):
             return
-        values["lang_code"] = g.lang_code
+        # If endpoint expects lang_code, send it forward
+        if current_app.url_map.is_endpoint_expecting(endpoint, 'lang_code'):
+            values['lang_code'] = g.lang_code
 
     @main.url_value_preprocessor
     def pull_lang_code(endpoint, values):
-        g.lang_code = values.pop("lang_code", None)
+        if values is not None:
+            # If no language code has been set, get the best language from the browser settings
+            default_lang = request.accept_languages.best_match(current_app.config['LANGUAGES'])
+            g.lang_code = values.pop('lang_code', default_lang)
 
     @main.before_request
     def redirect_default_language():
