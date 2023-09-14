@@ -10,14 +10,13 @@ from atlas.modeles.repositories import (
     vmMedias,
     vmCommunesRepository,
 )
-from atlas.env import cache
+from atlas.env import cache, db
 
 api = Blueprint("api", __name__)
 
-
 @api.route("/searchTaxon", methods=["GET"])
 def searchTaxonAPI():
-    session = utils.loadSession()
+    session = db.session
     search = request.args.get("search", "")
     limit = request.args.get("limit", 50)
     results = vmSearchTaxonRepository.listeTaxonsSearch(session, search, limit)
@@ -27,7 +26,7 @@ def searchTaxonAPI():
 
 @api.route("/searchCommune", methods=["GET"])
 def searchCommuneAPI():
-    session = utils.loadSession()
+    session = db.session
     search = request.args.get("search", "")
     limit = request.args.get("limit", 50)
     results = vmCommunesRepository.getCommunesSearch(session, search, limit)
@@ -42,7 +41,7 @@ if not current_app.config['AFFICHAGE_MAILLE']:
 
             :returns: dict ({'point:<GeoJson>', 'maille': 'GeoJson})
         """
-        session = utils.loadSession()
+        session = db.session
         observations = {
             "point": vmObservationsRepository.searchObservationsChilds(session, cd_ref),
             "maille": vmObservationsMaillesRepository.getObservationsMaillesChilds(
@@ -60,7 +59,7 @@ def getObservationsMailleAPI(cd_ref, year_min=None, year_max=None):
 
         :returns: GeoJson
     """
-    session = utils.loadSession()
+    session = db.session
     observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(
         session,
         cd_ref,
@@ -76,7 +75,7 @@ def getObservationsMailleAPI(cd_ref, year_min=None, year_max=None):
 if not current_app.config['AFFICHAGE_MAILLE']:
     @api.route("/observationsPoint/<int:cd_ref>", methods=["GET"])
     def getObservationsPointAPI(cd_ref):
-        session = utils.loadSession()
+        session = db.session
         observations = vmObservationsRepository.searchObservationsChilds(session, cd_ref)
         session.close()
         return jsonify(observations)
@@ -93,7 +92,7 @@ def getObservationsGenericApi(cd_ref: int):
     Returns:
         [type]: [description]
     """
-    session = utils.loadSession()
+    session = db.session
     observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(
         session,
         cd_ref,
@@ -107,7 +106,7 @@ def getObservationsGenericApi(cd_ref: int):
 if not current_app.config['AFFICHAGE_MAILLE']:
     @api.route("/observations/<insee>/<int:cd_ref>", methods=["GET"])
     def getObservationsCommuneTaxonAPI(insee, cd_ref):
-        connection = utils.engine.connect()
+        connection = db.engine.connect()
         observations = vmObservationsRepository.getObservationTaxonCommune(
             connection, insee, cd_ref
         )
@@ -117,7 +116,7 @@ if not current_app.config['AFFICHAGE_MAILLE']:
 
 @api.route("/observationsMaille/<insee>/<int:cd_ref>", methods=["GET"])
 def getObservationsCommuneTaxonMailleAPI(insee, cd_ref):
-    connection = utils.engine.connect()
+    connection = db.engine.connect()
     observations = vmObservationsMaillesRepository.getObservationsTaxonCommuneMaille(
         connection, insee, cd_ref
     )
@@ -127,7 +126,7 @@ def getObservationsCommuneTaxonMailleAPI(insee, cd_ref):
 
 @api.route("/photoGroup/<group>", methods=["GET"])
 def getPhotosGroup(group):
-    connection = utils.engine.connect()
+    connection = db.engine.connect()
     photos = vmMedias.getPhotosGalleryByGroup(
         connection,
         current_app.config["ATTR_MAIN_PHOTO"],
@@ -140,7 +139,7 @@ def getPhotosGroup(group):
 
 @api.route("/photosGallery", methods=["GET"])
 def getPhotosGallery():
-    connection = utils.engine.connect()
+    connection = db.engine.connect()
     photos = vmMedias.getPhotosGallery(
         connection,
         current_app.config["ATTR_MAIN_PHOTO"],
@@ -152,13 +151,13 @@ def getPhotosGallery():
 @api.route("/main_stat", methods=["GET"])
 @cache.cached()
 def main_stat():
-    connection = utils.engine.connect()
+    connection = db.engine.connect()
     return vmObservationsRepository.statIndex(connection)
 
 @api.route("/rank_stat", methods=["GET"])
 @cache.cached()
 def rank_stat():
-    connection = utils.engine.connect()
+    connection = db.engine.connect()
     return jsonify(
             vmObservationsRepository.genericStat(
             connection, current_app.config["RANG_STAT"]

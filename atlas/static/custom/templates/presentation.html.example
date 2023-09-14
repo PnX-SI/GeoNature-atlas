@@ -142,13 +142,13 @@
                   <img class="img-circle" src="{{url_for('static', filename='custom/images/03-determination.jpg') }}" alt="Generic placeholder image" width="140" height="140">
                   <h2>Fiches espèces</h2>
                   <p>Retrouvez la fiche de chaque espèce avec leur carte des observations, leur répartition altitudinale et mensuelle, ainsi que des descriptions, photos, vidéos, audios et liens complémentaires</p>
-                  <p><a class="btn btn-default" href="/espece/61098" role="button">Exemple &raquo;</a></p>
+                  <p><a class="btn btn-default" href="url_for('main.ficheEspece', cd_nom=61098)" role="button">Exemple &raquo;</a></p>
                 </div><!-- /.col-lg-4 -->
                 <div class="col-lg-4">
                   <img class="img-circle" src="{{url_for('static', filename='custom/images/04-loupe.jpg') }}" alt="Generic placeholder image" width="140" height="140">
                   <h2>Fiches communes</h2>
                   <p>Découvrez les espèces observées sur chaque commune du parc national et affichez leurs observations sur la carte de la commune.</p>
-                  <p><a class="btn btn-default" href="/commune/05090" role="button">Exemple &raquo;</a></p>
+                  <p><a class="btn btn-default" href="url_for('main.ficheCommune', insee=05090)" role="button">Exemple &raquo;</a></p>
                 </div><!-- /.col-lg-4 -->
                 <div class="col-lg-4">
                   <img class="img-circle" src="{{url_for('static', filename='custom/images/06-photographe.jpg') }}" alt="Generic placeholder image" width="140" height="140">

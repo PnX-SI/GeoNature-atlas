@@ -1,84 +1,70 @@
 import os
-
+import copy
 from flask import Flask, request, session, redirect, url_for, g
 from flask_compress import Compress
 from flask_sqlalchemy import SQLAlchemy
 from flask_babel import Babel, format_date, gettext, ngettext, get_locale
+from werkzeug.middleware.proxy_fix import ProxyFix
 
-from atlas.env import config, secret_conf, cache
-from atlas.utils import format_number
+from atlas.configuration.config_parser import valid_config_from_dict
+from atlas.configuration.config_schema import AtlasConfig, SecretSchemaConf
+from atlas.env import atlas_static_folder, atlas_template_folder, atlas_config_file_path, db, cache
 
-db = SQLAlchemy()
 compress = Compress()
-
-APP_DIR = os.path.abspath(os.path.dirname(__file__))
-
-
-class ReverseProxied(object):
-    def __init__(self, app, script_name=None, scheme=None, server=None):
-        self.app = app
-        self.script_name = script_name
-        self.scheme = scheme
-        self.server = server
-
-    def __call__(self, environ, start_response):
-        script_name = environ.get("HTTP_X_SCRIPT_NAME", "") or self.script_name
-        if script_name:
-            environ["SCRIPT_NAME"] = script_name
-            path_info = environ["PATH_INFO"]
-            if path_info.startswith(script_name):
-                environ["PATH_INFO"] = path_info[len(script_name) :]
-        scheme = environ.get("HTTP_X_SCHEME", "") or self.scheme
-        if scheme:
-            environ["wsgi.url_scheme"] = scheme
-        server = environ.get("HTTP_X_FORWARDED_SERVER", "") or self.server
-        if server:
-            environ["HTTP_HOST"] = server
-        return self.app(environ, start_response)
-
 
 def create_app():
     """
     renvoie une instance de l'app Flask
     """
-    app = Flask(__name__, template_folder=APP_DIR)
+
+    app = Flask(__name__, template_folder=atlas_template_folder, static_folder=atlas_static_folder)
     # push the config in app config at 'PUBLIC' key
-    app.config.update(config)
+    app.config.from_pyfile(str(atlas_config_file_path))
+
+    app.config.from_prefixed_env(prefix="ATLAS")
+    config_valid=valid_config_from_dict(copy.copy(app.config), AtlasConfig)
+    config_secret_valid=valid_config_from_dict(copy.copy(app.config), SecretSchemaConf)
+
+    app.config.update(config_valid)
+    app.config.update(config_secret_valid)
+
+    db.init_app(app)
+    cache.init_app(app)
     babel = Babel(app)
+    compress.init_app(app)
 
     @babel.localeselector
     def get_locale():
         # if MULTILINGUAL, valid language is in g via before_request_hook
-        if config["MULTILINGUAL"]:
+        if app.config["MULTILINGUAL"]:
             return g.lang_code
-        return config["DEFAULT_LANGUAGE"]
+        return app.config["DEFAULT_LANGUAGE"]
 
-    app.debug = secret_conf["modeDebug"]
-    app.config["SECRET_KEY"] = secret_conf["SECRET_KEY"]
+    app.debug = app.config.get("modeDebug")
+    app.config["SECRET_KEY"] = app.config["SECRET_KEY"]
     with app.app_context() as context:
         from atlas.atlasRoutes import main as main_blueprint
 
-        if config["MULTILINGUAL"]:
+        if app.config["MULTILINGUAL"]:
             app.register_blueprint(main_blueprint, url_prefix="/<lang_code>")
         app.register_blueprint(main_blueprint)
 
         from atlas.atlasAPI import api
 
         app.register_blueprint(api, url_prefix="/api")
-        compress.init_app(app)
 
-        cache.init_app(app)
-
-        app.wsgi_app = ReverseProxied(
-            app.wsgi_app, script_name=config["URL_APPLICATION"]
-        )
+        if "SCRIPT_NAME" not in os.environ and "APPLICATION_ROOT" in app.config:
+            os.environ["SCRIPT_NAME"] = app.config["APPLICATION_ROOT"].rstrip("/")
+        app.wsgi_app = ProxyFix(app.wsgi_app, x_host=1)
 
         @app.context_processor
         def inject_config():
-            return dict(configuration=config)
+            configuration = copy.copy(app.config)
+            configuration.pop("PERMANENT_SESSION_LIFETIME", None)
+            return dict(configuration=configuration)
 
         @app.template_filter("pretty")
         def pretty(val):
-            return format_number(val)
+            return "{:,}".format(val).replace(",", " ")
 
     return app

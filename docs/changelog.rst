@@ -3,11 +3,17 @@ CHANGELOG
 =========
 
 1.6.0 (unreleased)
-------------------
+-----------------
 
 🚀 **Nouveautés**
 
 - Ajout du paramètre ``DISPLAY_OBSERVERS`` permettant de masquer les observateurs des fiches espèces (#439 par @mvergez)
+- [Docker] Ajout d'un fichier ``Dockerfile`` permettant de dockeriser GeoNature-atlas
+- [Docker] Ajout de scripts ``docker_startup.sh`` et ``docker_install_atlas_schema.sh`` (sera joué au démarrage du container si la variable d'environnement ``ATLAS_INSTALL_SCHEMA`` est à  ``true```)
+- Possibilité de définir le chemin vers le fichier de config avec ``ATLAS_SETTINGS`` (par défaut ``atlas/configuration/config.py``)
+- Possibilité de définir le chemin vers le dossier des templates avec ``ATLAS_TEMPLATE_FOLDER``(par défaut ``.``)
+- Possibilité de définir le chemin vers le dossier des templates avec ``ATLAS_STATIC_FOLDER``(par défaut ``atlas/static``)
+- Gestion du proxy avec ``ProxyFix``
 
 🐛 **Corrections**
 
@@ -18,6 +24,7 @@ CHANGELOG
 - Affichage de lb_nom en italique (#387 par @Splendens)
 - Affichage HTML du titre du média principal dans les fiches espèce (#420 par @joelclems)
 - Correction du scroll infini de la gallerie photo (#430 par @mvergez)
+- Correction des liens vers les fiches espèces dans la galerie photo
 - Amélioration du lien vers la fiche d'un taxon depuis la galerie photo (#432 par @mvergez)
 - Correction de l'affichage de la liste des taxons sur les fiches communes (#445 par @mvergez)
 - Prise en compte des cas où le SRID est différent de 2154 lors de la création de ``atlas.t_mailles_territoire`` (#417 par @joelclems)
@@ -26,7 +33,7 @@ CHANGELOG
 - Exclusion des médias supprimés dans la vue ``vm_medias`` (#458 par @jpm-cbna)
 - Spécification du port de base de données dans le script ``install_db.sh`` (#422 par @geobrun)
 - Correction des photos lors du scroll dans les fiches des communes (#448 par @mvergez)
-- Support des cd_ref négatifs 
+- Support des cd_ref négatifs
 
 🐛 **Optimisations**
 
@@ -43,8 +50,9 @@ CHANGELOG
 Si vous mettez à jour GeoNature-atlas : 
 
 - Exécutez le script SQL de mise à jour de la BDD : https://github.com/PnX-SI/GeoNature-atlas/blob/master/data/update_1.5.2to1.6.0.sql
-- Suppression du paramètre ``ANONYMIZE`` au profit de ``ORGANISM_MODULE`` et ``DISPLAY_OBSERVERS`` qui permettent d'anonymiser indépendamment les organismes et les observateurs
+- Suppression du paramètre ``ANONYMIZE`` au profit de ``ORGANISM_MODULE`` et ``DISPLAY_OBSERVERS`` qui permettent d'afficher ou non indépendamment les organismes et les observateurs
 - Suivez la procédure classique de mise à jour de l'application
+- Dans le fichier de configuration ``config.py`` : changer le nom du paramètre ``database_connection`` en ``SQLALCHEMY_DATABASE_URI`
 
 1.5.1 (2021-12-06)
 ------------------

@@ -2,6 +2,15 @@
 Utils pour lire le fichier de conf et le valider selon le schéma Marshmallow 
 """
 
+from importlib.machinery import SourceFileLoader
+
+
+
+def get_config_module(atlas_config_file_path):
+# imports the module from the given path
+    atlas_config = SourceFileLoader("config", atlas_config_file_path).load_module()
+    return atlas_config
+
 def read_config_file(config_module):
     return {
         var: getattr(config_module, var) for var in remove_reserved_word(config_module)

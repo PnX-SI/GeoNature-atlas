@@ -2,7 +2,7 @@
 from sqlalchemy import Column, Integer, MetaData, String, Table
 from sqlalchemy.ext.declarative import declarative_base
 
-from atlas.utils import engine
+from atlas.env import db
 
 metadata = MetaData()
 Base = declarative_base()
@@ -31,5 +31,5 @@ class VmTaxref(Base):
         Column('group1_inpn', String(50)),
         Column('group2_inpn', String(50)),
         Column('nom_complet_html', String(500)),
-        schema='atlas', autoload=True, autoload_with=engine
+        schema='atlas', autoload=True, autoload_with=db.engine
     )

@@ -4,7 +4,7 @@ from sqlalchemy import Column, MetaData, String, Table, Integer, Text, ForeignKe
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
-from atlas.utils import engine
+from atlas.env import db
 
 metadata = MetaData()
 Base = declarative_base()
@@ -20,7 +20,7 @@ class VmBibAreasTypes(Base):
         Column("type_desc", Text()),
         schema="atlas",
         autoload=True,
-        autoload_with=engine,
+        autoload_with=db.engine,
         extend_existing=True,
     )
     areas = relationship("VmAreas")
@@ -38,7 +38,7 @@ class VmAreas(Base):
         Column("area_geojson", Text()),
         schema="atlas",
         autoload=True,
-        autoload_with=engine,
+        autoload_with=db.engine,
         extend_existing=True,
     )
 
@@ -51,7 +51,7 @@ class VmCorAreaObservation(Base):
         Column("id_area", Integer()),
         schema="atlas",
         autoload=True,
-        autoload_with=engine,
+        autoload_with=db.engine,
         extend_existing=True,
         primary_key=False,
     )

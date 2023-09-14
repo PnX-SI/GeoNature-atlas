@@ -47,7 +47,7 @@ function generateHtmlPhoto(photos, redimentionnement, taxhub_url) {
                    &copy; ${photo.author} - ${photo.licence} ${photo.source} cdRef='${photo.cd_ref}'>
             <div class='img-custom-medias' style='background-image:url(${photo_url})' alt='${photo.name}'></div>
             <div class='stat-medias-hovereffet'>
-              <h2 class='overlay-obs'><a class='overlay-link' href="/espece/${photo.cd_ref}">${photo.name}</a>
+              <h2 class='overlay-obs'><a class='overlay-link' href="${configuration.URL_APPLICATION}/espece/${photo.cd_ref}">${photo.name}</a>
               </br>
               </br> ${photo.nb_obs} observations </h2>
                 <img src='${configuration.URL_APPLICATION}/static/images/eye.png'>

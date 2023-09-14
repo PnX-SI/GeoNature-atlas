@@ -2,7 +2,7 @@
 from sqlalchemy import Column, MetaData, String, Table, Integer, ForeignKey, Text, Date
 from sqlalchemy.ext.declarative import declarative_base
 
-from atlas.utils import engine
+from atlas.env import db
 
 metadata = MetaData()
 Base = declarative_base()
@@ -25,5 +25,5 @@ class VmMedias(Base):
         Column("source", String(25)),
         schema="atlas",
         autoload=True,
-        autoload_with=engine,
+        autoload_with=db.engine,
     )

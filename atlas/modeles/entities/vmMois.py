@@ -2,7 +2,7 @@
 from sqlalchemy import Column, Integer, MetaData, Table
 from sqlalchemy.ext.declarative import declarative_base
 
-from atlas.utils import engine
+from atlas.env import db
 
 metadata = MetaData()
 Base = declarative_base()
@@ -24,5 +24,5 @@ class VmMois(Base):
         Column('_10', Integer),
         Column('_11', Integer),
         Column('_12', Integer),
-        schema='atlas', autoload=True, autoload_with=engine
+        schema='atlas', autoload=True, autoload_with=db.engine
     )

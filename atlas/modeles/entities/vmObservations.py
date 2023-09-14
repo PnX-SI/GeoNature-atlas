@@ -11,7 +11,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.ext.declarative import declarative_base
 
-from atlas.utils import engine
+from atlas.env import db
 
 metadata = MetaData()
 Base = declarative_base()
@@ -32,7 +32,7 @@ class VmObservations(Base):
         Column("diffusion_level"),
         schema="atlas",
         autoload=True,
-        autoload_with=engine,
+        autoload_with=db.engine,
     )
 
 
@@ -51,5 +51,5 @@ class VmObservationsMailles(Base):
         Column("annee", String(1000)),
         schema="atlas",
         autoload=True,
-        autoload_with=engine,
+        autoload_with=db.engine,
     )

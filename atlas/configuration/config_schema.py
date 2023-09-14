@@ -82,7 +82,7 @@ class SecretSchemaConf(Schema):
     class Meta:
         unknown = EXCLUDE
 
-    database_connection = fields.String(
+    SQLALCHEMY_DATABASE_URI = fields.String(
         required=True,
         validate=Regexp(
             "^postgresql:\/\/.*:.*@[^:]+:\w+\/\w+$",

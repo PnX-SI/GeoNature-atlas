@@ -423,7 +423,7 @@
                                                      v-bind:style="{ color: item.marker_color}"></i>[[item.nom_vern]]
                             </h5>
                             <span class="float-right">
-                    <a class="badge badge-primary" :href="'/espece/'+item.cd_nom" data-toggle="tooltip"
+                    <a class="badge badge-primary" :href="url_for('main.ficheEspece', cd_nom=item.cd_nom)" data-toggle="tooltip"
                        title="{{ _('species.sheet') }}"
                        data-placement="left">
                         <i class="fas fa-list fa-fw"></i> {{ _('check.species.sheet') }}</i>
