@@ -3,7 +3,7 @@
 from sqlalchemy import Column, Integer, MetaData, String, Table, Float
 from sqlalchemy.ext.declarative import declarative_base
 
-from atlas.utils import engine
+from atlas.env import db
 
 Base = declarative_base()
 metadata = MetaData()
@@ -35,5 +35,5 @@ class VmTaxons(Base):
         Column('protection_stricte', String(255)),
         Column('yearmin', Float(53)),
         Column('yearmax', Float(53)),
-        schema='atlas', autoload=True, autoload_with=engine
+        schema='atlas', autoload=True, autoload_with=db.engine
     )

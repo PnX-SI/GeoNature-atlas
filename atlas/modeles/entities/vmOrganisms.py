@@ -3,7 +3,7 @@
 from sqlalchemy import Column, Integer, MetaData, String, Table, Float
 from sqlalchemy.ext.declarative import declarative_base
 
-from atlas.utils import engine
+from atlas.env import db
 
 Base = declarative_base()
 metadata = MetaData()
@@ -25,5 +25,5 @@ class VmOrganisms(Base):
         Column('cd_ref',Integer),
         schema="atlas",
         autoload=True,
-        autoload_with=engine
+        autoload_with=db.engine
     ) 

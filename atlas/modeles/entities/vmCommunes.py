@@ -3,7 +3,7 @@ from geoalchemy2.types import Geometry
 from sqlalchemy import Column, MetaData, String, Table
 from sqlalchemy.ext.declarative import declarative_base
 
-from atlas.utils import engine
+from atlas.env import db
 
 metadata = MetaData()
 Base = declarative_base()
@@ -16,5 +16,5 @@ class VmCommunes(Base):
         Column('commune_maj', String(50)),
         # Column('commune_min', String(50)),
         Column('the_geom', Geometry(u'MULTIPOLYGON'), index=True),
-        schema='atlas', autoload=True, autoload_with=engine
+        schema='atlas', autoload=True, autoload_with=db.engine
     )

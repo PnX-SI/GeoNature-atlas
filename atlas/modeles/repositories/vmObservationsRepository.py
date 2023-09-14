@@ -6,7 +6,8 @@ from geojson import Feature, FeatureCollection
 from sqlalchemy.sql import text, func, or_
 
 from atlas.modeles import utils
-from atlas.utils import engine, GenericTable
+from atlas.env import db
+from atlas.utils import GenericTable
 from atlas.modeles.repositories import vmMedias
 
 currentYear = datetime.now().year
@@ -17,7 +18,7 @@ def searchObservationsChilds(session, cd_ref):
     global cached_vm_observation
     # on met en cache le GenericTable (lourd en traitement)
     if cached_vm_observation is None:
-        cached_vm_observation = GenericTable("vm_observations", "atlas", engine)
+        cached_vm_observation = GenericTable("vm_observations", "atlas", db.engine)
 
     subquery = session.query(func.atlas.find_all_taxons_childs(cd_ref))
     query = session.query(cached_vm_observation.tableDef).filter(
