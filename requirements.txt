@@ -73,7 +73,7 @@ sqlalchemy==1.4.27
     #   geoalchemy2
 visitor==0.1.3
     # via -r requirements.in
-werkzeug==2.2.2
+werkzeug==2.2.3
     # via
     #   -r requirements.in
     #   flask
