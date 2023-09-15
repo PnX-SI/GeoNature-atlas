@@ -26,7 +26,7 @@ function generateHtmlPhoto(photos, redimentionnement, taxhub_url) {
   if (compteurJson <= photos.length) {
     slicePhoto = photos.slice(compteurJson, compteurJson + 22);
     compteurJson = compteurJson + 22;
-    slicePhoto.forEach(function(photo) {
+    slicePhoto.forEach(function (photo) {
       photo.title = formatPhotoAttribut(photo.title);
       photo.description = formatPhotoAttribut(photo.description);
       photo.author = formatPhotoAttribut(photo.author);
@@ -40,17 +40,20 @@ function generateHtmlPhoto(photos, redimentionnement, taxhub_url) {
           photo.id_media +
           "?h=500&w=500";
       }
-      let subject = `${photo.title}<br/>`;
-      let description = photo.description ? `${photo.description}<br/>` : '';
-      let author = photo.author ? `&copy; ${photo.author} - ` : '';
-      let licence = `${photo.licence} ${photo.source}`;
+      let subject = `${stripHtml(photo.title)}<br/>`;
+      let description = photo.description
+        ? `${stripHtml(photo.description)}<br/>`
+        : "";
+      let author = photo.author ? `&copy; ${stripHtml(photo.author)} - ` : "";
+      let licence = `${stripHtml(photo.licence)} ${stripHtml(photo.source)}`;
+      let datatitle = `${subject} ${description} ${author} ${licence}`;
       onePhoto = `
 				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece ">
 				  <div class="zoom-wrapper" >
 				 		<a
               href="${photo.path}"
               data-lightbox="imageSet"
-              data-title="${subject} ${description} ${author} ${licence}"
+              data-title="${datatitle}"
               data-alt="${photo.cd_ref}"
             >
 						  <div
@@ -74,7 +77,7 @@ function generateHtmlPhoto(photos, redimentionnement, taxhub_url) {
 }
 
 function scrollEvent(photos) {
-  $("#insertPhotos").on("scroll", function() {
+  $("#insertPhotos").on("scroll", function () {
     clearHtml = false;
     if (
       $("#insertPhotos").scrollTop() + $("#insertPhotos").height() >=
@@ -141,12 +144,14 @@ function sufflePhotosEvent(photos) {
 
 jQuery(function () {
   lightbox.option({
-    "albumLabel": "Image %1 sur %2",
-    "wrapAround": true,
-  })
-  $("#lightbox .lb-next").after('<a class="lb-link" href="#"> Fiche espèce </a>');
+    albumLabel: "Image %1 sur %2",
+    wrapAround: true,
+  });
+  $("#lightbox .lb-next").after(
+    '<a class="lb-link" href="#"> Fiche espèce </a>'
+  );
 
-  $("#lightbox .lb-link").on("click", function() {
+  $("#lightbox .lb-link").on("click", function () {
     let cdRef = $("#lightbox .lb-image").attr("alt");
     let url = `${configuration.URL_APPLICATION}/espece/${cdRef}`;
     $(this).attr("href", url);
@@ -156,10 +161,10 @@ jQuery(function () {
   $.ajax({
     url: configuration.URL_APPLICATION + "/api/photosGallery",
     dataType: "json",
-    beforeSend: function() {
+    beforeSend: function () {
       // $('#loadingGif').attr("src", configuration.URL_APPLICATION+'/static/images/loading.svg')
-    }
-  }).done(function(photos) {
+    },
+  }).done(function (photos) {
     generateHtmlPhoto(
       photos,
       configuration.REDIMENSIONNEMENT_IMAGE,
@@ -170,7 +175,7 @@ jQuery(function () {
     orderPhotosEvent(photos);
     sufflePhotosEvent(photos);
 
-    $("#allGroups").on("click", function() {
+    $("#allGroups").on("click", function () {
       $("#searchPhotos").val("");
       $("body").off("click");
       orderPhotosEvent(photos);
@@ -189,12 +194,12 @@ jQuery(function () {
     });
 
     // search a photo by the name of the species
-    $("#searchPhotos").on("keyup", function() {
+    $("#searchPhotos").on("keyup", function () {
       $("#insertPhotos").off("scroll");
       $("body").off("click");
       $("#group").html("");
       keyString = this.value;
-      filterJsonPhoto = photos.filter(function(obj) {
+      filterJsonPhoto = photos.filter(function (obj) {
         if (obj.name) {
           name = obj.name.toLowerCase();
         } else {
@@ -232,7 +237,7 @@ jQuery(function () {
   });
 });
 
-$(".INPNgroup").on("click", function() {
+$(".INPNgroup").on("click", function () {
   $("#searchPhotos").val("");
   compteurJson = 0;
   clearHtml = true;
@@ -250,12 +255,12 @@ $(".INPNgroup").on("click", function() {
   $.ajax({
     url: configuration.URL_APPLICATION + "/api/photoGroup/" + group,
     dataType: "json",
-    beforeSend: function() {
+    beforeSend: function () {
       // $('#loadingGif').attr("src", configuration.URL_APPLICATION+'/static/images/loading.svg')
-    }
+    },
 
     // Count and display number of photos in 1 group
-  }).done(function(photos) {
+  }).done(function (photos) {
     generateHtmlPhoto(
       photos,
       configuration.REDIMENSIONNEMENT_IMAGE,
@@ -269,3 +274,9 @@ $(".INPNgroup").on("click", function() {
     sufflePhotosEvent();
   });
 });
+
+function stripHtml(html) {
+  let tmp = document.createElement("DIV");
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || "";
+}
