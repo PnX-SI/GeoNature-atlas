@@ -39,6 +39,7 @@ CHANGELOG
 - Support des cd_ref négatifs
 - Affichage cartographique sur la page "Recherche avancée" (#486)
 - Correction du lien vers les fiches espèces dans la galerie photo (#459 par @jpm-cbna)
+- Correction du bouton de tri (aléatoire ou nombre d'observation) dans la gallerie photo
 
 🐛 **Optimisations**
 
