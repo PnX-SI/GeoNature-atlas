@@ -56,9 +56,9 @@ CHANGELOG
 Si vous mettez à jour GeoNature-atlas :
 
 - Exécutez le script SQL de mise à jour de la BDD : https://github.com/PnX-SI/GeoNature-atlas/blob/master/data/update/update_1.5.2to1.6.0.sql
+- Dans le fichier de configuration ``config.py``, changez le nom du paramètre ``database_connection`` en ``SQLALCHEMY_DATABASE_URI``
 - Si vous utilisiez le paramètre ``ANONYMIZE``, celui-ci est à remplacer par ``ORGANISM_MODULE`` et ``DISPLAY_OBSERVERS`` qui permettent d'afficher ou non indépendamment les organismes et les observateurs
 - Suivez la procédure classique de mise à jour de l'application
-- Dans le fichier de configuration ``config.py``, changez le nom du paramètre ``database_connection`` en ``SQLALCHEMY_DATABASE_URI``, puis relancez l'application avec la commande ``sudo supervisorctl restart atlas``
 
 1.5.1 (2021-12-06)
 ------------------
