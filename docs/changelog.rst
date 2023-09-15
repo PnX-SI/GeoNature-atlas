@@ -2,18 +2,18 @@
 CHANGELOG
 =========
 
-1.6.0 (unreleased)
------------------
+1.6.0 (2023-09-15)
+------------------
 
 🚀 **Nouveautés**
 
 - Ajout du paramètre ``DISPLAY_OBSERVERS`` permettant de masquer les observateurs des fiches espèces (#439 par @mvergez)
 - [Docker] Ajout d'un fichier ``Dockerfile`` permettant de dockeriser GeoNature-atlas (#470)
 - [Docker] Ajout d'une Github action publiant automatiquement les images Docker de GeoNature-atlas
-- [Docker] Ajout de scripts ``docker_startup.sh`` et ``docker_install_atlas_schema.sh`` (sera joué au démarrage du container si la variable d'environnement ``ATLAS_INSTALL_SCHEMA`` est à  ``true``) (#470)
+- [Docker] Ajout des scripts ``docker_startup.sh`` et ``docker_install_atlas_schema.sh`` (sera exécuté au démarrage du container si la variable d'environnement ``ATLAS_INSTALL_SCHEMA`` est à  ``true``) (#470)
 - Possibilité de définir le chemin vers le fichier de config avec ``ATLAS_SETTINGS`` (par défaut ``atlas/configuration/config.py``) (#470)
-- Possibilité de définir le chemin vers le dossier des templates avec ``ATLAS_TEMPLATE_FOLDER``(par défaut ``.``) (#470)
-- Possibilité de définir le chemin vers le dossier des templates avec ``ATLAS_STATIC_FOLDER``(par défaut ``atlas/static``) (#470)
+- Possibilité de définir le chemin vers le dossier des templates avec ``ATLAS_TEMPLATE_FOLDER`` (par défaut ``.``) (#470)
+- Possibilité de définir le chemin vers le dossier des templates avec ``ATLAS_STATIC_FOLDER`` (par défaut ``atlas/static``) (#470)
 - Gestion du proxy avec ``ProxyFix`` (#470)
 - Mise à jour de Flask en version 2 et de nombreuses dépendances Python (#470)
 
@@ -26,20 +26,20 @@ CHANGELOG
 - Amélioration de l'affichage des logos des organismes sur la page d'accueil (#381 par @Splendens)
 - Affichage de lb_nom en italique (#387 par @Splendens)
 - Affichage HTML du titre du média principal dans les fiches espèce (#420 par @joelclems)
-- Correction du scroll infini de la gallerie photo (#430 par @mvergez)
+- Correction du scroll infini de la galerie photo (#430 par @mvergez)
 - Correction des liens vers les fiches espèces dans la galerie photo
+- Correction du lien vers les fiches espèces dans la galerie photo (#459 par @jpm-cbna)
+- Correction du bouton de tri (aléatoire ou nombre d'observation) dans la galerie photo
 - Amélioration du lien vers la fiche d'un taxon depuis la galerie photo (#432 par @mvergez)
 - Correction de l'affichage de la liste des taxons sur les fiches communes (#445 par @mvergez)
 - Prise en compte des cas où le SRID est différent de 2154 lors de la création de ``atlas.t_mailles_territoire`` (#417 par @joelclems)
 - Harmonisation de l'affichage du picto group2_inpn (#424, #425, #426, #427, #429 par @MissT)
-- Affichage en double de la légende quand le slider était touché (#452 par @mvergez)
+- Affichage en double de la légende quand le slider était manipulé (#452 par @mvergez)
 - Exclusion des médias supprimés dans la vue ``vm_medias`` (#458 par @jpm-cbna)
 - Spécification du port de base de données dans le script ``install_db.sh`` (#422 par @geobrun)
 - Correction des photos lors du scroll dans les fiches des communes (#448 par @mvergez)
-- Support des cd_ref négatifs
 - Affichage cartographique sur la page "Recherche avancée" (#486)
-- Correction du lien vers les fiches espèces dans la galerie photo (#459 par @jpm-cbna)
-- Correction du bouton de tri (aléatoire ou nombre d'observation) dans la gallerie photo
+- Support des cd_ref négatifs
 
 🐛 **Optimisations**
 
@@ -55,10 +55,10 @@ CHANGELOG
 
 Si vous mettez à jour GeoNature-atlas :
 
-- Exécutez le script SQL de mise à jour de la BDD : https://github.com/PnX-SI/GeoNature-atlas/blob/master/data/update_1.5.2to1.6.0.sql
-- Suppression du paramètre ``ANONYMIZE`` au profit de ``ORGANISM_MODULE`` et ``DISPLAY_OBSERVERS`` qui permettent d'afficher ou non indépendamment les organismes et les observateurs
+- Exécutez le script SQL de mise à jour de la BDD : https://github.com/PnX-SI/GeoNature-atlas/blob/master/data/update/update_1.5.2to1.6.0.sql
+- Si vous utilisiez le paramètre ``ANONYMIZE``, celui-ci est à remplacer par ``ORGANISM_MODULE`` et ``DISPLAY_OBSERVERS`` qui permettent d'afficher ou non indépendamment les organismes et les observateurs
 - Suivez la procédure classique de mise à jour de l'application
-- Dans le fichier de configuration ``config.py`` : changer le nom du paramètre ``database_connection`` en ``SQLALCHEMY_DATABASE_URI`
+- Dans le fichier de configuration ``config.py``, changez le nom du paramètre ``database_connection`` en ``SQLALCHEMY_DATABASE_URI``, puis relancez l'application avec la commande ``sudo supervisorctl restart atlas``
 
 1.5.1 (2021-12-06)
 ------------------
