@@ -91,16 +91,14 @@ function scrollEvent(photos) {
 
 // ORDER event
 function orderPhotosEvent(photos) {
-  $("body").on("click", "#sort", function() {
+  $("body").on("click", "#order-sort", function () {
     $("#searchPhotos").val("");
 
-    span = $("#orderPhotos").find("span");
-    $(span)
-      .toggleClass("fas fa-sort")
-      .toggleClass("fas fa-random");
-    $(span).attr("id", "random");
+    span = $("#order-sort");
+    $("#order-picto").toggleClass("fas fa-sort").toggleClass("fas fa-random");
+    $(span).attr("id", "order-random");
     $(span).attr("data-original-title", "Trier de manière aléatoire");
-    sortedPhotos = photos.slice().sort(function(a, b) {
+    sortedPhotos = photos.slice().sort(function (a, b) {
       if (a.nb_obs >= b.nb_obs) return -1;
       if (a.nb_obs < b.nb_obs) return 1;
       return 0;
@@ -119,14 +117,12 @@ function orderPhotosEvent(photos) {
 }
 
 function sufflePhotosEvent(photos) {
-  $("body").on("click", "#random", function() {
+  $("body").on("click", "#order-random", function () {
     $("#searchPhotos").val("");
 
-    span = $("#orderPhotos").find("span");
-    $(span)
-      .toggleClass("fas fa-sort")
-      .toggleClass("fas fa-random");
-    $(span).attr("id", "sort");
+    span = $("#order-random");
+    $("#order-picto").toggleClass("fas fa-sort").toggleClass("fas fa-random");
+    $(span).attr("id", "order-sort");
     $(span).attr(
       "data-original-title",
       "Trier les photos par nombre d'observations"
