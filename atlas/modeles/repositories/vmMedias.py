@@ -71,7 +71,9 @@ def switchMedia(row):
     media_template = {  # noqa
         current_app.config["ATTR_AUDIO"]: "{path}",
         current_app.config["ATTR_VIDEO_HEBERGEE"]: "{path}",
-        current_app.config["ATTR_YOUTUBE"]: """
+        current_app.config[
+            "ATTR_YOUTUBE"
+        ]: """
             <iframe
                 width='100%'
                 height='315'
@@ -79,7 +81,9 @@ def switchMedia(row):
                 frameborder='0'
                 allowfullscreen>
             </iframe>""",
-        current_app.config["ATTR_DAILYMOTION"]: """
+        current_app.config[
+            "ATTR_DAILYMOTION"
+        ]: """
             <iframe
                 frameborder='0'
                 width='100%'
@@ -87,7 +91,9 @@ def switchMedia(row):
                 src='//www.dailymotion.com/embed/video/{path}'
                 allowfullscreen>
             </iframe>""",
-        current_app.config["ATTR_VIMEO"]: """
+        current_app.config[
+            "ATTR_VIMEO"
+        ]: """
             <iframe
                 src='https://player.vimeo.com/video/{path}?color=ffffff&title=0&byline=0&portrait=0'
                 width='640'
@@ -96,7 +102,7 @@ def switchMedia(row):
                 webkitallowfullscreen
                 mozallowfullscreen
                 allowfullscreen>
-            </iframe>"""
+            </iframe>""",
     }
 
     goodPath = str()

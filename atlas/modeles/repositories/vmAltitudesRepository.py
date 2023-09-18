@@ -13,9 +13,7 @@ def getAltitudesChilds(connection, cd_ref):
     qalt = connection.execute(text(sql))
     alt = [k[0] for k in qalt]
 
-    sumSelect = ', '.join(
-        "SUM({}) AS {}".format(k, k) for k in alt
-    )
+    sumSelect = ", ".join("SUM({}) AS {}".format(k, k) for k in alt)
 
     sql = """
         SELECT {sumSelect}
@@ -24,13 +22,15 @@ def getAltitudesChilds(connection, cd_ref):
             alt.cd_ref IN (
                 SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
             ) OR alt.cd_ref = :thiscdref
-    """.format(sumSelect=sumSelect)
+    """.format(
+        sumSelect=sumSelect
+    )
     mesAltitudes = connection.execute(text(sql), thiscdref=cd_ref)
 
     altiList = list()
     for a in mesAltitudes:
         for k in alt:
-            temp = {"altitude": k.replace('_', '-')[1:], "value": getattr(a, k)}
+            temp = {"altitude": k.replace("_", "-")[1:], "value": getattr(a, k)}
             altiList.append(temp)
 
     return altiList

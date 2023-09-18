@@ -26,7 +26,6 @@ def getCommunesSearch(session, search, limit=50):
         func.length(VmCommunes.commune_maj),
     ).filter(VmCommunes.commune_maj.ilike("%" + search + "%"))
 
-
     req = req.order_by(VmCommunes.commune_maj)
 
     req = req.limit(limit).all()

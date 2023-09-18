@@ -34,7 +34,7 @@ class VmAreas(Base):
         Column("area_code", String(50)),
         Column("area_name", String(50)),
         Column("id_type", Integer(), ForeignKey("atlas.vm_bib_areas_types.id_type")),
-        Column("the_geom", Geometry(u"MULTIPOLYGON", 4326), index=True),
+        Column("the_geom", Geometry("MULTIPOLYGON", 4326), index=True),
         Column("area_geojson", Text()),
         schema="atlas",
         autoload=True,

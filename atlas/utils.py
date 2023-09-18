@@ -32,8 +32,8 @@ SERIALIZERS = {
 
 class GenericTable:
     """
-        Classe permettant de créer à la volée un mapping
-            d'une vue avec la base de données par rétroingénierie
+    Classe permettant de créer à la volée un mapping
+        d'une vue avec la base de données par rétroingénierie
     """
 
     def __init__(self, tableName, schemaName, engine, geometry_field=None, srid=None):
@@ -49,8 +49,8 @@ class GenericTable:
         if geometry_field:
             try:
                 if (
-                        not self.tableDef.columns[geometry_field].type.__class__.__name__
-                            == "Geometry"
+                    not self.tableDef.columns[geometry_field].type.__class__.__name__
+                    == "Geometry"
                 ):
                     raise TypeError(
                         "field {} is not a geometry column".format(geometry_field)
@@ -66,8 +66,8 @@ class GenericTable:
 
     def get_serialized_columns(self, serializers=SERIALIZERS):
         """
-            Return a tuple of serialize_columns, and db_cols
-            from the generic table
+        Return a tuple of serialize_columns, and db_cols
+        from the generic table
         """
         regular_serialize = []
         db_cols = []

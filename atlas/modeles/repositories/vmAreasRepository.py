@@ -51,7 +51,7 @@ def get_id_area(session, type_code, area_code):
 
 
 def last_observations_area_maille(session, myLimit, idArea):
-    """ Fonction a priori non utilisée à supprimer """
+    """Fonction a priori non utilisée à supprimer"""
     q_last_obs = (
         session.query(
             # VmObservations.cd_ref.label("cd_ref"),
@@ -86,9 +86,7 @@ def last_observations_area_maille(session, myLimit, idArea):
             q_last_obs.c.lb_nom,
             q_last_obs.c.cd_ref,
             q_last_obs.c.nom_vern,
-            func.st_asgeojson(TGrid.the_geom).label(
-                "geojson_maille"
-            ),
+            func.st_asgeojson(TGrid.the_geom).label("geojson_maille"),
         )
         .join(q_last_obs, q_last_obs.c.the_geom_point.st_intersects(TGrid.the_geom))
         .group_by(
@@ -238,9 +236,7 @@ def get_areas_grid_observations_by_cdnom(session, id_area, cd_nom):
         session.query(
             TGrid.id_maille,
             func.extract("year", VmObservations.dateobs).label("annee"),
-            func.st_asgeojson(TGrid.the_geom, 4326).label(
-                "geojson_maille"
-            ),
+            func.st_asgeojson(TGrid.the_geom, 4326).label("geojson_maille"),
         )
         .join(VmAreas, VmAreas.the_geom.st_intersects(VmObservations.the_geom_point))
         .join(TGrid, TGrid.the_geom.st_intersects(VmObservations.the_geom_point))

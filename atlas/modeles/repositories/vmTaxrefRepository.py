@@ -9,7 +9,7 @@ from atlas.modeles.entities.vmTaxref import VmTaxref
 
 def searchEspece(connection, cd_ref):
     """
-        recherche l espece corespondant au cd_nom et tout ces fils
+    recherche l espece corespondant au cd_nom et tout ces fils
     """
     sql = """
     WITH limit_obs AS (
@@ -116,9 +116,9 @@ def getTaxon(session, cd_nom):
             TBibTaxrefRang.nom_rang,
             TBibTaxrefRang.tri_rang,
         )
-            .join(TBibTaxrefRang, TBibTaxrefRang.id_rang == VmTaxref.id_rang)
-            .filter(VmTaxref.cd_nom == cd_nom)
-            .one_or_none()
+        .join(TBibTaxrefRang, TBibTaxrefRang.id_rang == VmTaxref.id_rang)
+        .filter(VmTaxref.cd_nom == cd_nom)
+        .one_or_none()
     )
 
 
@@ -130,8 +130,8 @@ def getCd_sup(session, cd_ref):
 def getInfoFromCd_ref(session, cd_ref):
     req = (
         session.query(VmTaxref.lb_nom, TBibTaxrefRang.nom_rang)
-            .join(TBibTaxrefRang, TBibTaxrefRang.id_rang == VmTaxref.id_rang)
-            .filter(VmTaxref.cd_ref == cd_ref)
+        .join(TBibTaxrefRang, TBibTaxrefRang.id_rang == VmTaxref.id_rang)
+        .filter(VmTaxref.cd_ref == cd_ref)
     )
 
     return {"lb_nom": req[0].lb_nom, "nom_rang": req[0].nom_rang}
@@ -142,8 +142,8 @@ def getAllTaxonomy(session, cd_ref):
     taxon = getTaxon(session, taxonSup)
     tabTaxon = list()
     while (
-            taxon
-            and taxon.tri_rang >= current_app.config["LIMIT_RANG_TAXONOMIQUE_HIERARCHIE"]
+        taxon
+        and taxon.tri_rang >= current_app.config["LIMIT_RANG_TAXONOMIQUE_HIERARCHIE"]
     ):
         temp = {
             "rang": taxon.id_rang,
@@ -155,6 +155,7 @@ def getAllTaxonomy(session, cd_ref):
         tabTaxon.insert(0, temp)
         taxon = getTaxon(session, taxon.cd_taxsup)  # on avance
     return tabTaxon
+
 
 def get_cd_ref(connection, cd_nom):
     sql = """
