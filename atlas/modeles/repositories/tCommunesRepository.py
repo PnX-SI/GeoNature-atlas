@@ -13,6 +13,8 @@ def getCommunesObservationsChilds(connection, cd_ref):
             SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
         ) OR obs.cd_ref = :thiscdref
     GROUP BY com.commune_maj, com.insee
-    """.encode('UTF-8')
+    """.encode(
+        "UTF-8"
+    )
 
     return connection.execute(text(sql), thiscdref=cd_ref)

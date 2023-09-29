@@ -8,22 +8,35 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 
 from atlas.configuration.config_parser import valid_config_from_dict
 from atlas.configuration.config_schema import AtlasConfig, SecretSchemaConf
-from atlas.env import atlas_static_folder, atlas_template_folder, atlas_config_file_path, db, cache
+from atlas.env import (
+    atlas_static_folder,
+    atlas_template_folder,
+    atlas_config_file_path,
+    db,
+    cache,
+)
 
 compress = Compress()
+
 
 def create_app():
     """
     renvoie une instance de l'app Flask
     """
 
-    app = Flask(__name__, template_folder=atlas_template_folder, static_folder=atlas_static_folder)
+    app = Flask(
+        __name__,
+        template_folder=atlas_template_folder,
+        static_folder=atlas_static_folder,
+    )
     # push the config in app config at 'PUBLIC' key
     app.config.from_pyfile(str(atlas_config_file_path))
 
     app.config.from_prefixed_env(prefix="ATLAS")
-    config_valid=valid_config_from_dict(copy.copy(app.config), AtlasConfig)
-    config_secret_valid=valid_config_from_dict(copy.copy(app.config), SecretSchemaConf)
+    config_valid = valid_config_from_dict(copy.copy(app.config), AtlasConfig)
+    config_secret_valid = valid_config_from_dict(
+        copy.copy(app.config), SecretSchemaConf
+    )
 
     app.config.update(config_valid)
     app.config.update(config_secret_valid)
@@ -46,7 +59,9 @@ def create_app():
         from atlas.atlasRoutes import main as main_blueprint
 
         if app.config["MULTILINGUAL"]:
-            app.register_blueprint(main_blueprint, url_prefix="/<lang_code>", name="multi_lg")
+            app.register_blueprint(
+                main_blueprint, url_prefix="/<lang_code>", name="multi_lg"
+            )
         app.register_blueprint(main_blueprint)
 
         from atlas.atlasAPI import api

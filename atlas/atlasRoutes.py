@@ -40,18 +40,20 @@ if current_app.config["MULTILINGUAL"]:
 
     @main.url_defaults
     def add_language_code(endpoint, values):
-        if 'lang_code' in values or not g.get('lang_code', None):
+        if "lang_code" in values or not g.get("lang_code", None):
             return
         # If endpoint expects lang_code, send it forward
-        if current_app.url_map.is_endpoint_expecting(endpoint, 'lang_code'):
-            values['lang_code'] = g.lang_code
+        if current_app.url_map.is_endpoint_expecting(endpoint, "lang_code"):
+            values["lang_code"] = g.lang_code
 
     @main.url_value_preprocessor
     def pull_lang_code(endpoint, values):
         if values is not None:
             # If no language code has been set, get the best language from the browser settings
-            default_lang = request.accept_languages.best_match(current_app.config['LANGUAGES'])
-            g.lang_code = values.pop('lang_code', default_lang)
+            default_lang = request.accept_languages.best_match(
+                current_app.config["LANGUAGES"]
+            )
+            g.lang_code = values.pop("lang_code", default_lang)
 
     @main.before_request
     def redirect_default_language():
@@ -60,7 +62,8 @@ if current_app.config["MULTILINGUAL"]:
                 default_lang_code = session["language"]
             else:
                 default_lang_code = request.accept_languages.best_match(
-                    current_app.config["AVAILABLE_LANGUAGES"].keys(), current_app.config["DEFAULT_LANGUAGE"]
+                    current_app.config["AVAILABLE_LANGUAGES"].keys(),
+                    current_app.config["DEFAULT_LANGUAGE"],
                 )
             view_args = request.view_args
             view_args["lang_code"] = default_lang_code
@@ -401,10 +404,15 @@ def photos():
     connection.close()
     return render_template("templates/photoGalery/_main.html", groups=groups)
 
+
 if current_app.config["AFFICHAGE_RECHERCHE_AVANCEE"]:
+
     @main.route("/recherche", methods=["GET"])
     def advanced_search():
-        return render_template("templates/core/advanced_search.html", )
+        return render_template(
+            "templates/core/advanced_search.html",
+        )
+
 
 @main.route("/<page>", methods=["GET", "POST"])
 def get_staticpages(page):

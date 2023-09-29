@@ -95,7 +95,6 @@ class SecretSchemaConf(Schema):
     CACHE_TIMEOUT = fields.Number(load_default=3600)
 
 
-
 class MapConfig(Schema):
     LAT_LONG = fields.List(fields.Float(), load_default=[44.7952, 6.2287])
     MIN_ZOOM = fields.Integer(load_default=1)
@@ -207,7 +206,7 @@ class AtlasConfig(Schema):
     SPLIT_NOM_VERN = fields.Boolean(load_default=True)
     INTERACTIVE_MAP_LIST = fields.Boolean(load_default=True)
     AVAILABLE_LANGUAGES = fields.Dict(load_default=LANGUAGES)
-    # Flask parameter enabling auto reload of templates 
+    # Flask parameter enabling auto reload of templates
     # (no need to restart the atlas service when updating templates)
     # Defaults to False to have the best performance in production
     TEMPLATES_AUTO_RELOAD = fields.Boolean(load_default=False)

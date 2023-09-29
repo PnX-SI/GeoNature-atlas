@@ -14,6 +14,7 @@ from atlas.env import cache, db
 
 api = Blueprint("api", __name__)
 
+
 @api.route("/searchTaxon", methods=["GET"])
 def searchTaxonAPI():
     session = db.session
@@ -33,13 +34,15 @@ def searchCommuneAPI():
     session.close()
     return jsonify(results)
 
-if not current_app.config['AFFICHAGE_MAILLE']:
+
+if not current_app.config["AFFICHAGE_MAILLE"]:
+
     @api.route("/observationsMailleAndPoint/<int:cd_ref>", methods=["GET"])
     def getObservationsMailleAndPointAPI(cd_ref):
         """
-            Retourne les observations d'un taxon en point et en maille
+        Retourne les observations d'un taxon en point et en maille
 
-            :returns: dict ({'point:<GeoJson>', 'maille': 'GeoJson})
+        :returns: dict ({'point:<GeoJson>', 'maille': 'GeoJson})
         """
         session = db.session
         observations = {
@@ -55,9 +58,9 @@ if not current_app.config['AFFICHAGE_MAILLE']:
 @api.route("/observationsMaille/<int:cd_ref>", methods=["GET"])
 def getObservationsMailleAPI(cd_ref, year_min=None, year_max=None):
     """
-        Retourne les observations d'un taxon par maille (et le nombre d'observation par maille)
+    Retourne les observations d'un taxon par maille (et le nombre d'observation par maille)
 
-        :returns: GeoJson
+    :returns: GeoJson
     """
     session = db.session
     observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(
@@ -70,16 +73,16 @@ def getObservationsMailleAPI(cd_ref, year_min=None, year_max=None):
     return jsonify(observations)
 
 
+if not current_app.config["AFFICHAGE_MAILLE"]:
 
-
-if not current_app.config['AFFICHAGE_MAILLE']:
     @api.route("/observationsPoint/<int:cd_ref>", methods=["GET"])
     def getObservationsPointAPI(cd_ref):
         session = db.session
-        observations = vmObservationsRepository.searchObservationsChilds(session, cd_ref)
+        observations = vmObservationsRepository.searchObservationsChilds(
+            session, cd_ref
+        )
         session.close()
         return jsonify(observations)
-
 
 
 @api.route("/observations/<int:cd_ref>", methods=["GET"])
@@ -93,17 +96,22 @@ def getObservationsGenericApi(cd_ref: int):
         [type]: [description]
     """
     session = db.session
-    observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(
-        session,
-        cd_ref,
-        year_min=request.args.get("year_min"),
-        year_max=request.args.get("year_max"),
-    ) if current_app.config['AFFICHAGE_MAILLE'] else vmObservationsRepository.searchObservationsChilds(session, cd_ref)
+    observations = (
+        vmObservationsMaillesRepository.getObservationsMaillesChilds(
+            session,
+            cd_ref,
+            year_min=request.args.get("year_min"),
+            year_max=request.args.get("year_max"),
+        )
+        if current_app.config["AFFICHAGE_MAILLE"]
+        else vmObservationsRepository.searchObservationsChilds(session, cd_ref)
+    )
     session.close()
     return jsonify(observations)
-    
 
-if not current_app.config['AFFICHAGE_MAILLE']:
+
+if not current_app.config["AFFICHAGE_MAILLE"]:
+
     @api.route("/observations/<insee>/<int:cd_ref>", methods=["GET"])
     def getObservationsCommuneTaxonAPI(insee, cd_ref):
         connection = db.engine.connect()
@@ -148,18 +156,20 @@ def getPhotosGallery():
     connection.close()
     return jsonify(photos)
 
+
 @api.route("/main_stat", methods=["GET"])
 @cache.cached()
 def main_stat():
     connection = db.engine.connect()
     return vmObservationsRepository.statIndex(connection)
 
+
 @api.route("/rank_stat", methods=["GET"])
 @cache.cached()
 def rank_stat():
     connection = db.engine.connect()
     return jsonify(
-            vmObservationsRepository.genericStat(
+        vmObservationsRepository.genericStat(
             connection, current_app.config["RANG_STAT"]
         )
     )

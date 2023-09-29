@@ -315,8 +315,9 @@ def genericStatMedias(connection, tab):
     else:
         return tabStat
 
+
 def getLastDiscoveries(connection):
-    sql="""
+    sql = """
         WITH t AS (
             SELECT date(min(vo.dateobs)) date, vo.cd_ref
             FROM atlas.vm_observations vo
@@ -331,17 +332,19 @@ def getLastDiscoveries(connection):
         ORDER BY t.date desc
         LIMIT 6
     """
-    req = connection.execute(text(sql), thisidtype=current_app.config["ATTR_MAIN_PHOTO"])
+    req = connection.execute(
+        text(sql), thisidtype=current_app.config["ATTR_MAIN_PHOTO"]
+    )
     lastDiscoveriesList = list()
     for r in req:
         temp = {
-            'date':r.date,
-            'cd_ref':r.cd_ref,
-            'nom_vern':r.nom_vern,
-            'lb_nom':r.lb_nom,
-            'id_media':r.id_media,
-            'group2_inpn': utils.deleteAccent(r.group2_inpn),
-            'media_path': r.chemin if r.chemin is not None else r.url
+            "date": r.date,
+            "cd_ref": r.cd_ref,
+            "nom_vern": r.nom_vern,
+            "lb_nom": r.lb_nom,
+            "id_media": r.id_media,
+            "group2_inpn": utils.deleteAccent(r.group2_inpn),
+            "media_path": r.chemin if r.chemin is not None else r.url,
         }
         lastDiscoveriesList.append(temp)
     return lastDiscoveriesList

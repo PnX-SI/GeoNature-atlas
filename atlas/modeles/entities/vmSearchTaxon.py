@@ -1,11 +1,5 @@
 # coding: utf-8
-from sqlalchemy import (
-    Column,
-    Integer,
-    MetaData,
-    String,
-    Table
-)
+from sqlalchemy import Column, Integer, MetaData, String, Table
 from sqlalchemy.ext.declarative import declarative_base
 
 from atlas.env import db

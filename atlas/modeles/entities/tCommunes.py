@@ -8,8 +8,8 @@ metadata = Base.metadata
 
 
 class LCommune(Base):
-    __tablename__ = 'l_communes'
-    __table_args__ = {u'schema': 'layers'}
+    __tablename__ = "l_communes"
+    __table_args__ = {"schema": "layers"}
 
     insee = Column(String(5), primary_key=True)
     commune_maj = Column(String(50))

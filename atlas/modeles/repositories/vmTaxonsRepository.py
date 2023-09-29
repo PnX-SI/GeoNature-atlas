@@ -21,26 +21,28 @@ def getTaxonsCommunes(connection, insee):
         GROUP BY o.cd_ref, t.nom_vern, t.nom_complet_html, t.group2_inpn,
             t.patrimonial, t.protection_stricte, m.url, m.chemin, m.id_media
         ORDER BY nb_obs DESC
-    """.format(current_app.config['ATTR_MAIN_PHOTO'])
+    """.format(
+        current_app.config["ATTR_MAIN_PHOTO"]
+    )
     req = connection.execute(text(sql), thisInsee=insee)
     taxonCommunesList = list()
     nbObsTotal = 0
     for r in req:
         temp = {
-            'nom_complet_html': r.nom_complet_html,
-            'nb_obs': r.nb_obs,
-            'nom_vern': r.nom_vern,
-            'cd_ref': r.cd_ref,
-            'last_obs': r.last_obs,
-            'group2_inpn': utils.deleteAccent(r.group2_inpn),
-            'patrimonial': r.patrimonial,
-            'protection_stricte': r.protection_stricte,
-            'path': utils.findPath(r),
-            'id_media': r.id_media
+            "nom_complet_html": r.nom_complet_html,
+            "nb_obs": r.nb_obs,
+            "nom_vern": r.nom_vern,
+            "cd_ref": r.cd_ref,
+            "last_obs": r.last_obs,
+            "group2_inpn": utils.deleteAccent(r.group2_inpn),
+            "patrimonial": r.patrimonial,
+            "protection_stricte": r.protection_stricte,
+            "path": utils.findPath(r),
+            "id_media": r.id_media,
         }
         taxonCommunesList.append(temp)
         nbObsTotal = nbObsTotal + r.nb_obs
-    return {'taxons': taxonCommunesList, 'nbObsTotal': nbObsTotal}
+    return {"taxons": taxonCommunesList, "nbObsTotal": nbObsTotal}
 
 
 def getTaxonsChildsList(connection, cd_ref):
@@ -55,31 +57,33 @@ def getTaxonsChildsList(connection, cd_ref):
         ON m.cd_ref = tax.cd_ref AND m.id_type={}
         WHERE tax.cd_ref IN (
             SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
-        ) """.format(str(current_app.config['ATTR_MAIN_PHOTO']))
+        ) """.format(
+        str(current_app.config["ATTR_MAIN_PHOTO"])
+    )
     req = connection.execute(text(sql), thiscdref=cd_ref)
     taxonRankList = list()
     nbObsTotal = 0
     for r in req:
         temp = {
-            'nom_complet_html': r.nom_complet_html,
-            'nb_obs': r.nb_obs,
-            'nom_vern': r.nom_vern,
-            'cd_ref': r.cd_ref,
-            'last_obs': r.yearmax,
-            'group2_inpn': utils.deleteAccent(r.group2_inpn),
-            'patrimonial': r.patrimonial,
-            'protection_stricte': r.protection_stricte,
-            'path': utils.findPath(r),
-            'id_media': r.id_media
+            "nom_complet_html": r.nom_complet_html,
+            "nb_obs": r.nb_obs,
+            "nom_vern": r.nom_vern,
+            "cd_ref": r.cd_ref,
+            "last_obs": r.yearmax,
+            "group2_inpn": utils.deleteAccent(r.group2_inpn),
+            "patrimonial": r.patrimonial,
+            "protection_stricte": r.protection_stricte,
+            "path": utils.findPath(r),
+            "id_media": r.id_media,
         }
         taxonRankList.append(temp)
         nbObsTotal = nbObsTotal + r.nb_obs
-    return {'taxons': taxonRankList, 'nbObsTotal': nbObsTotal}
+    return {"taxons": taxonRankList, "nbObsTotal": nbObsTotal}
 
 
 def getINPNgroupPhotos(connection):
     """
-        Get list of INPN groups with at least one photo
+    Get list of INPN groups with at least one photo
     """
 
     sql = """
@@ -93,8 +97,8 @@ def getINPNgroupPhotos(connection):
     groupList = list()
     for r in req:
         temp = {
-            'group': utils.deleteAccent(r.group2_inpn),
-            'groupAccent': r.group2_inpn
+            "group": utils.deleteAccent(r.group2_inpn),
+            "groupAccent": r.group2_inpn,
         }
         groupList.append(temp)
     return groupList
@@ -113,26 +117,28 @@ def getTaxonsGroup(connection, groupe):
         GROUP BY t.cd_ref, t.nom_complet_html, t.nom_vern, t.nb_obs,
             t.group2_inpn, t.protection_stricte, t.patrimonial, t.yearmax,
             m.chemin, m.url, m.id_media
-        """.format(current_app.config['ATTR_MAIN_PHOTO'])
+        """.format(
+        current_app.config["ATTR_MAIN_PHOTO"]
+    )
     req = connection.execute(text(sql), thisGroupe=groupe)
     tabTaxons = list()
     nbObsTotal = 0
     for r in req:
         nbObsTotal = nbObsTotal + r.nb_obs
         temp = {
-            'nom_complet_html': r.nom_complet_html,
-            'nb_obs': r.nb_obs,
-            'nom_vern': r.nom_vern,
-            'cd_ref': r.cd_ref,
-            'last_obs': r.yearmax,
-            'group2_inpn': utils.deleteAccent(r.group2_inpn),
-            'patrimonial': r.patrimonial,
-            'protection_stricte': r.protection_stricte,
-            'id_media': r.id_media,
-            'path': utils.findPath(r)
+            "nom_complet_html": r.nom_complet_html,
+            "nb_obs": r.nb_obs,
+            "nom_vern": r.nom_vern,
+            "cd_ref": r.cd_ref,
+            "last_obs": r.yearmax,
+            "group2_inpn": utils.deleteAccent(r.group2_inpn),
+            "patrimonial": r.patrimonial,
+            "protection_stricte": r.protection_stricte,
+            "id_media": r.id_media,
+            "path": utils.findPath(r),
         }
         tabTaxons.append(temp)
-    return {'taxons': tabTaxons, 'nbObsTotal': nbObsTotal}
+    return {"taxons": tabTaxons, "nbObsTotal": nbObsTotal}
 
 
 # get all groupINPN
@@ -147,8 +153,8 @@ def getAllINPNgroup(connection):
     groupList = list()
     for r in req:
         temp = {
-            'group': utils.deleteAccent(r.group2_inpn),
-            'groupAccent': r.group2_inpn
+            "group": utils.deleteAccent(r.group2_inpn),
+            "groupAccent": r.group2_inpn,
         }
         groupList.append(temp)
     return groupList

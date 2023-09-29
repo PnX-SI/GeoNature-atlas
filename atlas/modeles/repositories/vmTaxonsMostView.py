@@ -1,4 +1,3 @@
-
 # -*- coding:utf-8 -*-
 
 from atlas.modeles import utils
@@ -11,16 +10,16 @@ def mostViewTaxon(connection):
     tabTax = list()
     for r in req:
         if r.nom_vern is not None:
-            nom_verna = r.nom_vern.split(',')
+            nom_verna = r.nom_vern.split(",")
             taxonName = nom_verna[0] + " | " + "<i>" + r.lb_nom + "</i>"
         else:
             taxonName = "<i>" + r.lb_nom + "</i>"
         temp = {
-            'cd_ref': r.cd_ref,
-            'taxonName': taxonName,
-            'path': utils.findPath(r),
-            'group2_inpn': utils.deleteAccent(r.group2_inpn),
-            'id_media': r.id_media
+            "cd_ref": r.cd_ref,
+            "taxonName": taxonName,
+            "path": utils.findPath(r),
+            "group2_inpn": utils.deleteAccent(r.group2_inpn),
+            "id_media": r.id_media,
         }
         tabTax.append(temp)
     return tabTax
