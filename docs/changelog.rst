@@ -2,6 +2,29 @@
 CHANGELOG
 =========
 
+1.6.1 (unreleased)
+------------------
+
+🚀 **Nouveautés**
+
+- Ajout d'un linter pour le code python (``black``)
+- possibilité de surcoucher les éléments du dossier ``static`` en les plaçant dans le dossier ``custom``
+   -par exemple mettre un nouveau picto pour les mammifères : ``custom/images/picto_Mammiferes.png``
+**Note de version**
+
+- apache:
+  - Si l'application n'est pas à la racine du serveur la configuration apache devient:
+
+::
+
+    <Location /atlas>
+        ProxyPass  http://127.0.0.1:8080/atlas
+        ProxyPassReverse  http://127.0.0.1:8080/atlas
+    </Location>
+
+
+
+
 1.6.0 (2023-09-15)
 ------------------
 

@@ -224,8 +224,8 @@ Pour rendre l'application consultable comme un sous répertoire du serveur (http
 
     # Configuration GeoNature-atlas
     <Location /atlas>
-        ProxyPass  http://127.0.0.1:8080
-        ProxyPassReverse  http://127.0.0.1:8080
+        ProxyPass  http://127.0.0.1:8080/atlas
+        ProxyPassReverse  http://127.0.0.1:8080/atlas
     </Location>
     #FIN Configuration GeoNature-atlas
 

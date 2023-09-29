@@ -23,6 +23,7 @@ atlas/static/custom/territoire.json
 atlas/static/custom/glossaire.json
 atlas/static/custom/custom.css
 atlas/static/custom/maps-custom.js
+atlas/static/custom/images/picto*.png
 
 static/custom/territoire.json
 static/custom/glossaire.json
