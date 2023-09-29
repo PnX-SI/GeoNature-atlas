@@ -3,9 +3,7 @@
 from sqlalchemy.sql import text
 
 
-def getAttributesTaxon(
-    connection, cd_ref, attrDesc, attrComment, attrMilieu, attrChoro
-):
+def getAttributesTaxon(connection, cd_ref, attrDesc, attrComment, attrMilieu, attrChoro):
     sql = """
         SELECT *
         FROM atlas.vm_cor_taxon_attribut
@@ -21,12 +19,7 @@ def getAttributesTaxon(
         thisattrChoro=attrChoro,
     )
 
-    descTaxon = {
-        "description": None,
-        "commentaire": None,
-        "milieu": None,
-        "chorologie": None,
-    }
+    descTaxon = {"description": None, "commentaire": None, "milieu": None, "chorologie": None}
     for r in req:
         if r.id_attribut == attrDesc:
             descTaxon["description"] = r.valeur_attribut

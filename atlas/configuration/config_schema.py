@@ -98,9 +98,7 @@ class SecretSchemaConf(Schema):
 class MapConfig(Schema):
     LAT_LONG = fields.List(fields.Float(), load_default=[44.7952, 6.2287])
     MIN_ZOOM = fields.Integer(load_default=1)
-    MAX_BOUNDS = fields.List(
-        fields.List(fields.Float()), load_default=[[-180, -90], [180, 90]]
-    )
+    MAX_BOUNDS = fields.List(fields.List(fields.Float()), load_default=[[-180, -90], [180, 90]])
     FIRST_MAP = fields.Dict(load_default=MAP_1)
     SECOND_MAP = fields.Dict(load_default=MAP_2)
     ZOOM = fields.Integer(load_default=10)
@@ -218,7 +216,5 @@ class AtlasConfig(Schema):
         """
         if data["REDIMENSIONNEMENT_IMAGE"] and data["TAXHUB_URL"] is None:
             raise ValidationError(
-                {
-                    "Le champ TAXHUB_URL doit être rempli si REDIMENSIONNEMENT_IMAGE = True"
-                }
+                {"Le champ TAXHUB_URL doit être rempli si REDIMENSIONNEMENT_IMAGE = True"}
             )

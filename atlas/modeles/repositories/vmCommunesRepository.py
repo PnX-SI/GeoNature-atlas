@@ -21,9 +21,7 @@ def getAllCommunes(session):
 
 def getCommunesSearch(session, search, limit=50):
     req = session.query(
-        distinct(VmCommunes.commune_maj),
-        VmCommunes.insee,
-        func.length(VmCommunes.commune_maj),
+        distinct(VmCommunes.commune_maj), VmCommunes.insee, func.length(VmCommunes.commune_maj)
     ).filter(VmCommunes.commune_maj.ilike("%" + search + "%"))
 
     req = req.order_by(VmCommunes.commune_maj)

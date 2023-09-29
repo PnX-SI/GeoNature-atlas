@@ -11,13 +11,7 @@ from werkzeug.wrappers import Response
 
 from atlas.configuration.config_parser import valid_config_from_dict
 from atlas.configuration.config_schema import AtlasConfig, SecretSchemaConf
-from atlas.env import (
-    atlas_static_folder,
-    atlas_template_folder,
-    atlas_config_file_path,
-    db,
-    cache,
-)
+from atlas.env import atlas_static_folder, atlas_template_folder, atlas_config_file_path, db, cache
 
 compress = Compress()
 
@@ -27,11 +21,7 @@ def create_app():
     renvoie une instance de l'app Flask
     """
 
-    app = Flask(
-        __name__,
-        template_folder=atlas_template_folder,
-        static_folder=atlas_static_folder,
-    )
+    app = Flask(__name__, template_folder=atlas_template_folder, static_folder=atlas_static_folder)
     # push the config in app config at 'PUBLIC' key
     app.config.from_pyfile(str(atlas_config_file_path))
 
@@ -72,10 +62,7 @@ def create_app():
         app.wsgi_app = ProxyFix(app.wsgi_app, x_host=1)
 
         app.wsgi_app = SharedDataMiddleware(
-            app.wsgi_app,
-            {
-                app.static_url_path: f"{atlas_static_folder}/custom",
-            },
+            app.wsgi_app, {app.static_url_path: f"{atlas_static_folder}/custom"}
         )
 
         if app.config["APPLICATION_ROOT"] != "/":

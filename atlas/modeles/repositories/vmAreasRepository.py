@@ -10,11 +10,7 @@ from sqlalchemy.sql.expression import func
 
 from atlas.modeles import utils
 from atlas.modeles.entities.tGrid import TGrid
-from atlas.modeles.entities.vmAreas import (
-    VmAreas,
-    VmCorAreaObservation,
-    VmBibAreasTypes,
-)
+from atlas.modeles.entities.vmAreas import VmAreas, VmCorAreaObservation, VmBibAreasTypes
 from atlas.modeles.entities.vmMedias import VmMedias
 from atlas.modeles.entities.vmObservations import VmObservations
 from atlas.modeles.entities.vmTaxons import VmTaxons
@@ -38,8 +34,7 @@ def get_id_area(session, type_code, area_code):
             .join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type)
             .filter(
                 and_(
-                    VmAreas.area_code.ilike(area_code),
-                    VmBibAreasTypes.type_code.ilike(type_code),
+                    VmAreas.area_code.ilike(area_code), VmBibAreasTypes.type_code.ilike(type_code)
                 )
             )
         )
@@ -121,18 +116,16 @@ def last_observations_area_maille(session, myLimit, idArea):
             "id_maille": o.id_maille,
         }
         obsList.append(temp)
-    current_app.logger.debug(
-        "<last_observations_area_maille> end loop: {}".format(datetime.now())
-    )
+    current_app.logger.debug("<last_observations_area_maille> end loop: {}".format(datetime.now()))
     return obsList
 
 
 def get_observers_area(session, idArea):
     q_list_observers = (
         session.query(
-            func.trim(
-                func.unnest(func.string_to_array(VmObservations.observateurs, ","))
-            ).label("observateurs")
+            func.trim(func.unnest(func.string_to_array(VmObservations.observateurs, ","))).label(
+                "observateurs"
+            )
         )
         .join(
             VmCorAreaObservation,
@@ -244,9 +237,7 @@ def get_areas_grid_observations_by_cdnom(session, id_area, cd_nom):
         .order_by(TGrid.id_maille)
     )
 
-    current_app.logger.debug(
-        "<get_areas_grid_observations_by_cdnom> QUERY: {}".format(query)
-    )
+    current_app.logger.debug("<get_areas_grid_observations_by_cdnom> QUERY: {}".format(query))
     tabObs = list()
     for o in query.all():
         temp = {
@@ -314,9 +305,7 @@ def get_area_taxa(session, id_area):
 
 
 def get_surrounding_areas(session, id_area):
-    subquery = (
-        session.query(VmAreas.the_geom).filter(VmAreas.id_area == id_area).subquery()
-    )
+    subquery = session.query(VmAreas.the_geom).filter(VmAreas.id_area == id_area).subquery()
 
     query = (
         session.query(

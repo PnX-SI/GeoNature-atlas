@@ -332,9 +332,7 @@ def getLastDiscoveries(connection):
         ORDER BY t.date desc
         LIMIT 6
     """
-    req = connection.execute(
-        text(sql), thisidtype=current_app.config["ATTR_MAIN_PHOTO"]
-    )
+    req = connection.execute(text(sql), thisidtype=current_app.config["ATTR_MAIN_PHOTO"])
     lastDiscoveriesList = list()
     for r in req:
         temp = {

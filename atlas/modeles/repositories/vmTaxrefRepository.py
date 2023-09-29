@@ -37,9 +37,7 @@ def searchEspece(connection, cd_ref):
         nom_vern = None
         if r.nom_vern:
             nom_vern = (
-                r.nom_vern.split(",")[0]
-                if current_app.config["SPLIT_NOM_VERN"]
-                else r.nom_vern
+                r.nom_vern.split(",")[0] if current_app.config["SPLIT_NOM_VERN"] else r.nom_vern
             )
         taxonSearch = {
             "cd_ref": r.cd_ref,
@@ -141,10 +139,7 @@ def getAllTaxonomy(session, cd_ref):
     taxonSup = getCd_sup(session, cd_ref)  # cd_taxsup
     taxon = getTaxon(session, taxonSup)
     tabTaxon = list()
-    while (
-        taxon
-        and taxon.tri_rang >= current_app.config["LIMIT_RANG_TAXONOMIQUE_HIERARCHIE"]
-    ):
+    while taxon and taxon.tri_rang >= current_app.config["LIMIT_RANG_TAXONOMIQUE_HIERARCHIE"]:
         temp = {
             "rang": taxon.id_rang,
             "lb_nom": taxon.lb_nom,
