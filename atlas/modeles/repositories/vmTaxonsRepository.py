@@ -96,10 +96,7 @@ def getINPNgroupPhotos(connection):
     req = connection.execute(text(sql))
     groupList = list()
     for r in req:
-        temp = {
-            "group": utils.deleteAccent(r.group2_inpn),
-            "groupAccent": r.group2_inpn,
-        }
+        temp = {"group": utils.deleteAccent(r.group2_inpn), "groupAccent": r.group2_inpn}
         groupList.append(temp)
     return groupList
 
@@ -152,9 +149,6 @@ def getAllINPNgroup(connection):
     req = connection.execute(text(sql))
     groupList = list()
     for r in req:
-        temp = {
-            "group": utils.deleteAccent(r.group2_inpn),
-            "groupAccent": r.group2_inpn,
-        }
+        temp = {"group": utils.deleteAccent(r.group2_inpn), "groupAccent": r.group2_inpn}
         groupList.append(temp)
     return groupList

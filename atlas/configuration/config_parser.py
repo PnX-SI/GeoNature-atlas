@@ -12,9 +12,7 @@ def get_config_module(atlas_config_file_path):
 
 
 def read_config_file(config_module):
-    return {
-        var: getattr(config_module, var) for var in remove_reserved_word(config_module)
-    }
+    return {var: getattr(config_module, var) for var in remove_reserved_word(config_module)}
 
 
 def remove_reserved_word(config_module):

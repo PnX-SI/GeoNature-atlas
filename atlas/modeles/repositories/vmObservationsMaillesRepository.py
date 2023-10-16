@@ -22,10 +22,7 @@ def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
         )
         .group_by(VmObservationsMailles.id_maille, VmObservationsMailles.geojson_maille)
         .filter(
-            or_(
-                VmObservationsMailles.cd_ref.in_(subquery),
-                VmObservationsMailles.cd_ref == cd_ref,
-            )
+            or_(VmObservationsMailles.cd_ref.in_(subquery), VmObservationsMailles.cd_ref == cd_ref)
         )
     )
     if year_min and year_max:

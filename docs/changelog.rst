@@ -2,6 +2,31 @@
 CHANGELOG
 =========
 
+1.6.1 (unreleased)
+------------------
+
+🚀 **Nouveautés**
+
+- Possibilité de surcoucher les fichiers du dossier ``static`` en les plaçant avec le même nom dans le dossier ``custom`` (#496)
+
+  - Par exemple pour surcoucher le pictogrammes des mammifères, mettre le votre dans ``custom/images/picto_Mammiferes.png``
+- Possibilité de customiser le fichier ``navbar.html`` (déplacé dans le dossier ``static/custom/templates``) (#496)
+- Ajout d'un linter pour le code python (``black``)
+
+⚠️ **Notes de version**
+
+- Si l'application n'est pas à la racine du serveur (par exemple avec ``/atlas``), la configuration Apache est à modifier et devient :
+  ::
+    <Location /atlas>
+        ProxyPass  http://127.0.0.1:8080/atlas
+        ProxyPassReverse  http://127.0.0.1:8080/atlas
+    </Location>
+
+- Copier le fichier ``navbar.html`` dans le dossier ``atlas/static/custom/templates/`` :
+  ::
+    cp atlas/static/custom/templates/navbar.html.sample atlas/static/custom/templates/navbar.html
+
+
 1.6.0 (2023-09-15)
 ------------------
 

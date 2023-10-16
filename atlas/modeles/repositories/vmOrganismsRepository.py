@@ -45,10 +45,7 @@ def topObsOrganism(connection, id_organism):
     req = connection.execute(text(sql), thisidorganism=id_organism)
     topSpecies = list()
     for r in req:
-        temp = {
-            "cd_ref": r.cd_ref,
-            "nb_obs_taxon": r.nb_obs_taxon,
-        }
+        temp = {"cd_ref": r.cd_ref, "nb_obs_taxon": r.nb_obs_taxon}
         topSpecies.append(temp)
     return topSpecies
 

@@ -50,9 +50,7 @@ if current_app.config["MULTILINGUAL"]:
     def pull_lang_code(endpoint, values):
         if values is not None:
             # If no language code has been set, get the best language from the browser settings
-            default_lang = request.accept_languages.best_match(
-                current_app.config["LANGUAGES"]
-            )
+            default_lang = request.accept_languages.best_match(current_app.config["LANGUAGES"])
             g.lang_code = values.pop("lang_code", default_lang)
 
     @main.before_request
@@ -73,14 +71,11 @@ if current_app.config["MULTILINGUAL"]:
 
 
 @main.route(
-    "/espece/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>",
-    methods=["GET", "POST"],
+    "/espece/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>", methods=["GET", "POST"]
 )
 def especeMedias(image):
     return redirect(
-        current_app.config["REMOTE_MEDIAS_URL"]
-        + current_app.config["REMOTE_MEDIAS_PATH"]
-        + image
+        current_app.config["REMOTE_MEDIAS_URL"] + current_app.config["REMOTE_MEDIAS_PATH"] + image
     )
 
 
@@ -106,9 +101,7 @@ if current_app.config["ORGANISM_MODULE"]:
             taxon = {**taxon, **taxon_info["taxonSearch"]}
             taxon["photo"] = photo
             update_most_obs_taxons.append(taxon)
-        stats_group = vmOrganismsRepository.getTaxonRepartitionOrganism(
-            connection, id_organism
-        )
+        stats_group = vmOrganismsRepository.getTaxonRepartitionOrganism(connection, id_organism)
 
         connection.close()
         db_session.close()
@@ -132,49 +125,36 @@ if current_app.config["ORGANISM_MODULE"]:
 
 
 @main.route(
-    "/commune/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>",
-    methods=["GET", "POST"],
+    "/commune/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>", methods=["GET", "POST"]
 )
 def communeMedias(image):
     return redirect(
-        current_app.config["REMOTE_MEDIAS_URL"]
-        + current_app.config["REMOTE_MEDIAS_PATH"]
-        + image
+        current_app.config["REMOTE_MEDIAS_URL"] + current_app.config["REMOTE_MEDIAS_PATH"] + image
     )
 
 
 @main.route(
-    "/liste/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>",
-    methods=["GET", "POST"],
+    "/liste/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>", methods=["GET", "POST"]
 )
 def listeMedias(image):
     return redirect(
-        current_app.config["REMOTE_MEDIAS_URL"]
-        + current_app.config["REMOTE_MEDIAS_PATH"]
-        + image
+        current_app.config["REMOTE_MEDIAS_URL"] + current_app.config["REMOTE_MEDIAS_PATH"] + image
     )
 
 
 @main.route(
-    "/groupe/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>",
-    methods=["GET", "POST"],
+    "/groupe/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>", methods=["GET", "POST"]
 )
 def groupeMedias(image):
     return redirect(
-        current_app.config["REMOTE_MEDIAS_URL"]
-        + current_app.config["REMOTE_MEDIAS_PATH"]
-        + image
+        current_app.config["REMOTE_MEDIAS_URL"] + current_app.config["REMOTE_MEDIAS_PATH"] + image
     )
 
 
-@main.route(
-    "/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>", methods=["GET", "POST"]
-)
+@main.route("/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>", methods=["GET", "POST"])
 def indexMedias(image):
     return redirect(
-        current_app.config["REMOTE_MEDIAS_URL"]
-        + current_app.config["REMOTE_MEDIAS_PATH"]
-        + image
+        current_app.config["REMOTE_MEDIAS_URL"] + current_app.config["REMOTE_MEDIAS_PATH"] + image
     )
 
 
@@ -255,9 +235,7 @@ def ficheEspece(cd_nom):
     synonyme = vmTaxrefRepository.getSynonymy(connection, cd_ref)
     communes = vmCommunesRepository.getCommunesObservationsChilds(connection, cd_ref)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(db_session, cd_ref)
-    firstPhoto = vmMedias.getFirstPhoto(
-        connection, cd_ref, current_app.config["ATTR_MAIN_PHOTO"]
-    )
+    firstPhoto = vmMedias.getFirstPhoto(connection, cd_ref, current_app.config["ATTR_MAIN_PHOTO"])
     photoCarousel = vmMedias.getPhotoCarousel(
         connection, cd_ref, current_app.config["ATTR_OTHER_PHOTO"]
     )
@@ -271,10 +249,7 @@ def ficheEspece(cd_nom):
         current_app.config["ATTR_VIMEO"],
     )
     articles = vmMedias.getLinks_and_articles(
-        connection,
-        cd_ref,
-        current_app.config["ATTR_LIEN"],
-        current_app.config["ATTR_PDF"],
+        connection, cd_ref, current_app.config["ATTR_LIEN"], current_app.config["ATTR_PDF"]
     )
     taxonDescription = vmCorTaxonAttribut.getAttributesTaxon(
         connection,
@@ -409,9 +384,7 @@ if current_app.config["AFFICHAGE_RECHERCHE_AVANCEE"]:
 
     @main.route("/recherche", methods=["GET"])
     def advanced_search():
-        return render_template(
-            "templates/core/advanced_search.html",
-        )
+        return render_template("templates/core/advanced_search.html")
 
 
 @main.route("/<page>", methods=["GET", "POST"])
@@ -436,11 +409,7 @@ def sitemap():
         url_root = url_root[:-1]
     for rule in current_app.url_map.iter_rules():
         # check for a 'GET' request and that the length of arguments is = 0 and if you have an admin area that the rule does not start with '/admin'
-        if (
-            "GET" in rule.methods
-            and len(rule.arguments) == 0
-            and not rule.rule.startswith("/api")
-        ):
+        if "GET" in rule.methods and len(rule.arguments) == 0 and not rule.rule.startswith("/api"):
             pages.append([url_root + rule.rule, ten_days_ago])
 
     # get dynamic routes for blog
@@ -459,10 +428,7 @@ def sitemap():
         pages.append([url, modified_time])
 
     sitemap_template = render_template(
-        "templates/sitemap.xml",
-        pages=pages,
-        url_root=url_root,
-        last_modified=ten_days_ago,
+        "templates/sitemap.xml", pages=pages, url_root=url_root, last_modified=ten_days_ago
     )
     response = make_response(sitemap_template)
     response.headers["Content-Type"] = "application/xml"

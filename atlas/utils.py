@@ -48,13 +48,8 @@ class GenericTable:
         # Test geometry field
         if geometry_field:
             try:
-                if (
-                    not self.tableDef.columns[geometry_field].type.__class__.__name__
-                    == "Geometry"
-                ):
-                    raise TypeError(
-                        "field {} is not a geometry column".format(geometry_field)
-                    )
+                if not self.tableDef.columns[geometry_field].type.__class__.__name__ == "Geometry":
+                    raise TypeError("field {} is not a geometry column".format(geometry_field))
             except KeyError:
                 raise KeyError("field {} doesn't exists".format(geometry_field))
 
@@ -75,9 +70,7 @@ class GenericTable:
             if not db_col.type.__class__.__name__ == "Geometry":
                 serialize_attr = (
                     name,
-                    serializers.get(
-                        db_col.type.__class__.__name__.lower(), lambda x: x
-                    ),
+                    serializers.get(db_col.type.__class__.__name__.lower(), lambda x: x),
                 )
                 regular_serialize.append(serialize_attr)
 

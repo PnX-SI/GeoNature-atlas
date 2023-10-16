@@ -56,7 +56,5 @@ class VmCorAreaObservation(Base):
         primary_key=False,
     )
     __mapper_args__ = {"primary_key": [__table__.c.id_observation, __table__.c.id_area]}
-    observation = relationship(
-        "VmObservations", foreign_keys=[__table__.c.id_observation]
-    )
+    observation = relationship("VmObservations", foreign_keys=[__table__.c.id_observation])
     area = relationship("VmAreas", foreign_keys=[__table__.c.id_area])

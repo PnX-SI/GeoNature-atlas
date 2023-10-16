@@ -209,6 +209,9 @@ Vous pouvez aussi modifier ou ajouter des pages statiques de présentation, en p
 
 En mode point, il est possible de customiser l'affichage cartographique (modification de la couleur des points, modification de la légende) en éditant le fichier ``static/custom/maps-custom.js``. Par défaut l'affichage dissocie les données dégradées des données précises : voir `<degradation_donnees.rst>`_.
 
+Tous les fichiers du dossier ``static`` peuvent être surcouchés en placant un fichier de même chemin dans le dossier ``static/custom``
+- Par exemple pour remplacer le picto des mammifères il suffit d'ajouter un fichier ``static/custom/images/picto_Mammiferes.png``.
+
 Configuration d'Apache
 ======================
 
@@ -224,8 +227,8 @@ Pour rendre l'application consultable comme un sous répertoire du serveur (http
 
     # Configuration GeoNature-atlas
     <Location /atlas>
-        ProxyPass  http://127.0.0.1:8080
-        ProxyPassReverse  http://127.0.0.1:8080
+        ProxyPass  http://127.0.0.1:8080/atlas
+        ProxyPassReverse  http://127.0.0.1:8080/atlas
     </Location>
     #FIN Configuration GeoNature-atlas
 

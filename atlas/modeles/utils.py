@@ -6,9 +6,7 @@ import unicodedata
 def deleteAccent(string):
     if string is None:
         return None
-    return (
-        unicodedata.normalize("NFD", string).encode("ascii", "ignore").decode("utf-8")
-    )
+    return unicodedata.normalize("NFD", string).encode("ascii", "ignore").decode("utf-8")
 
 
 def findPath(row):

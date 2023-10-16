@@ -1,14 +1,6 @@
 # coding: utf-8
 from geoalchemy2.types import Geometry
-from sqlalchemy import (
-    Column,
-    Date,
-    Integer,
-    MetaData,
-    String,
-    Table,
-    Text,
-)
+from sqlalchemy import Column, Date, Integer, MetaData, String, Table, Text
 from sqlalchemy.ext.declarative import declarative_base
 
 from atlas.env import db

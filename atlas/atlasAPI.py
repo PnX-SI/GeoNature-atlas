@@ -78,9 +78,7 @@ if not current_app.config["AFFICHAGE_MAILLE"]:
     @api.route("/observationsPoint/<int:cd_ref>", methods=["GET"])
     def getObservationsPointAPI(cd_ref):
         session = db.session
-        observations = vmObservationsRepository.searchObservationsChilds(
-            session, cd_ref
-        )
+        observations = vmObservationsRepository.searchObservationsChilds(session, cd_ref)
         session.close()
         return jsonify(observations)
 
@@ -149,9 +147,7 @@ def getPhotosGroup(group):
 def getPhotosGallery():
     connection = db.engine.connect()
     photos = vmMedias.getPhotosGallery(
-        connection,
-        current_app.config["ATTR_MAIN_PHOTO"],
-        current_app.config["ATTR_OTHER_PHOTO"],
+        connection, current_app.config["ATTR_MAIN_PHOTO"], current_app.config["ATTR_OTHER_PHOTO"]
     )
     connection.close()
     return jsonify(photos)
@@ -169,7 +165,5 @@ def main_stat():
 def rank_stat():
     connection = db.engine.connect()
     return jsonify(
-        vmObservationsRepository.genericStat(
-            connection, current_app.config["RANG_STAT"]
-        )
+        vmObservationsRepository.genericStat(connection, current_app.config["RANG_STAT"])
     )

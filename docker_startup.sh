@@ -54,6 +54,7 @@ for custom_file in "templates/footer.html" \
     "templates/credits.html" \
     "templates/mentions-legales.html" \
     "templates/bandeaulogoshome.html" \
+    "templates/navbar.html" \
     "templates/robots.txt" \
     "custom.css" \
     "glossaire.json" \
