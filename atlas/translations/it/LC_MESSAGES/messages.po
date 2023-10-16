@@ -212,12 +212,12 @@ msgstr "Ultime osservazioni "
 msgid "loading"
 msgstr "Caricamento in corso..."
 
-#: templates/core/navbar.html:34 templates/home/globalStats.html:28
+#: static/custom/templates/core/navbar.html:34 templates/home/globalStats.html:28
 #: templates/photoGalery/_main.html:76
 msgid "search.species"
 msgstr "Cerca per species"
 
-#: templates/core/navbar.html:47 templates/home/globalStats.html:47
+#: static/custom/templates/core/navbar.html:47 templates/home/globalStats.html:47
 msgid "search.city"
 msgstr "Ricerca per comune"
 

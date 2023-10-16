@@ -10,11 +10,12 @@ CHANGELOG
 - Ajout d'un linter pour le code python (``black``)
 - possibilité de surcoucher les éléments du dossier ``static`` en les plaçant dans le dossier ``custom``
    -par exemple mettre un nouveau picto pour les mammifères : ``custom/images/picto_Mammiferes.png``
+- possibilité de cutomiser le fichier ``navbar.html`` (déplacement dans le dossier ``static/custom/templates``)
+
 **Note de version**
 
 - apache:
-  - Si l'application n'est pas à la racine du serveur la configuration apache devient:
-
+  - Si l'application n'est pas à la racine du serveur (par exemple avec ``/atlas``) la configuration apache devient:
 ::
 
     <Location /atlas>
@@ -22,6 +23,11 @@ CHANGELOG
         ProxyPassReverse  http://127.0.0.1:8080/atlas
     </Location>
 
+- s'il n'est pas présent copier le fichier ``navbar.html``.
+
+::
+
+    cp atlas/static/custom/templates/navbar.html.sample atlas/static/custom/templates/navbar.html
 
 
 

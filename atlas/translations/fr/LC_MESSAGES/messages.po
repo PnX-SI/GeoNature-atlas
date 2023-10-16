@@ -213,12 +213,12 @@ msgstr "Dernière observation en "
 msgid "loading"
 msgstr "Chargement..."
 
-#: templates/core/navbar.html:34 templates/home/globalStats.html:28
+#: static/custom/templates/core/navbar.html:34 templates/home/globalStats.html:28
 #: templates/photoGalery/_main.html:76
 msgid "search.species"
 msgstr "Recherche par espèce"
 
-#: templates/core/navbar.html:47 templates/home/globalStats.html:47
+#: static/custom/templates/core/navbar.html:47 templates/home/globalStats.html:47
 msgid "search.city"
 msgstr "Recherche par commune"
 
