@@ -69,16 +69,3 @@
         ga('send', 'pageview');
     </script>
 {% endif %}
-
-<script>
-    var prevScrollpos = window.pageYOffset;
-    window.onscroll = function () {
-        var currentScrollPos = window.pageYOffset;
-        if (prevScrollpos > currentScrollPos) {
-            document.getElementById("collapseFooter").style.top = "-100px";
-        } else {
-            document.getElementById("collapseFooter").style.top = "0px";
-        }
-        prevScrollpos = currentScrollPos;
-    }
-</script>
