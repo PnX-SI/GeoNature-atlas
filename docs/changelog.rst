@@ -2,6 +2,41 @@
 CHANGELOG
 =========
 
+1.6.2 (?)
+---------
+
+🐛 **Corrections**
+
+⚠️ **Notes de version**
+
+Si vous mettez à jour GeoNature-atlas :
+
+- Vous pouvez passer directement à cette version, mais en suivant les notes de versions intermédiaires
+- Si vous avez l'erreur suivante sur la page d'accueil après avoir scrollé sur la page :
+
+    ::
+
+        (index):1041 Uncaught TypeError: Cannot read properties of null (reading 'style')
+        at window.onscroll ((index):1041:54)
+
+  - Supprimer dans votre fichier ``atlas/static/custom/templates/footer.html`` le code situé à la fin suivant :
+
+    ::
+
+        <script>
+            var prevScrollpos = window.pageYOffset;
+            window.onscroll = function () {
+                var currentScrollPos = window.pageYOffset;
+                if (prevScrollpos > currentScrollPos) {
+                    document.getElementById("collapseFooter").style.top = "-100px";
+                } else {
+                    document.getElementById("collapseFooter").style.top = "0px";
+                }
+                prevScrollpos = currentScrollPos;
+            }
+        </script>
+
+
 1.6.1 (2023-10-16)
 ------------------
 
