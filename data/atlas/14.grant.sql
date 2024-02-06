@@ -39,3 +39,6 @@ GRANT EXECUTE ON FUNCTION atlas.find_all_taxons_childs(integer) TO my_reader_use
 GRANT SELECT ON TABLE atlas.bib_taxref_rangs TO my_reader_user;
 GRANT SELECT ON TABLE atlas.t_mailles_territoire TO my_reader_user;
 GRANT SELECT ON TABLE atlas.vm_cor_taxon_organism TO my_reader_user;
+GRANT SELECT ON TABLE atlas.vm_subdivided_area TO my_reader_user;
+GRANT SELECT ON TABLE atlas.t_layer_territoire TO my_reader_user;
+GRANT SELECT ON TABLE atlas.l_communes TO my_reader_user;
