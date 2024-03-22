@@ -83,7 +83,7 @@ def lastObservationsMailles(connection, mylimit, idPhoto):
             "id_observation": o.id_observation,
             "id_maille": o.id_maille,
             "cd_ref": o.cd_ref,
-            "dateobs": str(o.dateobs),
+            "dateobs": o.dateobs,
             "altitude_retenue": o.altitude_retenue,
             "taxon": taxon,
             "geojson_maille": json.loads(o.geojson_maille),
