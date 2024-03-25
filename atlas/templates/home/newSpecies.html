@@ -47,7 +47,7 @@
 
             </div>
             <div class="card-footer center text-muted">
-                {{species.date.strftime('%d/%m/%Y')}}
+                {{species.date | dateformat("long")}}
             </div>
         </div>
     </div>
