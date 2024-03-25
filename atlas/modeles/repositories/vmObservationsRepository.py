@@ -95,7 +95,7 @@ def lastObservations(connection, mylimit, idPhoto):
         temp = dict(o)
         temp.pop("the_geom_point", None)
         temp["geojson_point"] = json.loads(o.geojson_point or "{}")
-        temp["dateobs"] = str(o.dateobs)
+        temp["dateobs"] = o.dateobs
         temp["group2_inpn"] = utils.deleteAccent(o.group2_inpn)
         temp["pathImg"] = utils.findPath(o)
         obsList.append(temp)
@@ -122,7 +122,7 @@ def lastObservationsCommune(connection, mylimit, insee):
         temp = dict(o)
         temp.pop("the_geom_point", None)
         temp["geojson_point"] = json.loads(o.geojson_point or "{}")
-        temp["dateobs"] = str(o.dateobs)
+        temp["dateobs"] = o.dateobs
         obsList.append(temp)
     return obsList
 
@@ -150,7 +150,7 @@ def getObservationTaxonCommune(connection, insee, cd_ref):
         temp = dict(o)
         temp.pop("the_geom_point", None)
         temp["geojson_point"] = json.loads(o.geojson_point or "{}")
-        temp["dateobs"] = str(o.dateobs)
+        temp["dateobs"] = o.dateobs
         obsList.append(temp)
     return obsList
 
