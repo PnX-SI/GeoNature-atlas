@@ -7,42 +7,47 @@ from atlas.modeles.entities.vmObservations import VmObservationsMailles
 from atlas.modeles.utils import deleteAccent, findPath
 
 
-def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
-    """
-    Retourne les mailles et le nombre d'observation par maille pour un taxon et ses enfants
-    sous forme d'un geojson
-    """
-    subquery = session.query(func.atlas.find_all_taxons_childs(cd_ref))
-    query = (
-        session.query(
-            func.count(VmObservationsMailles.id_observation).label("nb_obs"),
-            func.max(VmObservationsMailles.annee).label("last_observation"),
-            VmObservationsMailles.id_maille,
-            VmObservationsMailles.geojson_maille,
-        )
-            .group_by(VmObservationsMailles.id_maille, VmObservationsMailles.geojson_maille)
-            .filter(
-            or_(
-                VmObservationsMailles.cd_ref.in_(subquery),
-                VmObservationsMailles.cd_ref == cd_ref,
-            )
-        )
-    )
+def getObservationsByMeshes(connection, cd_ref, year_min=None, year_max=None):
+    sql = "SELECT * FROM atlas.find_all_taxons_childs(:cdRef) AS taxon_childs(cd_nom)"
+    results = connection.execute(text(sql), cdRef=cd_ref)
+    taxons_ids = [cd_ref]
+    for r in results:
+        taxons_ids.append(r.cd_nom)
+
+    year_clause = ""
     if year_min and year_max:
-        query = query.filter(VmObservationsMailles.annee.between(year_min, year_max))
+        year_clause = "AND voma.year >= :yearMin AND voma.year <= :yearMax "
+
+    sql = f"""
+        SELECT
+            mt.id_maille AS id_mesh,
+            mt.geojson_maille AS mesh_geojson,
+            MAX(voma."year")::int AS last_obs_year,
+            SUM(voma.nbr)::int AS obs_nbr
+        FROM atlas.vm_observations_meshes_agg AS voma
+            JOIN atlas.t_mailles_territoire AS mt
+                ON voma.mesh_id = mt.id_maille
+        WHERE voma.cd_ref = ANY(:cdRefList)
+            {year_clause}
+        GROUP BY mt.id_maille, mt.geojson_maille ;
+    """
+
+    observations = connection.execute(
+        text(sql), cdRefList=taxons_ids, yearMin=year_min, yearMax=year_max
+    )
 
     return FeatureCollection(
         [
             Feature(
-                id=o.id_maille,
-                geometry=json.loads(o.geojson_maille),
+                id=o.id_mesh,
+                geometry=json.loads(o.mesh_geojson),
                 properties={
-                    "id_maille": o.id_maille,
-                    "nb_observations": o.nb_obs,
-                    "last_observation": o.last_observation,
+                    "id_maille": o.id_mesh,
+                    "nb_observations": o.obs_nbr,
+                    "last_observation": o.last_obs_year,
                 },
             )
-            for o in query.all()
+            for o in observations
         ]
     )
 

@@ -42,3 +42,4 @@ GRANT SELECT ON TABLE atlas.vm_cor_taxon_organism TO my_reader_user;
 GRANT SELECT ON TABLE atlas.vm_subdivided_area TO my_reader_user;
 GRANT SELECT ON TABLE atlas.t_layer_territoire TO my_reader_user;
 GRANT SELECT ON TABLE atlas.l_communes TO my_reader_user;
+GRANT SELECT ON TABLE atlas.vm_observations_meshes_agg TO my_reader_user;

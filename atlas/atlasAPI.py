@@ -43,31 +43,35 @@ if not current_app.config['AFFICHAGE_MAILLE']:
             :returns: dict ({'point:<GeoJson>', 'maille': 'GeoJson})
         """
         session = utils.loadSession()
-        observations = {
-            "point": vmObservationsRepository.searchObservationsChilds(session, cd_ref),
-            "maille": vmObservationsMaillesRepository.getObservationsMaillesChilds(
-                session, cd_ref
-            ),
-        }
+        points = vmObservationsRepository.searchObservationsChilds(session, cd_ref)
         session.close()
+
+        connection = utils.engine.connect()
+        meshes = vmObservationsMaillesRepository.getObservationsByMeshes(session, cd_ref)
+        connection.close()
+
+        observations = {
+            "point": points,
+            "maille": meshes,
+        }
         return jsonify(observations)
 
 
 @api.route("/observationsMaille/<int:cd_ref>", methods=["GET"])
-def getObservationsMailleAPI(cd_ref, year_min=None, year_max=None):
+def getObservationsMailleAPI(cd_ref):
     """
         Retourne les observations d'un taxon par maille (et le nombre d'observation par maille)
 
         :returns: GeoJson
     """
-    session = utils.loadSession()
-    observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(
-        session,
+    connection = utils.engine.connect()
+    observations = vmObservationsMaillesRepository.getObservationsByMeshes(
+        connection,
         cd_ref,
         year_min=request.args.get("year_min"),
         year_max=request.args.get("year_max"),
     )
-    session.close()
+    connection.close()
     return jsonify(observations)
 
 
@@ -93,16 +97,22 @@ def getObservationsGenericApi(cd_ref: int):
     Returns:
         [type]: [description]
     """
-    session = utils.loadSession()
-    observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(
-        session,
-        cd_ref,
-        year_min=request.args.get("year_min"),
-        year_max=request.args.get("year_max"),
-    ) if current_app.config['AFFICHAGE_MAILLE'] else vmObservationsRepository.searchObservationsChilds(session, cd_ref)
-    session.close()
+    if current_app.config["AFFICHAGE_MAILLE"]:
+        connection = utils.engine.connect()
+        observations = vmObservationsMaillesRepository.getObservationsByMeshes(
+            connection,
+            cd_ref,
+            year_min=request.args.get("year_min"),
+            year_max=request.args.get("year_max"),
+        )
+        connection.close()
+    else:
+        session = utils.loadSession()
+        observations = vmObservationsRepository.searchObservationsChilds(session, cd_ref)
+        session.close()
+
     return jsonify(observations)
-    
+
 
 if not current_app.config['AFFICHAGE_MAILLE']:
     @api.route("/observations/<insee>/<int:cd_ref>", methods=["GET"])

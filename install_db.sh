@@ -421,6 +421,11 @@ if ! database_exists $db_name
         export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/13.atlas.vm_observations_mailles.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
+        echo "[$(date +'%H:%M:%S')] Creating atlas.vm_observations_meshes_agg..."
+        time_temp=$SECONDS
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/14.atlas.vm_observations_meshes_agg.sql  &>> log/install_db.log
+        echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
+
         sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.bib_taxref_rangs OWNER TO "$owner_atlas";"
         sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.bib_taxref_rangs OWNER TO "$owner_atlas";"
         sudo -u postgres -s psql -d $db_name -c "ALTER FUNCTION atlas.create_vm_altitudes() OWNER TO "$owner_atlas";"
@@ -438,8 +443,8 @@ if ! database_exists $db_name
         # FR: Affectation de droits en lecture sur les VM à l'utilisateur de l'application ($user_pg)
         # EN: Assign read rights on VMs to the application user ($user_pg)
         echo "Grant..."
-        sudo sed -i "s/my_reader_user;$/$user_pg;/" /tmp/atlas/14.grant.sql
-        sudo -n -u postgres -s psql -d $db_name -f /tmp/atlas/14.grant.sql &>> log/install_db.log
+        sudo sed -i "s/my_reader_user;$/$user_pg;/" /tmp/atlas/15.grant.sql
+        sudo -n -u postgres -s psql -d $db_name -f /tmp/atlas/15.grant.sql &>> log/install_db.log
 
         # Clean file
         echo "Cleaning files..."
