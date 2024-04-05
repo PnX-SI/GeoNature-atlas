@@ -180,16 +180,19 @@ def observersParser(req):
 
 
 def getObservers(connection, cd_ref):
+    sql = "SELECT * FROM atlas.find_all_taxons_childs(:thiscdref) AS taxon_childs(cd_nom)"
+    results = connection.execute(text(sql), thiscdref=cd_ref)
+    taxons = [cd_ref]
+    for r in results:
+        taxons.append(r.cd_nom)
+
     sql = """
-    SELECT DISTINCT observateurs
-    FROM atlas.vm_observations
-    WHERE cd_ref IN (
-            SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
-        )
-        OR cd_ref = :thiscdref
+        SELECT DISTINCT observateurs
+        FROM atlas.vm_observations
+        WHERE cd_ref = ANY(:taxonsList)
     """
-    req = connection.execute(text(sql), thiscdref=cd_ref)
-    return observersParser(req)
+    results = connection.execute(text(sql), taxonsList=taxons)
+    return observersParser(results)
 
 
 def getGroupeObservers(connection, groupe):
