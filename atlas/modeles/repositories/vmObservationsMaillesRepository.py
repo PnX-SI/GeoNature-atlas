@@ -1,9 +1,10 @@
 import json
 
 from geojson import Feature, FeatureCollection
-from sqlalchemy.sql import text, func, or_
+from sqlalchemy.sql import text, func, any_
 
 from atlas.modeles.entities.vmObservations import VmObservationsMailles
+from atlas.modeles.entities.tMaillesTerritoire import TMaillesTerritoire
 from atlas.modeles.utils import deleteAccent, findPath
 
 
@@ -12,17 +13,25 @@ def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
     Retourne les mailles et le nombre d'observation par maille pour un taxon et ses enfants
     sous forme d'un geojson
     """
-    subquery = session.query(func.atlas.find_all_taxons_childs(cd_ref))
+    query = session.query(func.atlas.find_all_taxons_childs(cd_ref))
+    taxons_ids = query.all()
+    taxons_ids.append(cd_ref)
+
     query = (
         session.query(
-            func.count(VmObservationsMailles.id_observation).label("nb_obs"),
-            func.max(VmObservationsMailles.annee).label("last_observation"),
             VmObservationsMailles.id_maille,
-            VmObservationsMailles.geojson_maille,
+            TMaillesTerritoire.geojson_maille,
+            func.max(VmObservationsMailles.annee).label("last_obs_year"),
+            func.count(VmObservationsMailles.nbr).label("obs_nbr"),
         )
-        .group_by(VmObservationsMailles.id_maille, VmObservationsMailles.geojson_maille)
-        .filter(
-            or_(VmObservationsMailles.cd_ref.in_(subquery), VmObservationsMailles.cd_ref == cd_ref)
+        .join(
+            TMaillesTerritoire,
+            TMaillesTerritoire.id_maille == VmObservationsMailles.id_maille,
+        )
+        .filter(VmObservationsMailles.cd_ref == any_(taxons_ids))
+        .group_by(
+            VmObservationsMailles.id_maille,
+            TMaillesTerritoire.geojson_maille,
         )
     )
     if year_min and year_max:
@@ -35,8 +44,8 @@ def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
                 geometry=json.loads(o.geojson_maille),
                 properties={
                     "id_maille": o.id_maille,
-                    "nb_observations": o.nb_obs,
-                    "last_observation": o.last_observation,
+                    "nb_observations": o.obs_nbr,
+                    "last_observation": o.last_obs_year,
                 },
             )
             for o in query.all()
