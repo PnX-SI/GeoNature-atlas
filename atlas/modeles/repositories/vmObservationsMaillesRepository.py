@@ -22,7 +22,7 @@ def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
             VmObservationsMailles.id_maille,
             TMaillesTerritoire.geojson_maille,
             func.max(VmObservationsMailles.annee).label("last_obs_year"),
-            func.count(VmObservationsMailles.nbr).label("obs_nbr"),
+            func.sum(VmObservationsMailles.nbr).label("obs_nbr"),
         )
         .join(
             TMaillesTerritoire,
@@ -44,7 +44,7 @@ def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
                 geometry=json.loads(o.geojson_maille),
                 properties={
                     "id_maille": o.id_maille,
-                    "nb_observations": o.obs_nbr,
+                    "nb_observations": int(o.obs_nbr),
                     "last_observation": o.last_obs_year,
                 },
             )
