@@ -267,7 +267,7 @@ CUSTOM_LOGO_LINK='https://monadressecustom.org'
 # Pour choisir un picto font-awesome 5, il faut renseigner l'attribut "picto" ; pour utiliser un picto sotcké dans 'static/custom/images', il faut renseigner l'attribut "customized_picto"
 STATIC_PAGES = {
     'presentation': {'template': 'static/custom/templates/presentation.html', 'title': "Présentation de l'atlas", 'picto': 'fa-question-circle', 'order': 0},
-    'pne': {'url':'https://www.ecrins-parcnational.fr/', 'title': "Parc national des Ecrins", 'customized_picto': 'logo_pne.png', 'picto_height': 16, 'order': 1}
+    'pne': {'url':'https://www.ecrins-parcnational.fr/', 'title': "Parc national des Ecrins", 'customized_picto': 'sample.external-website.png', 'picto_height': 16, 'order': 1}
 }
 
 ###########################
