@@ -5,14 +5,24 @@
     </a>
     {% for page_key, page_values in configuration.STATIC_PAGES.items()|sort(attribute='1.order') %}
         {% if 'url' in page_values %}
-            <a href="{{ page_values.url }}" target="_blank" data-toggle="tooltip"
-               data-original-title="{{ page_values.title }}" data-placement="right">
-                <li class="sidebar-brand"><span class="fas {{ page_values.picto }}"></span></li>
+            <a href="{{ page_values.url }}" target="_blank" data-toggle="tooltip" data-original-title="{{ page_values.title }}" data-placement="right">
+                <li class="sidebar-brand">
+        		{% if 'customized_picto' in page_values %}
+	        		<span><img src="/static/custom/images/{{ page_values.customized_picto }}" height="{{ page_values.picto_height}}"></img></span>
+			{% else %}
+				<span class="fas {{ page_values.picto }}"></span>
+			{% endif %}
+		</li>
             </a>
         {% else %}
-            <a href="{{ url_for('main.get_staticpages', page=page_key) }}" data-toggle="tooltip"
-               data-original-title="{{ page_values.title }}" data-placement="right">
-                <li class="sidebar-brand"><span class="fas {{ page_values.picto }}"></span></li>
+            <a href="{{ url_for('main.get_staticpages', page=page_key) }}" data-toggle="tooltip" data-original-title="{{ page_values.title }}" data-placement="right">
+                <li class="sidebar-brand">
+		        {% if 'customized_picto' in page_values %}
+			        <span><img src="/static/custom/images/{{ page_values.customized_picto }}" height="{{ page_values.picto_height}}"></img></span>
+			{% else %}
+				<span class="fas {{ page_values.picto }}"></span>
+			{% endif %}
+		</li>
             </a>
         {% endif %}
     {% endfor %}
