@@ -264,7 +264,7 @@ CUSTOM_LOGO_LINK='https://monadressecustom.org'
 
 # Permet de lister les pages statiques souhaitées et de les afficher dynamiquement dans le menu sidebar
 # Pour ajouter une page externe, il faut renseigner l'attribut "url" ; pour une page interne, il faut renseigner l'attribut "template"
-# Pour choisir un picto font-awesome 5, il faut renseigner l'attribut "picto" ; pour utiliser un picto sotcké dans 'static/custom/images', il faut renseigner l'attribut "customized_picto"
+# Pour choisir un picto font-awesome 5, il faut renseigner l'attribut "picto" ; pour utiliser un picto stocké dans 'static/custom/images', il faut renseigner son nom de fichier dans l'attribut "customized_picto"
 STATIC_PAGES = {
     'presentation': {'template': 'static/custom/templates/presentation.html', 'title': "Présentation de l'atlas", 'picto': 'fa-question-circle', 'order': 0},
     'pne': {'url':'https://www.ecrins-parcnational.fr/', 'title': "Parc national des Ecrins", 'customized_picto': 'sample.external-website.png', 'picto_height': 16, 'order': 1}
