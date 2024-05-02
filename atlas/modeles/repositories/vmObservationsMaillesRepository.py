@@ -93,42 +93,43 @@ def lastObservationsMailles(connection, mylimit, idPhoto):
     return obsList
 
 
-def lastObservationsCommuneMaille(connection, mylimit, insee):
+def lastObservationsCommuneMaille(connection, obs_limit, insee_code):
     sql = """
     WITH last_obs AS (
         SELECT
-            obs.cd_ref, obs.dateobs, t.lb_nom,
-            t.nom_vern, obs.the_geom_point AS l_geom
-        FROM atlas.vm_observations obs
-        JOIN atlas.vm_communes c
-        ON ST_Intersects(obs.the_geom_point, c.the_geom)
-        JOIN atlas.vm_taxons t
-        ON  obs.cd_ref = t.cd_ref
-        WHERE c.insee = :thisInsee
+            obs.id_observation, obs.cd_ref, obs.dateobs,
+            COALESCE(t.nom_vern || ' | ', '') || t.lb_nom  AS display_name,
+            obs.the_geom_point AS l_geom
+        FROM atlas.vm_observations AS obs
+            JOIN atlas.vm_communes AS c
+                ON ST_Intersects(obs.the_geom_point, c.the_geom)
+            JOIN atlas.vm_taxons AS t
+                ON obs.cd_ref = t.cd_ref
+        WHERE c.insee = :inseeCode
         ORDER BY obs.dateobs DESC
-        LIMIT :thislimit
+        LIMIT :obsLimit
     )
-    SELECT l.lb_nom, l.nom_vern, l.cd_ref, m.id_maille, m.geojson_maille
-    FROM atlas.t_mailles_territoire m
-    JOIN last_obs  l
-    ON st_intersects(m.the_geom, l.l_geom)
-    GROUP BY l.lb_nom, l.cd_ref, m.id_maille, l.nom_vern, m.geojson_maille
+    SELECT
+        l.id_observation, l.cd_ref, l.display_name, m.id_maille, m.geojson_maille
+    FROM atlas.t_mailles_territoire AS m
+        JOIN last_obs AS l
+            ON st_intersects(m.the_geom, l.l_geom)
+    GROUP BY l.id_observation, l.cd_ref, l.display_name, m.id_maille, m.geojson_maille
+    ORDER BY l.display_name
     """
-    observations = connection.execute(text(sql), thisInsee=insee, thislimit=mylimit)
-    obsList = list()
-    for o in observations:
-        if o.nom_vern:
-            taxon = o.nom_vern + " | " + "<i>" + o.lb_nom + "</i>"
-        else:
-            taxon = "<i>" + o.lb_nom + "</i>"
-        temp = {
-            "cd_ref": o.cd_ref,
-            "taxon": taxon,
-            "geojson_maille": json.loads(o.geojson_maille),
-            "id_maille": o.id_maille,
+    results = connection.execute(text(sql), inseeCode=insee_code, obsLimit=obs_limit)
+    observations = list()
+    for r in results:
+        # taxon = (r.nom_vern + " | " + r.lb_nom) if r.nom_vern else r.lb_nom
+        infos = {
+            "cd_ref": r.cd_ref,
+            "taxon": r.display_name,
+            "geojson_maille": json.loads(r.geojson_maille),
+            "id_maille": r.id_maille,
+            "id_observation": r.id_observation,
         }
-        obsList.append(temp)
-    return obsList
+        observations.append(infos)
+    return observations
 
 
 # Use for API

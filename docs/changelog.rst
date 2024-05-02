@@ -2,6 +2,14 @@
 CHANGELOG
 =========
 
+[Unreleased]
+------------------
+
+🐛 **Corrections**
+
+- Correction de la carte avec affichage par mailles de la fiche "Commune" (#533 par @jpm-cbna)
+
+
 1.6.1 (2023-10-16)
 ------------------
 
