@@ -43,3 +43,8 @@ CREATE INDEX ON atlas.vm_observations_mailles
 
 CREATE INDEX ON atlas.vm_observations_mailles
     USING btree (id_maille, cd_ref);
+
+
+-- ISSUE #531 & #532
+CREATE EXTENSION IF NOT EXISTS unaccent SCHEMA "public";
+

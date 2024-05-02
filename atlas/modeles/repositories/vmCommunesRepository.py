@@ -2,7 +2,6 @@
 
 import ast
 
-from flask import current_app
 from sqlalchemy import distinct
 from sqlalchemy.sql import text
 from sqlalchemy.sql.expression import func
@@ -19,20 +18,22 @@ def getAllCommunes(session):
     return communeList
 
 
-def getCommunesSearch(session, search, limit=50):
-    req = session.query(
-        distinct(VmCommunes.commune_maj), VmCommunes.insee, func.length(VmCommunes.commune_maj)
-    ).filter(VmCommunes.commune_maj.ilike("%" + search + "%"))
+def searchMunicipalities(session, search, limit=50):
+    like_search = "%" + search.replace(" ", "%") + "%"
 
-    req = req.order_by(VmCommunes.commune_maj)
+    query = (
+        session.query(
+            distinct(VmCommunes.commune_maj),
+            VmCommunes.insee,
+            func.length(VmCommunes.commune_maj),
+        )
+        .filter(func.unaccent(VmCommunes.commune_maj).ilike(func.unaccent(like_search)))
+        .order_by(VmCommunes.commune_maj)
+        .limit(limit)
+    )
+    results = query.all()
 
-    req = req.limit(limit).all()
-
-    communeList = list()
-    for r in req:
-        temp = {"label": r[0], "value": r[1]}
-        communeList.append(temp)
-    return communeList
+    return [{"label": r[0], "value": r[1]} for r in results]
 
 
 def getCommuneFromInsee(connection, insee):
