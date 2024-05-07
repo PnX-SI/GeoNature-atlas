@@ -330,7 +330,9 @@ function displayGridLayerArea(observations) {
     style: styleMaille,
   });
   currentLayer.addTo(map);
-  map.fitBounds(currentLayer.getBounds());
+  if (currentLayer.getBounds().isValid()) {
+    map.fitBounds(currentLayer.getBounds());
+  }
 
   // ajout de la légende
   generateLegendMaille();
