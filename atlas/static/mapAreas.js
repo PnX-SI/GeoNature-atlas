@@ -148,11 +148,6 @@ function displayObsTaxonMaille(areaCode, cd_ref) {
         dataType: "json",
         beforeSend: function () {
             $("#loaderSpinner").show();
-            // $("#loadingGif").show();
-            // $("#loadingGif").attr(
-            //   "src",
-            //   configuration.URL_APPLICATION + "/static/images/loading.svg"
-            // );
         }
     }).done(function (observations) {
         $("#loaderSpinner").hide();
