@@ -130,17 +130,17 @@ function generateMap(zoomHomeButton) {
   fullScreenButton.attr("data-toggle", "tooltip");
   fullScreenButton.attr("data-original-title", "Fullscreen");
   $(".leaflet-control-fullscreen-button").removeAttr("title");
-  
+
   // Add scale depending on the configuration
   if (configuration.MAP.ENABLE_SCALE) {
     L.control.scale(
       {
-        imperial: false, 
+        imperial: false,
         position: 'bottomright'
       }
       ).addTo(map);
   }
-  
+
   return map;
 }
 
@@ -425,7 +425,10 @@ function onEachFeaturePointLastObs(feature, layer) {
     popupContent +
       "</br> <a href='" +
       configuration.URL_APPLICATION +
-      
+<<<<<<< HEAD
+
+=======
+>>>>>>> 8da0f00 (fix: show right taxons names for municipality default meshes map view)
       language +
       "/espece/" +
       feature.properties.cd_ref +
@@ -537,31 +540,28 @@ function compare(a, b) {
   return 0;
 }
 
-function printEspece(tabEspece, tabCdRef) {
-  stringEspece = "";
-  i = 0;
-  while (i < tabEspece.length) {
-    stringEspece +=
-      "<li> <a href='" +
-      configuration.URL_APPLICATION +
-      "/espece/" +
-      tabCdRef[i] +
-      "'>" +
-      tabEspece[i] +
-      "</li>";
-
-    i = i + 1;
-  }
-  return stringEspece;
+function buildSpeciesEntries(taxons) {
+  rows = [];
+  taxons.forEach(taxon => {
+    href = `${configuration.URL_APPLICATION}/espece/${taxon.cdRef}`
+    rows.push(`<li><a href="${href}">${taxon.name}</li>`);
+  });
+  return rows.join('\n');
 }
 
 function onEachFeatureMailleLastObs(feature, layer) {
+<<<<<<< HEAD
   popupContent =
     "<b>Espèces observées dans la maille: </b> <ul> " +
     printEspece(feature.properties.list_taxon, feature.properties.list_cdref) +
     "</ul>";
+=======
+  title = `${feature.properties.taxons.length} espèces observées dans la maille &nbsp;: `;
+  rows = buildSpeciesEntries(feature.properties.taxons);
+  popupContent = `<b>${title}</b><ul>${rows}</ul>`;
+>>>>>>> 8da0f00 (fix: show right taxons names for municipality default meshes map view)
 
-  layer.bindPopup(popupContent);
+  layer.bindPopup(popupContent, { maxHeight: 300 });
 }
 
 function styleMailleLastObs() {
@@ -574,34 +574,41 @@ function styleMailleLastObs() {
 }
 
 function generateGeoJsonMailleLastObs(observations) {
-  var i = 0;
-  myGeoJson = { type: "FeatureCollection", features: [] };
-  while (i < observations.length) {
-    geometry = observations[i].geojson_maille;
-    idMaille = observations[i].id_maille;
-    properties = {
-      id_maille: idMaille,
-      list_taxon: [observations[i].taxon],
-      list_cdref: [observations[i].cd_ref],
-      list_id_observation: [observations[i].id_observation],
-    };
-    var j = i + 1;
-    while (j < observations.length && observations[j].id_maille == idMaille) {
-      properties.list_taxon.push(observations[j].taxon);
-      properties.list_cdref.push(observations[j].cd_ref);
-      properties.list_id_observation.push(observations[j].id_observation);
-      j = j + 1;
+  var features = [];
+  observations.forEach((obs) => {
+    findedFeature = features.find(
+      (feat) => feat.properties.meshId === obs.id_maille
+    );
+    if (!findedFeature) {
+      features.push({
+        type: "Feature",
+        geometry: obs.geojson_maille,
+        properties: {
+          meshId: obs.id_maille,
+          taxons: [
+            {
+              cdRef: obs.cd_ref,
+              name: obs.taxon,
+            },
+          ],
+        },
+      });
+    } else if (
+      !findedFeature.properties.taxons.find(
+        (taxon) => taxon.cdRef === obs.cd_ref
+      )
+    ) {
+      findedFeature.properties.taxons.push({
+        cdRef: obs.cd_ref,
+        name: obs.taxon,
+      });
     }
-    myGeoJson.features.push({
-      type: "Feature",
-      properties: properties,
-      geometry: geometry,
-    });
-    // on avance jusqu' à j
-    i = j;
-  }
+  });
 
-  return myGeoJson;
+  return {
+    type: "FeatureCollection",
+    features: features,
+  };
 }
 
 function find_id_observation_in_array(tab_id, id_observation) {
