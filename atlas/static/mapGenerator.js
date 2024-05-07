@@ -425,10 +425,6 @@ function onEachFeaturePointLastObs(feature, layer) {
     popupContent +
       "</br> <a href='" +
       configuration.URL_APPLICATION +
-<<<<<<< HEAD
-
-=======
->>>>>>> 8da0f00 (fix: show right taxons names for municipality default meshes map view)
       language +
       "/espece/" +
       feature.properties.cd_ref +
@@ -550,16 +546,9 @@ function buildSpeciesEntries(taxons) {
 }
 
 function onEachFeatureMailleLastObs(feature, layer) {
-<<<<<<< HEAD
-  popupContent =
-    "<b>Espèces observées dans la maille: </b> <ul> " +
-    printEspece(feature.properties.list_taxon, feature.properties.list_cdref) +
-    "</ul>";
-=======
   title = `${feature.properties.taxons.length} espèces observées dans la maille &nbsp;: `;
   rows = buildSpeciesEntries(feature.properties.taxons);
   popupContent = `<b>${title}</b><ul>${rows}</ul>`;
->>>>>>> 8da0f00 (fix: show right taxons names for municipality default meshes map view)
 
   layer.bindPopup(popupContent, { maxHeight: 300 });
 }
