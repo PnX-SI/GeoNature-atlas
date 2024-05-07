@@ -3,7 +3,7 @@ from geoalchemy2.types import Geometry
 from sqlalchemy import Column, Integer, MetaData, Table, Text
 from sqlalchemy.ext.declarative import declarative_base
 
-from atlas.utils import engine
+from atlas.env import db
 
 metadata = MetaData()
 Base = declarative_base()
@@ -18,5 +18,5 @@ class TMaillesTerritoire(Base):
         Column("geojson_maille", Text),
         schema="atlas",
         autoload=True,
-        autoload_with=engine,
+        autoload_with=db.engine,
     )
