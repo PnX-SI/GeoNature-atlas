@@ -107,14 +107,16 @@
 
                     <!-- Modal -->
                     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                        <div class="modal-dialog" role="document">
+                        <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
+                                    <h3 class="modal-title" id="myModalLabel">
+                                        Taxon(s) agrégé(s) sur cette fiche
+                                    </h3>
                                     <button type="button" class="close" data-dismiss="modal"
-                                            aria-label="Close"><span
-                                            aria-hidden="true">&times;</span></button>
-                                    <h3 class="modal-title" id="myModalLabel">Taxon(s) agrégé(s) sur cette
-                                        fiche</h3>
+                                        aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
                                 </div>
                                 <div class="modal-body">
                                     <table class="table table-hover">
@@ -134,29 +136,31 @@
                                         </thead>
                                         <tbody>
                                         {% for child in taxon.listTaxonsChild %}
-                                            <a href="{{ url_for('main.ficheEspece', cd_nom=child.cd_ref) }}">
-                                                <tr>
-                                                    <td>
-                                                        {% if child.nom_vern != None %}
-                                                            {{ child.nom_vern }}
-                                                        {% else %}
-                                                            -
-                                                            </td>
-                                                        {% endif %}
-                                                    <td> {{ child.lb_nom }} </td>
+                                            <tr>
+                                                <td>
+                                                    {% if child.nom_vern != None %}
+                                                        {{ child.nom_vern }}
+                                                    {% else %}
+                                                        -
+                                                    {% endif %}
+                                                </td>
+                                                <td> {{ child.lb_nom }} </td>
+                                                {% if configuration.PROTECTION %}
                                                     <td>
                                                         {% if child.protection != None %}
                                                             <a href="https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.taxonSearch.cd_ref }}/tab/statut"
-                                                               target="_blank">
+                                                                target="_blank">
                                                                 <img class="caractEspece" width="130px"
-                                                                     src="{{ url_for('static', filename='images/logo_protection.png') }}"
-                                                                     data-toggle="tooltip"
-                                                                     data-original-title="{{ _('this.taxon.has.a.protected.status') }}"
-                                                                     data-placement="right"></a>
+                                                                        src="{{ url_for('static', filename='images/logo_protection.png') }}"
+                                                                        data-toggle="tooltip"
+                                                                        data-original-title="{{ _('this.taxon.has.a.protected.status') }}"
+                                                                        data-placement="right"></a>
                                                         {% endif %}
                                                     </td>
+                                                {% endif %}
+                                                {% if config.DISPLAY_PATRIMONIALITE %}
                                                     <td>
-                                                        {% if config.DISPLAY_PATRIMONIALITE and child.patrimonial in configuration.PATRIMONIALITE.config %}
+                                                        {% if child.patrimonial in configuration.PATRIMONIALITE.config %}
                                                             <img
                                                                     class="caractEspece" width="130px"
                                                                     src="{{ url_for('static', filename=configuration.PATRIMONIALITE.config[child.patrimonial].icon) }}"
@@ -166,24 +170,22 @@
                                                             >
                                                         {% endif %}
                                                     </td>
-                                                    <td> {{ child.nb_obs | pretty }} </td>
-                                                    <td>
-                                                        <a href="{{ url_for('main.ficheEspece', cd_nom=child.cd_ref) }}">
-                                                            <span id="ficheGlyficon" data-toggle="tooltip"
-                                                                  data-original-title="{{ _('check.species.sheet')}}"
-                                                                  data-placement="right"
-                                                                  class="fas fa-list"></span>
-                                                        </a>
-                                                    </td>
-
-                                                </tr>
-                                            </a>
+                                                {% endif %}
+                                                <td> {{ child.nb_obs | pretty }} </td>
+                                                <td>
+                                                    <a href="{{ url_for('main.ficheEspece', cd_nom=child.cd_ref) }}">
+                                                        <span id="ficheGlyficon" data-toggle="tooltip"
+                                                                data-original-title="{{ _('check.species.sheet')}}"
+                                                                data-placement="right"
+                                                                class="fas fa-list"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
                                         {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
-
                         </div>
                     </div>
 
