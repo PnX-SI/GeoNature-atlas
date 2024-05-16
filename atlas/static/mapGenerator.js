@@ -154,9 +154,15 @@ function observersTxt(feature) {
 
 // Popup Point
 function onEachFeaturePoint(feature, layer) {
+  date = new Date(feature.properties.dateobs);
+  const options = {
+	year: 'numeric',
+	month: 'long',
+	day: 'numeric',
+  };
   popupContent =
     "<b>Date: </b>" +
-    feature.properties.dateobs +
+    date.toLocaleDateString(undefined, options) +
     "</br><b>Altitude: </b>" +
     feature.properties.altitude_retenue +
     observersTxt(feature)
@@ -423,11 +429,17 @@ function displayMarkerLayerFicheEspece(
 /* *** Point ****/
 
 function onEachFeaturePointLastObs(feature, layer) {
+  date = new Date(feature.properties.dateobs);
+  const options = {
+	year: 'numeric',
+	month: 'long',
+	day: 'numeric',
+  };
   popupContent =
     "<b>Espèce: </b>" +
     feature.properties.taxon +
     "</br><b>Date: </b>" +
-    feature.properties.dateobs +
+    date.toLocaleDateString(undefined, options) +
     "</br><b>Altitude: </b>" +
     feature.properties.altitude_retenue;
 
@@ -444,11 +456,17 @@ function onEachFeaturePointLastObs(feature, layer) {
 }
 
 function onEachFeaturePointCommune(feature, layer) {
+  date = new Date(feature.properties.dateobs);
+  const options = {
+	year: 'numeric',
+	month: 'long',
+	day: 'numeric',
+  };
   popupContent =
     "<b>Espèce: </b>" +
     feature.properties.taxon +
     "</br><b>Date: </b>" +
-    feature.properties.dateobs +
+    date.toLocaleDateString(undefined, options) +
     "</br><b>Altitude: </b>" +
     feature.properties.altitude_retenue +
     observersTxt(feature)
