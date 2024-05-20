@@ -11,29 +11,34 @@ def searchEspece(connection, cd_ref):
     """
     recherche l espece corespondant au cd_nom et tout ces fils
     """
-    sql = """
+    query = """
     WITH limit_obs AS (
         SELECT
-            :thiscdref AS cd_ref, min(yearmin) AS yearmin,
-            max(yearmax) AS yearmax, SUM(nb_obs) AS nb_obs
+            :cdRef AS cd_ref,
+            MIN(yearmin) AS yearmin,
+            MAX(yearmax) AS yearmax,
+            SUM(nb_obs) AS nb_obs
         FROM atlas.vm_taxons
-        WHERE
-            cd_ref IN (SELECT * FROM atlas.find_all_taxons_childs(:thiscdref))
-            OR cd_ref = :thiscdref
+        WHERE cd_ref IN (SELECT * FROM atlas.find_all_taxons_childs(:cdRef))
+            OR cd_ref = :cdRef
     )
     SELECT taxref.*,
-        l.cd_ref, l.yearmin, l.yearmax, COALESCE(l.nb_obs, 0) AS nb_obs,
-        t2.patrimonial, t2.protection_stricte
-    FROM atlas.vm_taxref taxref
-    JOIN limit_obs l
-    ON l.cd_ref = taxref.cd_nom
-    LEFT JOIN atlas.vm_taxons t2
-    ON t2.cd_ref = taxref.cd_ref
-    WHERE taxref.cd_nom = :thiscdref
+        l.cd_ref,
+        l.yearmin,
+        l.yearmax,
+        COALESCE(l.nb_obs, 0) AS nb_obs,
+        t2.patrimonial,
+        t2.protection_stricte
+    FROM atlas.vm_taxref AS taxref
+        JOIN limit_obs AS l
+            ON l.cd_ref = taxref.cd_nom
+        LEFT JOIN atlas.vm_taxons AS t2
+            ON t2.cd_ref = taxref.cd_ref
+    WHERE taxref.cd_nom = :cdRef
     """
-    req = connection.execute(text(sql), thiscdref=cd_ref)
+    results = connection.execute(text(query), cdRef=cd_ref)
     taxonSearch = dict()
-    for r in req:
+    for r in results:
         nom_vern = None
         if r.nom_vern:
             nom_vern = (
@@ -54,7 +59,7 @@ def searchEspece(connection, cd_ref):
             "protection": r.protection_stricte,
         }
 
-    sql = """
+    query = """
         SELECT
             tax.lb_nom,
             tax.nom_vern,
@@ -64,16 +69,17 @@ def searchEspece(connection, cd_ref):
             tax.patrimonial,
             tax.protection_stricte,
             tax.nb_obs
-        FROM atlas.vm_taxons tax
-        JOIN atlas.bib_taxref_rangs br
-        ON br.id_rang = tax.id_rang
+        FROM atlas.vm_taxons AS tax
+            JOIN atlas.bib_taxref_rangs AS br
+                ON br.id_rang = tax.id_rang
         WHERE tax.cd_ref IN (
-            SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
+            SELECT * FROM atlas.find_all_taxons_childs(:cdRef)
         )
+        ORDER BY tax.lb_nom ASC, tax.nb_obs DESC
     """
-    req = connection.execute(text(sql), thiscdref=cd_ref)
+    results = connection.execute(text(query), cdRef=cd_ref)
     listTaxonsChild = list()
-    for r in req:
+    for r in results:
         temp = {
             "lb_nom": r.lb_nom,
             "nom_vern": r.nom_vern,
