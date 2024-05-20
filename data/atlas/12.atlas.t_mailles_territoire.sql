@@ -25,4 +25,5 @@ CREATE TABLE atlas.t_mailles_territoire AS
             AND st_intersects(a.geom, sa.geom)
     );
 
-CREATE UNIQUE INDEX t_mailles_territoire_id_maille_idx ON atlas.t_mailles_territoire USING btree (id_maille);
+CREATE UNIQUE INDEX ON atlas.t_mailles_territoire USING btree (id_maille);
+CREATE INDEX ON atlas.t_mailles_territoire USING spgist (the_geom);
