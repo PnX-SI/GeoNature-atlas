@@ -56,7 +56,7 @@ if not current_app.config["AFFICHAGE_MAILLE"]:
 
 
 @api.route("/observationsMaille/<int:cd_ref>", methods=["GET"])
-def getObservationsMailleAPI(cd_ref, year_min=None, year_max=None):
+def getObservationsMailleAPI(cd_ref):
     """
     Retourne les observations d'un taxon par maille (et le nombre d'observation par maille)
 
@@ -94,17 +94,17 @@ def getObservationsGenericApi(cd_ref: int):
         [type]: [description]
     """
     session = db.session
-    observations = (
-        vmObservationsMaillesRepository.getObservationsMaillesChilds(
+    if current_app.config["AFFICHAGE_MAILLE"]:
+        observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(
             session,
             cd_ref,
             year_min=request.args.get("year_min"),
             year_max=request.args.get("year_max"),
         )
-        if current_app.config["AFFICHAGE_MAILLE"]
-        else vmObservationsRepository.searchObservationsChilds(session, cd_ref)
-    )
+    else:
+        observations = vmObservationsRepository.searchObservationsChilds(session, cd_ref)
     session.close()
+
     return jsonify(observations)
 
 
