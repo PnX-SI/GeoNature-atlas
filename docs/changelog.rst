@@ -8,6 +8,7 @@ CHANGELOG
 🐛 **Corrections**
 
 - Correction de la carte avec affichage par mailles de la fiche "Commune" (#533 par @jpm-cbna)
+- Correction et amélioration de l'affichage de la fenêtre listant les sous-taxons aggrégés (#558 par @jpm-cbna)
 
 
 1.6.1 (2023-10-16)
