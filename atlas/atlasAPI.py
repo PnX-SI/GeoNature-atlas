@@ -30,7 +30,7 @@ def searchCommuneAPI():
     session = db.session
     search = request.args.get("search", "")
     limit = request.args.get("limit", 50)
-    results = vmCommunesRepository.getCommunesSearch(session, search, limit)
+    results = vmCommunesRepository.searchMunicipalities(session, search, limit)
     session.close()
     return jsonify(results)
 

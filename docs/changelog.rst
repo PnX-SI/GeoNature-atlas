@@ -9,6 +9,16 @@ CHANGELOG
 
 - Correction et amélioration de l'affichage de la fenêtre listant les sous-taxons aggrégés (#558 par @jpm-cbna)
 
+🐛 **Optimisations**
+
+- Amélioration de la "recherche par commune": mots tronqués, sans accent (#531 par @jpm-cbna)
+
+⚠️ **Notes de version**
+
+Si vous mettez à jour GeoNature-atlas :
+
+- Exécutez le script SQL de mise à jour de la BDD : https://github.com/PnX-SI/GeoNature-atlas/blob/master/data/update/update_1.6.1to1.6.2.sql
+
 
 1.6.1 (2023-10-16)
 ------------------
