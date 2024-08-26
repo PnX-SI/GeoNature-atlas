@@ -299,7 +299,7 @@ Mise à jour de l'application
 
 ::
 
-    cp -aR ../atlas_old/static/custom/ ./static
+    cp -aR ../atlas_old/atlas/static/custom/ ./atlas/static
 
 
 Attention à bien lire les notes de chaque version, qui peuvent indiquer des opérations spécifiques à faire, notamment des nouveaux paramètres à ajouter dans votre configuration et/ou des modifications à appliquer dans la BDD.
