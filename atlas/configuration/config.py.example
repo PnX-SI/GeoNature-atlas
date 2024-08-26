@@ -184,6 +184,12 @@ RANG_STAT_FR = ['Faune invertébrée', 'Faune vertébrée', 'Flore']
 ####### FICHE ESPECE #######
 ############################
 
+# Afficher le graphique des altitudes. Affichage True/False
+AFFICHAGE_GRAPH_ALTITUDES = True
+
+# Afficher le graphique de la phénologie. Affichage True/False
+AFFICHAGE_GRAPH_PHENOLOGIE = True
+
 # Rang taxonomique qui fixe jusqu'à quel taxon remonte la filiation taxonomique (hierarchie dans la fiche d'identite : Famille, Ordre etc... )
 LIMIT_RANG_TAXONOMIQUE_HIERARCHIE = 13
 
