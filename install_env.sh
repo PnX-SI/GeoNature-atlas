@@ -24,6 +24,7 @@ sudo apt-get -y upgrade
 # Go to folder of install_env.sh
 cd "$(dirname "$0")"
 
+sudo apt-get install -y wget
 sudo apt-get install -y unzip
 sudo apt-get install -y apache2
 sudo a2enmod proxy
@@ -51,11 +52,11 @@ then
 fi
 
 
-sudo apt-get install -y python-setuptools
+sudo apt-get install -y python3-setuptools
 sudo apt-get install -y libpq-dev python3-dev
 
-sudo apt-get install python-pip
-sudo apt-get install -y python-gdal
+sudo apt-get install python3-pip
+sudo apt-get install -y python3-gdal
 sudo apt-get install -y gdal-bin
 
 sudo apt-get install -y python3-virtualenv virtualenv
