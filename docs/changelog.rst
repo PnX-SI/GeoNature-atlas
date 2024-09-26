@@ -20,6 +20,10 @@ CHANGELOG
 
 - Amélioration de la "recherche par commune": mots tronqués, sans accent (#531 par @jpm-cbna)
 
+👨‍💻 **Développement**
+
+- Ajout d'un Makefile afin de faciliter les développements.
+
 ⚠️ **Notes de version**
 
 Si vous mettez à jour GeoNature-atlas :
