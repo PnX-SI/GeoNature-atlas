@@ -132,6 +132,10 @@ if ! database_exists $db_name
                     -v type_territoire=$type_territoire \
                     -f data/gn2/atlas_ref_geo.sql &>> log/install_db.log
         else
+
+            echo "Create extension defined in geonature"
+            sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS unaccent;"  &>> log/install_db.log
+
             # FR: Import du shape des limites du territoire ($limit_shp) dans la BDD / atlas.t_layer_territoire
             # EN: Import of the shape of the territory limits ($limit_shp) in the BDD / atlas.t_layer_territory
 
@@ -325,6 +329,9 @@ if ! database_exists $db_name
             echo "Creating syntheseff example table"
             sudo -n -u postgres -s psql -d $db_name -f /tmp/atlas/without_geonature.sql &>> log/install_db.log
             sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE synthese.syntheseff OWNER TO "$owner_atlas";"
+
+            sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE utilisateurs.bib_organismes OWNER TO "$owner_atlas";"
+            sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE gn_meta.cor_dataset_actor OWNER TO "$owner_atlas";"
         fi
 
         # FR: Creation des Vues Matérialisées (et remplacement éventuel des valeurs en dur par les paramètres)
