@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-27 10:27+0200\n"
+"POT-Creation-Date: 2024-09-27 10:32+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,45 +29,47 @@ msgstr ""
 
 #: static/custom/templates/footer.html:5 static/custom/templates/footer.html:29
 #: static/custom/templates/footer.html.sample:5
-#: static/custom/templates/footer.html.sample:24
+#: static/custom/templates/footer.html.sample:29
 msgid "credits"
 msgstr ""
 
 #: static/custom/templates/footer.html:7 static/custom/templates/footer.html:46
 #: static/custom/templates/footer.html.sample:7
-#: static/custom/templates/footer.html.sample:41
+#: static/custom/templates/footer.html.sample:46
 msgid "legal"
 msgstr ""
 
 #: static/custom/templates/footer.html:11
 #: static/custom/templates/footer.html:64
+#: static/custom/templates/footer.html.sample:11
+#: static/custom/templates/footer.html.sample:64
 msgid "personal_data"
 msgstr ""
 
 #: static/custom/templates/footer.html:17
-#: static/custom/templates/footer.html.sample:12
+#: static/custom/templates/footer.html.sample:17
 msgid "atlas.fauna.flora"
 msgstr ""
 
 #: static/custom/templates/footer.html:17
-#: static/custom/templates/footer.html.sample:12
+#: static/custom/templates/footer.html.sample:17
 #: static/custom/templates/introduction.html:7
 #: static/custom/templates/introduction.html.sample:7
 msgid "from1"
 msgstr ""
 
 #: static/custom/templates/footer.html:19
-#: static/custom/templates/footer.html.sample:14
+#: static/custom/templates/footer.html.sample:19
 msgid "powered.by"
 msgstr ""
 
 #: static/custom/templates/footer.html:19
-#: static/custom/templates/footer.html.sample:14
+#: static/custom/templates/footer.html.sample:19
 msgid "developed.by"
 msgstr ""
 
 #: static/custom/templates/footer.html:20
-#: static/custom/templates/footer.html.sample:15
+#: static/custom/templates/footer.html.sample:20
 msgid "ecrins.national.park"
 msgstr ""
 

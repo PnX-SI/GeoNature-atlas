@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-27 10:27+0200\n"
+"POT-Creation-Date: 2024-09-27 10:32+0200\n"
 "PO-Revision-Date: 2021-07-19 09:53+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
@@ -30,45 +30,47 @@ msgstr "Home"
 
 #: static/custom/templates/footer.html:5 static/custom/templates/footer.html:29
 #: static/custom/templates/footer.html.sample:5
-#: static/custom/templates/footer.html.sample:24
+#: static/custom/templates/footer.html.sample:29
 msgid "credits"
 msgstr "Concezione e crediti"
 
 #: static/custom/templates/footer.html:7 static/custom/templates/footer.html:46
 #: static/custom/templates/footer.html.sample:7
-#: static/custom/templates/footer.html.sample:41
+#: static/custom/templates/footer.html.sample:46
 msgid "legal"
 msgstr "Nota legale"
 
 #: static/custom/templates/footer.html:11
 #: static/custom/templates/footer.html:64
+#: static/custom/templates/footer.html.sample:11
+#: static/custom/templates/footer.html.sample:64
 msgid "personal_data"
-msgstr ""
+msgstr "Dati personali"
 
 #: static/custom/templates/footer.html:17
-#: static/custom/templates/footer.html.sample:12
+#: static/custom/templates/footer.html.sample:17
 msgid "atlas.fauna.flora"
 msgstr "Atlante della flora e della fauna"
 
 #: static/custom/templates/footer.html:17
-#: static/custom/templates/footer.html.sample:12
+#: static/custom/templates/footer.html.sample:17
 #: static/custom/templates/introduction.html:7
 #: static/custom/templates/introduction.html.sample:7
 msgid "from1"
 msgstr "di"
 
 #: static/custom/templates/footer.html:19
-#: static/custom/templates/footer.html.sample:14
+#: static/custom/templates/footer.html.sample:19
 msgid "powered.by"
 msgstr "Realizzato da"
 
 #: static/custom/templates/footer.html:19
-#: static/custom/templates/footer.html.sample:14
+#: static/custom/templates/footer.html.sample:19
 msgid "developed.by"
 msgstr "sviluppato da il"
 
 #: static/custom/templates/footer.html:20
-#: static/custom/templates/footer.html.sample:15
+#: static/custom/templates/footer.html.sample:20
 msgid "ecrins.national.park"
 msgstr "Parco Nazionale degli Ecrins"
 
