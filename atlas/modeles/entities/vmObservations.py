@@ -1,6 +1,6 @@
 # coding: utf-8
 from geoalchemy2.types import Geometry
-from sqlalchemy import Column, Date, Integer, MetaData, String, Table, Text
+from sqlalchemy import Column, Date, Integer, MetaData, String, Table, Text, ARRAY
 from sqlalchemy.ext.declarative import declarative_base
 
 from atlas.env import db
@@ -40,6 +40,7 @@ class VmObservationsMailles(Base):
         Column("annee", String(1000), primary_key=True, index=True),
         Column("id_maille", Integer, primary_key=True, index=True),
         Column("nbr", Integer),
+        Column("id_observations", ARRAY(Integer)),
         schema="atlas",
         autoload=True,
         autoload_with=db.engine,
