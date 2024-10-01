@@ -29,7 +29,7 @@
                         <span class="float-right">
                         {% if configuration.PROTECTION %}
                             {% if taxon.protection == 'oui' %}
-                                <a  href="https://inpn.mnhn.fr/espece/cd_nom/mostObsTaxs[top_taxons.index(taxon)]['cd_ref']/tab/statut"
+                                <a  href="https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.cd_ref }}/tab/statut"
                                     target="_blank">
                                     <img src="{{ url_for('static', filename='images/logo_protection.png') }}"
                                     style="width : 30px; height: 30px;" data-placement="left" data-toggle="tooltip"
