@@ -5,10 +5,15 @@ CHANGELOG
 [Unreleased]
 ------------------
 
+🚀 **Nouveautés**
+
+- Mise à jour de la dependance `greenlet` afin de pouvoir installer l'atlas sur une version de debian 12 (@juggler31)
+
 🐛 **Corrections**
 
 - Correction de la carte avec affichage par mailles de la fiche "Commune" (#533 par @jpm-cbna)
 - Correction et amélioration de l'affichage de la fenêtre listant les sous-taxons aggrégés (#558 par @jpm-cbna)
+- Correction du script install_db.sh afin d'installer l'atlas sans geonature. (@juggler31)
 
 🐛 **Optimisations**
 
