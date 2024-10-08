@@ -162,7 +162,7 @@ Vous devrez ensuite ajouter une couche qui correspond aux limites de votre terri
 Pour cela créer une ligne dans la table `ref_geo.bib_area_type` qui correspond au "type d'aire , puis une ligne dans `ref_geo.l_areas`. Le `type_name` de la ligne créé dans `ref_geo.bib_area_type` sera a mettre dans le paramètre `type_territoire` du fichier `settings.ini`
 
 
-A noter aussi que si vous ne connectez pas l'atlas à une BDD GeoNature (``geonature_source=false``), une table exemple ``synthese.syntheseff`` comprenant 2 observations est créée. A vous d'adapter les vues après l'installation pour les connecter à vos données sources.
+A noter aussi que si vous ne connectez pas l'atlas à une BDD GeoNature (``geonature_source=false``), il vous faudra modifier les vues matérialisées pour qu'elles puisent leurs données dans vos tables.
 
 Lancez le fichier fichier d'installation de la base de données :
 
