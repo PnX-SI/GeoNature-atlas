@@ -150,7 +150,7 @@ Par ailleurs, si vous n'utilisez pas GeoNature, il vous faut installer TaxHub (h
 
 L'installation du schéma ``taxonomie`` de TaxHub dans la BDD de l'atlas peut se faire automatiquement lors de l'installation de la BDD avec le paramètre ``install_taxonomie=true``.
 
-A noter aussi que si vous ne connectez pas l'atlas à une BDD GeoNature (``geonature_source=false``), une table exemple ``synthese.syntheseff`` comprenant 2 observations est créée. A vous d'adapter les vues après l'installation pour les connecter à vos données sources.
+A noter aussi que si vous ne connectez pas l'atlas à une BDD GeoNature (``geonature_source=false``), il vous faudra modifier les vues matérialisées pour qu'elles puisent leurs données dans vos tables.
 
 Lancez le fichier fichier d'installation de la base de données :
 

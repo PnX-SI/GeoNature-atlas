@@ -4,7 +4,7 @@ IMPORT FOREIGN SCHEMA ref_nomenclatures
 LIMIT TO (ref_nomenclatures.t_nomenclatures, ref_nomenclatures.bib_nomenclatures_types)
 FROM SERVER geonaturedbserver INTO synthese;
 
--- Schéma ref_geo necessaire pour créer la vue syntheseff qui s'appuie sur le ref_geo pour la sensibilité
+-- Schéma ref_geo necessaire pour créer la vue vm_observations qui s'appuie sur le ref_geo pour la sensibilité
 
 DROP SCHEMA IF EXISTS ref_geo CASCADE;
 CREATE SCHEMA IF NOT EXISTS ref_geo;
