@@ -44,7 +44,7 @@ function test_settings() {
     echo "Checking the validity of settings.ini"
     for i in "${!fields[@]}"
     do
-        if [ -z ${!fields[$i]} ];
+        if [[ -z "${!fields[$i]}" ]];
             then
                 echo -e "\033\033[31m Error : \033[0m attribut ${fields[$i]} manquant dans settings.ini"
                 exit
@@ -312,20 +312,6 @@ if ! database_exists $db_name
         fi
 
         echo "Creating DB structure"
-        # FR: Si j'utilise GeoNature ($geonature_source = True), alors je créé les tables filles en FDW connectées à la BDD de GeoNature
-        # EN: If I use GeoNature ($geonature_source = True), then I create the child tables in FDW connected to the GeoNature DB
-        if $geonature_source
-            then
-                sudo cp data/gn2/atlas_synthese.sql /tmp/atlas/atlas_synthese_extended.sql
-                sudo sed -i "s/myuser;$/$owner_atlas;/" /tmp/atlas/atlas_synthese_extended.sql
-                export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/atlas_synthese_extended.sql  &>> log/install_db.log
-        # FR: Sinon je créé une table synthese.syntheseff avec 2 observations exemple
-        # EN: Otherwise I created a table synthese.syntheseff with 2 observations example
-        else
-            echo "Creating syntheseff example table"
-            sudo -n -u postgres -s psql -d $db_name -f /tmp/atlas/without_geonature.sql &>> log/install_db.log
-            sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE synthese.syntheseff OWNER TO "$owner_atlas";"
-        fi
 
         # FR: Creation des Vues Matérialisées (et remplacement éventuel des valeurs en dur par les paramètres)
         # EN: Creation of Materialized Views (and possible replacement of hard values by parameters)
@@ -431,7 +417,7 @@ if ! database_exists $db_name
         sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.vm_subdivided_area OWNER TO "$owner_atlas";"
         sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_layer_territoire OWNER TO "$owner_atlas";"
         sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes OWNER TO "$owner_atlas";"
-        sudo -u postgres -s psql -d $db_name -c "ALTER TABLE synthese.vm_cor_synthese_area OWNER TO "$owner_atlas";"
+        sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.vm_cor_synthese_area OWNER TO "$owner_atlas";"
 
 
         # FR: Affectation de droits en lecture sur les VM à l'utilisateur de l'application ($user_pg)
