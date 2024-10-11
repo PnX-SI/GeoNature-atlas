@@ -457,6 +457,16 @@ footer {
   text-align: left;
 }
 
+.personal-data-body {
+  display: flex;
+  flex-wrap: wrap;
+  text-align: justify;
+
+  > span {
+    padding-top: 1rem;
+  }
+}
+
 /*END FOOTER*/
 
 /* Galerie Photo et fiche par groupe */

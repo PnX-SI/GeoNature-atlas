@@ -91,6 +91,9 @@ fi
 if [ ! -f ./atlas/static/custom/templates/mentions-legales.html ]; then
   cp ./atlas/static/custom/templates/mentions-legales.html.sample ./atlas/static/custom/templates/mentions-legales.html
 fi
+if [ ! -f ./atlas/static/custom/templates/personal-data.html ]; then
+ cp ./atlas/static/custom/templates/personal-data.html.sample ./atlas/static/custom/templates/personal-data.html
+fi
 if [ ! -f ./atlas/static/custom/templates/bandeaulogoshome.html ]; then
   cp ./atlas/static/custom/templates/bandeaulogoshome.html.sample ./atlas/static/custom/templates/bandeaulogoshome.html
 fi

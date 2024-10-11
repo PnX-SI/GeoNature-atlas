@@ -155,6 +155,9 @@ AFFICHAGE_INTRODUCTION = True
 # Afficher le Footer sur toutes les pages (static/custom/templates/footer.html)
 AFFICHAGE_FOOTER = True
 
+# Afficher le lien "données personnelles" dans le footer
+AFFICHAGE_RGPD = True
+
 # Bloc de statistiques globales. Affichage True/False
 AFFICHAGE_STAT_GLOBALES = True
 

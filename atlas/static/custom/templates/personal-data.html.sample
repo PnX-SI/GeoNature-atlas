@@ -1,0 +1,9 @@
+<div class="modal-body personal-data-body">
+  <span>Les informations recueillies sur ce formulaire sont enregistrées dans un fichier informatisé par <b>[identité et coordonnées du responsable de traitement]</b> pour <b>[finalités du traitement]</b>. La base légale du traitement est <b>[base légale du traitement]</b>.</span>
+  <span>Les données collectées seront communiquées aux seuls destinataires suivants : <b>[destinataires des données]</b>.</span>
+  <span>Les données sont conservées pendant <b>[durée de conservation des données prévue par le responsable du traitement ou critères permettant de la déterminer]</b>.</span>
+  <span>Vous pouvez accéder aux données vous concernant, les rectifier, demander leur effacement ou exercer votre droit à la limitation du traitement de vos données. (en fonction de la base légale du traitement, mentionner également : Vous pouvez retirer à tout moment votre consentement au traitement de vos données ; Vous pouvez également vous opposer au traitement de vos données ; Vous pouvez également exercer votre droit à la portabilité de vos données)</span>
+  <span>Consultez le site <a href="https://www.cnil.fr" target="_blank">CNIL</a> pour plus d’informations sur vos droits.</span>
+  <span>Pour exercer ces droits ou pour toute question sur le traitement de vos données dans ce dispositif, vous pouvez contacter (le cas échéant, notre délégué à la protection des données ou le service chargé de l’exercice de ces droits) : <b>[adresse électronique, postale, coordonnées téléphoniques, etc.]</b></span>
+  <span>Si vous estimez, après nous avoir contactés, que vos droits « Informatique et Libertés » ne sont pas respectés, vous pouvez adresser une réclamation à la CNIL.</span>
+</div>

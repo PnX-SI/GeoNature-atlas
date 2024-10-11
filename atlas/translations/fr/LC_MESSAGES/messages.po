@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-02 15:28+0100\n"
+"POT-Creation-Date: 2024-09-27 10:32+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,44 +18,59 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: static/custom/templates/bandeaulogoshome.html:5
-#: static/custom/templates/bandeaulogoshome.html.sample:5
+#: static/custom/templates/bandeaulogoshome.html:6
+#: static/custom/templates/bandeaulogoshome.html.sample:6
 msgid "home.partners"
 msgstr "Partenaires"
 
+#: static/custom/templates/footer.html:2
 #: static/custom/templates/footer.html.sample:2 templates/home/_main.html:3
 msgid "home"
 msgstr "Accueil"
 
+#: static/custom/templates/footer.html:5 static/custom/templates/footer.html:29
 #: static/custom/templates/footer.html.sample:5
-#: static/custom/templates/footer.html.sample:24
+#: static/custom/templates/footer.html.sample:29
 msgid "credits"
 msgstr "Conception et crédits"
 
+#: static/custom/templates/footer.html:7 static/custom/templates/footer.html:46
 #: static/custom/templates/footer.html.sample:7
-#: static/custom/templates/footer.html.sample:41
+#: static/custom/templates/footer.html.sample:46
 msgid "legal"
 msgstr "Mentions légales"
 
-#: static/custom/templates/footer.html.sample:12
+#: static/custom/templates/footer.html:11
+#: static/custom/templates/footer.html:64
+#: static/custom/templates/footer.html.sample:11
+#: static/custom/templates/footer.html.sample:64
+msgid "personal_data"
+msgstr "Données personnelles"
+
+#: static/custom/templates/footer.html:17
+#: static/custom/templates/footer.html.sample:17
 msgid "atlas.fauna.flora"
 msgstr "Atlas de la faune et de la flore"
 
-#: static/custom/templates/footer.html.sample:12
+#: static/custom/templates/footer.html:17
+#: static/custom/templates/footer.html.sample:17
 #: static/custom/templates/introduction.html:7
 #: static/custom/templates/introduction.html.sample:7
 msgid "from1"
 msgstr "du"
 
-#: static/custom/templates/footer.html.sample:14
+#: static/custom/templates/footer.html:19
+#: static/custom/templates/footer.html.sample:19
 msgid "powered.by"
 msgstr "Réalisé avec"
 
-#: static/custom/templates/footer.html.sample:14
+#: static/custom/templates/footer.html:19
+#: static/custom/templates/footer.html.sample:19
 msgid "developed.by"
 msgstr "développé par le"
 
-#: static/custom/templates/footer.html.sample:15
+#: static/custom/templates/footer.html:20
+#: static/custom/templates/footer.html.sample:20
 msgid "ecrins.national.park"
 msgstr "Parc national des Écrins"
 
@@ -97,6 +112,19 @@ msgstr ""
 "d'un inventaire exhaustif ni d'une répartition complète des espèces sur "
 "le territoire."
 
+#: static/custom/templates/navbar.html:34
+#: static/custom/templates/navbar.html.sample:34
+#: templates/home/globalStats.html:35 templates/photoGalery/_main.html:77
+msgid "search.species"
+msgstr "Recherche par espèce"
+
+#: static/custom/templates/navbar.html:47
+#: static/custom/templates/navbar.html.sample:47
+#: templates/home/globalStats.html:55
+msgid "search.city"
+msgstr "Recherche par commune"
+
+#: static/custom/templates/presentation.html:4
 #: static/custom/templates/presentation.html.sample:4
 msgid "atlas.presentation"
 msgstr "Présentation de l'atlas"
@@ -122,7 +150,7 @@ msgid "check.area.sheet"
 msgstr "Voir la fiche de la zone"
 
 #: templates/core/advanced_search.html:4
-#: templates/core/advanced_search.html:382 templates/core/sideBar.html:20
+#: templates/core/advanced_search.html:382 templates/core/sideBar.html:30
 msgid "advanced_search"
 msgstr "Recherche avancée"
 
@@ -163,16 +191,16 @@ msgstr "Commencez à taper le nom d'une espèce"
 msgid "asearch.remove.selection"
 msgstr "Retirer de la sélection"
 
-#: templates/core/advanced_search.html:427 templates/core/listTaxons.html:88
+#: templates/core/advanced_search.html:427 templates/core/listTaxons.html:87
 #: templates/home/lastObs.html:44 templates/home/mostViewNow.html:33
-#: templates/home/newSpecies.html:45 templates/home/taxoRank.html:57
+#: templates/home/newSpecies.html:45 templates/home/taxoRank.html:61
 #: templates/organismSheet/topSpecies.html:67
 msgid "species.sheet"
 msgstr "Fiche espèce"
 
-#: templates/core/advanced_search.html:429 templates/core/listTaxons.html:87
-#: templates/core/tabTaxons.html:85 templates/organismSheet/topSpecies.html:66
-#: templates/speciesSheet/identityCard.html:173
+#: templates/core/advanced_search.html:429 templates/core/listTaxons.html:86
+#: templates/core/tabTaxons.html:87 templates/organismSheet/topSpecies.html:66
+#: templates/speciesSheet/identityCard.html:180
 msgid "check.species.sheet"
 msgstr "Voir la fiche espèce"
 
@@ -188,24 +216,31 @@ msgstr "Filtrer les espèces"
 msgid "display.municipality.obs"
 msgstr "Voir les observations sur le territoire"
 
-#: templates/core/listTaxons.html:81 templates/core/statHierarchy.html:7
-#: templates/home/globalStats.html:12
+#: templates/core/listTaxons.html:49 templates/core/tabTaxons.html:62
+#: templates/organismSheet/topSpecies.html:36
+#: templates/speciesSheet/identityCard.html:64
+#: templates/speciesSheet/identityCard.html:158
+msgid "this.taxon.has.a.protected.status"
+msgstr "Ce taxon a un statut de protection"
+
+#: templates/core/listTaxons.html:80 templates/core/statHierarchy.html:7
 #: templates/organismSheet/topSpecies.html:61
 #: templates/speciesSheet/map.html:15
+#: templates/speciesSheet/otherInformations.html:144
 msgid "observation"
 msgstr "Observation"
 
-#: templates/core/listTaxons.html:82 templates/core/statHierarchy.html:7
-#: templates/core/tabTaxons.html:19 templates/home/globalStats.html:12
+#: templates/core/listTaxons.html:81 templates/core/statHierarchy.html:7
+#: templates/core/tabTaxons.html:19 templates/home/globalStats.html:16
 #: templates/organismSheet/statsInfos.html:11
 #: templates/organismSheet/topSpecies.html:61
-#: templates/speciesSheet/identityCard.html:131
+#: templates/speciesSheet/identityCard.html:135
 #: templates/speciesSheet/map.html:15
-#: templates/speciesSheet/otherInformations.html:137
+#: templates/speciesSheet/otherInformations.html:142
 msgid "observations"
 msgstr "Observations"
 
-#: templates/core/listTaxons.html:83
+#: templates/core/listTaxons.html:82
 msgid "last.obs.in"
 msgstr "Dernière observation en "
 
@@ -213,36 +248,27 @@ msgstr "Dernière observation en "
 msgid "loading"
 msgstr "Chargement..."
 
-#: static/custom/templates/core/navbar.html:34 templates/home/globalStats.html:28
-#: templates/photoGalery/_main.html:76
-msgid "search.species"
-msgstr "Recherche par espèce"
-
-#: static/custom/templates/core/navbar.html:47 templates/home/globalStats.html:47
-msgid "search.city"
-msgstr "Recherche par commune"
-
 #: templates/core/sideBar.html:3
 msgid "back.to.home"
 msgstr "Retour à l'accueil"
 
-#: templates/core/sideBar.html:25 templates/home/globalStats.html:59
-#: templates/photoGalery/_main.html:5 templates/photoGalery/_main.html:50
+#: templates/core/sideBar.html:35 templates/home/globalStats.html:68
+#: templates/photoGalery/_main.html:5 templates/photoGalery/_main.html:51
 msgid "gallery.title"
 msgstr "Galerie photos"
 
-#: templates/core/statHierarchy.html:12 templates/home/globalStats.html:21
-#: templates/home/taxoRank.html:28 templates/organismSheet/statsInfos.html:21
+#: templates/core/statHierarchy.html:12 templates/home/globalStats.html:28
+#: templates/home/taxoRank.html:32 templates/organismSheet/statsInfos.html:21
 msgid "species"
 msgstr "Espèces"
 
 #: templates/core/statHierarchy.html:17 templates/speciesSheet/map.html:25
-#: templates/speciesSheet/otherInformations.html:29
+#: templates/speciesSheet/otherInformations.html:28
 msgid "observers"
 msgstr "Observateurs"
 
 #: templates/core/statHierarchy.html:17 templates/speciesSheet/map.html:25
-#: templates/speciesSheet/otherInformations.html:29
+#: templates/speciesSheet/otherInformations.html:28
 msgid "observer"
 msgstr "Observateur"
 
@@ -250,11 +276,11 @@ msgstr "Observateur"
 msgid "group"
 msgstr "Groupe"
 
-#: templates/core/tabTaxons.html:8 templates/speciesSheet/identityCard.html:124
+#: templates/core/tabTaxons.html:8 templates/speciesSheet/identityCard.html:128
 msgid "scientific.name"
 msgstr "Nom binomial"
 
-#: templates/core/tabTaxons.html:9 templates/speciesSheet/identityCard.html:123
+#: templates/core/tabTaxons.html:9 templates/speciesSheet/identityCard.html:127
 msgid "common.name"
 msgstr "Nom vernaculaire"
 
@@ -262,21 +288,16 @@ msgstr "Nom vernaculaire"
 msgid "obs.number.s"
 msgstr "Nombre d'observation(s)"
 
-#: templates/core/tabTaxons.html:17 templates/speciesSheet/map.html:33
+#: templates/core/tabTaxons.html:17 templates/speciesSheet/map.html:38
 msgid "last.obs"
 msgstr "Dernière observation"
 
 #: templates/core/tabTaxons.html:21
-#: templates/speciesSheet/identityCard.html:132
+#: templates/speciesSheet/identityCard.html:136
 msgid "sheet"
 msgstr "Fiche"
 
-#: templates/core/tabTaxons.html:60 templates/speciesSheet/identityCard.html:62
-#: templates/speciesSheet/identityCard.html:154
-msgid "this.taxon.has.a.protected.status"
-msgstr "Ce taxon a un statut de protection"
-
-#: templates/core/tabTaxons.html:80
+#: templates/core/tabTaxons.html:82
 msgid "display.city.infos"
 msgstr "Afficher les informations de la commune"
 
@@ -284,29 +305,19 @@ msgstr "Afficher les informations de la commune"
 msgid "home.insomefigures"
 msgstr "En quelques chiffres"
 
-#: templates/home/globalStats.html:13
+#: templates/home/globalStats.html:18
 msgid "home.seelatestobs"
 msgstr "Voir les dernières observations"
 
-#: templates/home/globalStats.html:39 templates/speciesSheet/map.html:20
+#: templates/home/globalStats.html:47 templates/speciesSheet/map.html:20
 #: templates/speciesSheet/otherInformations.html:10
 #: templates/speciesSheet/otherInformations.html:14
 msgid "municipalities"
 msgstr "Communes"
 
-#: templates/home/globalStats.html:39 templates/speciesSheet/map.html:20
-#: templates/speciesSheet/otherInformations.html:10
-#: templates/speciesSheet/otherInformations.html:14
-msgid "municipality"
-msgstr "Commune"
-
-#: templates/home/globalStats.html:58
+#: templates/home/globalStats.html:67
 msgid "photos"
 msgstr "Photos"
-
-#: templates/home/globalStats.html:58
-msgid "photo"
-msgstr "Photo"
 
 #: templates/home/mostViewNow.html:5
 msgid "see.at.the.moment"
@@ -334,13 +345,22 @@ msgstr "Autres informations"
 msgid "part.graph"
 msgstr "Répartition des observations par groupe"
 
-#: templates/organismSheet/identityCard.html:21
+#: templates/organismSheet/identityCard.html:20
 msgid "Adresse"
 msgstr ""
 
-#: templates/organismSheet/identityCard.html:22
+#: templates/organismSheet/identityCard.html:21
 msgid "Téléphone"
 msgstr "Téléphone"
+
+#: templates/organismSheet/identityCard.html:22
+msgid "Email"
+msgstr ""
+
+#: templates/organismSheet/identityCard.html:23
+#, fuzzy
+msgid "Site"
+msgstr "Titre"
 
 #: templates/organismSheet/mapObs.html:5
 msgid "map.observations"
@@ -362,11 +382,11 @@ msgstr "Espèces les plus observées"
 msgid "from.organism.observations"
 msgstr "des observations de l'organisme"
 
-#: templates/photoGalery/_main.html:64 templates/photoGalery/_main.html:65
+#: templates/photoGalery/_main.html:65 templates/photoGalery/_main.html:66
 msgid "all.groups"
 msgstr "Tous les groupes"
 
-#: templates/photoGalery/_main.html:70
+#: templates/photoGalery/_main.html:71
 msgid "order.photos"
 msgstr "Trier les photos par nombre d'observations"
 
@@ -410,11 +430,11 @@ msgstr "Non renseigné pour le moment"
 msgid "no.synonym.for.this.taxon"
 msgstr "Pas de synonymes pour ce taxon"
 
-#: templates/speciesSheet/charts.html:3
+#: templates/speciesSheet/charts.html:4
 msgid "alt.classes.obs"
 msgstr "Observations par classes d'altitudes"
 
-#: templates/speciesSheet/charts.html:7
+#: templates/speciesSheet/charts.html:10
 msgid "monthly.obs"
 msgstr "Observations mensuelles"
 
@@ -423,25 +443,33 @@ msgstr "Observations mensuelles"
 msgid "author"
 msgstr "Auteur"
 
-#: templates/speciesSheet/identityCard.html:95
+#: templates/speciesSheet/identityCard.html:97
 msgid "check.species.sheet.inpn"
 msgstr "Voir la fiche espèce INPN"
 
-#: templates/speciesSheet/identityCard.html:126
+#: templates/speciesSheet/identityCard.html:130
 msgid "protection"
 msgstr "Statut de protection"
 
-#: templates/speciesSheet/map.html:29
-msgid "first.obs"
-msgstr "Première observation"
+#: templates/speciesSheet/map.html:20
+#: templates/speciesSheet/otherInformations.html:10
+#: templates/speciesSheet/otherInformations.html:14
+msgid "municipality"
+msgstr "Commune"
 
-#: templates/speciesSheet/otherInformations.html:22
+#: templates/speciesSheet/map.html:29
+#: templates/speciesSheet/otherInformations.html:21
 msgid "organisms"
 msgstr "Organismes"
 
-#: templates/speciesSheet/otherInformations.html:22
+#: templates/speciesSheet/map.html:29
+#: templates/speciesSheet/otherInformations.html:21
 msgid "organism"
 msgstr "Organisme"
+
+#: templates/speciesSheet/map.html:34
+msgid "first.obs"
+msgstr "Première observation"
 
 #: templates/speciesSheet/otherInformations.html:41
 msgid "title"
@@ -451,23 +479,26 @@ msgstr "Titre"
 msgid "date"
 msgstr "Date"
 
-#: templates/speciesSheet/otherInformations.html:137
+#: templates/speciesSheet/otherInformations.html:139
 msgid "organism.participation"
 msgstr "Participation à "
 
-#: templates/speciesSheet/otherInformations.html:138
+#: templates/speciesSheet/otherInformations.html:147
 msgid "organism.prospection"
 msgstr "Part d'aide à la prospection"
 
-#: templates/speciesSheet/otherInformations.html:144
+#: templates/speciesSheet/otherInformations.html:153
 msgid "check.organism.sheet"
 msgstr "Voir la fiche organisme"
 
-#: templates/speciesSheet/otherInformations.html:145
+#: templates/speciesSheet/otherInformations.html:154
 msgid "organism.sheet"
 msgstr "Fiche organisme"
 
 #: templates/taxoRankSheet/_main.html:47
 msgid "species.obs.for.tax"
 msgstr "Observation pour le taxon"
+
+#~ msgid "photo"
+#~ msgstr "Photo"
 

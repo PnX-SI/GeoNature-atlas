@@ -5,6 +5,10 @@ CHANGELOG
 [Unreleased]
 ------------------
 
+🚀 **Nouveautés**
+
+- Ajout du lien "Données personelles" dans le pied de page (#527 @juggler31)
+
 🐛 **Corrections**
 
 - Correction de la carte avec affichage par mailles de la fiche "Commune" (#533 par @jpm-cbna)
