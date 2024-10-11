@@ -334,7 +334,7 @@ function generateGeojsonGridArea(observations) {
 }
 
 function displayGridLayerArea(observations) {
-  myGeoJson = generateGeojsonGridArea(observations);
+    myGeoJson = generateGeojsonGridArea(observations);
   currentLayer = L.geoJson(myGeoJson, {
     onEachFeature: onEachFeatureMaille,
     style: styleMaille,
@@ -585,6 +585,7 @@ function generateGeoJsonMailleLastObs(observations) {
         geometry: obs.geojson_maille,
         properties: {
           meshId: obs.id_maille,
+          list_id_observation: [obs.id_observation],
           taxons: [
             {
               cdRef: obs.cd_ref,

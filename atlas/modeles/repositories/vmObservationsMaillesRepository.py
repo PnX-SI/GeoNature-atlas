@@ -58,11 +58,13 @@ def lastObservationsMailles(connection, mylimit, idPhoto):
     sql = """
         SELECT obs.*,
         tax.lb_nom, tax.nom_vern, tax.group2_inpn,
-        o.dateobs, o.altitude_retenue,
-        medias.url, medias.chemin, medias.id_media
+        o.dateobs, o.altitude_retenue, o.id_observation,
+        medias.url, medias.chemin, medias.id_media,
+        m.geojson_maille
         FROM atlas.vm_observations_mailles obs
         JOIN atlas.vm_taxons tax ON tax.cd_ref = obs.cd_ref
-        JOIN atlas.vm_observations o ON o.id_observation=obs.id_observation
+        JOIN atlas.vm_observations o ON o.id_observation=ANY(obs.id_observations)
+        JOIN atlas.t_mailles_territoire m ON m.id_maille=obs.id_maille
         LEFT JOIN atlas.vm_medias medias
             ON medias.cd_ref = obs.cd_ref AND medias.id_type = :thisID
         WHERE  o.dateobs >= (CURRENT_TIMESTAMP - INTERVAL :thislimit)
