@@ -88,7 +88,7 @@ if ! database_exists $db_name
         sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgis;"  &>> log/install_db.log
         sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog; COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';"  &>> log/install_db.log
         sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;" &>> log/install_db.log
-
+        sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS unaccent;"  &>> log/install_db.log
         # FR: Si j'utilise GeoNature ($geonature_source = True), alors je créé les connexions en FWD à la BDD GeoNature
         # EN: If I use GeoNature ($geonature_source = True), then I create the connections in FWD to the GeoNature DB
         if $geonature_source
@@ -132,10 +132,6 @@ if ! database_exists $db_name
                     -v type_territoire=$type_territoire \
                     -f data/gn2/atlas_ref_geo.sql &>> log/install_db.log
         else
-
-            echo "Create extension defined in geonature"
-            sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS unaccent;"  &>> log/install_db.log
-
             # FR: Import du shape des limites du territoire ($limit_shp) dans la BDD / atlas.t_layer_territoire
             # EN: Import of the shape of the territory limits ($limit_shp) in the BDD / atlas.t_layer_territory
 
@@ -187,6 +183,7 @@ if ! database_exists $db_name
                     cd ../../
 
                     # Creation de la table atlas.t_mailles_territoire avec la taille de maille passée en parametre ($taillemaille). Pour cela j'intersecte toutes les mailles avec mon territoire
+                    # TODO : rajouter la colonne id_maille
                     sudo -u postgres -s psql -d $db_name -c "CREATE TABLE atlas.t_mailles_territoire as
                                                                 SELECT m.geom AS the_geom, ST_AsGeoJSON(st_transform(m.geom, 4326)) as geojson_maille
                                                                 FROM atlas.t_mailles_"$taillemaille" m, atlas.t_layer_territoire t
@@ -204,7 +201,7 @@ if ! database_exists $db_name
             else
                 ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 custom_mailles_4326.shp $chemin_custom_maille
                 sudo -u postgres -s shp2pgsql -W "LATIN1" -s 4326 -D -I custom_mailles_4326.shp atlas.t_mailles_custom | sudo -n -u postgres -s psql -d $db_name  &>> log/install_db.log
-
+                # TODO : rajouter la colonne id_maille
                 sudo -u postgres -s psql -d $db_name -c "CREATE TABLE atlas.t_mailles_territoire as
                                                     SELECT m.geom AS the_geom, ST_AsGeoJSON(st_transform(m.geom, 4326)) as geojson_maille
                                                     FROM atlas.t_mailles_custom m, atlas.t_layer_territoire t
@@ -327,11 +324,7 @@ if ! database_exists $db_name
         # EN: Otherwise I created a table synthese.syntheseff with 2 observations example
         else
             echo "Creating syntheseff example table"
-            sudo -n -u postgres -s psql -d $db_name -f /tmp/atlas/without_geonature.sql &>> log/install_db.log
-            sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE synthese.syntheseff OWNER TO "$owner_atlas";"
-
-            sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE utilisateurs.bib_organismes OWNER TO "$owner_atlas";"
-            sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE gn_meta.cor_dataset_actor OWNER TO "$owner_atlas";"
+            export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/without_geonature.sql &>> log/install_db.log
         fi
 
         # FR: Creation des Vues Matérialisées (et remplacement éventuel des valeurs en dur par les paramètres)

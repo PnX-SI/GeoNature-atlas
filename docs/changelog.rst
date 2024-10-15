@@ -23,6 +23,7 @@ CHANGELOG
 
 Si vous mettez à jour GeoNature-atlas :
 
+- Ajouter l'extension unaccent à la base de données `CREATE EXTENSION IF NOT EXISTS unaccent SCHEMA "public";` (#531, #532)
 - Exécutez le script SQL de mise à jour de la BDD : https://github.com/PnX-SI/GeoNature-atlas/blob/master/data/update/update_1.6.1to1.6.2.sql
 
 
