@@ -1,5 +1,4 @@
-Click
-dominate
+# dominate
 Flask-Compress
 Flask-Caching
 Flask-Script
@@ -9,12 +8,7 @@ Flask
 GeoAlchemy2
 geojson
 gunicorn
-itsdangerous
-Jinja2
-MarkupSafe
 marshmallow
 psycopg2
 SQLAlchemy
-visitor
-Werkzeug
-
+# visitor 
