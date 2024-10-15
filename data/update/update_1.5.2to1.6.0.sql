@@ -19,7 +19,6 @@ WHERE NOT t_medias.supprime = true;
 
 CREATE UNIQUE INDEX ON atlas.vm_medias (id_media);
 
-
 CREATE MATERIALIZED VIEW atlas.vm_taxons_plus_observes AS
 SELECT count(*) AS nb_obs,
     obs.cd_ref,
@@ -42,8 +41,8 @@ WITH DATA;
 -- View indexes:
 CREATE UNIQUE INDEX vm_taxons_plus_observes_cd_ref_idx ON atlas.vm_taxons_plus_observes USING btree (cd_ref);
 
-
 ---------------------------
+
 DROP MATERIALIZED VIEW atlas.vm_cor_taxon_organism;
 
 CREATE MATERIALIZED VIEW atlas.vm_cor_taxon_organism AS
@@ -79,11 +78,13 @@ CREATE UNIQUE INDEX vm_cor_taxon_organism_cd_ref_id_organism_idx
 CREATE INDEX vm_cor_taxon_organism_id_organism_idx
     ON atlas.vm_cor_taxon_organism USING btree (id_organism);
 
-
 DROP VIEW utilisateurs.reduced_cor_dataset_actor;
 
-
-
+-- Donner les droits de lecture sur les VUES recréées précedemment à l'utilisateur de BDD utilisé par l'application
+-- geonatatlas à modifier par votre utilisateur de BDD si vous avez défini un autre nom d'utilisateur pour cet utilisateur
+GRANT SELECT ON TABLE atlas.vm_taxons_plus_observes TO geonatatlas;
+GRANT SELECT ON TABLE atlas.vm_medias TO geonatatlas;
+GRANT SELECT ON TABLE atlas.vm_cor_taxon_organism TO geonatatlas; 
 
 -- Rafraichissement des vues contenant les données de l'atlas
 CREATE OR REPLACE FUNCTION atlas.refresh_materialized_view_data()
@@ -94,9 +95,7 @@ BEGIN
   REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_observations_mailles;
   REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_cor_taxon_organism;
   REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_mois;
-
   REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_altitudes;
-
   REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_taxons;
   REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_cor_taxon_attribut;
   REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_search_taxon;
