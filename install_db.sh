@@ -134,88 +134,77 @@ if ! database_exists $db_name
         else
             # FR: Import du shape des limites du territoire ($limit_shp) dans la BDD / atlas.t_layer_territoire
             # EN: Import of the shape of the territory limits ($limit_shp) in the BDD / atlas.t_layer_territory
+            ogr2ogr -f "PostgreSQL" \
+                -t_srs EPSG:4326 \
+                -lco GEOMETRY_NAME=the_geom \
+                PG:"host=$db_host port=$db_port dbname=$db_name user=$owner_atlas password=$owner_atlas_pass schemas=atlas" \
+                -nln t_layer_territoire $limit_shp
 
-            ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 data/ref/emprise_territoire_4326.shp $limit_shp
-            sudo -u postgres -s shp2pgsql -W "LATIN1" -s 4326 -D -I ./data/ref/emprise_territoire_4326.shp atlas.t_layer_territoire | sudo -n -u postgres -s psql -d $db_name &>> log/install_db.log
-            rm data/ref/emprise_territoire_4326.*
-            sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_layer_territoire OWNER TO "$owner_atlas";"
             # FR: Creation de l'index GIST sur la couche territoire atlas.t_layer_territoire
             # EN: Creation of the GIST index on the territory layer atlas.t_layer_territory
-            sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_layer_territoire RENAME COLUMN geom TO the_geom; CREATE INDEX index_gist_t_layer_territoire ON atlas.t_layer_territoire USING gist(the_geom); "  &>> log/install_db.log
+            sudo -u postgres -s psql -d $db_name -c "CREATE INDEX index_gist_t_layer_territoire ON atlas.t_layer_territoire USING gist(the_geom); "  &>> log/install_db.log
 
             # FR: Import du shape des communes ($communes_shp) dans la BDD (si parametre import_commune_shp = TRUE) / atlas.l_communes
             # EN: Import of the shape of the communes ($communes_shp) in the DB (if parameter import_commune_shp = TRUE) / atlas.l_communes
             if $import_commune_shp
-                then
-                    ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 ./data/ref/communes_4326.shp $communes_shp
-                    sudo -u postgres -s shp2pgsql -W "LATIN1" -s 4326 -D -I ./data/ref/communes_4326.shp atlas.l_communes | sudo -n -u postgres -s psql -d $db_name &>> log/install_db.log
-                    sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes RENAME COLUMN "$colonne_nom_commune" TO commune_maj;"  &>> log/install_db.log
-                    sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes RENAME COLUMN "$colonne_insee" TO insee;"  &>> log/install_db.log
-                    sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes RENAME COLUMN geom TO the_geom;"  &>> log/install_db.log
+                then 
+                    file_name=`echo $(basename $communes_shp) | cut -d "." -f1`
+                    ogr2ogr -f "PostgreSQL" \
+                    -t_srs EPSG:4326 \
+                    -lco GEOMETRY_NAME=the_geom \
+                    -sql "SELECT $colonne_nom_commune AS commune_maj, $colonne_insee AS insee FROM $file_name" \
+                    PG:"host=$db_host port=$db_port dbname=$db_name user=$owner_atlas password=$owner_atlas_pass schemas=atlas" \
+                    -nln l_communes $communes_shp
+                   
                     sudo -u postgres -s psql -d $db_name -c "CREATE INDEX index_gist_t_layers_communes ON atlas.l_communes USING gist (the_geom);"  &>> log/install_db.log
-                    sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes OWNER TO "$owner_atlas";"
-                    rm ./data/ref/communes_4326.*
+  
             fi
 
             # FR: Mise en place des mailles
             # EN: Setting up the meshes
             echo "Cutting of meshes and creation of the mesh table"
-            cd data/ref
-            rm -f L93*.dbf L93*.prj L93*.sbn L93*.sbx L93*.shp L93*.shx
-
+            
             # FR: Si je suis en métropole (metropole=true), alors j'utilise les mailles fournies par l'INPN
             # EN: If I am in metropolitan France (metropole=true), then I use the grids provided by the INPN, comments are only in french here
             if $metropole
                 then
                     # Je dézippe mailles fournies par l'INPN aux 3 échelles
-                    unzip L93_1K.zip
-                    unzip L93_5K.zip
-                    unzip L93_10K.zip
-                    # Je les reprojete les SHP en 4326 et les renomme
-                    ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 ./mailles_1.shp L93_1x1.shp
-                    ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 ./mailles_5.shp L93_5K.shp
-                    ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 ./mailles_10.shp L93_10K.shp
-                    # J'importe dans la BDD le SHP des mailles à l'échelle définie en parametre ($taillemaille)
-                    sudo -n -u postgres -s shp2pgsql -W "LATIN1" -s 4326 -D -I mailles_$taillemaille.shp atlas.t_mailles_$taillemaille | sudo -n -u postgres -s psql -d $db_name &>> ../../log/install_db.log
-                    sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_mailles_"$taillemaille" OWNER TO "$owner_atlas";"
-                    rm mailles_1.* mailles_5.* mailles_10.*
-
+                    cd data/ref
+                    rm -f L93*.dbf L93*.prj L93*.sbn L93*.sbx L93*.shp L93*.shx
+                    unzip L93_${taillemaille}K.zip 
                     cd ../../
 
-                    # Creation de la table atlas.t_mailles_territoire avec la taille de maille passée en parametre ($taillemaille). Pour cela j'intersecte toutes les mailles avec mon territoire
-                    # TODO : rajouter la colonne id_maille
-                    sudo -u postgres -s psql -d $db_name -c "CREATE TABLE atlas.t_mailles_territoire as
-                                                                SELECT m.geom AS the_geom, ST_AsGeoJSON(st_transform(m.geom, 4326)) as geojson_maille
-                                                                FROM atlas.t_mailles_"$taillemaille" m, atlas.t_layer_territoire t
-                                                                WHERE ST_Intersects(m.geom, t.the_geom);
-
-                                                                CREATE INDEX index_gist_t_mailles_territoire
-                                                                ON atlas.t_mailles_territoire
-                                                                USING gist (the_geom);
-                                                                ALTER TABLE atlas.t_mailles_territoire
-                                                                ADD COLUMN id_maille serial;
-                                                                ALTER TABLE atlas.t_mailles_territoire
-                                                                ADD PRIMARY KEY (id_maille);"  &>> log/install_db.log
-            # FR: Sinon j'utilise un SHP des mailles fournies par l'utilisateur
-            # EN: Otherwise I use a SHP of user supplied meshes
-            else
-                ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 custom_mailles_4326.shp $chemin_custom_maille
-                sudo -u postgres -s shp2pgsql -W "LATIN1" -s 4326 -D -I custom_mailles_4326.shp atlas.t_mailles_custom | sudo -n -u postgres -s psql -d $db_name  &>> log/install_db.log
-                # TODO : rajouter la colonne id_maille
-                sudo -u postgres -s psql -d $db_name -c "CREATE TABLE atlas.t_mailles_territoire as
-                                                    SELECT m.geom AS the_geom, ST_AsGeoJSON(st_transform(m.geom, 4326)) as geojson_maille
-                                                    FROM atlas.t_mailles_custom m, atlas.t_layer_territoire t
-                                                    WHERE ST_Intersects(m.geom, t.the_geom);
-                                                    CREATE INDEX index_gist_t_mailles_custom
-                                                    ON atlas.t_mailles_territoire
-                                                    USING gist (the_geom);
-                                                    ALTER TABLE atlas.t_mailles_territoire
-                                                    ADD COLUMN id_maille serial;
-                                                    ALTER TABLE atlas.t_mailles_territoire
-                                                    ADD PRIMARY KEY (id_maille);"  &>> log/install_db.log
+                    if [ $taillemaille = 1 ] 
+                    then
+                        file_name="data/ref/L93_1x1.shp"
+                    else
+                        file_name="data/ref/L93_${taillemaille}K.shp"
+                    fi 
+            else     
+                file_name=$chemin_custom_maille
             fi
 
-            sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_mailles_territoire OWNER TO "$owner_atlas";"
+            # J'importe dans la BDD le SHP des mailles à l'échelle définie en parametre ($taillemaille)
+            ogr2ogr -f "PostgreSQL" \
+                -t_srs EPSG:4326 \
+                -lco GEOMETRY_NAME=geom \
+                PG:"host=$db_host port=$db_port dbname=$db_name user=$owner_atlas password=$owner_atlas_pass schemas=atlas" \
+                -nln t_mailles_$taillemaille  $file_name
+             
+            # Creation de la table atlas.t_mailles_territoire avec la taille de maille passée en parametre ($taillemaille). Pour cela j'intersecte toutes les mailles avec mon territoire
+            # TODO : rajouter la colonne id_maille
+            sudo -u postgres -s psql -d $db_name -c "CREATE TABLE atlas.t_mailles_territoire as
+                                                        SELECT m.geom AS the_geom, ST_AsGeoJSON(st_transform(m.geom, 4326)) as geojson_maille
+                                                        FROM atlas.t_mailles_"$taillemaille" m, atlas.t_layer_territoire t
+                                                        WHERE ST_Intersects(m.geom, t.the_geom);
+
+                                                        CREATE INDEX index_gist_t_mailles_territoire
+                                                        ON atlas.t_mailles_territoire
+                                                        USING gist (the_geom);
+                                                        ALTER TABLE atlas.t_mailles_territoire
+                                                        ADD COLUMN id_maille serial;
+                                                        ALTER TABLE atlas.t_mailles_territoire
+                                                        ADD PRIMARY KEY (id_maille);"  &>> log/install_db.log
         fi
 
         # FR: Conversion des limites du territoire en json
