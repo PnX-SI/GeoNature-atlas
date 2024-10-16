@@ -10,7 +10,8 @@ CREATE MATERIALIZED VIEW atlas.vm_observations_mailles AS
         o.cd_ref,
         date_part('year', o.dateobs) AS annee,
         m.id_maille,
-        COUNT(o.id_observation) AS nbr
+        COUNT(o.id_observation) AS nbr,
+        ARRAY_AGG(o.id_observation) AS id_observations
     FROM atlas.vm_observations AS o
         JOIN atlas.t_mailles_territoire AS m
             ON (o.the_geom_point && m.the_geom)
@@ -23,6 +24,9 @@ CREATE UNIQUE INDEX ON atlas.vm_observations_mailles
 
 CREATE INDEX ON atlas.vm_observations_mailles
     USING btree (annee);
+
+CREATE INDEX ON atlas.vm_observations_mailles
+    USING gin (id_observations);
 
 CREATE INDEX ON atlas.vm_observations_mailles
     USING btree (id_maille, cd_ref);
