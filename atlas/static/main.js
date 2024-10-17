@@ -139,3 +139,21 @@ if (configuration.GLOSSAIRE) {
     });
   });
 }
+
+
+var orejimeConfig = {
+    elementID: "orejime",
+    appElement: "main",
+    cookieName: "orejime",
+    cookieExpiresAfterDays: 365,
+    privacyPolicy: "/?personal_data=true",
+    default: true,
+    mustConsent: false,
+    mustNotice: false,
+    lang: configuration.DEFAULT_LANGUAGE,
+    logo: false,
+    debug: configuration.modeDebug,
+    translations: configuration.OREJIME_TRANSLATIONS,
+    apps: configuration.OREJIME_APPS,
+    categories: configuration.OREJIME_CATEGORIES
+}
