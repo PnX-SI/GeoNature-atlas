@@ -121,6 +121,9 @@ if ! database_exists $db_name
                 export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f data/gn2/atlas_gn2.sql  &>> log/install_db.log
         fi
 
+        ###########################
+        ######   REF_GEO
+        ###########################
         if $use_ref_geo_gn2
             then
                 echo "Creation of geographic tables from the ref_geo schema of the geonature database"
@@ -139,26 +142,16 @@ if ! database_exists $db_name
                 -lco GEOMETRY_NAME=the_geom \
                 PG:"host=$db_host port=$db_port dbname=$db_name user=$owner_atlas password=$owner_atlas_pass schemas=atlas" \
                 -nln t_layer_territoire $limit_shp
-
-            # FR: Creation de l'index GIST sur la couche territoire atlas.t_layer_territoire
-            # EN: Creation of the GIST index on the territory layer atlas.t_layer_territory
-            sudo -u postgres -s psql -d $db_name -c "CREATE INDEX index_gist_t_layer_territoire ON atlas.t_layer_territoire USING gist(the_geom); "  &>> log/install_db.log
-
+ 
             # FR: Import du shape des communes ($communes_shp) dans la BDD (si parametre import_commune_shp = TRUE) / atlas.l_communes
             # EN: Import of the shape of the communes ($communes_shp) in the DB (if parameter import_commune_shp = TRUE) / atlas.l_communes
-            if $import_commune_shp
-                then 
-                    file_name=`echo $(basename $communes_shp) | cut -d "." -f1`
-                    ogr2ogr -f "PostgreSQL" \
-                    -t_srs EPSG:4326 \
-                    -lco GEOMETRY_NAME=the_geom \
-                    -sql "SELECT $colonne_nom_commune AS commune_maj, $colonne_insee AS insee FROM $file_name" \
-                    PG:"host=$db_host port=$db_port dbname=$db_name user=$owner_atlas password=$owner_atlas_pass schemas=atlas" \
-                    -nln l_communes $communes_shp
-                   
-                    sudo -u postgres -s psql -d $db_name -c "CREATE INDEX index_gist_t_layers_communes ON atlas.l_communes USING gist (the_geom);"  &>> log/install_db.log
-  
-            fi
+            file_name=`echo $(basename $communes_shp) | cut -d "." -f1`
+            ogr2ogr -f "PostgreSQL" \
+            -t_srs EPSG:4326 \
+            -lco GEOMETRY_NAME=the_geom \
+            -sql "SELECT $colonne_nom_commune AS commune_maj, $colonne_insee AS insee FROM $file_name" \
+            PG:"host=$db_host port=$db_port dbname=$db_name user=$owner_atlas password=$owner_atlas_pass schemas=atlas" \
+            -nln l_communes $communes_shp 
 
             # FR: Mise en place des mailles
             # EN: Setting up the meshes
@@ -169,10 +162,7 @@ if ! database_exists $db_name
             if $metropole
                 then
                     # Je dézippe mailles fournies par l'INPN aux 3 échelles
-                    cd data/ref
-                    rm -f L93*.dbf L93*.prj L93*.sbn L93*.sbx L93*.shp L93*.shx
-                    unzip L93_${taillemaille}K.zip 
-                    cd ../../
+                    unzip data/ref/L93_${taillemaille}K.zip 
 
                     if [ $taillemaille = 1 ] 
                     then
@@ -189,22 +179,11 @@ if ! database_exists $db_name
                 -t_srs EPSG:4326 \
                 -lco GEOMETRY_NAME=geom \
                 PG:"host=$db_host port=$db_port dbname=$db_name user=$owner_atlas password=$owner_atlas_pass schemas=atlas" \
-                -nln t_mailles_$taillemaille  $file_name
-             
-            # Creation de la table atlas.t_mailles_territoire avec la taille de maille passée en parametre ($taillemaille). Pour cela j'intersecte toutes les mailles avec mon territoire
-            # TODO : rajouter la colonne id_maille
-            sudo -u postgres -s psql -d $db_name -c "CREATE TABLE atlas.t_mailles_territoire as
-                                                        SELECT m.geom AS the_geom, ST_AsGeoJSON(st_transform(m.geom, 4326)) as geojson_maille
-                                                        FROM atlas.t_mailles_"$taillemaille" m, atlas.t_layer_territoire t
-                                                        WHERE ST_Intersects(m.geom, t.the_geom);
+                -nln t_mailles_source  $file_name
+            
+            # Run sql files
+            export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/without_ref_geo.sql &>> log/install_db.log
 
-                                                        CREATE INDEX index_gist_t_mailles_territoire
-                                                        ON atlas.t_mailles_territoire
-                                                        USING gist (the_geom);
-                                                        ALTER TABLE atlas.t_mailles_territoire
-                                                        ADD COLUMN id_maille serial;
-                                                        ALTER TABLE atlas.t_mailles_territoire
-                                                        ADD PRIMARY KEY (id_maille);"  &>> log/install_db.log
         fi
 
         # FR: Conversion des limites du territoire en json
@@ -213,94 +192,18 @@ if ! database_exists $db_name
         ogr2ogr -f "GeoJSON" -t_srs "EPSG:4326" -s_srs "EPSG:4326" ./atlas/static/custom/territoire.json \
             PG:"host=$db_host user=$owner_atlas dbname=$db_name port=$db_port password=$owner_atlas_pass" "atlas.t_layer_territoire"
 
+        ###########################
+        ######    TAXHUB 
+        ###########################
+        # FR: Creation des tables filles en FWD
+        # EN: Creation of daughter tables in FWD
+        echo "Creating the connection to GeoNature for the taxonomy" 
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f data/gn2/atlas_ref_taxonomie.sql  &>> log/install_db.log
+         
 
-        # FR: Si j'installe le schéma taxonomie de TaxHub dans la BDD de GeoNature-atlas ($install_taxonomie = True),
-        #     alors je récupère les fichiers dans le dépôt de TaxHub et les éxécute
-        # EN: If I install the TaxHub taxonomy schema in the GeoNature-atlas DB ($install_taxonomy = True),
-        #     then I get the files from the TaxHub repository and run them
-        if $install_taxonomie
-            then
-                wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/inpn/data_inpn_taxhub.sql -P /tmp/taxhub
-
-                array=( TAXREF_INPN_v11.zip ESPECES_REGLEMENTEES_v11.zip LR_FRANCE_20160000.zip )
-                for i in "${array[@]}"
-                    do
-                        if [ ! -f '/tmp/taxhub/'$i ]
-                            then
-                                wget http://geonature.fr/data/inpn/taxonomie/$i -P /tmp/taxhub
-                        else
-                            echo $i exists
-                        fi
-                    unzip /tmp/taxhub/$i -d /tmp/taxhub
-                done
-
-                echo "Getting 'taxonomie' schema creation scripts..."
-                wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/taxhubdb.sql -P /tmp/taxhub
-                wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/taxhubdata.sql -P /tmp/taxhub
-                wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/taxhubdata_taxons_example.sql -P /tmp/taxhub
-                wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/taxhubdata_atlas.sql -P /tmp/taxhub
-                wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/materialized_views.sql -P /tmp/taxhub
-
-                echo "Creating 'taxonomie' schema..."
-                echo "" &>> log/install_db.log
-                echo "" &>> log/install_db.log
-                echo "--------------------" &>> log/install_db.log
-                echo "Creating 'taxonomie' schema" &>> log/install_db.log
-                echo "--------------------" &>> log/install_db.log
-                echo "" &>> log/install_db.log
-                export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/taxhub/taxhubdb.sql  &>> log/install_db.log
-
-                echo "Inserting INPN taxonomic data... (This may take a few minutes)"
-                echo "" &>> log/install_db.log
-                echo "" &>> log/install_db.log
-                echo "--------------------" &>> log/install_db.log
-                echo "Inserting INPN taxonomic data" &>> log/install_db.log
-                echo "--------------------" &>> log/install_db.log
-                echo "" &>> log/install_db.log
-                sudo -n -u postgres -s psql -d $db_name -f /tmp/taxhub/data_inpn_taxhub.sql &>> log/install_db.log
-
-                echo "Creating dictionaries data for taxonomic schema..."
-                echo "" &>> log/install_db.log
-                echo "" &>> log/install_db.log
-                echo "--------------------" &>> log/install_db.log
-                echo "Creating dictionaries data for taxonomic schema" &>> log/install_db.log
-                echo "--------------------" &>> log/install_db.log
-                echo "" &>> log/install_db.log
-                export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/taxhub/taxhubdata.sql  &>> log/install_db.log
-
-                echo "Inserting sample dataset of taxons for taxonomic schema..."
-                echo "" &>> log/install_db.log
-                echo "" &>> log/install_db.log
-                echo "--------------------" &>> log/install_db.log
-                echo "Inserting sample dataset of taxons for taxonomic schema" &>> log/install_db.log
-                echo "--------------------" &>> log/install_db.log
-                echo "" &>> log/install_db.log
-                export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/taxhub/taxhubdata_taxons_example.sql  &>> log/install_db.log
-
-                echo "--------------------" &>> log/install_db.log
-                echo "Inserting sample dataset  - atlas attributes" &>> log/install_db.log
-                echo "--------------------" &>> log/install_db.log
-                echo "" &>> log/install_db.log
-                export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/taxhub/taxhubdata_atlas.sql  &>> log/install_db.log
-
-                echo "Creating a view that represent the taxonomic hierarchy..."
-                echo "" &>> log/install_db.log
-                echo "" &>> log/install_db.log
-                echo "--------------------" &>> log/install_db.log
-                echo "Creating a view that represent the taxonomic hierarchy" &>> log/install_db.log
-                echo "--------------------" &>> log/install_db.log
-                echo "" &>> log/install_db.log
-                export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/taxhub/materialized_views.sql  &>> log/install_db.log
-        elif $geonature_source
-            then
-                # FR: Creation des tables filles en FWD
-                # EN: Creation of daughter tables in FWD
-                echo "Creating the connection to GeoNature for the taxonomy"
-                sudo cp data/gn2/atlas_ref_taxonomie.sql /tmp/atlas/atlas_ref_taxonomie.sql &>> log/install_db.log
-                sudo sed -i "s/myuser;$/$owner_atlas;/" /tmp/atlas/atlas_ref_taxonomie.sql &>> log/install_db.log
-                export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/atlas_ref_taxonomie.sql  &>> log/install_db.log
-        fi
-
+        ###########################
+        ######    Occurence data 
+        ###########################
         echo "Creating DB structure"
         # FR: Si j'utilise GeoNature ($geonature_source = True), alors je créé les tables filles en FDW connectées à la BDD de GeoNature
         # EN: If I use GeoNature ($geonature_source = True), then I create the child tables in FDW connected to the GeoNature DB
@@ -316,6 +219,10 @@ if ! database_exists $db_name
             export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/without_geonature.sql &>> log/install_db.log
         fi
 
+
+        ###########################
+        ######   ATLAS
+        ###########################
         # FR: Creation des Vues Matérialisées (et remplacement éventuel des valeurs en dur par les paramètres)
         # EN: Creation of Materialized Views (and possible replacement of hard values by parameters)
         echo "----- Creating materialized views ------"
@@ -373,6 +280,7 @@ if ! database_exists $db_name
             -v type_maille=$type_maille &>> log/install_db.log
             echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
         fi
+
         # FR: Création de la vue matérialisée vm_mailles_observations (nombre d'observations par maille et par taxon)
         # EN: Creation of the materialized view vm_meshes_observations (number of observations per mesh and per taxon)
         echo "[$(date +'%H:%M:%S')] Creating atlas.vm_observations_mailles..."
@@ -391,11 +299,7 @@ if ! database_exists $db_name
         cd data/ref
         rm -f L*.shp L*.dbf L*.prj L*.sbn L*.sbx L*.shx output_clip.*
         cd ../..
-        sudo -n rm -r /tmp/atlas
-        if [ -d '/tmp/taxhub' ]
-            then
-                rm -r /tmp/taxhub
-        fi
+        sudo -n rm -r /tmp/atlas 
 
         echo "Install finished - Duration :$(($SECONDS/60))m$(($SECONDS%60))s"
 fi

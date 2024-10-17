@@ -8,6 +8,7 @@ CHANGELOG
 🚀 **Nouveautés**
 
 - Ajout du lien "Données personelles" dans le pied de page (#527 @juggler31)
+- Suppression du support des installations sans TaxHub
 
 🐛 **Corrections**
 
