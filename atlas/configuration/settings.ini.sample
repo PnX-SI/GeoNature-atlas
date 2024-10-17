@@ -42,14 +42,15 @@ use_ref_geo_gn2=true
 # Souhaitez-vous installer le schéma taxonomie de TaxHub dans la BDD de GeoNature-atlas ? 
 # false si vous souhaitez utiliser celui de GeoNature en FDW
 # ATTENTION : Doit être true si geonature_source=false
-install_taxonomie=false
+# OBSOLETE
+# install_taxonomie=false
 
 ################################################
 ##### CONNEXION A LA BDD GEONATURE SOURCE ######
 ################################################
 
-# Necessaire uniquement si on veut se connecter à la BDD source GeoNature en foreign data wrapper
-# Si vous n'utilisez pas GeoNature, vous pouvez vous inspirer du fichier data/atlas_geonature.sql
+# Paramètres de connexion à la BDD source GeoNature et/ou Taxhub en foreign data wrapper
+# Si vous n'utilisez pas GeoNature, pour les données d'observation, vous pouvez vous inspirer du fichier data/atlas_geonature.sql
 # pour vous connecter à une autre BDD mère
 
 # Host de la BDD GeoNature source
@@ -85,7 +86,8 @@ type_territoire="'PEC'"
 
 # Creer la table des communes à partir d'un shapefile ?
 # Si false, modifiez la creation de 'atlas.vm_communes' dans data/atlas/atlas.vm_communes.sql
-import_commune_shp=true
+# PARAMETRE OBSOLETE OBLIGATOIRE SI PAS DE REF_GEO
+# import_commune_shp=true
 
 # Chemin et nom des colonnes du SHP des communes du territoire. Laisser tel quel (en modifiant uniquement MYUSERLINUX)
 # pour utiliser les communes du PnEcrins par défaut
@@ -120,7 +122,8 @@ altitudes=(0 500 1000 1500 2000 2500 3000 3500 4000)
 
 # Version de TaxHub à utiliser pour installer le schéma taxonomie si install_taxonomie=true
 # Numéro de version conseillée et testée : 1.8.1
-taxhub_release=1.8.1
+# PARAMETRE OBSOLETE Taxhub est OBLIGATOIRE
+# taxhub_release=1.8.1
 
 #### ID DES TYPES DES ATTRIBUTS DECRIVANT LES TAXONS DANS atlas.vm_cor_taxon_attribut --
 ## !! si changement: modifier également dans main/configuration/config.py

@@ -88,7 +88,7 @@ if ! database_exists $db_name
         sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgis;"  &>> log/install_db.log
         sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog; COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';"  &>> log/install_db.log
         sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;" &>> log/install_db.log
-
+        sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS unaccent;"  &>> log/install_db.log
         # FR: Si j'utilise GeoNature ($geonature_source = True), alors je créé les connexions en FWD à la BDD GeoNature
         # EN: If I use GeoNature ($geonature_source = True), then I create the connections in FWD to the GeoNature DB
         if $geonature_source
@@ -121,6 +121,9 @@ if ! database_exists $db_name
                 export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f data/gn2/atlas_gn2.sql  &>> log/install_db.log
         fi
 
+        ###########################
+        ######   REF_GEO
+        ###########################
         if $use_ref_geo_gn2
             then
                 echo "Creation of geographic tables from the ref_geo schema of the geonature database"
@@ -134,87 +137,53 @@ if ! database_exists $db_name
         else
             # FR: Import du shape des limites du territoire ($limit_shp) dans la BDD / atlas.t_layer_territoire
             # EN: Import of the shape of the territory limits ($limit_shp) in the BDD / atlas.t_layer_territory
-
-            ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 data/ref/emprise_territoire_4326.shp $limit_shp
-            sudo -u postgres -s shp2pgsql -W "LATIN1" -s 4326 -D -I ./data/ref/emprise_territoire_4326.shp atlas.t_layer_territoire | sudo -n -u postgres -s psql -d $db_name &>> log/install_db.log
-            rm data/ref/emprise_territoire_4326.*
-            sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_layer_territoire OWNER TO "$owner_atlas";"
-            # FR: Creation de l'index GIST sur la couche territoire atlas.t_layer_territoire
-            # EN: Creation of the GIST index on the territory layer atlas.t_layer_territory
-            sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_layer_territoire RENAME COLUMN geom TO the_geom; CREATE INDEX index_gist_t_layer_territoire ON atlas.t_layer_territoire USING gist(the_geom); "  &>> log/install_db.log
-
+            ogr2ogr -f "PostgreSQL" \
+                -t_srs EPSG:4326 \
+                -lco GEOMETRY_NAME=the_geom \
+                PG:"host=$db_host port=$db_port dbname=$db_name user=$owner_atlas password=$owner_atlas_pass schemas=atlas" \
+                -nln t_layer_territoire $limit_shp
+ 
             # FR: Import du shape des communes ($communes_shp) dans la BDD (si parametre import_commune_shp = TRUE) / atlas.l_communes
             # EN: Import of the shape of the communes ($communes_shp) in the DB (if parameter import_commune_shp = TRUE) / atlas.l_communes
-            if $import_commune_shp
-                then
-                    ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 ./data/ref/communes_4326.shp $communes_shp
-                    sudo -u postgres -s shp2pgsql -W "LATIN1" -s 4326 -D -I ./data/ref/communes_4326.shp atlas.l_communes | sudo -n -u postgres -s psql -d $db_name &>> log/install_db.log
-                    sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes RENAME COLUMN "$colonne_nom_commune" TO commune_maj;"  &>> log/install_db.log
-                    sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes RENAME COLUMN "$colonne_insee" TO insee;"  &>> log/install_db.log
-                    sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes RENAME COLUMN geom TO the_geom;"  &>> log/install_db.log
-                    sudo -u postgres -s psql -d $db_name -c "CREATE INDEX index_gist_t_layers_communes ON atlas.l_communes USING gist (the_geom);"  &>> log/install_db.log
-                    sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes OWNER TO "$owner_atlas";"
-                    rm ./data/ref/communes_4326.*
-            fi
+            file_name=`echo $(basename $communes_shp) | cut -d "." -f1`
+            ogr2ogr -f "PostgreSQL" \
+            -t_srs EPSG:4326 \
+            -lco GEOMETRY_NAME=the_geom \
+            -sql "SELECT $colonne_nom_commune AS commune_maj, $colonne_insee AS insee FROM $file_name" \
+            PG:"host=$db_host port=$db_port dbname=$db_name user=$owner_atlas password=$owner_atlas_pass schemas=atlas" \
+            -nln l_communes $communes_shp 
 
             # FR: Mise en place des mailles
             # EN: Setting up the meshes
             echo "Cutting of meshes and creation of the mesh table"
-            cd data/ref
-            rm -f L93*.dbf L93*.prj L93*.sbn L93*.sbx L93*.shp L93*.shx
-
+            
             # FR: Si je suis en métropole (metropole=true), alors j'utilise les mailles fournies par l'INPN
             # EN: If I am in metropolitan France (metropole=true), then I use the grids provided by the INPN, comments are only in french here
             if $metropole
                 then
                     # Je dézippe mailles fournies par l'INPN aux 3 échelles
-                    unzip L93_1K.zip
-                    unzip L93_5K.zip
-                    unzip L93_10K.zip
-                    # Je les reprojete les SHP en 4326 et les renomme
-                    ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 ./mailles_1.shp L93_1x1.shp
-                    ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 ./mailles_5.shp L93_5K.shp
-                    ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 ./mailles_10.shp L93_10K.shp
-                    # J'importe dans la BDD le SHP des mailles à l'échelle définie en parametre ($taillemaille)
-                    sudo -n -u postgres -s shp2pgsql -W "LATIN1" -s 4326 -D -I mailles_$taillemaille.shp atlas.t_mailles_$taillemaille | sudo -n -u postgres -s psql -d $db_name &>> ../../log/install_db.log
-                    sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_mailles_"$taillemaille" OWNER TO "$owner_atlas";"
-                    rm mailles_1.* mailles_5.* mailles_10.*
+                    unzip data/ref/L93_${taillemaille}K.zip 
 
-                    cd ../../
-
-                    # Creation de la table atlas.t_mailles_territoire avec la taille de maille passée en parametre ($taillemaille). Pour cela j'intersecte toutes les mailles avec mon territoire
-                    sudo -u postgres -s psql -d $db_name -c "CREATE TABLE atlas.t_mailles_territoire as
-                                                                SELECT m.geom AS the_geom, ST_AsGeoJSON(st_transform(m.geom, 4326)) as geojson_maille
-                                                                FROM atlas.t_mailles_"$taillemaille" m, atlas.t_layer_territoire t
-                                                                WHERE ST_Intersects(m.geom, t.the_geom);
-
-                                                                CREATE INDEX index_gist_t_mailles_territoire
-                                                                ON atlas.t_mailles_territoire
-                                                                USING gist (the_geom);
-                                                                ALTER TABLE atlas.t_mailles_territoire
-                                                                ADD COLUMN id_maille serial;
-                                                                ALTER TABLE atlas.t_mailles_territoire
-                                                                ADD PRIMARY KEY (id_maille);"  &>> log/install_db.log
-            # FR: Sinon j'utilise un SHP des mailles fournies par l'utilisateur
-            # EN: Otherwise I use a SHP of user supplied meshes
-            else
-                ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:4326 custom_mailles_4326.shp $chemin_custom_maille
-                sudo -u postgres -s shp2pgsql -W "LATIN1" -s 4326 -D -I custom_mailles_4326.shp atlas.t_mailles_custom | sudo -n -u postgres -s psql -d $db_name  &>> log/install_db.log
-
-                sudo -u postgres -s psql -d $db_name -c "CREATE TABLE atlas.t_mailles_territoire as
-                                                    SELECT m.geom AS the_geom, ST_AsGeoJSON(st_transform(m.geom, 4326)) as geojson_maille
-                                                    FROM atlas.t_mailles_custom m, atlas.t_layer_territoire t
-                                                    WHERE ST_Intersects(m.geom, t.the_geom);
-                                                    CREATE INDEX index_gist_t_mailles_custom
-                                                    ON atlas.t_mailles_territoire
-                                                    USING gist (the_geom);
-                                                    ALTER TABLE atlas.t_mailles_territoire
-                                                    ADD COLUMN id_maille serial;
-                                                    ALTER TABLE atlas.t_mailles_territoire
-                                                    ADD PRIMARY KEY (id_maille);"  &>> log/install_db.log
+                    if [ $taillemaille = 1 ] 
+                    then
+                        file_name="data/ref/L93_1x1.shp"
+                    else
+                        file_name="data/ref/L93_${taillemaille}K.shp"
+                    fi 
+            else     
+                file_name=$chemin_custom_maille
             fi
 
-            sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_mailles_territoire OWNER TO "$owner_atlas";"
+            # J'importe dans la BDD le SHP des mailles à l'échelle définie en parametre ($taillemaille)
+            ogr2ogr -f "PostgreSQL" \
+                -t_srs EPSG:4326 \
+                -lco GEOMETRY_NAME=geom \
+                PG:"host=$db_host port=$db_port dbname=$db_name user=$owner_atlas password=$owner_atlas_pass schemas=atlas" \
+                -nln t_mailles_source  $file_name
+            
+            # Run sql files
+            export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/without_ref_geo.sql &>> log/install_db.log
+
         fi
 
         # FR: Conversion des limites du territoire en json
@@ -223,94 +192,18 @@ if ! database_exists $db_name
         ogr2ogr -f "GeoJSON" -t_srs "EPSG:4326" -s_srs "EPSG:4326" ./atlas/static/custom/territoire.json \
             PG:"host=$db_host user=$owner_atlas dbname=$db_name port=$db_port password=$owner_atlas_pass" "atlas.t_layer_territoire"
 
+        ###########################
+        ######    TAXHUB 
+        ###########################
+        # FR: Creation des tables filles en FWD
+        # EN: Creation of daughter tables in FWD
+        echo "Creating the connection to GeoNature for the taxonomy" 
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f data/gn2/atlas_ref_taxonomie.sql  &>> log/install_db.log
+         
 
-        # FR: Si j'installe le schéma taxonomie de TaxHub dans la BDD de GeoNature-atlas ($install_taxonomie = True),
-        #     alors je récupère les fichiers dans le dépôt de TaxHub et les éxécute
-        # EN: If I install the TaxHub taxonomy schema in the GeoNature-atlas DB ($install_taxonomy = True),
-        #     then I get the files from the TaxHub repository and run them
-        if $install_taxonomie
-            then
-                wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/inpn/data_inpn_taxhub.sql -P /tmp/taxhub
-
-                array=( TAXREF_INPN_v11.zip ESPECES_REGLEMENTEES_v11.zip LR_FRANCE_20160000.zip )
-                for i in "${array[@]}"
-                    do
-                        if [ ! -f '/tmp/taxhub/'$i ]
-                            then
-                                wget http://geonature.fr/data/inpn/taxonomie/$i -P /tmp/taxhub
-                        else
-                            echo $i exists
-                        fi
-                    unzip /tmp/taxhub/$i -d /tmp/taxhub
-                done
-
-                echo "Getting 'taxonomie' schema creation scripts..."
-                wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/taxhubdb.sql -P /tmp/taxhub
-                wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/taxhubdata.sql -P /tmp/taxhub
-                wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/taxhubdata_taxons_example.sql -P /tmp/taxhub
-                wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/taxhubdata_atlas.sql -P /tmp/taxhub
-                wget https://raw.githubusercontent.com/PnX-SI/TaxHub/$taxhub_release/data/materialized_views.sql -P /tmp/taxhub
-
-                echo "Creating 'taxonomie' schema..."
-                echo "" &>> log/install_db.log
-                echo "" &>> log/install_db.log
-                echo "--------------------" &>> log/install_db.log
-                echo "Creating 'taxonomie' schema" &>> log/install_db.log
-                echo "--------------------" &>> log/install_db.log
-                echo "" &>> log/install_db.log
-                export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/taxhub/taxhubdb.sql  &>> log/install_db.log
-
-                echo "Inserting INPN taxonomic data... (This may take a few minutes)"
-                echo "" &>> log/install_db.log
-                echo "" &>> log/install_db.log
-                echo "--------------------" &>> log/install_db.log
-                echo "Inserting INPN taxonomic data" &>> log/install_db.log
-                echo "--------------------" &>> log/install_db.log
-                echo "" &>> log/install_db.log
-                sudo -n -u postgres -s psql -d $db_name -f /tmp/taxhub/data_inpn_taxhub.sql &>> log/install_db.log
-
-                echo "Creating dictionaries data for taxonomic schema..."
-                echo "" &>> log/install_db.log
-                echo "" &>> log/install_db.log
-                echo "--------------------" &>> log/install_db.log
-                echo "Creating dictionaries data for taxonomic schema" &>> log/install_db.log
-                echo "--------------------" &>> log/install_db.log
-                echo "" &>> log/install_db.log
-                export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/taxhub/taxhubdata.sql  &>> log/install_db.log
-
-                echo "Inserting sample dataset of taxons for taxonomic schema..."
-                echo "" &>> log/install_db.log
-                echo "" &>> log/install_db.log
-                echo "--------------------" &>> log/install_db.log
-                echo "Inserting sample dataset of taxons for taxonomic schema" &>> log/install_db.log
-                echo "--------------------" &>> log/install_db.log
-                echo "" &>> log/install_db.log
-                export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/taxhub/taxhubdata_taxons_example.sql  &>> log/install_db.log
-
-                echo "--------------------" &>> log/install_db.log
-                echo "Inserting sample dataset  - atlas attributes" &>> log/install_db.log
-                echo "--------------------" &>> log/install_db.log
-                echo "" &>> log/install_db.log
-                export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/taxhub/taxhubdata_atlas.sql  &>> log/install_db.log
-
-                echo "Creating a view that represent the taxonomic hierarchy..."
-                echo "" &>> log/install_db.log
-                echo "" &>> log/install_db.log
-                echo "--------------------" &>> log/install_db.log
-                echo "Creating a view that represent the taxonomic hierarchy" &>> log/install_db.log
-                echo "--------------------" &>> log/install_db.log
-                echo "" &>> log/install_db.log
-                export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/taxhub/materialized_views.sql  &>> log/install_db.log
-        elif $geonature_source
-            then
-                # FR: Creation des tables filles en FWD
-                # EN: Creation of daughter tables in FWD
-                echo "Creating the connection to GeoNature for the taxonomy"
-                sudo cp data/gn2/atlas_ref_taxonomie.sql /tmp/atlas/atlas_ref_taxonomie.sql &>> log/install_db.log
-                sudo sed -i "s/myuser;$/$owner_atlas;/" /tmp/atlas/atlas_ref_taxonomie.sql &>> log/install_db.log
-                export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/atlas_ref_taxonomie.sql  &>> log/install_db.log
-        fi
-
+        ###########################
+        ######    Occurence data 
+        ###########################
         echo "Creating DB structure"
         # FR: Si j'utilise GeoNature ($geonature_source = True), alors je créé les tables filles en FDW connectées à la BDD de GeoNature
         # EN: If I use GeoNature ($geonature_source = True), then I create the child tables in FDW connected to the GeoNature DB
@@ -323,10 +216,13 @@ if ! database_exists $db_name
         # EN: Otherwise I created a table synthese.syntheseff with 2 observations example
         else
             echo "Creating syntheseff example table"
-            sudo -n -u postgres -s psql -d $db_name -f /tmp/atlas/without_geonature.sql &>> log/install_db.log
-            sudo -n -u postgres -s psql -d $db_name -c "ALTER TABLE synthese.syntheseff OWNER TO "$owner_atlas";"
+            export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/without_geonature.sql &>> log/install_db.log
         fi
 
+
+        ###########################
+        ######   ATLAS
+        ###########################
         # FR: Creation des Vues Matérialisées (et remplacement éventuel des valeurs en dur par les paramètres)
         # EN: Creation of Materialized Views (and possible replacement of hard values by parameters)
         echo "----- Creating materialized views ------"
@@ -348,68 +244,33 @@ if ! database_exists $db_name
             done
 
         sudo sed -i "s/INSERT_ALTITUDE/${insert}/" /tmp/atlas/4.atlas.vm_altitudes.sql
-
-        echo "[$(date +'%H:%M:%S')] Creating atlas.vm_taxref..."
-        time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/1.atlas.vm_taxref.sql  &>> log/install_db.log
-        echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
-
-        echo "[$(date +'%H:%M:%S')] Creating atlas.vm_observations..."
-        time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/2.atlas.vm_observations.sql  &>> log/install_db.log
-        echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
-
-        echo "[$(date +'%H:%M:%S')] Creating atlas.vm_taxons..."
-        time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/3.atlas.vm_taxons.sql  &>> log/install_db.log
-        echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
-
-        echo "[$(date +'%H:%M:%S')] Creating atlas.vm_altitudes..."
-        time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/4.atlas.vm_altitudes.sql  &>> log/install_db.log
-        echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
-
-        echo "[$(date +'%H:%M:%S')] Creating atlas.vm_search_taxon..."
-        time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/5.atlas.vm_search_taxon.sql  &>> log/install_db.log
-        echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
-
-        echo "[$(date +'%H:%M:%S')] Creating atlas.vm_mois..."
-        time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/6.atlas.vm_mois.sql  &>> log/install_db.log
-        echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
-
-        echo "[$(date +'%H:%M:%S')] Creating atlas.vm_communes..."
-        time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/7.atlas.vm_communes.sql  &>> log/install_db.log
-        echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
-
-        echo "[$(date +'%H:%M:%S')] Creating atlas.vm_medias"
-        time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/8.atlas.vm_medias.sql  &>> log/install_db.log
-        echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
-
-        echo "[$(date +'%H:%M:%S')] Creating atlas.vm_cor_taxon_attribut..."
-        time_temp=$SECONDS
         sudo sed -i "s/WHERE id_attribut IN (100, 101, 102, 103);$/WHERE id_attribut  IN ($attr_desc, $attr_commentaire, $attr_milieu, $attr_chorologie);/" /tmp/atlas/9.atlas.vm_cor_taxon_attribut.sql
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/9.atlas.vm_cor_taxon_attribut.sql  &>> log/install_db.log
-        echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
+        
 
-        echo "[$(date +'%H:%M:%S')] Creating atlas.vm_taxons_plus_observes..."
-        time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/10.atlas.vm_taxons_plus_observes.sql  &>> log/install_db.log
-        echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
-
-        echo "[$(date +'%H:%M:%S')] Creating atlas.vm_cor_taxon_organism..."
-        time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/11.atlas.vm_cor_taxon_organism.sql  &>> log/install_db.log
-        echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
-
-        echo "[$(date +'%H:%M:%S')] Creating function refresh vm..."
-        time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/atlas.refresh_materialized_view_data.sql  &>> log/install_db.log
-        echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
-
+        # FR: Execution des scripts sql de création des vm de l'atlas
+        # EN: Run sql scripts : build atlas vm
+        scripts_sql=( 
+            "1.atlas.vm_taxref.sql"
+            "2.atlas.vm_observations.sql"
+            "3.atlas.vm_taxons.sql"
+            "4.atlas.vm_altitudes.sql"
+            "5.atlas.vm_search_taxon.sql"
+            "6.atlas.vm_mois.sql"
+            "7.atlas.vm_communes.sql"
+            "8.atlas.vm_medias.sql"
+            "9.atlas.vm_cor_taxon_attribut.sql"
+            "10.atlas.vm_taxons_plus_observes.sql"
+            "11.atlas.vm_cor_taxon_organism.sql"
+            "atlas.refresh_materialized_view_data.sql"
+        )
+        for script in "${scripts_sql[@]}"
+        do 
+            echo "[$(date +'%H:%M:%S')] Creating ${script}..."
+            time_temp=$SECONDS
+            export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/${script}  &>> log/install_db.log
+            echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
+        done
+  
         if $use_ref_geo_gn2
         then
             echo "[$(date +'%H:%M:%S')] Creating atlas.t_mailles_territoire..."
@@ -419,22 +280,14 @@ if ! database_exists $db_name
             -v type_maille=$type_maille &>> log/install_db.log
             echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
         fi
+
         # FR: Création de la vue matérialisée vm_mailles_observations (nombre d'observations par maille et par taxon)
         # EN: Creation of the materialized view vm_meshes_observations (number of observations per mesh and per taxon)
         echo "[$(date +'%H:%M:%S')] Creating atlas.vm_observations_mailles..."
         time_temp=$SECONDS
         export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/13.atlas.vm_observations_mailles.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
-
-        sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.bib_taxref_rangs OWNER TO "$owner_atlas";"
-        sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.bib_taxref_rangs OWNER TO "$owner_atlas";"
-        sudo -u postgres -s psql -d $db_name -c "ALTER FUNCTION atlas.create_vm_altitudes() OWNER TO "$owner_atlas";"
-        sudo -u postgres -s psql -d $db_name -c "ALTER FUNCTION atlas.find_all_taxons_childs(integer) OWNER TO "$owner_atlas";"
-        sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_mailles_territoire OWNER TO "$owner_atlas";"
-        sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.vm_observations_mailles OWNER TO "$owner_atlas";"
-        sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.vm_cor_taxon_organism OWNER TO "$owner_atlas";"
-
-
+ 
         # FR: Affectation de droits en lecture sur les VM à l'utilisateur de l'application ($user_pg)
         # EN: Assign read rights on VMs to the application user ($user_pg)
         echo "Grant..."
@@ -446,11 +299,7 @@ if ! database_exists $db_name
         cd data/ref
         rm -f L*.shp L*.dbf L*.prj L*.sbn L*.sbx L*.shx output_clip.*
         cd ../..
-        sudo -n rm -r /tmp/atlas
-        if [ -d '/tmp/taxhub' ]
-            then
-                rm -r /tmp/taxhub
-        fi
+        sudo -n rm -r /tmp/atlas 
 
         echo "Install finished - Duration :$(($SECONDS/60))m$(($SECONDS%60))s"
 fi
