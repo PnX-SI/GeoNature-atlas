@@ -139,3 +139,24 @@ if (configuration.GLOSSAIRE) {
     });
   });
 }
+
+if (configuration.OREJIME_APPS.length > 0) {
+    var orejimeConfig = {
+        elementID: "orejime",
+        appElement: "main",
+        cookieName: "orejime",
+        cookieExpiresAfterDays: 365,
+        privacyPolicy: "/?personal_data=true",
+        default: true,
+        mustConsent: false,
+        mustNotice: false,
+        lang: configuration.DEFAULT_LANGUAGE,
+        logo: false,
+        debug: configuration.modeDebug,
+        apps: configuration.OREJIME_APPS,
+        categories: configuration.OREJIME_CATEGORIES
+    }
+  if (configuration.OREJIME_TRANSLATIONS && configuration.OREJIME_TRANSLATIONS != {}) {
+      orejimeConfig.translations = configuration.OREJIME_TRANSLATIONS
+  }
+}

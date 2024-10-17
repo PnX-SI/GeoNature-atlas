@@ -5,10 +5,11 @@
        data-target="#modalCredits">{{ _('credits') }}</a> |
     <a data-toggle="modal" href="#"
        data-target="#modalMentions">{{ _('legal') }}</a>
-    {% if configuration.AFFICHAGE_RGPD %}
+    {% if configuration.AFFICHAGE_RGPD and configuration.OREJIME_APPS | length > 0 %}
     |
     <a data-toggle="modal" href="#"
        data-target="#modalPersonalData">{{ _('personal_data') }}</a>
+        | <a id="preferences-cookies" href="#" onclick="orejime.show()">{{ _('preferences_cookies') }}</a>
     {% endif %}
 </small>
 
@@ -74,22 +75,30 @@
 </div>
 {% endif %}
 
-{% if configuration.ID_GOOGLE_ANALYTICS != "UA-xxxxxxx-xx" %}
-    <!-- Script Google Analytics -->
-    <script>
-        (function (i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r;
-            i[r] = i[r] || function () {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date();
-            a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0];
-            a.async = 1;
-            a.src = g;
-            m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+<!-- Check ID_GOOGLE_ANALYTICS to keep compability with old Geonature-atlas -->
+{% if configuration.OREJIME_APPS|length > 0 %}
+    <!-- Sample script Analytics Google -->
+    {% for app in configuration.OREJIME_APPS %}
+        {% if app.name == "scripts-gtm" %}
+            <script
+                    type="opt-in"
+                    data-type="application/javascript"
+                    data-name="scripts-gtm">
+                (function (i, s, o, g, r, a, m) {
+                    i['GoogleAnalyticsObject'] = r;
+                    i[r] = i[r] || function () {
+                        (i[r].q = i[r].q || []).push(arguments)
+                    }, i[r].l = 1 * new Date();
+                    a = s.createElement(o),
+                        m = s.getElementsByTagName(o)[0];
+                    a.async = 1;
+                    a.src = g;
+                    m.parentNode.insertBefore(a, m)
+                })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-        ga('create', '{{configuration.ID_GOOGLE_ANALYTICS}}', 'auto');
-        ga('send', 'pageview');
-    </script>
+                ga('create', '{{configuration.ID_GOOGLE_ANALYTICS}}', 'auto');
+                ga('send', 'pageview');
+            </script>
+        {%  endif %}
+    {% endfor %}
 {% endif %}
