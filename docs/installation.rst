@@ -147,9 +147,7 @@ Plus de détails sur les différentes vues matérialisées dans le fichier `<vue
 Vous y trouverez aussi un exemple d'adaptation de la vue ``atlas.vm_observations``, basé sur une BDD SICEN.
 
 Par ailleurs, si vous n'utilisez pas GeoNature, il vous faut installer TaxHub (https://github.com/PnX-SI/TaxHub/) ou au moins sa BDD, pour gérer les attributs (description, commentaire, milieu et chorologie) ainsi que les médias rattachés à chaque espèce (photos, videos, audios et articles). TaxHub dispose aussi de scripts permettant d'importer les médias des espèces depuis les photos libres de l'INPN (https://github.com/PnX-SI/TaxHub/tree/master/data/scripts/import_inpn_media) ou de Wikimedia (https://github.com/PnX-SI/TaxHub/tree/master/data/scripts/import_wikimedia_commons).
-
-L'installation du schéma ``taxonomie`` de TaxHub dans la BDD de l'atlas peut se faire automatiquement lors de l'installation de la BDD avec le paramètre ``install_taxonomie=true``.
-
+ 
 A noter aussi que si vous ne connectez pas l'atlas à une BDD GeoNature (``geonature_source=false``), une table exemple ``synthese.syntheseff`` comprenant 2 observations est créée. A vous d'adapter les vues après l'installation pour les connecter à vos données sources.
 
 Lancez le fichier fichier d'installation de la base de données :
