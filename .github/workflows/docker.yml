@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - develop
-      - allow_docker_images_fork
   release:
     types: [published]
 
