@@ -2,6 +2,13 @@
 CHANGELOG
 =========
 
+1.6.2 (2024-11-06)
+------------------
+
+🐛 **Corrections**
+
+- Correction du chargement de la configuration
+
 1.6.1 (2023-10-16)
 ------------------
 
