@@ -377,7 +377,7 @@ if ! database_exists $db_name
 
         echo "[$(date +'%H:%M:%S')] Creating atlas.vm_taxon_attribute..."
         time_temp=$SECONDS
-        sudo sed -i "s/WHERE ba.id_attribut IN ('atlas_description', 'atlas_commentaire', 'atlas_milieu', 'atlas_chorologie')$/WHERE id_attribut  IN ($displayed_attr);/" /tmp/atlas/9.atlas.vm_taxon_attribute.sql
+        sudo sed -i "s/WHERE ba.nom_attribut IN ('atlas_description', 'atlas_commentaire', 'atlas_milieu', 'atlas_chorologie')$/WHERE nom_attribut  IN ($displayed_attr);/" /tmp/atlas/9.atlas.vm_taxon_attribute.sql
         export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/9.atlas.vm_taxon_attribute.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
