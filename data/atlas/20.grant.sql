@@ -37,7 +37,9 @@ GRANT EXECUTE ON FUNCTION atlas.find_all_taxons_childs(integer) TO my_reader_use
 GRANT SELECT ON TABLE atlas.bib_taxref_rangs TO my_reader_user;
 GRANT SELECT ON TABLE atlas.vm_cor_taxon_organism TO my_reader_user;
 GRANT SELECT ON TABLE atlas.vm_cor_area_synthese TO my_reader_user;
-
-
+GRANT SELECT ON TABLE atlas.vm_bdc_statut TO my_reader_user;
+GRANT SELECT ON TABLE atlas.vm_area_stats TO my_reader_user;
+GRANT SELECT ON TABLE atlas.vm_area_stats_by_taxonomy_group TO my_reader_user;
+GRANT SELECT ON TABLE atlas.vm_area_stats_by_organism TO my_reader_user;
 GRANT SELECT ON TABLE atlas.vm_l_areas TO my_reader_user;
 GRANT SELECT ON TABLE atlas.vm_cor_area_observation TO my_reader_user;
