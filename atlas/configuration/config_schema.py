@@ -161,6 +161,18 @@ class AtlasConfig(Schema):
     COLOR_STACKED_BAR_CHARTS = fields.List(
         fields.String(), load_default=["#E1CE7A", "#FBFFB9", "#FDD692"]
     )
+    AFFICHAGE_STATUTS = fields.Boolean(load_default=True)
+    GROUPES_STATUTS = fields.List(
+        fields.Dict,
+        load_default=[
+            {"label": "Monde", "filters": [{"cd_type_statut": "LRM", "cd_sig": "WORLD"}]},
+            {"label": "Europe", "filters": [{"cd_type_statut": "LRE", "cd_sig": "EUROPE"}]},
+            {
+                "label": "France métropolitaine",
+                "filters": [{"cd_type_statut": "LRN", "cd_sig": "TERFXFR"}],
+            },
+        ],
+    )
 
     COLOR_PIE_CHARTS = fields.List(
         fields.String(),
@@ -260,6 +272,7 @@ class AtlasConfig(Schema):
     SPLIT_NOM_VERN = fields.Boolean(load_default=True)
     INTERACTIVE_MAP_LIST = fields.Boolean(load_default=True)
     AVAILABLE_LANGUAGES = fields.Dict(load_default=LANGUAGES)
+    AFFICHAGE_STATUTS = fields.Boolean(load_default=True)
     # Flask parameter enabling auto reload of templates
     # (no need to restart the atlas service when updating templates)
     # Defaults to False to have the best performance in production

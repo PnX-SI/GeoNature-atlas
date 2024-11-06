@@ -33,6 +33,7 @@ from atlas.modeles.repositories import (
     vmCorTaxonAttribut,
     vmTaxonsMostView,
     vmCorTaxonOrganismRepository,
+    vmStatutBdcRepository,
 )
 
 
@@ -297,6 +298,10 @@ def ficheEspece(cd_nom):
 
     organisms = vmOrganismsRepository.getListOrganism(connection, cd_ref)
 
+    statuts = vmStatutBdcRepository.get_taxons_statut_bdc(connection, cd_ref)
+    groupes_statuts = _make_groupes_statuts(statuts)
+    groupes_statuts_have_labels = any([groupe.get("label") for groupe in groupes_statuts])
+
     connection.close()
     db_session.close()
     return render_template(
@@ -319,7 +324,57 @@ def ficheEspece(cd_nom):
         taxonDescription=taxonDescription,
         observers=observers,
         organisms=organisms,
+        groupesStatuts=groupes_statuts,
+        groupesStatutsHaveLabels=groupes_statuts_have_labels,
     )
+
+
+def _make_groupes_statuts(statuts):
+    """Groupe les statuts de la BDC suivant la configuration GROUPES_STATUTS.
+
+    Retourne une liste de groupes. Un groupe est de la forme :
+
+        {
+            "label": "Monde",
+            "statuts": [
+                {
+                    "cd_type_statut": "LRM",
+                    "lb_type_statut": "Liste Rouge Mondiale",
+                    "cd_sig": "WORLD",
+                    "code_statut": "LC",
+                    "label_statut": "Préoccupation mineure",
+                    "rq_statut": ""
+                }
+            ]
+        }
+    """
+
+    def is_statut_in_groupe(statut, groupe):
+        for filter_item in groupe["filters"]:
+            if filter_item.get("cd_type_statut"):
+                has_valid_type = statut["cd_type_statut"] == filter_item.get("cd_type_statut")
+            else:
+                has_valid_type = True
+
+            if filter_item.get("cd_sig"):
+                has_valid_sig = statut["cd_sig"] == filter_item.get("cd_sig")
+            else:
+                has_valid_sig = True
+
+            if has_valid_type and has_valid_sig:
+                return True
+        else:
+            return False
+
+    groupes_statuts = []
+    for config_groupe in current_app.config["GROUPES_STATUTS"]:
+        groupe = {"label": config_groupe.get("label", ""), "statuts": []}
+        for statut in statuts:
+            if is_statut_in_groupe(statut, config_groupe):
+                groupe["statuts"].append(statut)
+        if groupe["statuts"]:
+            groupes_statuts.append(groupe)
+    return groupes_statuts
 
 
 @main.route("/area/<id_area>", methods=["GET", "POST"])
