@@ -73,8 +73,7 @@ def create_app():
 
         @app.context_processor
         def inject_config():
-            configuration = copy.copy(app.config)
-            configuration.pop("PERMANENT_SESSION_LIFETIME", None)
+            configuration = copy.copy(config_valid)
             return dict(configuration=configuration)
 
         @app.template_filter("pretty")
