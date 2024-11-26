@@ -5,7 +5,59 @@ from sqlalchemy.sql import text, func, any_, extract
 
 from atlas.modeles.entities.vmObservations import VmObservations, VmObservationsMailles
 from atlas.modeles.entities.vmAreas import VmAreas
+from atlas.modeles.entities.vmTaxons import VmTaxons
 from atlas.modeles.utils import deleteAccent, findPath
+
+
+def getObservationsMaillesTerritorySpecies(session, cd_ref):
+    """
+    Retourne les mailles et le nombre d'observation par maille pour un taxon et ses enfants
+    sous forme d'un geojson
+    """
+    query = func.atlas.find_all_taxons_childs(cd_ref)
+    taxons_ids = session.scalars(query).all()
+    taxons_ids.append(cd_ref)
+
+    query = (
+        session.query(
+            VmObservationsMailles.id_maille,
+            VmAreas.area_geojson,
+            func.max(extract("year", VmObservations.dateobs)).label("last_obs_year"),
+            VmObservationsMailles.nbr.label("obs_nbr"),
+            VmObservationsMailles.type_code,
+        )
+        .join(
+            VmObservations,
+            VmObservations.id_observation == any_(VmObservationsMailles.id_observations),
+        )
+        .join(
+            VmAreas,
+            VmAreas.id_area == VmObservationsMailles.id_maille,
+        )
+        .filter(VmObservations.cd_ref == any_(taxons_ids))
+        .group_by(
+            VmObservationsMailles.id_maille,
+            VmAreas.area_geojson,
+            VmObservationsMailles.nbr,
+            VmObservationsMailles.type_code,
+        )
+    )
+
+    return FeatureCollection(
+        [
+            Feature(
+                id=o.id_maille,
+                geometry=json.loads(o.area_geojson),
+                properties={
+                    "id_maille": o.id_maille,
+                    "type_code": o.type_code,
+                    "nb_observations": int(o.obs_nbr),
+                    "last_observation": o.last_obs_year,
+                },
+            )
+            for o in query.all()
+        ]
+    )
 
 
 def format_taxon_name(observation):
@@ -68,6 +120,38 @@ def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
                 },
             )
             for o in query.all()
+        ]
+    )
+
+
+def territoryObservationsMailles(connection):
+    sql = """
+SELECT
+    obs.id_maille,
+    obs.nbr AS obs_nbr,
+    obs.type_code,
+    area.area_geojson,
+    MAX(extract(YEAR FROM o.dateobs)) AS last_observation
+FROM atlas.vm_observations_mailles obs
+        JOIN atlas.vm_l_areas area ON area.id_area=obs.id_maille
+        JOIN atlas.vm_observations AS o ON o.id_observation = ANY(obs.id_observations)
+GROUP BY obs.id_maille, obs.nbr, obs.type_code, area.area_geojson
+  """
+
+    observations = connection.execute(text(sql))
+    return FeatureCollection(
+        [
+            Feature(
+                id=o.id_maille,
+                geometry=json.loads(o.area_geojson),
+                properties={
+                    "id_maille": o.id_maille,
+                    "type_code": o.type_code,
+                    "nb_observations": int(o.obs_nbr),
+                    "last_observation": o.last_observation,
+                },
+            )
+            for o in observations
         ]
     )
 
