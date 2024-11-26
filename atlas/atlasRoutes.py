@@ -220,6 +220,7 @@ def index():
     else:
         lastDiscoveries = []
 
+    listTaxons = vmTaxonsRepository.getTaxonsTerritory(connection)
     connection.close()
     session.close()
 
@@ -230,6 +231,7 @@ def index():
 
     return render_template(
         "templates/home/_main.html",
+        listTaxons=listTaxons,
         observations=observations,
         mostViewTaxon=mostViewTaxon,
         customStatMedias=customStatMedias,
