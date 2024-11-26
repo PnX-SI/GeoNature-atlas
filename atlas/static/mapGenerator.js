@@ -404,7 +404,9 @@ function displayMailleLayerFicheEspece(observationsMaille) {
     myGeoJson = observationsMaille;
     // Get all different type code
     Object.values(myGeoJson.features).forEach(elem => {
+        if (!current_type_code.includes(elem.properties.type_code)) {
             current_type_code.push(elem.properties.type_code)
+        }
     })
     createMailleSelector(true)
     currentLayer = L.geoJson(myGeoJson, {
@@ -450,16 +452,18 @@ function generateGeojsonGridArea(observations) {
     return myGeoJson;
 }
 
-function displayGridLayerArea(observations) {
-    myGeoJson = generateGeojsonGridArea(observations);
+function displayMailleLayer(observationsMaille) {
+    myGeoJson = observationsMaille;
+    // Get all different type code
+    Object.values(myGeoJson.features).forEach(elem => {
+            if (!current_type_code.includes(elem.properties.type_code)) {
+                current_type_code.push(elem.properties.type_code)
+            }
+    })
+    createMailleSelector()
     currentLayer = L.geoJson(myGeoJson, {
         onEachFeature: onEachFeatureMaille,
-        style: styleMaille,
     });
-    currentLayer.addTo(map);
-    if (currentLayer.getBounds().isValid()) {
-        map.fitBounds(currentLayer.getBounds());
-    }
 
     // ajout de la légende
     generateLegendMaille();
