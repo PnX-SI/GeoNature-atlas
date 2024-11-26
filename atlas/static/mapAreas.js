@@ -175,8 +175,8 @@ function refreshObsArea() {
 $(document).ready(function () {
     $("#loaderSpinner").hide();
     if (configuration.INTERACTIVE_MAP_LIST) {
-        console.log("DOIT FAIRE 9AAAA");
-        
-        refreshObsArea();
+        $("#taxonList ul").on("click", "#taxonListItem", elem => {
+            refreshObsArea(elem);
+        });
     }
 });
