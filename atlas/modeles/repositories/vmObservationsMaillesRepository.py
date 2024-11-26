@@ -5,7 +5,65 @@ from sqlalchemy.sql import text, func, any_
 
 from atlas.modeles.entities.vmObservations import VmObservationsMailles
 from atlas.modeles.entities.vmAreas import VmAreas
+from atlas.modeles.entities.tMaillesTerritoire import TMaillesTerritoire
+from atlas.modeles.entities.vmTaxons import VmTaxons
 from atlas.modeles.utils import deleteAccent, findPath
+
+
+def getObservationsMaillesTerritorySpecies(session, cd_ref):
+    """
+    Retourne les mailles et le nombre d'observation par maille pour un taxon et ses enfants
+    sous forme d'un geojson
+    """
+    query = func.atlas.find_all_taxons_childs(cd_ref)
+    taxons_ids = session.scalars(query).all()
+    taxons_ids.append(cd_ref)
+
+    query = (
+        session.query(
+            VmObservationsMailles.id_maille,
+            TMaillesTerritoire.geojson_maille,
+            func.max(VmObservationsMailles.annee).label("last_obs_year"),
+            func.sum(VmObservationsMailles.nbr).label("obs_nbr"),
+            VmObservationsMailles.type_code,
+            VmTaxons.cd_ref,
+            VmTaxons.nom_vern,
+            VmTaxons.lb_nom,
+        )
+        .join(
+            TMaillesTerritoire,
+            TMaillesTerritoire.id_maille == VmObservationsMailles.id_maille,
+        )
+        .join(
+            VmTaxons,
+            VmTaxons.cd_ref == VmObservationsMailles.cd_ref,
+        )
+        .filter(VmObservationsMailles.cd_ref == any_(taxons_ids))
+        .group_by(
+            VmObservationsMailles.id_maille,
+            TMaillesTerritoire.geojson_maille,
+            VmObservationsMailles.type_code,
+            VmTaxons.cd_ref,
+            VmTaxons.nom_vern,
+            VmTaxons.lb_nom,
+        )
+    )
+
+    return FeatureCollection(
+        [
+            Feature(
+                id=o.id_maille,
+                geojson_maille=json.loads(o.geojson_maille),
+                id_maille=o.id_maille,
+                type_code=o.type_code,
+                nb_observations=int(o.obs_nbr),
+                last_observation=o.last_obs_year,
+                cd_ref=o.cd_ref,
+                taxon=format_taxon_name(o),
+            )
+            for o in query.all()
+        ]
+    )
 
 
 def format_taxon_name(observation):
@@ -63,6 +121,46 @@ def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
             for o in query.all()
         ]
     )
+
+
+def territoryObservationsMailles(connection):
+    sql = """
+SELECT obs.cd_ref, obs.id_maille, obs.nbr, obs.type_code,
+       tax.lb_nom, tax.nom_vern, tax.group2_inpn,
+       medias.url, medias.chemin, medias.id_media,
+       st_asgeojson(m.geojson_maille) AS geom
+FROM atlas.vm_observations_mailles obs
+         JOIN atlas.vm_taxons tax ON tax.cd_ref = obs.cd_ref
+         JOIN atlas.t_mailles_territoire m ON m.id_maille=obs.id_maille
+         LEFT JOIN atlas.vm_medias medias
+                   ON medias.cd_ref = obs.cd_ref AND medias.id_type = 1
+GROUP BY obs.cd_ref, obs.id_maille, obs.nbr,
+         tax.lb_nom, tax.nom_vern, tax.group2_inpn,
+         medias.url, medias.chemin, medias.id_media,
+         m.geojson_maille,
+         obs.type_code
+  """
+
+    observations = connection.execute(text(sql))
+    obsList = list()
+    for o in observations:
+        if o.nom_vern:
+            inter = o.nom_vern.split(",")
+            taxon = inter[0] + " | <i>" + o.lb_nom + "</i>"
+        else:
+            taxon = "<i>" + o.lb_nom + "</i>"
+        temp = {
+            "id_maille": o.id_maille,
+            "type_code": o.type_code,
+            "cd_ref": o.cd_ref,
+            "nb_observations": o.nbr,
+            "taxon": taxon,
+            "geojson_maille": json.loads(o.geom),
+            "group2_inpn": deleteAccent(o.group2_inpn),
+            "pathImg": findPath(o),
+        }
+        obsList.append(temp)
+    return obsList
 
 
 # last observation for index.html

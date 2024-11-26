@@ -158,6 +158,13 @@ def indexMedias(image):
     )
 
 
+def get_territory_mailles_obs(connection):
+    current_app.logger.debug("start AFFICHAGE_TERRITORY")
+    observations = vmObservationsMaillesRepository.territoryObservationsMailles(connection)
+    current_app.logger.debug("end AFFICHAGE_TERRITORY")
+    return observations
+
+
 @main.route("/", methods=["GET", "POST"])
 def index():
     session = db.session
@@ -180,6 +187,8 @@ def index():
                 current_app.config["ATTR_MAIN_PHOTO"],
             )
             current_app.logger.debug("end AFFICHAGE_PRECIS")
+    elif current_app.config["AFFICHAGE_TERRITOIRE_OBS"]:
+        observations = get_territory_mailles_obs(connection)
     else:
         observations = []
 
@@ -204,6 +213,7 @@ def index():
     else:
         lastDiscoveries = []
 
+    listTaxons = vmTaxonsRepository.getTaxonsTerritory(connection)
     connection.close()
     session.close()
 
@@ -214,6 +224,7 @@ def index():
 
     return render_template(
         "templates/home/_main.html",
+        listTaxons=listTaxons,
         observations=observations,
         mostViewTaxon=mostViewTaxon,
         customStatMedias=customStatMedias,
