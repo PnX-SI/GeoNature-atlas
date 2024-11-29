@@ -9,6 +9,7 @@ robots.txt
 venv/*
 venv3/*
 .flaskenv
+Makefile.perso.mk
 
 atlas/configuration/config.py
 atlas/configuration/settings.ini

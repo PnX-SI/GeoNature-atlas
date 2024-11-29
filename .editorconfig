@@ -10,6 +10,10 @@ indent_style = space
 end_of_line = lf
 insert_final_newline = true
 
+# Indentation override for Makefiles
+[Makefile, .mk]
+indent_style = tab
+
 # 4 space indentation
 [*.py]
 indent_style = space
