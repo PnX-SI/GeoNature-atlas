@@ -502,6 +502,19 @@ msgid "check.organism.sheet"
 msgstr ""
 
 #: atlas/templates/speciesSheet/otherInformations.html:151
+#: atlas/templates/speciesSheet/otherInformations.html:139
+msgid "organism.participation"
+msgstr ""
+
+#: atlas/templates/speciesSheet/otherInformations.html:147
+msgid "organism.prospection"
+msgstr ""
+
+#: atlas/templates/speciesSheet/otherInformations.html:153
+msgid "check.organism.sheet"
+msgstr ""
+
+#: atlas/templates/speciesSheet/otherInformations.html:154
 msgid "organism.sheet"
 msgstr ""
 

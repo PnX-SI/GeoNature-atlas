@@ -8,6 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-03-03 17:29+0100\n"
+"POT-Creation-Date: 2024-12-02 12:01+0100\n"
 "PO-Revision-Date: 2021-07-12 12:12+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -472,6 +473,12 @@ msgstr "Monthly observations"
 
 #: atlas/templates/speciesSheet/descriptionMedia.html:12
 #: atlas/templates/speciesSheet/otherInformations.html:42
+#: atlas/templates/speciesSheet/charts.html:16
+msgid "data.source"
+msgstr "Data provenance"
+
+#: templates/speciesSheet/descriptionMedia.html:12
+#: templates/speciesSheet/otherInformations.html:42
 msgid "author"
 msgstr "Author"
 
