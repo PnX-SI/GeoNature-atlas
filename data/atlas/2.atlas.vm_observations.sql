@@ -41,7 +41,7 @@ AS $function$
   BEGIN
     SELECT INTO isBlurred
       CASE
-        WHEN (sensiCode::INT >= 1 AND sensiCode::INT <= 3) THEN (
+        WHEN (sensiCode::NUMERIC >= 1 AND sensiCode::NUMERIC <= 3) THEN (
           atlas.is_blurred_area_type_by_sensitivity(sensiCode, areaTypeCode)
         )
         ELSE false
