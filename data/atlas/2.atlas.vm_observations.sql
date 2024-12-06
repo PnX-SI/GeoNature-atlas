@@ -70,19 +70,19 @@ AS $function$
   BEGIN
     SELECT INTO isBlurred
       CASE
-        WHEN (sensiCode::INT >= 1 AND sensiCode::INT <= 3 AND diffusionCode::INT >= 0 AND diffusionCode::INT <= 3) THEN
+        WHEN (sensiCode::NUMERIC >= 1 AND sensiCode::NUMERIC <= 3 AND diffusionCode::NUMERIC >= 0 AND diffusionCode::NUMERIC <= 3) THEN
         CASE
-            WHEN (sensiCode::INT >= diffusionCode::INT) THEN (
+            WHEN (sensiCode::NUMERIC >= diffusionCode::NUMERIC) THEN (
               atlas.is_blurred_area_type_by_sensitivity(sensiCode, areaTypeCode)
             )
-            WHEN (sensiCode::INT < diffusionCode::INT) THEN (
+            WHEN (sensiCode::NUMERIC < diffusionCode::NUMERIC) THEN (
               atlas.is_blurred_area_type_by_diffusion_level(diffusionCode, areaTypeCode)
             )
           END
-        WHEN (sensiCode::INT >= 1 AND sensiCode::INT <= 3) AND (diffusionCode::INT > 4) THEN (
+        WHEN (sensiCode::NUMERIC >= 1 AND sensiCode::NUMERIC <= 3) AND (diffusionCode::NUMERIC > 4) THEN (
           atlas.is_blurred_area_type_by_sensitivity(sensiCode, areaTypeCode)
         )
-        WHEN (diffusionCode::INT >= 0 AND diffusionCode::INT <= 3) AND (sensiCode::INT < 1) THEN (
+        WHEN (diffusionCode::NUMERIC >= 0 AND diffusionCode::NUMERIC <= 3) AND (sensiCode::NUMERIC < 1) THEN (
           atlas.is_blurred_area_type_by_diffusion_level(diffusionCode, areaTypeCode)
         )
         ELSE false
