@@ -41,7 +41,9 @@
     var months_name = {{ configuration.AVAILABLE_LANGUAGES[g.lang_code]['months'] | tojson }};
     {% else %}
     var months_name = {{ configuration.AVAILABLE_LANGUAGES[configuration.DEFAULT_LANGUAGE]['months'] | tojson }};
-
+    {% endif %}
+    {% if configuration.ORGANISM_MODULE and configuration.AFFICHAGE_GRAPH_PROVENANCE_DONNEE %}
+        var data_source_values = {{ data_source_values | tojson}};
     {% endif %}
     var observationsPoint = [];
     var observationsMaille = [];
