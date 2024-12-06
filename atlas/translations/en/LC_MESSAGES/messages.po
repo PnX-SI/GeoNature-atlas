@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-27 10:32+0200\n"
+"POT-Creation-Date: 2024-11-27 10:43+0100\n"
 "PO-Revision-Date: 2021-07-12 12:12+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -46,6 +46,10 @@ msgstr "Legal mentions"
 #: static/custom/templates/footer.html.sample:64
 msgid "personal_data"
 msgstr "Personal data"
+
+#: static/custom/templates/footer.html:12
+msgid "preferences_cookies"
+msgstr "Changing cookie preferences"
 
 #: static/custom/templates/footer.html:17
 #: static/custom/templates/footer.html.sample:17
