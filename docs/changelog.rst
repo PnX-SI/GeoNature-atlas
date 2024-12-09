@@ -9,6 +9,7 @@ CHANGELOG
 
 - Ajout du lien "Données personelles" dans le pied de page (#527 @juggler31)
 - Suppression du support des installations sans TaxHub
+- Ajout d'une carte territoire dans la page d'acceuil ainsi que la liste de toutes les espèces sur celui-ci.
 
 🐛 **Corrections**
 
