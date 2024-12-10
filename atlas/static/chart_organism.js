@@ -11,7 +11,7 @@ const getChartDatas = function (data, key) {
 };
 
 //Circle graph for parts graph
-circleChart = function (element, labels, values, colors) {
+circleChart = function (element, labels, values) {
     return new Chart(element, {
         type: 'pie',
         data: {
@@ -19,7 +19,7 @@ circleChart = function (element, labels, values, colors) {
             datasets: [{
                     label: 'observations',
                     data: values,
-                    backgroundColor: colors
+                    backgroundColor: configuration.COLOR_PIE_CHARTS
                 }]
         },
         options: {
@@ -33,30 +33,5 @@ circleChart = function (element, labels, values, colors) {
     })
 };
 
-var color_tab = [
-    '#E1CE7A',
-    '#FBFFB9',
-    '#FDD692',
-    '#EC7357',
-    '#754F44',
-    '#FB6376',
-    '#B7ADCF',
-    '#DEE7E7',
-    '#F4FAFF',
-    '#383D3B',
-    '#7C7C7C',
-    '#B5F44A',
-    '#D6FF79',
-    '#507255',
-    '#381D2A',
-    '#BA5624',
-    '#FFA552',
-    '#F7FFE0',
-    '#49C6E5',
-    '#54DEFD',
-    '#0B5563',
-    '#54DEFD'
-  ];
-
 var groupChartElement = document.getElementById('groupChart');
-const groupChart = circleChart(groupChartElement, getChartDatas(dataset, 'group2_inpn'), getChartDatas(dataset, 'nb_obs_group'), color_tab);
+const groupChart = circleChart(groupChartElement, getChartDatas(dataset, 'group2_inpn'), getChartDatas(dataset, 'nb_obs_group'));

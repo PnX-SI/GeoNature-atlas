@@ -12,5 +12,11 @@
                 <canvas id="monthChart"></canvas>
             </div>
         {% endif %}
+        {% if configuration.ORGANISM_MODULE and configuration.AFFICHAGE_GRAPH_PROVENANCE_DONNEE %}
+            <h4 class="title-bar title-spaced center strong">{{ _('data.source') }}</h4>
+            <div class="chart-container" style="position: relative; height:400px; width:100%">
+                <canvas id="organismChart" style="padding: 0.5rem;"></canvas>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

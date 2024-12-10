@@ -138,7 +138,35 @@ class AtlasConfig(Schema):
     AFFICHAGE_NOUVELLES_ESPECES = fields.Boolean(load_default=True)
     AFFICHAGE_RECHERCHE_AVANCEE = fields.Boolean(load_default=False)
     AFFICHAGE_GRAPH_ALTITUDES = fields.Boolean(load_default=True)
-    AFFICHAGE_GRAPH_PHENOLOGIE = fields.Boolean(load_default=True)
+    AFFICHAGE_GRAPH_PHENOLOGIE = fields.Boolean(load_default=False)
+    AFFICHAGE_GRAPH_PROVENANCE_DONNEE = fields.Boolean(load_default=False)
+    COLOR_PIE_CHARTS = fields.List(
+        fields.String(),
+        load_default=[
+            "#E1CE7A",
+            "#FBFFB9",
+            "#FDD692",
+            "#EC7357",
+            "#754F44",
+            "#FB6376",
+            "#B7ADCF",
+            "#DEE7E7",
+            "#F4FAFF",
+            "#383D3B",
+            "#7C7C7C",
+            "#B5F44A",
+            "#D6FF79",
+            "#507255",
+            "#381D2A",
+            "#BA5624",
+            "#FFA552",
+            "#F7FFE0",
+            "#49C6E5",
+            "#54DEFD",
+            "#0B5563",
+            "#54DEFD",
+        ],
+    )
 
     RANG_STAT = fields.List(
         fields.Dict,
