@@ -119,8 +119,8 @@ msgstr "Search by species"
 #: static/custom/templates/navbar.html:47
 #: static/custom/templates/navbar.html.sample:47
 #: templates/home/globalStats.html:55
-msgid "search.city"
-msgstr "Search by municipality"
+msgid "search.zone"
+msgstr "Search by area"
 
 #: static/custom/templates/presentation.html:4
 #: static/custom/templates/presentation.html.sample:4
