@@ -40,7 +40,7 @@ URL_APPLICATION = ""
 #################################
 #################################
 
-# Enable organism module : organism sheet + organism participation on species sheet
+# Enable organism module : organism sheet +  organism participation on species sheet and area sheet
 ORGANISM_MODULE = False
 
 # Shows the names of the observers in the species sheet
@@ -277,7 +277,8 @@ DISPLAY_PATRIMONIALITE = False
 
 # Pour customiser l'affichage de cette colonne (label affiché, valeurs du champs et leur affichage) :
 PATRIMONIALITE = {
-    'label': "Patrimonial",
+    'label': "Patrimoniale",
+    'label_pluriel': "Patrimoniales",
     'config': {
         'oui': {
             'icon': 'custom/images/logo_patrimonial.png',

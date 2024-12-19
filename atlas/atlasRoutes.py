@@ -160,6 +160,19 @@ def indexMedias(image):
     )
 
 
+def translations():
+    isOnlyMunicipalities = False
+    if current_app.config["TYPE_TERRITOIRE_SHEET"] == ["COM"]:
+        isOnlyMunicipalities = True
+    return {
+        "territories": (
+            gettext("municipalities") if isOnlyMunicipalities else gettext("territories")
+        ),
+        "territory": gettext("municipality") if isOnlyMunicipalities else gettext("territory"),
+        "search_area": gettext("search.city") if isOnlyMunicipalities else gettext("search.area"),
+    }
+
+
 @main.route("/", methods=["GET", "POST"])
 def index():
     session = db.session
@@ -301,9 +314,6 @@ def ficheArea(id_area):
     session = db.session
     connection = db.engine.connect()
 
-    listTaxons = vmTaxonsRepository.getTaxonsAreas(connection, id_area)
-
-    area = vmAreasRepository.getAreaFromIdArea(connection, id_area)
     if current_app.config["AFFICHAGE_MAILLE"]:
         observations = vmObservationsMaillesRepository.lastObservationsAreaMaille(
             connection, current_app.config["NB_LAST_OBS"], str(id_area)
@@ -313,20 +323,20 @@ def ficheArea(id_area):
             connection, current_app.config["NB_LAST_OBS"], id_area
         )
 
-    surroundingAreas = []
+    listTaxons = vmTaxonsRepository.getTaxonsAreas(connection, id_area)
+    area = vmAreasRepository.getAreaFromIdArea(connection, id_area)
 
-    observers = vmObservationsRepository.getObserversArea(connection, id_area)
+    stats_area = vmAreasRepository.getStatsByArea(connection, id_area)
 
     session.close()
     connection.close()
 
     return render_template(
         "templates/areaSheet/_main.html",
-        surroundingAreas=surroundingAreas,
         listTaxons=listTaxons,
+        stats_area=stats_area,
         areaInfos=area,
         observations=observations,
-        observers=observers,
         DISPLAY_EYE_ON_LIST=True,
         id_area=id_area,
     )

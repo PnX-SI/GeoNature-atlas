@@ -88,7 +88,7 @@
                 {% for type_code in configuration.TYPE_TERRITOIRE_SHEET %}
                     {% for com in areas[type_code] %}
                         {% if loop.first %}
-                            {% if areas.nb_territory_type != 1 and com.type_name != "COM" %}
+                            {% if areas.nb_area_type != 1 and com.type_name != "COM" %}
                                 <div class="type_name">{{ com.type_name }} :</div>
                             {% endif %}
                             <div class="territories_name">
