@@ -65,79 +65,42 @@ htmlLegend = configuration.AFFICHAGE_MAILLE
 
 generateLegende(htmlLegend);
 
-function displayObsPreciseBaseUrl() {
-    if (sheetType === 'commune') {
-        return configuration.URL_APPLICATION + "/api/observations/" + areaInfos.areaCode
-    } else {
-        return configuration.URL_APPLICATION + "/api/observations/area/" + areaInfos.id_area
-    }
-};
 
-// display observation on click
-function displayObsPreciseBaseUrl(areaCode, cd_ref) {
-    $.ajax({
-        url:
-            displayObsPreciseBaseUrl() +
-            areaCode +
-            "/" +
-            cd_ref,
-        dataType: "json",
-        beforeSend: function () {
-            $("#loaderSpinner").show();
-            // $("#loadingGif").show();
-            // $("#loadingGif").attr(
-            //   "src",
-            //   configuration.URL_APPLICATION + "/static/images/loading.svg"
-            // );
-        }
-    }).done(function (observations) {
-        $("#loaderSpinner").hide();
-        // $("#loadingGif").hide();
-        map.removeLayer(currentLayer);
-        clearOverlays()
-        if (configuration.AFFICHAGE_MAILLE) {
-            displayMailleLayerLastObs(observations);
-        } else {
-            displayMarkerLayerPointCommune(observations);
-        }
-    });
-}
+var baseUrl =  configuration.URL_APPLICATION + "/api/observations/" + areaInfos.areaCode
+
 
 function displayObsGridBaseUrl() {
-    if (sheetType === 'commune') {
-        return configuration.URL_APPLICATION + "/api/observationsMaille/"
-    } else {
-        return configuration.URL_APPLICATION + "/api/observationsMaille/area/"
-    }
+    return configuration.URL_APPLICATION + "/api/observationsMaille/"
 }
 
 // display observation on click
-function displayObsTaxon(insee, cd_ref) {
-    $.ajax({
-        url:
-            configuration.URL_APPLICATION +
-            "/api/observations/" +
-            insee +
-            "/" +
-            cd_ref,
-        dataType: "json",
-        beforeSend: function() {
-            $("#loadingGif").show();
-            $("#loadingGif").attr(
-                "src",
-                configuration.URL_APPLICATION + "/static/images/loading.svg"
-            );
-        }
-    }).done(function(observations) {
-        $("#loadingGif").hide();
-        map.removeLayer(currentLayer);
+function displayObsTaxon(id_area, cd_ref) {
+  $.ajax({
+    url:
+      configuration.URL_APPLICATION +
+      "/api/observations/" +
+      id_area +
+      "/" +
+      cd_ref,
+    dataType: "json",
+    beforeSend: function() {
+      $("#loadingGif").show();
+      $("#loadingGif").attr(
+        "src",
+        configuration.URL_APPLICATION + "/static/images/loading.svg"
+      );
+    }
+  }).done(function(observations) {    
+    $("#loadingGif").hide();
+    map.removeLayer(currentLayer);
+    if (configuration.AFFICHAGE_MAILLE) {
+        displayMailleLayerLastObs(observations);
         clearOverlays()
-        if (configuration.AFFICHAGE_MAILLE) {
-            displayMailleLayerLastObs(observations);
-        } else {
-            displayMarkerLayerPointCommune(observations);
-        }
-    });
+    } else {
+        map.removeLayer(currentLayer);
+        displayMarkerLayerPointArea(observations);
+    }
+  });
 }
 
 
@@ -175,8 +138,22 @@ function refreshObsArea(elem) {
     const name = elem.currentTarget.querySelector("#name").innerHTML;
     $("#titleMap").fadeOut(500, function () {
         $(this)
-            .html("Observations du taxon&nbsp;:&nbsp;" + name)
-            .fadeIn(500);
+            .siblings()
+            .removeClass("current");
+        $(this).addClass("current");
+        if (configuration.AFFICHAGE_MAILLE) {
+            displayObsTaxonMaille(this.getAttribute("area-code"), this.getAttribute("cdref"));
+        } else {
+            displayObsTaxon(this.getAttribute("area-code"), this.getAttribute("cdref"));
+        }
+        var name = $(this)
+            .find("#name")
+            .html();
+        $("#titleMap").fadeOut(500, function () {
+            $(this)
+                .html("Observations du taxon&nbsp;:&nbsp;" + name)
+                .fadeIn(500);
+        });
     });
 }
 

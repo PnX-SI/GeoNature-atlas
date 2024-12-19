@@ -156,7 +156,7 @@ class AtlasConfig(Schema):
     AFFICHAGE_RECHERCHE_AVANCEE = fields.Boolean(load_default=False)
     AFFICHAGE_GRAPH_ALTITUDES = fields.Boolean(load_default=True)
     AFFICHAGE_GRAPH_PHENOLOGIE = fields.Boolean(load_default=True)
-
+    TYPE_TERRITOIRE_SHEET = fields.List(fields.String(), load_default=["COM"])
     RANG_STAT = fields.List(
         fields.Dict,
         load_default=[
@@ -229,6 +229,8 @@ class AtlasConfig(Schema):
     # (no need to restart the atlas service when updating templates)
     # Defaults to False to have the best performance in production
     TEMPLATES_AUTO_RELOAD = fields.Boolean(load_default=False)
+
+    TYPE_TERRITOIRE_SHEET = fields.List(fields.String(), default=[])
 
     @validates_schema
     def validate_url_taxhub(self, data, **kwargs):

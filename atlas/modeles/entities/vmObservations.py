@@ -14,9 +14,7 @@ class VmObservations(Base):
         "vm_observations",
         metadata,
         Column("id_observation", Integer, primary_key=True, unique=True),
-        Column("insee", String(5), index=True),
         Column("dateobs", Date, index=True),
-        Column("type_code", Integer),
         Column("observateurs", String(255)),
         Column("altitude_retenue", Integer, index=True),
         Column("cd_ref", Integer, index=True),
@@ -27,6 +25,17 @@ class VmObservations(Base):
         autoload=True,
         autoload_with=db.engine,
     )
+
+    def as_dict(self):
+        return {
+            "dateobs": str(self.dateobs),
+            "year": self.dateobs.year if self.dateobs else None,
+            "id_observation": self.id_observation,
+            "observateurs": self.observateurs,
+            "altitude_retenue": self.altitude_retenue,
+            "cd_ref": self.cd_ref,
+            "cd_sensitivity": self.cd_ref,
+        }
 
 
 class VmObservationsMailles(Base):
