@@ -25,16 +25,15 @@
                 <div class="pictoImgList mr-2" data-toggle="tooltip" data-original-title="{{ taxon.group2_inpn }}"
                      data-placement="right">
                     {% if taxon.path == None %}
-                        <img class="mx-auto d-block INPNgroup"
-                             src="{{ url_for('static', filename='images/picto_'+ taxon.group2_inpn| replace(" ", "_") |urlencode+'.png') }}">
-
+                        <img loading="lazy" class="mx-auto d-block INPNgroup"
+                             src="{{ url_for('static', filename='images/picto_'+ taxon.group2_inpn| replace(" ", "_") |urlencode+'.png') }}" alt=" " />
                     {% else %}
                         {% if configuration.REDIMENSIONNEMENT_IMAGE %}
                             {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+taxon.id_media|string+'?h=500&w=500' %}
                         {% else %}
                             {% set img_path = taxon.path %}
                         {% endif %}
-                        <img class="lazy pictoImgList" data-src="{{ img_path }}">
+                        <img loading="lazy" class="pictoImgList" src="{{ img_path }}" alt=" " />
                     {% endif %}
                 </div>
                 <div class="media-body">
