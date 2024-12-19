@@ -121,21 +121,13 @@ msgstr "Recherche par espèce"
 #: static/custom/templates/navbar.html:47
 #: static/custom/templates/navbar.html.sample:47
 #: templates/home/globalStats.html:55
-msgid "search.city"
-msgstr "Recherche par commune"
+msgid "search.zone"
+msgstr "Recherche par zone"
 
 #: static/custom/templates/presentation.html:4
 #: static/custom/templates/presentation.html.sample:4
 msgid "atlas.presentation"
 msgstr "Présentation de l'atlas"
-
-#: templates/areaSheet/_main.html:6 templates/areaSheet/_main.html:59
-msgid "municipality.of"
-msgstr "Commune de"
-
-#: templates/areaSheet/_main.html:70
-msgid "last.obs.municipality"
-msgstr "dernières observations dans la commune de"
 
 #: templates/areaSheet/_main.html:73
 msgid "last.obs.zone"
@@ -299,7 +291,7 @@ msgstr "Fiche"
 
 #: templates/core/tabTaxons.html:82
 msgid "display.city.infos"
-msgstr "Afficher les informations de la commune"
+msgstr "Afficher les informations de la zone"
 
 #: templates/home/globalStats.html:4
 msgid "home.insomefigures"
