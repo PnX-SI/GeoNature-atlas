@@ -1,5 +1,5 @@
 IMPORT FOREIGN SCHEMA gn_synthese
-    LIMIT TO (gn_synthese.tmp_cor_area_synthse)
+    LIMIT TO (gn_synthese.cor_area_synthese)
 FROM SERVER geonaturedbserver INTO synthese;
 
 CREATE MATERIALIZED VIEW atlas.vm_cor_area_synthese
@@ -14,7 +14,7 @@ SELECT
     s.id_nomenclature_sensitivity,
     st_transform(a.geom, 4326) AS geom
 FROM synthese.synthese s
-         JOIN synthese.tmp_cor_area_synthse sa ON sa.id_synthese = s.id_synthese
+         JOIN synthese.cor_area_synthese sa ON sa.id_synthese = s.id_synthese
          JOIN ref_geo.l_areas a ON sa.id_area = a.id_area
          JOIN atlas.t_layer_territoire ON st_intersects(a.geom_4326, t_layer_territoire.geom)-- AND NOT ST_Touches(t_layer_territoire.geom, a.geom_4326)
        )
