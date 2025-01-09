@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-08 14:03+0100\n"
+"POT-Creation-Date: 2025-01-09 21:50+0100\n"
 "PO-Revision-Date: 2021-07-12 12:12+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -134,7 +134,7 @@ msgstr "Search by area"
 msgid "atlas.presentation"
 msgstr "Atlas presentation"
 
-#: atlas/templates/areaSheet/_main.html:55
+#: atlas/templates/areaSheet/_main.html:63
 msgid "last.obs.zone"
 msgstr "Latest observations in the zone"
 
@@ -283,6 +283,30 @@ msgstr "Observers"
 #: atlas/templates/speciesSheet/otherInformations.html:28
 msgid "observer"
 msgstr "Observer"
+
+#: atlas/templates/core/statHierarchy.html:23
+msgid "sources"
+msgstr "sources"
+
+#: atlas/templates/core/statHierarchy.html:23
+msgid "source"
+msgstr "source"
+
+#: atlas/templates/core/statHierarchy.html:28
+msgid "first_observation"
+msgstr "first observation"
+
+#: atlas/templates/core/statHierarchy.html:33
+msgid "last_observation"
+msgstr "last observation"
+
+#: atlas/templates/core/statHierarchy.html:38
+msgid "protected_species"
+msgstr "protected species"
+
+#: atlas/templates/core/statHierarchy.html:44
+msgid "patrimonial_species"
+msgstr "patrimonial species"
 
 #: atlas/templates/core/tabTaxons.html:7
 msgid "group"
