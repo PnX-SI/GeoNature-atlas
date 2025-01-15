@@ -77,6 +77,28 @@ LANGUAGES = {
     },
 }
 
+orijime_default_translations = {
+        "fr": {
+            "consentModal": {
+                "description": "",
+            },
+            "purposes": {
+                "analytics": "Analyse",
+                "security": "Sécurité"
+            }
+        },
+        "en": {
+            "consentModal": {
+                "description": "This is an example of how to override an existing translation already used by Orejime",
+            },
+            "purposes": {
+                "analytics": "Analytics",
+                "security": "Security"
+            },
+
+        }
+    }
+
 
 class SecretSchemaConf(Schema):
     class Meta:
@@ -122,7 +144,6 @@ class AtlasConfig(Schema):
     URL_APPLICATION = fields.String(load_default="")
     DEFAULT_LANGUAGE = fields.String(load_default="fr")
     MULTILINGUAL = fields.Boolean(load_default=False)
-    ID_GOOGLE_ANALYTICS = fields.String(load_default="UA-xxxxxxx-xx")
     ORGANISM_MODULE = fields.Boolean(load_default=False)
     DISPLAY_OBSERVERS = fields.Boolean(load_default=True)
     GLOSSAIRE = fields.Boolean(load_default=False)
@@ -132,6 +153,7 @@ class AtlasConfig(Schema):
     AFFICHAGE_FOOTER = fields.Boolean(load_default=True)
     AFFICHAGE_RGPD = fields.Boolean(load_default=True)
     OREJIME_APPS = fields.List(fields.Dict(), load_default=[])
+    OREJIME_TRANSLATIONS = fields.Dict(load_default=orijime_default_translations)
     AFFICHAGE_STAT_GLOBALES = fields.Boolean(load_default=True)
     AFFICHAGE_DERNIERES_OBS = fields.Boolean(load_default=True)
     AFFICHAGE_EN_CE_MOMENT = fields.Boolean(load_default=True)
