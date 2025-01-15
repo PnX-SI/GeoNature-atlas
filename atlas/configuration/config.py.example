@@ -84,9 +84,6 @@ LANGUAGES = {
 #####################
 #####################
 
-# Code de suivi des statistiques Google Analytics (si AFFICHAGE_FOOTER = True)
-ID_GOOGLE_ANALYTICS = "UA-xxxxxxx-xx"
-
 # Utiliser et afficher le glossaire (static/custom/glossaire.json.sample)
 GLOSSAIRE = False
 
@@ -260,6 +257,8 @@ PATRIMONIALITE = {
         }
     }
 }
+
+OREJIME_APPS = []
 
 #############################
 #### Lien custom du logo ####
