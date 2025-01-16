@@ -78,26 +78,19 @@ LANGUAGES = {
 }
 
 orijime_default_translations = {
-        "fr": {
-            "consentModal": {
-                "description": "",
-            },
-            "purposes": {
-                "analytics": "Analyse",
-                "security": "Sécurité"
-            }
+    "fr": {
+        "consentModal": {
+            "description": "",
         },
-        "en": {
-            "consentModal": {
-                "description": "This is an example of how to override an existing translation already used by Orejime",
-            },
-            "purposes": {
-                "analytics": "Analytics",
-                "security": "Security"
-            },
-
-        }
-    }
+        "purposes": {"analytics": "Analyse", "security": "Sécurité"},
+    },
+    "en": {
+        "consentModal": {
+            "description": "This is an example of how to override an existing translation already used by Orejime",
+        },
+        "purposes": {"analytics": "Analytics", "security": "Security"},
+    },
+}
 
 
 class SecretSchemaConf(Schema):
