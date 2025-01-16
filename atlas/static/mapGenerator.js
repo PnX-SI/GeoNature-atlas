@@ -19,6 +19,44 @@ const areaBorderColor = String(
   )
 );
 
+function formatDate(date) {
+  const date_options = {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+  };
+  return date.toLocaleDateString(undefined, date_options);
+}
+
+function generateObservationPopup(feature, linkSpecies = false) {
+  /*
+    Génération popup des observations
+    linkSpecies :  indique s'il faut ou non rajouter un lien vers la fiche espèce
+      (cas des fiches communes ; home page)
+  */
+  date = new Date(feature.properties.dateobs);
+  popupContent = `
+    <b>Date: </b> ${formatDate(date)}
+    </br><b>Altitude: </b> ${feature.properties.altitude_retenue}
+    ${observersTxt(feature)}`
+
+  // verifie si le champs effectif est rempli
+  if (feature.properties.effectif_total != undefined) {
+    popupContent = `${popupContent} </br><b>Effectif: </b>${feature.properties.effectif_total}`
+  }
+
+  // S'il faut lier à une fiche espèce
+  if (linkSpecies == true) {
+    popupContent = `<b>Espèce: </b> ${feature.properties.taxon} </br>
+      ${popupContent}
+      </br>
+      <a href='${configuration.URL_APPLICATION}${language}/espece/${feature.properties.cd_ref}'> Fiche espèce </a>
+      `
+  }
+  return popupContent
+}
+
+
 function generateMap(zoomHomeButton) {
   // Map initialization
   firstMapTile = L.tileLayer(configuration.MAP.FIRST_MAP.url, {
@@ -153,24 +191,9 @@ function observersTxt(feature) {
 //****** Fonction fiche espècce ***********
 
 // Popup Point
-function onEachFeaturePoint(feature, layer) {
-  popupContent =
-    "<b>Date: </b>" +
-    feature.properties.dateobs +
-    "</br><b>Altitude: </b>" +
-    feature.properties.altitude_retenue +
-    observersTxt(feature)
-
-  // verifie si le champs effectif est rempli
-  if (feature.properties.effectif_total != undefined) {
-    layer.bindPopup(
-      popupContent +
-        "</br><b>Effectif: </b>" +
-        feature.properties.effectif_total
-    );
-  } else {
-    layer.bindPopup(popupContent);
-  }
+function onEachFeaturePoint(feature, layer) { 
+  popupContent = generateObservationPopup(feature, false);
+  layer.bindPopup(popupContent);
 }
 
 // popup Maille
@@ -425,43 +448,13 @@ function displayMarkerLayerFicheEspece(
 /* *** Point ****/
 
 function onEachFeaturePointLastObs(feature, layer) {
-  popupContent =
-    "<b>Espèce: </b>" +
-    feature.properties.taxon +
-    "</br><b>Date: </b>" +
-    feature.properties.dateobs +
-    "</br><b>Altitude: </b>" +
-    feature.properties.altitude_retenue;
-
-  layer.bindPopup(
-    popupContent +
-      "</br> <a href='" +
-      configuration.URL_APPLICATION +
-      language +
-      "/espece/" +
-      feature.properties.cd_ref +
-      "'> Fiche espèce </a>"
-  );
+  popupContent = generateObservationPopup(feature, true);
+  layer.bindPopup(popupContent);
 }
 
 function onEachFeaturePointCommune(feature, layer) {
-  popupContent =
-    "<b>Espèce: </b>" +
-    feature.properties.taxon +
-    "</br><b>Date: </b>" +
-    feature.properties.dateobs +
-    "</br><b>Altitude: </b>" +
-    feature.properties.altitude_retenue +
-    observersTxt(feature)
-
-  layer.bindPopup(
-    popupContent +
-      "</br> <a href='" +
-      configuration.URL_APPLICATION +
-      "/espece/" +
-      feature.properties.cd_ref +
-      "'> Fiche espèce </a>"
-  );
+  popupContent = generateObservationPopup(feature, true);
+  layer.bindPopup(popupContent);
 }
 
 function generateGeojsonPointLastObs(observationsPoint) {

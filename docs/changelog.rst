@@ -9,6 +9,7 @@ CHANGELOG
 
 - Ajout du lien "Données personelles" dans le pied de page (#527 @juggler31)
 - Ajout de la librairie Orijeme pour recueillir le consentement de l'utilisateur sur l'utilisation des cookies
+- Suppression du support des installations sans TaxHub
 
 🐛 **Corrections**
 
@@ -20,12 +21,17 @@ CHANGELOG
 
 - Amélioration de la "recherche par commune": mots tronqués, sans accent (#531 par @jpm-cbna)
 
+👨‍💻 **Développement**
+
+- Ajout d'un Makefile afin de faciliter les développements.
+
 ⚠️ **Notes de version**
 
 - Le paramètre `ID_GOOGLE_ANALYTICS` et la façon d'integrer un script google analytic sont dépréciés. Se référer à la documentation sur le RGPD et la collecte de cookies : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/cookies_rgpd.rst
 
 Si vous mettez à jour GeoNature-atlas :
 
+- Ajouter l'extension unaccent à la base de données `CREATE EXTENSION IF NOT EXISTS unaccent SCHEMA "public";` (#531, #532)
 - Exécutez le script SQL de mise à jour de la BDD : https://github.com/PnX-SI/GeoNature-atlas/blob/master/data/update/update_1.6.1to1.6.2.sql
 
 
