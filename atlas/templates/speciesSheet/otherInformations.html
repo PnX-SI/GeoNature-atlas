@@ -130,8 +130,8 @@
                                     </div>
                                 </div>
 
-                                <div class="media-body">
-                                    <span class="float-right"></span>
+                                <div class="media-body d-flex align-items-center justify-content-between flex-wrap">
+                                  <div>
                                     <h5 class="mt-0 mb-1 ">
                                         <span id="name"><b>{{ o['nom_organism'] }}</b></span>
                                     </h5>
@@ -145,15 +145,14 @@
                                         {% endif %}
                                     </strong>
                                     <br>{{ _('organism.prospection') }} : <strong>{{ "%.2f"|format(o['nb_observation']/taxon.taxonSearch.nb_obs*100) }} %</strong>
-                                    <br>
-                                    <br>
-                                    <span class="float-right">
+                                  </div>
+                                  <span class="float-right">
                                         <h3><a class="badge badge-primary" href="{{ url_for('main.ficheOrganism', id_organism=o['id_organism']) }}"
                                             data-toggle="tooltip"  style="color: white;"
                                             title="{{ _('check.organism.sheet') }}" data-placement="left">
                                          <i class="fas fa-list fa-fw"></i> {{ _('organism.sheet') }}</i>
                                         </a></h3>
-                                    </span>
+                                  </span>
 
                                 </div>
                             {% endfor %}
