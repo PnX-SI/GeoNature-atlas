@@ -1,0 +1,15 @@
+{% if config.COUCHES_SIG %}
+    <script type="text/javascript">
+      var couchesSigInfo = {{ config.COUCHES_SIG|tojson }};
+    </script>
+    {# TODO: further if on whether arcgis layers are present or not #}
+    <script src="{{ url_for('static', filename='node_modules/esri-leaflet/dist/esri-leaflet.js') }}"></script>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='node_modules/leaflet-layer-tree/src/L.LayerTreeControl.css') }}"/>
+    <script src="{{ url_for('static', filename='node_modules/leaflet-layer-tree/src/L.LayerTreeControl.js') }}"></script>
+    <script src="{{ url_for('static', filename='couchesSig.js') }}"></script>
+{% else %}
+    <script type="text/javascript">
+      var couchesSigInfo = undefined;
+    </script>
+{% endif %}
