@@ -2,8 +2,7 @@
   color: var(--main-color);
 }
 
-#identityCard {
-}
+#identityCard {}
 
 #taxonIdentity {
   padding-top: 10px;
@@ -98,7 +97,7 @@ p.imgDescription.main {
   margin-top: 15px;
 }
 
-.nav > li > a {
+.nav>li>a {
   padding: 10px 7px;
 }
 
@@ -267,7 +266,8 @@ text {
 
 .carousel {
   width: 100%;
-  margin: 0 auto; /* center your carousel if other than 100% */
+  margin: 0 auto;
+  /* center your carousel if other than 100% */
 }
 
 #fixed .slider-size {
@@ -283,4 +283,18 @@ text {
 
 .carousel-indicators {
   bottom: 0px;
+}
+
+#organisms>ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  padding:0;
+}
+
+#organisms>ul .media-body {
+  gap: 0.5rem;
+}
+
+#organisms>ul h3 {
+  font-size: 1.5rem;
 }
