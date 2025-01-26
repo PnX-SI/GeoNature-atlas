@@ -105,7 +105,10 @@ COUCHES_SIG = [
             'layers': 'Zonage_pluvial_(I19-03)54824',
             'transparent': True,
             'format': 'image/png'
-        }
+        },
+        'pages': [
+            'home'
+        ]
     },
     {
         'name': 'Réseau de chaleur',
@@ -115,7 +118,10 @@ COUCHES_SIG = [
             'layers': 'Réseau_de_chaleur_(I_07-00)28291',
             'transparent': True,
             'format': 'image/png'
-        }
+        },
+        'pages': [
+            'species'
+        ]
     },
     {
         'name': 'PLUM annexes',

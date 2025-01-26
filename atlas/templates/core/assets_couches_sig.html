@@ -1,6 +1,6 @@
-{% if config.COUCHES_SIG %}
+{% if couchesSigInfo %}
     <script type="text/javascript">
-      var couchesSigInfo = {{ config.COUCHES_SIG|tojson }};
+      var couchesSigInfo = {{ couchesSigInfo|tojson }};
     </script>
     {# TODO: further if on whether arcgis layers are present or not #}
     <script src="{{ url_for('static', filename='node_modules/esri-leaflet/dist/esri-leaflet.js') }}"></script>
