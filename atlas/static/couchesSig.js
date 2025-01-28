@@ -43,6 +43,8 @@ function addLayerControlToMap(map) {
   );
   var layerTreeCtrl = new L.Control.LayerTreeControl(sigLayers, {
     position: 'topright',
+    collapsed: true
   });
+
   map.addControl(layerTreeCtrl);
 }
