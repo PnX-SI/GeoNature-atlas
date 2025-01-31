@@ -279,7 +279,9 @@ def ficheEspece(cd_nom):
     this_taxon_group2 = taxon["taxonSearch"]["group2_inpn"]
     couches_sig_info = []
     for couche_sig_info in couches_sig_info_for_page:
-        if "groups2_inpn" not in couche_sig_info or this_taxon_group2 in couche_sig_info.get("groups2_inpn", []):
+        all_groups = "groups2_inpn" not in couche_sig_info
+        has_this_taxon_group = this_taxon_group2 in couche_sig_info.get("groups2_inpn", [])
+        if all_groups or has_this_taxon_group:
             couches_sig_info.append(couche_sig_info)
 
     connection.close()
