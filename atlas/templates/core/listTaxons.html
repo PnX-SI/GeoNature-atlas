@@ -18,9 +18,15 @@
     <div id="taxonList" class="d-flex align-content-stretch bg-white flex-grow-1">
         <ul class="list-group w-100">
             {% for taxon in listTaxons.taxons %}
-                <li id="taxonListItem" class="media border-bottom p-2" area-code="{{ insee }}"
-                    cdRef="{{ taxon.cd_ref }}" {% if configuration.INTERACTIVE_MAP_LIST %}data-toggle="tooltip"
-                    data-original-title="{{ _('display.municipality.obs') }}"{% endif %}>
+                <li
+                        id="taxonListItem"
+                        class="media border-bottom p-2"
+                        area-code="{{ insee }}"
+                        cdRef="{{ taxon.cd_ref }}"
+                        {% if configuration.INTERACTIVE_MAP_LIST %}
+                        data-toggle="tooltip"
+                        data-original-title="{{ _('display.municipality.obs') }}"
+                        {% endif %}>
                 <span class="d-none">{{ taxon.group2_inpn }}</span>
                 <div class="pictoImgList mr-2" data-toggle="tooltip" data-original-title="{{ taxon.group2_inpn }}"
                      data-placement="right">
