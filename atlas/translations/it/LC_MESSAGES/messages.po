@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-27 10:32+0200\n"
+"POT-Creation-Date: 2025-02-06 22:17+0100\n"
 "PO-Revision-Date: 2021-07-19 09:53+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
@@ -210,6 +210,18 @@ msgstr "Cerca per altro tipo di zone"
 #: templates/core/listTaxons.html:14
 msgid "filter.species"
 msgstr "Filtrare le species"
+
+#: templates/core/listTaxons.html:24
+msgid "autres.filtres"
+msgstr "Altri filtri"
+
+#: templates/core/listTaxons.html:33
+msgid "espèces.protégées.uniquement"
+msgstr "Solo specie protette"
+
+#: templates/core/listTaxons.html:39
+msgid "espèces.patrimoniales.uniquement"
+msgstr "Solo specie patrimoniale"
 
 #: templates/core/listTaxons.html:23
 msgid "display.municipality.obs"

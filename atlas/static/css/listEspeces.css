@@ -204,3 +204,65 @@ tbody tr.current {
       color: deeppink;
   }
 }
+
+/* styles pour filtres sur liste taxons */
+
+/* mobile-first styles : display flex en column avec collapsed section Autres filtres */
+
+#filtresListeEspècesContainer {
+  container-type: inline-size;
+}
+
+#filtresListeEspèces {
+  margin: 0.5rem;
+}
+
+#filtresListeEspèces form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem 1.5rem;
+  align-items: start;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+#filtresListeEspècesContainer button {
+  padding-top: 0;
+  padding-bottom: 0;
+  font-size: 0.8rem;
+  background-color: var(--main-color);
+}
+
+#filtresListeEspèces #autresFiltresListeEspèces > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem 1.5rem;
+  align-items: start;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+#filtresListeEspèces label {
+  margin-bottom: unset;
+}
+
+@container (min-width: 800px) {
+  /* Styles pour affichage large : row-flex et on cache le bouton "Autres filtres" */
+  #filtresListeEspèces form {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  #filtresListeEspèces #autresFiltresListeEspèces > div {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  #filtresListeEspècesContainer button {
+    display: none;
+  }
+
+  #autresFiltresListeEspèces.collapse {
+    display: block;
+  }
+}
