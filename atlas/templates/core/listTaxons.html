@@ -8,19 +8,62 @@
 
         </style>
     {% endif %}
-    <div class="bg-white border-right p-2">
-
-        <div class="col">
-            <input id="taxonInput" type="text" class="form-control  form-control-sm" placeholder="{{ _('filter.species') }}" />
+    <div id="filtresListeEspècesContainer" class="bg-white border-right p-2 border-bottom">
+        <div id="filtresListeEspèces">
+            <form>
+                <div>
+                    <input id="taxonInput" type="text" placeholder="{{ _('filter.species') }}" />
+                    {% if config.PROTECTION or config.DISPLAY_PATRIMONIALITE %}
+                    <button
+                            class="btn btn-primary dropdown-toggle"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#autresFiltresListeEspèces"
+                            aria-expanded="false"
+                            aria-controls="filtresListeEspèces">
+                        {{ _('autres.filtres') }}
+                    </button>
+                    {% endif %}
+                </div>
+                <div id="autresFiltresListeEspèces" class="collapse">
+                    <div>
+                        {% if config.PROTECTION %}
+                        <div class="custom-control custom-switch">
+                            <input id="filtreProtégées" name="filtreProtégées" type="checkbox" class="custom-control-input" />
+                            <label for="filtreProtégées" class="custom-control-label">{{ _('espèces.protégées.uniquement') }}</label>
+                        </div>
+                        {% endif %}
+                        {% if config.DISPLAY_PATRIMONIALITE %}
+                        <div class="custom-control custom-switch">
+                            <input id="filtrePatrimoniales" name="filtrePatrimoniales" type="checkbox" class="custom-control-input" />
+                            <label for="filtrePatrimoniales" class="custom-control-label">{{ _('espèces.patrimoniales.uniquement') }}</label>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </form>
         </div>
-
     </div>
     <div id="taxonList" class="d-flex align-content-stretch bg-white flex-grow-1">
         <ul class="list-group w-100">
             {% for taxon in listTaxons.taxons %}
-                <li id="taxonListItem" class="media border-bottom p-2" area-code="{{ insee }}"
-                    cdRef="{{ taxon.cd_ref }}" {% if configuration.INTERACTIVE_MAP_LIST %}data-toggle="tooltip"
-                    data-original-title="{{ _('display.municipality.obs') }}"{% endif %}>
+                <li
+                        id="taxonListItem"
+                        class="media border-bottom p-2"
+                        area-code="{{ insee }}"
+                        cdRef="{{ taxon.cd_ref }}"
+                        {% if configuration.INTERACTIVE_MAP_LIST %}
+                        data-toggle="tooltip"
+                        data-original-title="{{ _('display.municipality.obs') }}"
+                        {% endif %}
+                        {% if configuration.PROTECTION and taxon.protection_stricte == 'oui' %}
+                        data-protégée
+                        {% endif %}
+                        {% if
+                            configuration.DISPLAY_PATRIMONIALITE
+                            and taxon.patrimonial in configuration.PATRIMONIALITE.config %}
+                        data-patrimoniale
+                        {% endif %}>
                 <span class="d-none">{{ taxon.group2_inpn }}</span>
                 <div class="pictoImgList mr-2" data-toggle="tooltip" data-original-title="{{ taxon.group2_inpn }}"
                      data-placement="right">
