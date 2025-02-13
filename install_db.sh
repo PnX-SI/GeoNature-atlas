@@ -209,9 +209,10 @@ if ! database_exists $db_name
         # EN: If I use GeoNature ($geonature_source = True), then I create the child tables in FDW connected to the GeoNature DB
         if $geonature_source
             then
-                sudo cp data/gn2/atlas_synthese.sql /tmp/atlas/atlas_synthese_extended.sql
-                sudo sed -i "s/myuser;$/$owner_atlas;/" /tmp/atlas/atlas_synthese_extended.sql
-                export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/atlas_synthese_extended.sql  &>> log/install_db.log
+                export PGPASSWORD="${owner_atlas_pass}" ; \
+                    cat data/gn2/atlas_synthese.sql | \
+                    sed "s/myuser;$/${owner_atlas}/g" | \
+                    psql -q -d ${db_name} -U ${owner_atlas} -h ${db_host} -p ${db_port}
         # FR: Sinon je créé une table synthese.syntheseff avec 2 observations exemple
         # EN: Otherwise I created a table synthese.syntheseff with 2 observations example
         else
