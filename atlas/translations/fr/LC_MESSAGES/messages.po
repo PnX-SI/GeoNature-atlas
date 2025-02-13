@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-27 10:32+0200\n"
+"POT-Creation-Date: 2024-11-27 10:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -47,7 +47,11 @@ msgstr "Mentions légales"
 msgid "personal_data"
 msgstr "Données personnelles"
 
-#: static/custom/templates/footer.html:17
+#: static/custom/templates/footer.html:12
+msgid "preferences_cookies"
+msgstr "Modifier les préférences de cookies"
+
+#: static/custom/templates/footer.html:18
 #: static/custom/templates/footer.html.sample:17
 msgid "atlas.fauna.flora"
 msgstr "Atlas de la faune et de la flore"

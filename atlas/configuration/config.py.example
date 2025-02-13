@@ -84,9 +84,6 @@ LANGUAGES = {
 #####################
 #####################
 
-# Code de suivi des statistiques Google Analytics (si AFFICHAGE_FOOTER = True)
-ID_GOOGLE_ANALYTICS = "UA-xxxxxxx-xx"
-
 # Utiliser et afficher le glossaire (static/custom/glossaire.json.sample)
 GLOSSAIRE = False
 
@@ -260,6 +257,12 @@ PATRIMONIALITE = {
         }
     }
 }
+
+# liste des application dont "orejime" controle la dépose de cookie
+OREJIME_APPS = []
+
+# traduction orejime (voir la doc cookie et RGPD pour comment le remplir)
+OREJIME_TRANSLATIONS = {}
 
 #############################
 #### Lien custom du logo ####

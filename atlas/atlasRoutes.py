@@ -207,12 +207,18 @@ def index():
     connection.close()
     session.close()
 
+    personal_data = False
+    args_personal_data = request.args.get("personal_data")
+    if args_personal_data and args_personal_data.lower() == "true":
+        personal_data = True
+
     return render_template(
         "templates/home/_main.html",
         observations=observations,
         mostViewTaxon=mostViewTaxon,
         customStatMedias=customStatMedias,
         lastDiscoveries=lastDiscoveries,
+        personal_data=personal_data,
     )
 
 
