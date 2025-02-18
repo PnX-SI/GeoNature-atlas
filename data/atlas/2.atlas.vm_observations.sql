@@ -69,12 +69,15 @@ AS
       ON (s.id_nomenclature_sensitivity = sens.id_nomenclature)
     LEFT JOIN synthese.t_nomenclatures AS st
       ON (s.id_nomenclature_observation_status = st.id_nomenclature)
+    LEFT JOIN synthese.t_nomenclatures AS va
+      ON (s.id_nomenclature_valid_status = va.id_nomenclature)
     JOIN ref_geo.l_areas AS a
       ON (sa.id_area = a.id_area)
     JOIN ref_geo.bib_areas_types AS t
       ON (a.id_type = t.id_type)
   WHERE s.the_geom_point IS NOT NULL
     AND st.cd_nomenclature = 'Pr'
+    AND va.cd_nomenclature IN ('1', '2')
     AND sens.cd_nomenclature != '2.8'
     AND t.type_code IN ('M1', 'M2', 'M5', 'M10', 'M20', 'M50')
     AND atlas.is_blurred_area_type(sens.cd_nomenclature, t.type_code) = TRUE
@@ -131,11 +134,14 @@ FROM synthese.synthese AS s
   JOIN synthese.t_nomenclatures AS sens
     ON (s.id_nomenclature_sensitivity = sens.id_nomenclature)
   JOIN synthese.t_nomenclatures AS st
-      ON (s.id_nomenclature_observation_status = st.id_nomenclature)
+    ON (s.id_nomenclature_observation_status = st.id_nomenclature)
+  JOIN synthese.t_nomenclatures AS va
+    ON (s.id_nomenclature_valid_status = va.id_nomenclature)
   LEFT JOIN blurred_centroid_insee AS bci
     ON bci.id_synthese = s.id_synthese
 WHERE s.the_geom_point IS NOT NULL
   AND st.cd_nomenclature = 'Pr'
+  AND va.cd_nomenclature IN ('1', '2')
   AND sens.cd_nomenclature != '2.8' ;
 
 CREATE UNIQUE INDEX ON atlas.vm_observations (id_observation);
