@@ -12,6 +12,7 @@ CREATE INDEX ON atlas.vm_taxref (nom_complet);
 CREATE INDEX ON atlas.vm_taxref (nom_valide);
 
 -- Rangs de taxref ordonnés
+DROP TABLE IF EXISTS atlas.bib_taxref_rangs ;
 
 CREATE TABLE atlas.bib_taxref_rangs (
     id_rang character(4) NOT NULL PRIMARY KEY,
