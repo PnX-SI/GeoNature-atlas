@@ -24,11 +24,11 @@
                         <b>{{ observers|length|pretty }}</b> <br/>
                         <span style="font-size: 0.90rem">{{ _('observers')|lower if observers|length > 1 else _('observer')|lower }}</span>
                     </li>
-                    <li id="firstObs" class="pointer">
+                    <li id="firstObs">
                         <i class="fas fa-search fa-2x"></i> <br/>
                         <span style="font-size: 0.90rem">{{ _('first.obs') }}</span><br/><b>{{ taxon.taxonSearch.yearmin|int }}</b>
                     </li>
-                    <li id="lastObs" class="pointer">
+                    <li id="lastObs">
                         <i class="far fa-clock fa-2x"></i> <br/>
                         <span style="font-size: 0.90rem">{{ _('last.obs') }}</span><br/><b>{{ taxon.taxonSearch.yearmax|int }}</b>
                     </li>
