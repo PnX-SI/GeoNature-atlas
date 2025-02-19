@@ -79,7 +79,7 @@ def lastObservationsMailles(connection, mylimit, idPhoto):
         JOIN atlas.vm_cor_area_synthese m ON m.id_synthese=o.id_observation
         JOIN atlas.vm_l_areas vla ON vla.id_area=m.id_area
         LEFT JOIN atlas.vm_medias medias
-            ON medias.cd_ref = obs.cd_ref AND medias.id_type = 1
+            ON medias.cd_ref = obs.cd_ref AND medias.id_type = :thisID
         WHERE  o.dateobs >= (CURRENT_TIMESTAMP - INTERVAL :thislimit) AND vla.id_type = 34
         ORDER BY o.dateobs DESC
         LIMIT 1000
