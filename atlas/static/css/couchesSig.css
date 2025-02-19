@@ -52,3 +52,15 @@
   margin: 0;
   padding: 0;
 }
+
+/* Spécifie une largeur fixe pour éviter le collapse accidentel quand on replie un tree */
+.layer-tree-control-expanded {
+  width: 250px;
+}
+
+/* Nécessaire pour affichage correct avec largeur fixe */
+.layer-tree-control-expanded .space,
+.layer-tree-control-expanded .tree-check,
+.layer-tree-control-expanded .tree-icon {
+  flex-shrink: 0;
+}
