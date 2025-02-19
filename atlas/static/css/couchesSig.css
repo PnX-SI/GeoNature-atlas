@@ -64,3 +64,9 @@
 .layer-tree-control-expanded .tree-icon {
   flex-shrink: 0;
 }
+
+/* Corrige l'affichage de la checkbox (nécessaire à cause du reboot bootstrap) */
+.layer-tree-control *,
+.layer-tree-control ::after {
+  box-sizing: content-box;
+}
