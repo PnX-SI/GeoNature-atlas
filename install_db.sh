@@ -97,7 +97,7 @@ if ! database_exists $db_name
                 sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgres_fdw;"  &>> log/install_db.log
                 sudo -u postgres -s psql -d $db_name -c "CREATE SERVER geonaturedbserver FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$db_source_host', dbname '$db_source_name', port '$db_source_port', fetch_size '$db_source_fetch_size');"  &>> log/install_db.log
                 sudo -u postgres -s psql -d $db_name -c "ALTER SERVER geonaturedbserver OWNER TO $owner_atlas;"  &>> log/install_db.log
-                sudo -u postgres -s psql -d $db_name -c "CREATE USER MAPPING FOR $owner_atlas SERVER geonaturedbserver OPTIONS (user '$atlas_source_user', password_required 'false') ;"  &>> log/install_db.log
+                sudo -u postgres -s psql -d $db_name -c "CREATE USER MAPPING FOR $owner_atlas SERVER geonaturedbserver OPTIONS (user '$atlas_source_user', password '$atlas_source_pass') ;"  &>> log/install_db.log
         fi
 
         # FR: Création des schémas de la BDD
@@ -377,7 +377,7 @@ if ! database_exists $db_name
 
         echo "[$(date +'%H:%M:%S')] Creating atlas.vm_taxon_attribute..."
         time_temp=$SECONDS
-        sudo sed -i "s/WHERE ba.nom_attribut IN ('atlas_description', 'atlas_commentaire', 'atlas_milieu', 'atlas_chorologie')$/WHERE nom_attribut  IN ($displayed_attr);/" /tmp/atlas/9.atlas.vm_taxon_attribute.sql
+        sudo sed -i "s/WHERE ba.nom_attribut IN ('atlas_description', 'atlas_commentaire', 'atlas_milieu', 'atlas_chorologie')$/WHERE ba.nom_attribut IN ($displayed_attr)/" /tmp/atlas/9.atlas.vm_taxon_attribute.sql
         export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -f /tmp/atlas/9.atlas.vm_taxon_attribute.sql  &>> log/install_db.log
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
