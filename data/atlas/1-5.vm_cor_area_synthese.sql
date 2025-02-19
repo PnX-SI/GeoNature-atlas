@@ -1,10 +1,3 @@
-IMPORT FOREIGN SCHEMA gn_synthese
-    LIMIT TO (gn_synthese.cor_area_synthese)
-FROM SERVER geonaturedbserver INTO synthese;
-
-IMPORT FOREIGN SCHEMA gn_sensitivity
-LIMIT TO (cor_sensitivity_area_type)  FROM SERVER geonaturedbserver INTO synthese;
-
 CREATE MATERIALIZED VIEW atlas.vm_cor_area_synthese
 TABLESPACE pg_default
 AS

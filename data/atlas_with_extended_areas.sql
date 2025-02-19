@@ -1,19 +1,8 @@
 --################################
 --###
 --################################
-
--- Suppression de la VM atlas.vm_bib_areas_types si existe
-DROP MATERIALIZED VIEW IF EXISTS atlas.vm_bib_areas_types CASCADE;
-
-CREATE MATERIALIZED VIEW atlas.vm_bib_areas_types AS
-SELECT t.id_type, t.type_code, t.type_name, t.type_desc
-FROM ref_geo.bib_areas_types t
-WHERE
-    type_code IN (SELECT * from string_to_table(:type_code, ','));
-
-CREATE INDEX ON atlas.vm_bib_areas_types(id_type);
-CREATE INDEX ON atlas.vm_bib_areas_types(type_code);
-CREATE INDEX ON atlas.vm_bib_areas_types(type_name);
+IMPORT FOREIGN SCHEMA gn_sensitivity
+LIMIT TO (cor_sensitivity_area_type)  FROM SERVER geonaturedbserver INTO synthese;
 
 -- Suppression de la VM atlas.vm_cor_areas si existe
 DROP MATERIALIZED VIEW IF EXISTS atlas.vm_cor_areas CASCADE;
@@ -39,14 +28,18 @@ SELECT
      , st_transform(a.geom, 4326)               AS the_geom
      , st_asgeojson(st_transform(a.geom, 4326)) AS area_geojson
      , a.description                            AS description
-FROM
-    ref_geo.l_areas a
-        JOIN atlas.t_layer_territoire layer ON ST_INTERSECTS(layer.the_geom, a.geom_4326)
-        JOIN atlas.vm_bib_areas_types t
-             ON t.id_type = a.id_type
+FROM ref_geo.l_areas a
+JOIN ref_geo.bib_areas_types b on a.id_type = b.id_type
+    JOIN atlas.t_layer_territoire layer ON ST_INTERSECTS(layer.the_geom, a.geom_4326)
 WHERE
     enable = TRUE AND
-    type_code IN (SELECT * from string_to_table(:type_code, ','))
+    b.type_code IN (
+        SELECT * from string_to_table(:type_code, ',')
+        )
+        OR a.id_type in (
+            SELECT id_area_type
+            FROM synthese.cor_sensitivity_area_type
+        )
 WITH DATA;
 
 CREATE UNIQUE INDEX vm_l_areas_id_area_idx
@@ -72,6 +65,3 @@ FROM
 
 CREATE UNIQUE INDEX ON atlas.vm_cor_area_observation(id_observation, id_area);
 
-GRANT SELECT ON TABLE atlas.vm_bib_areas_types TO my_reader_user;
-GRANT SELECT ON TABLE atlas.vm_l_areas TO my_reader_user;
-GRANT SELECT ON TABLE atlas.vm_cor_area_observation TO my_reader_user;
