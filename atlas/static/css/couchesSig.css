@@ -70,3 +70,8 @@
 .layer-tree-control ::after {
   box-sizing: content-box;
 }
+
+/* Le gestionnaire développé doit s'afficher au-dessus de la légende des mailles */
+.leaflet-top:has(.layer-tree-control-expanded) {
+  z-index: 1001;
+}
