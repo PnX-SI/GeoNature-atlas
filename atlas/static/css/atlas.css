@@ -277,7 +277,10 @@ li.sidebar-brand {
 
 /* Legend MAPS */
 
-.legend {
+.leaflet-top > .legend,
+.leaflet-right > .legend,
+.leaflet-bottom > .legend,
+.leaflet-left > .legend {
   line-height: 10px;
   font-size: 14px;
   color: #555;
@@ -288,14 +291,20 @@ li.sidebar-brand {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
-.legend i {
+.leaflet-top > .legend i,
+.leaflet-right > .legend i,
+.leaflet-bottom > .legend i,
+.leaflet-left > .legend i {
   width: 18px;
   height: 18px;
   float: left;
   margin-right: 8px;
 }
 
-.legend:hover {
+.leaflet-top > .legend:hover,
+.leaflet-right > .legend:hover,
+.leaflet-bottom > .legend:hover,
+.leaflet-left > .legend:hover {
   opacity: 1;
 }
 
