@@ -126,6 +126,41 @@ MAP = {
     'ENABLE_SCALE': True
 }
 
+# Définit les couches additionnelles en provenance de SIG externes. Les propriétés suivantes sont requises
+# pour chaque couche :
+# - 'name' : le libellé qui désignera la couche dans le gestionnaire
+# - 'type' : 'wms' ou 'arcgisMapService'
+# - 'url' : URL du service, voir plus bas
+# - 'layer' (uniquement pour type 'wms')
+# Propriétés optionnelles :
+# - 'pages' : restreint les pages sur laquelle le couche est disponible. Valeurs possibles : 'home', 'species', 'commune'
+# - 'groups2_inpn' : sur fiche espèce restreint les espèces pour lesquelles la couche est disponible. Par exemple : 'Amphibiens', 'Oiseaux'
+# - 'options' : les propriétés de l'objet 'options' sont passées directement au constructeur du layer. Les constructeurs sont :
+#   + type 'wms' => objet L.tileLayer.wms de Leaflet
+#   + type 'arcgisMapService' => objet L.esri.dynamicMapLayer de la lib 'leaflet-esri'
+#
+# Exemple URL d'un service WMS :
+#   https://cartographie.nantesmetropole.fr/arcgis/services/PLUm/plum_annexes/MapServer/WMSServer?
+#   (cette URL est généralement fournie dans la doc du service avec les paramètres pour une requête GetCapabilities,
+#    indiquer l'URL sans les paramètres)
+# Exemple URL d'un Arcgis Map Service :
+#   https://cartographie.nantesmetropole.fr/arcgis/rest/services/PLUm/plum_annexes/MapServer
+#           ^^^^^^^^^^ votre domaine ^^^^^^                      ^^ arborescence ^
+#
+# Comment contrôler la profondeur de l'affichage pour chaque couche ?
+# Fonctionnement par défaut :
+# - couches WMS vont dans le tile pane avec un z-index de 1. Comportement CSS par défaut : la dernière couche activée se
+#   met au-dessus des autres couches WMS
+# - couches arcgisMapService sont placées sur overlay pane et utilisent un mécanisme autoZIndex par défaut. Ça se traduit
+#   par le même comportement que les couches WMS : dernière couche Arcgis activée se met au-dessus des autres couches Arcgis.
+# - Leaflet place overlay pane au-dessus du tile pane : les couches Arcgis apparaissent toujours au-dessus des couches WMS.
+#
+# Les options suivantes permettent de contrôler finement les profondeurs des couches :
+# - 'pane' : pour changer la destination d'une couche. Par exemple : `'pane': 'overlayPane'` pour une couche WMS.
+# - 'zIndex' : spécifie le z-index de la couche. Par exemple : `'zIndex': 30`
+# Remarques :
+# - les z-index des couches sont pris en compte relativement au couches du même pane (comportement CSS)
+# - Leaflet place les couches points ou mailles de gn-atlas au z-index 200 dans le overlay pane
 COUCHES_SIG = [
     {
         'name': 'Zonage pluvial',
