@@ -131,8 +131,8 @@ COUCHES_SIG = [
         'name': 'Zonage pluvial',
         'type': 'wms',
         'url': 'https://cartographie.nantesmetropole.fr/arcgis/services/PLUm/plum_annexes/MapServer/WMSServer?',
+        'layer': 'Zonage_pluvial_(I19-03)54824',
         'options': {
-            'layers': 'Zonage_pluvial_(I19-03)54824',
             'transparent': True,
             'format': 'image/png'
         },
@@ -144,8 +144,8 @@ COUCHES_SIG = [
         'name': 'Zonage eaux usées',
         'type': 'wms',
         'url': 'https://cartographie.nantesmetropole.fr/arcgis/services/PLUm/plum_annexes/MapServer/WMSServer?',
+        'layer': 'Zonage_eaux_usées_(I19-01)7873',
         'options': {
-            'layers': 'Zonage_eaux_usées_(I19-01)7873',
             'transparent': True,
             'format': 'image/png'
         },
@@ -161,8 +161,8 @@ COUCHES_SIG = [
         'name': 'Réseau de chaleur',
         'type': 'wms',
         'url': 'https://cartographie.nantesmetropole.fr/arcgis/services/PLUm/plum_annexes/MapServer/WMSServer?',
+        'layer': 'Réseau_de_chaleur_(I_07-00)28291',
         'options': {
-            'layers': 'Réseau_de_chaleur_(I_07-00)28291',
             'transparent': True,
             'format': 'image/png'
         },

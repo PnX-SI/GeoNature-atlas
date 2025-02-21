@@ -67,20 +67,21 @@ L.Control.CollapsableLayerTreeControl = L.Control.LayerTreeControl.extend({
   }
 });
 
+function _deepCopy(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}
+
 function createLeafletLayer(coucheSigInfo) {
-  return L.tileLayer.wms(
-    coucheSigInfo.url,
-    coucheSigInfo.options
-  );
+  let options = _deepCopy(coucheSigInfo.options || {});
+  options.layers = [coucheSigInfo.layer];
+  return L.tileLayer.wms(coucheSigInfo.url, options);
 }
 
 function createEsriDynamicLayer(coucheSigInfo) {
-  return L.esri.dynamicMapLayer(
-    {
-      url: coucheSigInfo.url,
-      layers: []
-    }
-  );
+  let options = _deepCopy(coucheSigInfo.options || {});
+  options.layers = [];
+  options.url = coucheSigInfo.url;
+  return L.esri.dynamicMapLayer(options);
 }
 
 function createLayer(coucheSigInfo) {
