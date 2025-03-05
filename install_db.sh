@@ -9,8 +9,7 @@ if [ "$(id -u)" == "0" ];
         exit 1
 fi
 
-# FR: sudo ls pour demander le mot de passe une fois
-# EN: sudo ls to request the password once
+# sudo ls pour demander le mot de passe une fois
 sudo ls
 
 if [ ! -d 'log' ]
@@ -107,11 +106,6 @@ if ! database_exists $db_name
         sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA utilisateurs AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
         sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA gn_meta AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
 
-        if [ $install_taxonomie = "false" ] # Pourquoi ce if ? TODO
-            then
-                sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA taxonomie AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
-        fi
-
         if $geonature_source
             then
                 echo "Creating FDW from GN2"
@@ -126,18 +120,19 @@ if ! database_exists $db_name
         ###########################
         if $use_ref_geo_gn2
             then
-                echo "[$(date +'%H:%M:%S')] Creating materialized view in atlas_with_extended_areas"
-                export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port  \
-                -f data/atlas_with_extended_areas.sql -v type_code=$type_code &>> log/install_db.log
-
                 echo "Creation of geographic tables from the ref_geo schema of the geonature database"
                 echo "--------------------" &>> log/install_db.log
                 echo "Creation of layers table from ref_geo of geonaturedb" &>> log/install_db.log
                 echo "--------------------" &>> log/install_db.log
                 export PGPASSWORD=$owner_atlas_pass; psql -d $db_name -U $owner_atlas -h $db_host -p $db_port \
-                    -v type_maille=$type_maille \
                     -v type_territoire=$type_territoire \
                     -f data/gn2/atlas_ref_geo.sql &>> log/install_db.log
+
+                    
+                echo "[$(date +'%H:%M:%S')] Creating materialized view in atlas_with_extended_areas"
+                export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port  \
+                -f data/atlas_with_extended_areas.sql -v type_code=$type_code &>> log/install_db.log
+
         else
             # FR: Import du shape des limites du territoire ($limit_shp) dans la BDD / atlas.t_layer_territoire
             # EN: Import of the shape of the territory limits ($limit_shp) in the BDD / atlas.t_layer_territory
@@ -282,8 +277,7 @@ if ! database_exists $db_name
             echo "[$(date +'%H:%M:%S')] Creating atlas.t_mailles_territoire..."
             time_temp=$SECONDS
             export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port  \
-            -f data/atlas/12.atlas.t_mailles_territoire.sql \
-            -v type_maille=$type_maille &>> log/install_db.log
+            -f data/atlas/12.atlas.t_mailles_territoire.sql  &>> log/install_db.log
             echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
         fi
 

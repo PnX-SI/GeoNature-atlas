@@ -19,8 +19,9 @@ const areaBorderColor = String(
     )
 );
 
+// Feature group de chaque élément de floutage (M1, M5 etc...)
 let overlays = {}
-const current_type_code = []
+const current_type_code = new Set()
 
 function clearOverlays(){
     map.removeControl(control)
@@ -72,6 +73,9 @@ function generateObservationPopup(feature, linkSpecies = false) {
     return popupContent
 }
 
+/**
+ * Create a layer control for each type of zoning (M1, M5 etc..) and associate it a feature group
+ */
 function createMailleSelector(selectedAllLayer = false) {
     const defaultActiveLayer = []
 
@@ -155,7 +159,6 @@ function generateMap(zoomHomeButton) {
     });
 
     // 'Google-like' baseLayer controler
-
     var LayerControl = L.Control.extend({
         options: {
             position: "bottomleft",
@@ -241,7 +244,7 @@ function observersTxt(feature) {
 function onEachFeaturePointSpecies(feature, layer) {
     popupContent = generateObservationPopup(feature, false);
     layer.bindPopup(popupContent);
-    filterObservations(feature, layer);
+    addInFeatureGroup(feature, layer);
 }
 
 // popup Maille
@@ -254,7 +257,8 @@ function onEachFeatureMaille(feature, layer) {
         " ";
     layer.bindPopup(popupContent);
 
-    filterObservations(feature, layer);
+    // associate a feature to the correct feature group
+    addInFeatureGroup(feature, layer);
 
     zoomMaille(layer);
 
@@ -396,9 +400,7 @@ function displayMailleLayerFicheEspece(observationsMaille) {
     myGeoJson = observationsMaille;
     // Get all different type code
     Object.values(myGeoJson.features).forEach(elem => {
-        if (!current_type_code.includes(elem.properties.type_code)) {
-            current_type_code.push(elem.properties.type_code)
-        }
+            current_type_code.add(elem.properties.type_code)
     })
     createMailleSelector(true)
     currentLayer = L.geoJson(myGeoJson, {
@@ -538,13 +540,13 @@ function displayMarkerLayerFicheEspece(
 function onEachFeaturePointLastObs(feature, layer) {
     popupContent = generateObservationPopup(feature, true);
     layer.bindPopup(popupContent);
-    filterObservations(feature, layer);
+    addInFeatureGroup(feature, layer);
 }
 
 function onEachFeaturePointCommune(feature, layer) {
     popupContent = generateObservationPopup(feature, true);
     layer.bindPopup(popupContent);
-    filterObservations(feature, layer);
+    addInFeatureGroup(feature, layer);
 }
 
 function generateGeojsonPointLastObs(observationsPoint) {
@@ -647,7 +649,7 @@ function onEachFeatureMailleLastObs(feature, layer) {
 
     layer.bindPopup(popupContent, { maxHeight: 300 });
 
-    filterObservations(feature, layer);
+    addInFeatureGroup(feature, layer);
 
     zoomMaille(layer);
 
@@ -677,21 +679,11 @@ function styleMailleAtlas(nb) {
         color: getColor(nb),
         fillOpacity: 0.5,
     };
-    // TODO: C'est une proposition afin de mieux voir les différentes
-    //        mailles ainsi que changer le style lors d'une intéraction
-    // return {
-    //   opacity: 1,
-    //   weight: 2,
-    //   color: mailleLastObsBorderColor,
-    //   fillOpacity: 0,
-    // };
 }
 
 function styleMailleClickedOrHover(layer) {
     var mailleCode = layer.feature.properties.type_code;
-    var fillColor = getComputedStyle(document.body).getPropertyValue(
-        "--main-color"
-    );
+
 
     let fillOpacity = 0.85;
     if (configuration.AFFICHAGE_COUCHES_MAP[mailleCode] && configuration.AFFICHAGE_COUCHES_MAP[mailleCode].fillOpacity) {
@@ -699,12 +691,12 @@ function styleMailleClickedOrHover(layer) {
     }
 
     var options = layer.options;
+    
     return {
         ...options,
         opacity: 1,
-        weight: 2,
-        color: fillColor,
-        fillOpacity: fillOpacity,
+        weight: 5,
+        // fillOpacity: fillOpacity
     };
 }
 
@@ -717,7 +709,10 @@ function resetStyleMailles() {
     });
 }
 
-function filterObservations(feature, layer) {
+/**
+ * Associate a feature to the correct feature group (M1, M5 ...)
+ */
+function addInFeatureGroup(feature, layer) {
     mailleTypeCode = feature.properties.type_code;
 
     if (Object.keys(overlays).length !== 0) {
@@ -735,9 +730,7 @@ function generateGeoJsonMailleLastObs(observations, isRefresh=false) {
         observations = observations.features;
     }
     observations.forEach((obs) => {
-        if (!current_type_code.includes(obs.type_code)) {
-            current_type_code.push(obs.type_code)
-        }
+        current_type_code.add(obs.type_code)
         findedFeature = features.find(
             (feat) => feat.properties.meshId === obs.id_maille
         );
