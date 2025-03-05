@@ -36,7 +36,7 @@ if (configuration.AFFICHAGE_MAILLE) {
 }
 // POINT
 else {
-    displayMarkerLayerPointLastObs(observations);
+    customMarkerStyle(observations);
 }
 
 // Generate legends and check configuration to choose which to display (Maille ou Point)

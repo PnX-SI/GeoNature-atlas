@@ -53,7 +53,8 @@ Les paramètres de l'url de la fiche territoire était `url_for('main.ficheCommu
 
 - Le paramètre `ID_GOOGLE_ANALYTICS` et la façon d'integrer un script google analytic sont dépréciés. Se référer à la documentation sur le RGPD et la collecte de cookies : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/cookies_rgpd.rst
 - L'affichage des geométrie de sensibilité est calculé dynamiquement à partir de la table gn_sensitivity.cor_sensitivity_area_type . Pour que l'atlas fonctionne bien, veuillez remplir quel niveau de maille vous souhaitez pour les observations non sensible. Exemple pour l'id_nomenclature_sensitivity correspondant à "non sensible", mettez `id_area_type` (ref_geo.bib_area_type.id_type) des maille 1km.
-
+- Le fichier de customisation contenant la "navbar" `atlas/static/custom/templates/navbar.html.sample` a été modifié pour y integegrer la recherche multi zonage. Veuillez copiez coller le contenu de `atlas/static/custom/templates/navbar.html.sample` dans `atlas/static/custom/templates/navbar.html` et y appliquer les éventuelles customisation que vous aviez réalisé.
+- La fonction de customisation du style des observations en fonction de la sensibilité à changer de nom (`customizeMarkerStyle`), veuillez vous reporter au fichier `atlas/static/custom/maps-custom.js.sample` et repercuter les changements dans votre fichier `maps-custom.js`. Si vous le l'aviez pas touchez, copiez collez le contenu de `maps-custom.js.sample` dans `maps-custom.js`
 Si vous mettez à jour GeoNature-atlas :
 
 - Ajouter l'extension unaccent à la base de données `CREATE EXTENSION IF NOT EXISTS unaccent SCHEMA "public";` (#531, #532)

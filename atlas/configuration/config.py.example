@@ -283,6 +283,10 @@ PATRIMONIALITE = {
     }
 }
 
+# Liste des type de territoire pour les fichies territoires (code bib_area_type)
+# ex : TYPE_TERRITOIRE_SHEET = ['COM', 'EPCI']
+TYPE_TERRITOIRE_SHEET = []
+
 # liste des application dont "orejime" controle la dépose de cookie
 OREJIME_APPS = []
 

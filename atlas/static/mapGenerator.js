@@ -502,8 +502,8 @@ function displayMarkerLayerFicheEspece(
         sliderTouch
     );
 
-    if (typeof pointDisplayOptionsFicheEspece == "undefined") {
-        pointDisplayOptionsFicheEspece = function (feature) {
+    if (typeof customizeMarkerStyle == "undefined") {
+        customizeMarkerStyle = function (feature) {
             return {};
         };
     }
@@ -511,7 +511,7 @@ function displayMarkerLayerFicheEspece(
         onEachFeature: onEachFeaturePointSpecies,
 
         pointToLayer: function (feature, latlng) {
-            return L.circleMarker(latlng, pointDisplayOptionsFicheEspece(feature));
+            return L.circleMarker(latlng, customizeMarkerStyle(feature));
         },
     });
     if (myGeoJson.features.length > configuration.LIMIT_CLUSTER_POINT) {
@@ -570,8 +570,8 @@ function generateGeojsonPointLastObs(observationsPoint) {
 
 function displayMarkerLayerPointLastObs(observationsPoint) {
   myGeoJson = generateGeojsonPointLastObs(observationsPoint);
-  if (typeof pointDisplayOptionsFicheAreaHome == "undefined") {
-    pointDisplayOptionsFicheAreaHome = function (feature) {
+  if (typeof customizeMarkerStyle == "undefined") {
+    customizeMarkerStyle = function (feature) {
       return {};
     };
   }
@@ -581,7 +581,7 @@ function displayMarkerLayerPointLastObs(observationsPoint) {
     pointToLayer: function (feature, latlng) {
       return L.circleMarker(
         latlng,
-        pointDisplayOptionsFicheAreaHome(feature)
+        customizeMarkerStyle(feature)
       );
     },
   });
@@ -599,8 +599,8 @@ function displayMarkerLayerPointLastObs(observationsPoint) {
 
 function displayMarkerLayerPointArea(observationsPoint) {
   myGeoJson = generateGeojsonPointLastObs(observationsPoint);
-  if (typeof pointDisplayOptionsFicheAreaHome == "undefined") {
-    pointDisplayOptionsFicheAreaHome = function (feature) {
+  if (typeof customizeMarkerStyle == "undefined") {
+    customizeMarkerStyle = function (feature) {
       return {};
     };
   }
@@ -610,7 +610,7 @@ function displayMarkerLayerPointArea(observationsPoint) {
     pointToLayer: function (feature, latlng) {
       return L.circleMarker(
         latlng,
-        pointDisplayOptionsFicheAreaHome(feature)
+        customizeMarkerStyle(feature)
       );
     },
   });
