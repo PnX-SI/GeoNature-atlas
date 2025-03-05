@@ -24,8 +24,7 @@ let overlays = {}
 const current_type_code = []
 
 function clearOverlays(){
-    map.removeControl(control)
-
+    // map.removeControl(control);
     // remove all Layer from leaflet overlays (featureGroup)
     Object.values(overlays).forEach(elem => {
         elem.eachLayer(

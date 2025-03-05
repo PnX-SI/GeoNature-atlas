@@ -36,7 +36,7 @@ if (configuration.AFFICHAGE_MAILLE) {
 }
 // POINT
 else {
-    customMarkerStyle(observations);
+    displayMarkerLayerPointLastObs(observations);
 }
 
 // Generate legends and check configuration to choose which to display (Maille ou Point)
@@ -65,39 +65,9 @@ htmlLegend = configuration.AFFICHAGE_MAILLE
 
 generateLegende(htmlLegend);
 
-function displayObsPreciseBaseUrl() {
-    return configuration.URL_APPLICATION + "/api/observations/" + areaInfos.areaCode
-};
 
-// display observation on click
-function displayObsPreciseBaseUrl(areaCode, cd_ref) {
-    $.ajax({
-        url:
-            displayObsPreciseBaseUrl() +
-            areaCode +
-            "/" +
-            cd_ref,
-        dataType: "json",
-        beforeSend: function () {
-            $("#loaderSpinner").show();
-            // $("#loadingGif").show();
-            // $("#loadingGif").attr(
-            //   "src",
-            //   configuration.URL_APPLICATION + "/static/images/loading.svg"
-            // );
-        }
-    }).done(function (observations) {
-        $("#loaderSpinner").hide();
-        // $("#loadingGif").hide();
-        map.removeLayer(currentLayer);
-        clearOverlays()
-        if (configuration.AFFICHAGE_MAILLE) {
-            displayMailleLayerLastObs(observations);
-        } else {
-            displayMarkerLayerPointArea(observations);
-        }
-    });
-}
+var baseUrl =  configuration.URL_APPLICATION + "/api/observations/" + areaInfos.areaCode
+
 
 function displayObsGridBaseUrl() {
     return configuration.URL_APPLICATION + "/api/observationsMaille/"
@@ -105,6 +75,9 @@ function displayObsGridBaseUrl() {
 
 // display observation on click
 function displayObsTaxon(id_area, cd_ref) {
+    console.log(id_area);
+    console.log(cd_ref);
+    
   $.ajax({
     url:
       configuration.URL_APPLICATION +
@@ -120,14 +93,15 @@ function displayObsTaxon(id_area, cd_ref) {
         configuration.URL_APPLICATION + "/static/images/loading.svg"
       );
     }
-  }).done(function(observations) {
+  }).done(function(observations) {    
     $("#loadingGif").hide();
     map.removeLayer(currentLayer);
-        clearOverlays()
     if (configuration.AFFICHAGE_MAILLE) {
-      displayMailleLayerLastObs(observations);
+        displayMailleLayerLastObs(observations);
+        clearOverlays()
     } else {
-      displayMarkerLayerPointArea(observations);
+        map.removeLayer(currentLayer);
+        displayMarkerLayerPointArea(observations);
     }
   });
 }

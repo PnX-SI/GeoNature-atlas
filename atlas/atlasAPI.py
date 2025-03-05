@@ -30,7 +30,7 @@ def searchAreaAPI():
     session = db.session
     search = request.args.get("search", "")
     limit = request.args.get("limit", 50)
-    results = vmAreasRepository.searchMunicipalities(session, search, limit)
+    results = vmAreasRepository.searchAreas(session, search, limit)
     session.close()
     return jsonify(results)
 

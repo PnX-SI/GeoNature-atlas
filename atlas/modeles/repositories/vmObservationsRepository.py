@@ -113,12 +113,12 @@ def lastObservationsArea(connection, obs_limit, id_area):
             ) AS taxon,
             o.id_observation
     FROM atlas.vm_observations o
-    JOIN atlas.vm_l_areas area ON ST_Intersects(o.geom_point, area.the_geom)
+    JOIN atlas.vm_cor_area_synthese AS cas  ON cas.id_synthese = o.id_observation
     JOIN atlas.vm_taxons tax ON  o.cd_ref = tax.cd_ref
-    WHERE area.id_area = :thisIdArea
+    WHERE cas.id_area = :id_area
     ORDER BY o.dateobs DESC
     LIMIT :obsLimit"""
-    observations = connection.execute(text(sql), obsLimit=obs_limit, thisIdArea=id_area)
+    observations = connection.execute(text(sql), obsLimit=obs_limit, id_area=id_area)
     obsList = list()
     for o in observations:
         temp = dict(o)
@@ -130,28 +130,20 @@ def lastObservationsArea(connection, obs_limit, id_area):
     return obsList
 
 
-def getObservationTaxonArea(connection, insee, cd_ref):
+def getObservationTaxonArea(connection, id_area, cd_ref):
     sql = """
-        SELECT o.*,
-            COALESCE(split_part(tax.nom_vern, ',', 1) || ' | ', '')
-                || tax.lb_nom AS taxon,
-        o.observateurs
-        FROM (
-            SELECT * FROM atlas.vm_observations o
-            WHERE o.insee = :thisInsee AND o.cd_ref = :thiscdref
-        )  o
-        JOIN (
-            SELECT nom_vern, lb_nom, cd_ref
-            FROM atlas.vm_taxons
-            WHERE cd_ref = :thiscdref
-        ) tax ON tax.cd_ref = tax.cd_ref
+        SELECT 
+        obs.geojson_point,
+        obs.dateobs
+        FROM atlas.vm_observations obs
+        JOIN atlas.vm_cor_area_synthese AS cas  ON cas.id_synthese = obs.id_observation
+        WHERE cas.id_area = :id_area AND obs.cd_ref = :cd_ref
     """
 
-    observations = connection.execute(text(sql), thiscdref=cd_ref, thisInsee=insee)
+    observations = connection.execute(text(sql), cd_ref=cd_ref, id_area=id_area)
     obsList = list()
     for o in observations:
         temp = dict(o)
-        temp.pop("the_geom_point", None)
         temp["geojson_point"] = json.loads(o.geojson_point or "{}")
         temp["dateobs"] = o.dateobs
         obsList.append(temp)

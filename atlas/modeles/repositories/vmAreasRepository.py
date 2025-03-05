@@ -20,7 +20,7 @@ def getAllAreas(session):
     return areaList
 
 
-def searchMunicipalities(session, search, limit=50):
+def searchAreas(session, search, limit=50):
     like_search = "%" + search.replace(" ", "%") + "%"
 
     query = (
