@@ -10,7 +10,6 @@ metadata = MetaData()
 Base = declarative_base()
 
 
-
 class VmAreas(Base):
     __table__ = Table(
         "vm_l_areas",
