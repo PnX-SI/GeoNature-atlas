@@ -27,6 +27,18 @@ class VmObservations(Base):
         autoload=True,
         autoload_with=db.engine,
     )
+    def as_dict(self):
+        return {
+            "dateobs": str(self.dateobs),
+            "year": self.dateobs.year if self.dateobs else None,
+            "id_observation": self.id_observation,
+            "observateurs": self.observateurs,
+            "altitude_retenue": self.altitude_retenue,
+            "cd_ref": self.cd_ref,
+            "cd_sensitivity": self.cd_ref,
+            "id_area_blurring": self.id_area_blurring,
+        }
+
 
 
 class VmObservationsMailles(Base):
