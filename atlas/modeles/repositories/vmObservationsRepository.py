@@ -10,6 +10,7 @@ from atlas.env import db
 from atlas.utils import GenericTable
 from atlas.modeles.repositories import vmMedias
 from atlas.modeles.entities.vmObservations import VmObservations
+
 currentYear = datetime.now().year
 
 
@@ -34,7 +35,6 @@ def searchObservationsChilds(session, cd_ref):
         features.append(feature)
 
     return FeatureCollection(features)
-
 
 
 def firstObservationChild(connection, cd_ref):

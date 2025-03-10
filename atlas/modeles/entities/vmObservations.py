@@ -25,6 +25,7 @@ class VmObservations(Base):
         autoload=True,
         autoload_with=db.engine,
     )
+
     def as_dict(self):
         return {
             "dateobs": str(self.dateobs),
@@ -35,7 +36,6 @@ class VmObservations(Base):
             "cd_ref": self.cd_ref,
             "cd_sensitivity": self.cd_ref,
         }
-
 
 
 class VmObservationsMailles(Base):
