@@ -122,7 +122,6 @@ if current_app.config["ORGANISM_MODULE"]:
             stat=stat,
             mostObsTaxs=update_most_obs_taxons,
             stats_group=stats_group,
-            translations=translations(),
         )
 
 
@@ -221,7 +220,6 @@ def index():
         customStatMedias=customStatMedias,
         lastDiscoveries=lastDiscoveries,
         personal_data=personal_data,
-        translations=translations(),
     )
 
 
@@ -292,7 +290,6 @@ def ficheEspece(cd_nom):
         taxonDescription=taxonDescription,
         observers=observers,
         organisms=organisms,
-        translations=translations(),
     )
 
 
@@ -329,7 +326,6 @@ def ficheArea(id_area):
         observers=observers,
         DISPLAY_EYE_ON_LIST=True,
         id_area=id_area,
-        translations=translations(),
     )
 
 
@@ -353,7 +349,6 @@ def ficheRangTaxonomie(cd_ref):
         taxonomyHierarchy=taxonomyHierarchy,
         observers=observers,
         DISPLAY_EYE_ON_LIST=False,
-        translations=translations(),
     )
 
 
@@ -376,7 +371,6 @@ def ficheGroupe(groupe):
         groups=groups,
         observers=observers,
         DISPLAY_EYE_ON_LIST=False,
-        translations=translations(),
     )
 
 
@@ -398,7 +392,6 @@ if current_app.config["AFFICHAGE_RECHERCHE_AVANCEE"]:
     def advanced_search():
         return render_template(
             "templates/core/advanced_search.html",
-            translations=translations(),
         )
 
 
@@ -411,7 +404,6 @@ def get_staticpages(page):
     session.close()
     return render_template(
         static_page["template"],
-        translations=translations(),
     )
 
 
