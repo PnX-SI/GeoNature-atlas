@@ -214,16 +214,16 @@ a {
         font-weight: bold;
 
         .ui-menu-item-wrapper {
-            color: var(--main-color) !important;
+            /* color: var(--main-color) !important; */
             font-weight: bold;
             &.ui-state-active:hover {
                 font-weight: bold;
-                color: var(--main-color) !important;
+                /* color: var(--main-color) !important; */
                 background-color: #b6b6b6 !important;
                 border: none !important;
             }
             &.ui-state-active {
-                color: var(--main-color) !important;
+                /* color: var(--main-color) !important; */
                 background-color: #b6b6b6 !important;
                 border: none !important;
             }

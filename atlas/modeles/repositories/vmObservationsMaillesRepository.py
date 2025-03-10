@@ -4,7 +4,7 @@ from geojson import Feature, FeatureCollection
 from sqlalchemy.sql import text, func, any_, extract
 
 from atlas.modeles.entities.vmObservations import VmObservations, VmObservationsMailles
-from atlas.modeles.entities.vmAreas import VmAreas
+from atlas.modeles.entities.vmAreas import VmAreas, VmBibAreasTypes
 from atlas.modeles.utils import deleteAccent, findPath
 
 
@@ -28,40 +28,37 @@ def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
 
     query = (
         session.query(
-            VmObservationsMailles.id_maille,
+            VmAreas.id_area,
             VmAreas.area_geojson,
             func.max(extract("year", VmObservations.dateobs)).label("last_obs_year"),
             func.count(VmObservations.id_observation).label("obs_nbr"),
-            VmObservationsMailles.type_code,
+            VmBibAreasTypes.type_code,
+        )
+        .select_from(
+            VmAreas
         )
         .join(
             VmObservations,
-            VmObservations.id_observation == any_(VmObservationsMailles.id_observations),
+            VmObservations.id_area_blurring == VmAreas.id_area,
         )
         .join(
-            VmAreas,
-            VmAreas.id_area == VmObservationsMailles.id_maille,
+            VmBibAreasTypes,
+            VmBibAreasTypes.id_type == VmAreas.id_type,
         )
         .filter(VmObservations.cd_ref == any_(taxons_ids))
         .group_by(
-            VmObservationsMailles.id_maille,
+            VmAreas.id_area,
             VmAreas.area_geojson,
-            VmObservationsMailles.nbr,
-            VmObservationsMailles.type_code,
+            VmBibAreasTypes.type_code,
         )
     )
-    if year_min and year_max:
-        query = query.filter(
-            VmObservations.dateobs.between(str(year_min) + "-01-01", str(year_max) + "-12-31")
-        )
-
     return FeatureCollection(
         [
             Feature(
-                id=o.id_maille,
+                id=o.id_area,
                 geometry=json.loads(o.area_geojson),
                 properties={
-                    "id_maille": o.id_maille,
+                    "id_maille": o.id_area,
                     "type_code": o.type_code,
                     "nb_observations": int(o.obs_nbr),
                     "last_observation": o.last_obs_year,

@@ -9,48 +9,29 @@ from atlas.modeles import utils
 from atlas.env import db
 from atlas.utils import GenericTable
 from atlas.modeles.repositories import vmMedias
+from atlas.modeles.entities.vmObservations import VmObservations
 
 currentYear = datetime.now().year
-cached_vm_observation = None
 
 
 def searchObservationsChilds(session, cd_ref):
-    global cached_vm_observation
-    # on met en cache le GenericTable (lourd en traitement)
-    if cached_vm_observation is None:
-        cached_vm_observation = GenericTable("vm_observations", "atlas", db.engine)
 
     subquery = session.query(func.atlas.find_all_taxons_childs(cd_ref))
-    query = session.query(cached_vm_observation.tableDef).filter(
+    query = session.query(VmObservations).filter(
         or_(
-            cached_vm_observation.tableDef.c.cd_ref.in_(subquery),
-            cached_vm_observation.tableDef.c.cd_ref == cd_ref,
+            VmObservations.cd_ref.in_(subquery),
+            VmObservations.cd_ref == cd_ref,
         )
     )
     observations = query.all()
     obsList = list()
-    serialize, db_cols = cached_vm_observation.get_serialized_columns()
 
-    # features = [
-    #     Feature(
-    #         id=o.id_observation,
-    #         geometry=json.loads(o.geojson_point or "{}"),
-    #         properties=cached_vm_observation.as_dict(
-    #             o, columns=[c.name for c in db_cols if c.name != "geojson_point"]
-    #         ),
-    #     )
-    #     for o in observations:
-    # ]
     features = []
-    columns = [c.name for c in db_cols if c.name != "geojson_point"]
     for o in observations:
-        year = o.dateobs.year if o.dateobs else None
-        properties = cached_vm_observation.as_dict(o, columns=columns)
-        properties["year"] = year
         feature = Feature(
             id=o.id_observation,
             geometry=json.loads(o.geojson_point or "{}"),
-            properties=properties,
+            properties=o.as_dict(),
         )
         features.append(feature)
 

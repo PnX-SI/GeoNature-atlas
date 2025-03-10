@@ -1,7 +1,10 @@
+-- Cette table les géométries de floutage de chaque observation
+-- chaque ligne correspond à un zonage (qui peut être autre chose qu'une maille), et chaque zonage a un tableau d'id observations associé
+-- à renommé vm_observation_blurred_geom ?
 CREATE MATERIALIZED VIEW atlas.vm_observations_mailles AS
  with distinct_obs as (
   select
-  DISTINCT ON (o.id_observation, cor.type_code)  -- si l'observation est une ligne ou un polygone elle peut intersecté plusieur fois le même type de zonage
+  DISTINCT ON (o.id_observation, cor.type_code)  -- si l'observation est une ligne ou un polygone elle peut intersecter plusieurs fois le même type de zonage
     o.id_observation,
     o.cd_ref,
     date_part('year', o.dateobs) AS annee,

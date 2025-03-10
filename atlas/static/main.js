@@ -56,6 +56,8 @@ autocompleteSearch = function(inputID, urlDestination, nbProposal) {
                       return item.type_name === u
                   }).slice(0, nbProposal))
               })
+              console.log(items);
+              
               response(items);
           $(inputID)
             .attr("loading", "false")
