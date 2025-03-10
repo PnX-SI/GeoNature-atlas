@@ -9,7 +9,7 @@ from atlas.modeles import utils
 from atlas.env import db
 from atlas.utils import GenericTable
 from atlas.modeles.repositories import vmMedias
-
+from atlas.modeles.entities.vmObservations import VmObservations
 currentYear = datetime.now().year
 
 

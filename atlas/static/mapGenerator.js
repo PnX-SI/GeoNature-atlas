@@ -21,7 +21,9 @@ const areaBorderColor = String(
 
 // Feature group de chaque élément de floutage (M1, M5 etc...)
 let overlays = {}
+let mailleSelectorrGenerated = false;
 const current_type_code = []
+
 
 function clearOverlays(){
     // map.removeControl(control);
@@ -76,29 +78,32 @@ function generateObservationPopup(feature, linkSpecies = false) {
  * Create a layer control for each type of zoning (M1, M5 etc..) and associate it a feature group
  */
 function createMailleSelector(selectedAllLayer = false) {
-    const defaultActiveLayer = []
-
-    current_type_code.forEach(elem => {
-        if (configuration.AFFICHAGE_COUCHES_MAP[elem]) {
-            if (configuration.AFFICHAGE_COUCHES_MAP[elem].selected || selectedAllLayer) {
-                defaultActiveLayer.push(configuration.AFFICHAGE_COUCHES_MAP[elem].label)
+    if(!mailleSelectorrGenerated) {
+        const defaultActiveLayer = []
+    
+        current_type_code.forEach(elem => {
+            if (configuration.AFFICHAGE_COUCHES_MAP[elem]) {
+                if (configuration.AFFICHAGE_COUCHES_MAP[elem].selected || selectedAllLayer) {
+                    defaultActiveLayer.push(configuration.AFFICHAGE_COUCHES_MAP[elem].label)
+                }
+                overlays[configuration.AFFICHAGE_COUCHES_MAP[elem].label] = L.featureGroup()
+            } else {
+                defaultActiveLayer.push(elem)
+                overlays[elem] = L.featureGroup()
             }
-            overlays[configuration.AFFICHAGE_COUCHES_MAP[elem].label] = L.featureGroup()
-        } else {
-            defaultActiveLayer.push(elem)
-            overlays[elem] = L.featureGroup()
-        }
-    });
-
-    // Add layers
-    control = L.control.layers(null, overlays).addTo(map);
-
-    // Activate layers
-    Object.entries(overlays).forEach((e, key) => {
-        if (defaultActiveLayer.includes(e[0])) {
-            map.addLayer(e[1])
-        }
-    });
+        });
+    
+        // Add layers
+        control = L.control.layers(null, overlays).addTo(map);
+    
+        // Activate layers
+        Object.entries(overlays).forEach((e, key) => {
+            if (defaultActiveLayer.includes(e[0])) {
+                map.addLayer(e[1])
+            }
+        });
+    }
+    mailleSelectorrGenerated = true;
 }
 
 function generateMap(zoomHomeButton) {
@@ -244,7 +249,6 @@ function observersTxt(feature) {
 function onEachFeaturePointSpecies(feature, layer) {
     popupContent = generateObservationPopup(feature, false);
     layer.bindPopup(popupContent);
-    addInFeatureGroup(feature, layer);
 }
 
 // popup Maille
@@ -334,7 +338,7 @@ function generateLegendMaille() {
             grade_n1 = grades[i + 1] ? `&ndash; ${grades[i + 1] } <br>` : "+"
             labels.push(
                 `<i style="background: ${getColor(grades[i] + 1)}"></i>
-          ${grades[i]}${grade_n1}
+            ${grades[i]}${grade_n1}
         `
             );
         }
@@ -500,6 +504,7 @@ function displayMarkerLayerFicheEspece(
         yearMax,
         sliderTouch
     );
+    
 
     if (typeof customizeMarkerStyle == "undefined") {
         customizeMarkerStyle = function (feature) {
@@ -540,13 +545,11 @@ function displayMarkerLayerFicheEspece(
 function onEachFeaturePointLastObs(feature, layer) {
     popupContent = generateObservationPopup(feature, true);
     layer.bindPopup(popupContent);
-    addInFeatureGroup(feature, layer);
 }
 
 function onEachFeaturePointArea(feature, layer) {
     popupContent = generateObservationPopup(feature, true);
     layer.bindPopup(popupContent);
-    addInFeatureGroup(feature, layer);
 }
 
 function generateGeojsonPointLastObs(observationsPoint) {
