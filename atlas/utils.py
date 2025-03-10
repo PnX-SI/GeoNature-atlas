@@ -5,6 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.pool import QueuePool
 
 from flask import current_app
+from flask_babel import gettext
 
 # engine = create_engine(
 #     current_app.config['SQLALCHEMY_DATABASE_URI'],
@@ -84,3 +85,19 @@ class GenericTable:
             fprops = self.serialize_columns
 
         return {item: _serializer(getattr(data, item)) for item, _serializer in fprops}
+
+
+def get_tranlated_labels():
+    """
+    Return a dict of translated labels regarding the context of the app (multiple areas or not)
+    """
+    isOnlyMunicipalities = False
+    if current_app.config["TYPE_TERRITOIRE_SHEET"] == ["COM"]:
+        isOnlyMunicipalities = True
+    return {
+        "territories": (
+            gettext("municipalities") if isOnlyMunicipalities else gettext("territories")
+        ),
+        "territory": gettext("municipality") if isOnlyMunicipalities else gettext("territory"),
+        "search_area": gettext("search.city") if isOnlyMunicipalities else gettext("search.area"),
+    }
