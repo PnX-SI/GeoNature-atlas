@@ -19,12 +19,12 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
            FROM synthese.synthese s
             JOIN atlas.vm_cor_area_synthese cor ON cor.id_synthese = s.id_synthese
             JOIN ref_geo.bib_areas_types bat ON bat.type_code = cor.type_code
-            JOIN synthese.t_nomenclatures tn ON tn.cd_nomenclature = cor.cd_nomenclature
+            JOIN synthese.t_nomenclatures tn ON tn.id_nomenclature = s.id_nomenclature_sensitivity
             JOIN synthese.cor_sensitivity_area_type AS csat
                 ON csat.id_nomenclature_sensitivity = tn.id_nomenclature
                 AND csat.id_area_type = bat.id_type
             JOIN atlas.vm_l_areas areas ON cor.id_area = areas.id_area
-            WHERE cor.cd_nomenclature != '0'
+            WHERE tn.cd_nomenclature != '0'
         )
 SELECT
     c.geom_point as the_geom_point,
