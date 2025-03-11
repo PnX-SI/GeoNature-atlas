@@ -123,7 +123,7 @@ class MapConfig(Schema):
     ENABLE_SLIDER = fields.Boolean(load_default=True)
     ENABLE_SCALE = fields.Boolean(load_default=True)
     MASK_STYLE = fields.Dict(
-        load_default={"fill": False, "fillColor": "#020202", "fillOpacity": 0.3}
+        load_default={"fill": False, "fillColor": "#020202", "fillOpacity": 0.7}
     )
 
 
