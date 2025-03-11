@@ -118,29 +118,29 @@ def lastObservationsMailles(connection, mylimit, idPhoto):
 
 def lastObservationsAreaMaille(connection, obs_limit, id_area):
     sql = """
-WITH obs_in_area AS (
+    WITH obs_in_area AS (
+        SELECT
+            obs.id_observation,
+            obs.cd_ref,
+            date_part('year', obs.dateobs) AS annee
+        FROM atlas.vm_observations obs
+        JOIN atlas.vm_cor_area_synthese AS cas  ON cas.id_synthese = obs.id_observation
+        WHERE cas.id_area = :idAreaCode
+    )
     SELECT
-        obs.id_observation,
-        obs.cd_ref,
-        date_part('year', obs.dateobs) AS annee
-    FROM atlas.vm_observations obs
-             JOIN atlas.vm_cor_area_synthese AS cas  ON cas.id_synthese = obs.id_observation
-    WHERE cas.id_area = :idAreaCode
-)
-SELECT
-    obs_in_area.id_observation,
-    obs_in_area.cd_ref,
-    COALESCE(t.nom_vern || ' | ', '') || t.lb_nom  AS display_name,
-    obs_in_area.annee,
-    obs.type_code,
-    obs.id_maille,
-    vla.area_geojson AS geojson_4326
-FROM obs_in_area
-         JOIN atlas.vm_observations_mailles obs ON obs_in_area.id_observation = ANY(obs.id_observations)
-         JOIN atlas.vm_l_areas vla ON vla.id_area=obs.id_maille
-         JOIN atlas.vm_taxons AS t ON t.cd_ref = obs_in_area.cd_ref
-ORDER BY annee DESC
-LIMIT :obsLimit;
+        obs_in_area.id_observation,
+        obs_in_area.cd_ref,
+        COALESCE(t.nom_vern || ' | ', '') || t.lb_nom  AS display_name,
+        obs_in_area.annee,
+        obs.type_code,
+        obs.id_maille,
+        vla.area_geojson AS geojson_4326
+    FROM obs_in_area
+            JOIN atlas.vm_observations_mailles obs ON obs_in_area.id_observation = ANY(obs.id_observations)
+            JOIN atlas.vm_l_areas vla ON vla.id_area=obs.id_maille
+            JOIN atlas.vm_taxons AS t ON t.cd_ref = obs_in_area.cd_ref
+    ORDER BY annee DESC
+    LIMIT :obsLimit;
     """
     results = connection.execute(text(sql), idAreaCode=id_area, obsLimit=obs_limit)
     observations = list()
