@@ -10,7 +10,7 @@ CREATE MATERIALIZED VIEW atlas.vm_observations_mailles AS
     FROM atlas.vm_observations AS o
      LEFT JOIN atlas.vm_cor_area_synthese cor ON cor.id_synthese = o.id_observation
      JOIN ref_geo.bib_areas_types bat ON bat.type_code = cor.type_code
-     JOIN synthese.t_nomenclatures tn ON tn.cd_nomenclature = cor.cd_nomenclature
+     JOIN synthese.t_nomenclatures tn ON tn.cd_nomenclature = o.cd_sensitivity
      JOIN synthese.cor_sensitivity_area_type AS csat
           ON csat.id_nomenclature_sensitivity = tn.id_nomenclature
               AND csat.id_area_type = bat.id_type
