@@ -186,9 +186,8 @@ def getObserversArea(connection, id_area):
     sql = """
         SELECT DISTINCT observateurs
         FROM atlas.vm_observations AS obs
-        JOIN atlas.vm_l_areas AS area
-                ON ST_Intersects(obs.the_geom_point, area.the_geom)
-        WHERE area.id_area = :thisIdArea
+        JOIN atlas.vm_cor_area_synthese AS cas ON cas.id_synthese = obs.id_observation
+        WHERE cas.id_area = :thisIdArea
     """
     req = connection.execute(text(sql), thisIdArea=id_area)
     return observersParser(req)
