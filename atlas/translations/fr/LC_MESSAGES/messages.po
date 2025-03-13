@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-03 17:29+0100\n"
+"POT-Creation-Date: 2025-03-13 13:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,27 +18,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: atlas/atlasRoutes.py:167
+#: atlas/utils.py:99
 msgid "municipalities"
 msgstr "Communes"
 
-#: atlas/atlasRoutes.py:167
+#: atlas/templates/home/globalStats.html:50 atlas/utils.py:99
 msgid "territories"
 msgstr "territoires"
 
-#: atlas/atlasRoutes.py:168
+#: atlas/utils.py:101
 msgid "municipality"
 msgstr "Commune"
 
-#: atlas/atlasRoutes.py:168
+#: atlas/utils.py:101
 msgid "territory"
 msgstr "territoire"
 
-#: atlas/atlasRoutes.py:169
+#: atlas/utils.py:102
 msgid "search.city"
 msgstr "Recherche par commune"
 
-#: atlas/atlasRoutes.py:169
+#: atlas/utils.py:102
 msgid "search.area"
 msgstr "Recherche par territoire"
 
@@ -54,52 +54,50 @@ msgid "home"
 msgstr "Accueil"
 
 #: atlas/static/custom/templates/footer.html:5
-#: atlas/static/custom/templates/footer.html:29
+#: atlas/static/custom/templates/footer.html:24
 #: atlas/static/custom/templates/footer.html.sample:5
 #: atlas/static/custom/templates/footer.html.sample:30
 msgid "credits"
 msgstr "Conception et crédits"
 
 #: atlas/static/custom/templates/footer.html:7
-#: atlas/static/custom/templates/footer.html:46
+#: atlas/static/custom/templates/footer.html:41
 #: atlas/static/custom/templates/footer.html.sample:7
 #: atlas/static/custom/templates/footer.html.sample:47
 msgid "legal"
 msgstr "Mentions légales"
 
-#: atlas/static/custom/templates/footer.html:11
-#: atlas/static/custom/templates/footer.html:64
-#: atlas/static/custom/templates/footer.html.sample:11
-#: atlas/static/custom/templates/footer.html.sample:65
-msgid "personal_data"
-msgstr "Données personnelles"
-
-#: atlas/static/custom/templates/footer.html:17
+#: atlas/static/custom/templates/footer.html:12
 #: atlas/static/custom/templates/footer.html.sample:18
 msgid "atlas.fauna.flora"
 msgstr "Atlas de la faune et de la flore"
 
-#: atlas/static/custom/templates/footer.html:17
+#: atlas/static/custom/templates/footer.html:12
 #: atlas/static/custom/templates/footer.html.sample:18
 #: atlas/static/custom/templates/introduction.html:7
 #: atlas/static/custom/templates/introduction.html.sample:7
 msgid "from1"
 msgstr "du"
 
-#: atlas/static/custom/templates/footer.html:19
+#: atlas/static/custom/templates/footer.html:14
 #: atlas/static/custom/templates/footer.html.sample:20
 msgid "powered.by"
 msgstr "Réalisé avec"
 
-#: atlas/static/custom/templates/footer.html:19
+#: atlas/static/custom/templates/footer.html:14
 #: atlas/static/custom/templates/footer.html.sample:20
 msgid "developed.by"
 msgstr "développé par le"
 
-#: atlas/static/custom/templates/footer.html:20
+#: atlas/static/custom/templates/footer.html:15
 #: atlas/static/custom/templates/footer.html.sample:21
 msgid "ecrins.national.park"
 msgstr "Parc national des Écrins"
+
+#: atlas/static/custom/templates/footer.html.sample:11
+#: atlas/static/custom/templates/footer.html.sample:65
+msgid "personal_data"
+msgstr "Données personnelles"
 
 #: atlas/static/custom/templates/footer.html.sample:12
 msgid "preferences_cookies"
@@ -144,7 +142,7 @@ msgstr ""
 "le territoire."
 
 #: atlas/static/custom/templates/navbar.html:33
-#: atlas/static/custom/templates/navbar.html.sample:34
+#: atlas/static/custom/templates/navbar.html.sample:33
 #: atlas/templates/home/globalStats.html:35
 #: atlas/templates/photoGalery/_main.html:77
 msgid "search.species"
@@ -155,7 +153,7 @@ msgstr "Recherche par espèce"
 msgid "atlas.presentation"
 msgstr "Présentation de l'atlas"
 
-#: atlas/templates/areaSheet/_main.html:55
+#: atlas/templates/areaSheet/_main.html:52
 msgid "last.obs.area"
 msgstr "dernières observations"
 
@@ -227,10 +225,6 @@ msgstr "Fiche espèce"
 msgid "check.species.sheet"
 msgstr "Voir la fiche espèce"
 
-#: atlas/templates/core/extended_areas_search.html:13
-msgid "search.other.areas.type"
-msgstr "Recherche par autre type de zones"
-
 #: atlas/templates/core/listTaxons.html:14
 msgid "filter.species"
 msgstr "Filtrer les espèces"
@@ -251,7 +245,7 @@ msgstr "Ce taxon a un statut de protection"
 #: atlas/templates/core/statHierarchy.html:7
 #: atlas/templates/organismSheet/topSpecies.html:61
 #: atlas/templates/speciesSheet/map.html:15
-#: atlas/templates/speciesSheet/otherInformations.html:143
+#: atlas/templates/speciesSheet/otherInformations.html:153
 msgid "observation"
 msgstr "Observation"
 
@@ -263,7 +257,7 @@ msgstr "Observation"
 #: atlas/templates/organismSheet/topSpecies.html:61
 #: atlas/templates/speciesSheet/identityCard.html:135
 #: atlas/templates/speciesSheet/map.html:15
-#: atlas/templates/speciesSheet/otherInformations.html:141
+#: atlas/templates/speciesSheet/otherInformations.html:151
 msgid "observations"
 msgstr "Observations"
 
@@ -280,7 +274,7 @@ msgid "back.to.home"
 msgstr "Retour à l'accueil"
 
 #: atlas/templates/core/sideBar.html:35
-#: atlas/templates/home/globalStats.html:68
+#: atlas/templates/home/globalStats.html:70
 #: atlas/templates/photoGalery/_main.html:5
 #: atlas/templates/photoGalery/_main.html:51
 msgid "gallery.title"
@@ -320,6 +314,7 @@ msgid "common.name"
 msgstr "Nom vernaculaire"
 
 #: atlas/templates/core/tabTaxons.html:16
+#: atlas/templates/speciesSheet/_main.html:57
 msgid "obs.number.s"
 msgstr "Nombre d'observation(s)"
 
@@ -345,7 +340,7 @@ msgstr "En quelques chiffres"
 msgid "home.seelatestobs"
 msgstr "Voir les dernières observations"
 
-#: atlas/templates/home/globalStats.html:67
+#: atlas/templates/home/globalStats.html:69
 msgid "photos"
 msgstr "Photos"
 
@@ -465,9 +460,13 @@ msgstr "Pas de synonymes pour ce taxon"
 msgid "alt.classes.obs"
 msgstr "Observations par classes d'altitudes"
 
-#: atlas/templates/speciesSheet/charts.html:10
+#: atlas/templates/speciesSheet/charts.html:12
 msgid "monthly.obs"
 msgstr "Observations mensuelles"
+
+#: atlas/templates/speciesSheet/charts.html:20
+msgid "data.source"
+msgstr "Provenance des données"
 
 #: atlas/templates/speciesSheet/descriptionMedia.html:12
 #: atlas/templates/speciesSheet/otherInformations.html:42
@@ -504,19 +503,19 @@ msgstr "Titre"
 msgid "date"
 msgstr "Date"
 
-#: atlas/templates/speciesSheet/otherInformations.html:138
+#: atlas/templates/speciesSheet/otherInformations.html:148
 msgid "organism.participation"
 msgstr "Participation à "
 
-#: atlas/templates/speciesSheet/otherInformations.html:146
+#: atlas/templates/speciesSheet/otherInformations.html:156
 msgid "organism.prospection"
 msgstr "Part d'aide à la prospection"
 
-#: atlas/templates/speciesSheet/otherInformations.html:150
+#: atlas/templates/speciesSheet/otherInformations.html:160
 msgid "check.organism.sheet"
 msgstr "Voir la fiche organisme"
 
-#: atlas/templates/speciesSheet/otherInformations.html:151
+#: atlas/templates/speciesSheet/otherInformations.html:161
 msgid "organism.sheet"
 msgstr "Fiche organisme"
 
@@ -532,4 +531,7 @@ msgstr "Observation pour le taxon"
 
 #~ msgid "last.obs.municipality"
 #~ msgstr "dernières observations dans la commune de"
+
+#~ msgid "search.other.areas.type"
+#~ msgstr "Recherche par autre type de zones"
 

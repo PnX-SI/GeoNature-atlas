@@ -11,14 +11,8 @@ CHANGELOG
 - Ajout de la librairie Orijeme pour recueillir le consentement de l'utilisateur sur l'utilisation des cookies
 - Suppression du support des installations sans TaxHub
 - Ajout du floutage dans l'application (#571 @juggler31)
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-- Ajout d'une carte territoire dans la page d'acceuil ainsi que la liste de toutes les espèces sur celui-ci.
-=======
 - Changement de la notion de "commune" en notion de "territoire" (#545 @juggler31)
->>>>>>> aa3a696 (feat: change 'commune' to 'area' to have different 'geometry' page (#545))
->>>>>>> 30c1418 (feat: change 'commune' to 'area' to have different 'geometry' page (#545))
+- Ajout d'un graphique de provenance des données (#538)
 
 🐛 **Corrections**
 

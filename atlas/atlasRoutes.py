@@ -32,6 +32,7 @@ from atlas.modeles.repositories import (
     vmMedias,
     vmCorTaxonAttribut,
     vmTaxonsMostView,
+    vmCorTaxonOrganismRepository,
 )
 
 
@@ -239,6 +240,7 @@ def ficheEspece(cd_nom):
     taxon = vmTaxrefRepository.searchEspece(connection, cd_ref)
     altitudes = vmAltitudesRepository.getAltitudesChilds(connection, cd_ref)
     months = vmMoisRepository.getMonthlyObservationsChilds(connection, cd_ref)
+    organism_stats = vmCorTaxonOrganismRepository.getTaxonOrganism(connection, cd_ref)
     synonyme = vmTaxrefRepository.getSynonymy(connection, cd_ref)
     areas = vmAreasRepository.getAreasObservationsChilds(connection, cd_ref)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(db_session, cd_ref)
@@ -280,6 +282,7 @@ def ficheEspece(cd_nom):
         cd_ref=cd_ref,
         altitudes=altitudes,
         months=months,
+        organism_stats=organism_stats,
         synonyme=synonyme,
         areas=areas,
         taxonomyHierarchy=taxonomyHierarchy,
