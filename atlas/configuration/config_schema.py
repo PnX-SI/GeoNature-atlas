@@ -156,10 +156,7 @@ class AtlasConfig(Schema):
     AFFICHAGE_GRAPH_ALTITUDES = fields.Boolean(load_default=True)
     AFFICHAGE_GRAPH_PHENOLOGIE = fields.Boolean(load_default=True)
     TYPE_TERRITOIRE_SHEET = fields.List(fields.String(), load_default=["COM"])
-    AFFICHAGE_GRAPH_PROVENANCE_DONNEE = fields.Boolean(
-        load_default=False if ORGANISM_MODULE == False else True
-    )
-    COLOR_PIE_CHARTS = fields.List(
+    ORGANISMS_CHART_COLOR = fields.List(
         fields.String(),
         load_default=[
             "#E1CE7A",

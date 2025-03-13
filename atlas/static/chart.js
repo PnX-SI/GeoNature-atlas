@@ -57,19 +57,6 @@ pieChartConfig = function (element, data) {
     })
 }
 
-function getPieEndColor(index, isLastElem) {
-    // To change color if last element will have the same color to first element
-    if (isLastElem && index % 3 === 0) {
-        index++
-    }
-
-    if (index % 3 === 0) {
-        return chartMainColor
-    } else if (index % 3 === 1) {
-        return chartSecondColor
-    }
-    return chartThirdColor
-}
 
 function formatPieData(data) {
     let labels = []
@@ -83,9 +70,9 @@ function formatPieData(data) {
         labels: labels,
         datasets: [
             {
-                label: `${translations.nb_observations} :`,
+                label: `${translations.nb_observations} `,
                 data: data_count,
-                backgroundColor: configuration.COLOR_PIE_CHARTS,
+                backgroundColor: configuration.ORGANISMS_CHART_COLOR,
                 hoverOffset: 25
             }
         ]

@@ -10,8 +10,4 @@ def getTaxonOrganism(connection, cd_ref):
         where cd_ref = :cdref
     """
     result = connection.execute(text(sql), cdref=cd_ref)
-
-    taxon_orga = {}
-    for elem in result:
-        taxon_orga.update({elem[0]: elem[1]})
-    return taxon_orga
+    return {el.nom_organism: el.nb_observations for el in result}
