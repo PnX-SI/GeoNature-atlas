@@ -142,9 +142,11 @@ p.imgDescription.main {
 
 .liens-importants-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 0.7rem 0;
+  justify-content: center;
+  gap: 0.7rem 0.7rem;
 }
 
 .lien-important {
