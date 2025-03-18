@@ -220,8 +220,8 @@ msgid "espèces.protégées.uniquement"
 msgstr "Solo specie protette"
 
 #: templates/core/listTaxons.html:39
-msgid "espèces.patrimoniales.uniquement"
-msgstr "Solo specie patrimoniale"
+msgid "espèces.%(label_patrimonialite)s.uniquement"
+msgstr "Solo specie %(label_patrimonialite)s"
 
 #: templates/core/listTaxons.html:23
 msgid "display.municipality.obs"
