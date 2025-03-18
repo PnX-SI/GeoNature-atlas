@@ -26,3 +26,8 @@ FROM SERVER geonaturedbserver INTO utilisateurs;
 IMPORT FOREIGN SCHEMA gn_meta
 LIMIT TO (gn_meta.cor_dataset_actor)
 FROM SERVER geonaturedbserver INTO gn_meta;
+
+CREATE SCHEMA IF NOT EXISTS sensitivity;
+IMPORT FOREIGN SCHEMA gn_sensitivity
+LIMIT TO (gn_sensitivity.cor_sensitivity_area_type)
+FROM SERVER geonaturedbserver INTO sensitivity;

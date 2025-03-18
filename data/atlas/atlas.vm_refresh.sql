@@ -23,7 +23,11 @@ CREATE OR REPLACE FUNCTION atlas.refresh_materialized_view_data()
 RETURNS VOID AS $$
 BEGIN
 
-  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_cor_synthese_area;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.municipality_subdivided;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.observations_blurred;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.observations_blurred_geometry;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.observations_blurred_centroid;
+  REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.observations_blurred_insee;
 
   REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_observations;
   REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_observations_mailles;

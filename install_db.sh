@@ -418,8 +418,11 @@ if ! database_exists $db_name
         sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.vm_subdivided_area OWNER TO "$owner_atlas";"
         sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.t_layer_territoire OWNER TO "$owner_atlas";"
         sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.l_communes OWNER TO "$owner_atlas";"
-        sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.vm_cor_synthese_area OWNER TO "$owner_atlas";"
-
+        sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.municipality_subdivided OWNER TO "$owner_atlas";"
+        sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.observations_blurred OWNER TO "$owner_atlas";"
+        sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.observations_blurred_geometry OWNER TO "$owner_atlas";"
+        sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.observations_blurred_centroid OWNER TO "$owner_atlas";"
+        sudo -u postgres -s psql -d $db_name -c "ALTER TABLE atlas.observations_blurred_insee OWNER TO "$owner_atlas";"
 
         # FR: Affectation de droits en lecture sur les VM à l'utilisateur de l'application ($user_pg)
         # EN: Assign read rights on VMs to the application user ($user_pg)
