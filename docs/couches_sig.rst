@@ -39,6 +39,57 @@ Remarques :
 - les z-index des couches sont pris en compte relativement aux couches du même pane (comportement CSS)
 - Leaflet place les couches points ou mailles de gn-atlas au z-index 200 dans le ``overlay pane``
 
+Exemple de contrôle fin de la profondeur des couches :
+
+Toutes les couches SIG sont affichées sur le ``overlay pane``. Les profondeurs seront les suivantes :
+
+- Symbols #1 (couche la plus haute)
+- Symbols #2
+- observations (points ou mailles)
+- Zones #2
+- Zones #1 (couche la plus basse)
+
+.. code-block:: python
+
+    COUCHES_SIG = [
+        {
+            'name': 'Zones #1',
+            'type': 'arcgisMapService',
+            'url': "https://example.org/arcgis/rest/services/foobar/MapServer"
+            'options': {
+                'zIndex': 101    # Affichée en-dessous des observations (points ou mailles)
+            }
+        },
+        {
+            'name': 'Zones #2',
+            'type': 'wms',
+            'url': 'https://example.org/WMSServer?',
+            'layer': 'zones2',
+            'options': {
+                'pane': 'overlayPane',  # Force le pane, sinon tile pane par défaut pour les couches WMS
+                'zIndex': 102    # Affichée en-dessous des observations (points ou mailles)
+            }
+        },
+        {
+            'name': 'Symbols #1',
+            'type': 'arcgisMapService',
+            'url': "https://example.org/arcgis/rest/services/foobar/MapServer"
+            'options': {
+                'zIndex': 306  # Affichée au-dessus des observations (points ou mailles)
+            }
+        },
+        {
+            'name': 'Symbols #2',
+            'type': 'wms',
+            'url': 'https://example.org/WMSServer?',
+            'layer': 'symbols2',
+            'options': {
+                'pane': 'overlayPane',  # Force le pane, sinon tile pane par défaut pour les couches WMS
+                'zIndex': 305  # Affichée au-dessus des observations (points ou mailles)
+            }
+        }
+    ]
+
 Sources
 =======
 
