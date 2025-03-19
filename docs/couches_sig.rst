@@ -39,7 +39,7 @@ Remarques :
 - les z-index des couches sont pris en compte relativement aux couches du même pane (comportement CSS)
 - Leaflet place les couches points ou mailles de gn-atlas au z-index 200 dans le ``overlay pane``
 
-Exemple de contrôle fin de la profondeur des couches :
+**Exemple de contrôle fin de la profondeur des couches**
 
 Toutes les couches SIG sont affichées sur le ``overlay pane``. Les profondeurs seront les suivantes :
 
