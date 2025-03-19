@@ -9,57 +9,6 @@ from atlas.modeles.entities.vmTaxons import VmTaxons
 from atlas.modeles.utils import deleteAccent, findPath
 
 
-def getObservationsMaillesTerritorySpecies(session, cd_ref):
-    """
-    Retourne les mailles et le nombre d'observation par maille pour un taxon et ses enfants
-    sous forme d'un geojson
-    """
-    query = func.atlas.find_all_taxons_childs(cd_ref)
-    taxons_ids = session.scalars(query).all()
-    taxons_ids.append(cd_ref)
-
-    query = (
-        session.query(
-            VmObservationsMailles.id_maille,
-            VmAreas.area_geojson,
-            func.max(extract("year", VmObservations.dateobs)).label("last_obs_year"),
-            VmObservationsMailles.nbr.label("obs_nbr"),
-            VmObservationsMailles.type_code,
-        )
-        .join(
-            VmObservations,
-            VmObservations.id_observation == any_(VmObservationsMailles.id_observations),
-        )
-        .join(
-            VmAreas,
-            VmAreas.id_area == VmObservationsMailles.id_maille,
-        )
-        .filter(VmObservations.cd_ref == any_(taxons_ids))
-        .group_by(
-            VmObservationsMailles.id_maille,
-            VmAreas.area_geojson,
-            VmObservationsMailles.nbr,
-            VmObservationsMailles.type_code,
-        )
-    )
-
-    return FeatureCollection(
-        [
-            Feature(
-                id=o.id_maille,
-                geometry=json.loads(o.area_geojson),
-                properties={
-                    "id_maille": o.id_maille,
-                    "type_code": o.type_code,
-                    "nb_observations": int(o.obs_nbr),
-                    "last_observation": o.last_obs_year,
-                },
-            )
-            for o in query.all()
-        ]
-    )
-
-
 def format_taxon_name(observation):
     if observation.nom_vern:
         inter = observation.nom_vern.split(",")
