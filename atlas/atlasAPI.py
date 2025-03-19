@@ -72,24 +72,6 @@ if not current_app.config["AFFICHAGE_MAILLE"]:
         return jsonify(observations)
 
 
-@api.route("/observationsMaille/<int(signed=True):cd_ref>", methods=["GET"])
-def getObservationsMailleAPI(cd_ref):
-    """
-    Retourne les observations d'un taxon par maille (et le nombre d'observation par maille)
-
-    :returns: GeoJson
-    """
-    session = db.session
-    observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(
-        session,
-        cd_ref,
-        year_min=request.args.get("year_min"),
-        year_max=request.args.get("year_max"),
-    )
-    session.close()
-    return jsonify(observations)
-
-
 if not current_app.config["AFFICHAGE_MAILLE"]:
 
     @api.route("/observationsPoint/<int(signed=True):cd_ref>", methods=["GET"])
@@ -111,12 +93,7 @@ def getObservationsGenericApi(cd_ref: int):
         [type]: [description]
     """
     session = db.session
-    if current_app.config["AFFICHAGE_TERRITOIRE_OBS"]:
-        observations = vmObservationsMaillesRepository.getObservationsMaillesTerritorySpecies(
-            session,
-            cd_ref,
-        )
-    elif current_app.config["AFFICHAGE_MAILLE"]:
+    if current_app.config["AFFICHAGE_MAILLE"] or current_app.config["AFFICHAGE_TERRITOIRE_OBS"]:
         observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(
             session,
             cd_ref,
