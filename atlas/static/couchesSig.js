@@ -27,13 +27,10 @@ L.Control.CollapsableLayerTreeControl = L.Control.LayerTreeControl.extend({
   },
 
   onAdd: function (map) {
-    // TODO: call onAdd on LayerTreeControl
     L.Control.LayerTreeControl.prototype.onAdd.call(this, map);
 
     var container = this._container;
     var collapsed = this.options.collapsed;
-    // TODO: add the class on the already created DOM elmt
-    // this._treeContainer = L.DomUtil.create('div', 'layer-tree-control-list', container);
     container.childNodes[0].classList.add('layer-tree-control-list');
 
     if (collapsed) {
