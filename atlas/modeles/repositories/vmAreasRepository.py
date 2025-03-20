@@ -143,36 +143,6 @@ GROUP BY area.description,ca.id_area_group;
     return info_area
 
 
-def get_nb_species_by_taxonimy_group(connection, id_area):
-    """
-    Get number of species by taxonimy group:
-    """
-    sql = """
-    SELECT
-     COUNT(DISTINCT o.cd_ref)                  AS nb_species,
-     t.group2_inpn,
-     COUNT(DISTINCT case t.patrimonial when 'oui' then t.cd_ref else null end) AS nb_patrominal,
-     (SELECT COUNT(*)
-        FROM atlas.vm_taxons taxon
-        WHERE taxon.group2_inpn = t.group2_inpn) AS nb_species_in_teritory
-      from atlas.vm_observations o
-         JOIN atlas.vm_l_areas area ON st_intersects(o.the_geom_point, area.the_geom)
-         FULL JOIN atlas.vm_taxons t ON t.cd_ref = o.cd_ref
-WHERE area.id_area = :id_area
-GROUP BY t.group2_inpn
-        """
-
-    result = connection.execute(text(sql), id_area=id_area)
-    info_chart = dict()
-    for r in result:
-        info_chart[r.group2_inpn] = {
-            "nb_species": r.nb_species - r.nb_patrominal,
-            "nb_patrimonial": r.nb_patrominal,
-            "nb_species_in_teritory": r.nb_species_in_teritory - r.nb_species,
-        }
-    return info_chart
-
-
 def get_nb_observations_by_taxonimy_group(connection, id_area):
     """
     Get number of species by taxonimy group:
@@ -210,9 +180,9 @@ def get_biodiversity_stats_by_taxonimy_group(connection, id_area):
     info_chart = dict()
     for r in result:
         info_chart[r.group2_inpn] = {
-            "nb_species": r.nb_species - r.nb_patrominal,
+            "nb_species": r.nb_species,
             "nb_patrimonial": r.nb_patrominal,
-            "nb_species_in_teritory": r.nb_species_in_teritory - r.nb_species,
+            "nb_species_in_teritory": r.nb_species_in_teritory,
         }
     return info_chart
 

@@ -107,6 +107,11 @@ function stackedBarChartConfig(element, data) {
             interaction: {
                 intersect: false,
             },
+            elements: {
+                bar: {
+                    borderWidth: 2,
+                }
+            },
             scales: {
                 x: {
                     stacked: true,
@@ -116,8 +121,8 @@ function stackedBarChartConfig(element, data) {
                 }
             },
             borderRadius: '5',
-            barThickness: '20',
-            indexAxis: 'y',
+            barThickness: '10',
+            indexAxis: 'x',
         }
     });
 }
@@ -133,7 +138,7 @@ function formatStackedBarChart(values, element) {
         nb_species.push(values[key].nb_species)
         if(configuration.DISPLAY_PATRIMONIALITE) {
             nb_patrimonial.push(values[key].nb_patrimonial)
-        };
+        }
         nb_species_in_teritory.push(values[key].nb_species_in_teritory)
     })
 
@@ -141,27 +146,27 @@ function formatStackedBarChart(values, element) {
         labels: labels,
         datasets: [
             {
-                label: "Nombre d'espèces",
+                label: "Total",
                 data: nb_species,
                 backgroundColor: [configuration.COLOR_STACKED_BAR_CHARTS[0]],
                 stack: "0",
             },
 
             {
-                label: "Nombre d'espèces sur tout le territoire",
+                label: "Total sur tout le territoire",
                 data: nb_species_in_teritory,
                 backgroundColor: [configuration.COLOR_STACKED_BAR_CHARTS[2]],
-                stack: "0",
+                stack: "1",
             }
         ]
     };
     if(configuration.DISPLAY_PATRIMONIALITE) {
         data.datasets.push({
-                label: "Nombre d'espèces patrimonial",
-                data: nb_patrimonial,
-                backgroundColor: [configuration.COLOR_STACKED_BAR_CHARTS[1]],
-                stack: "0",
-            });
+            label: "Total patrimonial",
+            data: nb_patrimonial,
+            backgroundColor: [configuration.COLOR_STACKED_BAR_CHARTS[1]],
+            stack: "2",
+        });
     }
 
     return data
