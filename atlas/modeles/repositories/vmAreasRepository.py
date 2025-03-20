@@ -83,6 +83,7 @@ def getAreasObservationsChilds(connection, cd_ref):
         text(sql), taxonsList=taxons, list_id_type=current_app.config["TYPE_TERRITOIRE_SHEET"]
     )
     areas = {}
+    municipalities = {}
     nb_territory = 0
     nb_area_type = 0
     for r in results:

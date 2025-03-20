@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-07 17:51+0100\n"
+"POT-Creation-Date: 2025-03-20 16:28+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,27 +18,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: atlas/atlasRoutes.py:170
+#: atlas/atlasRoutes.py:169 atlas/utils.py:99
 msgid "municipalities"
 msgstr "Communes"
 
-#: atlas/atlasRoutes.py:170
+#: atlas/atlasRoutes.py:169 atlas/utils.py:99
 msgid "territories"
 msgstr "territoires"
 
-#: atlas/atlasRoutes.py:172
+#: atlas/atlasRoutes.py:171 atlas/utils.py:101
 msgid "municipality"
 msgstr "Commune"
 
-#: atlas/atlasRoutes.py:172
+#: atlas/atlasRoutes.py:171 atlas/utils.py:101
 msgid "territory"
 msgstr "territoire"
 
-#: atlas/atlasRoutes.py:173
+#: atlas/atlasRoutes.py:172 atlas/utils.py:102
 msgid "search.city"
 msgstr "Recherche par commune"
 
-#: atlas/atlasRoutes.py:173
+#: atlas/atlasRoutes.py:172 atlas/utils.py:102
 msgid "search.area"
 msgstr "Recherche par territoire"
 
@@ -101,11 +101,6 @@ msgstr "développé par le"
 msgid "ecrins.national.park"
 msgstr "Parc national des Écrins"
 
-#: atlas/static/custom/templates/footer.html.sample:11
-#: atlas/static/custom/templates/footer.html.sample:65
-msgid "personal_data"
-msgstr "Données personnelles"
-
 #: atlas/static/custom/templates/footer.html.sample:12
 msgid "preferences_cookies"
 msgstr "Modifier les préférences de cookies"
@@ -149,7 +144,7 @@ msgstr ""
 "le territoire."
 
 #: atlas/static/custom/templates/navbar.html:33
-#: atlas/static/custom/templates/navbar.html.sample:34
+#: atlas/static/custom/templates/navbar.html.sample:33
 #: atlas/templates/home/globalStats.html:35
 #: atlas/templates/photoGalery/_main.html:77
 msgid "search.species"
@@ -162,32 +157,26 @@ msgstr "Présentation de l'atlas"
 
 #: atlas/templates/areaSheet/_main.html:36
 #: atlas/templates/core/tabTaxons.html:16
+#: atlas/templates/speciesSheet/_main.html:57
 msgid "obs.number.s"
 msgstr "Nombre d'observation(s)"
 
-#: atlas/templates/areaSheet/_main.html:74
+#: atlas/templates/areaSheet/_main.html:69
 msgid "last.obs.area"
 msgstr "dernières observations"
 
-#: atlas/templates/areaSheet/moreZoneInfo.html:5
+#: atlas/templates/areaSheet/moreZoneInfo.html:6
 msgid "general_presentation"
 msgstr "Présentation générale"
 
-#: atlas/templates/areaSheet/moreZoneInfo.html:8
+#: atlas/templates/areaSheet/moreZoneInfo.html:9
 msgid "observations_and_species"
 msgstr "Observations et espèces"
 
-#: atlas/templates/areaSheet/moreZoneInfo.html:11
+#: atlas/templates/areaSheet/moreZoneInfo.html:12
 msgid "data_sources"
 msgstr "Provenance des données"
 
-#: atlas/templates/areaSheet/moreZoneInfo.html:24
-#: atlas/templates/areaSheet/moreZoneInfo.html:42
-msgid "Biodiversity"
-msgstr "Biodiversité"
-
-#: atlas/templates/areaSheet/moreZoneInfo.html:31
-#: atlas/templates/areaSheet/moreZoneInfo.html:49
 #: atlas/templates/areaSheet/statArea.html:8
 #: atlas/templates/core/listTaxons.html:80
 #: atlas/templates/core/statHierarchy.html:7
@@ -211,6 +200,7 @@ msgid "observation"
 msgstr "Observation"
 
 #: atlas/templates/areaSheet/statArea.html:13
+#: atlas/templates/areaSheet/statArea.html:48
 #: atlas/templates/core/statHierarchy.html:12
 #: atlas/templates/home/globalStats.html:28
 #: atlas/templates/home/taxoRank.html:32
@@ -251,18 +241,6 @@ msgstr "dernière observation"
 #: atlas/templates/areaSheet/statArea.html:40
 msgid "protected_species"
 msgstr "espèces protégées"
-
-#: atlas/templates/areaSheet/statArea.html:47
-msgid "patrimonial_species"
-msgstr "espèces patrimoniales"
-
-#: atlas/templates/areaSheet/surrounding_areas.html:10
-msgid "associate.area"
-msgstr "Territoires associés"
-
-#: atlas/templates/areaSheet/surrounding_areas.html:23
-msgid "check.area.sheet"
-msgstr "Voir la fiche de la zone"
 
 #: atlas/templates/core/advanced_search.html:4
 #: atlas/templates/core/advanced_search.html:382
@@ -323,10 +301,6 @@ msgstr "Fiche espèce"
 #: atlas/templates/speciesSheet/identityCard.html:180
 msgid "check.species.sheet"
 msgstr "Voir la fiche espèce"
-
-#: atlas/templates/core/extended_areas_search.html:13
-msgid "search.other.areas.type"
-msgstr "Recherche par autre type de zones"
 
 #: atlas/templates/core/listTaxons.html:14
 msgid "filter.species"
@@ -519,9 +493,13 @@ msgstr "Pas de synonymes pour ce taxon"
 msgid "alt.classes.obs"
 msgstr "Observations par classes d'altitudes"
 
-#: atlas/templates/speciesSheet/charts.html:10
+#: atlas/templates/speciesSheet/charts.html:12
 msgid "monthly.obs"
 msgstr "Observations mensuelles"
+
+#: atlas/templates/speciesSheet/charts.html:20
+msgid "data.source"
+msgstr "Provenance des données"
 
 #: atlas/templates/speciesSheet/descriptionMedia.html:12
 #: atlas/templates/speciesSheet/otherInformations.html:42
@@ -558,19 +536,19 @@ msgstr "Titre"
 msgid "date"
 msgstr "Date"
 
-#: atlas/templates/speciesSheet/otherInformations.html:138
+#: atlas/templates/speciesSheet/otherInformations.html:148
 msgid "organism.participation"
 msgstr "Participation à "
 
-#: atlas/templates/speciesSheet/otherInformations.html:146
+#: atlas/templates/speciesSheet/otherInformations.html:156
 msgid "organism.prospection"
 msgstr "Part d'aide à la prospection"
 
-#: atlas/templates/speciesSheet/otherInformations.html:150
+#: atlas/templates/speciesSheet/otherInformations.html:160
 msgid "check.organism.sheet"
 msgstr "Voir la fiche organisme"
 
-#: atlas/templates/speciesSheet/otherInformations.html:151
+#: atlas/templates/speciesSheet/otherInformations.html:161
 msgid "organism.sheet"
 msgstr "Fiche organisme"
 
@@ -589,4 +567,19 @@ msgstr "Observation pour le taxon"
 
 #~ msgid "Observations"
 #~ msgstr "Observations"
+
+#~ msgid "Biodiversity"
+#~ msgstr "Biodiversité"
+
+#~ msgid "patrimonial_species"
+#~ msgstr "espèces patrimoniales"
+
+#~ msgid "associate.area"
+#~ msgstr "Territoires associés"
+
+#~ msgid "check.area.sheet"
+#~ msgstr "Voir la fiche de la zone"
+
+#~ msgid "search.other.areas.type"
+#~ msgstr "Recherche par autre type de zones"
 

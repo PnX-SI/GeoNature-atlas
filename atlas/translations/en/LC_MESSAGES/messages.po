@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-07 17:51+0100\n"
+"POT-Creation-Date: 2025-03-20 16:28+0100\n"
 "PO-Revision-Date: 2021-07-12 12:12+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,27 +18,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: atlas/atlasRoutes.py:170
+#: atlas/atlasRoutes.py:169 atlas/utils.py:99
 msgid "municipalities"
 msgstr "Municipalities"
 
-#: atlas/atlasRoutes.py:170
+#: atlas/atlasRoutes.py:169 atlas/utils.py:99
 msgid "territories"
 msgstr "territories"
 
-#: atlas/atlasRoutes.py:172
+#: atlas/atlasRoutes.py:171 atlas/utils.py:101
 msgid "municipality"
 msgstr "Municipality"
 
-#: atlas/atlasRoutes.py:172
+#: atlas/atlasRoutes.py:171 atlas/utils.py:101
 msgid "territory"
 msgstr "territory"
 
-#: atlas/atlasRoutes.py:173
+#: atlas/atlasRoutes.py:172 atlas/utils.py:102
 msgid "search.city"
 msgstr "Search by municipality"
 
-#: atlas/atlasRoutes.py:173
+#: atlas/atlasRoutes.py:172 atlas/utils.py:102
 msgid "search.area"
 msgstr "search by torritory"
 
@@ -155,33 +155,27 @@ msgstr "Atlas presentation"
 
 #: atlas/templates/areaSheet/_main.html:36
 #: atlas/templates/core/tabTaxons.html:16
+#: atlas/templates/speciesSheet/_main.html:57
 msgid "obs.number.s"
 msgstr "Observation(s) number"
 
-#: atlas/templates/areaSheet/_main.html:74
+#: atlas/templates/areaSheet/_main.html:69
 #, fuzzy
 msgid "last.obs.area"
 msgstr "last observations"
 
-#: atlas/templates/areaSheet/moreZoneInfo.html:5
+#: atlas/templates/areaSheet/moreZoneInfo.html:6
 msgid "general_presentation"
 msgstr "General presentation"
 
-#: atlas/templates/areaSheet/moreZoneInfo.html:8
+#: atlas/templates/areaSheet/moreZoneInfo.html:9
 msgid "observations_and_species"
 msgstr "Observations and species"
 
-#: atlas/templates/areaSheet/moreZoneInfo.html:11
+#: atlas/templates/areaSheet/moreZoneInfo.html:12
 msgid "data_sources"
 msgstr "Data sources"
 
-#: atlas/templates/areaSheet/moreZoneInfo.html:24
-#: atlas/templates/areaSheet/moreZoneInfo.html:42
-msgid "Biodiversity"
-msgstr "Biodiversity"
-
-#: atlas/templates/areaSheet/moreZoneInfo.html:31
-#: atlas/templates/areaSheet/moreZoneInfo.html:49
 #: atlas/templates/areaSheet/statArea.html:8
 #: atlas/templates/core/listTaxons.html:80
 #: atlas/templates/core/statHierarchy.html:7
@@ -205,6 +199,7 @@ msgid "observation"
 msgstr "Observation"
 
 #: atlas/templates/areaSheet/statArea.html:13
+#: atlas/templates/areaSheet/statArea.html:48
 #: atlas/templates/core/statHierarchy.html:12
 #: atlas/templates/home/globalStats.html:28
 #: atlas/templates/home/taxoRank.html:32
@@ -245,19 +240,6 @@ msgstr "last observation"
 #: atlas/templates/areaSheet/statArea.html:40
 msgid "protected_species"
 msgstr "protected species"
-
-#: atlas/templates/areaSheet/statArea.html:47
-msgid "patrimonial_species"
-msgstr "patrimonial species"
-
-#: atlas/templates/areaSheet/surrounding_areas.html:10
-#, fuzzy
-msgid "associate.area"
-msgstr "Associated areas"
-
-#: atlas/templates/areaSheet/surrounding_areas.html:23
-msgid "check.area.sheet"
-msgstr "View area sheet"
 
 #: atlas/templates/core/advanced_search.html:4
 #: atlas/templates/core/advanced_search.html:382
@@ -510,7 +492,7 @@ msgstr "No synonyms for this taxon"
 msgid "alt.classes.obs"
 msgstr "Observations by altitude class"
 
-#: atlas/templates/speciesSheet/charts.html:10
+#: atlas/templates/speciesSheet/charts.html:12
 msgid "monthly.obs"
 msgstr "Monthly observations"
 
@@ -590,4 +572,16 @@ msgstr "Specific observations for this taxon"
 
 #~ msgid "Observations"
 #~ msgstr "Observations"
+
+#~ msgid "Biodiversity"
+#~ msgstr "Biodiversity"
+
+#~ msgid "patrimonial_species"
+#~ msgstr "patrimonial species"
+
+#~ msgid "associate.area"
+#~ msgstr "Associated areas"
+
+#~ msgid "check.area.sheet"
+#~ msgstr "View area sheet"
 

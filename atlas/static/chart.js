@@ -225,7 +225,7 @@ if (altiChartElement) {
 
 const dataSourceChartElement = document.getElementById('organismChart');
 if (dataSourceChartElement) {
-    const organismChart = pieChartConfig(dataSourceChartElement, formatPieData(data_source_values, dataSourceChartElement));
+    const organismChart = pieChartConfig(dataSourceChartElement, formatPieData(organism_stats, dataSourceChartElement));
 }
 
 const areaCode = document.getElementById("taxonListItem").getAttribute("area-code")
