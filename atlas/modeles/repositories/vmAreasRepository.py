@@ -83,7 +83,6 @@ def getAreasObservationsChilds(connection, cd_ref):
         text(sql), taxonsList=taxons, list_id_type=current_app.config["TYPE_TERRITOIRE_SHEET"]
     )
     areas = {}
-    municipalities = {}
     nb_territory = 0
     nb_area_type = 0
     for r in results:
@@ -92,13 +91,13 @@ def getAreasObservationsChilds(connection, cd_ref):
             "area_name": r.area_name,
             "type_name": r.type_name,
         }
-        if r.type_code not in municipalities:
+        if r.type_code not in areas:
             areas[r.type_code] = []
             nb_area_type += 1
         areas[r.type_code].append(municipality)
         nb_territory += 1
     areas["length"] = nb_territory
-    municipalities["nb_area_type"] = nb_area_type
+    areas["nb_area_type"] = nb_area_type
     return areas
 
 
