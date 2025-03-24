@@ -1,5 +1,5 @@
 {% block otherInformations %}
-    <div class="card mt-4" id="otherInformationsPanel">
+<div class="card mt-4" id="otherInformationsPanel">
     <div class="col" id="otherInformations">
         <ul class="nav nav-tabs">
             {% if articles | length != 0 %}
@@ -14,6 +14,7 @@
                     <b>{{ areas['length'] }}</b> {{ translations.territories|lower if areas['length'] > 1 else translations.territory|lower }}</a>
                 </li>
             {% endif %}
+            
 
             {% if configuration.ORGANISM_MODULE %}
                 <li class="nav-item">
@@ -82,27 +83,25 @@
             {% if articles | length != 0 %}
                 <div id="area" class="tab-pane fade">
             {% else %}
-                <div id="area" class="tab-pane  fade show active">
+                <div id="area" class="tab-pane fade show active">
             {% endif %}
-            <p>
-                {% for type_code in configuration.TYPE_TERRITOIRE_SHEET %}
-                    {% for com in areas[type_code] %}
-                        {% if loop.first %}
-                            {% if areas.nb_area_type != 1 and com.type_name != "COM" %}
-                                <div class="type_name">{{ com.type_name }} :</div>
-                            {% endif %}
-                            <div class="territories_name">
-                        {% endif %}
+                    <p>
+                        {% for type_code in configuration.TYPE_TERRITOIRE_SHEET %}
+                            {% for com in areas[type_code] %}
+                                {% if loop.first %}
+                                    {% if areas.nb_territory_type != 1 and com.type_name != "COM" %}
+                                        <div class="type_name">{{ com.type_name }} :</div>
+                                    {% endif %}
+                                {% endif %}
 
-                        <a href="{{ url_for('main.ficheArea', id_area = com.id_area) }}">{{ com.area_name }}</a>
-                        {% if not loop.last %}
-                            -
-                        {% endif %}
-                    {% endfor %}
+                                <a href="{{ url_for('main.ficheArea', id_area = com.id_area) }}">{{ com.area_name }}</a>
+                                {% if not loop.last %}
+                                    -
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </p>
                 </div>
-                {% endfor %}
-            </p>
-            </div>
 
             <!--- oberservers tab-->
             {% if configuration.DISPLAY_OBSERVERS %}
