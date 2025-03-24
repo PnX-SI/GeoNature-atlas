@@ -48,14 +48,13 @@
                 <br> {{ _('species')|lower }} {{config.PATRIMONIALITE.label_pluriel|lower}} 
             </div>
             {% endif %}
-
-            {% if stats_area.id_parent %}
+            {% for area in areaInfos.areasParent %}
                 <div class="col-sm center border-left">
                     <i class="fa fa-city"></i>
-                    <br><strong><a href="/area/{{ stats_area.id_parent }}">{{ stats_area.area_parent_name }}</a></strong>
-                    <br>{{ stats_area.area_parent_type_name }}
+                    <br><strong><a href="/area/{{ stats_area.areaCode }}">{{ area.areaName }}</a></strong>
+                    <br>{{ area.typeName }}
                 </div>
-            {% endif %}
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

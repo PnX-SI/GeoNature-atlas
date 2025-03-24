@@ -7,8 +7,9 @@ from sqlalchemy.sql import text
 from sqlalchemy.sql.expression import func
 
 from flask import current_app
-
+from werkzeug.exceptions import NotFound
 from atlas.modeles.entities.vmAreas import VmAreas, VmBibAreasTypes
+
 
 
 def getAllAreas(session):
@@ -43,19 +44,41 @@ def getAreaFromIdArea(connection, id_area):
            area.area_geojson,
            bib.type_name
         FROM atlas.vm_l_areas area
-        JOIN ref_geo.bib_areas_types bib ON bib.id_type = area.id_type
+        JOIN atlas.vm_bib_areas_types bib ON bib.id_type = area.id_type
         WHERE area.id_area = :thisIdArea
     """
-    req = connection.execute(text(sql), thisIdArea=id_area)
-    area_obj = dict()
-    for r in req:
-        area_obj = {
-            "areaName": r.area_name,
-            "areaCode": str(r.id_area),
-            "areaGeoJson": ast.literal_eval(r.area_geojson),
-            "typeName": r.type_name,
-        }
-    return area_obj
+    area = connection.execute(text(sql), thisIdArea=id_area).fetchone()
+    if not area:
+        raise NotFound()
+    area_dict = {
+        "areaName": area.area_name,
+        "areaCode": str(area.id_area),
+        "areaGeoJson": ast.literal_eval(area.area_geojson),
+        "typeName": area.type_name,
+        "areasParent": []
+    }
+
+    sql_area_parent = """
+    SELECT l.area_name, l.id_area, bib.type_name
+    FROM atlas.vm_l_areas l
+    JOIN (
+        SELECT id_area_group  
+        FROM atlas.vm_cor_areas cor
+        WHERE cor.id_area = :thisIdArea
+    ) parent ON parent.id_area_group = l.id_area
+    JOIN atlas.vm_bib_areas_types bib ON bib.id_type = l.id_type
+    """
+    areas_parent = connection.execute(text(sql_area_parent), thisIdArea=id_area).fetchall()
+    areas_parent_serialized = [
+        {
+            "areaName": area.area_name,
+            "areaCode": str(area.id_area),
+            "typeName": area.type_name,
+        } 
+        for area in areas_parent
+    ]
+    area_dict["areasParent"] = areas_parent_serialized
+    return area_dict
 
 
 def getAreasObservationsChilds(connection, cd_ref):
@@ -153,4 +176,6 @@ def getStatsByArea(connection, id_area):
     WHERE id_area = :id_area;
     """
     result = connection.execute(text(sql), id_area=id_area).fetchone()
+    if not result:
+        raise NotFound()
     return result._asdict()

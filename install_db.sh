@@ -265,6 +265,7 @@ if ! database_exists $db_name
             time_temp=$SECONDS
             export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port \
              -v type_territoire=$type_territoire \
+             -v type_code=$type_code \
              -f /tmp/atlas/${script}  &>> log/install_db.log
             echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
         done

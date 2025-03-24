@@ -132,7 +132,6 @@ function formatStackedBarChart(values, element) {
     const nb_species = []
     const nb_patrimonial = []
     const nb_species_in_teritory = []
-    console.log(values)
     Object.keys(values).forEach(key => {
         labels.push(key)
         nb_species.push(values[key].nb_species)
