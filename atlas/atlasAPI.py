@@ -174,16 +174,16 @@ def rank_stat():
 def get_area_chart_valuesAPI(id_area):
     session = db.session
     connection = db.engine.connect()
-    biodiversity_stats_by_taxonimy_group_values_chart = (
-        vmAreasRepository.get_biodiversity_stats_by_taxonimy_group(connection, id_area)
+    species_by_taxonomic_group = (
+        vmAreasRepository.get_species_by_taxonomic_group(connection, id_area)
     )
-    observations_stats_by_taxonimy_group_values_chart = (
+    observations_by_taxonomic_group = (
         vmAreasRepository.get_observations_stats_taxonomy_group(connection, id_area)
     )
-    biodiversity_stats_organism_values_chart = (
+    nb_species_by_organism = (
         vmOrganismsRepository.get_biodiversity_stats_by_organism_on_area(connection, id_area)
     )
-    observations_stats_organism_values_chart = (
+    observations_by_organism = (
         vmOrganismsRepository.get_observations_stats_by_organism_on_area(connection, id_area)
     )
 
@@ -191,9 +191,9 @@ def get_area_chart_valuesAPI(id_area):
     connection.close()
     return jsonify(
         {
-            "biodiversity_stats_taxonomy_values_chart": biodiversity_stats_by_taxonimy_group_values_chart,
-            "observations_taxonomy_values_chart": observations_stats_by_taxonimy_group_values_chart,
-            "biodiversity_stats_organism_values_chart": biodiversity_stats_organism_values_chart,
-            "observations_organism_values_chart": observations_stats_organism_values_chart,
+            "species_by_taxonomic_group": species_by_taxonomic_group,
+            "observations_by_taxonomic_group": observations_by_taxonomic_group,
+            "nb_species_by_organism": nb_species_by_organism,
+            "observations_by_organism": observations_by_organism,
         }
     )

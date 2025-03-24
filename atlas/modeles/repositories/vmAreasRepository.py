@@ -163,7 +163,7 @@ GROUP BY t.group2_inpn, area.id_area
     return info_chart
 
 
-def get_biodiversity_stats_by_taxonimy_group(connection, id_area):
+def get_species_by_taxonomic_group(connection, id_area):
     """
     Get number of species by taxonimy group:
     """
