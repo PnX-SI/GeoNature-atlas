@@ -47,17 +47,21 @@ autocompleteSearch = function(inputID, urlDestination, nbProposal) {
         configuration.URL_APPLICATION + searchUrl,
         { search: request.term, limit: nbProposal },
           function(results) {
-              const unique_type_name = [...new Set(results.map(item => item.type_name))];
-              const items = []
-              unique_type_name.forEach(u => {
-                  items.push({"type": u })
-                  items.push(
-                      ...results.filter(item => {
-                      return item.type_name === u
-                  }).slice(0, nbProposal))
-              })
-              response(items);
-          $(inputID)
+              const unique_type_name = [...new Set(results.map(item => item.type_name))].filter(Boolean);
+              if (unique_type_name.length === 0) {
+                  response(results.slice(0, nbProposal));
+              } else {
+                  const items = []
+                  unique_type_name.forEach(u => {
+                      items.push({"type": u})
+                      items.push(
+                          ...results.filter(item => {
+                              return item.type_name === u
+                          }).slice(0, nbProposal))
+                  })
+                  response(items);
+              }
+              $(inputID)
             .attr("loading", "false")
             .css("background-image", "none");
         }
