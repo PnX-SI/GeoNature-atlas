@@ -11,7 +11,6 @@ from werkzeug.exceptions import NotFound
 from atlas.modeles.entities.vmAreas import VmAreas, VmBibAreasTypes
 
 
-
 def getAllAreas(session):
     req = session.query(distinct(VmAreas.area_name), VmAreas.id_area).all()
     areaList = list()
@@ -55,7 +54,7 @@ def getAreaFromIdArea(connection, id_area):
         "areaCode": str(area.id_area),
         "areaGeoJson": ast.literal_eval(area.area_geojson),
         "typeName": area.type_name,
-        "areasParent": []
+        "areasParent": [],
     }
 
     sql_area_parent = """
@@ -74,7 +73,7 @@ def getAreaFromIdArea(connection, id_area):
             "areaName": area.area_name,
             "areaCode": str(area.id_area),
             "typeName": area.type_name,
-        } 
+        }
         for area in areas_parent
     ]
     area_dict["areasParent"] = areas_parent_serialized
@@ -124,8 +123,6 @@ def getAreasObservationsChilds(connection, cd_ref):
     return areas
 
 
-
-
 def get_species_by_taxonomic_group(connection, id_area):
     """
     Get number of species by taxonimy group:
@@ -166,7 +163,6 @@ def get_nb_observations_taxonomic_group(connection, id_area):
     for r in result:
         info_chart[r.group2_inpn] = r.nb_obs
     return info_chart
-
 
 
 def getStatsByArea(connection, id_area):
