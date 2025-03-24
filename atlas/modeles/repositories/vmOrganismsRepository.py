@@ -145,7 +145,7 @@ ORDER BY b.nom_organisme;
     return list_observations_by_organism
 
 
-def get_biodiversity_stats_by_organism_on_area(connection, id_area):
+def get_species_by_organism_on_area(connection, id_area):
     sql = """
 SELECT nb_species,
        nom_organism
@@ -160,7 +160,7 @@ WHERE id_area = :id_area;
     return list_species_by_organism
 
 
-def get_observations_stats_by_organism_on_area(connection, id_area):
+def get_nb_observations_by_organism_on_area(connection, id_area):
     sql = """
     SELECT nb_obs,
            nom_organism

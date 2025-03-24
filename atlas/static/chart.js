@@ -146,14 +146,14 @@ function formatStackedBarChart(values, element) {
         labels: labels,
         datasets: [
             {
-                label: "Total",
+                label: "Nombre d'espèces",
                 data: nb_species,
                 backgroundColor: [configuration.COLOR_STACKED_BAR_CHARTS[0]],
                 stack: "0",
             },
 
             {
-                label: "Total sur tout le territoire",
+                label: "Nombre d'espèces sur tout le territoire",
                 data: nb_species_in_teritory,
                 backgroundColor: [configuration.COLOR_STACKED_BAR_CHARTS[2]],
                 stack: "1",
@@ -162,7 +162,7 @@ function formatStackedBarChart(values, element) {
     };
     if(configuration.DISPLAY_PATRIMONIALITE) {
         data.datasets.push({
-            label: "Total patrimonial",
+            label: "Nombre d'espèces patrimonialies",
             data: nb_patrimonial,
             backgroundColor: [configuration.COLOR_STACKED_BAR_CHARTS[1]],
             stack: "2",
@@ -228,7 +228,7 @@ if (dataSourceChartElement) {
     const organismChart = pieChartConfig(dataSourceChartElement, formatPieData(organism_stats, dataSourceChartElement));
 }
 
-const areaCode = document.getElementById("taxonListItem").getAttribute("area-code")
+const areaCode = areaInfos.areaCode;
 
 fetch(`/api/area_chart_values/${areaCode}`)
     .then(response => response.json())

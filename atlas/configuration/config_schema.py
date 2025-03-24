@@ -162,7 +162,7 @@ class AtlasConfig(Schema):
         fields.String(), load_default=["#E1CE7A", "#FBFFB9", "#FDD692"]
     )
 
-    ORGANISMS_CHART_COLOR = fields.List(
+    COLOR_PIE_CHARTS = fields.List(
         fields.String(),
         load_default=[
             "#E1CE7A",

@@ -101,66 +101,6 @@ def getAreasObservationsChilds(connection, cd_ref):
     return areas
 
 
-def get_infos_area(connection, id_area):
-    """
-    Get area info:
-    yearmin: fisrt observation year
-    yearmax: last observation year
-    id_parent: id parent area
-    area_name: name parent area
-    area_type_name: type parent area
-    """
-    sql = """
-SELECT
-    MIN(extract(YEAR FROM o.dateobs)) AS yearmin,
-    MAX(extract(YEAR FROM o.dateobs)) AS yearmax,
-    area.description,
-    ca.id_area_group AS id_parent,
-    (SELECT area_name FROM atlas.vm_l_areas WHERE id_area = ca.id_area_group) AS area_parent_name,
-    (SELECT type.type_name
-        FROM atlas.vm_l_areas l
-        JOIN atlas.vm_bib_areas_types type ON type.id_type = l.id_type
-    WHERE l.id_area = ca.id_area_group) AS area_parent_type_name
-FROM atlas.vm_observations o
-    JOIN atlas.vm_l_areas area ON st_intersects(o.the_geom_point, area.the_geom)
-    JOIN atlas.vm_cor_areas ca ON ca.id_area = area.id_area
-WHERE area.id_area = :id_area
-GROUP BY area.description,ca.id_area_group;
-    """
-
-    result = connection.execute(text(sql), id_area=id_area)
-    info_area = dict()
-    for r in result:
-        info_area = {
-            "yearmin": r.yearmin,
-            "yearmax": r.yearmax,
-            "description": r.description,
-            "id_parent": r.id_parent,
-            "parent_name": r.area_parent_name,
-            "parent_type_name": r.area_parent_type_name,
-        }
-
-    return info_area
-
-
-def get_nb_observations_by_taxonimy_group(connection, id_area):
-    """
-    Get number of species by taxonimy group:
-    """
-    sql = """
-SELECT COUNT(o.id_observation) AS nb_observations, t.group2_inpn
-from atlas.vm_observations o
-JOIN atlas.vm_taxons t ON t.cd_ref = o.cd_ref
-JOIN atlas.vm_l_areas area ON st_intersects(o.the_geom_point, area.the_geom)
-WHERE area.id_area = :id_area
-GROUP BY t.group2_inpn, area.id_area
-        """
-
-    result = connection.execute(text(sql), id_area=id_area)
-    info_chart = dict()
-    for r in result:
-        info_chart[r.group2_inpn] = r.nb_observations
-    return info_chart
 
 
 def get_species_by_taxonomic_group(connection, id_area):
@@ -187,7 +127,7 @@ def get_species_by_taxonomic_group(connection, id_area):
     return info_chart
 
 
-def get_observations_stats_taxonomy_group(connection, id_area):
+def get_nb_observations_taxonomic_group(connection, id_area):
     """
     Get number of species by taxonimy group:
     """
