@@ -40,7 +40,7 @@ URL_APPLICATION = ""
 #################################
 #################################
 
-# Enable organism module : organism sheet + organism participation on species sheet
+# Enable organism module : organism sheet +  organism participation on species sheet and area sheet
 ORGANISM_MODULE = False
 
 # Shows the names of the observers in the species sheet
@@ -215,9 +215,31 @@ AFFICHAGE_GRAPH_ALTITUDES = True
 # Afficher le graphique de la phénologie. Affichage True/False
 AFFICHAGE_GRAPH_PHENOLOGIE = True
 
-# couleur du graphique de la provenance des données par organisme (l'affichage du graphique est controlé par le paramètre `ORGANISM_MODULE` )
-ORGANISMS_CHART_COLOR = ["#E1CE7A","#FBFFB9","#FDD692","#EC7357","#754F44","#FB6376","#B7ADCF","#DEE7E7","#F4FAFF","#383D3B","#7C7C7C","#B5F44A","#D6FF79","#507255","#381D2A","#BA5624","#FFA552","#F7FFE0","#49C6E5","#54DEFD","#0B5563","#54DEFD",        ]
-
+# couleurs des diagrames circulaires (provenance des données par organismes et groupes taxonomiques - fiche espèce et zonage) 
+COLOR_PIE_CHARTS = [
+    "#981D97",
+    "#FBFFB9",
+    "#FDD692",
+    "#EC7357",
+    "#754F44",
+    "#FB6376",
+    "#B7ADCF",
+    "#DEE7E7",
+    "#F4FAFF",
+    "#383D3B",
+    "#7C7C7C",
+    "#B5F44A",
+    "#D6FF79",
+    "#507255",
+    "#381D2A",
+    "#BA5624",
+    "#FFA552",
+    "#F7FFE0",
+    "#49C6E5",
+    "#54DEFD",
+    "#0B5563",
+    "#54DEFD",
+]
 # Rang taxonomique qui fixe jusqu'à quel taxon remonte la filiation taxonomique (hierarchie dans la fiche d'identite : Famille, Ordre etc... )
 LIMIT_RANG_TAXONOMIQUE_HIERARCHIE = 13
 
@@ -277,7 +299,8 @@ DISPLAY_PATRIMONIALITE = False
 
 # Pour customiser l'affichage de cette colonne (label affiché, valeurs du champs et leur affichage) :
 PATRIMONIALITE = {
-    'label': "Patrimonial",
+    'label': "Patrimoniale",
+    'label_pluriel': "Patrimoniales",
     'config': {
         'oui': {
             'icon': 'custom/images/logo_patrimonial.png',

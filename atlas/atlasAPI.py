@@ -9,6 +9,7 @@ from atlas.modeles.repositories import (
     vmObservationsMaillesRepository,
     vmMedias,
     vmAreasRepository,
+    vmOrganismsRepository,
 )
 from atlas.env import cache, db
 
@@ -166,4 +167,33 @@ def rank_stat():
     connection = db.engine.connect()
     return jsonify(
         vmObservationsRepository.genericStat(connection, current_app.config["RANG_STAT"])
+    )
+
+
+@api.route("/area_chart_values/<id_area>", methods=["GET"])
+def get_area_chart_valuesAPI(id_area):
+    session = db.session
+    connection = db.engine.connect()
+    species_by_taxonomic_group = vmAreasRepository.get_species_by_taxonomic_group(
+        connection, id_area
+    )
+    observations_by_taxonomic_group = vmAreasRepository.get_nb_observations_taxonomic_group(
+        connection, id_area
+    )
+    nb_species_by_organism = vmOrganismsRepository.get_species_by_organism_on_area(
+        connection, id_area
+    )
+    observations_by_organism = vmOrganismsRepository.get_nb_observations_by_organism_on_area(
+        connection, id_area
+    )
+
+    session.close()
+    connection.close()
+    return jsonify(
+        {
+            "species_by_taxonomic_group": species_by_taxonomic_group,
+            "observations_by_taxonomic_group": observations_by_taxonomic_group,
+            "nb_species_by_organism": nb_species_by_organism,
+            "observations_by_organism": observations_by_organism,
+        }
     )
