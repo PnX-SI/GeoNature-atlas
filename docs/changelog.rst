@@ -15,6 +15,7 @@ CHANGELOG
 - Changement de la notion de "commune" en notion de "territoire" (#545 @juggler31)
 - Ajout d'un graphique de provenance des données (#538)
 Les changements effectués afin de pouvoir changer la notion de `commune` en `territoire` necessitent un changement dans les fichiers:
+- Ajout de "liens importants" sur les fiches taxons. Cette fonctionnalité permet par exemple de mettre en avant des démarches ou des ressources additionelles sur un taxon: un lien vers une plateforme de contribution collaborative, un lien vers une fiche détaillé sur l'espèce etc... Voir le paramètre `TYPES_MEDIAS_LIENS_IMPORTANTS`
 
 `navbar.html`
 Le `form` devient :
