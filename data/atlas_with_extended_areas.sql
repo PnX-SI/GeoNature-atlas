@@ -43,13 +43,13 @@ JOIN ref_geo.bib_areas_types b on a.id_type = b.id_type
     JOIN atlas.t_layer_territoire layer ON ST_INTERSECTS(layer.the_geom, a.geom_4326)
 WHERE
     enable = TRUE AND
-    b.type_code IN (
+    (b.type_code IN (
         SELECT * from string_to_table(:type_code, ',')
         )
         OR a.id_type in (
             SELECT id_area_type
             FROM synthese.cor_sensitivity_area_type
-        )
+        ))
 WITH DATA;
 
 CREATE UNIQUE INDEX vm_l_areas_id_area_idx
