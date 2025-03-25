@@ -15,10 +15,11 @@ from flask import (
     url_for,
     session,
 )
+from flask_babel import gettext
 
 from atlas.env import db
 from atlas import utils
-from atlas.modeles.entities import vmTaxons, vmCommunes
+from atlas.modeles.entities import vmTaxons, vmAreas
 from atlas.modeles.repositories import (
     vmOrganismsRepository,
     vmTaxonsRepository,
@@ -26,11 +27,12 @@ from atlas.modeles.repositories import (
     vmAltitudesRepository,
     vmMoisRepository,
     vmTaxrefRepository,
-    vmCommunesRepository,
+    vmAreasRepository,
     vmObservationsMaillesRepository,
     vmMedias,
     vmCorTaxonAttribut,
     vmTaxonsMostView,
+    vmCorTaxonOrganismRepository,
 )
 
 
@@ -125,9 +127,9 @@ if current_app.config["ORGANISM_MODULE"]:
 
 
 @main.route(
-    "/commune/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>", methods=["GET", "POST"]
+    "/area/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>", methods=["GET", "POST"]
 )
-def communeMedias(image):
+def areaMedias(image):
     return redirect(
         current_app.config["REMOTE_MEDIAS_URL"] + current_app.config["REMOTE_MEDIAS_PATH"] + image
     )
@@ -156,6 +158,19 @@ def indexMedias(image):
     return redirect(
         current_app.config["REMOTE_MEDIAS_URL"] + current_app.config["REMOTE_MEDIAS_PATH"] + image
     )
+
+
+def translations():
+    isOnlyMunicipalities = False
+    if current_app.config["TYPE_TERRITOIRE_SHEET"] == ["COM"]:
+        isOnlyMunicipalities = True
+    return {
+        "territories": (
+            gettext("municipalities") if isOnlyMunicipalities else gettext("territories")
+        ),
+        "territory": gettext("municipality") if isOnlyMunicipalities else gettext("territory"),
+        "search_area": gettext("search.city") if isOnlyMunicipalities else gettext("search.area"),
+    }
 
 
 def _get_couches_sig_info(page_name):
@@ -218,12 +233,18 @@ def index():
     connection.close()
     session.close()
 
+    personal_data = False
+    args_personal_data = request.args.get("personal_data")
+    if args_personal_data and args_personal_data.lower() == "true":
+        personal_data = True
+
     return render_template(
         "templates/home/_main.html",
         observations=observations,
         mostViewTaxon=mostViewTaxon,
         customStatMedias=customStatMedias,
         lastDiscoveries=lastDiscoveries,
+        personal_data=personal_data,
         couchesSigInfo=couches_sig_info,
     )
 
@@ -244,8 +265,9 @@ def ficheEspece(cd_nom):
     taxon = vmTaxrefRepository.searchEspece(connection, cd_ref)
     altitudes = vmAltitudesRepository.getAltitudesChilds(connection, cd_ref)
     months = vmMoisRepository.getMonthlyObservationsChilds(connection, cd_ref)
+    organism_stats = vmCorTaxonOrganismRepository.getTaxonOrganism(connection, cd_ref)
     synonyme = vmTaxrefRepository.getSynonymy(connection, cd_ref)
-    communes = vmCommunesRepository.getCommunesObservationsChilds(connection, cd_ref)
+    areas = vmAreasRepository.getAreasObservationsChilds(connection, cd_ref)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(db_session, cd_ref)
     firstPhoto = vmMedias.getFirstPhoto(connection, cd_ref, current_app.config["ATTR_MAIN_PHOTO"])
     photoCarousel = vmMedias.getPhotoCarousel(
@@ -263,6 +285,18 @@ def ficheEspece(cd_nom):
     articles = vmMedias.getLinks_and_articles(
         connection, cd_ref, current_app.config["ATTR_LIEN"], current_app.config["ATTR_PDF"]
     )
+
+    liens_importants = []
+    if current_app.config.get("TYPES_MEDIAS_LIENS_IMPORTANTS"):
+        liens_config = current_app.config["TYPES_MEDIAS_LIENS_IMPORTANTS"]
+        media_type_ids = list({t["type_media_id"] for t in liens_config})
+        liens_importants = vmMedias.get_liens_importants(connection, cd_ref, media_type_ids)
+        icones_by_media_type = {
+            i["type_media_id"]: i["icon"] for i in liens_config if i.get("icon")
+        }
+        for lien in liens_importants:
+            lien["icon"] = icones_by_media_type.get(lien["id_type"], "")
+
     taxonDescription = vmCorTaxonAttribut.getAttributesTaxon(
         connection,
         cd_ref,
@@ -286,7 +320,6 @@ def ficheEspece(cd_nom):
 
     connection.close()
     db_session.close()
-
     return render_template(
         "templates/speciesSheet/_main.html",
         taxon=taxon,
@@ -295,13 +328,15 @@ def ficheEspece(cd_nom):
         cd_ref=cd_ref,
         altitudes=altitudes,
         months=months,
+        organism_stats=organism_stats,
         synonyme=synonyme,
-        communes=communes,
+        areas=areas,
         taxonomyHierarchy=taxonomyHierarchy,
         firstPhoto=firstPhoto,
         photoCarousel=photoCarousel,
         videoAudio=videoAudio,
         articles=articles,
+        liensImportants=liens_importants,
         taxonDescription=taxonDescription,
         observers=observers,
         organisms=organisms,
@@ -309,25 +344,23 @@ def ficheEspece(cd_nom):
     )
 
 
-@main.route("/commune/<insee>", methods=["GET", "POST"])
-def ficheCommune(insee):
+@main.route("/area/<id_area>", methods=["GET", "POST"])
+def ficheArea(id_area):
     session = db.session
     connection = db.engine.connect()
 
-    listTaxons = vmTaxonsRepository.getTaxonsCommunes(connection, insee)
-    commune = vmCommunesRepository.getCommuneFromInsee(connection, insee)
     if current_app.config["AFFICHAGE_MAILLE"]:
-        observations = vmObservationsMaillesRepository.lastObservationsCommuneMaille(
-            connection, current_app.config["NB_LAST_OBS"], str(insee)
+        observations = vmObservationsMaillesRepository.lastObservationsAreaMaille(
+            connection, current_app.config["NB_LAST_OBS"], str(id_area)
         )
     else:
-        observations = vmObservationsRepository.lastObservationsCommune(
-            connection, current_app.config["NB_LAST_OBS"], insee
+        observations = vmObservationsRepository.lastObservationsArea(
+            connection, current_app.config["NB_LAST_OBS"], id_area
         )
 
-    surroundingAreas = []
-
-    observers = vmObservationsRepository.getObserversCommunes(connection, insee)
+    listTaxons = vmTaxonsRepository.getTaxonsAreas(connection, id_area)
+    area = vmAreasRepository.getAreaFromIdArea(connection, id_area)
+    stats_area = vmAreasRepository.getStatsByArea(connection, id_area)
 
     couches_sig_info = _get_couches_sig_info("commune")
 
@@ -336,14 +369,12 @@ def ficheCommune(insee):
 
     return render_template(
         "templates/areaSheet/_main.html",
-        sheetType="commune",
-        surroundingAreas=surroundingAreas,
         listTaxons=listTaxons,
-        areaInfos=commune,
+        stats_area=stats_area,
+        areaInfos=area,
         observations=observations,
-        observers=observers,
         DISPLAY_EYE_ON_LIST=True,
-        insee=insee,
+        id_area=id_area,
         couchesSigInfo=couches_sig_info,
     )
 
@@ -409,7 +440,9 @@ if current_app.config["AFFICHAGE_RECHERCHE_AVANCEE"]:
 
     @main.route("/recherche", methods=["GET"])
     def advanced_search():
-        return render_template("templates/core/advanced_search.html")
+        return render_template(
+            "templates/core/advanced_search.html",
+        )
 
 
 @main.route("/<page>", methods=["GET", "POST"])
@@ -419,7 +452,9 @@ def get_staticpages(page):
         abort(404)
     static_page = current_app.config["STATIC_PAGES"][page]
     session.close()
-    return render_template(static_page["template"])
+    return render_template(
+        static_page["template"],
+    )
 
 
 @main.route("/sitemap.xml", methods=["GET"])
@@ -444,11 +479,9 @@ def sitemap():
         modified_time = ten_days_ago
         pages.append([url, modified_time])
 
-    municipalities = (
-        session.query(vmCommunes.VmCommunes).order_by(vmCommunes.VmCommunes.insee).all()
-    )
+    municipalities = session.query(vmAreas.VmAreas).order_by(vmAreas.VmAreas.id_area).all()
     for municipalitie in municipalities:
-        url = url_root + url_for("main.ficheCommune", insee=municipalitie.insee)
+        url = url_root + url_for("main.ficheArea", id_area=municipalitie.id_area)
         modified_time = ten_days_ago
         pages.append([url, modified_time])
 

@@ -78,6 +78,21 @@ LANGUAGES = {
     },
 }
 
+orijime_default_translations = {
+    "fr": {
+        "consentModal": {
+            "description": "",
+        },
+        "purposes": {"analytics": "Analyse", "security": "Sécurité"},
+    },
+    "en": {
+        "consentModal": {
+            "description": "This is an example of how to override an existing translation already used by Orejime",
+        },
+        "purposes": {"analytics": "Analytics", "security": "Security"},
+    },
+}
+
 
 class SecretSchemaConf(Schema):
     class Meta:
@@ -109,7 +124,7 @@ class MapConfig(Schema):
     ENABLE_SLIDER = fields.Boolean(load_default=True)
     ENABLE_SCALE = fields.Boolean(load_default=True)
     MASK_STYLE = fields.Dict(
-        load_default={"fill": False, "fillColor": "#020202", "fillOpacity": 0.3}
+        load_default={"fill": False, "fillColor": "#020202", "fillOpacity": 0.7}
     )
 
 
@@ -138,7 +153,6 @@ class AtlasConfig(Schema):
     URL_APPLICATION = fields.String(load_default="")
     DEFAULT_LANGUAGE = fields.String(load_default="fr")
     MULTILINGUAL = fields.Boolean(load_default=False)
-    ID_GOOGLE_ANALYTICS = fields.String(load_default="UA-xxxxxxx-xx")
     ORGANISM_MODULE = fields.Boolean(load_default=False)
     DISPLAY_OBSERVERS = fields.Boolean(load_default=True)
     GLOSSAIRE = fields.Boolean(load_default=False)
@@ -147,6 +161,8 @@ class AtlasConfig(Schema):
     AFFICHAGE_LOGOS_HOME = fields.Boolean(load_default=True)
     AFFICHAGE_FOOTER = fields.Boolean(load_default=True)
     AFFICHAGE_RGPD = fields.Boolean(load_default=True)
+    OREJIME_APPS = fields.List(fields.Dict(), load_default=[])
+    OREJIME_TRANSLATIONS = fields.Dict(load_default=orijime_default_translations)
     AFFICHAGE_STAT_GLOBALES = fields.Boolean(load_default=True)
     AFFICHAGE_DERNIERES_OBS = fields.Boolean(load_default=True)
     AFFICHAGE_EN_CE_MOMENT = fields.Boolean(load_default=True)
@@ -155,7 +171,40 @@ class AtlasConfig(Schema):
     AFFICHAGE_RECHERCHE_AVANCEE = fields.Boolean(load_default=False)
     AFFICHAGE_GRAPH_ALTITUDES = fields.Boolean(load_default=True)
     AFFICHAGE_GRAPH_PHENOLOGIE = fields.Boolean(load_default=True)
+    TYPE_TERRITOIRE_SHEET = fields.List(fields.String(), load_default=["COM"])
+    AFFICHAGE_GRAPH_PHENOLOGIE = fields.Boolean(load_default=False)
+    AFFICHAGE_GRAPH_PROVENANCE_DONNEE = fields.Boolean(load_default=False)
+    COLOR_STACKED_BAR_CHARTS = fields.List(
+        fields.String(), load_default=["#E1CE7A", "#FBFFB9", "#FDD692"]
+    )
 
+    COLOR_PIE_CHARTS = fields.List(
+        fields.String(),
+        load_default=[
+            "#E1CE7A",
+            "#FBFFB9",
+            "#FDD692",
+            "#EC7357",
+            "#754F44",
+            "#FB6376",
+            "#B7ADCF",
+            "#DEE7E7",
+            "#F4FAFF",
+            "#383D3B",
+            "#7C7C7C",
+            "#B5F44A",
+            "#D6FF79",
+            "#507255",
+            "#381D2A",
+            "#BA5624",
+            "#FFA552",
+            "#F7FFE0",
+            "#49C6E5",
+            "#54DEFD",
+            "#0B5563",
+            "#54DEFD",
+        ],
+    )
     RANG_STAT = fields.List(
         fields.Dict,
         load_default=[
@@ -188,9 +237,12 @@ class AtlasConfig(Schema):
     ATTR_VIMEO = fields.Integer(load_default=9)
     PROTECTION = fields.Boolean(load_default=False)
     DISPLAY_PATRIMONIALITE = fields.Boolean(load_default=False)
+    AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION = fields.Boolean(load_default=True)
+    AFFICHAGE_TAB_AREA_OBS_ESPECES = fields.Boolean(load_default=True)
     PATRIMONIALITE = fields.Dict(
         load_default={
-            "label": "Patrimonial",
+            "label": "Patrimoniale",
+            "label_pluriel": "Patrimoniales",
             "config": {
                 "oui": {
                     "icon": "custom/images/logo_patrimonial.png",
@@ -211,6 +263,7 @@ class AtlasConfig(Schema):
     )
 
     AFFICHAGE_MAILLE = fields.Boolean(load_default=False)
+    AFFICHAGE_COUCHES_MAP = fields.Dict(load_default={})
     ZOOM_LEVEL_POINT = fields.Integer(load_default=11)
     LIMIT_CLUSTER_POINT = fields.Integer(load_default=1000)
     NB_DAY_LAST_OBS = fields.String(load_default="7")
@@ -228,6 +281,8 @@ class AtlasConfig(Schema):
     # (no need to restart the atlas service when updating templates)
     # Defaults to False to have the best performance in production
     TEMPLATES_AUTO_RELOAD = fields.Boolean(load_default=False)
+
+    TYPE_TERRITOIRE_SHEET = fields.List(fields.String(), default=[])
 
     @validates_schema
     def validate_url_taxhub(self, data, **kwargs):

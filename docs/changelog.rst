@@ -8,7 +8,36 @@ CHANGELOG
 🚀 **Nouveautés**
 
 - Ajout du lien "Données personelles" dans le pied de page (#527 @juggler31)
+- Ajout de la librairie Orijeme pour recueillir le consentement de l'utilisateur sur l'utilisation des cookies
 - Suppression du support des installations sans TaxHub
+- Ajout du floutage dans l'application (#571 @juggler31)
+- Ajout d'une carte territoire dans la page d'acceuil ainsi que la liste de toutes les espèces sur celui-ci.
+- Changement de la notion de "commune" en notion de "territoire" (#545 @juggler31)
+- Ajout d'un graphique de provenance des données (#538)
+Les changements effectués afin de pouvoir changer la notion de `commune` en `territoire` necessitent un changement dans les fichiers:
+- Ajout de "liens importants" sur les fiches taxons. Cette fonctionnalité permet par exemple de mettre en avant des démarches ou des ressources additionelles sur un taxon: un lien vers une plateforme de contribution collaborative, un lien vers une fiche détaillé sur l'espèce etc... Voir le paramètre `TYPES_MEDIAS_LIENS_IMPORTANTS`
+
+`navbar.html`
+Le `form` devient :
+    ::
+        <form class="form-inline my-2 my-lg-0" method="POST"
+              onsubmit="completeAction('#searchFormAreas', hiddenInputAreas)" id='searchFormAreas'
+              action=""
+              role="search">
+            <div class="form-group has-feedback">
+                <input id="searchAreas" type="text" style="width: 175px;"
+                       class="form-control mr-sm-2 ajax-search small-placeholder"
+                       placeholder="{{ translations.search_area }}&nbsp;&nbsp;&nbsp;">
+            </div>
+            <input id="hiddenInputAreas" type="hidden" name="id_area">
+        </form>
+
+`maps-custom`
+La fonction `pointDisplayOptionsFicheCommuneHome` devient `customizeMarkerStyle`
+
+`presentation.html`
+Les paramètres de l'url de la fiche territoire était `url_for('main.ficheCommune', insee=05090)` et devient `url_for('main.ficheArea', id_area=XXXXXX)`
+- Ajout de statistique sur la fiche de "zoning" (#540 @juggler31)
 
 🐛 **Corrections**
 
@@ -25,6 +54,29 @@ CHANGELOG
 - Ajout d'un Makefile afin de faciliter les développements.
 
 ⚠️ **Notes de version**
+
+- Le paramètre `ID_GOOGLE_ANALYTICS` et la façon d'integrer un script google analytic sont dépréciés. Se référer à la documentation sur le RGPD et la collecte de cookies : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/cookies_rgpd.rst
+- L'affichage des geométrie de sensibilité est calculé dynamiquement à partir de la table gn_sensitivity.cor_sensitivity_area_type . Pour que l'atlas fonctionne bien, veuillez remplir quel niveau de maille vous souhaitez pour les observations non sensible. Exemple pour l'id_nomenclature_sensitivity correspondant à "non sensible", mettez `id_area_type` (ref_geo.bib_area_type.id_type) des maille 1km.
+- Le fichier de customisation contenant la "navbar" `atlas/static/custom/templates/navbar.html.sample` a été modifié pour y integegrer la recherche multi zonage. 
+ Veuillez copiez coller le contenu de `atlas/static/custom/templates/navbar.html.sample` dans `atlas/static/custom/templates/navbar.html` et y appliquer les éventuelles customisation que vous aviez réalisé.
+ Seul la partie du formulaire des "zonages" a été modifié : 
+ `navbar.html`
+Le `form` devient :
+    ::
+        <form class="form-inline my-2 my-lg-0" method="POST"
+              onsubmit="completeAction('#searchFormAreas', hiddenInputAreas)" id='searchFormAreas'
+              action=""
+              role="search">
+            <div class="form-group has-feedback">
+                <input id="searchAreas" type="text" style="width: 175px;"
+                       class="form-control mr-sm-2 ajax-search small-placeholder"
+                       placeholder="{{ translations.search_area }}&nbsp;&nbsp;&nbsp;">
+            </div>
+            <input id="hiddenInputAreas" type="hidden" name="id_area">
+        </form>
+- La fonction de customisation du style des observations en fonction de la sensibilité à changer de nom (`customizeMarkerStyle`), veuillez vous reporter au fichier `atlas/static/custom/maps-custom.js.sample` et repercuter les changements dans votre fichier `maps-custom.js`. Si vous le l'aviez pas touchez, copiez collez le contenu de `maps-custom.js.sample` dans `maps-custom.js`
+- Si vous aviez des liens vers une commune dans le template `presentation.html`, veuillez les modifier comme suit :  les paramètres de l'url de la fiche commune était `url_for('main.ficheCommune', insee=05090)` et devient `url_for('main.ficheArea', id_area=XXXXXX)` 
+
 
 Si vous mettez à jour GeoNature-atlas :
 

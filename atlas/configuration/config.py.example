@@ -40,7 +40,7 @@ URL_APPLICATION = ""
 #################################
 #################################
 
-# Enable organism module : organism sheet + organism participation on species sheet
+# Enable organism module : organism sheet +  organism participation on species sheet and area sheet
 ORGANISM_MODULE = False
 
 # Shows the names of the observers in the species sheet
@@ -83,9 +83,6 @@ LANGUAGES = {
 ### Configuration ###
 #####################
 #####################
-
-# Code de suivi des statistiques Google Analytics (si AFFICHAGE_FOOTER = True)
-ID_GOOGLE_ANALYTICS = "UA-xxxxxxx-xx"
 
 # Utiliser et afficher le glossaire (static/custom/glossaire.json.sample)
 GLOSSAIRE = False
@@ -203,6 +200,31 @@ COUCHES_SIG = [
 # True = maille / False = point
 AFFICHAGE_MAILLE = False
 
+# Si affichage en mailles, il est possible de surcharger certains elements dans le selecteur de couche.
+AFFICHAGE_COUCHES_MAP = {
+    "M1": {
+        "label": "Mailles 1 km",
+        "selected": True,
+        "fillOpacity": 0.4,
+        "fillOpacityHover": 0.4,
+        "weight": 1,
+        "weightHover": 2,
+        "strokeOpacity": 0.75,
+        "strokeColor": "black",
+        "strokeColorHover": "green"
+    },
+    "COM": {
+        "label": "Mailles communes",
+        "selected": False,
+        "fillOpacity": 0.2
+    },
+    "M10": {
+        "label": "Mailles 10 km",
+        "selected": False,
+        "fillOpacity": 0.6
+    }
+}
+
 # Niveau de zoom à partir duquel on passe à l'affichage en point (si AFFICHAGE_MAILLE = False)
 ZOOM_LEVEL_POINT = 11
 
@@ -215,7 +237,7 @@ NB_DAY_LAST_OBS = '7'
 # Texte à afficher pour décrire la cartographie des 'dernières observations'
 TEXT_LAST_OBS = 'Les observations des agents ces 7 derniers jours |'
 
-# Carte de la fiche commune : nombre des 'x' dernières observations affichées
+# Carte de la fiche "area" : nombre des 'x' dernières observations affichées
 NB_LAST_OBS=100
 
 ###########################
@@ -266,6 +288,31 @@ AFFICHAGE_GRAPH_ALTITUDES = True
 # Afficher le graphique de la phénologie. Affichage True/False
 AFFICHAGE_GRAPH_PHENOLOGIE = True
 
+# couleurs des diagrames circulaires (provenance des données par organismes et groupes taxonomiques - fiche espèce et zonage) 
+COLOR_PIE_CHARTS = [
+    "#981D97",
+    "#FBFFB9",
+    "#FDD692",
+    "#EC7357",
+    "#754F44",
+    "#FB6376",
+    "#B7ADCF",
+    "#DEE7E7",
+    "#F4FAFF",
+    "#383D3B",
+    "#7C7C7C",
+    "#B5F44A",
+    "#D6FF79",
+    "#507255",
+    "#381D2A",
+    "#BA5624",
+    "#FFA552",
+    "#F7FFE0",
+    "#49C6E5",
+    "#54DEFD",
+    "#0B5563",
+    "#54DEFD",
+]
 # Rang taxonomique qui fixe jusqu'à quel taxon remonte la filiation taxonomique (hierarchie dans la fiche d'identite : Famille, Ordre etc... )
 LIMIT_RANG_TAXONOMIQUE_HIERARCHIE = 13
 
@@ -309,8 +356,31 @@ ATTR_VIMEO = 9
 # Coupe le nom_vernaculaire à la 1ere virgule sur les fiches espèces
 SPLIT_NOM_VERN = True
 
+# Permet de définir des types de médias TaxHub comme « Liens importants » de la fiche taxon.
+# Les liens importants sont mis en avant dans l'affichage de la fiche.
+# - `type_media_id` : l'ID d'un type de média définit dans l'instance TaxHub.
+# - `icon` (optionnel) : l'URL d'une image à ajouter sur le bouton du lien.
+#
+# Une classe CSS `lien-important-type-XX` est ajoutée sur l'élément HTML du lien avec XX l'ID du type
+# de média. Cela permet de personnaliser l'apparence des liens, par type, dans `custom.css`.
+#
+# Exemple de configuration :
+# (les types médias et les icones sont des exemples et n'existent pas de base
+# sur une instance Atlas/TaxHub)
+TYPES_MEDIAS_LIENS_IMPORTANTS = [
+  {
+    'type_media_id': 10,  # Lien participation campagne d'observation
+    'icon': '/static/custom/images/jumelles.svg'
+  },
+  {
+    'type_media_id': 11,  # Lien vers fiche focus territoire
+    'icon': '/static/custom/images/logo_fiche_focus.png'
+  }
+]
+
+
 ############################################
-#### FICHE COMMUNE ET RANG TAXONOMIQUE #####
+#### FICHE "AREA" ET RANG TAXONOMIQUE  #####
 ############################################
 
 # Permet d'afficher ou non les colonnes Protection et/ou Patrimonialité/Enjeux dans les listes de taxons
@@ -325,7 +395,8 @@ DISPLAY_PATRIMONIALITE = False
 
 # Pour customiser l'affichage de cette colonne (label affiché, valeurs du champs et leur affichage) :
 PATRIMONIALITE = {
-    'label': "Patrimonial",
+    'label': "Patrimoniale",
+    'label_pluriel': "Patrimoniales",
     'config': {
         'oui': {
             'icon': 'custom/images/logo_patrimonial.png',
@@ -333,6 +404,16 @@ PATRIMONIALITE = {
         }
     }
 }
+
+# Liste des type de territoire pour les fichies territoires (code bib_area_type)
+# ex : TYPE_TERRITOIRE_SHEET = ['COM', 'EPCI']
+TYPE_TERRITOIRE_SHEET = []
+
+# liste des application dont "orejime" controle la dépose de cookie
+OREJIME_APPS = []
+
+# traduction orejime (voir la doc cookie et RGPD pour comment le remplir)
+OREJIME_TRANSLATIONS = {}
 
 #############################
 #### Lien custom du logo ####
