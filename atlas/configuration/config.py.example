@@ -131,7 +131,7 @@ MAP = {
 # - 'layer' (uniquement pour type 'wms')
 #
 # Propriétés optionnelles :
-# - 'pages' : restreint les pages sur laquelle le couche est disponible. Valeurs possibles : 'home', 'species', 'commune'
+# - 'pages' : restreint les pages sur laquelle le couche est disponible. Valeurs possibles : 'home', 'species', 'area'
 # - 'groups2_inpn' : sur fiche espèce restreint les espèces pour lesquelles la couche est disponible. Par exemple : 'Amphibiens', 'Oiseaux'
 # - 'options' : les propriétés de l'objet 'options' sont passées directement au constructeur du layer. Les constructeurs sont :
 #   + type 'wms' => objet L.tileLayer.wms de Leaflet

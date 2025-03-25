@@ -420,7 +420,7 @@ def ficheArea(id_area):
     area = vmAreasRepository.getAreaFromIdArea(connection, id_area)
     stats_area = vmAreasRepository.getStatsByArea(connection, id_area)
 
-    couches_sig_info = _get_couches_sig_info("commune")
+    couches_sig_info = _get_couches_sig_info("area")
 
     session.close()
     connection.close()

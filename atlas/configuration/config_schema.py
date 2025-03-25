@@ -133,7 +133,7 @@ class CouchesSigConfig(Schema):
     type = fields.Str(required=True, validate=validate.OneOf(["wms", "arcgisMapService"]))
     url = fields.Str(required=True)
     layer = fields.Str()
-    pages = fields.List(fields.Str(validate=validate.OneOf(["home", "species", "commune"])))
+    pages = fields.List(fields.Str(validate=validate.OneOf(["home", "species", "area"])))
     groups2_inpn = fields.List(fields.Str())
     options = fields.Dict()
 
