@@ -240,7 +240,7 @@ COLOR_PIE_CHARTS = [
     "#0B5563",
     "#54DEFD",
 ]
-# Afficher les statuts de protection. Affichage True/False
+# Afficher les statuts de conservation. Affichage True/False
 AFFICHAGE_STATUTS = True
 
 # Configure quels statuts de protection sont affichés et dans quel ordre.
