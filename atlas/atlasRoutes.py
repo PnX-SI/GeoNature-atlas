@@ -208,7 +208,10 @@ def index():
     else:
         observations = []
 
-    if current_app.config["AFFICHAGE_DERNIERES_OBS"] or current_app.config["AFFICHAGE_TERRITOIRE_OBS"]:
+    if (
+        current_app.config["AFFICHAGE_DERNIERES_OBS"]
+        or current_app.config["AFFICHAGE_TERRITOIRE_OBS"]
+    ):
         couches_sig_info = _get_couches_sig_info("home")
     else:
         couches_sig_info = []
