@@ -256,8 +256,9 @@ if ! database_exists $db_name
             "9.atlas.vm_cor_taxon_attribut.sql"
             "10.atlas.vm_taxons_plus_observes.sql"
             "11.atlas.vm_cor_taxon_organism.sql"
-            "13.5.territory_stats.sql",
+            "13.5.atlas.territory_stats.sql"
             "15.atlas.vm_bdc_statut.sql"
+            "20.grant.sql"
             "atlas.refresh_materialized_view_data.sql"
         )
         for script in "${scripts_sql[@]}"
