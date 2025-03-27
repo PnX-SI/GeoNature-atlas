@@ -382,15 +382,6 @@ def ficheArea(id_area):
     session = db.session
     connection = db.engine.connect()
 
-    if current_app.config["AFFICHAGE_MAILLE"]:
-        observations = vmObservationsMaillesRepository.lastObservationsAreaMaille(
-            connection, current_app.config["NB_LAST_OBS"], str(id_area)
-        )
-    else:
-        observations = vmObservationsRepository.lastObservationsArea(
-            connection, current_app.config["NB_LAST_OBS"], id_area
-        )
-
     listTaxons = vmTaxonsRepository.getTaxonsAreas(connection, id_area)
     area = vmAreasRepository.getAreaFromIdArea(connection, id_area)
     stats_area = vmAreasRepository.getStatsByArea(connection, id_area)
@@ -403,7 +394,6 @@ def ficheArea(id_area):
         listTaxons=listTaxons,
         stats_area=stats_area,
         areaInfos=area,
-        observations=observations,
         DISPLAY_EYE_ON_LIST=True,
         id_area=id_area,
     )

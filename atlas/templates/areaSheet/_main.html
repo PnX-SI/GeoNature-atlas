@@ -29,7 +29,6 @@
     {# Ajoutez ici les assets complémentaires qui seront en bas de page #}
     <script type="text/javascript">
         var configuration = {{configuration|tojson}};
-        var observations = {{observations|tojson}};
         var areaInfos = {{ areaInfos | tojson }};
         var url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
         const translations = {
@@ -66,8 +65,13 @@
             </div>
             <div class="col-12 col-xl-8 col-lg-7 col-md-6 d-flex flex-column m-0 p-0" style="min-height: 80vh;">
                 <div class="bg-light p-2">
-                    <h5 id="titleMap"><i class="fa fa-map"></i> <i>{{ areaInfos.areaName }}</i> : {{ configuration.NB_LAST_OBS }} {{ _('last.obs.area') }}
-                    </h5>
+                    {% if configuration.AFFICHAGE_MAILLE %}
+                        <h5 id="titleMap"><i class="fa fa-map"></i> <i>{{ areaInfos.areaName }}</i> 
+                        </h5>
+                    {% else %}
+                        <h5 id="titleMap"><i class="fa fa-map"></i> <i>{{ areaInfos.areaName }}</i> : {{ configuration.NB_LAST_OBS }} {{ _('last.obs.area') }}
+                        </h5>
+                    {% endif %}
                 </div>
                 <div class="d-flex align-content-stretch bg-warning flex-grow-1">
                     <div class="d-flex flex-grow-1">

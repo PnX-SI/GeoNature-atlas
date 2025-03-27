@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+import json
 
 from flask import jsonify, Blueprint, request, current_app
 
@@ -127,6 +128,23 @@ def getObservationsAreaTaxonMailleAPI(id_area, cd_ref):
     observations = vmObservationsMaillesRepository.getObservationsTaxonAreaMaille(
         connection, id_area, cd_ref
     )
+    connection.close()
+    return jsonify(observations)
+
+
+@api.route("/area/<int(signed=True):id_area>", methods=["GET"])
+def get_observations_area_api(id_area):
+    connection = db.engine.connect()
+
+    if current_app.config["AFFICHAGE_MAILLE"]:
+        observations = vmObservationsMaillesRepository.lastObservationsAreaMaille(
+            connection, current_app.config["NB_LAST_OBS"], str(id_area)
+        )
+    else:
+        observations = vmObservationsRepository.lastObservationsArea(
+            connection, current_app.config["NB_LAST_OBS"], id_area
+        )
+
     connection.close()
     return jsonify(observations)
 

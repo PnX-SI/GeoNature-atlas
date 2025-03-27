@@ -9,6 +9,10 @@ var currentLayer;
 // Current observation geoJson:  type object
 var myGeoJson;
 
+const id_area = document.location.pathname.split("/")[2]
+displayObs(id_area)
+
+
 // Display limit of the territory
 var areaLayer = L.geoJson(areaInfos.areaGeoJson, {
     style: function () {
@@ -30,12 +34,8 @@ bounds.extend(layerBounds);
 map.fitBounds(bounds);
 map.zoom = map.getZoom();
 // Display the 'x' last observations
-// MAILLE
-if (configuration.AFFICHAGE_MAILLE) {
-    displayMailleLayerLastObs(observations);
-}
 // POINT
-else {
+if (!configuration.AFFICHAGE_MAILLE) {
     displayMarkerLayerPointLastObs(observations);
 }
 
@@ -75,34 +75,53 @@ function displayObsGridBaseUrl() {
 
 // display observation on click
 function displayObsTaxon(id_area, cd_ref) {
-  $.ajax({
-    url:
-      configuration.URL_APPLICATION +
-      "/api/observations/" +
-      id_area +
-      "/" +
-      cd_ref,
-    dataType: "json",
-    beforeSend: function() {
-      $("#loadingGif").show();
-      $("#loadingGif").attr(
-        "src",
-        configuration.URL_APPLICATION + "/static/images/loading.svg"
-      );
-    }
-  }).done(function(observations) {    
-    $("#loadingGif").hide();
-    map.removeLayer(currentLayer);
-    if (configuration.AFFICHAGE_MAILLE) {
-        displayMailleLayerLastObs(observations);
-        clearOverlays()
-    } else {
+    $.ajax({
+        url:
+            configuration.URL_APPLICATION +
+            "/api/observations/" +
+            id_area +
+            "/" +
+            cd_ref,
+        dataType: "json",
+        beforeSend: function() {
+            $("#loadingGif").show();
+            $("#loadingGif").attr(
+                "src",
+                configuration.URL_APPLICATION + "/static/images/loading.svg"
+            );
+        }
+    }).done(function(observations) {
+        $("#loadingGif").hide();
         map.removeLayer(currentLayer);
-        displayMarkerLayerPointArea(observations);
-    }
-  });
+        if (configuration.AFFICHAGE_MAILLE) {
+            displayMailleLayerLastObs(observations);
+            clearOverlays()
+        } else {
+            map.removeLayer(currentLayer);
+            displayMarkerLayerPointArea(observations);
+        }
+    });
 }
 
+function displayObs(areaCode) {
+    $("#loaderSpinner").show();
+    fetch(`/api/area/${areaCode}`)
+        .then(data => {
+            return data.json()
+        })
+        .then(observations => {
+            if (configuration.AFFICHAGE_MAILLE) {
+                displayMailleLayer(observations.observations_features);
+            } else {
+                displayMarkerLayerPointLastObs(observations)
+            }
+            $("#loaderSpinner").hide();
+        })
+        .catch(err => {
+            console.error(err)
+            $("#loaderSpinner").hide();
+        })
+}
 
 function displayObsTaxonMaille(areaCode, cd_ref) {
     $.ajax({

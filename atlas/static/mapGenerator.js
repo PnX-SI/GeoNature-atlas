@@ -451,8 +451,7 @@ function generateGeojsonGridArea(observations) {
 }
 
 function displayGridLayerArea(observations) {
-    myGeoJson = generateGeojsonGridArea(observations);
-    currentLayer = L.geoJson(myGeoJson, {
+    currentLayer = L.geoJson(observations, {
         onEachFeature: onEachFeatureMaille,
         style: styleMaille,
     });
@@ -645,12 +644,17 @@ function buildSpeciesEntries(taxons) {
     return rows.join('\n');
 }
 
-function onEachFeatureMailleLastObs(feature, layer) {
-    title = `${feature.properties.taxons.length} espèces observées dans la maille &nbsp;: `;
-    rows = buildSpeciesEntries(feature.properties.taxons);
-    popupContent = `<b>${title}</b><ul>${rows}</ul>`;
+function createPopUp(feature, layer) {
+    const title = `${feature.properties.taxons.length} espèces observées dans la maille &nbsp;: `;
+    const rows = buildSpeciesEntries(feature.properties.taxons);
+    const popupContent = `<b>${title}</b><ul>${rows}</ul>`;
 
     layer.bindPopup(popupContent, { maxHeight: 300 });
+}
+
+function onEachFeatureMailleLastObs(feature, layer) {
+    createPopUp(feature, layer);
+
 
     addInFeatureGroup(feature, layer);
 
@@ -808,6 +812,22 @@ function generateGeoJsonMailleLastObs(observations, isRefresh=false) {
     };
 }
 
+function displayMailleLayer(observationsMaille) {
+    // myGeoJson = observationsMaille;
+    // Get all different type code
+    Object.values(observationsMaille.features).forEach(elem => {
+            if (!current_type_code.includes(elem.properties.type_code)) {
+                current_type_code.push(elem.properties.type_code)
+            }
+    })
+    createMailleSelector()
+    currentLayer = L.geoJson(observationsMaille, {
+        onEachFeature: onEachFeatureMailleLastObs,
+    });
+
+    // ajout de la légende
+    generateLegendMaille();
+}
 
 function displayMailleLayerLastObs(observations, isRefresh=false) {
     const geojsonMaille = generateGeoJsonMailleLastObs(observations, isRefresh);
