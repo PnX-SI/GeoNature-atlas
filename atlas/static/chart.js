@@ -122,7 +122,7 @@ function stackedBarChartConfig(element, data) {
             },
             borderRadius: '5',
             barThickness: '10',
-            indexAxis: 'x',
+            indexAxis: 'y',
         }
     });
 }
