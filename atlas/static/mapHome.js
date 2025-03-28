@@ -19,12 +19,11 @@ $(function(){
         // display maille layer
         fetch(`/api/observationsMailleTerritory`)
             .then(response => response.json())
-            .then(data => {
-                observations = data
-                displayMailleLayer(observations);
+            .then(observations => {
+                displayMailleLayer(observations.observations_features);
             })
             .catch(error => {
-                console.log('Error fetching data: ', error);
+                console.log('Error fetching observations: ', error);
             });
 
 
