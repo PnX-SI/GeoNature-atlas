@@ -462,7 +462,7 @@ function displayMailleLayer(observationsMaille) {
     })
     createMailleSelector()
     currentLayer = L.geoJson(myGeoJson, {
-        onEachFeature: onEachFeatureMaille,
+        onEachFeature: onEachFeatureMailleLastObs,
     });
 
     // ajout de la légende
