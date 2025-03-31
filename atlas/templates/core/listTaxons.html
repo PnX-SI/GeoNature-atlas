@@ -36,7 +36,7 @@
                         {% if config.DISPLAY_PATRIMONIALITE %}
                         <div class="custom-control custom-switch">
                             <input id="filtrePatrimoniales" name="filtrePatrimoniales" type="checkbox" class="custom-control-input" />
-                            <label for="filtrePatrimoniales" class="custom-control-label">{{ _("espèces.%(label_patrimonialite)s.uniquement", label_patrimonialite=config.PATRIMONIALITE.label) }}</label>
+                            <label for="filtrePatrimoniales" class="custom-control-label">{{ _("espèces.%(label_patrimonialite)s.uniquement", label_patrimonialite=config.PATRIMONIALITE.label_pluriel)|lower }}</label>
                         </div>
                         {% endif %}
                     </div>
