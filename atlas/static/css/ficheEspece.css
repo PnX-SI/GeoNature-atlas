@@ -118,6 +118,49 @@ p.imgDescription.main {
     padding-right: 0px;
 }
 
+/* Slider temporel sur la carte */
+
+#mapContainer .leaflet-bar.leaflet-control.leaflet-slider-control {
+  margin: 0 0 0 10px !important; /* Supprime les marges inutiles */
+  /*margin-left: 10px !important;*/
+  width: fit-content !important; /* Adapte la largeur au contenu */
+  min-width: 250px; /* Pour éviter un trop petit encart */
+  max-width: 100%; /* Empêche le dépassement */
+  height: auto !important; /* Ajuste automatiquement la hauteur */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#mapContainer .leaflet-bottom.leaflet-left {
+  display: flex;
+  flex-direction: column-reverse;
+  margin-bottom: 20px;
+}
+
+/* Optimisation pour les petits écrans */
+@media (max-width: 950px) {
+
+  #mapContainer #contour-legend {
+    margin-bottom: 80px;
+  }
+
+  #mapContainer .slider.slider-horizontal {
+    width: 160px;
+  }
+}
+
+@media (max-width: 400px) {
+
+  #mapContainer #contour-legend {
+    margin-bottom: 110px;
+  }
+
+  #mapContainer .slider.slider-horizontal {
+    width: 160px;
+  }
+}
+
 #mapStat {
     text-align: center;
     padding-left: 0px;

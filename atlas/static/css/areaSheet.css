@@ -42,6 +42,9 @@
     }
 }
 
+.leaflet-top.leaflet-right {
+  z-index: 1000;
+}
 
 img.statut_icon {
     width: 1rem;
