@@ -109,7 +109,6 @@ FROM (
     return dict(query.all()[0])
 
 
-
 # last observation for index.html
 def lastObservationsMailles(connection, mylimit, idPhoto):
     sql = """
