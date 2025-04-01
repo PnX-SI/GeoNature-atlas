@@ -103,6 +103,10 @@ main {
   width: 150 px;
 }
 
+#navbarSupportedContent .form-inline {
+  flex-flow: nowrap;
+}
+
 /* carto */
 
 .leaflet-touch .leaflet-bar a:last-child {
@@ -156,6 +160,29 @@ a {
   border-bottom: 1px solid var(--main-color);
   z-index: 1999;
   height: 60px;
+  flex-wrap: nowrap;
+}
+
+.navbar a.titreAppli {
+  white-space: normal; /* surcharge propriété bootstrap */
+  /* Si titre trop long tronque le contenu au-delà de 2 lignes */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+
+}
+
+#navbarSupportedContent {
+  position: absolute;
+  top: 100%;
+  right: 0;
+}
+
+@media(min-width: 768px) {
+#navbarSupportedContent {
+    position: static;
+}
 }
 
 .logoStructure {
