@@ -10,7 +10,7 @@ INSTALLATION
 Prérequis
 =========
 
-Application installable sur un serveur Debian 9, 10 et1 (seuls Debian 9 et 10 ont été prouvé et testé).
+Application installable sur un serveur Debian 11 et 12.
 
 Ce serveur doit aussi disposer de :
 
@@ -27,21 +27,8 @@ Ce serveur doit aussi disposer de :
     GeoNature-atlas est susceptible de fonctionner sur d'autres OS (comme Ubuntu par exemple) mais cela n'a pas été testé.
 
 
-**1. Mettre à jour les sources list**
 
-Ces opérations doivent être faites en tant qu'administrateur (en sudo ou avec l'utilisateur ``root``).
-Adapter à votre version d'OS (ici Debian 9 Stretch) :
-
-::
-
-    sudo echo "#" | sudo tee -a /etc/apt/sources.list
-    sudo echo "#Ajout pour GeoNature-atlas" | sudo tee -a /etc/apt/sources.list
-    sudo echo "deb http://httpredir.debian.org/debian stretch main" | sudo tee -a /etc/apt/sources.list
-    sudo apt-get update
-    sudo apt-get upgrade
-
-
-**2. Récupérez la dernière version (X.Y.Z à remplacer par le numéro de version) de GeoNature-atlas (https://github.com/PnX-SI/GeoNature-atlas/releases)**
+**1. Récupérez la dernière version (X.Y.Z à remplacer par le numéro de version) de GeoNature-atlas (https://github.com/PnX-SI/GeoNature-atlas/releases)**
 
 Ces opérations doivent être faites avec l'utilisateur courant (autre que ``root``), ``whoami`` dans l'exemple :
 
@@ -69,7 +56,7 @@ Vous pouvez renommer le dossier qui contient l'application (dans un dossier ``/h
     mv GeoNature-atlas-X.Y.Z atlas
     cd atlas
 
-**3. Installation de l'environnement logiciel**
+**2. Installation de l'environnement logiciel**
 
 Le script ``install_env.sh`` va automatiquement installer les outils nécessaires à l'application si ils ne sont pas déjà sur le serveur :
 
@@ -85,7 +72,7 @@ Lancer le script :
     ./install_env.sh
 
 
-**4. Installation de la base de données**
+**3. Installation de la base de données**
 
 Faites une copie du modèle de fichier de configuration de la BDD et de son installation automatique ``atlas/configuration/settings.ini.sample`` puis modifiez-le.
 
@@ -174,7 +161,7 @@ Si vous souhaitez uniquement recréer la vue ``atlas.vm_observations`` et les 6 
 
     Un mécanisme de dégradation des données est fourni par défaut dans GeoNature-atlas, voir la documentation à ce sujet : `<degradation_donnees.rst>`_
 
-**5. Installation de l'application**
+**4. Installation de l'application**
 
 
 **Lancez l'installation automatique de l'application :**
@@ -307,6 +294,18 @@ Attention à bien lire les notes de chaque version, qui peuvent indiquer des op�
 ::
 
     ./install_app.sh
+
+- Relancez l'installation de la BDD :
+
+Pour mettre à jour l'application, il est necessaire de réinstaller la BDD.
+Assurez vous que le paramètre `drop_apps_db=true`
+
+⚠️ ⚠️ Cette opération va supprimer votre BDD pour en recréer un nouvelle. Assurez vous de bien posseder des sauvegardes ⚠️⚠️
+
+::
+
+    ./install_app.sh
+    
 
 
 Mise à jour des couches de référence

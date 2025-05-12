@@ -39,16 +39,10 @@ then
     sudo apt install -y postgis postgresql-13-postgis-3
 fi
 
-if [ "$OS_VERSION" == "10" ]
+if [ "$OS_VERSION" == "12" ]
 then
-    sudo apt-get install -y postgresql-server-dev-11
-    sudo apt install -y postgis-2.5 postgis
-fi
-
-if [ "$OS_VERSION" == "9" ]
-then
-    sudo apt-get install -y postgresql-server-dev-9.6 
-    sudo apt install -y postgis-2.3 postgis postgresql-9.6-postgis-2.3 
+    sudo apt-get install -y postgresql-server-dev-15
+    sudo apt install -y postgis postgresql-15-postgis-3
 fi
 
 

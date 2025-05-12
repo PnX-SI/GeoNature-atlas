@@ -54,7 +54,7 @@ Technologies
 
 - Langages : Python, HTML, JS, CSS
 - BDD : PostgreSQL, PostGIS
-- Serveur : Debian ou Ubuntu
+- Serveur : Debian
 - Framework Python : Flask
 - Framework JS : jQuery
 - Framework carto : Leaflet
