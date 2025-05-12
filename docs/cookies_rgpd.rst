@@ -1,7 +1,7 @@
 Gestion des cookies et RGPD
 ===========================
 
-Cette section explique comment ajouter des outils de collectes de cookies (matomo, google analytics par ex) tout en respetant le RGPG. GeoNature-Atlas utilise pour cela une librairie permettant de receuillir le consentement de l'utilisateur: Orejime.
+Cette section explique comment ajouter des outils de collectes de cookies (matomo, Google analytics par ex) tout en respetant le RGPG. GeoNature-Atlas utilise pour cela une librairie permettant de receuillir le consentement de l'utilisateur: Orejime.
 
 À quoi sert le RGPD
 -------------------
@@ -11,9 +11,11 @@ Le règlement général sur la protection des données est utilisé afin de prot
 Où configurer l'application
 ---------------------------
 
-Dans le fichier : `atlas/configuration/config.py`
+Veuillez d'abord à bien récupérer le contenu du fichier `footer.html.sample` dans votre fichier `footer.html` si vous aviez GeoNature-Atlas avant la version 2.7.0.
 
+Dans le fichier  `atlas/configuration/config.py` :
 
+- Passer la variable à `AFFICHAGE_RGPD = True`
 - Définir les applications pour lesquelles il faut demander l'autorisation de la collecte de cookies via la variable **OREJIME_APPS**
 
 En complément, se référer à la documentation officielle de l'outil orejim: https://github.com/empreinte-digitale/orejime

@@ -7,15 +7,20 @@ CHANGELOG
 
 🚀 **Nouveautés**
 
-- Ajout du lien "Données personelles" dans le pied de page (#527 @juggler31)
+- Ajout du support Debian 12. Suppression du support de Debian 9 et 10 (voir note de version)
+- Refonte de l'integration de traqueur de fréquentation (Google analytic, Matomo) en lien avec la mise en conformité RGPD - voir la note de version (#527 @juggler31)
 - Ajout de la librairie Orijeme pour recueillir le consentement de l'utilisateur sur l'utilisation des cookies
 - Suppression du support des installations sans TaxHub
+- Ajout du support des cd_nom négatifs sur les fiches espèces et les API @andriacap
+- Ajout de paramètre de configuration pour afficher/masques les graphiques de phénologie et d'altitude (`AFFICHAGE_GRAPH_PHENOLOGIE` et `AFFICHAGE_GRAPH_ALTITUDES`)
+- Affichage des dates au format "court" et dans la locale du navigateur
 
 🐛 **Corrections**
 
 - Correction de la carte avec affichage par mailles de la fiche "Commune" (#533 par @jpm-cbna)
 - Correction et amélioration de l'affichage de la fenêtre listant les sous-taxons aggrégés (#558 par @jpm-cbna)
 - Correction du lien vers le statut INPN des taxons protégés sur la page organisme (#578 par @marcantoinedupre)
+- Correcion du "lazy-loading" des images sur les page HTML (@submarcos)
 
 🐛 **Optimisations**
 
@@ -27,13 +32,11 @@ CHANGELOG
 
 ⚠️ **Notes de version**
 
-- Le paramètre `ID_GOOGLE_ANALYTICS` et la façon d'integrer un script google analytic sont dépréciés. Se référer à la documentation sur le RGPD et la collecte de cookies : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/cookies_rgpd.rst
+- Veuillez vous référer à la documentation concernant le RGPD et le consentement du recueil de cookies : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/cookies_rgpd.rst . Ces fonctionnalités sont utiles uniquement si vous avez mis en place le recueil de cookies necessitant le consentement de l'utilisateur (statistiques de fréquentation par exemple). 
+- Le paramètre `ID_GOOGLE_ANALYTICS` et la façon d'integrer un script google analytic sont dépréciés. Se référer à la documentation sur le RGPD ci-dessus 
+- Il est désormais possible d'installer GeoNature uniquement sur Debian 11 et 12.
 
-Si vous mettez à jour GeoNature-atlas :
-
-- Ajouter l'extension unaccent à la base de données `CREATE EXTENSION IF NOT EXISTS unaccent SCHEMA "public";` (#531, #532)
-- Exécutez le script SQL de mise à jour de la BDD : https://github.com/PnX-SI/GeoNature-atlas/blob/master/data/update/update_1.6.1to1.6.2.sql
-
+Si vous mettez à jour GeoNature-atlas suivez la procédure de MAJ décrite dans : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/installation.rst#mise-%C3%A0-jour-de-lapplication
 
 1.6.1 (2023-10-16)
 ------------------

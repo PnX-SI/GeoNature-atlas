@@ -144,7 +144,7 @@ class AtlasConfig(Schema):
     AFFICHAGE_INTRODUCTION = fields.Boolean(load_default=True)
     AFFICHAGE_LOGOS_HOME = fields.Boolean(load_default=True)
     AFFICHAGE_FOOTER = fields.Boolean(load_default=True)
-    AFFICHAGE_RGPD = fields.Boolean(load_default=True)
+    AFFICHAGE_RGPD = fields.Boolean(load_default=False)
     OREJIME_APPS = fields.List(fields.Dict(), load_default=[])
     OREJIME_TRANSLATIONS = fields.Dict(load_default=orijime_default_translations)
     AFFICHAGE_STAT_GLOBALES = fields.Boolean(load_default=True)
