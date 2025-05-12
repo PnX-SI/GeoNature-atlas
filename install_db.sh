@@ -107,11 +107,6 @@ if ! database_exists $db_name
         sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA utilisateurs AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
         sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA gn_meta AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
 
-        if [ $install_taxonomie = "false" ] # Pourquoi ce if ? TODO
-            then
-                sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA taxonomie AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
-        fi
-
         if $geonature_source
             then
                 echo "Creating FDW from GN2"
