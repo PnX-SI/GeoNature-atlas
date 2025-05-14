@@ -10,7 +10,7 @@ metadata = Base.metadata
 
 
 class TGrid(Base):
-    __tablename__ = "t_mailles_territoire"
+    __tablename__ = "vm_mailles_territoire"
     __table_args__ = {"schema": "atlas"}
 
     id_maille = Column(Integer, primary_key=True)

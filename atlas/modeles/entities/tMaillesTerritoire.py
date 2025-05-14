@@ -11,7 +11,7 @@ Base = declarative_base()
 
 class TMaillesTerritoire(Base):
     __table__ = Table(
-        "t_mailles_territoire",
+        "vm_mailles_territoire",
         metadata,
         Column("id_maille", Integer, primary_key=True, unique=True),
         Column("the_geom", Geometry()),

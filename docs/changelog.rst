@@ -22,9 +22,10 @@ CHANGELOG
 - Correction du lien vers le statut INPN des taxons protégés sur la page organisme (#578 par @marcantoinedupre)
 - Correcion du "lazy-loading" des images sur les page HTML (@submarcos)
 
-🐛 **Optimisations**
+🐛 **Optimisations / evolutions**
 
 - Amélioration de la "recherche par commune": mots tronqués, sans accent (#531 par @jpm-cbna)
+
 
 👨‍💻 **Développement**
 
@@ -32,11 +33,24 @@ CHANGELOG
 
 ⚠️ **Notes de version**
 
+- Suppression de la possibilité d'installer l'atlas à partir de couche shapefile. Tout est basé sur le ref_geo fourni par GeoNature ou TaxHub. Il est maintenant obligatoire d'installer TaxHub pour deployer l'atlas.
 - Veuillez vous référer à la documentation concernant le RGPD et le consentement du recueil de cookies : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/cookies_rgpd.rst . Ces fonctionnalités sont utiles uniquement si vous avez mis en place le recueil de cookies necessitant le consentement de l'utilisateur (statistiques de fréquentation par exemple). 
 - Le paramètre `ID_GOOGLE_ANALYTICS` et la façon d'integrer un script google analytic sont dépréciés. Se référer à la documentation sur le RGPD ci-dessus 
 - Il est désormais possible d'installer GeoNature uniquement sur Debian 11 et 12.
 
 Si vous mettez à jour GeoNature-atlas suivez la procédure de MAJ décrite dans : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/installation.rst#mise-%C3%A0-jour-de-lapplication
+
+Vous pouvez supprimez les paramètre suivant du fichier `settings.ini`
+- use_ref_geo_gn2
+- install_taxonomie
+- communes_shp
+- colonne_insee
+- colonne_nom_commune
+- limit_shp
+- metropole
+- taillemaille
+- chemin_custom_maille
+- taxhub_release
 
 1.6.1 (2023-10-16)
 ------------------
@@ -93,7 +107,7 @@ Si vous mettez à jour GeoNature-atlas suivez la procédure de MAJ décrite dans
 - Correction du bouton de tri (aléatoire ou nombre d'observation) dans la galerie photo
 - Amélioration du lien vers la fiche d'un taxon depuis la galerie photo (#432 par @mvergez)
 - Correction de l'affichage de la liste des taxons sur les fiches communes (#445 par @mvergez)
-- Prise en compte des cas où le SRID est différent de 2154 lors de la création de ``atlas.t_mailles_territoire`` (#417 par @joelclems)
+- Prise en compte des cas où le SRID est différent de 2154 lors de la création de ``atlas.vm_mailles_territoire`` (#417 par @joelclems)
 - Harmonisation de l'affichage du picto group2_inpn (#424, #425, #426, #427, #429 par @MissT)
 - Affichage en double de la légende quand le slider était manipulé (#452 par @mvergez)
 - Exclusion des médias supprimés dans la vue ``vm_medias`` (#458 par @jpm-cbna)
@@ -236,7 +250,7 @@ Si vous mettez à jour GeoNature-atlas :
 
 * Désactivation de la route des observations ponctuelles quand l'atlas est paramétre en mode mailles (#237 par @lpofredc)
 * Correction de l'affichage des rangs taxonomiques sur les fiches espèces
-* Ajout d'index sur les vues matérialisées ``atlas.t_layer_territoire`` et ``atlas.t_mailles_territoire`` pour pouvoir les rafraichir en parallèle (#254 et #260)
+* Ajout d'index sur les vues matérialisées ``atlas.t_layer_territoire`` et ``atlas.vm_mailles_territoire`` pour pouvoir les rafraichir en parallèle (#254 et #260)
 * Correction des observations dupliquées dans les fiches communes (#225 par @jpm-cbna)
 * Correction des liens vers les fiches espèce depuis la carte de la page d'accueil en mode mailles (#221 par @jpm-cbna et @lpofredc)
 * Correction du spinner pour la recherche par commune (#227 par @jpm-cbna)

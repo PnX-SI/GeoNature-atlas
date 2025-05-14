@@ -101,9 +101,9 @@ NOTES :
     \q
     exit
 
-* GeoNature-atlas fonctionne avec des données géographiques qui doivent être fournies en amont (mailles, limite de territoire, limite de communes). Vous avez la possibilité de récupérer ces données directement depuis le référentiel géographique de GeoNature si les données y sont présentes (``use_ref_geo_gn2=true``); ou de fournir des fichiers shapefiles (à mettre dans le répertoire ``data/ref``)
+* GeoNature-atlas fonctionne avec des données géographiques du schema ref_geo (installé avec GeoNature ou TaxHub). Si vous avez installez seulement TaxHub, veuillez d'abord suivre la section 3.1
 
-**Attention** si ``use_ref_geo_gn2=true``. Par défaut le ``ref_geo`` contient l'ensemble des communes de France, ce qui ralentit fortement l'installation lorsqu'on construit la vue matérialisée ``vm_communes`` (qui intersecte les communes avec les limites du territoire).
+**Attention**  Par défaut le ``ref_geo`` contient l'ensemble des communes de France, ce qui ralentit fortement l'installation lorsqu'on construit la vue matérialisée ``vm_communes`` (qui intersecte les communes avec les limites du territoire).
 
 Pour accelérer l'installation, vous pouvez "désactiver" certaines communes du ``ref_geo``, dont vous ne vous servez pas. Voir l'exemple de requête ci-dessous :
 
@@ -115,11 +115,12 @@ Pour accelérer l'installation, vous pouvez "désactiver" certaines communes du 
     where insee_dep in ('MON_CODE_DEPARTEMENT', 'MON_CODE_DEPARTEMENT_BIS')
     )
 
-Si votre territoire est celui de toute la France, préférez une installation en fournissant une couche SHP des communes (sans connection au ``ref_geo``)
 
 :note:
 
     Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci sur le même serveur que l'application (``localhost``) car la création d'une BDD requiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adaptez les commandes du fichier ``install_db.sh`` en les exécutant une par une.
+
+**3.1 Installation de l'atlas sans GeoNature**
 
 L'application se base entièrement sur des vues matérialisées. Par défaut, celles-ci sont proposées pour requêter les données dans une BDD GeoNature.
 
@@ -133,8 +134,31 @@ Plus de détails sur les différentes vues matérialisées dans le fichier `<vue
 
 Vous y trouverez aussi un exemple d'adaptation de la vue ``atlas.vm_observations``, basé sur une BDD SICEN.
 
-Par ailleurs, si vous n'utilisez pas GeoNature, il vous faut installer TaxHub (https://github.com/PnX-SI/TaxHub/) ou au moins sa BDD, pour gérer les attributs (description, commentaire, milieu et chorologie) ainsi que les médias rattachés à chaque espèce (photos, videos, audios et articles). TaxHub dispose aussi de scripts permettant d'importer les médias des espèces depuis les photos libres de l'INPN (https://github.com/PnX-SI/TaxHub/tree/master/data/scripts/import_inpn_media) ou de Wikimedia (https://github.com/PnX-SI/TaxHub/tree/master/data/scripts/import_wikimedia_commons).
- 
+Par ailleurs, si vous n'utilisez pas GeoNature, il vous faut installer TaxHub (https://github.com/PnX-SI/TaxHub/)pour gérer les attributs (description, commentaire, milieu et chorologie) ainsi que les médias rattachés à chaque espèce (photos, videos, audios et articles). TaxHub dispose aussi de scripts permettant d'importer les médias des espèces depuis les photos libres de l'INPN (https://github.com/PnX-SI/TaxHub/tree/master/data/scripts/import_inpn_media) ou de Wikimedia (https://github.com/PnX-SI/TaxHub/tree/master/data/scripts/import_wikimedia_commons).
+⚠️ L'atlas devra impérativement être installé dans la même BDD que TaxHub.
+
+Une fois TaxHub installé, il est necessaire d'ajouter des migrations alembic ajouter les mailles necessaire à l'atlas.
+
+```
+# se mettre dans le venv de TaxHub
+
+# mettre à jour le schéma ref_geo
+flask db upgrade ref_geo@head
+source <chemin_vers_repertoire_taxhub>/venv/bin/activate
+# ajout des mailles 1
+flask db upgrade ref_geo_inpn_grids_1@head
+# ajout des mailles 5
+flask db upgrade ref_geo_inpn_grids_5@head
+# ajout des mailles 10
+flask db upgrade ref_geo_inpn_grids_10@head
+# ajout des communes
+flask db upgrade ref_geo_fr_municipalities@head
+```
+
+Vous devrez ensuite ajouter une couche qui correspond auX limiteS de votre territoire dans le schéma `ref_geo` de la base qui a été créé avec TaxHub.
+Pour cela créer une ligne dans la table `ref_geo.bib_area_type` qui correspond au "type d'aire , puis une ligne dans `ref_geo.l_areas`. Le `type_name` de la ligne créé dans `ref_geo.bib_area_type` sera a mettre dans le paramètre `type_territoire` du fichier `settings.ini`
+
+
 A noter aussi que si vous ne connectez pas l'atlas à une BDD GeoNature (``geonature_source=false``), une table exemple ``synthese.syntheseff`` comprenant 2 observations est créée. A vous d'adapter les vues après l'installation pour les connecter à vos données sources.
 
 Lancez le fichier fichier d'installation de la base de données :
@@ -295,17 +319,7 @@ Attention à bien lire les notes de chaque version, qui peuvent indiquer des op�
 
     ./install_app.sh
 
-- Relancez l'installation de la BDD :
-
-Pour mettre à jour l'application, il est necessaire de réinstaller la BDD.
-Assurez vous que le paramètre `drop_apps_db=true`
-
-⚠️ ⚠️ Cette opération va supprimer votre BDD pour en recréer un nouvelle. Assurez vous de bien posseder des sauvegardes ⚠️⚠️
-
-::
-
-    ./install_app.sh
-    
+- Executer le script de migration associé à la monté de version `update_X.Y.Z_to_X.Y.Z.sql`
 
 
 Mise à jour des couches de référence

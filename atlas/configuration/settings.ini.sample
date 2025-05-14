@@ -34,16 +34,7 @@ owner_atlas_pass=monpassachanger
 # GeoNature-atlas est-il connecté à une BDD GeoNature ? Si oui, renseignez true
 geonature_source=true
 
-# L'atlas est-il en lien avec le référentiel géographique de GeoNature (ref_geo) ?
-# ATTENTION : Doit être égal à true si geonature_source=true, 
-# ATTENTION : Doit être égal à false si geonature_source=false
-use_ref_geo_gn2=true
 
-# Souhaitez-vous installer le schéma taxonomie de TaxHub dans la BDD de GeoNature-atlas ? 
-# false si vous souhaitez utiliser celui de GeoNature en FDW
-# ATTENTION : Doit être true si geonature_source=false
-# OBSOLETE
-# install_taxonomie=false
 
 ################################################
 ##### CONNEXION A LA BDD GEONATURE SOURCE ######
@@ -80,36 +71,6 @@ atlas_source_pass=monpassachanger
 type_maille="'M1'"
 type_territoire="'PEC'"
 
-########### Si ref_geo = False #############
-
-#### COMMUNES ####
-
-# Creer la table des communes à partir d'un shapefile ?
-# Si false, modifiez la creation de 'atlas.vm_communes' dans data/atlas/atlas.vm_communes.sql
-# PARAMETRE OBSOLETE OBLIGATOIRE SI PAS DE REF_GEO
-# import_commune_shp=true
-
-# Chemin et nom des colonnes du SHP des communes du territoire. Laisser tel quel (en modifiant uniquement MYUSERLINUX)
-# pour utiliser les communes du PnEcrins par défaut
-communes_shp=/home/`whoami`/atlas/data/ref/communes.shp
-colonne_insee=insee
-colonne_nom_commune=nom_com
-
-#### TERRITOIRE ####
-
-# Chemin vers le SHP de l'emprise du territoire
-limit_shp=/home/`whoami`/atlas/data/ref/territoire.shp
-
-##### MAILLES #####
-
-# Mon territoire se situe en métropole ? Dans ce cas, on utilise les mailles fournies par l'INPN
-metropole=true
-
-# Choisissez alors la taille de vos mailles à utiliser (en km) / Valeurs possibles 1, 5 ou 10
-taillemaille=5
-
-# Si 'metropole=false', rajoutez dans le dossier /data/ref un SHP des mailles de votre territoire et renseignez son chemin
-chemin_custom_maille=/home/`whoami`/atlas/data/ref/custom_maille.shp
 
 # Altitudes
 # lister les valeurs des classes d'altitudes
@@ -119,11 +80,6 @@ altitudes=(0 500 1000 1500 2000 2500 3000 3500 4000)
 ############################
 ### Données TAXONOMIQUES ###
 ############################
-
-# Version de TaxHub à utiliser pour installer le schéma taxonomie si install_taxonomie=true
-# Numéro de version conseillée et testée : 1.8.1
-# PARAMETRE OBSOLETE Taxhub est OBLIGATOIRE
-# taxhub_release=1.8.1
 
 #### ID DES TYPES DES ATTRIBUTS DECRIVANT LES TAXONS DANS atlas.vm_cor_taxon_attribut --
 ## !! si changement: modifier également dans main/configuration/config.py

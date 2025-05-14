@@ -6,7 +6,7 @@
             COUNT(o.id_observation) AS nbr,
             ARRAY_AGG(o.id_observation) AS id_observations
         FROM atlas.vm_observations AS o
-            JOIN atlas.t_mailles_territoire AS m
+            JOIN atlas.vm_mailles_territoire AS m
                 ON (o.the_geom_point && m.the_geom)
         GROUP BY o.cd_ref, date_part('year', o.dateobs), m.id_maille
         ORDER BY o.cd_ref, annee

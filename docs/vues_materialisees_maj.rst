@@ -33,7 +33,7 @@ Liste des vues matérialisées
 
 Seule ``atlas.vm_observations`` doit éventuellement être adaptée, les autres vues sont calculées à partir du contenu de cette vue et de la vue qui renvoie tout TAXREF.
 
-Voir ``data/atlas.sql`` pour plus de précisions.
+Voir les fichiers dans le répertoire ``data`` pour plus de précisions.
 
 - ``atlas.vm_taxref`` qui renvoie toutes les données de ``taxonomie.taxref``.
 Les champs de cette table sont ``cd_nom``, ``id_statut``, ``id_habitat``, ``id_rang``, ``regne``, ``phylum``, ``classe``, ``ordre``, ``famille``, ``cd_taxsup``, ``cd_ref``, ``lb_nom``, ``lb_auteur``, ``nom_complet``, ``nom_valide``, ``nom_vern``, ``nom_vern_eng``, ``group1_inpn``, ``group2_inpn``, ``nom_complet_html`` et ``cd_sup``.
@@ -57,8 +57,6 @@ Les champs de cette table sont ``cd_nom``, ``id_statut``, ``id_habitat``, ``id_r
 - ``atlas.vm_cor_taxon_attribut`` qui renvoie les 4 descriptions des taxons (description, commentaire, milieux, chorologie, sur la base du schéma ``taxonomie`` de TaxHub
 
 - ``atlas.vm_observations_mailles`` qui renvoie la liste de toute les observations agrégées par maille.
-
-Pour créer la vue ``atlas.vm_observations_mailles``, remplacer le fichier ``data/ref/emprise_territoire.sample.shp`` par le fichier SHP de l'emprise de votre territore. Il est possible de choisir la table des mailles (1, 5 ou 10 km) en modifiant la variable ``taillemaille`` du fichier ``config/settings.ini``
 
 **Modèle conceptuel du schéma `atlas`**
 

@@ -64,7 +64,7 @@ def lastObservationsMailles(connection, mylimit, idPhoto):
         FROM atlas.vm_observations_mailles obs
         JOIN atlas.vm_taxons tax ON tax.cd_ref = obs.cd_ref
         JOIN atlas.vm_observations o ON o.id_observation=ANY(obs.id_observations)
-        JOIN atlas.t_mailles_territoire m ON m.id_maille=obs.id_maille
+        JOIN atlas.vm_mailles_territoire m ON m.id_maille=obs.id_maille
         LEFT JOIN atlas.vm_medias medias
             ON medias.cd_ref = obs.cd_ref AND medias.id_type = :thisID
         WHERE  o.dateobs >= (CURRENT_TIMESTAMP - INTERVAL :thislimit)
@@ -113,7 +113,7 @@ def lastObservationsCommuneMaille(connection, obs_limit, insee_code):
     )
     SELECT
         l.id_observation, l.cd_ref, l.display_name, m.id_maille, m.geojson_maille
-    FROM atlas.t_mailles_territoire AS m
+    FROM atlas.vm_mailles_territoire AS m
         JOIN last_obs AS l
             ON st_intersects(m.the_geom, l.l_geom)
     GROUP BY l.id_observation, l.cd_ref, l.display_name, m.id_maille, m.geojson_maille
@@ -145,7 +145,7 @@ def getObservationsTaxonCommuneMaille(connection, insee, cd_ref):
         FROM atlas.vm_observations AS o
             JOIN atlas.vm_communes AS c
                 ON ST_INTERSECTS(o.the_geom_point, c.the_geom)
-            JOIN atlas.t_mailles_territoire AS t
+            JOIN atlas.vm_mailles_territoire AS t
                 ON ST_INTERSECTS(t.the_geom, o.the_geom_point)
         WHERE o.cd_ref = :thiscdref
             AND c.insee = :thisInsee

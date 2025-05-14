@@ -44,19 +44,6 @@ atlas/static/custom/templates/mentions-legales.html
 atlas/static/custom/templates/personal-data.html
 atlas/static/custom/templates/navbar.html
 
-data/ref/emprise_territoire.*
-data/ref/communes.dbf
-data/ref/communes.prj
-data/ref/communes.shp
-data/ref/communes.shx
-
-data/ref/territoire.dbf
-data/ref/territoire.prj
-data/ref/territoire.shp
-data/ref/territoire.shx
-
-data/ref/L93*
-data/ref/mailles*
 
 # Pycharm
 .idea/

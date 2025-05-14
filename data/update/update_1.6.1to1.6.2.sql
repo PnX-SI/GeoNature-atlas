@@ -1,5 +1,7 @@
 DROP MATERIALIZED VIEW IF EXISTS atlas.vm_observations_mailles;
 
+drop table atlas.t_mailles_territoire;
+
 -- Création index sur les mailles du territoire
 CREATE INDEX ON atlas.t_mailles_territoire
     USING spgist (the_geom);
@@ -31,3 +33,6 @@ CREATE INDEX ON atlas.vm_observations_mailles
 CREATE INDEX ON atlas.vm_observations_mailles
     USING btree (id_maille, cd_ref);
  
+
+CREATE INDEX index_gist_t_layer_territoire ON atlas.t_layer_territoire USING gist(the_geom);
+CREATE INDEX index_gist_t_layers_communes ON atlas.l_communes USING gist (the_geom);

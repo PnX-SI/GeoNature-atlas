@@ -27,16 +27,3 @@ CREATE TABLE gn_meta.cor_dataset_actor (
     id_role int4  NULL,
     id_organism int4 NULL
 );
-
-CREATE TABLE utilisateurs.bib_organismes (
-    id_organisme int4 NOT NULL,
-    uuid_organisme uuid NULL,
-    nom_organisme varchar(100) NOT NULL,
-    adresse_organisme varchar(128) NULL,
-    cp_organisme varchar(5)  NULL,
-    ville_organisme varchar(100) NULL,
-    tel_organisme varchar(14) NULL,
-    email_organisme varchar(100)  NULL,
-    url_organisme varchar(255) NULL,
-    url_logo varchar(255) NULL
-);

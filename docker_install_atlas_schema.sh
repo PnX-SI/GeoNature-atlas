@@ -73,6 +73,6 @@ psql -v ON_ERROR_STOP=1 -d ${POSTGRES_DB} -U ${POSTGRES_USER} -h ${POSTGRES_HOST
 psql -v ON_ERROR_STOP=1 -d ${POSTGRES_DB} -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -f /tmp/11.atlas.vm_cor_taxon_organism.sql
 psql -v ON_ERROR_STOP=1 -d ${POSTGRES_DB} -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} \
     -v type_maille=$ATLAS_TYPE_MAILLE \
-    -f data/atlas/12.atlas.t_mailles_territoire.sql
+    -f data/atlas/12.atlas.vm_mailles_territoire.sql
 psql -v ON_ERROR_STOP=1 -d ${POSTGRES_DB} -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -f data/atlas/13.atlas.vm_observations_mailles.sql
 psql -v ON_ERROR_STOP=1 -d ${POSTGRES_DB} -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -f data/atlas/atlas.refresh_materialized_view_data.sql

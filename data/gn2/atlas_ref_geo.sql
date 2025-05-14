@@ -41,9 +41,9 @@ CREATE UNIQUE INDEX l_communes_insee_idx
 
 DO $$
 BEGIN
-	DROP TABLE atlas.t_mailles_territoire;
+	DROP TABLE atlas.vm_mailles_territoire;
 EXCEPTION WHEN others THEN
-	RAISE NOTICE 'view atlas.t_mailles_territoire does not exist';
+	RAISE NOTICE 'view atlas.vm_mailles_territoire does not exist';
 END$$;
 
 --################################
@@ -93,7 +93,7 @@ RETURNS VOID AS $$
 BEGIN
 
   REFRESH MATERIALIZED VIEW atlas.t_layer_territoire;
-  REFRESH MATERIALIZED VIEW atlas.t_mailles_territoire;
+  REFRESH MATERIALIZED VIEW atlas.vm_mailles_territoire;
   REFRESH MATERIALIZED VIEW atlas.l_communes;
   REFRESH MATERIALIZED VIEW atlas.vm_communes;
 
