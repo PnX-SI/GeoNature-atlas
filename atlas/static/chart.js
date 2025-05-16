@@ -145,7 +145,7 @@ function formatStackedBarChart(values, element) {
 
     if(configuration.DISPLAY_PATRIMONIALITE) {
         datasets.push({
-            label: "Nombre d'espèces remarquables",
+            label: `Nombre d'espèces ${configuration.PATRIMONIALITE.label_pluriel || "remarquables"}`,
             data: nb_patrimonial,
             backgroundColor: [configuration.COLOR_STACKED_BAR_CHARTS[1]],
             stack: "2",
