@@ -70,23 +70,28 @@ function displayObsGridBaseUrl() {
 
 // display observation on click
 function displayObsTaxon(id_area, cd_ref) {
-    $.ajax({
-        url:
-            configuration.URL_APPLICATION +
-            "/api/observations/" +
-            id_area +
-            "/" +
-            cd_ref,
-        dataType: "json",
-        beforeSend: function() {
-            $("#loadingGif").show();
-            $("#loadingGif").attr(
-                "src",
-                configuration.URL_APPLICATION + "/static/images/loading.svg"
-            );
-        }
-    }).done(function(observations) {
-        $("#loadingGif").hide();
+  $.ajax({
+    url:
+      configuration.URL_APPLICATION +
+      "/api/observations/" +
+      id_area +
+      "/" +
+      cd_ref,
+    dataType: "json",
+    beforeSend: function() {
+      $("#loadingGif").show();
+      $("#loadingGif").attr(
+        "src",
+        configuration.URL_APPLICATION + "/static/images/loading.svg"
+      );
+    }
+  }).done(function(observations) {
+    $("#loadingGif").hide();
+    map.removeLayer(currentLayer);
+    if (configuration.AFFICHAGE_MAILLE) {
+        displayMailleLayerLastObs(observations);
+        clearOverlays()
+    } else {
         map.removeLayer(currentLayer);
         if (configuration.AFFICHAGE_MAILLE) {
             displayMailleLayerLastObs(observations);
@@ -149,10 +154,8 @@ function refreshObsArea() {
     console.log("YEP");
     
     $("#taxonList ul").on("click", "#taxonListItem", function () {
-        $(this)
-            .siblings()
-            .removeClass("current");
-        $(this).addClass("current");
+        document.querySelector("#taxonList .current")?.classList.remove("current")
+        elem.currentTarget.classList.add("current")
         if (configuration.AFFICHAGE_MAILLE) {
             displayObsTaxonMaille(this.getAttribute("area-code"), this.getAttribute("cdref"));
         } else {
