@@ -141,32 +141,36 @@ function formatStackedBarChart(values, element) {
         nb_species_in_teritory.push(values[key].nb_species_in_teritory)
     })
 
-    const data = {
-        labels: labels,
-        datasets: [
+    const datasets = []
+
+    if(configuration.DISPLAY_PATRIMONIALITE) {
+        datasets.push({
+            label: "Nombre d'espèces remarquables",
+            data: nb_patrimonial,
+            backgroundColor: [configuration.COLOR_STACKED_BAR_CHARTS[1]],
+            stack: "2",
+        });
+    }
+
+    datasets.push(
             {
-                label: "Nombre d'espèces",
+                label: "Nombre d'espèces sur ce territoire",
                 data: nb_species,
                 backgroundColor: [configuration.COLOR_STACKED_BAR_CHARTS[0]],
                 stack: "0",
             },
-
             {
                 label: "Nombre d'espèces sur tout le territoire",
                 data: nb_species_in_teritory,
                 backgroundColor: [configuration.COLOR_STACKED_BAR_CHARTS[2]],
                 stack: "1",
             }
-        ]
+    )
+
+    const data = {
+        labels: labels,
+        datasets: datasets
     };
-    if(configuration.DISPLAY_PATRIMONIALITE) {
-        data.datasets.push({
-            label: "Nombre d'espèces patrimonialies",
-            data: nb_patrimonial,
-            backgroundColor: [configuration.COLOR_STACKED_BAR_CHARTS[1]],
-            stack: "2",
-        });
-    }
 
     return data
 }
