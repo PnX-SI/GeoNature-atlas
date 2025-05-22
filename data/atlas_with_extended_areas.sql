@@ -37,7 +37,7 @@ SELECT
      , a.id_type                                AS id_type
      , st_transform(a.geom, 4326)               AS the_geom
      , st_asgeojson(st_transform(a.geom, 4326)) AS area_geojson
-     , a.description                            AS description
+     , ''::text                                 AS description
 FROM ref_geo.l_areas a
 JOIN ref_geo.bib_areas_types b on a.id_type = b.id_type
     JOIN atlas.t_layer_territoire layer ON ST_INTERSECTS(layer.the_geom, a.geom_4326)

@@ -7,7 +7,7 @@ Type=simple
 User=${USER}
 Group=${USER}
 WorkingDirectory=${BASE_DIR}/
-Environment=GUNICORN_PROC_NAME=geonature-atlas
+Environment=GUNICORN_PROC_NAME=geonature-atlas-dev
 Environment=GUNICORN_NUM_WORKERS=${gun_num_workers}
 Environment=GUNICORN_HOST=127.0.0.1
 Environment=GUNICORN_PORT=${gun_port}
@@ -20,7 +20,7 @@ ExecReload=/bin/kill -s HUP $MAINPID
 TimeoutStartSec=10
 TimeoutStopSec=5
 PrivateTmp=true
-StandardOutput=append:/var/log/geonature-atlas.log
+StandardOutput=append:/var/log/geonature-atlas-dev.log
 StandardError=inherit
 
 [Install]

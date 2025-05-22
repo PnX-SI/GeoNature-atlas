@@ -61,10 +61,10 @@ sed -i "s/GUNICORN_PORT = .*$/GUNICORN_PORT = '${gun_port}'/g" ./atlas/configura
 
 echo "Launching application..."
 export BASE_DIR=$(readlink -e "${0%/*}")
-envsubst '${USER} ${BASE_DIR} ${gun_num_workers} ${gun_port}' < geonature-atlas.service | sudo tee /etc/systemd/system/geonature-atlas.service || exit 1
+envsubst '${USER} ${BASE_DIR} ${gun_num_workers} ${gun_port}' < geonature-atlas-dev.service | sudo tee /etc/systemd/system/geonature-atlas-dev.service || exit 1
 sudo systemctl daemon-reload || exit 1
-sudo systemctl enable geonature-atlas || exit 1
-sudo systemctl start geonature-atlas || exit 1
+sudo systemctl enable geonature-atlas-dev || exit 1
+sudo systemctl start geonature-atlas-dev || exit 1
 
 
 
