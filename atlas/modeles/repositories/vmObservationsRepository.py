@@ -76,6 +76,7 @@ def lastObservations(connection, mylimit, idPhoto):
         temp.pop("the_geom_point", None)
         temp["geojson_point"] = json.loads(o.geojson_point or "{}")
         temp["dateobs"] = o.dateobs
+#        temp["type_code"] = o.type_code
         temp["group2_inpn"] = utils.deleteAccent(o.group2_inpn)
         temp["pathImg"] = utils.findPath(o)
         obsList.append(temp)
