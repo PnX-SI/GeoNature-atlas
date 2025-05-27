@@ -6,37 +6,31 @@ from sqlalchemy.ext.declarative import declarative_base
 from atlas.env import db
 
 Base = declarative_base()
-metadata = MetaData()
 
 
 class VmTaxons(Base):
-    __table__ = Table(
-        "vm_taxons",
-        metadata,
-        Column("cd_ref", Integer, primary_key=True, unique=True),
-        Column("regne", String(20)),
-        Column("phylum", String(50)),
-        Column("classe", String(50)),
-        Column("ordre", String(50)),
-        Column("famille", String(50)),
-        Column("cd_taxsup", Integer),
-        Column("lb_nom", String(100)),
-        Column("lb_auteur", String(250)),
-        Column("nom_complet", String(255)),
-        Column("nom_valide", String(255)),
-        Column("nom_vern", String(1000)),
-        Column("nom_vern_eng", String(500)),
-        Column("group1_inpn", String(50)),
-        Column("group2_inpn", String(50)),
-        Column("nom_complet_html", String(500)),
-        # Column('nom_habitat', String(50)),
-        # Column('nom_rang', String(20)),
-        # Column('nom_statut', String(50)),
-        Column("patrimonial", String(255)),
-        Column("protection_stricte", String(255)),
-        Column("yearmin", Float(53)),
-        Column("yearmax", Float(53)),
-        schema="atlas",
-        autoload=True,
-        autoload_with=db.engine,
-    )
+    __tablename__ = "vm_taxons"
+    __table_args__ = {"schema" : "atlas"}
+
+    cd_ref = Column(Integer, primary_key=True)
+    regne = Column(String(20))
+    phylum = Column(String(50))
+    classe = Column(String(50)) 
+    ordre = Column(String(50))
+    famille = Column(String(50))
+    cd_taxsup = Column(Integer)
+    lb_nom = Column(String(100))
+    lb_auteur = Column(String(250))
+    nom_complet = Column(String(255))
+    nom_valide = Column(String(255))
+    nom_vern = Column(String(1000))
+    nom_vern_eng = Column(String(500))
+    group1_inpn = Column(String(50))
+    group2_inpn = Column(String(50))
+    nom_complet_html = Column(String(500))
+    id_rang = Column(String(10)) 
+    patrimonial = Column(String(255))
+    protection_stricte = Column(String(255))
+    yearmin = Column(Float(53))
+    yearmax = Column(Float(53))
+    nb_obs = Column(Integer)

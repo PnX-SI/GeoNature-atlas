@@ -4,26 +4,21 @@ from sqlalchemy.ext.declarative import declarative_base
 
 from atlas.env import db
 
-metadata = MetaData()
 Base = declarative_base()
 
 
 class VmMedias(Base):
-    __table__ = Table(
-        "vm_medias",
-        metadata,
-        Column("id_media", Integer(), primary_key=True, unique=True),
-        Column("cd_ref", Integer()),
-        Column("titre", String(255)),
-        Column("url", String(255)),
-        Column("chemin", String(255)),
-        Column("auteur", String(1000)),
-        Column("desc_media", Text()),
-        Column("date_media", Date()),
-        Column("id_type", Integer()),
-        Column("licence", String(100)),
-        Column("source", String(25)),
-        schema="atlas",
-        autoload=True,
-        autoload_with=db.engine,
-    )
+    __tablename__ = "vm_medias"
+    __table_args__ = {"schema": "atlas"}
+
+    id_media = Column(Integer, primary_key=True)
+    cd_ref = Column(Integer)
+    titre = Column(String(255))
+    url = Column(String(255))
+    chemin = Column(String(255))
+    auteur = Column(String(1000))
+    desc_media = Column(Text)
+    date_media = Column(Date)
+    id_type = Column(Integer)
+    licence = Column(String(100))
+    source = Column(String(25))
