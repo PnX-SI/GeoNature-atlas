@@ -44,7 +44,9 @@ def firstObservationChild(connection, cd_ref):
     WHERE taxons.cd_ref IN (
     SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
     )OR taxons.cd_ref = :thiscdref"""
-    req = connection.execute(text(sql), thiscdref=cd_ref)
+    req = connection.execute(
+        text(sql), {"thiscdref":cd_ref}
+        )
     for r in req:
         return r.yearmin
 
@@ -68,11 +70,14 @@ def lastObservations(connection, mylimit, idPhoto):
     WHERE  obs.dateobs >= (CURRENT_TIMESTAMP - INTERVAL :thislimit)
     ORDER BY obs.dateobs DESC """
 
-    observations = connection.execute(text(sql), thislimit=mylimit, thisidphoto=idPhoto)
+    observations = connection.execute(
+        text(sql), 
+        {"thislimit": mylimit, "thisidphoto": idPhoto}
+        )
 
     obsList = list()
     for o in observations:
-        temp = dict(o)
+        temp = dict(o._mapping)
         temp.pop("the_geom_point", None)
         temp["geojson_point"] = json.loads(o.geojson_point or "{}")
         temp["dateobs"] = o.dateobs
@@ -96,14 +101,15 @@ def getObservationsByArea(connection, id_area, limit):
     JOIN atlas.vm_cor_area_synthese AS cas  ON cas.id_synthese = o.id_observation
     JOIN atlas.vm_taxons tax ON  o.cd_ref = tax.cd_ref
     WHERE cas.id_area = :id_area
-    ORDER BY o.dateobs DESC """
-    if limit:
-        sql += "LIMIT :obsLimit"
-    
-    observations = connection.execute(text(sql), obsLimit=limit, id_area=id_area)
+    ORDER BY o.dateobs DESC
+    LIMIT :obsLimit"""
+    observations = connection.execute(
+        text(sql), 
+        {"obsLimit":obs_limit, "id_area":id_area}
+        )
     obsList = list()
     for o in observations:
-        temp = dict(o)
+        temp = dict(o._mapping)
         temp.pop("the_geom_point", None)
         temp["geojson_point"] = json.loads(o.geojson_point or "{}")
         temp["dateobs"] = o.dateobs
@@ -122,10 +128,13 @@ def getObservationTaxonArea(connection, id_area, cd_ref):
         WHERE cas.id_area = :id_area AND obs.cd_ref = :cd_ref
     """
 
-    observations = connection.execute(text(sql), cd_ref=cd_ref, id_area=id_area)
+    observations = connection.execute(
+        text(sql), 
+        {"cd_ref":cd_ref, "id_area":id_area}
+        )
     obsList = list()
     for o in observations:
-        temp = dict(o)
+        temp = dict(o._mapping)
         temp["geojson_point"] = json.loads(o.geojson_point or "{}")
         temp["dateobs"] = o.dateobs
         obsList.append(temp)
@@ -158,7 +167,7 @@ def observersParser(req):
 
 def getObservers(connection, cd_ref):
     sql = "SELECT * FROM atlas.find_all_taxons_childs(:thiscdref) AS taxon_childs(cd_nom)"
-    results = connection.execute(text(sql), thiscdref=cd_ref)
+    results = connection.execute(text(sql), {"thiscdref":cd_ref})
     taxons = [cd_ref]
     for r in results:
         taxons.append(r.cd_nom)
@@ -168,7 +177,7 @@ def getObservers(connection, cd_ref):
         FROM atlas.vm_observations
         WHERE cd_ref = ANY(:taxonsList)
     """
-    results = connection.execute(text(sql), taxonsList=taxons)
+    results = connection.execute(text(sql), {"taxonsList":taxons})
     return observersParser(results)
 
 
@@ -180,7 +189,7 @@ def getGroupeObservers(connection, groupe):
             SELECT cd_ref FROM atlas.vm_taxons WHERE group2_inpn = :thisgroupe
         )
     """
-    req = connection.execute(text(sql), thisgroupe=groupe)
+    req = connection.execute(text(sql), {"thisgroupe":groupe})
     return observersParser(req)
 
 
@@ -191,7 +200,7 @@ def getObserversArea(connection, id_area):
         JOIN atlas.vm_cor_area_synthese AS cas ON cas.id_synthese = obs.id_observation
         WHERE cas.id_area = :thisIdArea
     """
-    req = connection.execute(text(sql), thisIdArea=id_area)
+    req = connection.execute(text(sql), {"thisIdArea":id_area})
     return observersParser(req)
 
 
@@ -211,7 +220,10 @@ def statIndex(connection):
         JOIN atlas.vm_bib_areas_types bat ON bat.id_type = vla.id_type
         WHERE bat.type_code = any(:type_code)
     """
-    req = connection.execute(text(sql), type_code=current_app.config["TYPE_TERRITOIRE_SHEET"])
+    req = connection.execute(
+        text(sql), 
+        {"type_code":current_app.config["TYPE_TERRITOIRE_SHEET"]}
+        )
     for r in req:
         result["town"] = r.count
 
@@ -232,8 +244,8 @@ def statIndex(connection):
     """
     req = connection.execute(
         text(sql),
-        id_type1=current_app.config["ATTR_MAIN_PHOTO"],
-        id_type2=current_app.config["ATTR_OTHER_PHOTO"],
+        {"id_type1":current_app.config["ATTR_MAIN_PHOTO"],
+         "id_type2":current_app.config["ATTR_OTHER_PHOTO"]}
     )
     for r in req:
         result["photo"] = r.count
@@ -253,7 +265,7 @@ def genericStat(connection, tab):
         """.format(
             rang=rang
         )
-        req = connection.execute(text(sql), nomTaxon=tuple(nomTaxon))
+        req = connection.execute(text(sql), {"nomTaxon":tuple(nomTaxon)})
         for r in req:
             temp = {"nb_obs": r.nb_obs, "nb_taxons": r.nb_taxons}
             tabStat.append(temp)
@@ -275,7 +287,7 @@ def genericStatMedias(connection, tab):
         """.format(
             rang
         )
-        req = connection.execute(text(sql), nomTaxon=tuple(nomTaxon))
+        req = connection.execute(text(sql), {"nomTaxon" : tuple(nomTaxon)})
         tabStat.insert(i, list())
         for r in req:
             shorterName = None
@@ -315,7 +327,10 @@ def getLastDiscoveries(connection):
         ORDER BY t.date desc
         LIMIT 6
     """
-    req = connection.execute(text(sql), thisidtype=current_app.config["ATTR_MAIN_PHOTO"])
+    req = connection.execute(
+        text(sql), 
+        {"thisidtype" : current_app.config["ATTR_MAIN_PHOTO"]}
+        )
     lastDiscoveriesList = list()
     for r in req:
         temp = {

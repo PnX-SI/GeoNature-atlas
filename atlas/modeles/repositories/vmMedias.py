@@ -45,7 +45,10 @@ def getFirstPhoto(connection, cd_ref, id):
                 AND id_type=:thisid
         LIMIT 1
     """
-    req = connection.execute(text(sql), thiscdref=cd_ref, thisid=id)
+    req = connection.execute(
+        text(sql), 
+        {"thiscdref":cd_ref, "thisid":id}
+        )
     for r in req:
         return _format_media(r)
 
@@ -62,7 +65,10 @@ def getPhotoCarousel(connection, cd_ref, id):
             )
             AND id_type= :thisid
     """
-    req = connection.execute(text(sql), thiscdref=cd_ref, thisid=id)
+    req = connection.execute(
+        text(sql), 
+        {"thiscdref":cd_ref, "thisid":id}
+        )
 
     return [_format_media(r) for r in req]
 
@@ -126,7 +132,10 @@ def getVideo_and_audio(connection, cd_ref, id5, id6, id7, id8, id9):
         ORDER BY date_media DESC
     """
     req = connection.execute(
-        text(sql), thiscdref=cd_ref, id5=id5, id6=id6, id7=id7, id8=id8, id9=id9
+        text(sql), 
+        {"thiscdref":cd_ref, "id5":id5, 
+        "id6":id6, "id7":id7, 
+        "id8":id8, "id9":id9}
     )
     tabMedias = {"audio": list(), "video": list()}
     for r in req:
@@ -156,7 +165,8 @@ def getLinks_and_articles(connection, cd_ref, id3, id4):
         WHERE id_type IN (:id3, :id4) AND cd_ref = :thiscdref
         ORDER BY date_media DESC
     """
-    req = connection.execute(text(sql), thiscdref=cd_ref, id3=id3, id4=id4)
+    req = connection.execute(
+        text(sql), {"thiscdref":cd_ref, "id3":id3, "id4":id4})
     return [_format_media(r) for r in req]
 
 
@@ -167,7 +177,8 @@ def get_liens_importants(connection, cd_ref, media_ids):
         WHERE id_type = ANY(:media_ids) AND cd_ref = :thiscdref
         ORDER BY date_media DESC
     """
-    req = connection.execute(text(sql), thiscdref=cd_ref, media_ids=media_ids)
+    req = connection.execute(text(sql), 
+                            {"thiscdref":cd_ref, "media_ids":media_ids})
     return [_format_media(r) for r in req]
 
 
@@ -179,7 +190,8 @@ def getPhotosGallery(connection, id1, id2):
         WHERE m.id_type IN (:thisID1, :thisID2)
         ORDER BY RANDOM()
     """
-    req = connection.execute(text(sql), thisID1=id1, thisID2=id2)
+    req = connection.execute(text(sql), 
+                            {"thisID1":id1, "thisID2":id2})
     tab_photos = []
     for r in req:
         if r.nom_vern:
@@ -202,7 +214,10 @@ def getPhotosGalleryByGroup(connection, id1, id2, INPNgroup):
         JOIN atlas.vm_taxons t ON t.cd_ref = m.cd_ref
         WHERE m.id_type IN  (:thisID1, :thisID2) AND t.group2_inpn = :thisGroup
         ORDER BY RANDOM()"""
-    req = connection.execute(text(sql), thisID1=id1, thisID2=id2, thisGroup=INPNgroup)
+    req = connection.execute(
+        text(sql), 
+        {"thisID1":id1, "thisID2":id2, "thisGroup":INPNgroup}
+        )
     tab_photos = []
     for r in req:
         photo = _format_media(r)

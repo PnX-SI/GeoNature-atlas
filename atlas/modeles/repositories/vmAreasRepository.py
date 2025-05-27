@@ -46,7 +46,7 @@ def getAreaFromIdArea(connection, id_area):
         JOIN atlas.vm_bib_areas_types bib ON bib.id_type = area.id_type
         WHERE area.id_area = :thisIdArea
     """
-    area = connection.execute(text(sql), thisIdArea=id_area).fetchone()
+    area = connection.execute(text(sql), {"thisIdArea":id_area}).fetchone()
     if not area:
         raise NotFound()
     area_dict = {
@@ -67,7 +67,7 @@ def getAreaFromIdArea(connection, id_area):
     ) parent ON parent.id_area_group = l.id_area
     JOIN atlas.vm_bib_areas_types bib ON bib.id_type = l.id_type
     """
-    areas_parent = connection.execute(text(sql_area_parent), thisIdArea=id_area).fetchall()
+    areas_parent = connection.execute(text(sql_area_parent), {"thisIdArea":id_area}).fetchall()
     areas_parent_serialized = [
         {
             "areaName": area.area_name,
@@ -82,7 +82,7 @@ def getAreaFromIdArea(connection, id_area):
 
 def getAreasObservationsChilds(connection, cd_ref):
     sql = "SELECT * FROM atlas.find_all_taxons_childs(:thiscdref) AS taxon_childs(cd_nom)"
-    results = connection.execute(text(sql), thiscdref=cd_ref)
+    results = connection.execute(text(sql), {"thiscdref":cd_ref})
     taxons = [cd_ref]
     for r in results:
         taxons.append(r.cd_nom)
@@ -102,7 +102,8 @@ def getAreasObservationsChilds(connection, cd_ref):
     """
 
     results = connection.execute(
-        text(sql), taxonsList=taxons, list_id_type=current_app.config["TYPE_TERRITOIRE_SHEET"]
+        text(sql), 
+        {"taxonsList":taxons, "list_id_type":current_app.config["TYPE_TERRITOIRE_SHEET"]}
     )
     areas = {}
     nb_territory = 0
@@ -136,7 +137,7 @@ def get_species_by_taxonomic_group(connection, id_area):
     WHERE id_area = :id_area;
         """
 
-    result = connection.execute(text(sql), id_area=id_area)
+    result = connection.execute(text(sql), {"id_area":id_area})
     info_chart = dict()
     for r in result:
         info_chart[r.group2_inpn] = {
@@ -158,7 +159,7 @@ def get_nb_observations_taxonomic_group(connection, id_area):
     WHERE id_area = :id_area;
         """
 
-    result = connection.execute(text(sql), id_area=id_area)
+    result = connection.execute(text(sql), {"id_area":id_area})
     info_chart = dict()
     for r in result:
         info_chart[r.group2_inpn] = r.nb_obs
@@ -171,7 +172,7 @@ def getStatsByArea(connection, id_area):
     FROM atlas.vm_area_stats
     WHERE id_area = :id_area;
     """
-    result = connection.execute(text(sql), id_area=id_area).fetchone()
+    result = connection.execute(text(sql), {"id_area":id_area}).fetchone()
     if not result:
         raise NotFound()
     return result._asdict()

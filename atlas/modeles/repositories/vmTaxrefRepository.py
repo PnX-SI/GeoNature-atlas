@@ -36,7 +36,7 @@ def searchEspece(connection, cd_ref):
             ON t2.cd_ref = taxref.cd_ref
     WHERE taxref.cd_nom = :cdRef
     """
-    results = connection.execute(text(query), cdRef=cd_ref)
+    results = connection.execute(text(query), {"cdRef":cd_ref})
     taxonSearch = dict()
     for r in results:
         nom_vern = None
@@ -77,7 +77,7 @@ def searchEspece(connection, cd_ref):
         )
         ORDER BY tax.lb_nom ASC, tax.nb_obs DESC
     """
-    results = connection.execute(text(query), cdRef=cd_ref)
+    results = connection.execute(text(query), {"cdRef":cd_ref})
     listTaxonsChild = list()
     for r in results:
         temp = {
@@ -102,7 +102,7 @@ def getSynonymy(connection, cd_ref):
         WHERE cd_ref = :thiscdref
         ORDER BY lb_nom ASC
     """
-    req = connection.execute(text(sql), thiscdref=cd_ref)
+    req = connection.execute(text(sql), {"thiscdref":cd_ref})
     tabSyn = list()
     for r in req:
         temp = {"lb_nom": r.lb_nom, "nom_complet_html": r.nom_complet_html}
@@ -164,6 +164,6 @@ def get_cd_ref(connection, cd_nom):
         FROM atlas.vm_taxref AS t
         WHERE t.cd_nom = :cdNom
     """
-    results = connection.execute(text(sql), cdNom=cd_nom)
+    results = connection.execute(text(sql), {"cdNom":cd_nom})
     row = results.fetchone()
     return row.cd_ref

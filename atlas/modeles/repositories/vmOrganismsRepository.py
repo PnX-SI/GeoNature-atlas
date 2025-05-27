@@ -15,7 +15,7 @@ def statOrganism(connection, id_organism):
     WHERE o.id_organism = :thisidorganism
     GROUP BY nom_organism, url_organism, url_logo, adresse_organism, cp_organism, ville_organism,
     tel_organism, email_organism"""
-    req = connection.execute(text(sql), thisidorganism=id_organism)
+    req = connection.execute(text(sql), {"thisidorganism":id_organism})
     StatsOrga = dict()
     for r in req:
         StatsOrga = {
@@ -42,7 +42,7 @@ def topObsOrganism(connection, id_organism):
     ORDER BY nb_observations DESC
     LIMIT 3
     """
-    req = connection.execute(text(sql), thisidorganism=id_organism)
+    req = connection.execute(text(sql), {"thisidorganism":id_organism})
     topSpecies = list()
     for r in req:
         temp = {"cd_ref": r.cd_ref, "nb_obs_taxon": r.nb_obs_taxon}
@@ -60,7 +60,7 @@ def getListOrganism(connection, cd_ref):
                 OR cd_ref = :thiscdref
              GROUP by id_organism, nom_organism, url_organism, url_logo            
              ORDER BY nb_observations DESC"""
-    req = connection.execute(text(sql), thiscdref=cd_ref)
+    req = connection.execute(text(sql), {"thiscdref":cd_ref})
     ListOrganism = list()
     for r in req:
         temp = {
@@ -82,7 +82,7 @@ def getTaxonRepartitionOrganism(connection, id_organism):
     WHERE o.id_organism = :thisidorganism
    	GROUP BY g.group2_inpn, o.id_organism
     """
-    req = connection.execute(text(sql), thisidorganism=id_organism)
+    req = connection.execute(text(sql), {"thisidorganism":id_organism})
     ListGroup = list()
     for r in req:
         temp = {"group2_inpn": r.group2_inpn, "nb_obs_group": int(r.nb_obs_group)}
@@ -99,7 +99,7 @@ FROM atlas.vm_observations obs
         JOIN atlas.vm_l_areas area ON st_intersects(obs.the_geom_point, area.the_geom)
 WHERE area.id_area = :id_area;
     """
-    res = connection.execute(text(sql), id_area=id_area)
+    res = connection.execute(text(sql), {"id_area":id_area})
     result = dict()
     for r in res:
         result = r.nb_organism
@@ -118,7 +118,7 @@ WHERE area.id_area = :id_area
 GROUP BY cto.nom_organism
 ORDER BY cto.nom_organism;
     """
-    result = connection.execute(text(sql), id_area=id_area)
+    result = connection.execute(text(sql), {id_area:id_area})
     list_species_by_organism = list()
     for r in result:
         temp = {"nb": r.nb_species, "label": r.nom_organism}
@@ -137,7 +137,7 @@ WHERE area.id_area = :id_area
 GROUP BY b.nom_organisme
 ORDER BY b.nom_organisme;
     """
-    result = connection.execute(text(sql), id_area=id_area)
+    result = connection.execute(text(sql), {"id_area":id_area})
     list_observations_by_organism = list()
     for r in result:
         temp = {"nb": r.nb_observations, "label": r.nom_organisme}
@@ -152,7 +152,7 @@ SELECT nb_species,
 FROM atlas.vm_area_stats_by_organism
 WHERE id_area = :id_area;
     """
-    result = connection.execute(text(sql), id_area=id_area)
+    result = connection.execute(text(sql), {"id_area":id_area})
     list_species_by_organism = list()
     for r in result:
         temp = {"nb": r.nb_species, "label": r.nom_organism}
@@ -167,7 +167,7 @@ def get_nb_observations_by_organism_on_area(connection, id_area):
     FROM atlas.vm_area_stats_by_organism
     WHERE id_area = :id_area;
         """
-    result = connection.execute(text(sql), id_area=id_area)
+    result = connection.execute(text(sql), {"id_area":id_area})
     list_species_by_organism = list()
     for r in result:
         temp = {"nb": r.nb_obs, "label": r.nom_organism}

@@ -67,7 +67,7 @@ def getTaxonsAreas(connection, id_area):
     """.format(
         current_app.config["ATTR_MAIN_PHOTO"]
     )
-    req = connection.execute(text(sql), idAreaCode=id_area)
+    req = connection.execute(text(sql), {"idAreaCode":id_area})
     taxonAreasList = list()
     nbObsTotal = 0
     for r in req:
@@ -103,7 +103,7 @@ def getTaxonsChildsList(connection, cd_ref):
         ) """.format(
         str(current_app.config["ATTR_MAIN_PHOTO"])
     )
-    req = connection.execute(text(sql), thiscdref=cd_ref)
+    req = connection.execute(text(sql), {"thiscdref":cd_ref})
     taxonRankList = list()
     nbObsTotal = 0
     for r in req:
@@ -160,7 +160,7 @@ def getTaxonsGroup(connection, groupe):
         """.format(
         current_app.config["ATTR_MAIN_PHOTO"]
     )
-    req = connection.execute(text(sql), thisGroupe=groupe)
+    req = connection.execute(text(sql), {"thisGroupe":groupe})
     tabTaxons = list()
     nbObsTotal = 0
     for r in req:

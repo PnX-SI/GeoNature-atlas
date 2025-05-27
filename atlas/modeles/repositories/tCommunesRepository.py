@@ -17,4 +17,4 @@ def getZonesObservationsChilds(connection, cd_ref):
         "UTF-8"
     )
 
-    return connection.execute(text(sql), thiscdref=cd_ref)
+    return connection.execute(text(sql), {"thiscdref":cd_ref})

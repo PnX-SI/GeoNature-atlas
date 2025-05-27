@@ -17,7 +17,7 @@ def getMonthlyObservationsChilds(connection, cd_ref):
         OR mois.cd_ref = :thiscdref
     """
 
-    mesMois = connection.execute(text(sql), thiscdref=cd_ref)
+    mesMois = connection.execute(text(sql), {"thiscdref":cd_ref})
     for inter in mesMois:
         return [
             {"mois": "Janvier", "value": inter._01},

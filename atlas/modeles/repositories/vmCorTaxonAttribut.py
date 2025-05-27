@@ -12,11 +12,11 @@ def getAttributesTaxon(connection, cd_ref, attrDesc, attrComment, attrMilieu, at
     """
     req = connection.execute(
         text(sql),
-        thiscdref=cd_ref,
-        thisattrDesc=attrDesc,
-        thisattrComment=attrComment,
-        thisattrMilieu=attrMilieu,
-        thisattrChoro=attrChoro,
+        {"thiscdref":cd_ref,
+        "thisattrDesc":attrDesc,
+        "thisattrComment":attrComment,
+        "thisattrMilieu":attrMilieu,
+        "thisattrChoro":attrChoro,}
     )
 
     descTaxon = {"description": None, "commentaire": None, "milieu": None, "chorologie": None}

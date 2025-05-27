@@ -3,7 +3,7 @@ from sqlalchemy.sql import text
 
 def get_taxons_statut_bdc(connection, cd_ref):
     sql = "SELECT * FROM atlas.vm_bdc_statut WHERE cd_ref = :thiscdref"
-    result = connection.execute(text(sql), thiscdref=cd_ref)
+    result = connection.execute(text(sql), {"thiscdref":cd_ref})
     statuts = list()
     for row in result:
         statut = {
