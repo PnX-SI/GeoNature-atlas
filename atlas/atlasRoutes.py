@@ -258,7 +258,7 @@ def ficheEspece(cd_nom):
     months = vmMoisRepository.getMonthlyObservationsChilds(connection, cd_ref)
     organism_stats = vmCorTaxonOrganismRepository.getTaxonOrganism(connection, cd_ref)
     synonyme = vmTaxrefRepository.getSynonymy(connection, cd_ref)
-    areas = vmAreasRepository.getAreasObservationsChilds(connection, cd_ref)
+    areas = vmAreasRepository.getAreasObservationsChilds(db_session, cd_ref)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(db_session, cd_ref)
     firstPhoto = vmMedias.getFirstPhoto(connection, cd_ref, current_app.config["ATTR_MAIN_PHOTO"])
     photoCarousel = vmMedias.getPhotoCarousel(
@@ -385,8 +385,8 @@ def ficheArea(id_area):
     connection = db.engine.connect()
 
     listTaxons = vmTaxonsRepository.getTaxonsAreas(connection, id_area)
-    area = vmAreasRepository.getAreaFromIdArea(connection, id_area)
-    stats_area = vmAreasRepository.getStatsByArea(connection, id_area)
+    area = vmAreasRepository.getAreaFromIdArea(session, id_area)
+    stats_area = vmAreasRepository.getStatsByArea(session, id_area)
 
     session.close()
     connection.close()

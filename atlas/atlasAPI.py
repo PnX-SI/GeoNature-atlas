@@ -192,10 +192,10 @@ def get_area_chart_valuesAPI(id_area):
     session = db.session
     connection = db.engine.connect()
     species_by_taxonomic_group = vmAreasRepository.get_species_by_taxonomic_group(
-        connection, id_area
+        session, id_area
     )
     observations_by_taxonomic_group = vmAreasRepository.get_nb_observations_taxonomic_group(
-        connection, id_area
+        session, id_area
     )
     nb_species_by_organism = vmOrganismsRepository.get_species_by_organism_on_area(
         connection, id_area
