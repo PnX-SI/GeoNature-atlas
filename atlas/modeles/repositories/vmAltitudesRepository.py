@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from sqlalchemy.sql import text, func
-from sqlalchemy import select
+from sqlalchemy.sql import text, func, select
 from atlas.modeles.entities.tBibAltitudes import TBibAltitudes
 from atlas.modeles.entities.vmAltitudes import VmAltitudes
 
