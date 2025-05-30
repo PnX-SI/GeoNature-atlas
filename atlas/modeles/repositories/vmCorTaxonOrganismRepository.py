@@ -1,13 +1,14 @@
 # -*- coding:utf-8 -*-
 
-from sqlalchemy.sql import text
+from atlas.modeles.entities.vmTaxons import VmCorTaxonOrganism
 
 
-def getTaxonOrganism(connection, cd_ref):
-    sql = """
-        select nom_organism, nb_observations
-        from atlas.vm_cor_taxon_organism 
-        where cd_ref = :cdref
-    """
-    result = connection.execute(text(sql), {"cdref":cd_ref})
+def getTaxonOrganism(session, cd_ref):
+    result = (
+        session.query(
+            VmCorTaxonOrganism.nom_organism, 
+            VmCorTaxonOrganism.nb_observations
+        ).filter(VmCorTaxonOrganism.cd_ref == cd_ref)
+    )
+
     return {el.nom_organism: el.nb_observations for el in result}

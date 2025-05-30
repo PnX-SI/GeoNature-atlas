@@ -2,21 +2,14 @@
 
 from sqlalchemy.sql import text
 
+from atlas.modeles.entities.vmTaxons import VmCorTaxonAttribut
 
-def getAttributesTaxon(connection, cd_ref, attrDesc, attrComment, attrMilieu, attrChoro):
-    sql = """
-        SELECT *
-        FROM atlas.vm_cor_taxon_attribut
-        WHERE id_attribut IN (:thisattrDesc, :thisattrComment, :thisattrMilieu, :thisattrChoro)
-        AND cd_ref = :thiscdref
-    """
-    req = connection.execute(
-        text(sql),
-        {"thiscdref":cd_ref,
-        "thisattrDesc":attrDesc,
-        "thisattrComment":attrComment,
-        "thisattrMilieu":attrMilieu,
-        "thisattrChoro":attrChoro,}
+def getAttributesTaxon(session, cd_ref, attrDesc, attrComment, attrMilieu, attrChoro):
+    id_attributs = [attrDesc, attrComment, attrMilieu, attrChoro]
+    req = (
+        session.query(VmCorTaxonAttribut)
+        .filter(VmCorTaxonAttribut.id_attribut.in_(id_attributs),
+                VmCorTaxonAttribut.cd_ref == cd_ref)
     )
 
     descTaxon = {"description": None, "commentaire": None, "milieu": None, "chorologie": None}
