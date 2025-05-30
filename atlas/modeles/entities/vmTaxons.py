@@ -1,7 +1,8 @@
 # -*- coding:utf-8 -*-
 
-from sqlalchemy import Column, Integer, MetaData, String, Table, Float
+from sqlalchemy import Column, Integer, MetaData, String, Table, Float, Text, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 
 from atlas.env import db
 
@@ -34,3 +35,34 @@ class VmTaxons(Base):
     yearmin = Column(Float(53))
     yearmax = Column(Float(53))
     nb_obs = Column(Integer)
+    attributs = relationship("VmCorTaxonAttribut", back_populates="taxon")
+    organisms = relationship("VmCorTaxonOrganism", back_populates="taxon")
+
+class VmCorTaxonAttribut(Base):
+    __tablename__ = "vm_cor_taxon_attribut"
+    __table_args__ = {"schema" : "atlas"}
+
+    id_attribut = Column(Integer, primary_key=True)
+    cd_ref = Column(Integer, ForeignKey("atlas.vm_taxons.cd_ref"), primary_key=True)
+    valeur_attribut = Column(Text)
+    taxon = relationship("VmTaxons", back_populates="attributs")
+
+class VmCorTaxonOrganism(Base):
+    __tablename__ = "vm_cor_taxon_organism"
+    __table_args__ = {"schema" : "atlas"}
+
+    cd_ref = Column(Integer, ForeignKey("atlas.vm_taxons.cd_ref"), primary_key=True)
+    id_organism = Column(Integer, primary_key=True)
+
+    nb_observations = Column(Integer)
+    nom_organism = Column(String(500))
+    adress_organism = Column(String(128))
+    cp_organism = Column(String(5))
+    ville_organism = Column(String(100))
+    tel_organism = Column(String(14))
+    email_organism = Column(String(100))
+    url_organism = Column(String(255))
+    url_logo = Column(String(255))
+    taxon = relationship("VmTaxons", back_populates="organisms")
+
+
