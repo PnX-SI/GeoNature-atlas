@@ -99,7 +99,7 @@ if current_app.config["ORGANISM_MODULE"]:
         for taxon in mostObsTaxs:
             taxon_info = vmTaxrefRepository.searchEspece(connection, taxon["cd_ref"])
             photo = vmMedias.getFirstPhoto(
-                connection, taxon["cd_ref"], current_app.config["ATTR_MAIN_PHOTO"]
+                db_session, taxon["cd_ref"], current_app.config["ATTR_MAIN_PHOTO"]
             )
             taxon = {**taxon, **taxon_info["taxonSearch"]}
             taxon["photo"] = photo
@@ -256,16 +256,16 @@ def ficheEspece(cd_nom):
     taxon = vmTaxrefRepository.searchEspece(connection, cd_ref)
     altitudes = vmAltitudesRepository.getAltitudesChilds(db_session, cd_ref)
     months = vmMoisRepository.getMonthlyObservationsChilds(connection, cd_ref)
-    organism_stats = vmCorTaxonOrganismRepository.getTaxonOrganism(connection, cd_ref)
+    organism_stats = vmCorTaxonOrganismRepository.getTaxonOrganism(db_session, cd_ref)
     synonyme = vmTaxrefRepository.getSynonymy(connection, cd_ref)
     areas = vmAreasRepository.getAreasObservationsChilds(db_session, cd_ref)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(db_session, cd_ref)
-    firstPhoto = vmMedias.getFirstPhoto(connection, cd_ref, current_app.config["ATTR_MAIN_PHOTO"])
+    firstPhoto = vmMedias.getFirstPhoto(db_session, cd_ref, current_app.config["ATTR_MAIN_PHOTO"])
     photoCarousel = vmMedias.getPhotoCarousel(
-        connection, cd_ref, current_app.config["ATTR_OTHER_PHOTO"]
+        db_session, cd_ref, current_app.config["ATTR_OTHER_PHOTO"]
     )
     videoAudio = vmMedias.getVideo_and_audio(
-        connection,
+        db_session,
         cd_ref,
         current_app.config["ATTR_AUDIO"],
         current_app.config["ATTR_VIDEO_HEBERGEE"],
@@ -274,14 +274,14 @@ def ficheEspece(cd_nom):
         current_app.config["ATTR_VIMEO"],
     )
     articles = vmMedias.getLinks_and_articles(
-        connection, cd_ref, current_app.config["ATTR_LIEN"], current_app.config["ATTR_PDF"]
+        db_session, cd_ref, current_app.config["ATTR_LIEN"], current_app.config["ATTR_PDF"]
     )
 
     liens_importants = []
     if current_app.config.get("TYPES_MEDIAS_LIENS_IMPORTANTS"):
         liens_config = current_app.config["TYPES_MEDIAS_LIENS_IMPORTANTS"]
         media_type_ids = list({t["type_media_id"] for t in liens_config})
-        liens_importants = vmMedias.get_liens_importants(connection, cd_ref, media_type_ids)
+        liens_importants = vmMedias.get_liens_importants(db_session, cd_ref, media_type_ids)
         icones_by_media_type = {
             i["type_media_id"]: i["icon"] for i in liens_config if i.get("icon")
         }
@@ -289,7 +289,7 @@ def ficheEspece(cd_nom):
             lien["icon"] = icones_by_media_type.get(lien["id_type"], "")
 
     taxonDescription = vmCorTaxonAttribut.getAttributesTaxon(
-        connection,
+        db_session,
         cd_ref,
         current_app.config["ATTR_DESC"],
         current_app.config["ATTR_COMMENTAIRE"],

@@ -150,24 +150,22 @@ def get_observations_area_api(id_area):
 
 @api.route("/photoGroup/<group>", methods=["GET"])
 def getPhotosGroup(group):
-    connection = db.engine.connect()
+    session = db.session
     photos = vmMedias.getPhotosGalleryByGroup(
-        connection,
+        session,
         current_app.config["ATTR_MAIN_PHOTO"],
         current_app.config["ATTR_OTHER_PHOTO"],
         group,
     )
-    connection.close()
     return jsonify(photos)
 
 
 @api.route("/photosGallery", methods=["GET"])
 def getPhotosGallery():
-    connection = db.engine.connect()
+    session = db.session
     photos = vmMedias.getPhotosGallery(
-        connection, current_app.config["ATTR_MAIN_PHOTO"], current_app.config["ATTR_OTHER_PHOTO"]
+        session, current_app.config["ATTR_MAIN_PHOTO"], current_app.config["ATTR_OTHER_PHOTO"]
     )
-    connection.close()
     return jsonify(photos)
 
 
