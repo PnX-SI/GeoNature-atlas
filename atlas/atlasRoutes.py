@@ -255,7 +255,7 @@ def ficheEspece(cd_nom):
     # Get data to render template
     taxon = vmTaxrefRepository.searchEspece(connection, cd_ref)
     altitudes = vmAltitudesRepository.getAltitudesChilds(db_session, cd_ref)
-    months = vmMoisRepository.getMonthlyObservationsChilds(connection, cd_ref)
+    months = vmMoisRepository.getMonthlyObservationsChilds(db_session, cd_ref)
     organism_stats = vmCorTaxonOrganismRepository.getTaxonOrganism(db_session, cd_ref)
     synonyme = vmTaxrefRepository.getSynonymy(connection, cd_ref)
     areas = vmAreasRepository.getAreasObservationsChilds(db_session, cd_ref)
