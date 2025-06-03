@@ -112,11 +112,10 @@ if not current_app.config["AFFICHAGE_MAILLE"]:
 
     @api.route("/observations/<id_area>/<int(signed=True):cd_ref>", methods=["GET"])
     def getObservationsAreaTaxonAPI(id_area, cd_ref):
-        connection = db.engine.connect()
+        session = db.session
         observations = vmObservationsRepository.getObservationTaxonArea(
-            connection, id_area, cd_ref
+            session, id_area, cd_ref
         )
-        connection.close()
         return jsonify(observations)
 
 
@@ -172,16 +171,16 @@ def getPhotosGallery():
 @api.route("/main_stat", methods=["GET"])
 @cache.cached()
 def main_stat():
-    connection = db.engine.connect()
-    return vmObservationsRepository.statIndex(connection)
+    session = db.session
+    return vmObservationsRepository.statIndex(session)
 
 
 @api.route("/rank_stat", methods=["GET"])
 @cache.cached()
 def rank_stat():
-    connection = db.engine.connect()
+    session = db.session
     return jsonify(
-        vmObservationsRepository.genericStat(connection, current_app.config["RANG_STAT"])
+        vmObservationsRepository.genericStat(session, current_app.config["RANG_STAT"])
     )
 
 

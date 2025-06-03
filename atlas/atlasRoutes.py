@@ -92,7 +92,7 @@ if current_app.config["ORGANISM_MODULE"]:
 
         infos_organism = vmOrganismsRepository.statOrganism(connection, id_organism)
 
-        stat = vmObservationsRepository.statIndex(connection)
+        stat = vmObservationsRepository.statIndex(db_session)
 
         mostObsTaxs = vmOrganismsRepository.topObsOrganism(connection, id_organism)
         update_most_obs_taxons = []
@@ -191,7 +191,7 @@ def index():
         else:
             current_app.logger.debug("start AFFICHAGE_PRECIS")
             observations = vmObservationsRepository.lastObservations(
-                connection,
+                session,
                 str(current_app.config["NB_DAY_LAST_OBS"]) + " day",
                 current_app.config["ATTR_MAIN_PHOTO"],
             )
@@ -209,14 +209,14 @@ def index():
     if current_app.config["AFFICHAGE_RANG_STAT"]:
         current_app.logger.debug("start customStatMedia")
         customStatMedias = vmObservationsRepository.genericStatMedias(
-            connection, current_app.config["RANG_STAT"]
+            session, current_app.config["RANG_STAT"]
         )
         current_app.logger.debug("end customStatMedia")
     else:
         customStatMedias = []
 
     if current_app.config["AFFICHAGE_NOUVELLES_ESPECES"]:
-        lastDiscoveries = vmObservationsRepository.getLastDiscoveries(connection)
+        lastDiscoveries = vmObservationsRepository.getLastDiscoveries(session)
     else:
         lastDiscoveries = []
 
@@ -296,7 +296,7 @@ def ficheEspece(cd_nom):
         current_app.config["ATTR_MILIEU"],
         current_app.config["ATTR_CHOROLOGIE"],
     )
-    observers = vmObservationsRepository.getObservers(connection, cd_ref)
+    observers = vmObservationsRepository.getObservers(db_session, cd_ref)
 
     organisms = vmOrganismsRepository.getListOrganism(connection, cd_ref)
 
@@ -384,6 +384,15 @@ def ficheArea(id_area):
     session = db.session
     connection = db.engine.connect()
 
+    if current_app.config["AFFICHAGE_MAILLE"]:
+        observations = vmObservationsMaillesRepository.lastObservationsAreaMaille(
+            connection, current_app.config["NB_LAST_OBS"], str(id_area)
+        )
+    else:
+        observations = vmObservationsRepository.lastObservationsArea(
+            session, current_app.config["NB_LAST_OBS"], id_area
+        )
+
     listTaxons = vmTaxonsRepository.getTaxonsAreas(connection, id_area)
     area = vmAreasRepository.getAreaFromIdArea(session, id_area)
     stats_area = vmAreasRepository.getStatsByArea(session, id_area)
@@ -409,7 +418,7 @@ def ficheRangTaxonomie(cd_ref):
     listTaxons = vmTaxonsRepository.getTaxonsChildsList(connection, cd_ref)
     referenciel = vmTaxrefRepository.getInfoFromCd_ref(session, cd_ref)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
-    observers = vmObservationsRepository.getObservers(connection, cd_ref)
+    observers = vmObservationsRepository.getObservers(session, cd_ref)
 
     connection.close()
     session.close()
@@ -431,7 +440,7 @@ def ficheGroupe(groupe):
 
     groups = vmTaxonsRepository.getAllINPNgroup(connection)
     listTaxons = vmTaxonsRepository.getTaxonsGroup(connection, groupe)
-    observers = vmObservationsRepository.getGroupeObservers(connection, groupe)
+    observers = vmObservationsRepository.getGroupeObservers(session, groupe)
 
     session.close()
     connection.close()
