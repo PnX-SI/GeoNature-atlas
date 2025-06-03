@@ -20,6 +20,8 @@ class VmObservations(Base):
     the_geom_point = Column(Geometry(geometry_type="POINT", srid=4326))
     geojson_point = Column(Text)
     cd_sensitivity = Column(String(255))
+    id_dataset = Column(Integer)
+    insee = Column(Text)
 
     def as_dict(self):
         return {
