@@ -300,7 +300,7 @@ def ficheEspece(cd_nom):
 
     organisms = vmOrganismsRepository.getListOrganism(db_session, cd_ref)
 
-    statuts = vmStatutBdcRepository.get_taxons_statut_bdc(connection, cd_ref)
+    statuts = vmStatutBdcRepository.get_taxons_statut_bdc(db_session, cd_ref)
     groupes_statuts = _make_groupes_statuts(statuts)
     groupes_statuts_have_labels = any([groupe.get("label") for groupe in groupes_statuts])
 
