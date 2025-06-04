@@ -77,5 +77,15 @@ class VmAreaStats(Base):
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+    
+class VmAreaStatsOrganism(Base):
+    __tablename__ = "vm_area_stats_by_organism"
+    __table_args__ = {"schema" : "atlas"}
+
+    id_area = Column(Integer, primary_key = True)
+    nom_organism = Column(String(500), primary_key = True)
+    
+    nb_species = Column(Integer)
+    nb_obs = Column(Integer)
 
 
