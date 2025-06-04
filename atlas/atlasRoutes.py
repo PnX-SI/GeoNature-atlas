@@ -90,11 +90,11 @@ if current_app.config["ORGANISM_MODULE"]:
         db_session = db.session
         connection = db.engine.connect()
 
-        infos_organism = vmOrganismsRepository.statOrganism(connection, id_organism)
+        infos_organism = vmOrganismsRepository.statOrganism(db_session, id_organism)
 
         stat = vmObservationsRepository.statIndex(db_session)
 
-        mostObsTaxs = vmOrganismsRepository.topObsOrganism(connection, id_organism)
+        mostObsTaxs = vmOrganismsRepository.topObsOrganism(db_session, id_organism)
         update_most_obs_taxons = []
         for taxon in mostObsTaxs:
             taxon_info = vmTaxrefRepository.searchEspece(connection, taxon["cd_ref"])
@@ -104,7 +104,7 @@ if current_app.config["ORGANISM_MODULE"]:
             taxon = {**taxon, **taxon_info["taxonSearch"]}
             taxon["photo"] = photo
             update_most_obs_taxons.append(taxon)
-        stats_group = vmOrganismsRepository.getTaxonRepartitionOrganism(connection, id_organism)
+        stats_group = vmOrganismsRepository.getTaxonRepartitionOrganism(db_session, id_organism)
 
         connection.close()
         db_session.close()
@@ -298,7 +298,7 @@ def ficheEspece(cd_nom):
     )
     observers = vmObservationsRepository.getObservers(db_session, cd_ref)
 
-    organisms = vmOrganismsRepository.getListOrganism(connection, cd_ref)
+    organisms = vmOrganismsRepository.getListOrganism(db_session, cd_ref)
 
     statuts = vmStatutBdcRepository.get_taxons_statut_bdc(connection, cd_ref)
     groupes_statuts = _make_groupes_statuts(statuts)

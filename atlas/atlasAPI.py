@@ -195,10 +195,10 @@ def get_area_chart_valuesAPI(id_area):
         session, id_area
     )
     nb_species_by_organism = vmOrganismsRepository.get_species_by_organism_on_area(
-        connection, id_area
+        session, id_area
     )
     observations_by_organism = vmOrganismsRepository.get_nb_observations_by_organism_on_area(
-        connection, id_area
+        session, id_area
     )
 
     session.close()
