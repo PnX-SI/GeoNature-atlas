@@ -4,21 +4,6 @@ from sqlalchemy import desc, func
 from atlas.modeles.entities.vmSearchTaxon import VmSearchTaxon
 
 
-def listeTaxons(session):
-    """
-    revoie un tableau de dict :
-    label = nom latin et nom francais concatene, value = cd_ref
-
-    TODO Fonction inutile à supprimer !!!
-    """
-    req = session.query(VmSearchTaxon.search_name, VmSearchTaxon.cd_ref).all()
-    taxonList = list()
-    for r in req:
-        temp = {"label": r[0], "value": r[1]}
-        taxonList.append(temp)
-    return taxonList
-
-
 def listeTaxonsSearch(session, search, limit=50):
     """
     Recherche dans la VmSearchTaxon en ilike
