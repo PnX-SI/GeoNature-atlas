@@ -201,7 +201,7 @@ def index():
 
     if current_app.config["AFFICHAGE_EN_CE_MOMENT"]:
         current_app.logger.debug("start mostViewTaxon")
-        mostViewTaxon = vmTaxonsMostView.mostViewTaxon(connection)
+        mostViewTaxon = vmTaxonsMostView.mostViewTaxon(session)
         current_app.logger.debug("end mostViewTaxon")
     else:
         mostViewTaxon = []
@@ -220,7 +220,7 @@ def index():
     else:
         lastDiscoveries = []
 
-    listTaxons = vmTaxonsRepository.getTaxonsTerritory(connection)
+    listTaxons = vmTaxonsRepository.getTaxonsTerritory(session)
     connection.close()
     session.close()
 
@@ -393,7 +393,7 @@ def ficheArea(id_area):
             session, current_app.config["NB_LAST_OBS"], id_area
         )
 
-    listTaxons = vmTaxonsRepository.getTaxonsAreas(connection, id_area)
+    listTaxons = vmTaxonsRepository.getTaxonsAreas(session, id_area)
     area = vmAreasRepository.getAreaFromIdArea(session, id_area)
     stats_area = vmAreasRepository.getStatsByArea(session, id_area)
 
@@ -415,7 +415,7 @@ def ficheRangTaxonomie(cd_ref):
     session = db.session
     connection = db.engine.connect()
 
-    listTaxons = vmTaxonsRepository.getTaxonsChildsList(connection, cd_ref)
+    listTaxons = vmTaxonsRepository.getTaxonsChildsList(session, cd_ref)
     referenciel = vmTaxrefRepository.getInfoFromCd_ref(session, cd_ref)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
     observers = vmObservationsRepository.getObservers(session, cd_ref)
@@ -438,8 +438,8 @@ def ficheGroupe(groupe):
     session = db.session
     connection = db.engine.connect()
 
-    groups = vmTaxonsRepository.getAllINPNgroup(connection)
-    listTaxons = vmTaxonsRepository.getTaxonsGroup(connection, groupe)
+    groups = vmTaxonsRepository.getAllINPNgroup(session)
+    listTaxons = vmTaxonsRepository.getTaxonsGroup(session, groupe)
     observers = vmObservationsRepository.getGroupeObservers(session, groupe)
 
     session.close()
@@ -460,7 +460,7 @@ def photos():
     session = db.session
     connection = db.engine.connect()
 
-    groups = vmTaxonsRepository.getINPNgroupPhotos(connection)
+    groups = vmTaxonsRepository.getINPNgroupPhotos(session)
 
     session.close()
     connection.close()
