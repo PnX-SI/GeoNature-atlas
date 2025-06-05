@@ -97,7 +97,7 @@ if current_app.config["ORGANISM_MODULE"]:
         mostObsTaxs = vmOrganismsRepository.topObsOrganism(db_session, id_organism)
         update_most_obs_taxons = []
         for taxon in mostObsTaxs:
-            taxon_info = vmTaxrefRepository.searchEspece(connection, taxon["cd_ref"])
+            taxon_info = vmTaxrefRepository.searchEspece(db_session, taxon["cd_ref"])
             photo = vmMedias.getFirstPhoto(
                 db_session, taxon["cd_ref"], current_app.config["ATTR_MAIN_PHOTO"]
             )
@@ -246,18 +246,18 @@ def ficheEspece(cd_nom):
     connection = db.engine.connect()
 
     # Get cd_ref from cd_nom
-    cd_ref = vmTaxrefRepository.get_cd_ref(connection, cd_nom)
+    cd_ref = vmTaxrefRepository.get_cd_ref(db_session, cd_nom)
 
     # Redirect to cd_ref if cd_nom is a synonym. Redirection is better for SEO.
     if cd_ref != cd_nom:
         return redirect(url_for(request.endpoint, cd_nom=cd_ref))
 
     # Get data to render template
-    taxon = vmTaxrefRepository.searchEspece(connection, cd_ref)
+    taxon = vmTaxrefRepository.searchEspece(db_session, cd_ref)
     altitudes = vmAltitudesRepository.getAltitudesChilds(db_session, cd_ref)
     months = vmMoisRepository.getMonthlyObservationsChilds(db_session, cd_ref)
     organism_stats = vmCorTaxonOrganismRepository.getTaxonOrganism(db_session, cd_ref)
-    synonyme = vmTaxrefRepository.getSynonymy(connection, cd_ref)
+    synonyme = vmTaxrefRepository.getSynonymy(db_session, cd_ref)
     areas = vmAreasRepository.getAreasObservationsChilds(db_session, cd_ref)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(db_session, cd_ref)
     firstPhoto = vmMedias.getFirstPhoto(db_session, cd_ref, current_app.config["ATTR_MAIN_PHOTO"])
