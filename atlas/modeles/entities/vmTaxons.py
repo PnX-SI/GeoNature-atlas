@@ -65,4 +65,17 @@ class VmCorTaxonOrganism(Base):
     url_logo = Column(String(255))
     taxon = relationship("VmTaxons", back_populates="organisms")
 
+class VmTaxonsMostView(Base):
+    __tablename__ = "vm_taxons_plus_observes"
+    __table_args__ = {"schema" : "atlas"}
+
+    cd_ref = Column(Integer, primary_key = True)
+    nb_obs = Column(Integer)
+    lb_nom = Column(String(250))
+    group2_inpn = Column(String(50))
+    nom_vern = Column(String(1000))
+    id_media = Column(Integer)
+    url = Column(String(255))
+    chemin = Column(String(255))
+    id_type = Column(Integer)
 
