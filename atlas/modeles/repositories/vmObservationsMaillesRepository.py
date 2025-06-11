@@ -116,39 +116,39 @@ def lastObservationsMailles(connection, mylimit, idPhoto):
     return obsList
 
 
-def lastObservationsAreaMaille(connection, obs_limit, id_area):
+def getObservationsByArea(connection, id_area):
     sql = """
-WITH obs_in_area AS (
+    WITH obs_in_area AS (
+        SELECT
+            obs.id_observation,
+            obs.cd_ref,
+            date_part('year', obs.dateobs) AS annee
+        FROM atlas.vm_observations obs
+                JOIN atlas.vm_cor_area_synthese AS cas  ON cas.id_synthese = obs.id_observation
+        WHERE cas.id_area = :id_area
+    )
     SELECT
-        obs.id_observation,
-        obs.cd_ref,
-        date_part('year', obs.dateobs) AS annee
-    FROM atlas.vm_observations obs
-             JOIN atlas.vm_cor_area_synthese AS cas  ON cas.id_synthese = obs.id_observation
-    WHERE cas.id_area = :idAreaCode
-)
-SELECT
-    json_build_object(
-            'type', 'FeatureCollection',
-            'features', json_agg(ST_AsGeoJSON(features.*)::json)
-    ) AS observations_features
-     FROM (
-SELECT
-    COUNT(obs_in_area.id_observation) AS nb_observations,
-    COUNT(DISTINCT obs_in_area.cd_ref) AS nb_cd_ref,
-    json_agg(DISTINCT jsonb_build_object(
-            'name', (COALESCE(t.nom_vern || ' | ', '') || t.lb_nom),
-            'cdRef', t.cd_ref)) AS taxons,
-    obs.type_code,
-    obs.id_maille,
-    vla.the_geom
-FROM obs_in_area
-         JOIN atlas.vm_observations_mailles obs ON obs_in_area.id_observation = ANY(obs.id_observations)
-         JOIN atlas.vm_l_areas vla ON vla.id_area=obs.id_maille
-         JOIN atlas.vm_taxons AS t ON t.cd_ref = obs_in_area.cd_ref
-GROUP BY obs.type_code, obs.id_maille, vla.the_geom) AS features
+        json_build_object(
+                'type', 'FeatureCollection',
+                'features', json_agg(ST_AsGeoJSON(features.*)::json)
+        ) AS observations_features
+        FROM (
+    SELECT
+        COUNT(obs_in_area.id_observation) AS nb_observations,
+        COUNT(DISTINCT obs_in_area.cd_ref) AS nb_cd_ref,
+        json_agg(DISTINCT jsonb_build_object(
+                'name', (COALESCE(t.nom_vern || ' | ', '') || t.lb_nom),
+                'cdRef', t.cd_ref)) AS taxons,
+        obs.type_code,
+        obs.id_maille,
+        vla.the_geom
+    FROM obs_in_area
+            JOIN atlas.vm_observations_mailles obs ON obs_in_area.id_observation = ANY(obs.id_observations)
+            JOIN atlas.vm_l_areas vla ON vla.id_area=obs.id_maille
+            JOIN atlas.vm_taxons AS t ON t.cd_ref = obs_in_area.cd_ref
+    GROUP BY obs.type_code, obs.id_maille, vla.the_geom) AS features
     """
-    query = connection.execute(text(sql), idAreaCode=id_area, obsLimit=obs_limit)
+    query = connection.execute(text(sql), id_area=id_area)
     return dict(query.all()[0])
 
 

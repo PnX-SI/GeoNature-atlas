@@ -136,13 +136,14 @@ def getObservationsAreaTaxonMailleAPI(id_area, cd_ref):
 def get_observations_area_api(id_area):
     connection = db.engine.connect()
 
+    limit = request.args.get("limit")
     if current_app.config["AFFICHAGE_MAILLE"]:
-        observations = vmObservationsMaillesRepository.lastObservationsAreaMaille(
-            connection, current_app.config["NB_LAST_OBS"], str(id_area)
+        observations = vmObservationsMaillesRepository.getObservationsByArea(
+            connection, str(id_area)
         )
     else:
-        observations = vmObservationsRepository.lastObservationsArea(
-            connection, current_app.config["NB_LAST_OBS"], id_area
+        observations = vmObservationsRepository.getObservationsByArea(
+            connection, id_area, limit
         )
 
     connection.close()

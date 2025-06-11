@@ -82,7 +82,7 @@ def lastObservations(connection, mylimit, idPhoto):
     return obsList
 
 
-def lastObservationsArea(connection, obs_limit, id_area):
+def getObservationsByArea(connection, id_area, limit):
     sql = """SELECT o.*,
             CONCAT(
                 split_part(tax.nom_vern, ',', 1) || ' | ',
@@ -95,9 +95,11 @@ def lastObservationsArea(connection, obs_limit, id_area):
     JOIN atlas.vm_cor_area_synthese AS cas  ON cas.id_synthese = o.id_observation
     JOIN atlas.vm_taxons tax ON  o.cd_ref = tax.cd_ref
     WHERE cas.id_area = :id_area
-    ORDER BY o.dateobs DESC
-    LIMIT :obsLimit"""
-    observations = connection.execute(text(sql), obsLimit=obs_limit, id_area=id_area)
+    ORDER BY o.dateobs DESC """
+    if limit:
+        sql += "LIMIT :obsLimit"
+    
+    observations = connection.execute(text(sql), obsLimit=limit, id_area=id_area)
     obsList = list()
     for o in observations:
         temp = dict(o)
