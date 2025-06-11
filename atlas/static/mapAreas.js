@@ -33,11 +33,6 @@ var layerBounds = areaLayer.getBounds();
 bounds.extend(layerBounds);
 map.fitBounds(bounds);
 map.zoom = map.getZoom();
-// Display the 'x' last observations
-// POINT
-if (!configuration.AFFICHAGE_MAILLE) {
-    displayMarkerLayerPointLastObs(observations);
-}
 
 // Generate legends and check configuration to choose which to display (Maille ou Point)
 
@@ -103,9 +98,15 @@ function displayObsTaxon(id_area, cd_ref) {
     });
 }
 
-function displayObs(areaCode) {
+function displayObs(id_area) {
+    let url = `/api/area/${id_area}`;
+    // si on est en mode point on rajoute une limite au nombre d'obs
+    // si on est en maille on renvoie toutes les données aggregées par maille
+    if(!configuration.AFFICHAGE_MAILLE) {
+        url +=`?limit=${configuration["NB_LAST_OBS"]}`
+    }
     $("#loaderSpinner").show();
-    fetch(`/api/area/${areaCode}`)
+    fetch(url)
         .then(data => {
             return data.json()
         })
@@ -145,6 +146,8 @@ function displayObsTaxonMaille(areaCode, cd_ref) {
 }
 
 function refreshObsArea() {
+    console.log("YEP");
+    
     $("#taxonList ul").on("click", "#taxonListItem", function () {
         $(this)
             .siblings()
@@ -169,6 +172,8 @@ function refreshObsArea() {
 $(document).ready(function () {
     $("#loaderSpinner").hide();
     if (configuration.INTERACTIVE_MAP_LIST) {
+        console.log("DOIT FAIRE 9AAAA");
+        
         refreshObsArea();
     }
 });
