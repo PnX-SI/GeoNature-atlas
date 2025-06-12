@@ -17,13 +17,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/leaflet.markercluster/dist/MarkerCluster.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css') }}"/>
     <!-- DataTable -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/datatables.net-bs4/css/dataTables.bootstrap4.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/datatables.net-bs5/css/dataTables.bootstrap5.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/listEspeces.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/icones.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/areaSheet.css') }}" />
 {% endblock %}
-
-
 
 {% block additionalFooterAssets %}
     {# Ajoutez ici les assets complémentaires qui seront en bas de page #}
@@ -34,15 +32,13 @@
         const translations = {
             "nb_observations": `{{ _('obs.number.s') }}`
         };
-        </script>
+    </script>
     <script src="{{ url_for('static', filename='custom/maps-custom.js') }}"></script>
     <script src="{{ url_for('static', filename='listeEspeces.js') }}"></script>
     <script src="{{ url_for('static', filename='mapGenerator.js') }}"></script>
     <script src="{{ url_for('static', filename='mapAreas.js') }}"></script>
     <script src="{{ url_for('static', filename='chart.js') }}"></script>
-
 {% endblock %}
-
 
 {% block content %}
     {# Ajoutez ici coeur de la page #}
@@ -65,13 +61,8 @@
             </div>
             <div class="col-12 col-xl-8 col-lg-7 col-md-6 d-flex flex-column m-0 p-0" style="min-height: 80vh;">
                 <div class="bg-light p-2">
-                    {% if configuration.AFFICHAGE_MAILLE %}
-                        <h5 id="titleMap"><i class="fa fa-map"></i> <i>{{ areaInfos.areaName }}</i> 
-                        </h5>
-                    {% else %}
-                        <h5 id="titleMap"><i class="fa fa-map"></i> <i>{{ areaInfos.areaName }}</i> : {{ configuration.NB_LAST_OBS }} {{ _('last.obs.area') }}
-                        </h5>
-                    {% endif %}
+                    <h5 id="titleMap"><i class="fa fa-map"></i> <i>{{ areaInfos.areaName }}</i> : {{ configuration.NB_LAST_OBS }} {{ _('last.obs.area') }}
+                    </h5>
                 </div>
                 <div class="d-flex align-content-stretch bg-warning flex-grow-1">
                     <div class="d-flex flex-grow-1">
