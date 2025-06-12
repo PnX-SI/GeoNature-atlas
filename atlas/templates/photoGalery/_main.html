@@ -14,27 +14,56 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/galleryPhoto.css') }}"/>
     {# Ajoutez ici les assets complémentaires qui seront dans le bloc <head></head> #}
     <style>
-        #page {
-            padding-left: 0;
-            padding-right: 0;
-        }
+    #page {
+        padding-left: 0;
+        padding-right: 0;
+    }
 
-        footer {
-            margin-top: 0;
-        }
+    footer {
+        margin-top: 0;
+    }
 
-        #insertPhotos {
-            flex: 1 1 0;
-            overflow: auto;
-        }
-    </style>
+    #insertPhotos {
+        flex: 1 1 0;
+        overflow: auto;
+    }
+
+    .bg-light.text-center.border-bottom.border-end.p-2 {
+        padding: 0.5rem !important; /* réduit le padding */
+    }
+
+    h1.title {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    #filtresPhotos ul {
+        margin-bottom: 0.5rem;
+    }
+
+    #nbPhotos {
+        font-size: 1.25rem;
+        margin: 0.5rem 0;
+    }
+
+    .INPNgroup {
+        max-height: 32px; 
+    }
+
+    #allGroups,
+    #orderPhotos,
+    #searchPhotos {
+        font-size: 0.875rem;
+        padding: 0.25rem 0.5rem;
+    }
+</style>
 {% endblock %}
 
 
 {% block additionalFooterAssets %}
     {# Ajoutez ici les assets complémentaires qui seront en bas de page #}
     <script type="text/javascript">
-        var configuration = {{ configuration| tojson}};
+        var configuration = {{ configuration|tojson }};
     </script>
 
     <script src="{{ url_for('static', filename='node_modules/lightbox2/dist/js/lightbox.js') }}"></script>
@@ -47,34 +76,43 @@
 
     <div class="row h-100 flex-grow-1 p-0 m-0 border-bottom">
         <div class="col d-flex flex-column m-0 p-0">
-            <div class="bg-light text-center border-bottom border-right p-2">
+            <div class="bg-light text-center border-bottom border-end p-2">
                 <h1 class="title">{{ _('gallery.title') }}<span id="group"></span></h1>
-                <div id="filtresPhotos text-center">
-                    <ul class="floatParent">
+                <div id="filtresPhotos" class="text-center">
+                    <ul class="d-flex flex-wrap list-unstyled justify-content-center gap-2">
                         {% for group in groups %}
-                            <li class="floatLeft">
+                            <li>
                                 <img class="INPNgroup"
-                                     src="{{ url_for('static', filename='images/picto_' + group.group | replace(" ", "_") +'.png') }}"
-                                     alt="{{ group.groupAccent }}" data-toggle="tooltip" data-original-
-                                     title="{{ group.groupAccent }}" data-placement="top">
+                                     src="{{ url_for('static', filename='images/picto_' + group.group | replace(" ", "_") + '.png') }}"
+                                     alt="{{ group.groupAccent }}"
+                                     data-bs-toggle="tooltip"
+                                     title="{{ group.groupAccent }}"
+                                     data-bs-placement="top">
                             </li>
                         {% endfor %}
 
-                        <li class="floatLeft bottom">
-                            <a id="allGroups" class="btn btn-default" role="button" data-toggle="tooltip"
-                               data-original-title="{{ _('all.groups') }}" data-placement="top">
-                                {{ _('all.groups') }}</a>
+                        <li>
+                            <a id="allGroups" class="btn btn-outline-secondary"
+                               role="button"
+                               data-bs-toggle="tooltip"
+                               title="{{ _('all.groups') }}"
+                               data-bs-placement="top">
+                                {{ _('all.groups') }}
+                            </a>
                         </li>
-                        <li class="floatLeft bottom">
-                        <span id="orderPhotos" class="sortedButton">
-                            <span id="order-sort"  data-toggle="tooltip"
-                                  data-original-title="{{ _('order.photos') }}"
-                                  data-placement="top"><span id="order-picto" class="fas fa-sort"></span></span>
-                        </span>
+                        <li>
+                            <span id="orderPhotos" class="sortedButton">
+                                <span id="order-sort"
+                                      data-bs-toggle="tooltip"
+                                      title="{{ _('order.photos') }}"
+                                      data-bs-placement="top">
+                                    <span id="order-picto" class="fas fa-sort"></span>
+                                </span>
+                            </span>
                         </li>
-                        <li class="floatLeft bottom">
+                        <li>
                             <input type="text" class="form-control" id="searchPhotos"
-                                   placeholder="{{ _('search.species')}}"
+                                   placeholder="{{ _('search.species') }}"
                                    value="">
                         </li>
                     </ul>
@@ -82,8 +120,9 @@
                 <h3 id="nbPhotos"></h3>
             </div>
 
-            <div id="insertPhotos" class="d-flex  flex-wrap  bg-white flex-grow-1">
+            <div id="insertPhotos" class="d-flex flex-wrap bg-white flex-grow-1">
 
             </div>
         </div>
+    </div>
 {% endblock %}
