@@ -1,14 +1,16 @@
 # coding: utf-8
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import String
+from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import DeclarativeBase
 
-Base = declarative_base()
+class Base(DeclarativeBase):
+    pass
 
 class TBibAltitudes(Base):
     __tablename__ = "bib_altitudes"
     __table_args__ = {"schema": "atlas"}
 
-    id_altitude = Column(Integer, primary_key=True)
-    altitude_min = Column(Integer)
-    altitude_max = Column(Integer)
-    label_altitude = Column(String(255))
+    id_altitude: Mapped[int] = mapped_column(primary_key = True)
+    altitude_min: Mapped[int] = mapped_column()
+    altitude_max: Mapped[int] = mapped_column()
+    label_altitude: Mapped[str] = mapped_column(String(255))

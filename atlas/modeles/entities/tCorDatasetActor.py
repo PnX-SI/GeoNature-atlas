@@ -1,17 +1,17 @@
 # coding: utf-8
-from sqlalchemy import Column, Integer
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import DeclarativeBase
 
 
-Base = declarative_base()
-
+class Base(DeclarativeBase):
+    pass
 
 class TCorDatasetActor(Base):
     __tablename__ = "cor_dataset_actor"
     __table_args__ = {"schema" : "gn_meta"}
 
-    id_cda = Column(Integer, primary_key = True)
-    id_dataset = Column(Integer)
-    id_role = Column(Integer)
-    id_organism = Column(Integer)
-    id_nomenclature_actor_role = Column(Integer)
+    id_cda: Mapped[int] = mapped_column(primary_key = True) 
+    id_dataset: Mapped[int] = mapped_column() 
+    id_role: Mapped[int] = mapped_column()
+    id_organism: Mapped[int] = mapped_column()
+    id_nomenclature_actor_role: Mapped[int] = mapped_column()
