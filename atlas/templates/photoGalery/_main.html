@@ -56,6 +56,21 @@
         font-size: 0.875rem;
         padding: 0.25rem 0.5rem;
     }
+    
+    #orderPhotos {
+        width: 40px; /* ou adapte selon l’espace que tu veux */
+        text-align: center;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Pour forcer l'icône à ne pas élargir le bouton */
+    #orderPhotos i {
+        width: 16px;
+        text-align: center;
+        display: inline-block;
+    }
 </style>
 {% endblock %}
 
@@ -92,7 +107,7 @@
                         {% endfor %}
 
                         <li>
-                            <a id="allGroups" class="btn btn-outline-secondary"
+                            <a id="allGroups" class="btn btn-secondary"
                                role="button"
                                data-bs-toggle="tooltip"
                                title="{{ _('all.groups') }}"
