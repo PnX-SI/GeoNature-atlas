@@ -48,7 +48,7 @@ function generateHtmlPhoto(photos, redimentionnement, taxhub_url) {
       let licence = `${stripHtml(photo.licence)} ${stripHtml(photo.source)}`;
       let datatitle = `${subject} ${description} ${author} ${licence}`;
       onePhoto = `
-				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col photo-espece ">
+				<div class="col-lg-3 col-md-4 col-sm-6 col-12 thumbnail-col photo-espece ">
 				  <div class="zoom-wrapper" >
 				 		<a
               href="${photo.path}"
@@ -127,7 +127,7 @@ function sufflePhotosEvent(photos) {
     $("#order-picto").toggleClass("fas fa-sort").toggleClass("fas fa-random");
     $(span).attr("id", "order-sort");
     $(span).attr(
-      "data-original-title",
+      "title",
       "Trier les photos par nombre d'observations"
     );
     clearHtml = true;
@@ -251,7 +251,7 @@ $(".INPNgroup").on("click", function () {
   $("#order-picto").removeClass("fa-random").addClass("fa-sort");
   $("#order-sort, #order-random")
     .attr("id", "order-sort")
-    .attr("data-original-title", "Trier les photos par nombre d'observations");
+    .attr("title", "Trier les photos par nombre d'observations");
 
   // Supprimer les anciens événements de tri
   $("body").off("click", "#order-sort");
