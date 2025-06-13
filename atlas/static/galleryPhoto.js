@@ -100,7 +100,7 @@ function orderPhotosEvent(photos) {
     span = $("#order-sort");
     $("#order-picto").toggleClass("fas fa-sort").toggleClass("fas fa-random");
     $(span).attr("id", "order-random");
-    $(span).attr("data-original-title", "Trier de manière aléatoire");
+    $(span).attr("title", "Trier de manière aléatoire");
     sortedPhotos = photos.slice().sort(function (a, b) {
       if (a.nb_obs >= b.nb_obs) return -1;
       if (a.nb_obs < b.nb_obs) return 1;
@@ -241,37 +241,43 @@ $(".INPNgroup").on("click", function () {
   $("#searchPhotos").val("");
   compteurJson = 0;
   clearHtml = true;
-  group = $(this).attr("alt");
+  let group = $(this).attr("alt");
+
+  // Débrancher scroll & events précédents
   $("#insertPhotos").off("scroll");
   $("#page").off("click");
-  span = $("#orderPhotos").find("span");
-  $(span).attr("class", "fas fa-sort");
-  $(span).attr(
-    "data-original-title",
-    "Trier les photos par nombre d'observations"
-  );
-  $(span).attr("id", "sort");
 
+  // Réinitialiser l'icône de tri et le bouton
+  $("#order-picto").removeClass("fa-random").addClass("fa-sort");
+  $("#order-sort, #order-random")
+    .attr("id", "order-sort")
+    .attr("data-original-title", "Trier les photos par nombre d'observations");
+
+  // Supprimer les anciens événements de tri
+  $("body").off("click", "#order-sort");
+  $("body").off("click", "#order-random");
+
+  // Charger les photos du groupe
   $.ajax({
     url: configuration.URL_APPLICATION + "/api/photoGroup/" + group,
     dataType: "json",
-    beforeSend: function () {
-      // $('#loadingGif').attr("src", configuration.URL_APPLICATION+'/static/images/loading.svg')
-    },
-
-    // Count and display number of photos in 1 group
   }).done(function (photos) {
     generateHtmlPhoto(
       photos,
       configuration.REDIMENSIONNEMENT_IMAGE,
       configuration.TAXHUB_URL
     );
+
     $("#group").html("(" + group + ")");
     $("#nbPhotos").html(photos.length + " photos");
+
     clearHtml = false;
+    compteurJson = 0;
+
+    // Réactiver scroll + événements de tri avec données correctes
     scrollEvent(photos);
     orderPhotosEvent(photos);
-    sufflePhotosEvent();
+    sufflePhotosEvent(photos);
   });
 });
 
