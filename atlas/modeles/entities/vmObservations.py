@@ -1,27 +1,29 @@
 # coding: utf-8
 from geoalchemy2.types import Geometry
-from sqlalchemy import Column, Date, Integer, MetaData, String, Table, Text, ARRAY
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Integer, String, Text, ARRAY
+from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import DeclarativeBase
 
-from atlas.env import db
+from typing import List
+import datetime
 
-Base = declarative_base()
-
+class Base(DeclarativeBase):
+    pass
 
 class VmObservations(Base):
     __tablename__ = "vm_observations"
     __table_args__ = {"schema":"atlas"}
 
-    id_observation = Column(Integer, primary_key=True)
-    dateobs = Column(Date, index=True)
-    observateurs = Column(String(255))
-    altitude_retenue = Column(Integer, index=True)
-    cd_ref = Column(Integer, index=True)
-    the_geom_point = Column(Geometry(geometry_type="POINT", srid=4326))
-    geojson_point = Column(Text)
-    cd_sensitivity = Column(String(255))
-    id_dataset = Column(Integer)
-    insee = Column(Text)
+    id_observation: Mapped[int] = mapped_column(primary_key = True) 
+    dateobs: Mapped[datetime.date] = mapped_column(index=True)
+    observateurs: Mapped[str] = mapped_column(String(255)) 
+    altitude_retenue: Mapped[int] = mapped_column(index=True)
+    cd_ref: Mapped[int] = mapped_column(index=True)
+    the_geom_point: Mapped[object] = mapped_column(Geometry(geometry_type="POINT", srid=4326))
+    geojson_point: Mapped[str] = mapped_column(Text)
+    cd_sensitivity: Mapped[str] = mapped_column(String(255))
+    id_dataset: Mapped[int] = mapped_column()
+    insee: Mapped[str] = mapped_column(Text)
 
     def as_dict(self):
         return {
@@ -33,7 +35,7 @@ class VmObservations(Base):
             "cd_ref": self.cd_ref,
             "cd_sensitivity": self.cd_sensitivity,
         }
-    
+
 class VmObservationsMailles(Base):
     """
     Table des observations par maille
@@ -41,9 +43,9 @@ class VmObservationsMailles(Base):
     __tablename__ = "vm_observations_mailles"
     __table_args__ = {"schema" : "atlas"}
 
-    cd_ref = Column(Integer, primary_key=True, index=True)
-    annee = Column(String(1000), primary_key=True, index=True)
-    id_maille = Column(Integer, primary_key=True, index=True)
-    nbr = Column(Integer)
-    id_observations = Column(ARRAY(Integer))
-    type_code = Column(String(25))
+    cd_ref: Mapped[int] = mapped_column(primary_key=True, index=True)
+    annee: Mapped[str] = mapped_column(String(1000), primary_key=True, index=True)
+    id_maille: Mapped[int] = mapped_column(primary_key=True, index=True)
+    nbr: Mapped[int] = mapped_column()
+    id_observations: Mapped[List[int]] = mapped_column(ARRAY(Integer))
+    type_code: Mapped[str] = mapped_column(String(25))
