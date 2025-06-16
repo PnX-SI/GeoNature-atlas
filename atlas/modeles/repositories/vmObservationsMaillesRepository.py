@@ -5,7 +5,6 @@ from sqlalchemy.sql import text, func, any_, extract
 
 from atlas.modeles.entities.vmObservations import VmObservations, VmObservationsMailles
 from atlas.modeles.entities.vmAreas import VmAreas
-from atlas.modeles.entities.vmTaxons import VmTaxons
 from atlas.modeles.utils import deleteAccent, findPath
 
 
@@ -71,42 +70,6 @@ def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
             for o in query.all()
         ]
     )
-
-
-def territoryObservationsMailles(connection):
-    sql = """
-WITH obs_in_area AS (
-    SELECT
-        obs.id_observation,
-        obs.cd_ref,
-        date_part('year', obs.dateobs) AS annee
-    FROM atlas.vm_observations obs
-)
-SELECT
-    json_build_object(
-            'type', 'FeatureCollection',
-            'features', json_agg(ST_AsGeoJSON(features.*)::json)
-    ) AS observations_features
-FROM (
-         SELECT
-             COUNT(obs_in_area.id_observation) AS nb_observations,
-             COUNT(DISTINCT obs_in_area.cd_ref) AS nb_cd_ref,
-             json_agg(DISTINCT jsonb_build_object(
-                     'name', (COALESCE(t.nom_vern || ' | ', '') || t.lb_nom),
-                     'cdRef', t.cd_ref)) AS taxons,
-             obs.type_code,
-             obs.id_maille,
-             vla.the_geom,
-             MAX(obs_in_area.annee)
-         FROM obs_in_area
-                  JOIN atlas.vm_observations_mailles obs ON obs_in_area.id_observation = ANY(obs.id_observations)
-                  JOIN atlas.vm_l_areas vla ON vla.id_area=obs.id_maille
-                  JOIN atlas.vm_taxons AS t ON t.cd_ref = obs_in_area.cd_ref
-         GROUP BY obs.type_code, obs.id_maille, vla.the_geom) AS features
-  """
-
-    query = connection.execute(text(sql))
-    return dict(query.all()[0])
 
 
 # last observation for index.html
@@ -185,19 +148,8 @@ def getObservationsByArea(connection, id_area):
             JOIN atlas.vm_taxons AS t ON t.cd_ref = obs_in_area.cd_ref
     GROUP BY obs.type_code, obs.id_maille, vla.the_geom) AS features
     """
-    results = connection.execute(text(sql), {"idAreaCode":id_area, "obsLimit":obs_limit})
-    observations = list()
-    for r in results:
-        infos = {
-            "cd_ref": r.cd_ref,
-            "taxon": r.display_name,
-            "geojson_maille": json.loads(r.geojson_4326),
-            "id_maille": r.id_maille,
-            "id_observation": r.id_observation,
-            "type_code": r.type_code,
-        }
-        observations.append(infos)
-    return observations
+    query = connection.execute(text(sql), {"id_area":id_area})
+    return dict(query.all()[0])
 
 
 # Use for API
@@ -226,10 +178,7 @@ FROM obs_in_area
          JOIN atlas.vm_taxons AS t ON t.cd_ref = obs_in_area.cd_ref
 ORDER BY annee DESC;
     """
-    observations = connection.execute(
-        text(sql), 
-        {"thisIdArea":id_area, "thiscdref":cd_ref}
-        )
+    observations = connection.execute(text(sql), {"thisIdArea":id_area, "thiscdref":cd_ref})
     tabObs = list()
     for o in observations:
         temp = {
