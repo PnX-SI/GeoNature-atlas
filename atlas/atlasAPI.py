@@ -37,22 +37,6 @@ def searchAreaAPI():
     return jsonify(results)
 
 
-@api.route("/observationsMailleTerritory", methods=["GET"])
-def getMailleHomeTerritory():
-    """
-    Retourne les mailles de tout le territoire
-    """
-    session = db.session
-    connection = db.engine.connect()
-
-    current_app.logger.debug("start AFFICHAGE_TERRITORY")
-    observations = vmObservationsMaillesRepository.territoryObservationsMailles(connection)
-    current_app.logger.debug("end AFFICHAGE_TERRITORY")
-
-    session.close()
-    return observations
-
-
 if not current_app.config["AFFICHAGE_MAILLE"]:
 
     @api.route("/observationsMailleAndPoint/<int(signed=True):cd_ref>", methods=["GET"])
@@ -71,6 +55,24 @@ if not current_app.config["AFFICHAGE_MAILLE"]:
         }
         session.close()
         return jsonify(observations)
+    
+
+@api.route("/observationsMaille/<int(signed=True):cd_ref>", methods=["GET"])
+def getObservationsMailleAPI(cd_ref):
+    """
+    Retourne les observations d'un taxon par maille (et le nombre d'observation par maille)
+
+    :returns: GeoJson
+    """
+    session = db.session
+    observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(
+        session,
+        cd_ref,
+        year_min=request.args.get("year_min"),
+        year_max=request.args.get("year_max"),
+    )
+    session.close()
+    return jsonify(observations)
 
 
 if not current_app.config["AFFICHAGE_MAILLE"]:
@@ -94,7 +96,7 @@ def getObservationsGenericApi(cd_ref: int):
         [type]: [description]
     """
     session = db.session
-    if current_app.config["AFFICHAGE_MAILLE"] or current_app.config["AFFICHAGE_TERRITOIRE_OBS"]:
+    if current_app.config["AFFICHAGE_MAILLE"]:
         observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(
             session,
             cd_ref,
@@ -187,7 +189,6 @@ def rank_stat():
 @api.route("/area_chart_values/<id_area>", methods=["GET"])
 def get_area_chart_valuesAPI(id_area):
     session = db.session
-    connection = db.engine.connect()
     species_by_taxonomic_group = vmAreasRepository.get_species_by_taxonomic_group(
         session, id_area
     )
@@ -202,7 +203,6 @@ def get_area_chart_valuesAPI(id_area):
     )
 
     session.close()
-    connection.close()
     return jsonify(
         {
             "species_by_taxonomic_group": species_by_taxonomic_group,
