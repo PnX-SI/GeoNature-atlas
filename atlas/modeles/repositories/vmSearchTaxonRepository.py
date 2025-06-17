@@ -23,16 +23,9 @@ def listeTaxonsSearch(session, search, limit=50):
     idx_trgm_col = func.similarity(VmSearchTaxon.search_name, search).label("idx_trgm")
     search = search.replace(" ", "%")
     subreq = (
-        select(
-            VmSearchTaxon.cd_ref,
-            VmSearchTaxon.search_name,
-            idx_trgm_col
-        )
+        select(VmSearchTaxon.cd_ref, VmSearchTaxon.search_name, idx_trgm_col)
         .filter(VmSearchTaxon.search_name.ilike("%" + search + "%"))
-        .order_by(
-            desc(idx_trgm_col),                         
-            VmSearchTaxon.cd_ref == VmSearchTaxon.cd_nom  
-        )
+        .order_by(desc(idx_trgm_col), VmSearchTaxon.cd_ref == VmSearchTaxon.cd_nom)
         .limit(limit)
         .subquery()
     )

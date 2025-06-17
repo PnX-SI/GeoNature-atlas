@@ -10,6 +10,7 @@ from atlas.modeles import utils
 from atlas.app import create_app
 from atlas.env import db
 
+
 def _format_media(r):
     """
     Return a dict from request of the t_media table
@@ -39,26 +40,19 @@ def getFirstPhoto(session, cd_ref, id):
     childs_ids = select(func.atlas.find_all_taxons_childs(cd_ref))
     req = (
         session.query(VmMedias)
-            .filter(
-                or_(
-                    VmMedias.cd_ref.in_(childs_ids), 
-                    VmMedias.cd_ref == cd_ref
-                ), 
-                VmMedias.id_type == id
-            ).limit(1)
+        .filter(
+            or_(VmMedias.cd_ref.in_(childs_ids), VmMedias.cd_ref == cd_ref), VmMedias.id_type == id
+        )
+        .limit(1)
     )
     for r in req:
         return _format_media(r)
-    
+
 
 def getPhotoCarousel(session, cd_ref, id):
     childs_ids = select(func.atlas.find_all_taxons_childs(cd_ref).label("cd_ref"))
-    req = (
-        session.query(VmMedias)
-            .filter(
-                or_(VmMedias.cd_ref.in_(childs_ids), VmMedias.cd_ref == cd_ref),
-                VmMedias.id_type == id
-            )
+    req = session.query(VmMedias).filter(
+        or_(VmMedias.cd_ref.in_(childs_ids), VmMedias.cd_ref == cd_ref), VmMedias.id_type == id
     )
     return [_format_media(r) for r in req]
 
@@ -117,10 +111,8 @@ def switchMedia(row):
 def getVideo_and_audio(session, cd_ref, id5, id6, id7, id8, id9):
     req = (
         session.query(VmMedias)
-            .filter(
-                VmMedias.id_type.in_((id5, id6, id7, id8, id9)), 
-                VmMedias.cd_ref == cd_ref
-            ).order_by(VmMedias.date_media.desc())
+        .filter(VmMedias.id_type.in_((id5, id6, id7, id8, id9)), VmMedias.cd_ref == cd_ref)
+        .order_by(VmMedias.date_media.desc())
     )
     tabMedias = {"audio": list(), "video": list()}
     for r in req:
@@ -146,10 +138,8 @@ def getVideo_and_audio(session, cd_ref, id5, id6, id7, id8, id9):
 def getLinks_and_articles(session, cd_ref, id3, id4):
     req = (
         session.query(VmMedias)
-            .filter(
-                VmMedias.id_type.in_((id3, id4)), VmMedias.cd_ref == cd_ref
-            )
-            .order_by(VmMedias.date_media.desc())
+        .filter(VmMedias.id_type.in_((id3, id4)), VmMedias.cd_ref == cd_ref)
+        .order_by(VmMedias.date_media.desc())
     )
     return [_format_media(r) for r in req]
 
@@ -157,27 +147,20 @@ def getLinks_and_articles(session, cd_ref, id3, id4):
 def get_liens_importants(session, cd_ref, media_ids):
     req = (
         session.query(VmMedias)
-            .filter(
-                VmMedias.id_type == func.any(media_ids), VmMedias.cd_ref == cd_ref
-            )
-            .order_by(VmMedias.date_media.desc())
+        .filter(VmMedias.id_type == func.any(media_ids), VmMedias.cd_ref == cd_ref)
+        .order_by(VmMedias.date_media.desc())
     )
     return [_format_media(r) for r in req]
 
 
 def getPhotosGallery(session, id1, id2):
     req = (
-        session.query(
-            VmMedias, 
-            VmTaxons.nom_vern, 
-            VmTaxons.lb_nom, 
-            VmTaxons.nb_obs
-        )
+        session.query(VmMedias, VmTaxons.nom_vern, VmTaxons.lb_nom, VmTaxons.nb_obs)
         .join(VmTaxons, VmTaxons.cd_ref == VmMedias.cd_ref)
         .filter(VmMedias.id_type.in_((id1, id2)))
         .order_by(func.random())
     )
-    
+
     tab_photos = []
     for vm_media, nom_vern, lb_nom, nb_obs in req:
         if nom_vern:
@@ -194,18 +177,11 @@ def getPhotosGallery(session, id1, id2):
 
 
 def getPhotosGalleryByGroup(session, id1, id2, INPNgroup):
-    req =  (
-        session.query(
-            VmMedias, 
-            VmTaxons.nom_vern, 
-            VmTaxons.lb_nom, 
-            VmTaxons.nb_obs)
-                .join(VmTaxons, VmTaxons.cd_ref == VmMedias.cd_ref)
-                .filter(
-                    VmMedias.id_type.in_((id1, id2)), 
-                    VmTaxons.group2_inpn == INPNgroup)
-                .order_by(func.random())
-
+    req = (
+        session.query(VmMedias, VmTaxons.nom_vern, VmTaxons.lb_nom, VmTaxons.nb_obs)
+        .join(VmTaxons, VmTaxons.cd_ref == VmMedias.cd_ref)
+        .filter(VmMedias.id_type.in_((id1, id2)), VmTaxons.group2_inpn == INPNgroup)
+        .order_by(func.random())
     )
 
     tab_photos = []

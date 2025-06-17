@@ -4,12 +4,11 @@ from sqlalchemy.sql import text
 
 from atlas.modeles.entities.vmTaxons import VmCorTaxonAttribut
 
+
 def getAttributesTaxon(session, cd_ref, attrDesc, attrComment, attrMilieu, attrChoro):
     id_attributs = [attrDesc, attrComment, attrMilieu, attrChoro]
-    req = (
-        session.query(VmCorTaxonAttribut)
-        .filter(VmCorTaxonAttribut.id_attribut.in_(id_attributs),
-                VmCorTaxonAttribut.cd_ref == cd_ref)
+    req = session.query(VmCorTaxonAttribut).filter(
+        VmCorTaxonAttribut.id_attribut.in_(id_attributs), VmCorTaxonAttribut.cd_ref == cd_ref
     )
 
     descTaxon = {"description": None, "commentaire": None, "milieu": None, "chorologie": None}

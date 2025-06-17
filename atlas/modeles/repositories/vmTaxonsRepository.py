@@ -16,24 +16,31 @@ def getTaxonsTerritory(session):
     req = (
         select(
             VmObservations.cd_ref,
-            func.max(func.date_part("year", VmObservations.dateobs))\
-                .label("last_obs"),
+            func.max(func.date_part("year", VmObservations.dateobs)).label("last_obs"),
             func.count(VmObservations.id_observation).label("nb_obs"),
-            VmTaxons.nom_complet_html, VmTaxons.nom_vern,
-            VmTaxons.group2_inpn, VmTaxons.patrimonial,
-            VmTaxons.protection_stricte, VmMedias.url,
-            VmMedias.chemin, VmMedias.id_media
+            VmTaxons.nom_complet_html,
+            VmTaxons.nom_vern,
+            VmTaxons.group2_inpn,
+            VmTaxons.patrimonial,
+            VmTaxons.protection_stricte,
+            VmMedias.url,
+            VmMedias.chemin,
+            VmMedias.id_media,
         )
         .join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
-        .outerjoin(VmMedias, 
-                   (VmMedias.cd_ref == VmObservations.cd_ref) 
-                   & (VmMedias.id_type == id_type)
+        .outerjoin(
+            VmMedias, (VmMedias.cd_ref == VmObservations.cd_ref) & (VmMedias.id_type == id_type)
         )
         .group_by(
-            VmObservations.cd_ref, VmTaxons.nom_vern, 
-            VmTaxons.nom_complet_html, VmTaxons.group2_inpn,
-            VmTaxons.patrimonial, VmTaxons.protection_stricte,
-            VmMedias.url, VmMedias.chemin, VmMedias.id_media
+            VmObservations.cd_ref,
+            VmTaxons.nom_vern,
+            VmTaxons.nom_complet_html,
+            VmTaxons.group2_inpn,
+            VmTaxons.patrimonial,
+            VmTaxons.protection_stricte,
+            VmMedias.url,
+            VmMedias.chemin,
+            VmMedias.id_media,
         )
         .order_by(func.count(VmObservations.id_observation).desc())
         .distinct()
@@ -63,13 +70,8 @@ def getTaxonsTerritory(session):
 def getTaxonsAreas(session, id_area):
     id_photo = current_app.config["ATTR_MAIN_PHOTO"]
     obs_in_area = (
-        select(
-            distinct(VmObservations.id_observation).label("id_observation")
-        )
-        .join(
-            VmCorAreaSynthese, 
-            VmCorAreaSynthese.id_synthese == VmObservations.id_observation
-        )
+        select(distinct(VmObservations.id_observation).label("id_observation"))
+        .join(VmCorAreaSynthese, VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
         .filter(VmCorAreaSynthese.id_area == id_area)
     ).subquery()
     req = (
@@ -77,34 +79,34 @@ def getTaxonsAreas(session, id_area):
             VmObservations.cd_ref,
             func.max(func.date_part("year", VmObservations.dateobs)).label("last_obs"),
             func.count(distinct(VmObservations.id_observation)).label("nb_obs"),
-            VmTaxons.nom_complet_html, VmTaxons.nom_vern,
-            VmTaxons.group2_inpn, VmTaxons.patrimonial,
-            VmTaxons.protection_stricte, VmMedias.url,
-            VmMedias.chemin, VmMedias.id_media
+            VmTaxons.nom_complet_html,
+            VmTaxons.nom_vern,
+            VmTaxons.group2_inpn,
+            VmTaxons.patrimonial,
+            VmTaxons.protection_stricte,
+            VmMedias.url,
+            VmMedias.chemin,
+            VmMedias.id_media,
         )
         .distinct()
         .select_from(obs_in_area)
-        .join(
-            VmObservations, 
-            VmObservations.id_observation == obs_in_area.c.id_observation
-        )
-        .join(
-            VmTaxons, 
-            VmTaxons.cd_ref == VmObservations.cd_ref
-        )
+        .join(VmObservations, VmObservations.id_observation == obs_in_area.c.id_observation)
+        .join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
         .outerjoin(
-            VmMedias, (VmMedias.cd_ref == VmObservations.cd_ref) 
-            & (VmMedias.id_type == id_photo)
+            VmMedias, (VmMedias.cd_ref == VmObservations.cd_ref) & (VmMedias.id_type == id_photo)
         )
         .group_by(
-            VmObservations.cd_ref, VmTaxons.nom_vern, 
-            VmTaxons.nom_complet_html, VmTaxons.group2_inpn,
-            VmTaxons.patrimonial, VmTaxons. protection_stricte,
-            VmMedias.url, VmMedias.chemin, VmMedias.id_media
+            VmObservations.cd_ref,
+            VmTaxons.nom_vern,
+            VmTaxons.nom_complet_html,
+            VmTaxons.group2_inpn,
+            VmTaxons.patrimonial,
+            VmTaxons.protection_stricte,
+            VmMedias.url,
+            VmMedias.chemin,
+            VmMedias.id_media,
         )
-        .order_by(
-            func.count(distinct(VmObservations.id_observation)).desc()
-        )
+        .order_by(func.count(distinct(VmObservations.id_observation)).desc())
     )
     results = session.execute(req).all()
     taxonAreasList = list()
@@ -132,21 +134,21 @@ def getTaxonsChildsList(session, cd_ref):
     childs_ids = select(func.atlas.find_all_taxons_childs(cd_ref))
     req = (
         select(
-            VmTaxons.nom_complet_html, VmTaxons.nb_obs, 
-            VmTaxons.nom_vern, VmTaxons.cd_ref,
-            VmTaxons.yearmax, VmTaxons.group2_inpn,
-            VmTaxons.patrimonial, VmTaxons.protection_stricte,
-            VmMedias.chemin, VmMedias.url, VmMedias.id_media
+            VmTaxons.nom_complet_html,
+            VmTaxons.nb_obs,
+            VmTaxons.nom_vern,
+            VmTaxons.cd_ref,
+            VmTaxons.yearmax,
+            VmTaxons.group2_inpn,
+            VmTaxons.patrimonial,
+            VmTaxons.protection_stricte,
+            VmMedias.chemin,
+            VmMedias.url,
+            VmMedias.id_media,
         )
         .distinct()
-        .join(
-            TBibTaxrefRang, 
-            func.trim(VmTaxons.id_rang) == func.trim(TBibTaxrefRang.id_rang)
-        )
-        .outerjoin(
-            VmMedias, (VmMedias.cd_ref == VmTaxons.cd_ref) &
-            (VmMedias.id_type == id_photo)
-        )
+        .join(TBibTaxrefRang, func.trim(VmTaxons.id_rang) == func.trim(TBibTaxrefRang.id_rang))
+        .outerjoin(VmMedias, (VmMedias.cd_ref == VmTaxons.cd_ref) & (VmMedias.id_type == id_photo))
         .filter(VmTaxons.cd_ref.in_(childs_ids))
     )
     results = session.execute(req).all()
@@ -174,12 +176,9 @@ def getINPNgroupPhotos(session):
     """
     Get list of INPN groups with at least one photo
     """
-    
+
     req = (
-        select(
-            func.count(distinct(VmMedias.id_media)).label("nb_photos"),
-            VmTaxons.group2_inpn
-        )
+        select(func.count(distinct(VmMedias.id_media)).label("nb_photos"), VmTaxons.group2_inpn)
         .select_from(VmTaxons)
         .join(VmMedias, VmMedias.cd_ref == VmTaxons.cd_ref)
         .group_by(VmTaxons.group2_inpn)
@@ -197,24 +196,32 @@ def getTaxonsGroup(session, groupe):
     id_photo = current_app.config["ATTR_MAIN_PHOTO"]
     req = (
         select(
-            VmTaxons.cd_ref, VmTaxons.nom_complet_html,
-            VmTaxons.nom_vern, VmTaxons.nb_obs,
-            VmTaxons.group2_inpn, VmTaxons.protection_stricte,
-            VmTaxons.patrimonial, VmTaxons.yearmax,
-            VmMedias.chemin, VmMedias.url, VmMedias.id_media
+            VmTaxons.cd_ref,
+            VmTaxons.nom_complet_html,
+            VmTaxons.nom_vern,
+            VmTaxons.nb_obs,
+            VmTaxons.group2_inpn,
+            VmTaxons.protection_stricte,
+            VmTaxons.patrimonial,
+            VmTaxons.yearmax,
+            VmMedias.chemin,
+            VmMedias.url,
+            VmMedias.id_media,
         )
-        .outerjoin(
-            VmMedias, 
-            (VmMedias.cd_ref == VmTaxons.cd_ref) &
-            (VmMedias.id_type == id_photo)
-        )
-        .filter(VmTaxons.group2_inpn == groupe) 
+        .outerjoin(VmMedias, (VmMedias.cd_ref == VmTaxons.cd_ref) & (VmMedias.id_type == id_photo))
+        .filter(VmTaxons.group2_inpn == groupe)
         .group_by(
-            VmTaxons.cd_ref, VmTaxons.nom_complet_html,
-            VmTaxons.nom_vern, VmTaxons.nb_obs,
-            VmTaxons.group2_inpn, VmTaxons.protection_stricte,
-            VmTaxons.patrimonial, VmTaxons.yearmax,
-            VmMedias.chemin, VmMedias.url, VmMedias.id_media
+            VmTaxons.cd_ref,
+            VmTaxons.nom_complet_html,
+            VmTaxons.nom_vern,
+            VmTaxons.nb_obs,
+            VmTaxons.group2_inpn,
+            VmTaxons.protection_stricte,
+            VmTaxons.patrimonial,
+            VmTaxons.yearmax,
+            VmMedias.chemin,
+            VmMedias.url,
+            VmMedias.id_media,
         )
     )
     results = session.execute(req).all()
@@ -241,10 +248,7 @@ def getTaxonsGroup(session, groupe):
 # get all groupINPN
 def getAllINPNgroup(session):
     req = (
-        select(
-            func.sum(VmTaxons.nb_obs).label("som_obs"),
-            VmTaxons.group2_inpn
-        )
+        select(func.sum(VmTaxons.nb_obs).label("som_obs"), VmTaxons.group2_inpn)
         .group_by(VmTaxons.group2_inpn)
         .order_by(func.sum(VmTaxons.nb_obs).desc())
     )

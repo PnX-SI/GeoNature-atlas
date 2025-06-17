@@ -9,9 +9,10 @@ import datetime
 class Base(DeclarativeBase):
     pass
 
+
 class Syntheseff(Base):
     __tablename__ = "syntheseff"
-    __table_args__ = {"schema" : "synthese"}
+    __table_args__ = {"schema": "synthese"}
 
     id_synthese: Mapped[int] = mapped_column(primary_key=True)
     id_dataset: Mapped[int] = mapped_column()

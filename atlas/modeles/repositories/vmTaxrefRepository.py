@@ -18,14 +18,10 @@ def searchEspece(session, cd_ref):
             literal(cd_ref).label("cd_ref"),
             func.min(VmTaxons.yearmin).label("yearmin"),
             func.max(VmTaxons.yearmax).label("yearmax"),
-            func.sum(VmTaxons.nb_obs).label("nb_obs")
+            func.sum(VmTaxons.nb_obs).label("nb_obs"),
         )
-        .filter(
-            or_(
-                VmTaxons.cd_ref.in_(childs_ids),
-                VmTaxons.cd_ref == cd_ref 
-            )
-        ).subquery()
+        .filter(or_(VmTaxons.cd_ref.in_(childs_ids), VmTaxons.cd_ref == cd_ref))
+        .subquery()
     )
     req = (
         select(
@@ -35,12 +31,10 @@ def searchEspece(session, cd_ref):
             limit_obs.c.yearmax,
             func.coalesce(limit_obs.c.nb_obs, 0).label("nb_obs"),
             VmTaxons.patrimonial,
-            VmTaxons.protection_stricte
+            VmTaxons.protection_stricte,
         )
-        .join(limit_obs, 
-              limit_obs.c.cd_ref == VmTaxref.cd_nom)
-        .outerjoin(VmTaxons, 
-                   VmTaxons.cd_ref == VmTaxref.cd_ref)
+        .join(limit_obs, limit_obs.c.cd_ref == VmTaxref.cd_nom)
+        .outerjoin(VmTaxons, VmTaxons.cd_ref == VmTaxref.cd_ref)
         .filter(VmTaxref.cd_nom == cd_ref)
     )
     results = session.execute(req).mappings().all()
@@ -50,7 +44,8 @@ def searchEspece(session, cd_ref):
         nom_vern = None
         if obj.nom_vern:
             nom_vern = (
-                obj.nom_vern.split(",")[0] if current_app.config["SPLIT_NOM_VERN"] 
+                obj.nom_vern.split(",")[0]
+                if current_app.config["SPLIT_NOM_VERN"]
                 else obj.nom_vern
             )
         taxonSearch = {
@@ -70,15 +65,17 @@ def searchEspece(session, cd_ref):
 
     childs_ids = select(func.atlas.find_all_taxons_childs(cd_ref))
     req = (
-        select(VmTaxons.lb_nom, VmTaxons.nom_vern, 
-               VmTaxons.cd_ref, TBibTaxrefRang.tri_rang,
-               VmTaxons.group2_inpn, VmTaxons.patrimonial,
-               VmTaxons.protection_stricte, VmTaxons.nb_obs
+        select(
+            VmTaxons.lb_nom,
+            VmTaxons.nom_vern,
+            VmTaxons.cd_ref,
+            TBibTaxrefRang.tri_rang,
+            VmTaxons.group2_inpn,
+            VmTaxons.patrimonial,
+            VmTaxons.protection_stricte,
+            VmTaxons.nb_obs,
         )
-        .join(
-            TBibTaxrefRang, 
-            TBibTaxrefRang.id_rang == VmTaxons.id_rang
-        )
+        .join(TBibTaxrefRang, TBibTaxrefRang.id_rang == VmTaxons.id_rang)
         .filter(VmTaxons.cd_ref.in_(childs_ids))
         .order_by(VmTaxons.lb_nom.asc(), VmTaxons.nb_obs.desc())
     )
@@ -102,10 +99,7 @@ def searchEspece(session, cd_ref):
 
 def getSynonymy(session, cd_ref):
     req = (
-        select(
-            VmTaxref.nom_complet_html, 
-            VmTaxref.lb_nom
-        )
+        select(VmTaxref.nom_complet_html, VmTaxref.lb_nom)
         .filter(VmTaxref.cd_ref == cd_ref)
         .order_by(VmTaxref.lb_nom.asc())
     )
@@ -134,8 +128,7 @@ def getTaxon(session, cd_nom):
 
 
 def getCd_sup(session, cd_ref):
-    req = session.query(VmTaxref.cd_taxsup)\
-        .filter(VmTaxref.cd_nom == cd_ref).first()
+    req = session.query(VmTaxref.cd_taxsup).filter(VmTaxref.cd_nom == cd_ref).first()
     return req.cd_taxsup
 
 
@@ -167,11 +160,6 @@ def getAllTaxonomy(session, cd_ref):
 
 
 def get_cd_ref(session, cd_nom):
-    req = (
-        select(
-            VmTaxref.cd_ref
-        )
-        .filter(VmTaxref.cd_nom == cd_nom)
-    )
+    req = select(VmTaxref.cd_ref).filter(VmTaxref.cd_nom == cd_nom)
     row = session.execute(req).one()
     return row.cd_ref

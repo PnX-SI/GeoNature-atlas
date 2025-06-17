@@ -11,6 +11,7 @@ engine = create_engine(SQLALCHEMY_DATABASE_URI, echo=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
+
 def deleteAccent(string):
     if string is None:
         return None
@@ -25,7 +26,8 @@ def findPath(row):
     else:
         return row.url
 
-@contextmanager   
+
+@contextmanager
 def get_session():
     """Créer une session pour les opérations sur la base."""
     session = SessionLocal()

@@ -44,13 +44,10 @@ def searchObservationsChilds(session, cd_ref):
 def firstObservationChild(session, cd_ref):
     childs_ids = session.query(func.atlas.find_all_taxons_childs(cd_ref))
     req = (
-        session.query(
-            func.min(VmTaxons.yearmin).label("yearmin")
-        )
+        session.query(func.min(VmTaxons.yearmin).label("yearmin"))
         .join(VmTaxref, VmTaxref.cd_ref == VmTaxons.cd_ref)
-        .filter(
-            or_(VmTaxons.cd_ref.in_(childs_ids), VmTaxons.cd_ref == cd_ref)
-        ).all()
+        .filter(or_(VmTaxons.cd_ref.in_(childs_ids), VmTaxons.cd_ref == cd_ref))
+        .all()
     )
     for r in req:
         return r.yearmin
@@ -61,21 +58,19 @@ def lastObservations(session, mylimit, idPhoto):
         select(
             VmObservations,
             func.concat(
-                func.split_part(VmTaxons.nom_vern, ',', 1) + ' | ',
-                literal('<i>'),
+                func.split_part(VmTaxons.nom_vern, ",", 1) + " | ",
+                literal("<i>"),
                 VmTaxons.lb_nom,
-                literal('</i>')
+                literal("</i>"),
             ).label("taxon"),
             VmTaxons.group2_inpn,
             VmMedias.url,
             VmMedias.chemin,
-            VmMedias.id_media
+            VmMedias.id_media,
         )
         .join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
         .outerjoin(
-            VmMedias,
-            (VmMedias.cd_ref == VmObservations.cd_ref) & 
-            (VmMedias.id_type == idPhoto)
+            VmMedias, (VmMedias.cd_ref == VmObservations.cd_ref) & (VmMedias.id_type == idPhoto)
         )
         .where(
             VmObservations.dateobs >= func.current_timestamp() - cast(literal(mylimit), Interval)
@@ -87,10 +82,10 @@ def lastObservations(session, mylimit, idPhoto):
 
     obsList = []
     for row in results:
-        obs = row["VmObservations"] # Objet ORM VmObservations
-        temp = {**obs.__dict__, **row} 
-        temp.pop("VmObservations")     # supression car partie isolée dans obs
-        temp.pop("_sa_instance_state", None)  # supression du champ interne de SQLAlchemy 
+        obs = row["VmObservations"]  # Objet ORM VmObservations
+        temp = {**obs.__dict__, **row}
+        temp.pop("VmObservations")  # supression car partie isolée dans obs
+        temp.pop("_sa_instance_state", None)  # supression du champ interne de SQLAlchemy
         temp.pop("the_geom_point", None)
         temp["geojson_point"] = json.loads(obs.geojson_point or "{}")
         temp["dateobs"] = obs.dateobs
@@ -105,17 +100,14 @@ def getObservationsByArea(session, id_area, limit):
         select(
             VmObservations,
             func.concat(
-                func.split_part(VmTaxons.nom_vern, ',', 1) + ' | ',
-                literal('<i>'),
+                func.split_part(VmTaxons.nom_vern, ",", 1) + " | ",
+                literal("<i>"),
                 VmTaxons.lb_nom,
-                literal('</i>')
+                literal("</i>"),
             ).label("taxon"),
-            VmObservations.id_observation
+            VmObservations.id_observation,
         )
-        .join(
-            VmCorAreaSynthese, 
-            VmCorAreaSynthese.id_synthese == VmObservations.id_observation
-        )
+        .join(VmCorAreaSynthese, VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
         .join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
         .filter(VmCorAreaSynthese.id_area == id_area)
         .order_by(VmObservations.dateobs.desc())
@@ -128,8 +120,8 @@ def getObservationsByArea(session, id_area, limit):
     for row in results:
         obs = row["VmObservations"]
         temp = {**obs.__dict__, **row}
-        temp.pop("VmObservations")     # supression car partie isolée dans obs
-        temp.pop("_sa_instance_state", None)  # supression du champ interne de SQLAlchemy 
+        temp.pop("VmObservations")  # supression car partie isolée dans obs
+        temp.pop("_sa_instance_state", None)  # supression du champ interne de SQLAlchemy
         temp.pop("the_geom_point", None)
         temp["geojson_point"] = json.loads(obs.geojson_point or "{}")
         temp["dateobs"] = obs.dateobs
@@ -140,18 +132,9 @@ def getObservationsByArea(session, id_area, limit):
 
 def getObservationTaxonArea(session, id_area, cd_ref):
     req = (
-        select(
-            VmObservations.geojson_point,
-            VmObservations.dateobs
-        )
-        .join(
-            VmCorAreaSynthese, 
-            VmCorAreaSynthese.id_synthese == VmObservations.id_observation
-        )
-        .filter(
-            VmCorAreaSynthese.id_area == id_area, 
-            VmObservations.cd_ref == cd_ref
-        )
+        select(VmObservations.geojson_point, VmObservations.dateobs)
+        .join(VmCorAreaSynthese, VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
+        .filter(VmCorAreaSynthese.id_area == id_area, VmObservations.cd_ref == cd_ref)
     )
     results = session.execute(req).mappings().all()
     obsList = list()
@@ -188,15 +171,11 @@ def observersParser(req):
 
 
 def getObservers(session, cd_ref):
-    childs_ids = session.execute(
-        select(func.atlas.find_all_taxons_childs(cd_ref))
-        ).scalars().all()
-    taxons = [cd_ref] + childs_ids   # inclut le parent
+    childs_ids = session.execute(select(func.atlas.find_all_taxons_childs(cd_ref))).scalars().all()
+    taxons = [cd_ref] + childs_ids  # inclut le parent
 
-    req = (
-        select(
-            distinct(VmObservations.observateurs).label("observateurs") 
-        ).filter(VmObservations.cd_ref == func.any(array(taxons)))
+    req = select(distinct(VmObservations.observateurs).label("observateurs")).filter(
+        VmObservations.cd_ref == func.any(array(taxons))
     )
     results = session.execute(req).all()
     return observersParser(results)
@@ -204,11 +183,8 @@ def getObservers(session, cd_ref):
 
 def getGroupeObservers(session, groupe):
     subquery = select(VmTaxons.cd_ref).filter(VmTaxons.group2_inpn == groupe)
-    req = (
-        select(
-            distinct(VmObservations.observateurs).label("observateurs")
-        )
-        .filter(VmObservations.cd_ref.in_(subquery))
+    req = select(distinct(VmObservations.observateurs).label("observateurs")).filter(
+        VmObservations.cd_ref.in_(subquery)
     )
     results = session.execute(req).all()
     return observersParser(results)
@@ -216,52 +192,32 @@ def getGroupeObservers(session, groupe):
 
 def getObserversArea(session, id_area):
     req = (
-        select(
-            distinct(VmObservations.observateurs).label("observateurs")
-        )
-        .join(
-            VmCorAreaSynthese, 
-            VmCorAreaSynthese.id_synthese == VmObservations.id_observation
-        )
+        select(distinct(VmObservations.observateurs).label("observateurs"))
+        .join(VmCorAreaSynthese, VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
         .filter(VmCorAreaSynthese.id_area == id_area)
-
     )
     results = session.execute(req).all()
     return observersParser(results)
 
 
 def statIndex(session):
-    result = {"nbTotalObs": None, "nbTotalTaxons": None, 
-              "town": None, "photo": None}
-    req = (
-        select(
-            func.count(VmObservations.id_observation).label("count")
-        )
-    )
+    result = {"nbTotalObs": None, "nbTotalTaxons": None, "town": None, "photo": None}
+    req = select(func.count(VmObservations.id_observation).label("count"))
     results = session.execute(req).all()
     for r in results:
         result["nbTotalObs"] = r.count
-    
+
     type_code = current_app.config["TYPE_TERRITOIRE_SHEET"]
     req = (
-        select(
-            func.count(VmAreas.id_area).label("count")
-        )
-        .join(
-            VmBibAreasTypes, 
-            VmBibAreasTypes.id_type == VmAreas.id_type
-        )
+        select(func.count(VmAreas.id_area).label("count"))
+        .join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type)
         .filter(VmBibAreasTypes.type_code.in_(type_code))
     )
     results = session.execute(req).all()
     for r in results:
         result["town"] = r.count
- 
-    req = (
-        select(
-            func.count(distinct(VmTaxons.cd_ref)).label("count")
-        )
-    )
+
+    req = select(func.count(distinct(VmTaxons.cd_ref)).label("count"))
     results = session.execute(req).all()
     for r in results:
         result["nbTotalTaxons"] = r.count
@@ -269,9 +225,7 @@ def statIndex(session):
     id_type1 = current_app.config["ATTR_MAIN_PHOTO"]
     id_type2 = current_app.config["ATTR_OTHER_PHOTO"]
     req = (
-        select(
-            func.count(distinct(VmMedias.id_media)).label("count")
-        )
+        select(func.count(distinct(VmMedias.id_media)).label("count"))
         .join(VmTaxons, VmTaxons.cd_ref == VmMedias.cd_ref)
         .filter(VmMedias.id_type.in_([id_type1, id_type2]))
     )
@@ -289,10 +243,8 @@ def genericStat(session, tab):
         colonne_rang = getattr(VmTaxons, rang)
         req = (
             select(
-                func.count(distinct(VmObservations.id_observation))
-                .label("nb_obs"),
-                func.count(distinct(VmTaxons.cd_ref))
-                .label("nb_taxons")
+                func.count(distinct(VmObservations.id_observation)).label("nb_obs"),
+                func.count(distinct(VmTaxons.cd_ref)).label("nb_taxons"),
             )
             .join(VmObservations, VmObservations.cd_ref == VmTaxons.cd_ref)
             .filter(colonne_rang.in_(nomTaxon))
@@ -312,14 +264,17 @@ def genericStatMedias(session, tab):
         colonne_rang = getattr(VmTaxons, rang)
         req = (
             select(
-                VmTaxons.nb_obs, VmTaxons.cd_ref, VmTaxons.lb_nom,
-                VmTaxons.nom_vern, VmTaxons.group2_inpn, VmMedias.url,
-                VmMedias.chemin, VmMedias.auteur, VmMedias.id_media
+                VmTaxons.nb_obs,
+                VmTaxons.cd_ref,
+                VmTaxons.lb_nom,
+                VmTaxons.nom_vern,
+                VmTaxons.group2_inpn,
+                VmMedias.url,
+                VmMedias.chemin,
+                VmMedias.auteur,
+                VmMedias.id_media,
             )
-            .join(
-                VmMedias, (VmMedias.cd_ref == VmTaxons.cd_ref)
-                & (VmMedias.id_type == 1)
-            )
+            .join(VmMedias, (VmMedias.cd_ref == VmTaxons.cd_ref) & (VmMedias.id_type == 1))
             .filter(colonne_rang.in_(nomTaxon))
             .order_by(func.random())
             .limit(10)
@@ -351,28 +306,25 @@ def genericStatMedias(session, tab):
 def getLastDiscoveries(session):
     id_type = current_app.config["ATTR_MAIN_PHOTO"]
     subreq = (
-        select(
-            func.date(func.min(VmObservations.dateobs)).label("date"),
-            VmObservations.cd_ref
-        )
+        select(func.date(func.min(VmObservations.dateobs)).label("date"), VmObservations.cd_ref)
         .group_by(VmObservations.cd_ref)
         .order_by(func.date(func.min(VmObservations.dateobs)).desc())
         .subquery("t")
     )
     req = (
         select(
-            subreq.c.date, subreq.c.cd_ref,
-            VmTaxref.lb_nom, VmTaxref.nom_vern,
-            VmMedias.id_media, VmMedias.chemin,
-            VmMedias.url, VmTaxref.group2_inpn
+            subreq.c.date,
+            subreq.c.cd_ref,
+            VmTaxref.lb_nom,
+            VmTaxref.nom_vern,
+            VmMedias.id_media,
+            VmMedias.chemin,
+            VmMedias.url,
+            VmTaxref.group2_inpn,
         )
         .join(VmTaxref, VmTaxref.cd_nom == subreq.c.cd_ref)
-        .outerjoin(
-            VmMedias, 
-            (VmMedias.cd_ref == subreq.c.cd_ref)
-            & (VmMedias.id_type == id_type) 
-        )
-        .filter(VmTaxref.id_rang == 'ES')
+        .outerjoin(VmMedias, (VmMedias.cd_ref == subreq.c.cd_ref) & (VmMedias.id_type == id_type))
+        .filter(VmTaxref.id_rang == "ES")
         .order_by(subreq.c.date.desc())
         .limit(6)
     )

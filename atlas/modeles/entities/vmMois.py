@@ -2,8 +2,10 @@
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped, mapped_column
 
+
 class Base(DeclarativeBase):
     pass
+
 
 class VmMois(Base):
     __tablename__ = "vm_mois"
@@ -16,9 +18,9 @@ class VmMois(Base):
     _04: Mapped[int] = mapped_column()
     _05: Mapped[int] = mapped_column()
     _06: Mapped[int] = mapped_column()
-    _07: Mapped[int] = mapped_column()   
-    _08: Mapped[int] = mapped_column()   
-    _09: Mapped[int] = mapped_column()   
-    _10: Mapped[int] = mapped_column()   
-    _11: Mapped[int] = mapped_column()   
-    _12: Mapped[int] = mapped_column() 
+    _07: Mapped[int] = mapped_column()
+    _08: Mapped[int] = mapped_column()
+    _09: Mapped[int] = mapped_column()
+    _10: Mapped[int] = mapped_column()
+    _11: Mapped[int] = mapped_column()
+    _12: Mapped[int] = mapped_column()

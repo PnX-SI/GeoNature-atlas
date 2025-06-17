@@ -3,14 +3,19 @@
 import ast
 
 from sqlalchemy import distinct, select
-from sqlalchemy.sql.expression import func 
+from sqlalchemy.sql.expression import func
 from sqlalchemy.dialects.postgresql import array
 
 from flask import current_app
 from werkzeug.exceptions import NotFound
-from atlas.modeles.entities.vmAreas import (VmAreas, VmBibAreasTypes, 
-                                            VmCorAreas, VmCorAreaSynthese, 
-                                            VmAreaStatTaxonomyGroup, VmAreaStats)
+from atlas.modeles.entities.vmAreas import (
+    VmAreas,
+    VmBibAreasTypes,
+    VmCorAreas,
+    VmCorAreaSynthese,
+    VmAreaStatTaxonomyGroup,
+    VmAreaStats,
+)
 from atlas.modeles.entities.vmObservations import VmObservations
 
 
@@ -42,13 +47,13 @@ def searchAreas(session, search, limit=50):
 def getAreaFromIdArea(session, id_area):
     area = (
         session.query(
-            VmAreas.area_name, VmAreas.id_area, 
-            VmAreas.area_geojson, 
-            VmBibAreasTypes.type_name
+            VmAreas.area_name, VmAreas.id_area, VmAreas.area_geojson, VmBibAreasTypes.type_name
         )
         .join(VmBibAreasTypes, VmAreas.id_type == VmBibAreasTypes.id_type)
-        .filter(VmAreas.id_area == id_area).one_or_none())
-    
+        .filter(VmAreas.id_area == id_area)
+        .one_or_none()
+    )
+
     if not area:
         raise NotFound()
     area_dict = {
@@ -60,17 +65,16 @@ def getAreaFromIdArea(session, id_area):
     }
 
     subquery = (
-        session.query(VmCorAreas.id_area_group)
-        .filter(VmCorAreas.id_area == id_area)
-        .subquery()
-        )
-    
+        session.query(VmCorAreas.id_area_group).filter(VmCorAreas.id_area == id_area).subquery()
+    )
+
     areas_parent = (
         session.query(VmAreas.area_name, VmAreas.id_area, VmBibAreasTypes.type_name)
         .join(subquery, subquery.c.id_area_group == VmAreas.id_area)
-        .join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type).all()
+        .join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type)
+        .all()
     )
-    
+
     areas_parent_serialized = [
         {
             "areaName": area.area_name,
@@ -84,27 +88,29 @@ def getAreaFromIdArea(session, id_area):
 
 
 def getAreasObservationsChilds(session, cd_ref):
-    results = (session.execute(
-        select(func.atlas.find_all_taxons_childs(cd_ref)))
-    ).scalars().all()
+    results = (session.execute(select(func.atlas.find_all_taxons_childs(cd_ref)))).scalars().all()
     taxons = [cd_ref]
     for r in results:
         taxons.append(r)
 
-    param = {"taxonsList":taxons, "list_id_type":current_app.config["TYPE_TERRITOIRE_SHEET"]}
+    param = {"taxonsList": taxons, "list_id_type": current_app.config["TYPE_TERRITOIRE_SHEET"]}
     results = (
-        session.query(distinct(VmCorAreaSynthese.id_area).label("id_area"), 
-                      VmAreas.area_name.label("area_name"), 
-                      VmBibAreasTypes.type_code.label("type_code"), 
-                      VmBibAreasTypes.type_name.label("type_name"))
-                      .join(VmObservations, VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
-                      .join(VmAreas, VmCorAreaSynthese.id_area ==  VmAreas.id_area)
-                      .join(VmBibAreasTypes, VmCorAreaSynthese.type_code == VmBibAreasTypes.type_code)
-                      .filter(
-                          VmCorAreaSynthese.type_code == func.any(array(param["list_id_type"])),
-                          VmObservations.cd_ref == func.any(array(param["taxonsList"]))
-                      ).order_by(VmAreas.area_name.asc()).all()        
+        session.query(
+            distinct(VmCorAreaSynthese.id_area).label("id_area"),
+            VmAreas.area_name.label("area_name"),
+            VmBibAreasTypes.type_code.label("type_code"),
+            VmBibAreasTypes.type_name.label("type_name"),
         )
+        .join(VmObservations, VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
+        .join(VmAreas, VmCorAreaSynthese.id_area == VmAreas.id_area)
+        .join(VmBibAreasTypes, VmCorAreaSynthese.type_code == VmBibAreasTypes.type_code)
+        .filter(
+            VmCorAreaSynthese.type_code == func.any(array(param["list_id_type"])),
+            VmObservations.cd_ref == func.any(array(param["taxonsList"])),
+        )
+        .order_by(VmAreas.area_name.asc())
+        .all()
+    )
 
     areas = {}
     nb_territory = 0
@@ -134,7 +140,7 @@ def get_species_by_taxonomic_group(session, id_area):
             VmAreaStatTaxonomyGroup.nb_species.label("nb_species"),
             VmAreaStatTaxonomyGroup.group2_inpn.label("group2_inpn"),
             VmAreaStatTaxonomyGroup.nb_patrominal.label("nb_patrominal"),
-            VmAreaStatTaxonomyGroup.nb_species_in_teritory.label("nb_species_in_teritory")
+            VmAreaStatTaxonomyGroup.nb_species_in_teritory.label("nb_species_in_teritory"),
         )
         .filter(VmAreaStatTaxonomyGroup.id_area == id_area)
         .all()
@@ -156,7 +162,7 @@ def get_nb_observations_taxonomic_group(session, id_area):
     result = (
         session.query(
             VmAreaStatTaxonomyGroup.nb_obs.label("nb_obs"),
-            VmAreaStatTaxonomyGroup.group2_inpn.label("group2_inpn")
+            VmAreaStatTaxonomyGroup.group2_inpn.label("group2_inpn"),
         )
         .filter(VmAreaStatTaxonomyGroup.id_area == id_area)
         .all()
@@ -168,11 +174,7 @@ def get_nb_observations_taxonomic_group(session, id_area):
 
 
 def getStatsByArea(session, id_area):
-    result = (
-        session.query(VmAreaStats)
-            .filter(VmAreaStats.id_area == id_area)
-            .one_or_none()
-    )
+    result = session.query(VmAreaStats).filter(VmAreaStats.id_area == id_area).one_or_none()
     if not result:
         raise NotFound()
     return result.as_dict()

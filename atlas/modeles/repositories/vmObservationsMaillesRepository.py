@@ -90,7 +90,7 @@ def lastObservationsMailles(connection, mylimit, idPhoto):
         ORDER BY o.dateobs DESC
     """
 
-    observations = connection.execute(text(sql), {"thislimit":mylimit, "thisID":idPhoto})
+    observations = connection.execute(text(sql), {"thislimit": mylimit, "thisID": idPhoto})
     obsList = list()
     for o in observations:
         if o.nom_vern:
@@ -148,7 +148,7 @@ def getObservationsByArea(connection, id_area):
             JOIN atlas.vm_taxons AS t ON t.cd_ref = obs_in_area.cd_ref
     GROUP BY obs.type_code, obs.id_maille, vla.the_geom) AS features
     """
-    query = connection.execute(text(sql), {"id_area":id_area})
+    query = connection.execute(text(sql), {"id_area": id_area})
     return dict(query.all()[0])
 
 
@@ -178,7 +178,7 @@ FROM obs_in_area
          JOIN atlas.vm_taxons AS t ON t.cd_ref = obs_in_area.cd_ref
 ORDER BY annee DESC;
     """
-    observations = connection.execute(text(sql), {"thisIdArea":id_area, "thiscdref":cd_ref})
+    observations = connection.execute(text(sql), {"thisIdArea": id_area, "thiscdref": cd_ref})
     tabObs = list()
     for o in observations:
         temp = {

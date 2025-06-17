@@ -4,6 +4,7 @@ from atlas.modeles import utils
 from sqlalchemy.sql import select
 from atlas.modeles.entities.vmTaxons import VmTaxonsMostView
 
+
 def mostViewTaxon(session):
     req = select(VmTaxonsMostView)
     results = session.execute(req).mappings().all()

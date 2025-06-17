@@ -10,24 +10,18 @@ from atlas.modeles.entities.vmAreas import VmAreas
 def get_nb_taxon_pro_pat_area(session, id_area):
     req = (
         select(
-            func.count(VmTaxons.patrimonial)\
-                .label("nb_taxon_patrimonial"),
-            func.count(VmTaxons.protection_stricte)\
-                .label("nb_taxon_protege")
+            func.count(VmTaxons.patrimonial).label("nb_taxon_patrimonial"),
+            func.count(VmTaxons.protection_stricte).label("nb_taxon_protege"),
         )
         .select_from(VmObservations)
         .join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
-        .join(
-            VmAreas, 
-            func.ST_intersects(VmObservations.the_geom_point, VmAreas.the_geom)
-        )
+        .join(VmAreas, func.ST_intersects(VmObservations.the_geom_point, VmAreas.the_geom))
         .filter(VmAreas.id_area == id_area)
-    )   
-    results = session.execute(req).all() 
+    )
+    results = session.execute(req).all()
     taxonProPatri = dict()
     for r in results:
-        taxonProPatri = {"nbTaxonPro": r.nb_taxon_protege, 
-                         "nbTaxonPatri": r.nb_taxon_patrimonial}
+        taxonProPatri = {"nbTaxonPro": r.nb_taxon_protege, "nbTaxonPatri": r.nb_taxon_patrimonial}
     return taxonProPatri
 
 

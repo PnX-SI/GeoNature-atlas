@@ -4,14 +4,16 @@ from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.orm import DeclarativeBase
 import datetime
 
+
 class Base(DeclarativeBase):
     pass
+
 
 class VmMedias(Base):
     __tablename__ = "vm_medias"
     __table_args__ = {"schema": "atlas"}
 
-    id_media: Mapped[int] = mapped_column(primary_key = True) 
+    id_media: Mapped[int] = mapped_column(primary_key=True)
     cd_ref: Mapped[int] = mapped_column()
     titre: Mapped[str] = mapped_column(String(255))
     url: Mapped[str] = mapped_column(String(255))
