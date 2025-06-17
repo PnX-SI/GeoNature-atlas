@@ -348,12 +348,13 @@ h3.title-spaced {
   object-fit: contain;
 }
 
+.lastObslistItem .lastObslistItemIcon,
 .lastObslistItem .lastObslistItemImage {
   width: 80px;
   height: 80px;
-  background-position: center;
   object-fit: cover;
   background-color: var(--light);
+  flex-shrink: 0; /* IMPORTANT → évite que le flex les écrase */
 }
 
 .lastObslistItem.current {

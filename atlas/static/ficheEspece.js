@@ -5,11 +5,11 @@ YEARMAX = currentDate.getFullYear();
 var myBoolean = true;
 $('#btn-more-audio').click(function(){
     if (myBoolean){
-   		 $(this).attr('data-original-title', "Masquer les enregistrements")
+   		 $(this).attr('title', "Masquer les enregistrements")
    		 myBoolean = false;
    	}
    	else {
-   		$(this).attr('data-original-title', "Afficher plus d'enregistrements")
+   		$(this).attr('title', "Afficher plus d'enregistrements")
    		myBoolean = true;
    	}
 });
@@ -17,11 +17,11 @@ $('#btn-more-audio').click(function(){
 var myBooleanVideo = true;
 $('#btn-more-video').click(function(){
     if (myBoolean){
-   		 $(this).attr('data-original-title', "Masquer les vidéos")
+   		 $(this).attr('title', "Masquer les vidéos")
    		 myBooleanVideo = false;
    	}
    	else {
-   		$(this).attr('data-original-title', "Afficher plus de vidéos")
+   		$(this).attr('title', "Afficher plus de vidéos")
    		myBooleanVideo = true;
    	}
 });

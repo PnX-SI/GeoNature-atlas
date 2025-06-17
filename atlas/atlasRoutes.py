@@ -90,21 +90,21 @@ if current_app.config["ORGANISM_MODULE"]:
         db_session = db.session
         connection = db.engine.connect()
 
-        infos_organism = vmOrganismsRepository.statOrganism(connection, id_organism)
+        infos_organism = vmOrganismsRepository.statOrganism(db_session, id_organism)
 
-        stat = vmObservationsRepository.statIndex(connection)
+        stat = vmObservationsRepository.statIndex(db_session)
 
-        mostObsTaxs = vmOrganismsRepository.topObsOrganism(connection, id_organism)
+        mostObsTaxs = vmOrganismsRepository.topObsOrganism(db_session, id_organism)
         update_most_obs_taxons = []
         for taxon in mostObsTaxs:
-            taxon_info = vmTaxrefRepository.searchEspece(connection, taxon["cd_ref"])
+            taxon_info = vmTaxrefRepository.searchEspece(db_session, taxon["cd_ref"])
             photo = vmMedias.getFirstPhoto(
-                connection, taxon["cd_ref"], current_app.config["ATTR_MAIN_PHOTO"]
+                db_session, taxon["cd_ref"], current_app.config["ATTR_MAIN_PHOTO"]
             )
             taxon = {**taxon, **taxon_info["taxonSearch"]}
             taxon["photo"] = photo
             update_most_obs_taxons.append(taxon)
-        stats_group = vmOrganismsRepository.getTaxonRepartitionOrganism(connection, id_organism)
+        stats_group = vmOrganismsRepository.getTaxonRepartitionOrganism(db_session, id_organism)
 
         connection.close()
         db_session.close()
@@ -191,7 +191,7 @@ def index():
         else:
             current_app.logger.debug("start AFFICHAGE_PRECIS")
             observations = vmObservationsRepository.lastObservations(
-                connection,
+                session,
                 str(current_app.config["NB_DAY_LAST_OBS"]) + " day",
                 current_app.config["ATTR_MAIN_PHOTO"],
             )
@@ -201,7 +201,7 @@ def index():
 
     if current_app.config["AFFICHAGE_EN_CE_MOMENT"]:
         current_app.logger.debug("start mostViewTaxon")
-        mostViewTaxon = vmTaxonsMostView.mostViewTaxon(connection)
+        mostViewTaxon = vmTaxonsMostView.mostViewTaxon(session)
         current_app.logger.debug("end mostViewTaxon")
     else:
         mostViewTaxon = []
@@ -209,17 +209,18 @@ def index():
     if current_app.config["AFFICHAGE_RANG_STAT"]:
         current_app.logger.debug("start customStatMedia")
         customStatMedias = vmObservationsRepository.genericStatMedias(
-            connection, current_app.config["RANG_STAT"]
+            session, current_app.config["RANG_STAT"]
         )
         current_app.logger.debug("end customStatMedia")
     else:
         customStatMedias = []
 
     if current_app.config["AFFICHAGE_NOUVELLES_ESPECES"]:
-        lastDiscoveries = vmObservationsRepository.getLastDiscoveries(connection)
+        lastDiscoveries = vmObservationsRepository.getLastDiscoveries(session)
     else:
         lastDiscoveries = []
 
+    listTaxons = vmTaxonsRepository.getTaxonsTerritory(session)
     connection.close()
     session.close()
 
@@ -230,6 +231,7 @@ def index():
 
     return render_template(
         "templates/home/_main.html",
+        listTaxons=listTaxons,
         observations=observations,
         mostViewTaxon=mostViewTaxon,
         customStatMedias=customStatMedias,
@@ -244,26 +246,26 @@ def ficheEspece(cd_nom):
     connection = db.engine.connect()
 
     # Get cd_ref from cd_nom
-    cd_ref = vmTaxrefRepository.get_cd_ref(connection, cd_nom)
+    cd_ref = vmTaxrefRepository.get_cd_ref(db_session, cd_nom)
 
     # Redirect to cd_ref if cd_nom is a synonym. Redirection is better for SEO.
     if cd_ref != cd_nom:
         return redirect(url_for(request.endpoint, cd_nom=cd_ref))
 
     # Get data to render template
-    taxon = vmTaxrefRepository.searchEspece(connection, cd_ref)
-    altitudes = vmAltitudesRepository.getAltitudesChilds(connection, cd_ref)
-    months = vmMoisRepository.getMonthlyObservationsChilds(connection, cd_ref)
-    organism_stats = vmCorTaxonOrganismRepository.getTaxonOrganism(connection, cd_ref)
-    synonyme = vmTaxrefRepository.getSynonymy(connection, cd_ref)
-    areas = vmAreasRepository.getAreasObservationsChilds(connection, cd_ref)
+    taxon = vmTaxrefRepository.searchEspece(db_session, cd_ref)
+    altitudes = vmAltitudesRepository.getAltitudesChilds(db_session, cd_ref)
+    months = vmMoisRepository.getMonthlyObservationsChilds(db_session, cd_ref)
+    organism_stats = vmCorTaxonOrganismRepository.getTaxonOrganism(db_session, cd_ref)
+    synonyme = vmTaxrefRepository.getSynonymy(db_session, cd_ref)
+    areas = vmAreasRepository.getAreasObservationsChilds(db_session, cd_ref)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(db_session, cd_ref)
-    firstPhoto = vmMedias.getFirstPhoto(connection, cd_ref, current_app.config["ATTR_MAIN_PHOTO"])
+    firstPhoto = vmMedias.getFirstPhoto(db_session, cd_ref, current_app.config["ATTR_MAIN_PHOTO"])
     photoCarousel = vmMedias.getPhotoCarousel(
-        connection, cd_ref, current_app.config["ATTR_OTHER_PHOTO"]
+        db_session, cd_ref, current_app.config["ATTR_OTHER_PHOTO"]
     )
     videoAudio = vmMedias.getVideo_and_audio(
-        connection,
+        db_session,
         cd_ref,
         current_app.config["ATTR_AUDIO"],
         current_app.config["ATTR_VIDEO_HEBERGEE"],
@@ -272,14 +274,14 @@ def ficheEspece(cd_nom):
         current_app.config["ATTR_VIMEO"],
     )
     articles = vmMedias.getLinks_and_articles(
-        connection, cd_ref, current_app.config["ATTR_LIEN"], current_app.config["ATTR_PDF"]
+        db_session, cd_ref, current_app.config["ATTR_LIEN"], current_app.config["ATTR_PDF"]
     )
 
     liens_importants = []
     if current_app.config.get("TYPES_MEDIAS_LIENS_IMPORTANTS"):
         liens_config = current_app.config["TYPES_MEDIAS_LIENS_IMPORTANTS"]
         media_type_ids = list({t["type_media_id"] for t in liens_config})
-        liens_importants = vmMedias.get_liens_importants(connection, cd_ref, media_type_ids)
+        liens_importants = vmMedias.get_liens_importants(db_session, cd_ref, media_type_ids)
         icones_by_media_type = {
             i["type_media_id"]: i["icon"] for i in liens_config if i.get("icon")
         }
@@ -287,18 +289,18 @@ def ficheEspece(cd_nom):
             lien["icon"] = icones_by_media_type.get(lien["id_type"], "")
 
     taxonDescription = vmCorTaxonAttribut.getAttributesTaxon(
-        connection,
+        db_session,
         cd_ref,
         current_app.config["ATTR_DESC"],
         current_app.config["ATTR_COMMENTAIRE"],
         current_app.config["ATTR_MILIEU"],
         current_app.config["ATTR_CHOROLOGIE"],
     )
-    observers = vmObservationsRepository.getObservers(connection, cd_ref)
+    observers = vmObservationsRepository.getObservers(db_session, cd_ref)
 
-    organisms = vmOrganismsRepository.getListOrganism(connection, cd_ref)
+    organisms = vmOrganismsRepository.getListOrganism(db_session, cd_ref)
 
-    statuts = vmStatutBdcRepository.get_taxons_statut_bdc(connection, cd_ref)
+    statuts = vmStatutBdcRepository.get_taxons_statut_bdc(db_session, cd_ref)
     groupes_statuts = _make_groupes_statuts(statuts)
     groupes_statuts_have_labels = any([groupe.get("label") for groupe in groupes_statuts])
 
@@ -381,10 +383,10 @@ def _make_groupes_statuts(statuts):
 def ficheArea(id_area):
     session = db.session
     connection = db.engine.connect()
-
-    listTaxons = vmTaxonsRepository.getTaxonsAreas(connection, id_area)
-    area = vmAreasRepository.getAreaFromIdArea(connection, id_area)
-    stats_area = vmAreasRepository.getStatsByArea(connection, id_area)
+    
+    listTaxons = vmTaxonsRepository.getTaxonsAreas(session, id_area)
+    area = vmAreasRepository.getAreaFromIdArea(session, id_area)
+    stats_area = vmAreasRepository.getStatsByArea(session, id_area)
 
     session.close()
     connection.close()
@@ -404,10 +406,10 @@ def ficheRangTaxonomie(cd_ref):
     session = db.session
     connection = db.engine.connect()
 
-    listTaxons = vmTaxonsRepository.getTaxonsChildsList(connection, cd_ref)
+    listTaxons = vmTaxonsRepository.getTaxonsChildsList(session, cd_ref)
     referenciel = vmTaxrefRepository.getInfoFromCd_ref(session, cd_ref)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
-    observers = vmObservationsRepository.getObservers(connection, cd_ref)
+    observers = vmObservationsRepository.getObservers(session, cd_ref)
 
     connection.close()
     session.close()
@@ -427,9 +429,9 @@ def ficheGroupe(groupe):
     session = db.session
     connection = db.engine.connect()
 
-    groups = vmTaxonsRepository.getAllINPNgroup(connection)
-    listTaxons = vmTaxonsRepository.getTaxonsGroup(connection, groupe)
-    observers = vmObservationsRepository.getGroupeObservers(connection, groupe)
+    groups = vmTaxonsRepository.getAllINPNgroup(session)
+    listTaxons = vmTaxonsRepository.getTaxonsGroup(session, groupe)
+    observers = vmObservationsRepository.getGroupeObservers(session, groupe)
 
     session.close()
     connection.close()
@@ -449,7 +451,7 @@ def photos():
     session = db.session
     connection = db.engine.connect()
 
-    groups = vmTaxonsRepository.getINPNgroupPhotos(connection)
+    groups = vmTaxonsRepository.getINPNgroupPhotos(session)
 
     session.close()
     connection.close()

@@ -29,16 +29,16 @@
                             <img
                                 class="INPNgroup"
                                 src="{{ url_for('static', filename='images/picto_'+ taxon.group2_inpn| replace(" ", "_") |urlencode+'.png') }}"
-                                data-toggle="tooltip" data-original-title="{{ taxon.group2_inpn }}"
-                                data-placement="right" >
+                                data-bs-toggle="tooltip" title="{{ taxon.group2_inpn }}"
+                                data-bs-placement="right">
                         {% else %}
                             {% if configuration.REDIMENSIONNEMENT_IMAGE %}
                                 {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+taxon.id_media|string+'?h=500&w=500' %}
                             {% else %}
                                 {% set img_path = taxon.path %}
                             {% endif %}
-                            <div class="pictoImgList lazy" data-src="{{ img_path }}" data-toggle="tooltip"
-                                 data-original-title="{{ taxon.group2_inpn }}" data-placement="right"></div>
+                            <div class="pictoImgList lazy" data-src="{{ img_path }}" data-bs-toggle="tooltip"
+                                 title="{{ taxon.group2_inpn }}" data-bs-placement="right"></div>
                         {% endif %}
                         <span class="d-none">{{ taxon.group2_inpn }}</span>
                     </td>
@@ -58,8 +58,8 @@
                                 <a href="https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.cd_ref }}/tab/statut"
                                    target="_blank">
                                     <img src="{{ url_for('static', filename='images/logo_protection.png') }}"
-                                         style="width : 40px; height: 40px" data-placement="left" data-toggle="tooltip"
-                                         data-original-title="{{ _('this.taxon.has.a.protected.status') }}">
+                                         style="width : 40px; height: 40px" data-bs-placement="left" data-bs-toggle="tooltip"
+                                         title="{{ _('this.taxon.has.a.protected.status') }}">
                                 </a>
                             {% endif %}
                         </td>
@@ -68,9 +68,9 @@
                         <td>
                             {% if taxon.patrimonial in configuration.PATRIMONIALITE.config %}
                                 <img src="{{ url_for('static', filename=configuration.PATRIMONIALITE.config[taxon.patrimonial].icon) }}"
-                                     style="width : 30px; height: 30px" data-placement="left" data-toggle="tooltip"
-                                     data-original-title="{{ configuration.PATRIMONIALITE.config[taxon.patrimonial].text }}"
-                                     data-placement="right">
+                                     style="width : 30px; height: 30px" data-bs-placement="left" data-bs-toggle="tooltip"
+                                     title="{{ configuration.PATRIMONIALITE.config[taxon.patrimonial].text }}"
+                                     data-bs-placement="right">
                             {% endif %}
                         </td>
                     {% endif %}
@@ -78,14 +78,14 @@
                     <td>{{ taxon.last_obs|int }}</td>
                     {% if DISPLAY_EYE_ON_LIST %}
                         <td>
-                    <span class="fas fa-eye" data-toggle="tooltip"
-                          data-original-title={{ _('display.city.infos') }} data-placement="right"> </span>
+                            <span class="fas fa-eye" data-bs-toggle="tooltip"
+                                  title="{{ _('display.city.infos') }}" data-bs-placement="right"> </span>
                         </td>
                     {% endif %}
                     <td>
                         <a href="{{ url_for('main.ficheEspece', cd_nom=taxon.cd_ref) }}">
-                        <span class="fas fa-list" data-toggle="tooltip" data-original-title={{ _('check.species.sheet') }}
-                              data-placement="left"> </span>
+                            <span class="fas fa-list" data-bs-toggle="tooltip" title="{{ _('check.species.sheet') }}"
+                                  data-bs-placement="left"> </span>
                         </a>
                     </td>
                 </tr>

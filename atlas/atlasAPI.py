@@ -114,11 +114,8 @@ if not current_app.config["AFFICHAGE_MAILLE"]:
 
     @api.route("/observations/<id_area>/<int(signed=True):cd_ref>", methods=["GET"])
     def getObservationsAreaTaxonAPI(id_area, cd_ref):
-        connection = db.engine.connect()
-        observations = vmObservationsRepository.getObservationTaxonArea(
-            connection, id_area, cd_ref
-        )
-        connection.close()
+        session = db.session
+        observations = vmObservationsRepository.getObservationTaxonArea(session, id_area, cd_ref)
         return jsonify(observations)
 
 
@@ -134,80 +131,69 @@ def getObservationsAreaTaxonMailleAPI(id_area, cd_ref):
 
 @api.route("/area/<int(signed=True):id_area>", methods=["GET"])
 def get_observations_area_api(id_area):
-    connection = db.engine.connect()
+    session = db.session
 
     limit = request.args.get("limit")
     if current_app.config["AFFICHAGE_MAILLE"]:
         observations = vmObservationsMaillesRepository.getObservationsByArea(
-            connection, str(id_area)
+            session, str(id_area)
         )
     else:
-        observations = vmObservationsRepository.getObservationsByArea(
-            connection, id_area, limit
-        )
+        observations = vmObservationsRepository.getObservationsByArea(session, id_area, limit)
 
-    connection.close()
     return jsonify(observations)
 
 
 @api.route("/photoGroup/<group>", methods=["GET"])
 def getPhotosGroup(group):
-    connection = db.engine.connect()
+    session = db.session
     photos = vmMedias.getPhotosGalleryByGroup(
-        connection,
+        session,
         current_app.config["ATTR_MAIN_PHOTO"],
         current_app.config["ATTR_OTHER_PHOTO"],
         group,
     )
-    connection.close()
     return jsonify(photos)
 
 
 @api.route("/photosGallery", methods=["GET"])
 def getPhotosGallery():
-    connection = db.engine.connect()
+    session = db.session
     photos = vmMedias.getPhotosGallery(
-        connection, current_app.config["ATTR_MAIN_PHOTO"], current_app.config["ATTR_OTHER_PHOTO"]
+        session, current_app.config["ATTR_MAIN_PHOTO"], current_app.config["ATTR_OTHER_PHOTO"]
     )
-    connection.close()
     return jsonify(photos)
 
 
 @api.route("/main_stat", methods=["GET"])
 @cache.cached()
 def main_stat():
-    connection = db.engine.connect()
-    return vmObservationsRepository.statIndex(connection)
+    session = db.session
+    return vmObservationsRepository.statIndex(session)
 
 
 @api.route("/rank_stat", methods=["GET"])
 @cache.cached()
 def rank_stat():
-    connection = db.engine.connect()
-    return jsonify(
-        vmObservationsRepository.genericStat(connection, current_app.config["RANG_STAT"])
-    )
+    session = db.session
+    return jsonify(vmObservationsRepository.genericStat(session, current_app.config["RANG_STAT"]))
 
 
 @api.route("/area_chart_values/<id_area>", methods=["GET"])
 def get_area_chart_valuesAPI(id_area):
     session = db.session
-    connection = db.engine.connect()
-    species_by_taxonomic_group = vmAreasRepository.get_species_by_taxonomic_group(
-        connection, id_area
-    )
+    species_by_taxonomic_group = vmAreasRepository.get_species_by_taxonomic_group(session, id_area)
     observations_by_taxonomic_group = vmAreasRepository.get_nb_observations_taxonomic_group(
-        connection, id_area
+        session, id_area
     )
     nb_species_by_organism = vmOrganismsRepository.get_species_by_organism_on_area(
-        connection, id_area
+        session, id_area
     )
     observations_by_organism = vmOrganismsRepository.get_nb_observations_by_organism_on_area(
-        connection, id_area
+        session, id_area
     )
 
     session.close()
-    connection.close()
     return jsonify(
         {
             "species_by_taxonomic_group": species_by_taxonomic_group,

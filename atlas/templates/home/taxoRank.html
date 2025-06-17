@@ -7,7 +7,7 @@
                     <h3 class="card-title title-spaced">
                         <span class="fa fa-eye icon-color-title"></span> &nbsp;{{ _('species.to.discover') }}
                         <div id="rankstat-spinner" class="spinner-border" role="status">
-                            <span class="sr-only">Loading...</span>
+                            <span class="visually-hidden">Loading...</span>
                         </div>
                     </h3>
                 </div>
@@ -16,58 +16,61 @@
 
                 {% for i in range(customStatMedias | length) %}
 {#                    <div class="col-12 col-lg-4 stat-medias-wrapper">#}
-                                        {% if configuration.RANG_STAT | length == 2 %}
-                                            <div class="col-12 col-lg-6 stat-medias-wrapper">
-                                        {% elif configuration.RANG_STAT | length == 3 %}
-                                            <div class="col-12 col-lg-4 stat-medias-wrapper">
-                                        {% elif configuration.RANG_STAT | length == 4 %}
-                                            <div class="col-12 col-lg-3 stat-medias-wrapper">
-                                        {% endif %}
-                        <div class="statMedias">
-                            <div class="">
-                                <h4 class="title-spaced title-bar">{{ configuration.RANG_STAT_FR[i] }} </h4>
-                                <span class="higlight" id="rankNbObs{{i}}">
-                                </span> observations
-                                <span class="higlight" id="rankNbTax{{i}}">
-                                </span> {{ _('species') }}
-                            </div>
-                            <div class="row">
-                                {% for j in range(2) %}
-                                    {% if loop.index <= customStatMedias[i] | length %}
-                                        <div class="col-12 col-md-6 col-stat-medias">
-                                            <div class="thumbnail-stat-medias">
-                                                <div class="zoom-wrapper">
-                                                    <a href="{{ url_for('main.ficheEspece', cd_nom=customStatMedias[i][j].cd_ref) }}">
-                                                        {% if configuration.REDIMENSIONNEMENT_IMAGE %}
-                                                            <div class="img-custom-medias cover"
-                                                                 style="background-image: url({{ configuration.TAXHUB_URL }}/api/tmedias/thumbnail/{{ customStatMedias[i][j].id_media }}?h=500&w=500)"></div>
-                                                        {% else %}
-                                                            <div class="img-custom-medias cover"
-                                                                 style="background-image: url({{ customStatMedias[i][j].path }})"></div>
-                                                        {% endif %}
-                                                        <div class="stat-medias-hovereffet">
-                                                            <img src="{{ url_for('static', filename='images/eye.png') }}">
-                                                            <h2 class="overlay-obs">{{ customStatMedias[i][j].nb_obs | pretty }}
-                                                                observations</h2>
+                    {% if configuration.RANG_STAT | length == 2 %}
+                        <div class="col-12 col-lg-6 stat-medias-wrapper">
+                    {% elif configuration.RANG_STAT | length == 3 %}
+                        <div class="col-12 col-lg-4 stat-medias-wrapper">
+                    {% elif configuration.RANG_STAT | length == 4 %}
+                        <div class="col-12 col-lg-3 stat-medias-wrapper">
+                    {% endif %}
+                    <div class="statMedias">
+                        <div class="">
+                            <h4 class="title-spaced title-bar">{{ configuration.RANG_STAT_FR[i] }} </h4>
+                            <span class="higlight" id="rankNbObs{{i}}">
+                            </span> observations
+                            <span class="higlight" id="rankNbTax{{i}}">
+                            </span> {{ _('species') }}
+                        </div>
+                        <div class="row">
+                            {% for j in range(2) %}
+                                {% if loop.index <= customStatMedias[i] | length %}
+                                    <div class="col-12 col-md-6 col-stat-medias">
+                                        <div class="thumbnail-stat-medias">
+                                            <div class="zoom-wrapper">
+                                                <a href="{{ url_for('main.ficheEspece', cd_nom=customStatMedias[i][j].cd_ref) }}">
+                                                    {% if configuration.REDIMENSIONNEMENT_IMAGE %}
+                                                        <div class="img-custom-medias cover"
+                                                             style="background-image: url({{ configuration.TAXHUB_URL }}/api/tmedias/thumbnail/{{ customStatMedias[i][j].id_media }}?h=500&w=500); height:200px;">
                                                         </div>
-                                                    </a>
-                                                </div>
-                                                <div class="thumbnail-caption-medias">
-                                                    <p> {% if customStatMedias[i][j].nom_vern != None %}
-                                                        <b>  {{ customStatMedias[i][j].nom_vern }}</b> {% endif %}
-                                                        <br/><i>{{ customStatMedias[i][j].lb_nom }}</i></p>
-                                                    <p>
-                                                        <a href="{{ url_for('main.ficheEspece', cd_nom=customStatMedias[i][j].cd_ref) }}"
-                                                           class="btn btn-default" role="button">{{ _('species.sheet') }}</a>
-                                                    </p>
-                                                </div>
+                                                    {% else %}
+                                                        <div class="img-custom-medias cover"
+                                                             style="background-image: url({{ customStatMedias[i][j].path }}); height:200px;">
+                                                        </div>
+                                                    {% endif %}
+                                                    <div class="stat-medias-hovereffet d-flex justify-content-center align-items-center text-white fw-bold">
+                                                        <i class="fas fa-eye me-2"></i> {{ customStatMedias[i][j].nb_obs | pretty }} {{ _('observations') }}
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            <div class="thumbnail-caption-medias">
+                                                <p>
+                                                    {% if customStatMedias[i][j].nom_vern != None %}
+                                                        <b>{{ customStatMedias[i][j].nom_vern }}</b>
+                                                    {% endif %}
+                                                    <br/><i>{{ customStatMedias[i][j].lb_nom }}</i>
+                                                </p>
+                                                <p>
+                                                    <a href="{{ url_for('main.ficheEspece', cd_nom=customStatMedias[i][j].cd_ref) }}"
+                                                       class="btn btn-secondary" role="button">{{ _('species.sheet') }}</a>
+                                                </p>
                                             </div>
                                         </div>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     </div>
+                </div>
                 {% endfor %}
             </div>
         </div>
