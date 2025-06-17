@@ -131,17 +131,16 @@ def getObservationsAreaTaxonMailleAPI(id_area, cd_ref):
 
 @api.route("/area/<int(signed=True):id_area>", methods=["GET"])
 def get_observations_area_api(id_area):
-    connection = db.engine.connect()
+    session = db.session
 
     limit = request.args.get("limit")
     if current_app.config["AFFICHAGE_MAILLE"]:
         observations = vmObservationsMaillesRepository.getObservationsByArea(
-            connection, str(id_area)
+            session, str(id_area)
         )
     else:
-        observations = vmObservationsRepository.getObservationsByArea(connection, id_area, limit)
+        observations = vmObservationsRepository.getObservationsByArea(session, id_area, limit)
 
-    connection.close()
     return jsonify(observations)
 
 

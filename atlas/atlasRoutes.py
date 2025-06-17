@@ -383,16 +383,7 @@ def _make_groupes_statuts(statuts):
 def ficheArea(id_area):
     session = db.session
     connection = db.engine.connect()
-
-    if current_app.config["AFFICHAGE_MAILLE"]:
-        observations = vmObservationsMaillesRepository.lastObservationsAreaMaille(
-            connection, current_app.config["NB_LAST_OBS"], str(id_area)
-        )
-    else:
-        observations = vmObservationsRepository.lastObservationsArea(
-            session, current_app.config["NB_LAST_OBS"], id_area
-        )
-
+    
     listTaxons = vmTaxonsRepository.getTaxonsAreas(session, id_area)
     area = vmAreasRepository.getAreaFromIdArea(session, id_area)
     stats_area = vmAreasRepository.getStatsByArea(session, id_area)
