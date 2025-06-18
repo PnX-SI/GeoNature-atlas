@@ -1,31 +1,22 @@
 # coding: utf-8
-from sqlalchemy import Column, Integer, MetaData, Table
-from sqlalchemy.ext.declarative import declarative_base
-
+from sqlalchemy.orm import Mapped, mapped_column
 from atlas.env import db
 
-metadata = MetaData()
-Base = declarative_base()
 
+class VmMois(db.Model):
+    __tablename__ = "vm_mois"
+    __table_args__ = {"schema": "atlas"}
 
-class VmMois(Base):
-    __table__ = Table(
-        "vm_mois",
-        metadata,
-        Column("cd_ref", Integer, primary_key=True, unique=True),
-        Column("_01", Integer),
-        Column("_02", Integer),
-        Column("_03", Integer),
-        Column("_04", Integer),
-        Column("_05", Integer),
-        Column("_06", Integer),
-        Column("_07", Integer),
-        Column("_08", Integer),
-        Column("_09", Integer),
-        Column("_10", Integer),
-        Column("_11", Integer),
-        Column("_12", Integer),
-        schema="atlas",
-        autoload=True,
-        autoload_with=db.engine,
-    )
+    cd_ref: Mapped[int] = mapped_column(primary_key=True)
+    _01: Mapped[int] = mapped_column()
+    _02: Mapped[int] = mapped_column()
+    _03: Mapped[int] = mapped_column()
+    _04: Mapped[int] = mapped_column()
+    _05: Mapped[int] = mapped_column()
+    _06: Mapped[int] = mapped_column()
+    _07: Mapped[int] = mapped_column()
+    _08: Mapped[int] = mapped_column()
+    _09: Mapped[int] = mapped_column()
+    _10: Mapped[int] = mapped_column()
+    _11: Mapped[int] = mapped_column()
+    _12: Mapped[int] = mapped_column()

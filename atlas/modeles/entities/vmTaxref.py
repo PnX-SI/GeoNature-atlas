@@ -1,38 +1,35 @@
 # coding: utf-8
-from sqlalchemy import Column, Integer, MetaData, String, Table
-from sqlalchemy.ext.declarative import declarative_base
-
+from sqlalchemy import String, Text
+from sqlalchemy.orm import Mapped, mapped_column
 from atlas.env import db
 
-metadata = MetaData()
-Base = declarative_base()
 
+class VmTaxref(db.Model):
+    __tablename__ = "vm_taxref"
+    __table_args__ = {"schema": "atlas"}
 
-class VmTaxref(Base):
-    __table__ = Table(
-        "vm_taxref",
-        metadata,
-        Column("cd_nom", Integer, unique=True, primary_key=True),
-        Column("id_statut", String(1)),
-        Column("id_habitat", Integer),
-        Column("id_rang", String(4)),
-        Column("regne", String(20)),
-        Column("phylum", String(50)),
-        Column("classe", String(50)),
-        Column("ordre", String(50)),
-        Column("famille", String(50)),
-        Column("cd_taxsup", Integer),
-        Column("cd_ref", Integer, index=True),
-        Column("lb_nom", String(100), index=True),
-        Column("lb_auteur", String(250)),
-        Column("nom_complet", String(255), index=True),
-        Column("nom_valide", String(255), index=True),
-        Column("nom_vern", String(1000)),
-        Column("nom_vern_eng", String(500)),
-        Column("group1_inpn", String(50)),
-        Column("group2_inpn", String(50)),
-        Column("nom_complet_html", String(500)),
-        schema="atlas",
-        autoload=True,
-        autoload_with=db.engine,
-    )
+    cd_nom: Mapped[int] = mapped_column(primary_key=True)
+    id_statut: Mapped[str] = mapped_column(String(1))
+    id_habitat: Mapped[int] = mapped_column()
+    id_rang: Mapped[str] = mapped_column(String(4))
+    regne: Mapped[str] = mapped_column(String(20))
+    phylum: Mapped[str] = mapped_column(String(50))
+    classe: Mapped[str] = mapped_column(String(50))
+    ordre: Mapped[str] = mapped_column(String(50))
+    famille: Mapped[str] = mapped_column(String(50))
+    sous_famille: Mapped[str] = mapped_column(String(50))
+    tribu: Mapped[str] = mapped_column(String(50))
+    cd_taxsup: Mapped[int] = mapped_column()
+    cd_sup: Mapped[int] = mapped_column()
+    cd_ref: Mapped[int] = mapped_column(index=True)
+    lb_nom: Mapped[str] = mapped_column(String(100), index=True)
+    lb_auteur: Mapped[str] = mapped_column(String(250))
+    nom_complet: Mapped[str] = mapped_column(String(255), index=True)
+    nom_complet_html: Mapped[str] = mapped_column(String(500))
+    nom_valide: Mapped[str] = mapped_column(String(255), index=True)
+    nom_vern: Mapped[str] = mapped_column(String(1000))
+    nom_vern_eng: Mapped[str] = mapped_column(String(500))
+    group1_inpn: Mapped[str] = mapped_column(String(50))
+    group2_inpn: Mapped[str] = mapped_column(String(50))
+    url: Mapped[str] = mapped_column(Text)
+    group3_inpn: Mapped[str] = mapped_column(String(250))

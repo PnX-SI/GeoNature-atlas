@@ -2,17 +2,26 @@
 
 import ast
 
-from sqlalchemy import distinct
-from sqlalchemy.sql import text
+from sqlalchemy import distinct, select
 from sqlalchemy.sql.expression import func
+from sqlalchemy.dialects.postgresql import array
 
 from flask import current_app
 from werkzeug.exceptions import NotFound
-from atlas.modeles.entities.vmAreas import VmAreas, VmBibAreasTypes
+from atlas.modeles.entities.vmAreas import (
+    VmAreas,
+    VmBibAreasTypes,
+    VmCorAreas,
+    VmCorAreaSynthese,
+    VmAreaStatTaxonomyGroup,
+    VmAreaStats,
+)
+from atlas.modeles.entities.vmObservations import VmObservations
+from atlas.env import db
 
 
-def getAllAreas(session):
-    req = session.query(distinct(VmAreas.area_name), VmAreas.id_area).all()
+def getAllAreas():
+    req = db.session.query(distinct(VmAreas.area_name), VmAreas.id_area).all()
     areaList = list()
     for r in req:
         temp = {"label": r[0], "value": r[1]}
@@ -20,11 +29,11 @@ def getAllAreas(session):
     return areaList
 
 
-def searchAreas(session, search, limit=50):
+def searchAreas(search, limit=50):
     like_search = "%" + search.replace(" ", "%") + "%"
 
     query = (
-        session.query(distinct(VmAreas.area_name), VmAreas.id_area, VmBibAreasTypes.type_name)
+        db.session.query(distinct(VmAreas.area_name), VmAreas.id_area, VmBibAreasTypes.type_name)
         .join(VmBibAreasTypes)
         .filter(func.unaccent(VmAreas.area_name).ilike(func.unaccent(like_search)))
         .filter(VmBibAreasTypes.type_code.in_(current_app.config["TYPE_TERRITOIRE_SHEET"]))
@@ -36,17 +45,16 @@ def searchAreas(session, search, limit=50):
     return [{"label": r[0], "value": r[1], "type_name": r[2]} for r in results]
 
 
-def getAreaFromIdArea(connection, id_area):
-    sql = """
-        SELECT area.area_name,
-           area.id_area,
-           area.area_geojson,
-           bib.type_name
-        FROM atlas.vm_l_areas area
-        JOIN atlas.vm_bib_areas_types bib ON bib.id_type = area.id_type
-        WHERE area.id_area = :thisIdArea
-    """
-    area = connection.execute(text(sql), thisIdArea=id_area).fetchone()
+def getAreaFromIdArea(id_area):
+    area = (
+        db.session.query(
+            VmAreas.area_name, VmAreas.id_area, VmAreas.area_geojson, VmBibAreasTypes.type_name
+        )
+        .join(VmBibAreasTypes, VmAreas.id_type == VmBibAreasTypes.id_type)
+        .filter(VmAreas.id_area == id_area)
+        .one_or_none()
+    )
+
     if not area:
         raise NotFound()
     area_dict = {
@@ -57,17 +65,17 @@ def getAreaFromIdArea(connection, id_area):
         "areasParent": [],
     }
 
-    sql_area_parent = """
-    SELECT l.area_name, l.id_area, bib.type_name
-    FROM atlas.vm_l_areas l
-    JOIN (
-        SELECT id_area_group  
-        FROM atlas.vm_cor_areas cor
-        WHERE cor.id_area = :thisIdArea
-    ) parent ON parent.id_area_group = l.id_area
-    JOIN atlas.vm_bib_areas_types bib ON bib.id_type = l.id_type
-    """
-    areas_parent = connection.execute(text(sql_area_parent), thisIdArea=id_area).fetchall()
+    subquery = (
+        db.session.query(VmCorAreas.id_area_group).filter(VmCorAreas.id_area == id_area).subquery()
+    )
+
+    areas_parent = (
+        db.session.query(VmAreas.area_name, VmAreas.id_area, VmBibAreasTypes.type_name)
+        .join(subquery, subquery.c.id_area_group == VmAreas.id_area)
+        .join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type)
+        .all()
+    )
+
     areas_parent_serialized = [
         {
             "areaName": area.area_name,
@@ -80,30 +88,31 @@ def getAreaFromIdArea(connection, id_area):
     return area_dict
 
 
-def getAreasObservationsChilds(connection, cd_ref):
-    sql = "SELECT * FROM atlas.find_all_taxons_childs(:thiscdref) AS taxon_childs(cd_nom)"
-    results = connection.execute(text(sql), thiscdref=cd_ref)
+def getAreasObservationsChilds(cd_ref):
+    results = (db.session.execute(select(func.atlas.find_all_taxons_childs(cd_ref)))).scalars().all()
     taxons = [cd_ref]
     for r in results:
-        taxons.append(r.cd_nom)
+        taxons.append(r)
 
-    sql = """
-        SELECT
-            DISTINCT cas.id_area,
-            vla.area_name,
-            bat.type_code,
-            bat.type_name
-        FROM atlas.vm_cor_area_synthese AS cas
-                JOIN atlas.vm_observations obs ON cas.id_synthese = obs.id_observation
-                JOIN atlas.vm_l_areas vla ON cas.id_area = vla.id_area
-                JOIN atlas.vm_bib_areas_types AS bat ON cas.type_code = bat.type_code
-        WHERE cas.type_code = ANY(:list_id_type) AND obs.cd_ref = ANY(:taxonsList)
-        ORDER BY vla.area_name ASC;
-    """
-
-    results = connection.execute(
-        text(sql), taxonsList=taxons, list_id_type=current_app.config["TYPE_TERRITOIRE_SHEET"]
+    param = {"taxonsList": taxons, "list_id_type": current_app.config["TYPE_TERRITOIRE_SHEET"]}
+    results = (
+        db.session.query(
+            distinct(VmCorAreaSynthese.id_area).label("id_area"),
+            VmAreas.area_name.label("area_name"),
+            VmBibAreasTypes.type_code.label("type_code"),
+            VmBibAreasTypes.type_name.label("type_name"),
+        )
+        .join(VmObservations, VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
+        .join(VmAreas, VmCorAreaSynthese.id_area == VmAreas.id_area)
+        .join(VmBibAreasTypes, VmCorAreaSynthese.type_code == VmBibAreasTypes.type_code)
+        .filter(
+            VmCorAreaSynthese.type_code == func.any(array(param["list_id_type"])),
+            VmObservations.cd_ref == func.any(array(param["taxonsList"])),
+        )
+        .order_by(VmAreas.area_name.asc())
+        .all()
     )
+
     areas = {}
     nb_territory = 0
     nb_area_type = 0
@@ -123,20 +132,20 @@ def getAreasObservationsChilds(connection, cd_ref):
     return areas
 
 
-def get_species_by_taxonomic_group(connection, id_area):
+def get_species_by_taxonomic_group(id_area):
     """
     Get number of species by taxonimy group:
     """
-    sql = """
-    SELECT nb_species,
-        group2_inpn,
-        nb_patrominal,
-        nb_species_in_teritory
-    FROM atlas.vm_area_stats_by_taxonomy_group
-    WHERE id_area = :id_area;
-        """
-
-    result = connection.execute(text(sql), id_area=id_area)
+    result = (
+        db.session.query(
+            VmAreaStatTaxonomyGroup.nb_species.label("nb_species"),
+            VmAreaStatTaxonomyGroup.group2_inpn.label("group2_inpn"),
+            VmAreaStatTaxonomyGroup.nb_patrominal.label("nb_patrominal"),
+            VmAreaStatTaxonomyGroup.nb_species_in_teritory.label("nb_species_in_teritory"),
+        )
+        .filter(VmAreaStatTaxonomyGroup.id_area == id_area)
+        .all()
+    )
     info_chart = dict()
     for r in result:
         info_chart[r.group2_inpn] = {
@@ -147,31 +156,26 @@ def get_species_by_taxonomic_group(connection, id_area):
     return info_chart
 
 
-def get_nb_observations_taxonomic_group(connection, id_area):
+def get_nb_observations_taxonomic_group(id_area):
     """
     Get number of species by taxonimy group:
     """
-    sql = """
-    SELECT nb_obs,
-        group2_inpn
-    FROM atlas.vm_area_stats_by_taxonomy_group
-    WHERE id_area = :id_area;
-        """
-
-    result = connection.execute(text(sql), id_area=id_area)
+    result = (
+        db.session.query(
+            VmAreaStatTaxonomyGroup.nb_obs.label("nb_obs"),
+            VmAreaStatTaxonomyGroup.group2_inpn.label("group2_inpn"),
+        )
+        .filter(VmAreaStatTaxonomyGroup.id_area == id_area)
+        .all()
+    )
     info_chart = dict()
     for r in result:
         info_chart[r.group2_inpn] = r.nb_obs
     return info_chart
 
 
-def getStatsByArea(connection, id_area):
-    sql = """
-    SELECT *
-    FROM atlas.vm_area_stats
-    WHERE id_area = :id_area;
-    """
-    result = connection.execute(text(sql), id_area=id_area).fetchone()
+def getStatsByArea(id_area):
+    result = db.session.query(VmAreaStats).filter(VmAreaStats.id_area == id_area).one_or_none()
     if not result:
         raise NotFound()
-    return result._asdict()
+    return result.as_dict()
