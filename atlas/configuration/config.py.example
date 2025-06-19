@@ -215,6 +215,10 @@ AFFICHAGE_GRAPH_ALTITUDES = True
 # Afficher le graphique de la phénologie. Affichage True/False
 AFFICHAGE_GRAPH_PHENOLOGIE = True
 
+# Affiche ou non la barre "tout le terrtoire" sur les graphiques
+# du nombre d'espèce des fiches zonages
+AFFICHAGE_TOUT_TERRITOIRE_GRAPH = False
+
 # couleurs des diagrames circulaires (provenance des données par organismes et groupes taxonomiques - fiche espèce et zonage) 
 COLOR_PIE_CHARTS = [
     "#981D97",

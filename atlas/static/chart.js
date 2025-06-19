@@ -128,13 +128,16 @@ function stackedBarChartConfig(element, data) {
 }
 
 function formatStackedBarChart(values, element) {
+    console.log("AREA", areaInfos);
     const labels = []
     const nb_species = []
     const nb_patrimonial = []
     const nb_species_in_teritory = []
     Object.keys(values).forEach(key => {
-        labels.push(key)
-        nb_species.push(values[key].nb_species)
+        labels.push(key);
+        if(configuration.DISPLAY_PATRIMONIALITE) {
+            nb_species.push(values[key].nb_species)
+        }
         if(configuration.DISPLAY_PATRIMONIALITE) {
             nb_patrimonial.push(values[key].nb_patrimonial)
         }
@@ -145,7 +148,7 @@ function formatStackedBarChart(values, element) {
 
     if(configuration.DISPLAY_PATRIMONIALITE) {
         datasets.push({
-            label: `Nombre d'espèces ${configuration.PATRIMONIALITE.label_pluriel.toLowerCase() || "remarquables"}`,
+            label: `Nombre d'espèces ${configuration.PATRIMONIALITE.label_pluriel.toLowerCase()}`,
             data: nb_patrimonial,
             backgroundColor: [configuration.COLOR_STACKED_BAR_CHARTS[1]],
             stack: "2",
@@ -154,18 +157,21 @@ function formatStackedBarChart(values, element) {
 
     datasets.push(
             {
-                label: "Nombre d'espèces sur ce territoire",
+                label: `Nombre d'espèces (${areaInfos.areaName})`,
                 data: nb_species,
                 backgroundColor: [configuration.COLOR_STACKED_BAR_CHARTS[0]],
                 stack: "0",
             },
-            {
-                label: "Nombre d'espèces sur tout le territoire",
-                data: nb_species_in_teritory,
-                backgroundColor: [configuration.COLOR_STACKED_BAR_CHARTS[2]],
-                stack: "1",
-            }
+
     )
+    if(configuration.AFFICHAGE_TOUT_TERRITOIRE_GRAPH) {
+        datasets.push({
+            label: "Nombre d'espèces sur tout le territoire",
+            data: nb_species_in_teritory,
+            backgroundColor: [configuration.COLOR_STACKED_BAR_CHARTS[2]],
+            stack: "1",
+        })
+    }
 
     const data = {
         labels: labels,
