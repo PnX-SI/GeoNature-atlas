@@ -651,8 +651,6 @@ function createPopUp(feature, layer) {
 
 function onEachFeatureMailleLastObs(feature, layer) {
     createPopUp(feature, layer);
-
-
     addInFeatureGroup(feature, layer);
 
     zoomMaille(layer);
@@ -810,7 +808,6 @@ function generateGeoJsonMailleLastObs(observations, isRefresh=false) {
 }
 
 function displayMailleLayer(observationsMaille) {
-    // myGeoJson = observationsMaille;
     // Get all different type code
     Object.values(observationsMaille.features).forEach(elem => {
             if (!current_type_code.includes(elem.properties.type_code)) {

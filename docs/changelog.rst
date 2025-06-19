@@ -11,7 +11,7 @@ CHANGELOG
 - Ajout de la librairie Orijeme pour recueillir le consentement de l'utilisateur sur l'utilisation des cookies
 - Suppression du support des installations sans TaxHub
 - Ajout du floutage dans l'application (#571 @juggler31)
-- Ajout d'une carte territoire dans la page d'acceuil ainsi que la liste de toutes les espèces sur celui-ci.
+- Ajout d'une carte territoire dans la page d'acceuil ainsi que la liste de toutes les espèces sur celui-ci. Au dela de 4000 espèces sur votre atlas, il est déconseillé d'activer cette fonctionnalité
 - Changement de la notion de "commune" en notion de "territoire" (#545 @juggler31)
 - Ajout d'un graphique de provenance des données (#538)
 - Ajout de graphiques sur la fiche territoire (le paramètre `AFFICHAGE_TOUT_TERRITOIRE_GRAPH` permet d'afficher ou non la barre du nombre d'espèce sur tout le territoire de l'atlas sur chaque graphique)

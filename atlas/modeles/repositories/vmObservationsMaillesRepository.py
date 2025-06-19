@@ -126,34 +126,30 @@ def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
 
 def territoryObservationsMailles(connection):
     sql = """
-SELECT
-    obs.id_maille,
-    obs.nbr AS obs_nbr,
-    obs.type_code,
-    area.area_geojson,
-    MAX(extract(YEAR FROM o.dateobs)) AS last_observation
-FROM atlas.vm_observations_mailles obs
-        JOIN atlas.vm_l_areas area ON area.id_area=obs.id_maille
-        JOIN atlas.vm_observations AS o ON o.id_observation = ANY(obs.id_observations)
-GROUP BY obs.id_maille, obs.nbr, obs.type_code, area.area_geojson
+    SELECT
+        json_build_object(
+                'type', 'FeatureCollection',
+                'features', json_agg(ST_AsGeoJSON(features.*)::json)
+        ) AS observations_features
+        FROM (
+    SELECT
+        COUNT(o.id_observation) AS nb_observations,
+        COUNT(DISTINCT o.cd_ref) AS nb_cd_ref,
+        json_agg(DISTINCT jsonb_build_object(
+                'name', (COALESCE(t.nom_vern || ' | ', '') || t.lb_nom),
+                'cdRef', t.cd_ref)) AS taxons,
+        obs.type_code,
+        obs.id_maille,
+        vla.the_geom
+    FROM atlas.vm_observations o
+            JOIN atlas.vm_observations_mailles obs ON o.id_observation = ANY(obs.id_observations)
+            JOIN atlas.vm_l_areas vla ON vla.id_area=obs.id_maille
+            JOIN atlas.vm_taxons AS t ON t.cd_ref = o.cd_ref
+    GROUP BY obs.type_code, obs.id_maille, vla.the_geom) AS features
   """
-
-    observations = connection.execute(text(sql))
-    return FeatureCollection(
-        [
-            Feature(
-                id=o.id_maille,
-                geometry=json.loads(o.area_geojson),
-                properties={
-                    "id_maille": o.id_maille,
-                    "type_code": o.type_code,
-                    "nb_observations": int(o.obs_nbr),
-                    "last_observation": o.last_observation,
-                },
-            )
-            for o in observations
-        ]
-    )
+    
+    observations = connection.execute(text(sql)).fetchone()
+    return dict(observations[0])
 
 
 # last observation for index.html

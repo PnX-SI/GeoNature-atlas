@@ -100,7 +100,8 @@ function displayObsTaxon(id_area, cd_ref) {
             map.removeLayer(currentLayer);
             displayMarkerLayerPointArea(observations);
         }
-    });
+    }
+    })
 }
 
 function displayObs(id_area) {
