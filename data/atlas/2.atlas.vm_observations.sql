@@ -35,19 +35,14 @@ SELECT
     (s.altitude_min + s.altitude_max) / 2 AS altitude_retenue,
     s.observers as observateurs	,
     s.id_dataset,
-    --c.type_code,
-    --com.insee,
-    null as insee,
     tx.cd_ref
 FROM synthese.synthese s
 JOIN centroid_synthese c ON c.id_synthese = s.id_synthese
 JOIN atlas.vm_taxref tx ON tx.cd_nom = s.cd_nom
---JOIN atlas.l_communes com ON st_intersects(s.the_geom_4326, com.the_geom) AND NOT st_touches(s.the_geom_4326, com.the_geom);
 ;
 
 CREATE UNIQUE INDEX ON atlas.vm_observations (id_observation);
 CREATE INDEX ON atlas.vm_observations (cd_ref);
-CREATE INDEX ON atlas.vm_observations (insee);
 CREATE INDEX ON atlas.vm_observations (altitude_retenue);
 CREATE INDEX ON atlas.vm_observations (dateobs);
 CREATE INDEX index_gist_vm_observations_the_geom_point ON atlas.vm_observations USING gist (the_geom_point);
