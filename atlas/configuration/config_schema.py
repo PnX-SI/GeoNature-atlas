@@ -283,11 +283,17 @@ class AtlasConfig(Schema):
     TYPE_TERRITOIRE_SHEET = fields.List(fields.String(), default=[])
 
     @validates_schema
-    def validate_url_taxhub(self, data, **kwargs):
+    def validate_config(self, data, **kwargs):
         """
         TAXHHUB_URL doit être rempli si REDIMENSIONNEMENT_IMAGE = True
         """
         if data["REDIMENSIONNEMENT_IMAGE"] and data["TAXHUB_URL"] is None:
             raise ValidationError(
                 {"Le champ TAXHUB_URL doit être rempli si REDIMENSIONNEMENT_IMAGE = True"}
+            )
+        
+        #AFFICHAGE_DERNIERES_OBS et AFFICHAGE_TERRITOIRE_OBS ne peuvent pas être True en meme temps
+        if data["AFFICHAGE_DERNIERES_OBS"] and data["AFFICHAGE_TERRITOIRE_OBS"]:
+            raise ValidationError(
+                "Les paramètre AFFICHAGE_DERNIERES_OBS et AFFICHAGE_TERRITOIRE_OBS ne peuvent pas être tous les deux à True"
             )

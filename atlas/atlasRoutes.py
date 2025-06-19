@@ -179,39 +179,33 @@ def index():
     session = db.session
     connection = db.engine.connect()
 
-    if current_app.config["AFFICHAGE_DERNIERES_OBS"]:
+    #si AFFICHAGE_TERRITOIRE_OBS on charge les données en AJAX
+    # si AFFICHAGE_DERNIERES_OBS = False, on ne charge pas les obs
+    if current_app.config["AFFICHAGE_TERRITOIRE_OBS"] or not current_app.config["AFFICHAGE_DERNIERES_OBS"]:
+        observations = []
+    elif current_app.config["AFFICHAGE_DERNIERES_OBS"]:
         if current_app.config["AFFICHAGE_MAILLE"]:
-            current_app.logger.debug("start AFFICHAGE_MAILLE")
             observations = vmObservationsMaillesRepository.lastObservationsMailles(
                 connection,
                 str(current_app.config["NB_DAY_LAST_OBS"]) + " day",
                 current_app.config["ATTR_MAIN_PHOTO"],
             )
-            current_app.logger.debug("end AFFICHAGE_MAILLE")
         else:
-            current_app.logger.debug("start AFFICHAGE_PRECIS")
             observations = vmObservationsRepository.lastObservations(
                 connection,
                 str(current_app.config["NB_DAY_LAST_OBS"]) + " day",
                 current_app.config["ATTR_MAIN_PHOTO"],
             )
-            current_app.logger.debug("end AFFICHAGE_PRECIS")
-    else:
-        observations = []
 
     if current_app.config["AFFICHAGE_EN_CE_MOMENT"]:
-        current_app.logger.debug("start mostViewTaxon")
         mostViewTaxon = vmTaxonsMostView.mostViewTaxon(connection)
-        current_app.logger.debug("end mostViewTaxon")
     else:
         mostViewTaxon = []
 
     if current_app.config["AFFICHAGE_RANG_STAT"]:
-        current_app.logger.debug("start customStatMedia")
         customStatMedias = vmObservationsRepository.genericStatMedias(
             connection, current_app.config["RANG_STAT"]
         )
-        current_app.logger.debug("end customStatMedia")
     else:
         customStatMedias = []
 
