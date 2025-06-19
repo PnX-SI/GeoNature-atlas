@@ -2,6 +2,7 @@ IMPORT FOREIGN SCHEMA gn_synthese
     LIMIT TO (gn_synthese.cor_area_synthese)
 FROM SERVER geonaturedbserver INTO synthese;
 
+
 CREATE MATERIALIZED VIEW atlas.vm_cor_area_synthese
 TABLESPACE pg_default
 AS
@@ -40,6 +41,9 @@ WHERE (t.type_code IN (:'sensibility0', :'sensibility1', :'sensibility2', :'sens
   AND (NOT sensi.cd_nomenclature = '4'::TEXT OR sensi.cd_nomenclature IS NULL )
 
 WITH DATA;
+
+
+
 CREATE UNIQUE INDEX i_vm_cor_area_synthese ON atlas.vm_cor_area_synthese USING btree (id_synthese, id_area );
 
 REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_cor_area_synthese;

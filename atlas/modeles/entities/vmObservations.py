@@ -21,7 +21,7 @@ class VmObservations(db.Model):
     geojson_point: Mapped[str] = mapped_column(Text)
     cd_sensitivity: Mapped[str] = mapped_column(String(255))
     id_dataset: Mapped[int] = mapped_column()
-    insee: Mapped[str] = mapped_column(Text)
+    # insee: Mapped[str] = mapped_column(Text)
 
     def as_dict(self):
         return {

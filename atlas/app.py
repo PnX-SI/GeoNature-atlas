@@ -11,7 +11,7 @@ from werkzeug.wrappers import Response
 
 from atlas.configuration.config_parser import valid_config_from_dict
 from atlas.configuration.config_schema import AtlasConfig, SecretSchemaConf
-from atlas.env import atlas_static_folder, atlas_template_folder, atlas_config_file_path, db, cache
+from atlas.env import atlas_static_folder, atlas_template_folder, atlas_config_file_path, db, cache, ma
 from atlas.utils import get_tranlated_labels
 
 compress = Compress()
@@ -37,6 +37,7 @@ def create_app():
     cache.init_app(app)
     babel = Babel(app)
     compress.init_app(app)
+    ma.init_app(app)
 
     @babel.localeselector
     def get_locale():

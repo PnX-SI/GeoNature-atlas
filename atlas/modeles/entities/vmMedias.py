@@ -1,5 +1,5 @@
 # coding: utf-8
-from sqlalchemy import String, Text
+from sqlalchemy import String, Text, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 from atlas.env import db
 import datetime
@@ -10,7 +10,7 @@ class VmMedias(db.Model):
     __table_args__ = {"schema": "atlas"}
 
     id_media: Mapped[int] = mapped_column(primary_key=True)
-    cd_ref: Mapped[int] = mapped_column()
+    cd_ref: Mapped[int] = mapped_column(ForeignKey("atlas.vm_medias.cd_ref"))
     titre: Mapped[str] = mapped_column(String(255))
     url: Mapped[str] = mapped_column(String(255))
     chemin: Mapped[str] = mapped_column(String(255))

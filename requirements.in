@@ -10,3 +10,5 @@ gunicorn
 marshmallow
 psycopg2
 SQLAlchemy
+flask-marshmallow
+marshmallow-sqlalchemy

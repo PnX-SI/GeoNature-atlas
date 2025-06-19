@@ -3,6 +3,7 @@ from sqlalchemy import String, Float, Text, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.orm import relationship
 from atlas.env import db
+from atlas.modeles.entities.vmMedias import VmMedias
 
 from typing import List
 
@@ -35,6 +36,18 @@ class VmTaxons(db.Model):
     nb_obs: Mapped[int] = mapped_column()
     attributs: Mapped[List["VmCorTaxonAttribut"]] = relationship(
         "VmCorTaxonAttribut", back_populates="taxon"
+    )
+    # TODO default exclude this
+    medias: Mapped[List[VmMedias]] = relationship(
+        VmMedias,
+        primaryjoin=cd_ref == VmMedias.cd_ref,
+        foreign_keys=[cd_ref],
+        uselist=True
+    )
+    main_picture: Mapped[List[VmMedias]] = relationship(
+        VmMedias,
+        primaryjoin=(cd_ref == VmMedias.cd_ref and VmMedias.id_type == 2),
+        foreign_keys=[cd_ref],
     )
 
 

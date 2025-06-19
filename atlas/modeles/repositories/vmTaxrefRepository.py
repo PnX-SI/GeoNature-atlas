@@ -7,6 +7,25 @@ from atlas.modeles.entities.tBibTaxrefRang import TBibTaxrefRang
 from atlas.modeles.entities.vmTaxref import VmTaxref
 from atlas.modeles.entities.vmTaxons import VmTaxons
 from atlas.env import db
+from atlas.schemas import VmTaxonSchema
+
+
+def search(cd_ref):
+    childs_ids = select(func.atlas.find_all_taxons_childs(cd_ref))
+    req = select(
+        VmTaxons,
+            func.min(VmTaxons.yearmin).label("yearmin"),
+            func.max(VmTaxons.yearmax).label("yearmax"),
+            func.sum(VmTaxons.nb_obs).label("nb_obs"),
+        ).filter(or_(VmTaxons.cd_ref.in_(childs_ids), VmTaxons.cd_ref == cd_ref)).group_by(VmTaxons)
+    
+    
+    res = db.session.execute(req).mappings().one()
+    print(res["VmTaxons"].medias)
+    taxonSchema = VmTaxonSchema()
+    taxon = taxonSchema.dump(res["VmTaxons"])
+    # taxon = {**taxon, **res}
+    return taxon
 
 
 def searchEspece(cd_ref):
@@ -38,6 +57,7 @@ def searchEspece(cd_ref):
         .outerjoin(VmTaxons, VmTaxons.cd_ref == VmTaxref.cd_ref)
         .filter(VmTaxref.cd_nom == cd_ref)
     )
+    print(req)
     results = db.session.execute(req).mappings().all()
     taxonSearch = dict()
     for r in results:

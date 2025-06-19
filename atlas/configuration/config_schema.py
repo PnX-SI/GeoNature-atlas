@@ -280,7 +280,7 @@ class AtlasConfig(Schema):
     # Defaults to False to have the best performance in production
     TEMPLATES_AUTO_RELOAD = fields.Boolean(load_default=False)
 
-    TYPE_TERRITOIRE_SHEET = fields.List(fields.String(), default=[])
+    TYPE_TERRITOIRE_SHEET = fields.List(fields.String(), load_default=[])
 
     @validates_schema
     def validate_config(self, data, **kwargs):

@@ -2,6 +2,9 @@ import os
 from pathlib import Path
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
+from flask_marshmallow import Marshmallow
+
+
 
 from flask_caching import Cache
 from flask_babel import Babel
@@ -14,6 +17,8 @@ babel = Babel()
 cache = Cache(config={"CACHE_TYPE": "SimpleCache"})
 
 db = SQLAlchemy(model_class=Base)
+ma = Marshmallow()
+
 
 default_atlas_config_file_path = Path(__file__).parent / "configuration/config.py"
 default_atlas_static_folder = Path(__file__).parent / "static"

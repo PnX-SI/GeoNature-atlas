@@ -17,6 +17,23 @@ from atlas.env import cache, db
 api = Blueprint("api", __name__)
 
 
+@api.route("/test", methods=["GET"])
+def test():
+    from atlas.modeles.entities.vmMedias import VmMedias
+    from atlas.modeles.entities.vmTaxons import VmTaxons
+    from atlas.modeles.repositories.vmTaxrefRepository import search
+
+    test = search(60612)
+    return test
+    print(test)
+    print(test["yearmin"])
+    s = db.session.get(VmTaxons, 60612)
+    print(s)
+
+    print(s.yearmin)
+    print(s.medias)
+    return "la"
+
 @api.route("/searchTaxon", methods=["GET"])
 def searchTaxonAPI():
     search = request.args.get("search", "")
