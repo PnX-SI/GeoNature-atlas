@@ -1,30 +1,23 @@
 # -*- coding:utf-8 -*-
 
-from sqlalchemy import Column, Integer, MetaData, String, Table, Float
-from sqlalchemy.ext.declarative import declarative_base
-
+from sqlalchemy import String, ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column
 from atlas.env import db
 
-Base = declarative_base()
-metadata = MetaData()
 
+class VmOrganisms(db.Model):
+    __tablename__ = "vm_cor_taxon_organism"
+    __table_args__ = {"schema": "atlas"}
 
-class VmOrganisms(Base):
-    __table__ = Table(
-        "vm_cor_taxon_organism",
-        metadata,
-        Column("nb_observations", Integer),
-        Column("id_organism", Integer, primary_key=True, unique=True),
-        Column("nom_organism", String(500)),
-        Column("adresse_organism", String(128)),
-        Column("cp_organism", String(5)),
-        Column("ville_organism", String(100)),
-        Column("tel_organism", String(14)),
-        Column("email_organism", String(100)),
-        Column("url_organism", String(255)),
-        Column("url_logo", String(255)),
-        Column("cd_ref", Integer),
-        schema="atlas",
-        autoload=True,
-        autoload_with=db.engine,
-    )
+    cd_ref: Mapped[int] = mapped_column(ForeignKey("atlas.vm_taxons.cd_ref"), primary_key=True)
+    id_organism: Mapped[int] = mapped_column(primary_key=True, unique=True)
+
+    nb_observations: Mapped[int] = mapped_column()
+    nom_organism: Mapped[str] = mapped_column(String(500))
+    adresse_organism: Mapped[str] = mapped_column(String(128))
+    cp_organism: Mapped[str] = mapped_column(String(5))
+    ville_organism: Mapped[str] = mapped_column(String(100))
+    tel_organism: Mapped[str] = mapped_column(String(14))
+    email_organism: Mapped[str] = mapped_column(String(100))
+    url_organism: Mapped[str] = mapped_column(String(255))
+    url_logo: Mapped[str] = mapped_column(String(255))

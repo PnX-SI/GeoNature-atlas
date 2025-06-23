@@ -2,9 +2,12 @@
 
 
 from flask import current_app
-from sqlalchemy.sql import text
+from sqlalchemy.sql import func, select, or_
 
+from atlas.modeles.entities.vmMedias import VmMedias
+from atlas.modeles.entities.vmTaxons import VmTaxons
 from atlas.modeles import utils
+from atlas.env import db
 
 
 def _format_media(r):
@@ -32,38 +35,24 @@ def deleteNone(r):
         return r
 
 
-def getFirstPhoto(connection, cd_ref, id):
-    sql = """
-        SELECT *
-        FROM atlas.vm_medias
-        WHERE (
-                cd_ref IN (
-                    SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
-                )
-                OR cd_ref = :thiscdref
-            )
-                AND id_type=:thisid
-        LIMIT 1
-    """
-    req = connection.execute(text(sql), thiscdref=cd_ref, thisid=id)
+def getFirstPhoto(cd_ref, id):
+    childs_ids = db.select(func.atlas.find_all_taxons_childs(cd_ref))
+    req = (
+        db.session.query(VmMedias)
+        .filter(
+            or_(VmMedias.cd_ref.in_(childs_ids), VmMedias.cd_ref == cd_ref), VmMedias.id_type == id
+        )
+        .limit(1)
+    )
     for r in req:
         return _format_media(r)
 
 
-def getPhotoCarousel(connection, cd_ref, id):
-    sql = """
-        SELECT *
-        FROM atlas.vm_medias
-        WHERE (
-                cd_ref IN (
-                    SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
-                )
-                OR cd_ref = :thiscdref
-            )
-            AND id_type= :thisid
-    """
-    req = connection.execute(text(sql), thiscdref=cd_ref, thisid=id)
-
+def getPhotoCarousel(cd_ref, id):
+    childs_ids = select(func.atlas.find_all_taxons_childs(cd_ref).label("cd_ref"))
+    req = db.session.query(VmMedias).filter(
+        or_(VmMedias.cd_ref.in_(childs_ids), VmMedias.cd_ref == cd_ref), VmMedias.id_type == id
+    )
     return [_format_media(r) for r in req]
 
 
@@ -118,15 +107,11 @@ def switchMedia(row):
     return media_template[row.id_type].format(path=goodPath)
 
 
-def getVideo_and_audio(connection, cd_ref, id5, id6, id7, id8, id9):
-    sql = """
-        SELECT *
-        FROM atlas.vm_medias
-        WHERE id_type IN (:id5, :id6, :id7, :id8, :id9) AND cd_ref = :thiscdref
-        ORDER BY date_media DESC
-    """
-    req = connection.execute(
-        text(sql), thiscdref=cd_ref, id5=id5, id6=id6, id7=id7, id8=id8, id9=id9
+def getVideo_and_audio(cd_ref, id5, id6, id7, id8, id9):
+    req = (
+        db.session.query(VmMedias)
+        .filter(VmMedias.id_type.in_((id5, id6, id7, id8, id9)), VmMedias.cd_ref == cd_ref)
+        .order_by(VmMedias.date_media.desc())
     )
     tabMedias = {"audio": list(), "video": list()}
     for r in req:
@@ -149,70 +134,65 @@ def getVideo_and_audio(connection, cd_ref, id5, id6, id7, id8, id9):
     return tabMedias
 
 
-def getLinks_and_articles(connection, cd_ref, id3, id4):
-    sql = """
-        SELECT *
-        FROM atlas.vm_medias
-        WHERE id_type IN (:id3, :id4) AND cd_ref = :thiscdref
-        ORDER BY date_media DESC
-    """
-    req = connection.execute(text(sql), thiscdref=cd_ref, id3=id3, id4=id4)
+def getLinks_and_articles(cd_ref, id3, id4):
+    req = (
+        db.session.query(VmMedias)
+        .filter(VmMedias.id_type.in_((id3, id4)), VmMedias.cd_ref == cd_ref)
+        .order_by(VmMedias.date_media.desc())
+    )
     return [_format_media(r) for r in req]
 
 
-def get_liens_importants(connection, cd_ref, media_ids):
-    sql = """
-        SELECT *
-        FROM atlas.vm_medias
-        WHERE id_type = ANY(:media_ids) AND cd_ref = :thiscdref
-        ORDER BY date_media DESC
-    """
-    req = connection.execute(text(sql), thiscdref=cd_ref, media_ids=media_ids)
+def get_liens_importants(cd_ref, media_ids):
+    req = (
+        db.session.query(VmMedias)
+        .filter(VmMedias.id_type == func.any(media_ids), VmMedias.cd_ref == cd_ref)
+        .order_by(VmMedias.date_media.desc())
+    )
     return [_format_media(r) for r in req]
 
 
-def getPhotosGallery(connection, id1, id2):
-    sql = """
-        SELECT m.*, t.nom_vern, t.lb_nom, t.nb_obs
-        FROM atlas.vm_medias m
-        JOIN atlas.vm_taxons t ON t.cd_ref = m.cd_ref
-        WHERE m.id_type IN (:thisID1, :thisID2)
-        ORDER BY RANDOM()
-    """
-    req = connection.execute(text(sql), thisID1=id1, thisID2=id2)
+def getPhotosGallery(id1, id2):
+    req = (
+        db.session.query(VmMedias, VmTaxons.nom_vern, VmTaxons.lb_nom, VmTaxons.nb_obs)
+        .join(VmTaxons, VmTaxons.cd_ref == VmMedias.cd_ref)
+        .filter(VmMedias.id_type.in_((id1, id2)))
+        .order_by(func.random())
+    )
+
     tab_photos = []
-    for r in req:
-        if r.nom_vern:
-            nom_verna = r.nom_vern.split(",")
-            taxonName = nom_verna[0] + " | <i>" + r.lb_nom + "</i>"
+    for vm_media, nom_vern, lb_nom, nb_obs in req:
+        if nom_vern:
+            nom_verna = nom_vern.split(",")
+            taxonName = nom_verna[0] + " | <i>" + lb_nom + "</i>"
         else:
-            taxonName = "<i>" + r.lb_nom + "</i>"
+            taxonName = "<i>" + lb_nom + "</i>"
 
-        photo = _format_media(r)
+        photo = _format_media(vm_media)  # vm_media est un objet VmMedias
         photo["name"] = taxonName
-        photo["nb_obs"] = r.nb_obs
+        photo["nb_obs"] = nb_obs
         tab_photos.append(photo)
     return tab_photos
 
 
-def getPhotosGalleryByGroup(connection, id1, id2, INPNgroup):
-    sql = """
-        SELECT m.*, t.nom_vern, t.lb_nom, t.nb_obs
-        FROM atlas.vm_medias m
-        JOIN atlas.vm_taxons t ON t.cd_ref = m.cd_ref
-        WHERE m.id_type IN  (:thisID1, :thisID2) AND t.group2_inpn = :thisGroup
-        ORDER BY RANDOM()"""
-    req = connection.execute(text(sql), thisID1=id1, thisID2=id2, thisGroup=INPNgroup)
-    tab_photos = []
-    for r in req:
-        photo = _format_media(r)
-        if r.nom_vern:
-            nom_verna = r.nom_vern.split(",")
-            taxonName = nom_verna[0] + " | <i>" + r.lb_nom + "</i>"
-        else:
-            taxonName = "<i>" + r.lb_nom + "</i>"
+def getPhotosGalleryByGroup(id1, id2, INPNgroup):
+    req = (
+        db.session.query(VmMedias, VmTaxons.nom_vern, VmTaxons.lb_nom, VmTaxons.nb_obs)
+        .join(VmTaxons, VmTaxons.cd_ref == VmMedias.cd_ref)
+        .filter(VmMedias.id_type.in_((id1, id2)), VmTaxons.group2_inpn == INPNgroup)
+        .order_by(func.random())
+    )
 
+    tab_photos = []
+    for vm_media, nom_vern, lb_nom, nb_obs in req:
+        if nom_vern:
+            nom_verna = nom_vern.split(",")
+            taxonName = nom_verna[0] + " | <i>" + lb_nom + "</i>"
+        else:
+            taxonName = "<i>" + lb_nom + "</i>"
+
+        photo = _format_media(vm_media)  # vm_media est un objet VmMedias
         photo["name"] = taxonName
-        photo["nb_obs"] = r.nb_obs
+        photo["nb_obs"] = nb_obs
         tab_photos.append(photo)
     return tab_photos

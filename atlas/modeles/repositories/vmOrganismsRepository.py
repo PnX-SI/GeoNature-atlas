@@ -1,23 +1,47 @@
 import json
 
 from geojson import Feature, FeatureCollection
-from sqlalchemy.sql import text, func, or_
+from sqlalchemy.sql import func, or_, select, distinct
 
-from atlas.modeles.entities import vmOrganisms
+from atlas.modeles.entities.vmAreas import VmAreas, VmAreaStatsOrganism
+from atlas.modeles.entities.tCorDatasetActor import TCorDatasetActor
+from atlas.modeles.entities.tBibOrganismes import TBibOrganismes
+from atlas.modeles.entities.vmObservations import VmObservations
+from atlas.modeles.entities.vmOrganisms import VmOrganisms
+from atlas.modeles.entities.vmTaxref import VmTaxref
+from atlas.env import db
 
 
-def statOrganism(connection, id_organism):
+def statOrganism(id_organism):
     # Fiche organism
-    sql = """SELECT count(DISTINCT cd_ref) AS nb_taxons, SUM(nb_observations) AS nb_obs,
-    nom_organism, url_organism, url_logo, adresse_organism, cp_organism, ville_organism,
-    tel_organism, email_organism
-    FROM atlas.vm_cor_taxon_organism o
-    WHERE o.id_organism = :thisidorganism
-    GROUP BY nom_organism, url_organism, url_logo, adresse_organism, cp_organism, ville_organism,
-    tel_organism, email_organism"""
-    req = connection.execute(text(sql), thisidorganism=id_organism)
+    req = (
+        select(
+            func.count(distinct(VmOrganisms.cd_ref)).label("nb_taxons"),
+            func.sum(VmOrganisms.nb_observations).label("nb_obs"),
+            VmOrganisms.nom_organism,
+            VmOrganisms.url_organism,
+            VmOrganisms.url_logo,
+            VmOrganisms.adresse_organism,
+            VmOrganisms.cp_organism,
+            VmOrganisms.ville_organism,
+            VmOrganisms.tel_organism,
+            VmOrganisms.email_organism,
+        )
+        .filter(VmOrganisms.id_organism == id_organism)
+        .group_by(
+            VmOrganisms.nom_organism,
+            VmOrganisms.url_organism,
+            VmOrganisms.url_logo,
+            VmOrganisms.adresse_organism,
+            VmOrganisms.cp_organism,
+            VmOrganisms.ville_organism,
+            VmOrganisms.tel_organism,
+            VmOrganisms.email_organism,
+        )
+    )
+    results = db.session.execute(req).all()
     StatsOrga = dict()
-    for r in req:
+    for r in results:
         StatsOrga = {
             "nb_taxons": r.nb_taxons,
             "nb_obs": r.nb_obs,
@@ -34,35 +58,46 @@ def statOrganism(connection, id_organism):
     return StatsOrga
 
 
-def topObsOrganism(connection, id_organism):
+def topObsOrganism(id_organism):
     # Stats avancées organism
-    sql = """SELECT cd_ref, nb_observations as nb_obs_taxon 
-    FROM atlas.vm_cor_taxon_organism o
-    WHERE o.id_organism = :thisidorganism
-    ORDER BY nb_observations DESC
-    LIMIT 3
-    """
-    req = connection.execute(text(sql), thisidorganism=id_organism)
+    req = (
+        select(VmOrganisms.cd_ref, VmOrganisms.nb_observations.label("nb_obs_taxon"))
+        .filter(VmOrganisms.id_organism == id_organism)
+        .order_by(VmOrganisms.nb_observations.desc())
+        .limit(3)
+    )
+    results = db.session.execute(req).all()
     topSpecies = list()
-    for r in req:
+    for r in results:
         temp = {"cd_ref": r.cd_ref, "nb_obs_taxon": r.nb_obs_taxon}
         topSpecies.append(temp)
     return topSpecies
 
 
-def getListOrganism(connection, cd_ref):
+def getListOrganism(cd_ref):
     # Fiche espèce : Liste des organismes pour un taxon
-    sql = """SELECT SUM(nb_observations) AS nb_observations, id_organism, nom_organism, url_organism, url_logo
-             FROM atlas.vm_cor_taxon_organism o 
-             WHERE cd_ref in (
-                SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
-                )
-                OR cd_ref = :thiscdref
-             GROUP by id_organism, nom_organism, url_organism, url_logo            
-             ORDER BY nb_observations DESC"""
-    req = connection.execute(text(sql), thiscdref=cd_ref)
+    childs_ids = select(func.atlas.find_all_taxons_childs(cd_ref))
+    nb_observations = func.sum(VmOrganisms.nb_observations).label("nb_observations")
+    req = (
+        select(
+            nb_observations,
+            VmOrganisms.id_organism,
+            VmOrganisms.nom_organism,
+            VmOrganisms.url_organism,
+            VmOrganisms.url_logo,
+        )
+        .filter(or_(VmOrganisms.cd_ref.in_(childs_ids), VmOrganisms.cd_ref == cd_ref))
+        .group_by(
+            VmOrganisms.id_organism,
+            VmOrganisms.nom_organism,
+            VmOrganisms.url_organism,
+            VmOrganisms.url_logo,
+        )
+        .order_by(nb_observations.desc())
+    )
+    results = db.session.execute(req).all()
     ListOrganism = list()
-    for r in req:
+    for r in results:
         temp = {
             "nb_observation": r.nb_observations,
             "id_organism": r.id_organism,
@@ -74,102 +109,101 @@ def getListOrganism(connection, cd_ref):
     return ListOrganism
 
 
-def getTaxonRepartitionOrganism(connection, id_organism):
+def getTaxonRepartitionOrganism(id_organism):
     # Fiche organism : réparition du type d'observations
-    sql = """SELECT  SUM(o.nb_observations) as nb_obs_group, g.group2_inpn
-    FROM atlas.vm_cor_taxon_organism o
-    JOIN atlas.vm_taxref g on g.cd_nom=o.cd_ref
-    WHERE o.id_organism = :thisidorganism
-   	GROUP BY g.group2_inpn, o.id_organism
-    """
-    req = connection.execute(text(sql), thisidorganism=id_organism)
+    req = (
+        select(func.sum(VmOrganisms.nb_observations).label("nb_obs_group"), VmTaxref.group2_inpn)
+        .join(VmTaxref, VmTaxref.cd_nom == VmOrganisms.cd_ref)
+        .filter(VmOrganisms.id_organism == id_organism)
+        .group_by(VmTaxref.group2_inpn, VmOrganisms.id_organism)
+    )
+    results = db.session.execute(req).all()
     ListGroup = list()
-    for r in req:
+    for r in results:
         temp = {"group2_inpn": r.group2_inpn, "nb_obs_group": int(r.nb_obs_group)}
         ListGroup.append(temp)
     return ListGroup
 
 
-def get_nb_organism_on_area(connection, id_area):
-    sql = """SELECT COUNT(DISTINCT cto.nom_organism) AS nb_organism
-FROM atlas.vm_observations obs
-         JOIN gn_meta.cor_dataset_actor AS rcda
-              ON obs.id_dataset = rcda.id_dataset
-         JOIN atlas.vm_cor_taxon_organism cto ON rcda.id_organism = cto.id_organism
-        JOIN atlas.vm_l_areas area ON st_intersects(obs.the_geom_point, area.the_geom)
-WHERE area.id_area = :id_area;
-    """
-    res = connection.execute(text(sql), id_area=id_area)
+def get_nb_organism_on_area(id_area):
+    req = (
+        select(
+            func.count(distinct(VmOrganisms.nom_organism)).label("nb_organism"),
+        )
+        .select_from(VmObservations)
+        .join(TCorDatasetActor, VmObservations.id_dataset == TCorDatasetActor.id_dataset)
+        .join(VmOrganisms, VmOrganisms.id_organism == TCorDatasetActor.id_organism)
+        .join(VmAreas, func.ST_Intersects(VmObservations.the_geom_point, VmAreas.the_geom))
+        .filter(VmAreas.id_area == id_area)
+    )
+    results = db.session.execute(req).all()
     result = dict()
-    for r in res:
+    for r in results:
         result = r.nb_organism
     return result
 
 
-def get_nb_species_by_organism_on_area(connection, id_area):
-    sql = """
-SELECT COUNT(DISTINCT obs.cd_ref) AS nb_species, cto.nom_organism
-FROM atlas.vm_observations obs
-     JOIN gn_meta.cor_dataset_actor AS rcda
-          ON obs.id_dataset = rcda.id_dataset
-    JOIN atlas.vm_cor_taxon_organism cto ON rcda.id_organism = cto.id_organism
-        JOIN atlas.vm_l_areas area ON st_intersects(obs.the_geom_point, area.the_geom)
-WHERE area.id_area = :id_area
-GROUP BY cto.nom_organism
-ORDER BY cto.nom_organism;
-    """
-    result = connection.execute(text(sql), id_area=id_area)
+def get_nb_species_by_organism_on_area(id_area):
+    req = (
+        select(
+            func.count(distinct(VmObservations.cd_ref)).label("nb_species"),
+            VmOrganisms.nom_organism,
+        )
+        .join(TCorDatasetActor, TCorDatasetActor.id_dataset == VmObservations.id_dataset)
+        .join(VmOrganisms, VmOrganisms.id_organism == TCorDatasetActor.id_organism)
+        .join(VmAreas, func.ST_intersects(VmObservations.the_geom_point, VmAreas.the_geom))
+        .filter(VmAreas.id_area == id_area)
+        .group_by(VmOrganisms.nom_organism)
+        .order_by(VmOrganisms.nom_organism)
+    )
+    results = db.session.execute(req).all()
     list_species_by_organism = list()
-    for r in result:
+    for r in results:
         temp = {"nb": r.nb_species, "label": r.nom_organism}
         list_species_by_organism.append(temp)
     return list_species_by_organism
 
 
-def get_nb_observations_by_organism_on_area(connection, id_area):
-    sql = """
-SELECT COUNT(obs.id_observation) AS nb_observations, b.nom_organisme
-FROM atlas.vm_observations obs
-     JOIN gn_meta.cor_dataset_actor AS rcda ON obs.id_dataset = rcda.id_dataset
-    JOIN utilisateurs.bib_organismes b ON b.id_organisme = rcda.id_organism
-        JOIN atlas.vm_l_areas area ON st_intersects(obs.the_geom_point, area.the_geom)
-WHERE area.id_area = :id_area
-GROUP BY b.nom_organisme
-ORDER BY b.nom_organisme;
-    """
-    result = connection.execute(text(sql), id_area=id_area)
+def get_nb_observations_by_organism_on_area(id_area):
+    req = (
+        select(
+            func.count(VmObservations.id_observation).label("nb_observations"),
+            TBibOrganismes.nom_organisme,
+        )
+        .join(TCorDatasetActor, TCorDatasetActor.id_dataset == VmObservations.id_dataset)
+        .join(TBibOrganismes, TBibOrganismes.id_organisme == TCorDatasetActor.id_organism)
+        .join(VmAreas, func.St_Intersects(VmObservations.the_geom_point, VmAreas.the_geom))
+        .filter(VmAreas.id_area == id_area)
+        .group_by(TBibOrganismes.nom_organisme)
+        .order_by(TBibOrganismes.nom_organisme)
+    )
+    results = db.session.execute(req).all()
     list_observations_by_organism = list()
-    for r in result:
+    for r in results:
         temp = {"nb": r.nb_observations, "label": r.nom_organisme}
         list_observations_by_organism.append(temp)
     return list_observations_by_organism
 
 
-def get_species_by_organism_on_area(connection, id_area):
-    sql = """
-SELECT nb_species,
-       nom_organism
-FROM atlas.vm_area_stats_by_organism
-WHERE id_area = :id_area;
-    """
-    result = connection.execute(text(sql), id_area=id_area)
+def get_species_by_organism_on_area(id_area):
+    req = select(VmAreaStatsOrganism.nb_species, VmAreaStatsOrganism.nom_organism).filter(
+        VmAreaStatsOrganism.id_area == id_area
+    )
+    results = db.session.execute(req).all()
     list_species_by_organism = list()
-    for r in result:
+    for r in results:
         temp = {"nb": r.nb_species, "label": r.nom_organism}
         list_species_by_organism.append(temp)
     return list_species_by_organism
 
 
-def get_nb_observations_by_organism_on_area(connection, id_area):
-    sql = """
-    SELECT nb_obs,
-           nom_organism
-    FROM atlas.vm_area_stats_by_organism
-    WHERE id_area = :id_area;
-        """
-    result = connection.execute(text(sql), id_area=id_area)
+def get_nb_observations_by_organism_on_area(id_area):
+    req = select(VmAreaStatsOrganism.nb_obs, VmAreaStatsOrganism.nom_organism).filter(
+        VmAreaStatsOrganism.id_area == id_area
+    )
+    results = db.session.execute(req).all()
     list_species_by_organism = list()
-    for r in result:
+    for r in results:
         temp = {"nb": r.nb_obs, "label": r.nom_organism}
         list_species_by_organism.append(temp)
     return list_species_by_organism

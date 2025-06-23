@@ -26,9 +26,9 @@ flask-compress==1.10.1
     # via -r requirements.in
 flask-script==2.0.6
     # via -r requirements.in
-flask-sqlalchemy==2.5.1
+flask-sqlalchemy==3.1.1
     # via -r requirements.in
-geoalchemy2==0.9.4
+geoalchemy2==0.17.1
     # via -r requirements.in
 geojson==2.5.0
     # via -r requirements.in
@@ -58,11 +58,13 @@ pytz==2021.3
     # via
     #   babel
     #   flask-babel
-sqlalchemy==1.4.27
+sqlalchemy==2.0.41
     # via
     #   -r requirements.in
     #   flask-sqlalchemy
     #   geoalchemy2
+typing-extensions==4.13.2
+    # via sqlalchemy
 werkzeug==2.2.3
     # via flask
 
