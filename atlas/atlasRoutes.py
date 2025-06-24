@@ -174,6 +174,15 @@ def translations():
     }
 
 
+def _get_couches_sig_info(page_name):
+    """Returns the subset of couches SIG which should be displayed on the given page."""
+    couches_sig_info = []
+    for couche_sig_info in current_app.config["COUCHES_SIG"]:
+        if "pages" not in couche_sig_info or page_name in couche_sig_info.get("pages", []):
+            couches_sig_info.append(couche_sig_info)
+    return couches_sig_info
+
+
 @main.route("/", methods=["GET", "POST"])
 def index():
     session = db.session
@@ -196,6 +205,14 @@ def index():
                 str(current_app.config["NB_DAY_LAST_OBS"]) + " day",
                 current_app.config["ATTR_MAIN_PHOTO"],
             )
+
+    if (
+        current_app.config["AFFICHAGE_DERNIERES_OBS"]
+        or current_app.config["AFFICHAGE_TERRITOIRE_OBS"]
+    ):
+        couches_sig_info = _get_couches_sig_info("home")
+    else:
+        couches_sig_info = []
 
     if current_app.config["AFFICHAGE_EN_CE_MOMENT"]:
         mostViewTaxon = vmTaxonsMostView.mostViewTaxon(connection)
@@ -231,6 +248,7 @@ def index():
         customStatMedias=customStatMedias,
         lastDiscoveries=lastDiscoveries,
         personal_data=personal_data,
+        couchesSigInfo=couches_sig_info,
     )
 
 
@@ -298,6 +316,15 @@ def ficheEspece(cd_nom):
     groupes_statuts = _make_groupes_statuts(statuts)
     groupes_statuts_have_labels = any([groupe.get("label") for groupe in groupes_statuts])
 
+    couches_sig_info_for_page = _get_couches_sig_info("species")
+    this_taxon_group2 = taxon["taxonSearch"]["group2_inpn"]
+    couches_sig_info = []
+    for couche_sig_info in couches_sig_info_for_page:
+        all_groups = "groups2_inpn" not in couche_sig_info
+        has_this_taxon_group = this_taxon_group2 in couche_sig_info.get("groups2_inpn", [])
+        if all_groups or has_this_taxon_group:
+            couches_sig_info.append(couche_sig_info)
+
     connection.close()
     db_session.close()
     return render_template(
@@ -322,6 +349,7 @@ def ficheEspece(cd_nom):
         organisms=organisms,
         groupesStatuts=groupes_statuts,
         groupesStatutsHaveLabels=groupes_statuts_have_labels,
+        couchesSigInfo=couches_sig_info,
     )
 
 
@@ -382,6 +410,8 @@ def ficheArea(id_area):
     area = vmAreasRepository.getAreaFromIdArea(connection, id_area)
     stats_area = vmAreasRepository.getStatsByArea(connection, id_area)
 
+    couches_sig_info = _get_couches_sig_info("area")
+
     session.close()
     connection.close()
 
@@ -392,6 +422,7 @@ def ficheArea(id_area):
         areaInfos=area,
         DISPLAY_EYE_ON_LIST=True,
         id_area=id_area,
+        couchesSigInfo=couches_sig_info,
     )
 
 

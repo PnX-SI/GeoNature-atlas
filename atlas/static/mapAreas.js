@@ -60,6 +60,10 @@ htmlLegend = configuration.AFFICHAGE_MAILLE
 
 generateLegende(htmlLegend);
 
+// Gestionnaire de couches SIG additionnelles
+if (couchesSigInfo !== undefined) {
+  addLayerControlToMap(map);
+}
 
 var baseUrl =  configuration.URL_APPLICATION + "/api/observations/" + areaInfos.areaCode
 

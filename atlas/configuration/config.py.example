@@ -123,6 +123,79 @@ MAP = {
     'ENABLE_SCALE': True
 }
 
+# Définit les couches additionnelles en provenance de SIG externes. Les propriétés suivantes sont requises
+# pour chaque couche :
+# - 'name' : le libellé qui désignera la couche dans le gestionnaire
+# - 'type' : 'wms' ou 'arcgisMapService'
+# - 'url' : URL du service, voir plus bas
+# - 'layer' (uniquement pour type 'wms')
+#
+# Propriétés optionnelles :
+# - 'pages' : restreint les pages sur laquelle le couche est disponible. Valeurs possibles : 'home', 'species', 'area'
+# - 'groups2_inpn' : sur fiche espèce restreint les espèces pour lesquelles la couche est disponible. Par exemple : 'Amphibiens', 'Oiseaux'
+# - 'options' : les propriétés de l'objet 'options' sont passées directement au constructeur du layer. Les constructeurs sont :
+#   + type 'wms' => objet L.tileLayer.wms de Leaflet
+#   + type 'arcgisMapService' => objet L.esri.dynamicMapLayer de la lib 'leaflet-esri'
+#
+# Exemple URL d'un service WMS :
+#   https://cartographie.nantesmetropole.fr/arcgis/services/PLUm/plum_annexes/MapServer/WMSServer?
+#   (cette URL est généralement fournie dans la doc du service avec les paramètres pour une requête GetCapabilities,
+#    indiquer l'URL sans les paramètres)
+# Exemple URL d'un Arcgis Map Service :
+#   https://cartographie.nantesmetropole.fr/arcgis/rest/services/PLUm/plum_annexes/MapServer
+#           ^^^^^^^^^^ votre domaine ^^^^^^                      ^^ arborescence ^
+#
+COUCHES_SIG = [
+    {
+        'name': 'Zonage pluvial',
+        'type': 'wms',
+        'url': 'https://cartographie.nantesmetropole.fr/arcgis/services/PLUm/plum_annexes/MapServer/WMSServer?',
+        'layer': 'Zonage_pluvial_(I19-03)54824',
+        'options': {
+            'transparent': True,
+            'format': 'image/png'
+        },
+        'pages': [
+            'home'
+        ]
+    },
+    {
+        'name': 'Zonage eaux usées',
+        'type': 'wms',
+        'url': 'https://cartographie.nantesmetropole.fr/arcgis/services/PLUm/plum_annexes/MapServer/WMSServer?',
+        'layer': 'Zonage_eaux_usées_(I19-01)7873',
+        'options': {
+            'transparent': True,
+            'format': 'image/png'
+        },
+        'pages': [
+            'species'
+        ],
+        'groups2_inpn': [
+            'Amphibiens',
+            'Oiseaux',
+        ]
+    },
+    {
+        'name': 'Réseau de chaleur',
+        'type': 'wms',
+        'url': 'https://cartographie.nantesmetropole.fr/arcgis/services/PLUm/plum_annexes/MapServer/WMSServer?',
+        'layer': 'Réseau_de_chaleur_(I_07-00)28291',
+        'options': {
+            'transparent': True,
+            'format': 'image/png'
+        },
+        'pages': [
+            'species'
+        ]
+    },
+    {
+        'name': 'PLUM annexes',
+        'type': 'arcgisMapService',
+        'url': "https://cartographie.nantesmetropole.fr/arcgis/rest/services/PLUm/plum_annexes/MapServer"
+    }
+]
+
 # Affichage des observations par maille ou point
 # True = maille / False = point
 AFFICHAGE_MAILLE = False

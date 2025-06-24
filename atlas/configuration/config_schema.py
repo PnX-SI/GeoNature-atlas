@@ -4,6 +4,7 @@ from marshmallow import (
     validates_schema,
     ValidationError,
     validates_schema,
+    validate,
     EXCLUDE,
 )
 from marshmallow.validate import Regexp
@@ -125,6 +126,21 @@ class MapConfig(Schema):
     MASK_STYLE = fields.Dict(
         load_default={"fill": False, "fillColor": "#020202", "fillOpacity": 0.7}
     )
+
+
+class CouchesSigConfig(Schema):
+    name = fields.Str(required=True)
+    type = fields.Str(required=True, validate=validate.OneOf(["wms", "arcgisMapService"]))
+    url = fields.Str(required=True)
+    layer = fields.Str()
+    pages = fields.List(fields.Str(validate=validate.OneOf(["home", "species", "area"])))
+    groups2_inpn = fields.List(fields.Str())
+    options = fields.Dict()
+
+    @validates_schema
+    def layer_required_for_wms_type(self, data, **kwargs):
+        if data["type"] == "wms" and not data.get("layer"):
+            raise ValidationError("'layer' is required for type 'wms'")
 
 
 class AtlasConfig(Schema):
@@ -270,6 +286,7 @@ class AtlasConfig(Schema):
         load_default="Les observations des agents ces 7 derniers jours |"
     )
     MAP = fields.Nested(MapConfig, load_default=dict())
+    COUCHES_SIG = fields.List(fields.Nested(CouchesSigConfig), load_default=list())
     # coupe le nom_vernaculaire à la 1ere virgule sur les fiches espèces
     SPLIT_NOM_VERN = fields.Boolean(load_default=True)
     INTERACTIVE_MAP_LIST = fields.Boolean(load_default=True)

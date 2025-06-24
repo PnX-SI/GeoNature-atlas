@@ -1,0 +1,78 @@
+/* classes for collapse/expand mechanism */
+/* (adapted from Leaflet's L.control.layers) */
+
+.layer-tree-control {
+  border: unset;
+  min-width: unset;
+  padding: unset;
+}
+
+.layer-tree-control-expanded {
+  min-width: 250px;
+  padding: 8px;
+}
+
+.layer-tree-control {
+  /*box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);*/
+  background: #fff;
+  border-radius: 5px;
+}
+
+.layer-tree-control-toggle {
+  background-image: url(../images/layers.png);
+  width: 36px;
+  height: 36px;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  display: block;
+}
+
+.leaflet-retina .layer-tree-control-toggle {
+    background-image: url(../images/layers-2x.png);
+    background-size: 26px 26px;
+}
+
+.leaflet-touch .layer-tree-control-toggle {
+  width: 44px;
+  height: 44px;
+}
+
+.layer-tree-control .layer-tree-control-list,
+.layer-tree-control-expanded .layer-tree-control-toggle {
+  display: none;
+}
+
+.layer-tree-control-expanded .layer-tree-control-list {
+  display: block;
+  position: relative;
+}
+
+.layer-tree-control-list {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* Spécifie une largeur fixe pour éviter le collapse accidentel quand on replie un tree */
+.layer-tree-control-expanded {
+  width: 250px;
+  max-height: 500px;
+}
+
+/* Nécessaire pour affichage correct avec largeur fixe */
+.layer-tree-control-expanded .space,
+.layer-tree-control-expanded .tree-check,
+.layer-tree-control-expanded .tree-icon {
+  flex-shrink: 0;
+}
+
+/* Corrige l'affichage de la checkbox (nécessaire à cause du reboot bootstrap) */
+.layer-tree-control *,
+.layer-tree-control ::after {
+  box-sizing: content-box;
+}
+
+/* Le gestionnaire développé doit s'afficher au-dessus de la légende des mailles */
+.leaflet-top:has(.layer-tree-control-expanded) {
+  z-index: 1001;
+}
