@@ -37,7 +37,7 @@ CHANGELOG
 - Veuillez vous référer à la documentation concernant le RGPD et le consentement du recueil de cookies : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/cookies_rgpd.rst . Ces fonctionnalités sont utiles uniquement si vous avez mis en place le recueil de cookies necessitant le consentement de l'utilisateur (statistiques de fréquentation par exemple). 
 - Le paramètre `ID_GOOGLE_ANALYTICS` et la façon d'integrer un script google analytic sont dépréciés. Se référer à la documentation sur le RGPD ci-dessus 
 - Il est désormais possible d'installer GeoNature uniquement sur Debian 11 et 12.
-
+- Le paramètre `REMOTE_MEDIAS_PATH` est deprecié, seul `REMOTE_MEDIAS_URL` permet de construire l'URL des médias "locaux" (dont le champs `chemin` est rempli)
 Si vous mettez à jour GeoNature-atlas suivez la procédure de MAJ décrite dans : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/installation.rst#mise-%C3%A0-jour-de-lapplication
 
 Vous pouvez supprimez les paramètre suivant du fichier `settings.ini`

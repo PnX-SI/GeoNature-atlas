@@ -170,7 +170,6 @@ class AtlasConfig(Schema):
     LIMIT_RANG_TAXONOMIQUE_HIERARCHIE = fields.Integer(load_default=13)
     LIMIT_FICHE_LISTE_HIERARCHY = fields.Integer(load_default=28)
     REMOTE_MEDIAS_URL = fields.String(load_default="http://mondomaine.fr/taxhub/")
-    REMOTE_MEDIAS_PATH = fields.String(load_default="static/medias/")
     REDIMENSIONNEMENT_IMAGE = fields.Boolean(load_default=False)
     TAXHUB_URL = fields.String(required=False, load_default=None)
     ATTR_DESC = fields.Integer(load_default=100)
