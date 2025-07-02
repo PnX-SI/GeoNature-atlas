@@ -70,14 +70,6 @@ if current_app.config["MULTILINGUAL"]:
             session["language"] = g.lang_code
 
 
-@main.route(
-    "/espece/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>", methods=["GET", "POST"]
-)
-def especeMedias(image):
-    return redirect(
-        current_app.config["REMOTE_MEDIAS_URL"] + current_app.config["REMOTE_MEDIAS_PATH"] + image
-    )
-
 
 # Activating organisms sheets routes
 if current_app.config["ORGANISM_MODULE"]:
@@ -122,40 +114,6 @@ if current_app.config["ORGANISM_MODULE"]:
             mostObsTaxs=update_most_obs_taxons,
             stats_group=stats_group,
         )
-
-
-@main.route(
-    "/commune/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>", methods=["GET", "POST"]
-)
-def communeMedias(image):
-    return redirect(
-        current_app.config["REMOTE_MEDIAS_URL"] + current_app.config["REMOTE_MEDIAS_PATH"] + image
-    )
-
-
-@main.route(
-    "/liste/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>", methods=["GET", "POST"]
-)
-def listeMedias(image):
-    return redirect(
-        current_app.config["REMOTE_MEDIAS_URL"] + current_app.config["REMOTE_MEDIAS_PATH"] + image
-    )
-
-
-@main.route(
-    "/groupe/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>", methods=["GET", "POST"]
-)
-def groupeMedias(image):
-    return redirect(
-        current_app.config["REMOTE_MEDIAS_URL"] + current_app.config["REMOTE_MEDIAS_PATH"] + image
-    )
-
-
-@main.route("/" + current_app.config["REMOTE_MEDIAS_PATH"] + "<image>", methods=["GET", "POST"])
-def indexMedias(image):
-    return redirect(
-        current_app.config["REMOTE_MEDIAS_URL"] + current_app.config["REMOTE_MEDIAS_PATH"] + image
-    )
 
 
 @main.route("/", methods=["GET", "POST"])
