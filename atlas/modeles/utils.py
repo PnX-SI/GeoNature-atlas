@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 import unicodedata
+from flask import current_app
 
 
 def deleteAccent(string):
@@ -13,6 +14,6 @@ def findPath(row):
     if row.chemin == None and row.url == None:
         return None
     elif row.chemin != None and row.chemin != "":
-        return row.chemin
+        return current_app.config["REMOTE_MEDIAS_URL"] + row.chemin
     else:
         return row.url
