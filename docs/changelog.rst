@@ -2,45 +2,62 @@
 CHANGELOG
 =========
 
-[Unreleased]
+1.7.0 (unreleased)
 ------------------
+
+- Manque le SQL pour update la BDD ? Voir update_1.6.1to1.6.2.sql
+- Nécessite Debian 11 ou 12
 
 🚀 **Nouveautés**
 
-- Ajout du support Debian 12. Suppression du support de Debian 9 et 10 (voir note de version)
+- Ajout du support de Debian 12. Suppression du support de Debian 9 et 10 (#582 par @juggler31, @marcantoinedupre, @submarcos)
+- Ajout de tests automatisés pour tester l'installation des dépendances Python (#582 par @juggler31)
+- Nettoyage et simplification des scripts d'installation
+
+  - Suppression du support des installations sans TaxHub (#582 par @amandine-sahl)
+  - Suppression des installations sans `ref_geo` (par @TheoLechemia)
+
 - Refonte de l'integration de traqueur de fréquentation (Google analytic, Matomo) en lien avec la mise en conformité RGPD - voir la note de version (#527 @juggler31)
-- Ajout de la librairie Orijeme pour recueillir le consentement de l'utilisateur sur l'utilisation des cookies
-- Suppression du support des installations sans TaxHub
-- Ajout du support des cd_nom négatifs sur les fiches espèces et les API @andriacap
-- Ajout de paramètre de configuration pour afficher/masques les graphiques de phénologie et d'altitude (`AFFICHAGE_GRAPH_PHENOLOGIE` et `AFFICHAGE_GRAPH_ALTITUDES`)
-- Affichage des dates au format "court" et dans la locale du navigateur
+- Ajout de la librairie Orejime pour recueillir le consentement de l'utilisateur sur l'utilisation des cookies
+- Ajout de la possibilité d'ajouter un lien dans le pied de page (footer) vers une modale précisant la politique des données personnelles (#527 par @juggler31)
+- Ajout du support des cd_nom négatifs sur les fiches espèces et les API (#616 par @andriacap)
+- Ajout des paramètres `AFFICHAGE_GRAPH_PHENOLOGIE` et `AFFICHAGE_GRAPH_ALTITUDES` pour afficher/masquer les graphiques de phénologie et d'altitude sur les fiches espèces (#568 par @gildeluermoz)
+- Affichage des dates au format "court" et selon la langue du navigateur (#512 et #631 par @geobrun)
+- Ajout de la possibilité d'ajouter un lien externe et d'utiliser un picto sous forme d'image dans la barre de navigation latérale (#520 par @geobrun)
 
 🐛 **Corrections**
 
-- Correction de la carte avec affichage par mailles de la fiche "Commune" (#533 par @jpm-cbna)
-- Correction et amélioration de l'affichage de la fenêtre listant les sous-taxons aggrégés (#558 par @jpm-cbna)
+- Correction de l'affichage des observations par maille sur la carte des fiches "Commune" (#453 par @jpm-cbna)
+- Correction de l'affichage par maille sur les cartes des fiches "Commune" (#533 par @jpm-cbna)
+- Correction et amélioration de l'affichage de la fenêtre listant les sous-taxons agrégés sur les fiches espèces (#558 par @jpm-cbna)
+- Prise en charge des cd_nom négatifs (#616 par @andriacap)
 - Correction du lien vers le statut INPN des taxons protégés sur la page organisme (#578 par @marcantoinedupre)
 - Correcion du "lazy-loading" des images sur les page HTML (@submarcos)
 
 🐛 **Optimisations / evolutions**
 
-- Amélioration de la "recherche par commune": mots tronqués, sans accent (#531 par @jpm-cbna)
-
+- Amélioration des performances des requêtes des fiches espèces en forçant l'utilisation des index de la BDD (#516 par @jpm-cbna)
+- Amélioration du chargement des mailles des observations sur les fiches espèces en optimisant `atlas.vm_observations_mailles` (#518 par @jpm-cbna et @juggler31)
+- Amélioration de la recherche par commune : mots tronqués, sans accent (#531 par @jpm-cbna)
 
 👨‍💻 **Développement**
 
-- Ajout d'un Makefile afin de faciliter les développements.
+- Ajout d'un Makefile afin de faciliter les développements (#576 par @juggler31)
 
 ⚠️ **Notes de version**
 
-- Suppression de la possibilité d'installer l'atlas à partir de couche shapefile. Tout est basé sur le ref_geo fourni par GeoNature ou TaxHub. Il est maintenant obligatoire d'installer TaxHub pour deployer l'atlas.
+- Suppression de la possibilité d'installer l'atlas à partir de couche shapefile. Tout est basé sur le `ref_geo` fourni par GeoNature ou TaxHub. Il est maintenant obligatoire d'installer TaxHub pour deployer l'atlas.
 - Veuillez vous référer à la documentation concernant le RGPD et le consentement du recueil de cookies : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/cookies_rgpd.rst . Ces fonctionnalités sont utiles uniquement si vous avez mis en place le recueil de cookies necessitant le consentement de l'utilisateur (statistiques de fréquentation par exemple). 
 - Le paramètre `ID_GOOGLE_ANALYTICS` et la façon d'integrer un script google analytic sont dépréciés. Se référer à la documentation sur le RGPD ci-dessus 
-- Il est désormais possible d'installer GeoNature uniquement sur Debian 11 et 12.
+- Il est désormais possible d'installer ou mettre à jour GeoNature uniquement sur Debian 11 et 12.
 - Le paramètre `REMOTE_MEDIAS_PATH` est deprecié, seul `REMOTE_MEDIAS_URL` permet de construire l'URL des médias "locaux" (dont le champs `chemin` est rempli)
+
 Si vous mettez à jour GeoNature-atlas suivez la procédure de MAJ décrite dans : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/installation.rst#mise-%C3%A0-jour-de-lapplication
 
-Vous pouvez supprimez les paramètre suivant du fichier `settings.ini`
+- Ajoutez l'extension unaccent à la base de données `CREATE EXTENSION IF NOT EXISTS unaccent SCHEMA "public";` (#531, #532)
+- Exécutez le script SQL de mise à jour de la BDD : https://github.com/PnX-SI/GeoNature-atlas/blob/master/data/update/update_1.6.1to1.6.2.sql
+
+Vous pouvez supprimer les paramètre suivants du fichier `settings.ini`
 - use_ref_geo_gn2
 - install_taxonomie
 - communes_shp
