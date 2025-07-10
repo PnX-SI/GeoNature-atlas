@@ -39,7 +39,7 @@ function database_exists () {
 }
 
 function test_settings() {
-    fields=('owner_atlas' 'user_pg' 'altitudes' 'time' 'attr_desc' 'attr_commentaire' 'attr_milieu' 'attr_chorologie' 'db_source_fetch_size')
+    fields=('owner_atlas' 'user_pg' 'altitudes' 'time' 'displayed_attr' 'db_source_fetch_size')
     echo "Checking the validity of settings.ini"
     for i in "${!fields[@]}"
     do
@@ -239,8 +239,7 @@ if ! database_exists $db_name
             done
 
         sudo sed -i "s/INSERT_ALTITUDE/${insert}/" /tmp/atlas/4.atlas.vm_altitudes.sql
-        sudo sed -i "s/WHERE id_attribut IN (100, 101, 102, 103);$/WHERE id_attribut  IN ($attr_desc, $attr_commentaire, $attr_milieu, $attr_chorologie);/" /tmp/atlas/9.atlas.vm_cor_taxon_attribut.sql
-
+        sudo sed -i "s/WHERE ba.nom_attribut IN ('atlas_description', 'atlas_commentaire', 'atlas_milieu', 'atlas_chorologie')$/WHERE ba.nom_attribut  IN ($displayed_attr);/" /tmp/atlas/9.atlas.vm_cor_taxon_attribut.sql
 
         # FR: Execution des scripts sql de création des vm de l'atlas
         # EN: Run sql scripts : build atlas vm
