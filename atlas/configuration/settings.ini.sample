@@ -53,6 +53,10 @@ db_source_port=5432
 # Nom de la BDD GeoNature source
 db_source_name=geonature2db
 
+# Nombre d'éléments à récupérer par lot en Foreign Data Wrapper (défaut 100)
+# Note : utiliser 1000000 pour une table synthese avec plusieurs millions d'observations.
+db_source_fetch_size=100
+
 # Nom de l'utilisateur atlas dans la BDD GeoNature source (lecture seule)
 atlas_source_user=geonatatlas
 

@@ -41,7 +41,7 @@ function database_exists () {
 }
 
 function test_settings() {
-    fields=('owner_atlas' 'user_pg' 'altitudes' 'time' 'attr_desc' 'attr_commentaire' 'attr_milieu' 'attr_chorologie')
+    fields=('owner_atlas' 'user_pg' 'altitudes' 'time' 'attr_desc' 'attr_commentaire' 'attr_milieu' 'attr_chorologie' 'db_source_fetch_size')
     echo "Checking the validity of settings.ini"
     for i in "${!fields[@]}"
     do
@@ -109,7 +109,7 @@ if $geonature_source
     then
         echo "Adding FDW and connection to the GeoNature parent DB"
         sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgres_fdw;"  &>> log/install_db.log
-        sudo -u postgres -s psql -d $db_name -c "CREATE SERVER geonaturedbserver FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$db_source_host', dbname '$db_source_name', port '$db_source_port');"  &>> log/install_db.log
+        sudo -u postgres -s psql -d $db_name -c "CREATE SERVER geonaturedbserver FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$db_source_host', dbname '$db_source_name', port '$db_source_port', fetch_size '$db_source_fetch_size');"  &>> log/install_db.log
         sudo -u postgres -s psql -d $db_name -c "ALTER SERVER geonaturedbserver OWNER TO $owner_atlas;"  &>> log/install_db.log
         sudo -u postgres -s psql -d $db_name -c "CREATE USER MAPPING FOR $owner_atlas SERVER geonaturedbserver OPTIONS (user '$atlas_source_user', password '$atlas_source_pass') ;"  &>> log/install_db.log
         # si geonature source on crée le schéma utilisateur. Si gn_source =false, on a forcément deja taxhub et donc le schéma utilisateur
@@ -125,17 +125,14 @@ sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA gn_meta AUTHORIZATION "$o
 
 if $geonature_source
     then
-        echo "Creating FDW from GN2"
-        echo "--------------------" &>> log/install_db.log #en double non? TODO
         echo "Creating FDW from GN2" &>> log/install_db.log
         echo "--------------------" &>> log/install_db.log
         export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f data/gn2/atlas_gn2.sql  &>> log/install_db.log
 
-        # FR: Creation des tables filles en FWD
-        # EN: Creation of daughter tables in FWD
-        echo "Creating the connection to GeoNature for the taxonomy" 
+        # FR: Creation des tables filles en FDW
+        # EN: Creation of daughter tables in FDW
+        echo "Creating the connection to GeoNature for the taxonomy tables"
         psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f data/gn2/atlas_ref_taxonomie.sql  &>> log/install_db.log
-            
 fi
 
 
@@ -151,7 +148,7 @@ export PGPASSWORD=$owner_atlas_pass; psql -d $db_name -U $owner_atlas -h $db_hos
 
 
 ###########################
-######    Occurence data 
+######    Occurence data
 ###########################
 echo "Creating DB structure"
 # FR: Si j'utilise GeoNature ($geonature_source = True), alors je créé les tables filles en FDW connectées à la BDD de GeoNature
@@ -198,7 +195,7 @@ sudo sed -i "s/WHERE id_attribut IN (100, 101, 102, 103);$/WHERE id_attribut  IN
 
 # FR: Execution des scripts sql de création des vm de l'atlas
 # EN: Run sql scripts : build atlas vm
-scripts_sql=( 
+scripts_sql=(
     "1.atlas.vm_taxref.sql"
     "2.atlas.vm_observations.sql"
     "3.atlas.vm_taxons.sql"
@@ -213,7 +210,7 @@ scripts_sql=(
     "atlas.refresh_materialized_view_data.sql"
 )
 for script in "${scripts_sql[@]}"
-do 
+do
     echo "[$(date +'%H:%M:%S')] Creating ${script}..."
     time_temp=$SECONDS
     export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/${script}  &>> log/install_db.log
@@ -243,7 +240,7 @@ sudo -n -u postgres -s psql -d $db_name -f /tmp/atlas/14.grant.sql &>> log/insta
 
 # Clean file
 echo "Cleaning files..."
-sudo -n rm -r /tmp/atlas 
+sudo -n rm -r /tmp/atlas
 
 echo "Install finished - Duration :$(($SECONDS/60))m$(($SECONDS%60))s"
 
