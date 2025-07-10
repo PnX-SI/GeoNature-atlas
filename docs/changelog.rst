@@ -7,6 +7,8 @@ CHANGELOG
 
 - Manque le SQL pour update la BDD ? Voir update_1.6.1to1.6.2.sql
 - Nécessite Debian 11 ou 12
+- Nécessite GN 2.15.0 (ou plus). A vérifier ? Pas compatible avec versions précédentes à cause de la suppression du champs `supprime` sur les médias TaxHub ? Compatible avec GN 2.16.0 ?
+- La 2.0.0 nécessitera GN 2.16.0 (ou plus) je crois à cause du champs `description` de `ref_geo.l_areas` ?
 
 🚀 **Nouveautés**
 
