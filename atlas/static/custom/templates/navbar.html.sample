@@ -1,6 +1,6 @@
 {% block navbar %}
 {% if configuration.MULTILINGUAL %}
-<script type="text/javascript"> 
+<script type="text/javascript">
     var language = '{{ '/' + g.lang_code }}';
 </script>
 {% else %}
@@ -30,7 +30,7 @@
                 <form method="POST" action="" id='searchFormTaxons' role="search">
                     <div class="form-group has-feedback">
                         <input id="searchTaxons" type="text" class="form-control mr-sm-2 ajax-search small-placeholder"
-                               placeholder="{{ _('search.species') }}&nbsp;&nbsp;&nbsp;" loading="false" style="width: 175px;"  />
+                               placeholder="{{ _('search.species') }}&nbsp;&nbsp;&nbsp;" loading="false" />
 
                     </div>
                     <input id="hiddenInputTaxons" type="hidden"name="cd_ref"/>
@@ -38,9 +38,9 @@
 
                 <form class="form-inline my-2 my-lg-0" method="POST">
                     <div class="form-group has-feedback">
-                        <input id="searchAreas" type="text" style="width: 175px;"
-                               class="form-control mr-sm-2 ajax-search small-placeholder"
-                               placeholder="{{ translations.search_area }}&nbsp;&nbsp;&nbsp;">
+                        <input id="searchAreas" type="text"
+                            class="form-control mr-sm-2 ajax-search small-placeholder"
+                            placeholder="{{ translations.search_area }}&nbsp;&nbsp;&nbsp;">
                     </div>
                     <input id="hiddenInputAreas" type="hidden" name="id_area">
                 </form>

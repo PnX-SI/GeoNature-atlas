@@ -71,10 +71,14 @@ autocompleteSearch = function(inputID, urlDestination, nbProposal) {
       return false;
     },
     select: function(event, ui) {
-        if (ui.item && ui.item.type) {
-            return false;
-        }
-      $(inputID).val(ui.item.label);
+      if (ui.item && ui.item.type) {
+          return false;
+      }
+
+      let splited_label = ui.item.label.split(' = ');
+      let label_for_input = splited_label[0] != '' ? splited_label[0] : splited_label[1];
+      $(inputID).val(label_for_input.replace(/<[^>]*>?/gm, ''));
+
       var url = ui.item.value;
       if (urlDestination == "espece") {
         location.href = configuration.URL_APPLICATION + language  + "/espece/" + url;
