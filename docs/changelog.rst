@@ -2,13 +2,21 @@
 CHANGELOG
 =========
 
+2.0.0 (unreleased)
+------------------
+
+- Nécessitera GeoNature 2.16.0 (ou plus) (à cause du nouveau champs ``description`` de ``ref_geo.l_areas``)
+
 1.7.0 (unreleased)
 ------------------
 
-- Manque le SQL pour update la BDD ? Voir update_1.6.1to1.6.2.sql
 - Nécessite Debian 11 ou 12
-- Nécessite GN 2.15.0 (ou plus). A vérifier ? Pas compatible avec versions précédentes à cause de la suppression du champs `supprime` sur les médias TaxHub ? Compatible avec GN 2.16.0 ?
-- La 2.0.0 nécessitera GN 2.16.0 (ou plus) je crois à cause du champs `description` de `ref_geo.l_areas` ?
+- Compatible avec GeoNature 2.15.0 (ou plus) et TaxHub 2.0.0 (ou plus). Fonctionne aussi avec les versions précédentes de GeoNature et TaxHub mais sans filtrer les éventuels médias supprimés.
+
+NOTES avant release :
+
+- Voir ce qui peut être mergé parmi https://github.com/PnX-SI/GeoNature-atlas/pulls?q=is%3Aopen+is%3Apr+milestone%3A1.7.0 ?
+- Manque le SQL pour update la BDD ? Voir update_1.6.1to1.6.2.sql
 
 🚀 **Nouveautés**
 
@@ -17,13 +25,13 @@ CHANGELOG
 - Nettoyage et simplification des scripts d'installation
 
   - Suppression du support des installations sans TaxHub (#582 par @amandine-sahl)
-  - Suppression des installations sans `ref_geo` (par @TheoLechemia)
+  - Suppression des installations sans ``ref_geo`` (par @TheoLechemia)
 
 - Refonte de l'integration de traqueur de fréquentation (Google analytic, Matomo) en lien avec la mise en conformité RGPD - voir la note de version (#527 @juggler31)
 - Ajout de la librairie Orejime pour recueillir le consentement de l'utilisateur sur l'utilisation des cookies
-- Ajout de la possibilité d'ajouter un lien dans le pied de page (footer) vers une modale précisant la politique des données personnelles (#527 par @juggler31)
+- Ajout de la possibilité d'ajouter un lien dans le pied de page (footer) vers une modale précisant la politique des données personnelles, activable ou non avec le paramètre `AFFICHAGE_RGPD` (#527 par @juggler31)
 - Ajout du support des cd_nom négatifs sur les fiches espèces et les API (#616 par @andriacap)
-- Ajout des paramètres `AFFICHAGE_GRAPH_PHENOLOGIE` et `AFFICHAGE_GRAPH_ALTITUDES` pour afficher/masquer les graphiques de phénologie et d'altitude sur les fiches espèces (#568 par @gildeluermoz)
+- Ajout des paramètres ``AFFICHAGE_GRAPH_PHENOLOGIE`` et ``AFFICHAGE_GRAPH_ALTITUDES`` pour afficher/masquer les graphiques de phénologie et d'altitude sur les fiches espèces (#568 par @gildeluermoz)
 - Affichage des dates au format "court" et selon la langue du navigateur (#512 et #631 par @geobrun)
 - Ajout de la possibilité d'ajouter un lien externe et d'utiliser un picto sous forme d'image dans la barre de navigation latérale (#520 par @geobrun)
 
@@ -39,7 +47,7 @@ CHANGELOG
 🐛 **Optimisations / evolutions**
 
 - Amélioration des performances des requêtes des fiches espèces en forçant l'utilisation des index de la BDD (#516 par @jpm-cbna)
-- Amélioration du chargement des mailles des observations sur les fiches espèces en optimisant `atlas.vm_observations_mailles` (#518 par @jpm-cbna et @juggler31)
+- Amélioration du chargement des mailles des observations sur les fiches espèces en optimisant ``atlas.vm_observations_mailles`` (#518 par @jpm-cbna et @juggler31)
 - Amélioration de la recherche par commune : mots tronqués, sans accent (#531 par @jpm-cbna)
 
 👨‍💻 **Développement**
@@ -48,18 +56,19 @@ CHANGELOG
 
 ⚠️ **Notes de version**
 
-- Suppression de la possibilité d'installer l'atlas à partir de couche shapefile. Tout est basé sur le `ref_geo` fourni par GeoNature ou TaxHub. Il est maintenant obligatoire d'installer TaxHub pour deployer l'atlas.
+- Suppression de la possibilité d'installer l'atlas à partir de couche shapefile. Tout est basé sur le ``ref_geo`` fourni par GeoNature ou TaxHub. Il est maintenant obligatoire d'installer TaxHub pour deployer l'atlas.
 - Veuillez vous référer à la documentation concernant le RGPD et le consentement du recueil de cookies : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/cookies_rgpd.rst . Ces fonctionnalités sont utiles uniquement si vous avez mis en place le recueil de cookies necessitant le consentement de l'utilisateur (statistiques de fréquentation par exemple). 
-- Le paramètre `ID_GOOGLE_ANALYTICS` et la façon d'integrer un script google analytic sont dépréciés. Se référer à la documentation sur le RGPD ci-dessus 
+- Le paramètre ``ID_GOOGLE_ANALYTICS`` et la façon d'integrer un script google analytic sont dépréciés. Se référer à la documentation sur le RGPD ci-dessus 
 - Il est désormais possible d'installer ou mettre à jour GeoNature uniquement sur Debian 11 et 12.
-- Le paramètre `REMOTE_MEDIAS_PATH` est deprecié, seul `REMOTE_MEDIAS_URL` permet de construire l'URL des médias "locaux" (dont le champs `chemin` est rempli)
+- Le paramètre ``REMOTE_MEDIAS_PATH`` est deprecié, seul ``REMOTE_MEDIAS_URL`` permet de construire l'URL des médias "locaux" (dont le champs ``chemin`` est rempli)
+- Pour ajouter un lien dans le pied de page (footer), répercuter les `évolutions <https://github.com/PnX-SI/GeoNature-atlas/pull/574/files#diff-05964f85b0bb6f2d285f98fe1e3a56d9343b8a740ddd8c7e6ac85cfd611f62bb>`_ du template de footer dans votre fichier ``custom/templates/footer.html``, copier le fichier `custom/templates/personal-data.html.sample <https://github.com/PnX-SI/GeoNature-atlas/blob/develop/atlas/static/custom/templates/personal-data.html.sample>`_ en ``custom/templates/personal-data.html`` (``cp custom/templates/personal-data.html.sample custom/templates/personal-data.html``), puis adapter le contenu du fichier ``custom/templates/personal-data.html`` à votre contexte 
 
 Si vous mettez à jour GeoNature-atlas suivez la procédure de MAJ décrite dans : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/installation.rst#mise-%C3%A0-jour-de-lapplication
 
-- Ajoutez l'extension unaccent à la base de données `CREATE EXTENSION IF NOT EXISTS unaccent SCHEMA "public";` (#531, #532)
+- Ajoutez l'extension unaccent à la base de données ``CREATE EXTENSION IF NOT EXISTS unaccent SCHEMA "public";`` (#531, #532)
 - Exécutez le script SQL de mise à jour de la BDD : https://github.com/PnX-SI/GeoNature-atlas/blob/master/data/update/update_1.6.1to1.6.2.sql
 
-Vous pouvez supprimer les paramètre suivants du fichier `settings.ini`
+Vous pouvez supprimer les paramètre suivants du fichier ``settings.ini``
 - use_ref_geo_gn2
 - install_taxonomie
 - communes_shp
