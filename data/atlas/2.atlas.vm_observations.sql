@@ -91,6 +91,7 @@ AS
   WHERE s.the_geom_point IS NOT NULL
     AND s.id_nomenclature_observation_status = synthese.get_id_nomenclature('STATUT_OBS', 'Pr')
     AND s.id_nomenclature_valid_status IN (
+      synthese.get_id_nomenclature('STATUT_VALID', '0'),
       synthese.get_id_nomenclature('STATUT_VALID', '1'),
       synthese.get_id_nomenclature('STATUT_VALID', '2')
     )
@@ -178,6 +179,7 @@ FROM synthese.synthese AS s
 WHERE s.the_geom_point IS NOT NULL
     AND s.id_nomenclature_observation_status = synthese.get_id_nomenclature('STATUT_OBS', 'Pr')
     AND s.id_nomenclature_valid_status IN (
+      synthese.get_id_nomenclature('STATUT_VALID', '0'),
       synthese.get_id_nomenclature('STATUT_VALID', '1'),
       synthese.get_id_nomenclature('STATUT_VALID', '2')
     )
