@@ -239,7 +239,7 @@ if ! database_exists $db_name
             done
 
         sudo sed -i "s/INSERT_ALTITUDE/${insert}/" /tmp/atlas/4.atlas.vm_altitudes.sql
-        sudo sed -i "s/WHERE ba.nom_attribut IN ('atlas_description', 'atlas_commentaire', 'atlas_milieu', 'atlas_chorologie')$/WHERE ba.nom_attribut  IN ($displayed_attr);/" /tmp/atlas/9.atlas.vm_cor_taxon_attribut.sql
+        sudo sed -i "s/WHERE ba.nom_attribut IN ('atlas_description', 'atlas_commentaire', 'atlas_milieu', 'atlas_chorologie')$/WHERE ba.nom_attribut  IN ($displayed_attr)/" /tmp/atlas/9.atlas.vm_cor_taxon_attribut.sql
 
         # FR: Execution des scripts sql de création des vm de l'atlas
         # EN: Run sql scripts : build atlas vm
@@ -257,7 +257,6 @@ if ! database_exists $db_name
             "11.atlas.vm_cor_taxon_organism.sql"
             "13.5.atlas.territory_stats.sql"
             "15.atlas.vm_bdc_statut.sql"
-            "20.grant.sql"
             "atlas.refresh_materialized_view_data.sql"
         )
         for script in "${scripts_sql[@]}"
