@@ -1,6 +1,38 @@
 #!/bin/bash
 SECONDS=0
 
+# DESC: Redirect output
+#       Send stdout and stderr in Terminal and a log file
+#       In Terminal replace "--> " by empty string
+#       In logfile replace "--> " by a separator line and remove color characters.
+# ARGS: $1 (required): Log file path.
+# OUTS: None
+# NOTE: Directories on log file path will be create if not exist.
+#       All lines with a carriage return "\r" will be removed from log file.
+#       In script use :
+#           `>&3` to redirect to original stdOut
+#           `>&4` to redirect to original stdErr
+# SOURCE: https://stackoverflow.com/a/20564208
+function redirectOutput() {
+    if [[ $# -lt 1 ]]; then
+        exitScript "Missing required argument to ${FUNCNAME[0]}()!" 2
+    fi
+    local log_file="${1}"
+    local log_file_dir="$(dirname "${log_file}")"
+    if [[ ! -d "${log_file_dir}" ]]; then
+        echo "Create log directory..."
+        mkdir -p "${log_file_dir}"
+    fi
+
+    exec 3>&1 4>&2 1>&>(sed -r "s/--> //g") 1>&2>&>(tee -a >(grep -v $'\r' | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g' | sed -r "s/--> /${sep}/g" > "$1"))
+}
+
+# FR: Suppression du fichier de log d'installation s'il existe déjà puis création de ce fichier vide.
+# EN: Delete the install log file if it already exists and create this empty file.
+#rm  -f ./log/install_db.log
+#touch ./log/install_db.log
+redirectOutput ./log/install_db.log
+
 # FR: S'assurer que le script n'est pas lancer en root (utilisation de whoami)
 # EN: Make sure the script is not runn with root (use whoami)
 if [[ "$(id -u)" == "0" ]]; then
@@ -10,10 +42,6 @@ fi
 
 # sudo ls pour demander le mot de passe une fois
 sudo ls
-
-if [[ ! -d 'log' ]]; then
-    mkdir log
-fi
 
 . atlas/configuration/settings.ini
 sudo mkdir /tmp/atlas
@@ -48,19 +76,12 @@ function test_settings() {
 
 test_settings
 
-# FR: Suppression du fichier de log d'installation s'il existe déjà puis création de ce fichier vide.
-# EN: Delete the install log file if it already exists and create this empty file.
-
-rm  -f ./log/install_db.log
-touch ./log/install_db.log
-
-
 # FR: Si la BDD existe, je verifie le parametre qui indique si je dois la supprimer ou non
 # EN: If the DB exists, I check the parameter that indicates whether I should delete it or not
 if database_exists $db_name; then
     if $drop_apps_db; then
         echo "Deleting DB..."
-        sudo -u postgres -s dropdb $db_name  &>> log/install_db.log
+        sudo -u postgres -s dropdb $db_name
     else
         echo "The database exists and the settings file says not to delete it."
     fi
@@ -72,37 +93,37 @@ if ! database_exists $db_name; then
     print_time
     echo "Creating DB..."
 
-    sudo -u postgres psql -c "CREATE USER $owner_atlas WITH PASSWORD '$owner_atlas_pass' "  &>> log/install_db.log
-    sudo -u postgres psql -c "CREATE USER $user_pg WITH PASSWORD '$user_pg_pass' "  &>> log/install_db.log
+    sudo -u postgres psql -c "CREATE USER $owner_atlas WITH PASSWORD '$owner_atlas_pass' "
+    sudo -u postgres psql -c "CREATE USER $user_pg WITH PASSWORD '$user_pg_pass' "
     sudo -u postgres -s createdb -O $owner_atlas $db_name
     echo "Adding postGIS and  pgSQL to DB"
-    sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgis;"  &>> log/install_db.log
-    sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog; COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';"  &>> log/install_db.log
+    sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgis;"
+    sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog; COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';"
     sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;" &>> log/install_db.log
-    sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS unaccent;"  &>> log/install_db.log
+    sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS unaccent;"
     # FR: Si j'utilise GeoNature ($geonature_source = True), alors je créé les connexions en FWD à la BDD GeoNature
     # EN: If I use GeoNature ($geonature_source = True), then I create the connections in FWD to the GeoNature DB
     if $geonature_source; then
         echo "Adding FDW and connection to the GeoNature parent DB"
-        sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgres_fdw;"  &>> log/install_db.log
-        sudo -u postgres -s psql -d $db_name -c "CREATE SERVER geonaturedbserver FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$db_source_host', dbname '$db_source_name', port '$db_source_port', fetch_size '$db_source_fetch_size');"  &>> log/install_db.log
-        sudo -u postgres -s psql -d $db_name -c "ALTER SERVER geonaturedbserver OWNER TO $owner_atlas;"  &>> log/install_db.log
-        sudo -u postgres -s psql -d $db_name -c "CREATE USER MAPPING FOR $owner_atlas SERVER geonaturedbserver OPTIONS (user '$atlas_source_user', password '$atlas_source_pass') ;"  &>> log/install_db.log
+        sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgres_fdw;"
+        sudo -u postgres -s psql -d $db_name -c "CREATE SERVER geonaturedbserver FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$db_source_host', dbname '$db_source_name', port '$db_source_port', fetch_size '$db_source_fetch_size');"
+        sudo -u postgres -s psql -d $db_name -c "ALTER SERVER geonaturedbserver OWNER TO $owner_atlas;"
+        sudo -u postgres -s psql -d $db_name -c "CREATE USER MAPPING FOR $owner_atlas SERVER geonaturedbserver OPTIONS (user '$atlas_source_user', password '$atlas_source_pass') ;"
     fi
 
     # FR: Création des schémas de la BDD
     # EN: Creating DB schemes
-    sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA atlas AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
-    sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA synthese AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
-    sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA utilisateurs AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
-    sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA gn_meta AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
+    sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA atlas AUTHORIZATION "$owner_atlas";"
+    sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA synthese AUTHORIZATION "$owner_atlas";"
+    sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA utilisateurs AUTHORIZATION "$owner_atlas";"
+    sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA gn_meta AUTHORIZATION "$owner_atlas";"
 
     if $geonature_source; then
         echo "Creating FDW from GN2"
         echo "--------------------" &>> log/install_db.log #en double non? TODO
         echo "Creating FDW from GN2" &>> log/install_db.log
         echo "--------------------" &>> log/install_db.log
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f data/gn2/atlas_gn2.sql  &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f data/gn2/atlas_gn2.sql
     fi
 
     ###########################
@@ -179,7 +200,7 @@ if ! database_exists $db_name; then
     # FR: Creation des tables filles en FWD
     # EN: Creation of daughter tables in FWD
     echo "Creating the connection to GeoNature for the taxonomy"
-    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f data/gn2/atlas_ref_taxonomie.sql  &>> log/install_db.log
+    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f data/gn2/atlas_ref_taxonomie.sql
 
 
     ###########################
@@ -191,7 +212,7 @@ if ! database_exists $db_name; then
     if $geonature_source; then
         sudo cp data/gn2/atlas_synthese.sql /tmp/atlas/atlas_synthese_extended.sql
         sudo sed -i "s/myuser;$/$owner_atlas;/" /tmp/atlas/atlas_synthese_extended.sql
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/atlas_synthese_extended.sql  &>> log/install_db.log
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/atlas_synthese_extended.sql
     # FR: Sinon je créé une table synthese.syntheseff avec 2 observations exemple
     # EN: Otherwise I created a table synthese.syntheseff with 2 observations example
     else
@@ -248,7 +269,7 @@ if ! database_exists $db_name; then
         export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port \
             -v type_territoire=$type_territoire \
             -v type_code=$type_code \
-            -f /tmp/atlas/${script}  &>> log/install_db.log
+            -f /tmp/atlas/${script}
         echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
     done
 
@@ -257,7 +278,7 @@ if ! database_exists $db_name; then
     # EN: Creation of the materialized view vm_meshes_observations (number of observations per mesh and per taxon)
     echo "[$(date +'%H:%M:%S')] Creating atlas.vm_observations_mailles..."
     time_temp=$SECONDS
-    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/13.atlas.vm_observations_mailles.sql  &>> log/install_db.log
+    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/13.atlas.vm_observations_mailles.sql
     echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
     # FR: Affectation de droits en lecture sur les VM à l'utilisateur de l'application ($user_pg)
