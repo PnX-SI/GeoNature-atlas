@@ -285,8 +285,6 @@ class AtlasConfig(Schema):
     # Defaults to False to have the best performance in production
     TEMPLATES_AUTO_RELOAD = fields.Boolean(load_default=False)
 
-    TYPE_TERRITOIRE_SHEET = fields.List(fields.String(), default=[])
-
     @validates_schema
     def validate_config(self, data, **kwargs):
         """
@@ -296,7 +294,7 @@ class AtlasConfig(Schema):
             raise ValidationError(
                 {"Le champ TAXHUB_URL doit être rempli si REDIMENSIONNEMENT_IMAGE = True"}
             )
-        
+
         #AFFICHAGE_DERNIERES_OBS et AFFICHAGE_TERRITOIRE_OBS ne peuvent pas être True en meme temps
         if data["AFFICHAGE_DERNIERES_OBS"] and data["AFFICHAGE_TERRITOIRE_OBS"]:
             raise ValidationError(
