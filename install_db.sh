@@ -82,6 +82,16 @@ if database_exists $db_name; then
     if $drop_apps_db; then
         echo "Deleting DB..."
         sudo -u postgres -s dropdb $db_name
+        drop_db_result=$?
+
+        if [[ ${drop_db_result} -ne 0 ]]; then
+            echo "If necessary, close all Postgresql conections on Atlas DB with:"
+            echo "sudo -u postgres psql -c \"SELECT pg_terminate_backend(pg_stat_activity.pid) " \
+                "FROM pg_stat_activity " \
+                "WHERE pg_stat_activity.datname = '${db_name}' " \
+                "AND pid <> pg_backend_pid() ;\""
+            exit 1
+        fi
     else
         echo "The database exists and the settings file says not to delete it."
     fi
