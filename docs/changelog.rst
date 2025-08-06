@@ -30,6 +30,8 @@ NOTES avant release :
 - Affichage des dates au format "court" et selon la langue du navigateur (#512 et #631 par @geobrun)
 - Ajout de la possibilité d'ajouter un lien externe et d'utiliser un picto sous forme d'image dans la barre de navigation latérale (#520 par @geobrun)
 - Compactage des informations dans les blocs de bas de page sur les fiches espèce (#601 par @bruhnild)
+- Amélioration de la "recherche par espèces" (#532 par @jpm-cbna)
+
 
 🐛 **Corrections**
 
