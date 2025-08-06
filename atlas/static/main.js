@@ -62,6 +62,9 @@ autocompleteSearch = function(inputID, urlDestination, nbProposal) {
       var url = ui.item.value;
       if (urlDestination == "espece") {
         location.href = configuration.URL_APPLICATION + language  + "/espece/" + url;
+        let splited_label = ui.item.label.split(' = ');
+        let label_for_input = splited_label[0] != '' ? splited_label[0] : splited_label[1];
+        $(inputID).val(label_for_input.replace(/<[^>]*>?/gm, ''));
       } else if (urlDestination == "commune") {
         location.href = configuration.URL_APPLICATION + language  + "/commune/" + url;
       } else {
