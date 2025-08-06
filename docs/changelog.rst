@@ -8,11 +8,6 @@ CHANGELOG
 - Nécessite Debian 11 ou 12.
 - Compatible avec GeoNature 2.15.0 (ou plus) et TaxHub 2.0.0 (ou plus). Fonctionne aussi avec les versions précédentes de GeoNature et TaxHub mais sans filtrer les éventuels médias supprimés.
 
-NOTES avant release :
-
-- Voir ce qui peut être mergé parmi https://github.com/PnX-SI/GeoNature-atlas/pulls?q=is%3Aopen+is%3Apr+milestone%3A1.7.0 ?
-- Vérifier et tester le SQL pour update la BDD (update_1.6.1to1.7.0.sql)
-
 🚀 **Nouveautés**
 
 - Ajout du support de Debian 12. Suppression du support de Debian 9 et 10 (#582 par @juggler31, @marcantoinedupre, @submarcos)
@@ -22,17 +17,22 @@ NOTES avant release :
   - Suppression du support des installations sans TaxHub (#582 par @amandine-sahl)
   - Suppression des installations sans ``ref_geo`` (par @TheoLechemia)
 
-- Refonte de l'integration d'outils de suivi de fréquentation (Google analytics, Matomo ou autre) en lien avec la mise en conformité RGPD (#527 @juggler31, #499 par @andriacap)
+- Refonte de l'intégration d'outils de suivi de fréquentation (Google analytics, Matomo ou autre) en lien avec la mise en conformité RGPD (#527 @juggler31, #499 par @andriacap)
 - Ajout de la librairie Orejime pour recueillir le consentement de l'utilisateur sur l'utilisation des cookies (#527 @juggler31)
-- Ajout de la possibilité d'ajouter un lien dans le pied de page (footer) vers une modale précisant la politique des données personnelles, activable ou non avec le paramètre `AFFICHAGE_RGPD` (#527 par @juggler31)
+- Ajout de la possibilité d'ajouter un lien dans le pied de page (footer) vers une modale précisant la politique des données personnelles, activable ou non avec le paramètre ``AFFICHAGE_RGPD`` (#527 par @juggler31)
 - Ajout du support des cd_nom négatifs sur les fiches espèces et les API (#616 par @andriacap)
 - Ajout des paramètres ``AFFICHAGE_GRAPH_PHENOLOGIE`` et ``AFFICHAGE_GRAPH_ALTITUDES`` pour afficher/masquer les graphiques de phénologie et d'altitude sur les fiches espèces (#568 par @gildeluermoz)
-- Affichage des dates au format "court" et selon la langue du navigateur (#512 et #631 par @geobrun)
+- Affichage des dates au format "court" et selon la langue du navigateur (#512 et #631 par @geobrun et @xavyeah39)
 - Ajout de la possibilité d'ajouter un lien externe et d'utiliser un picto sous forme d'image dans la barre de navigation latérale (#520 par @geobrun)
 - Compactage des informations dans les blocs de bas de page sur les fiches espèce (#601 par @bruhnild)
-- Amélioration de la "recherche par espèces" (#532 par @jpm-cbna)
-- Possibilité de lire des contenus de taxhub écrit en markdown (#415 par @jpm-cbna)
-
+- Amélioration du responsive design (#609 par @bruhnild)
+- Amélioration de la recherche par espèces, insensible aux accents et mieux formatée (#532 par @jpm-cbna)
+- Suppression de l'affichage des balises ``<i></i>`` dans les zones de recherche de taxon (#405 par @jpm-cbna)
+- Amélioration de la recherche par commune : mots tronqués, sans accent (#531 par @jpm-cbna)
+- Prise en charge du formatage markdown des contenus des attributs de description des espèces provenant de TaxHub (#413 par @jpm-cbna)
+- Amélioration des performances des requêtes des fiches espèces en forçant l'utilisation des index de la BDD (#516 par @jpm-cbna)
+- Amélioration du chargement des mailles des observations sur les fiches espèces en optimisant ``atlas.vm_observations_mailles`` (#518 par @jpm-cbna et @juggler31)
+- Mise à jour des dépendances Python (Flask version 2 à 3, sqlalchemy 1 à 2, marshmallow 3 à 4...)
 
 🐛 **Corrections**
 
@@ -43,12 +43,8 @@ NOTES avant release :
 - Correction du lien vers le statut INPN des taxons protégés sur la page organisme (#578 par @marcantoinedupre)
 - Correcion du "lazy-loading" des images sur les page HTML (#590 par @submarcos)
 - Suppression de la possibilité de masquer l'URL de TaxHub quand on récupère un média et du paramètre associé ``REMOTE_MEDIAS_PATH`` (#642 par @TheoLechemia)
-
-🐛 **Optimisations / evolutions**
-
-- Amélioration des performances des requêtes des fiches espèces en forçant l'utilisation des index de la BDD (#516 par @jpm-cbna)
-- Amélioration du chargement des mailles des observations sur les fiches espèces en optimisant ``atlas.vm_observations_mailles`` (#518 par @jpm-cbna et @juggler31)
-- Amélioration de la recherche par commune : mots tronqués, sans accent (#531 par @jpm-cbna)
+- Suppression d'erreurs javascript sur la page d'accueil (#403 par @jpm-cbna)
+- Prise en charge complète du paramètre ``SPLIT_NOM_VERN`` (#514 par @xavyeah39)
 
 👨‍💻 **Développement**
 
@@ -57,19 +53,19 @@ NOTES avant release :
 
 ⚠️ **Notes de version**
 
-- Suppression de la possibilité d'installer GeoNature-atlas à partir de couches shapefile. Tous les zonages et les mailles sont basés sur le ``ref_geo`` fourni par GeoNature ou TaxHub. Il est maintenant obligatoire de disposer de TaxHub (dans GeoNature ou à part) pour déployer GeoNature-atlas. Alimenter GeoNature-atlas avec GeoNature reste optionnel.
-- Veuillez vous référer à la documentation concernant le RGPD et le consentement du recueil de cookies : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/cookies_rgpd.rst . Ces fonctionnalités sont utiles uniquement si vous avez mis en place le recueil de cookies nécessitant le consentement de l'utilisateur (statistiques de fréquentation avec Google Analytics par exemple). 
-- Le paramètre ``ID_GOOGLE_ANALYTICS`` et l'intégration native d'un script Google analytics sont dépréciés. Se référer à la documentation sur le RGPD ci-dessus.
 - Il est désormais possible d'installer ou mettre à jour GeoNature uniquement sur Debian 11 et 12.
+- Suppression de la possibilité d'installer GeoNature-atlas à partir de couches shapefile. Tous les zonages et les mailles sont basés sur le ``ref_geo`` fourni par GeoNature ou TaxHub. Il est maintenant obligatoire de disposer de TaxHub (dans GeoNature ou à part) pour déployer GeoNature-atlas. Alimenter GeoNature-atlas avec GeoNature reste optionnel.
+- Veuillez vous référer à la documentation concernant le RGPD et le consentement du recueil de cookies : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/cookies_rgpd.rst. Ces fonctionnalités sont utiles uniquement si vous avez mis en place le recueil de cookies nécessitant le consentement de l'utilisateur (statistiques de fréquentation avec Google Analytics par exemple). 
+- Le paramètre ``ID_GOOGLE_ANALYTICS`` et l'intégration native d'un script Google analytics sont dépréciés. Se référer à la documentation sur le RGPD ci-dessus si vous suivez la fréquentation de votre GeoNature-atlas avec Google Analytics.
 - Le paramètre ``REMOTE_MEDIAS_PATH`` est deprecié, seul ``REMOTE_MEDIAS_URL`` permet de construire l'URL des médias "locaux" (dont le champs ``chemin`` est rempli).
-- Pour ajouter un lien vers la politique de gestions des données personnelles dans le pied de page (footer), répercuter les `évolutions <https://github.com/PnX-SI/GeoNature-atlas/pull/574/files#diff-05964f85b0bb6f2d285f98fe1e3a56d9343b8a740ddd8c7e6ac85cfd611f62bb>`_ du template de footer dans votre fichier ``custom/templates/footer.html``, copier le fichier `custom/templates/personal-data.html.sample <https://github.com/PnX-SI/GeoNature-atlas/blob/develop/atlas/static/custom/templates/personal-data.html.sample>`_ en ``custom/templates/personal-data.html`` (``cp custom/templates/personal-data.html.sample custom/templates/personal-data.html``), puis adapter le contenu du fichier ``custom/templates/personal-data.html`` à votre contexte 
+- Pour ajouter un lien vers la politique de gestion des données personnelles dans le pied de page (footer), répercuter les `évolutions <https://github.com/PnX-SI/GeoNature-atlas/pull/574/files#diff-05964f85b0bb6f2d285f98fe1e3a56d9343b8a740ddd8c7e6ac85cfd611f62bb>`_ du template de footer dans votre fichier ``custom/templates/footer.html``, copier le fichier `custom/templates/personal-data.html.sample <https://github.com/PnX-SI/GeoNature-atlas/blob/develop/atlas/static/custom/templates/personal-data.html.sample>`_ en ``custom/templates/personal-data.html`` (``cp custom/templates/personal-data.html.sample custom/templates/personal-data.html``), puis adapter le contenu du fichier ``custom/templates/personal-data.html`` à votre contexte 
 
-Si vous mettez à jour GeoNature-atlas suivez la procédure de MAJ décrite dans : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/installation.rst#mise-%C3%A0-jour-de-lapplication
+Si vous mettez à jour GeoNature-atlas, suivez la procédure classique de MAJ décrite dans : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/installation.rst#mise-%C3%A0-jour-de-lapplication
 
 - Ajoutez l'extension ``unaccent`` à la base de données ``CREATE EXTENSION IF NOT EXISTS unaccent SCHEMA "public";`` (#531, #532)
-- Exécutez le script SQL de mise à jour de la BDD : https://github.com/PnX-SI/GeoNature-atlas/blob/master/data/update/update_1.6.1to1.7.0.sql (Attention à remplacer l'utilisateur `geonatatlas` dans les GRANT à la fin du fichier si vous avez changer l'utilisateur lecteur `user_pg` dans le fichier `settings.ini`)
+- Exécutez le script SQL de mise à jour de la BDD : https://github.com/PnX-SI/GeoNature-atlas/blob/master/data/update/update_1.6.1to1.7.0.sql (Attention à remplacer l'utilisateur ``geonatatlas`` dans les GRANT à la fin du fichier si vous avez changé l'utilisateur lecteur ``user_pg`` dans le fichier ``settings.ini``)
 
-Vous pouvez supprimer les paramètre suivants du fichier ``settings.ini`` :
+Vous pouvez supprimer les paramètres suivants du fichier ``settings.ini`` :
 
 - ``use_ref_geo_gn2``
 - ``install_taxonomie``
