@@ -202,10 +202,6 @@ LIMIT_FICHE_LISTE_HIERARCHY = 28
 # Cette url sera cachée aux utilisateurs de l'atlas
 REMOTE_MEDIAS_URL = "http://mondomaine.fr/taxhub/"
 
-# Racine du chemin des fichiers médias stockés dans le champ "chemin" de "atlas.vm_medias"
-# Seule cette partie de l'url sera visible pour les utilisateurs de l'atlas
-REMOTE_MEDIAS_PATH = "static/medias/"
-
 # URL de TaxHub (pour génération à la volée des vignettes des images).
 # Si le service Taxhub n'est pas utilisé, commenter la variable
 REDIMENSIONNEMENT_IMAGE = False
