@@ -70,7 +70,6 @@ if current_app.config["MULTILINGUAL"]:
             session["language"] = g.lang_code
 
 
-
 # Activating organisms sheets routes
 if current_app.config["ORGANISM_MODULE"]:
 
