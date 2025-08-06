@@ -70,10 +70,7 @@
                     </div>
                 </div>
                 {% endif %}
-                
-                {% if configuration.EXTENDED_AREAS %}
-                    {% include 'templates/core/extended_areas_search.html' %}
-                {% endif %}
+
             </div>
         </div>
 

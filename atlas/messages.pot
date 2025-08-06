@@ -132,13 +132,6 @@ msgstr ""
 msgid "last.obs.zone"
 msgstr ""
 
-#: templates/areaSheet/surrounding_areas.html:10
-msgid "associate.zone"
-msgstr ""
-
-#: templates/areaSheet/surrounding_areas.html:23
-msgid "check.area.sheet"
-msgstr ""
 
 #: templates/core/advanced_search.html:4
 #: templates/core/advanced_search.html:382 templates/core/sideBar.html:30
@@ -192,9 +185,6 @@ msgstr ""
 msgid "check.species.sheet"
 msgstr ""
 
-#: templates/core/extended_areas_search.html:13
-msgid "search.other.zones.type"
-msgstr ""
 
 #: templates/core/listTaxons.html:14
 msgid "filter.species"

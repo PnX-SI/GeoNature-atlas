@@ -267,8 +267,6 @@ def ficheCommune(insee):
             connection, current_app.config["NB_LAST_OBS"], insee
         )
 
-    surroundingAreas = []
-
     observers = vmObservationsRepository.getObserversCommunes(connection, insee)
 
     session.close()
@@ -277,7 +275,6 @@ def ficheCommune(insee):
     return render_template(
         "templates/areaSheet/_main.html",
         sheetType="commune",
-        surroundingAreas=surroundingAreas,
         listTaxons=listTaxons,
         areaInfos=commune,
         observations=observations,
