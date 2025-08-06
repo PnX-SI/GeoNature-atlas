@@ -139,23 +139,26 @@ Par ailleurs, si vous n'utilisez pas GeoNature, il vous faut installer TaxHub (h
 
 Une fois TaxHub installé, il est necessaire d'ajouter des migrations alembic ajouter les mailles necessaire à l'atlas.
 
-```
-# se mettre dans le venv de TaxHub
 
-# mettre à jour le schéma ref_geo
-flask db upgrade ref_geo@head
-source <chemin_vers_repertoire_taxhub>/venv/bin/activate
-# ajout des mailles 1
-flask db upgrade ref_geo_inpn_grids_1@head
-# ajout des mailles 5
-flask db upgrade ref_geo_inpn_grids_5@head
-# ajout des mailles 10
-flask db upgrade ref_geo_inpn_grids_10@head
-# ajout des communes
-flask db upgrade ref_geo_fr_municipalities@head
-```
+::
 
-Vous devrez ensuite ajouter une couche qui correspond auX limiteS de votre territoire dans le schéma `ref_geo` de la base qui a été créé avec TaxHub.
+    
+    # se mettre dans le venv de TaxHub
+
+    # mettre à jour le schéma ref_geo
+    flask db upgrade ref_geo@head
+    source <chemin_vers_repertoire_taxhub>/venv/bin/activate
+    # ajout des mailles 1
+    flask db upgrade ref_geo_inpn_grids_1@head
+    # ajout des mailles 5
+    flask db upgrade ref_geo_inpn_grids_5@head
+    # ajout des mailles 10
+    flask db upgrade ref_geo_inpn_grids_10@head
+    # ajout des communes
+    flask db upgrade ref_geo_fr_municipalities@head
+
+
+Vous devrez ensuite ajouter une couche qui correspond aux limites de votre territoire dans le schéma `ref_geo` de la base qui a été créé avec TaxHub.
 Pour cela créer une ligne dans la table `ref_geo.bib_area_type` qui correspond au "type d'aire , puis une ligne dans `ref_geo.l_areas`. Le `type_name` de la ligne créé dans `ref_geo.bib_area_type` sera a mettre dans le paramètre `type_territoire` du fichier `settings.ini`
 
 

@@ -2,11 +2,6 @@
 CHANGELOG
 =========
 
-2.0.0 (unreleased)
-------------------
-
-- Nécessitera GeoNature 2.16.0 (ou plus) (à cause du nouveau champs ``description`` de ``ref_geo.l_areas``)
-
 1.7.0 (unreleased)
 ------------------
 
@@ -69,7 +64,7 @@ NOTES avant release :
 Si vous mettez à jour GeoNature-atlas suivez la procédure de MAJ décrite dans : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/installation.rst#mise-%C3%A0-jour-de-lapplication
 
 - Ajoutez l'extension ``unaccent`` à la base de données ``CREATE EXTENSION IF NOT EXISTS unaccent SCHEMA "public";`` (#531, #532)
-- Exécutez le script SQL de mise à jour de la BDD : https://github.com/PnX-SI/GeoNature-atlas/blob/master/data/update/update_1.6.1to1.7.0.sql
+- Exécutez le script SQL de mise à jour de la BDD : https://github.com/PnX-SI/GeoNature-atlas/blob/master/data/update/update_1.6.1to1.7.0.sql (Attention à remplacer l'utilisateur `geonatatlas` dans les GRANT à la fin du fichier si vous avez changer l'utilisateur lecteur `user_pg` dans le fichier `settings.ini`)
 
 Vous pouvez supprimer les paramètre suivants du fichier ``settings.ini`` :
 
