@@ -12,7 +12,7 @@ from werkzeug.wrappers import Response
 from atlas.configuration.config_parser import valid_config_from_dict
 from atlas.configuration.config_schema import AtlasConfig, SecretSchemaConf
 from atlas.env import atlas_static_folder, atlas_template_folder, atlas_config_file_path, db, cache
-from atlas.utils import get_tranlated_labels
+from atlas.utils import get_tranlated_labels, get_locale
 
 compress = Compress()
 
@@ -35,15 +35,8 @@ def create_app():
 
     db.init_app(app)
     cache.init_app(app)
-    babel = Babel(app)
+    babel = Babel(app, locale_selector=get_locale)
     compress.init_app(app)
-
-    @babel.localeselector
-    def get_locale():
-        # if MULTILINGUAL, valid language is in g via before_request_hook
-        if app.config["MULTILINGUAL"]:
-            return g.lang_code
-        return app.config["DEFAULT_LANGUAGE"]
 
     app.debug = app.config.get("modeDebug")
     app.config["SECRET_KEY"] = app.config["SECRET_KEY"]

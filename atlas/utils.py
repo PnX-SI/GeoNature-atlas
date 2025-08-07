@@ -4,7 +4,7 @@ from sqlalchemy import MetaData
 from sqlalchemy import create_engine
 from sqlalchemy.pool import QueuePool
 
-from flask import current_app
+from flask import current_app, g
 from flask_babel import gettext
 
 # engine = create_engine(
@@ -86,6 +86,12 @@ class GenericTable:
 
         return {item: _serializer(getattr(data, item)) for item, _serializer in fprops}
 
+
+def get_locale():
+    # if MULTILINGUAL, valid language is in g via before_request_hook
+    if current_app.config["MULTILINGUAL"]:
+        return g.lang_code
+    return current_app.config["DEFAULT_LANGUAGE"]
 
 def get_tranlated_labels():
     """
