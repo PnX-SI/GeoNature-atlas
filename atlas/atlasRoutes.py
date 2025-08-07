@@ -34,45 +34,39 @@ from atlas.modeles.repositories import (
 )
 
 
-# Adding functions for multilingual url process if MULTILINGUAL = True
-main = Blueprint("main", __name__)  # , url_prefix='/<lang_code>')
-if current_app.config["MULTILINGUAL"]:
+main = Blueprint("main", __name__) 
 
-    @main.url_defaults
-    def add_language_code(endpoint, values):
-        if "lang_code" in values or not g.get("lang_code", None):
-            return
-        # If endpoint expects lang_code, send it forward
-        if current_app.url_map.is_endpoint_expecting(endpoint, "lang_code"):
-            values["lang_code"] = g.lang_code
+@main.url_defaults
+def add_language_code(endpoint, values):
+    """
+    Auto add lang_code to all url_for
+    """
+    if "lang_code" in values:
+        return
+    #If endpoint expects lang_code, send it forward
+    if current_app.url_map.is_endpoint_expecting(endpoint, "lang_code"):
+        values["lang_code"] = g.lang_code
 
-    @main.url_value_preprocessor
-    def pull_lang_code(endpoint, values):
-        if values is not None:
-            # If no language code has been set, get the best language from the browser settings
-            default_lang = request.accept_languages.best_match(current_app.config["LANGUAGES"])
-            g.lang_code = values.pop("lang_code", default_lang)
 
-    @main.before_request
-    def redirect_default_language():
-        if g.lang_code is None:
-            if "language" in session:
-                default_lang_code = session["language"]
-            else:
-                default_lang_code = request.accept_languages.best_match(
-                    current_app.config["AVAILABLE_LANGUAGES"].keys(),
-                    current_app.config["DEFAULT_LANGUAGE"],
-                )
-            view_args = request.view_args
-            view_args["lang_code"] = default_lang_code
-            return redirect(url_for(request.endpoint, **view_args))
-        else:
-            session["language"] = g.lang_code
+@main.url_value_preprocessor
+def pull_lang_code(endpoint, values):
+    """
+    Catch the lang_code in URL to set it globally
+    """
+    # language can be set in url param (values) or in query string
+    language_from_url = values.pop("lang_code", request.args.get("lang_code"))
+    if language_from_url and language_from_url in current_app.config["LANGUAGES"]:
+        g.lang_code = language_from_url
+    else:
+        # If no language code has been set, get the best language from the browser settings
+        g.lang_code = request.accept_languages.best_match(current_app.config["LANGUAGES"])
+
 
 
 # Activating organisms sheets routes
 if current_app.config["ORGANISM_MODULE"]:
 
+    @main.route("/<lang_code>/organism/<int:id_organism>", methods=["GET", "POST"])
     @main.route("/organism/<int:id_organism>", methods=["GET", "POST"])
     def ficheOrganism(id_organism):
         db_session = db.session
@@ -115,6 +109,7 @@ if current_app.config["ORGANISM_MODULE"]:
         )
 
 
+@main.route("/<lang_code>", methods=["GET", "POST"])
 @main.route("/", methods=["GET", "POST"])
 def index():
     session = db.session
@@ -178,7 +173,7 @@ def index():
         personal_data=personal_data,
     )
 
-
+@main.route("/<lang_code>/espece/<int(signed=True):cd_nom>", methods=["GET", "POST"])
 @main.route("/espece/<int(signed=True):cd_nom>", methods=["GET", "POST"])
 def ficheEspece(cd_nom):
     db_session = db.session
@@ -250,6 +245,7 @@ def ficheEspece(cd_nom):
     )
 
 
+@main.route("/<lang_code>/commune/<insee>", methods=["GET", "POST"])
 @main.route("/commune/<insee>", methods=["GET", "POST"])
 def ficheCommune(insee):
     session = db.session
@@ -283,6 +279,7 @@ def ficheCommune(insee):
     )
 
 
+@main.route("/<lang_code>/liste/<int(signed=True):cd_ref>", methods=["GET", "POST"])
 @main.route("/liste/<int(signed=True):cd_ref>", methods=["GET", "POST"])
 def ficheRangTaxonomie(cd_ref):
     session = db.session
@@ -306,6 +303,7 @@ def ficheRangTaxonomie(cd_ref):
     )
 
 
+@main.route("/<lang_code>/groupe/<groupe>", methods=["GET", "POST"])
 @main.route("/groupe/<groupe>", methods=["GET", "POST"])
 def ficheGroupe(groupe):
     session = db.session
@@ -328,6 +326,7 @@ def ficheGroupe(groupe):
     )
 
 
+@main.route("/<lang_code>/photos", methods=["GET", "POST"])
 @main.route("/photos", methods=["GET", "POST"])
 def photos():
     session = db.session
@@ -342,11 +341,13 @@ def photos():
 
 if current_app.config["AFFICHAGE_RECHERCHE_AVANCEE"]:
 
+    @main.route("/<lang_code>/recherche", methods=["GET"])
     @main.route("/recherche", methods=["GET"])
     def advanced_search():
         return render_template("templates/core/advanced_search.html")
 
 
+@main.route("/<lang_code>/<page>", methods=["GET", "POST"])
 @main.route("/<page>", methods=["GET", "POST"])
 def get_staticpages(page):
     session = db.session
