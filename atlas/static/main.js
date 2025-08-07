@@ -155,7 +155,6 @@ if (configuration.OREJIME_APPS.length > 0) {
         mustNotice: false,
         lang: configuration.DEFAULT_LANGUAGE,
         logo: false,
-        debug: configuration.modeDebug,
         apps: configuration.OREJIME_APPS,
         categories: configuration.OREJIME_CATEGORIES
     }

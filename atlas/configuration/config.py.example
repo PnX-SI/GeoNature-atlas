@@ -4,13 +4,9 @@
 ## Exemple de fichier de configuration ##
 #########################################
 
-# Mettre l'application en mode debug ou pas
-modeDebug = False
 
-# Connexion de l'application à la BDD
-# Remplacer user, monpassachanger, IPADRESSE (localhost si la BDD est sur le même serveur que l'application),
-# eventuellement le port de la BDD et le nom de la BDD avec l'utilisateur qui a des droits de lecture sur les vues de l'atlas (user_pg dans settings.ini)
-SQLALCHEMY_DATABASE_URI = "postgresql://user:monpassachanger@IPADRESSE:5432/databaseName"
+# Connexion de l'application à la BDD (avec l'utilisateur `user_pg` renseigné dans le `settings.ini`)
+SQLALCHEMY_DATABASE_URI = "postgresql://geonatatlas:monpassachanger@localhost:5432/geonatureatlas"
 
 # Port sur lequel tourne le serveur gunicorn
 GUNICORN_PORT = 8080
@@ -32,7 +28,7 @@ NOM_APPLICATION = "Nom de l application"
 
 # URL de l'application depuis la racine du domaine
 # ex "/atlas" pour une URL: http://mon-domaine/atlas OU "" si l'application est accessible à la racine du domaine
-URL_APPLICATION = ""
+URL_APPLICATION = "/atlas"
 
 #################################
 #################################
@@ -198,16 +194,17 @@ LIMIT_RANG_TAXONOMIQUE_HIERARCHIE = 13
 # On prend alors tout ce qui est inferieur ou egal a l'espece pour faire des fiches et ce qui est superieur pour les listes
 LIMIT_FICHE_LISTE_HIERARCHY = 28
 
-# URL d'accès aux photos et autres médias (URL racine). Par exemple l'url d'accès à Taxhub
-# Cette url sera cachée aux utilisateurs de l'atlas
-REMOTE_MEDIAS_URL = "http://mondomaine.fr/taxhub/"
+# URL d'accès aux photos et autres médias (URL racine). Dans la vm_medias, il est uniquement stocké le nom du fichier. Il est donc necessaire de préciser l'URL de stockage des médias, pour construire le chemin complet d'accès à l'image. Par exemple l'url d'accès à Taxhub.
+# Si vous utilisez GeoNature: REMOTE_MEDIAS_URL = "https://<URL_GEONATURE>/api/media/taxhub/"
+REMOTE_MEDIAS_URL = "https://<URL_GEONATURE>/api/media/taxhub/"
 
 # URL de TaxHub (pour génération à la volée des vignettes des images).
 # Si le service Taxhub n'est pas utilisé, commenter la variable
-REDIMENSIONNEMENT_IMAGE = False
+REDIMENSIONNEMENT_IMAGE = True
 
-# si REDIMENSIONNEMENT_IMAGE = True, indiquer l'URL de TaxHub
-TAXHUB_URL = "http://mondomaine.fr/taxhub"
+# URL de Taxhub : necessaire pour le redimensionnement des images
+# Si vous utilisez GeoNature: TAXHUB_URL "https://<URL_GEONATURE>/api/taxhub"
+TAXHUB_URL = "https://<URL_GEONATURE>/api/taxhub"
 
 #### ID DES ATTRIBUTS DESCRIPTIFS DES TAXONS DE LA TABLE vm_cor_taxon_attribut
 ATTR_DESC = 100

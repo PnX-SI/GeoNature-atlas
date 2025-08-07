@@ -38,7 +38,6 @@ def create_app():
     babel = Babel(app, locale_selector=get_locale)
     compress.init_app(app)
 
-    app.debug = app.config.get("modeDebug")
     app.config["SECRET_KEY"] = app.config["SECRET_KEY"]
     with app.app_context() as context:
         from atlas.atlasRoutes import main as main_blueprint
