@@ -349,7 +349,7 @@ def getLastDiscoveries(connection):
             "lb_nom": r.lb_nom,
             "id_media": r.id_media,
             "group2_inpn": utils.deleteAccent(r.group2_inpn),
-            "media_path": r.chemin if r.chemin is not None else r.url,
+            "media_path": utils.findPath(r),
         }
         lastDiscoveriesList.append(temp)
     return lastDiscoveriesList
