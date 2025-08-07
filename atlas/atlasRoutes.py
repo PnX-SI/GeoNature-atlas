@@ -37,16 +37,17 @@ from atlas.modeles.repositories import (
 main = Blueprint("main", __name__)
 
 
-@main.url_defaults
-def add_language_code(endpoint, values):
-    """
-    Auto add lang_code to all url_for
-    """
-    if "lang_code" in values:
-        return
-    # If endpoint expects lang_code, send it forward
-    if current_app.url_map.is_endpoint_expecting(endpoint, "lang_code"):
-        values["lang_code"] = g.lang_code
+if current_app.config["MULTILINGUAL"]:
+    @main.url_defaults
+    def add_language_code(endpoint, values):
+        """
+        Auto add lang_code to all url_for
+        """
+        if "lang_code" in values:
+            return
+        # If endpoint expects lang_code, send it forward
+        if current_app.url_map.is_endpoint_expecting(endpoint, "lang_code"):
+            values["lang_code"] = g.lang_code
 
 
 @main.url_value_preprocessor
