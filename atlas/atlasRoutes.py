@@ -34,7 +34,8 @@ from atlas.modeles.repositories import (
 )
 
 
-main = Blueprint("main", __name__) 
+main = Blueprint("main", __name__)
+
 
 @main.url_defaults
 def add_language_code(endpoint, values):
@@ -43,7 +44,7 @@ def add_language_code(endpoint, values):
     """
     if "lang_code" in values:
         return
-    #If endpoint expects lang_code, send it forward
+    # If endpoint expects lang_code, send it forward
     if current_app.url_map.is_endpoint_expecting(endpoint, "lang_code"):
         values["lang_code"] = g.lang_code
 
@@ -60,7 +61,6 @@ def pull_lang_code(endpoint, values):
     else:
         # If no language code has been set, get the best language from the browser settings
         g.lang_code = request.accept_languages.best_match(current_app.config["LANGUAGES"])
-
 
 
 # Activating organisms sheets routes
@@ -172,6 +172,7 @@ def index():
         lastDiscoveries=lastDiscoveries,
         personal_data=personal_data,
     )
+
 
 @main.route("/<lang_code>/espece/<int(signed=True):cd_nom>", methods=["GET", "POST"])
 @main.route("/espece/<int(signed=True):cd_nom>", methods=["GET", "POST"])

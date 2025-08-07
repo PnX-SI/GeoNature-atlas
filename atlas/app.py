@@ -41,6 +41,7 @@ def create_app():
     app.config["SECRET_KEY"] = app.config["SECRET_KEY"]
     with app.app_context() as context:
         from atlas.atlasRoutes import main as main_blueprint
+
         app.register_blueprint(main_blueprint)
 
         from atlas.atlasAPI import api

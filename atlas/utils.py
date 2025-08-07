@@ -93,6 +93,7 @@ def get_locale():
         return g.lang_code
     return current_app.config["DEFAULT_LANGUAGE"]
 
+
 def get_tranlated_labels():
     """
     Return a dict of translated labels regarding the context of the app (multiple areas or not)
