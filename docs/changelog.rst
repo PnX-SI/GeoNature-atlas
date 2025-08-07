@@ -23,6 +23,7 @@ CHANGELOG
 - Ajout du support des cd_nom négatifs sur les fiches espèces et les API (#616 par @andriacap)
 - Ajout des paramètres ``AFFICHAGE_GRAPH_PHENOLOGIE`` et ``AFFICHAGE_GRAPH_ALTITUDES`` pour afficher/masquer les graphiques de phénologie et d'altitude sur les fiches espèces (#568 par @gildeluermoz)
 - Affichage des dates au format "court" et selon la langue du navigateur (#512 et #631 par @geobrun et @xavyeah39)
+- Possibilité de personnaliser les attributs TaxHub du bloc "Informations espèce" sur les fiches espèces (#412 par @jpm-cbna)
 - Ajout de la possibilité d'ajouter un lien externe et d'utiliser un picto sous forme d'image dans la barre de navigation latérale (#520 par @geobrun)
 - Compactage des informations dans les blocs de bas de page sur les fiches espèce (#601 par @bruhnild)
 - Amélioration du responsive design (#609 par @bruhnild)
@@ -32,7 +33,8 @@ CHANGELOG
 - Prise en charge du formatage markdown des contenus des attributs de description des espèces provenant de TaxHub (#413 par @jpm-cbna)
 - Amélioration des performances des requêtes des fiches espèces en forçant l'utilisation des index de la BDD (#516 par @jpm-cbna)
 - Amélioration du chargement des mailles des observations sur les fiches espèces en optimisant ``atlas.vm_observations_mailles`` (#518 par @jpm-cbna et @juggler31)
-- Mise à jour des dépendances Python (Flask version 2 à 3, sqlalchemy 1 à 2, marshmallow 3 à 4...)
+- Mise à jour des dépendances Python (Flask version 2 à 3, marshmallow 3 à 4...)
+- Possibilité de définir l'option ``fetch_size`` des connexions de BDD en Foreign data wrapper (#657 par @jpm-cbna)
 
 🐛 **Corrections**
 
@@ -50,6 +52,7 @@ CHANGELOG
 
 - Ajout d'un Makefile afin de faciliter les développements (#576 par @juggler31)
 - Ajout de la possibilité de créer des images Docker sur un fork du dépôt (#585 par @submarcos)
+- Correction du fichier ``.gitignore`` (#554 par @sfermigier)
 
 ⚠️ **Notes de version**
 
