@@ -9,27 +9,23 @@ from atlas.modeles import utils
 from atlas.env import db
 from atlas.utils import GenericTable
 from atlas.modeles.repositories import vmMedias
+from atlas.modeles.entities.vmObservations import VmObservations
 
 currentYear = datetime.now().year
-cached_vm_observation = None
 
 
 def searchObservationsChilds(session, cd_ref):
-    global cached_vm_observation
-    # on met en cache le GenericTable (lourd en traitement)
-    if cached_vm_observation is None:
-        cached_vm_observation = GenericTable("vm_observations", "atlas", db.engine)
 
     subquery = session.query(func.atlas.find_all_taxons_childs(cd_ref))
-    query = session.query(cached_vm_observation.tableDef).filter(
+    query = session.query(VmObservations).filter(
         or_(
-            cached_vm_observation.tableDef.c.cd_ref.in_(subquery),
-            cached_vm_observation.tableDef.c.cd_ref == cd_ref,
+            VmObservations.cd_ref.in_(subquery),
+            VmObservations.cd_ref == cd_ref,
         )
     )
     observations = query.all()
-    obsList = list()
-    serialize, db_cols = cached_vm_observation.get_serialized_columns()
+    # obsList = list()
+    # serialize, db_cols = cached_vm_observation.get_serialized_columns()
 
     # features = [
     #     Feature(
@@ -42,10 +38,11 @@ def searchObservationsChilds(session, cd_ref):
     #     for o in observations:
     # ]
     features = []
-    columns = [c.name for c in db_cols if c.name != "geojson_point"]
+    # columns = [c.name for c in db_cols if c.name != "geojson_point"]
     for o in observations:
+        print(dir(o))
         year = o.dateobs.year if o.dateobs else None
-        properties = cached_vm_observation.as_dict(o, columns=columns)
+        properties = o.as_dict()
         properties["year"] = year
         feature = Feature(
             id=o.id_observation,
@@ -88,7 +85,7 @@ def lastObservations(connection, mylimit, idPhoto):
     WHERE  obs.dateobs >= (CURRENT_TIMESTAMP - INTERVAL :thislimit)
     ORDER BY obs.dateobs DESC """
 
-    observations = connection.execute(text(sql), thislimit=mylimit, thisidphoto=idPhoto)
+    observations = connection.execute(text(sql), {"thislimit": mylimit, "thisidphoto": idPhoto})
 
     obsList = list()
     for o in observations:
@@ -116,13 +113,19 @@ def lastObservationsCommune(connection, mylimit, insee):
     WHERE c.insee = :thisInsee
     ORDER BY o.dateobs DESC
     LIMIT 100"""
-    observations = connection.execute(text(sql), thisInsee=insee)
+    observations = connection.execute(text(sql), {"thisInsee": insee})
     obsList = list()
     for o in observations:
-        temp = dict(o)
-        temp.pop("the_geom_point", None)
+        print("laaaaa", o)
+        temp = {
+            "id": o.id_observation,
+            "dateobs": o.dateobs,
+            "cd_ref": o.cd_ref,
+            "altitude_retenue": o.altitude_retenue,
+            "observateurs": o.observateurs,
+            "taxon": o.taxon,
+        }
         temp["geojson_point"] = json.loads(o.geojson_point or "{}")
-        temp["dateobs"] = o.dateobs
         obsList.append(temp)
     return obsList
 
@@ -181,7 +184,7 @@ def observersParser(req):
 
 def getObservers(connection, cd_ref):
     sql = "SELECT * FROM atlas.find_all_taxons_childs(:thiscdref) AS taxon_childs(cd_nom)"
-    results = connection.execute(text(sql), thiscdref=cd_ref)
+    results = connection.execute(text(sql), {"thiscdref": cd_ref})
     taxons = [cd_ref]
     for r in results:
         taxons.append(r.cd_nom)
@@ -191,7 +194,7 @@ def getObservers(connection, cd_ref):
         FROM atlas.vm_observations
         WHERE cd_ref = ANY(:taxonsList)
     """
-    results = connection.execute(text(sql), taxonsList=taxons)
+    results = connection.execute(text(sql), {"taxonsList": taxons})
     return observersParser(results)
 
 
@@ -203,7 +206,7 @@ def getGroupeObservers(connection, groupe):
             SELECT cd_ref FROM atlas.vm_taxons WHERE group2_inpn = :thisgroupe
         )
     """
-    req = connection.execute(text(sql), thisgroupe=groupe)
+    req = connection.execute(text(sql), {"thisgroupe": groupe})
     return observersParser(req)
 
 
@@ -213,7 +216,7 @@ def getObserversCommunes(connection, insee):
         FROM atlas.vm_observations
         WHERE insee = :thisInsee
     """
-    req = connection.execute(text(sql), thisInsee=insee)
+    req = connection.execute(text(sql), {"thisInsee": insee})
     return observersParser(req)
 
 
@@ -252,8 +255,10 @@ def statIndex(connection):
     """
     req = connection.execute(
         text(sql),
-        id_type1=current_app.config["ATTR_MAIN_PHOTO"],
-        id_type2=current_app.config["ATTR_OTHER_PHOTO"],
+        {
+            "id_type1": current_app.config["ATTR_MAIN_PHOTO"],
+            "id_type2": current_app.config["ATTR_OTHER_PHOTO"],
+        },
     )
     for r in req:
         result["photo"] = r.count
@@ -273,7 +278,7 @@ def genericStat(connection, tab):
         """.format(
             rang=rang
         )
-        req = connection.execute(text(sql), nomTaxon=tuple(nomTaxon))
+        req = connection.execute(text(sql), {"nomTaxon": tuple(nomTaxon)})
         for r in req:
             temp = {"nb_obs": r.nb_obs, "nb_taxons": r.nb_taxons}
             tabStat.append(temp)
@@ -295,7 +300,7 @@ def genericStatMedias(connection, tab):
         """.format(
             rang
         )
-        req = connection.execute(text(sql), nomTaxon=tuple(nomTaxon))
+        req = connection.execute(text(sql), {"nomTaxon": tuple(nomTaxon)})
         tabStat.insert(i, list())
         for r in req:
             shorterName = None
@@ -335,7 +340,7 @@ def getLastDiscoveries(connection):
         ORDER BY t.date desc
         LIMIT 6
     """
-    req = connection.execute(text(sql), thisidtype=current_app.config["ATTR_MAIN_PHOTO"])
+    req = connection.execute(text(sql), {"thisidtype": current_app.config["ATTR_MAIN_PHOTO"]})
     lastDiscoveriesList = list()
     for r in req:
         shorterName = None

@@ -24,7 +24,7 @@ def getTaxonsCommunes(connection, insee):
     """.format(
         current_app.config["ATTR_MAIN_PHOTO"]
     )
-    req = connection.execute(text(sql), thisInsee=insee)
+    req = connection.execute(text(sql), {"thisInsee": insee})
     taxonCommunesList = list()
     nbObsTotal = 0
     for r in req:
@@ -60,7 +60,7 @@ def getTaxonsChildsList(connection, cd_ref):
         ) """.format(
         str(current_app.config["ATTR_MAIN_PHOTO"])
     )
-    req = connection.execute(text(sql), thiscdref=cd_ref)
+    req = connection.execute(text(sql), {"thiscdref": cd_ref})
     taxonRankList = list()
     nbObsTotal = 0
     for r in req:
@@ -117,7 +117,7 @@ def getTaxonsGroup(connection, groupe):
         """.format(
         current_app.config["ATTR_MAIN_PHOTO"]
     )
-    req = connection.execute(text(sql), thisGroupe=groupe)
+    req = connection.execute(text(sql), {"thisGroupe": groupe})
     tabTaxons = list()
     nbObsTotal = 0
     for r in req:

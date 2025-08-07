@@ -151,7 +151,7 @@ def getObservationsTaxonCommuneMaille(connection, insee, cd_ref):
             AND c.insee = :thisInsee
         ORDER BY id_maille
     """
-    observations = connection.execute(text(sql), thisInsee=insee, thiscdref=cd_ref)
+    observations = connection.execute(text(sql), {"thisInsee": insee, "thiscdref": cd_ref})
     tabObs = list()
     for o in observations:
         temp = {

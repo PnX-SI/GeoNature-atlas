@@ -15,7 +15,7 @@ def statOrganism(connection, id_organism):
     WHERE o.id_organism = :thisidorganism
     GROUP BY nom_organism, url_organism, url_logo, adresse_organism, cp_organism, ville_organism,
     tel_organism, email_organism"""
-    req = connection.execute(text(sql), thisidorganism=id_organism)
+    req = connection.execute(text(sql), {"thisidorganism": id_organism})
     StatsOrga = dict()
     for r in req:
         StatsOrga = {
@@ -42,7 +42,7 @@ def topObsOrganism(connection, id_organism):
     ORDER BY nb_observations DESC
     LIMIT 3
     """
-    req = connection.execute(text(sql), thisidorganism=id_organism)
+    req = connection.execute(text(sql), {"thisidorganism": id_organism})
     topSpecies = list()
     for r in req:
         temp = {"cd_ref": r.cd_ref, "nb_obs_taxon": r.nb_obs_taxon}
@@ -60,7 +60,7 @@ def getListOrganism(connection, cd_ref):
                 OR cd_ref = :thiscdref
              GROUP by id_organism, nom_organism, url_organism, url_logo            
              ORDER BY nb_observations DESC"""
-    req = connection.execute(text(sql), thiscdref=cd_ref)
+    req = connection.execute(text(sql), {"thiscdref": cd_ref})
     ListOrganism = list()
     for r in req:
         temp = {
@@ -82,7 +82,7 @@ def getTaxonRepartitionOrganism(connection, id_organism):
     WHERE o.id_organism = :thisidorganism
    	GROUP BY g.group2_inpn, o.id_organism
     """
-    req = connection.execute(text(sql), thisidorganism=id_organism)
+    req = connection.execute(text(sql), {"thisidorganism": id_organism})
     ListGroup = list()
     for r in req:
         temp = {"group2_inpn": r.group2_inpn, "nb_obs_group": int(r.nb_obs_group)}

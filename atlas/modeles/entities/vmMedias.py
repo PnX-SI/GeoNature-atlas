@@ -9,21 +9,16 @@ Base = declarative_base()
 
 
 class VmMedias(Base):
-    __table__ = Table(
-        "vm_medias",
-        metadata,
-        Column("id_media", Integer(), primary_key=True, unique=True),
-        Column("cd_ref", Integer()),
-        Column("titre", String(255)),
-        Column("url", String(255)),
-        Column("chemin", String(255)),
-        Column("auteur", String(1000)),
-        Column("desc_media", Text()),
-        Column("date_media", Date()),
-        Column("id_type", Integer()),
-        Column("licence", String(100)),
-        Column("source", String(25)),
-        schema="atlas",
-        autoload=True,
-        autoload_with=db.engine,
-    )
+    __tablename__ = "vm_medias"
+    __table_args__ = {"schema": "atlas"}
+    id_media = Column("id_media", Integer(), primary_key=True, unique=True)
+    cd_ref = Column("cd_ref", Integer())
+    titre = Column("titre", String(255))
+    url = Column("url", String(255))
+    chemin = Column("chemin", String(255))
+    auteur = Column("auteur", String(1000))
+    desc_media = Column("desc_media", Text())
+    date_media = Column("date_media", Date())
+    id_type = Column("id_type", Integer())
+    licence = Column("licence", String(100))
+    source = Column("source", String(25))

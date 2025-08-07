@@ -25,7 +25,7 @@ def getAltitudesChilds(connection, cd_ref):
     """.format(
         sumSelect=sumSelect
     )
-    mesAltitudes = connection.execute(text(sql), thiscdref=cd_ref)
+    mesAltitudes = connection.execute(text(sql), {"thiscdref": cd_ref})
 
     altiList = list()
     for a in mesAltitudes:

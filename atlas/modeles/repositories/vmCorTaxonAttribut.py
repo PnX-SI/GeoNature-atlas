@@ -1,7 +1,8 @@
 # -*- coding:utf-8 -*-
 
 from sqlalchemy.sql import text
-import markdown
+
+# from markdown import markdown
 
 
 def getAttributesTaxon(connection, cd_ref, attrDesc, attrComment, attrMilieu, attrChoro):
@@ -13,16 +14,18 @@ def getAttributesTaxon(connection, cd_ref, attrDesc, attrComment, attrMilieu, at
     """
     req = connection.execute(
         text(sql),
-        thiscdref=cd_ref,
-        thisattrDesc=attrDesc,
-        thisattrComment=attrComment,
-        thisattrMilieu=attrMilieu,
-        thisattrChoro=attrChoro,
+        {
+            "thiscdref": cd_ref,
+            "thisattrDesc": attrDesc,
+            "thisattrComment": attrComment,
+            "thisattrMilieu": attrMilieu,
+            "thisattrChoro": attrChoro,
+        },
     )
 
     descTaxon = {"description": None, "commentaire": None, "milieu": None, "chorologie": None}
     for r in req:
-        html_value = markdown.markdown(r.valeur_attribut)
+        html_value = r.valeur_attribut
         if r.id_attribut == attrDesc:
             descTaxon["description"] = html_value
         elif r.id_attribut == attrComment:

@@ -44,7 +44,7 @@ def getCommuneFromInsee(connection, insee):
         FROM atlas.vm_communes c
         WHERE c.insee = :thisInsee
     """
-    req = connection.execute(text(sql), thisInsee=insee)
+    req = connection.execute(text(sql), {"thisInsee": insee})
     communeObj = dict()
     for r in req:
         communeObj = {
@@ -57,7 +57,7 @@ def getCommuneFromInsee(connection, insee):
 
 def getCommunesObservationsChilds(connection, cd_ref):
     sql = "SELECT * FROM atlas.find_all_taxons_childs(:thiscdref) AS taxon_childs(cd_nom)"
-    results = connection.execute(text(sql), thiscdref=cd_ref)
+    results = connection.execute(text(sql), {"thiscdref": cd_ref})
     taxons = [cd_ref]
     for r in results:
         taxons.append(r.cd_nom)
@@ -72,7 +72,7 @@ def getCommunesObservationsChilds(connection, cd_ref):
         WHERE obs.cd_ref = ANY(:taxonsList)
         ORDER BY com.commune_maj ASC
     """
-    results = connection.execute(text(sql), taxonsList=taxons)
+    results = connection.execute(text(sql), {"taxonsList": taxons})
     municipalities = list()
     for r in results:
         municipality = {"insee": r.insee, "commune_maj": r.commune_maj}

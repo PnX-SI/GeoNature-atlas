@@ -10,14 +10,8 @@ Base = declarative_base()
 
 
 class VmCommunes(Base):
-    __table__ = Table(
-        "vm_communes",
-        metadata,
-        Column("insee", String(5), primary_key=True, unique=True),
-        Column("commune_maj", String(50)),
-        # Column('commune_min', String(50)),
-        Column("the_geom", Geometry("MULTIPOLYGON"), index=True),
-        schema="atlas",
-        autoload=True,
-        autoload_with=db.engine,
-    )
+    __tablename__ = "vm_communes"
+    __table_args__ = {"schema": "atlas"}
+    insee = Column("insee", String(5), primary_key=True, unique=True)
+    commune_maj = Column("commune_maj", String(50))
+    the_geom = Column("the_geom", Geometry("MULTIPOLYGON"), index=True)

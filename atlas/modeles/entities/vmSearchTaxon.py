@@ -9,14 +9,9 @@ Base = declarative_base()
 
 
 class VmSearchTaxon(Base):
-    __table__ = Table(
-        "vm_search_taxon",
-        metadata,
-        Column("cd_ref", Integer, primary_key=True, unique=True),
-        Column("cd_nom", Integer),
-        Column("display_name", String),
-        Column("search_name", String),
-        schema="atlas",
-        autoload=True,
-        autoload_with=db.engine,
-    )
+    __tablename__ = "vm_search_taxon"
+    __table_args__ = {"schema": "atlas"}
+    cd_ref = Column("cd_ref", Integer, primary_key=True, unique=True)
+    cd_nom = Column("cd_nom", Integer)
+    display_name = Column("display_name", String)
+    search_name = Column("search_name", String)

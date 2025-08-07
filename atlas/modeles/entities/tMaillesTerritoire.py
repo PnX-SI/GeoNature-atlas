@@ -5,18 +5,13 @@ from sqlalchemy.ext.declarative import declarative_base
 
 from atlas.env import db
 
-metadata = MetaData()
 Base = declarative_base()
 
 
 class TMaillesTerritoire(Base):
-    __table__ = Table(
-        "vm_mailles_territoire",
-        metadata,
-        Column("id_maille", Integer, primary_key=True, unique=True),
-        Column("the_geom", Geometry()),
-        Column("geojson_maille", Text),
-        schema="atlas",
-        autoload=True,
-        autoload_with=db.engine,
-    )
+    __tablename__ = "vm_mailles_territoire"
+    __table_args__ = {"schema": "atlas"}
+
+    id_maille = Column("id_maille", Integer, primary_key=True, unique=True)
+    the_geom = Column("the_geom", Geometry())
+    geojson_maille = Column("geojson_maille", Text)
