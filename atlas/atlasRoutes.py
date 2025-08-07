@@ -38,6 +38,7 @@ main = Blueprint("main", __name__)
 
 
 if current_app.config["MULTILINGUAL"]:
+
     @main.url_defaults
     def add_language_code(endpoint, values):
         """
