@@ -2,7 +2,7 @@
 CHANGELOG
 =========
 
-1.7.0 (unreleased)
+1.7.0 (2025-08-08)
 ------------------
 
 - Nécessite Debian 11 ou 12.
