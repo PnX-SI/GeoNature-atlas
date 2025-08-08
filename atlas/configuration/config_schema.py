@@ -230,7 +230,7 @@ class AtlasConfig(Schema):
     # Flask parameter enabling auto reload of templates
     # (no need to restart the atlas service when updating templates)
     # Defaults to False to have the best performance in production
-    TEMPLATES_AUTO_RELOAD = fields.Boolean(load_default=False)
+    TEMPLATES_AUTO_RELOAD = fields.Boolean(allow_none=True)
 
     @validates_schema
     def validate_url_taxhub(self, data, **kwargs):
