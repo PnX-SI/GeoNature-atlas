@@ -58,11 +58,11 @@ def pull_lang_code(endpoint, values):
     """
     # language can be set in url param (values) or in query string
     language_from_url = values.pop("lang_code", request.args.get("lang_code"))
-    if language_from_url and language_from_url in current_app.config["LANGUAGES"]:
+    if language_from_url and language_from_url in current_app.config["AVAILABLE_LANGUAGES"]:
         g.lang_code = language_from_url
     else:
         # If no language code has been set, get the best language from the browser settings
-        g.lang_code = request.accept_languages.best_match(current_app.config["LANGUAGES"])
+        g.lang_code = request.accept_languages.best_match(current_app.config["AVAILABLE_LANGUAGES"])
 
 
 # Activating organisms sheets routes
