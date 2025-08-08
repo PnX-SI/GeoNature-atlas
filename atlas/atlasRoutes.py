@@ -62,7 +62,9 @@ def pull_lang_code(endpoint, values):
         g.lang_code = language_from_url
     else:
         # If no language code has been set, get the best language from the browser settings
-        g.lang_code = request.accept_languages.best_match(current_app.config["AVAILABLE_LANGUAGES"])
+        g.lang_code = request.accept_languages.best_match(
+            current_app.config["AVAILABLE_LANGUAGES"]
+        )
 
 
 # Activating organisms sheets routes

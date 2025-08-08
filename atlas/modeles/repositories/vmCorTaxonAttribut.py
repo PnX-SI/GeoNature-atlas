@@ -18,7 +18,9 @@ def getAttributesTaxon(connection, cd_ref, displayed_attr):
     )
     desc_taxon = []
     for row in results:
-        desc_taxon.append({"code": row.code, "title": row.title, "value": markdown.markdown(row.value)})
+        desc_taxon.append(
+            {"code": row.code, "title": row.title, "value": markdown.markdown(row.value)}
+        )
     # must do it twice because results in a cursor, when you loop over it, items disapear !
     ordered_attr = []
     for att_code in displayed_attr:
