@@ -55,6 +55,7 @@ CHANGELOG
 ⚠️ **Notes de version**
 
 - Il est désormais possible d'installer ou mettre à jour GeoNature uniquement sur Debian 11 et 12.
+- En raison d'un conflit d'URL avec le mode multiligue les pages "statics" (cd paramètre `STATIC_PAGES`) sont désormais préfixées de "/static"
 - Suppression de la possibilité d'installer GeoNature-atlas à partir de couches shapefile. Tous les zonages et les mailles sont basés sur le ``ref_geo`` fourni par GeoNature ou TaxHub. Il est maintenant obligatoire de disposer de TaxHub (dans GeoNature ou à part) pour déployer GeoNature-atlas. Alimenter GeoNature-atlas avec GeoNature reste optionnel.
 - Veuillez vous référer à la documentation concernant le RGPD et le consentement du recueil de cookies : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/cookies_rgpd.rst. Ces fonctionnalités sont utiles uniquement si vous avez mis en place le recueil de cookies nécessitant le consentement de l'utilisateur (statistiques de fréquentation avec Google Analytics par exemple). 
 - Le paramètre ``ID_GOOGLE_ANALYTICS`` et l'intégration native d'un script Google analytics sont dépréciés. Se référer à la documentation sur le RGPD ci-dessus si vous suivez la fréquentation de votre GeoNature-atlas avec Google Analytics.
