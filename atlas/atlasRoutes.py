@@ -348,7 +348,7 @@ if current_app.config["AFFICHAGE_RECHERCHE_AVANCEE"]:
 
 
 @main.route("/<lang_code>/static/<page>", methods=["GET", "POST"])
-@main.route("/static/<page>", methods=["GET", "POST"])
+@main.route("/static_pages/<page>", methods=["GET", "POST"])
 def get_staticpages(page):
     session = db.session
     if page not in current_app.config["STATIC_PAGES"]:
