@@ -92,16 +92,12 @@ if ! database_exists $db_name
 fi
 
 # Test si la base de donnée contient déja des schéma qui indique que la BDD atlas a déjà été installée
-schema_already_exists=$(psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -t -c "SELECT count(*) FROM information_schema.schemata WHERE schema_name in ('atlas', 'gn_meta', 'synthese');")
-
+schema_already_exists=$(psql --quiet -d $db_name -U $owner_atlas -h $db_host -p $db_port -t -c "SELECT count(*) FROM information_schema.schemata WHERE schema_name in ('atlas', 'gn_meta', 'synthese');")
 
 if [[ $schema_already_exists > 0 ]]; then
     echo "La base de donnée semble déjà contenir une installation de l'atlas... on s'arrête là"
     exit 1
 fi
-
-
-
 
 # FR: Si j'utilise GeoNature ($geonature_source = True), alors je créé les connexions en FWD à la BDD GeoNature
 # EN: If I use GeoNature ($geonature_source = True), then I create the connections in FWD to the GeoNature DB
