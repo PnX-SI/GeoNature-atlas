@@ -6,9 +6,6 @@ from geojson import Feature, FeatureCollection
 from sqlalchemy.sql import text, func, or_
 
 from atlas.modeles import utils
-from atlas.env import db
-from atlas.utils import GenericTable
-from atlas.modeles.repositories import vmMedias
 from atlas.modeles.entities.vmObservations import VmObservations
 
 currentYear = datetime.now().year
@@ -24,23 +21,10 @@ def searchObservationsChilds(session, cd_ref):
         )
     )
     observations = query.all()
-    # obsList = list()
-    # serialize, db_cols = cached_vm_observation.get_serialized_columns()
 
-    # features = [
-    #     Feature(
-    #         id=o.id_observation,
-    #         geometry=json.loads(o.geojson_point or "{}"),
-    #         properties=cached_vm_observation.as_dict(
-    #             o, columns=[c.name for c in db_cols if c.name != "geojson_point"]
-    #         ),
-    #     )
-    #     for o in observations:
-    # ]
     features = []
     # columns = [c.name for c in db_cols if c.name != "geojson_point"]
     for o in observations:
-        print(dir(o))
         year = o.dateobs.year if o.dateobs else None
         properties = o.as_dict()
         properties["year"] = year
@@ -116,7 +100,6 @@ def lastObservationsCommune(connection, mylimit, insee):
     observations = connection.execute(text(sql), {"thisInsee": insee})
     obsList = list()
     for o in observations:
-        print("laaaaa", o)
         temp = {
             "id": o.id_observation,
             "dateobs": o.dateobs,

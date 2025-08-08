@@ -157,7 +157,6 @@ def search_area_by_type(session, search, type_code, limit=50):
             ),
         )
     )
-    print(limit)
     query = query.limit(limit)
     current_app.logger.debug("<search_area_by_type> query {}".format(query))
 
