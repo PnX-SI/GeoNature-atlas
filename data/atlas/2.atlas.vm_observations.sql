@@ -46,3 +46,15 @@ CREATE INDEX ON atlas.vm_observations (cd_ref);
 CREATE INDEX ON atlas.vm_observations (altitude_retenue);
 CREATE INDEX ON atlas.vm_observations (dateobs);
 CREATE INDEX index_gist_vm_observations_the_geom_point ON atlas.vm_observations USING gist (the_geom_point);
+
+--Table des correspondances observations <> zonages;
+
+DROP MATERIALIZED VIEW IF EXISTS atlas.vm_cor_area_observation;
+
+CREATE MATERIALIZED VIEW atlas.vm_cor_area_observation AS
+SELECT cas.id_synthese AS id_observation, cas.id_area
+FROM
+    synthese.cor_area_synthese cas
+        JOIN atlas.vm_l_areas la ON cas.id_area = la.id_area;
+
+CREATE UNIQUE INDEX ON atlas.vm_cor_area_observation(id_observation, id_area);

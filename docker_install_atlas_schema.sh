@@ -55,7 +55,6 @@ psql -v ON_ERROR_STOP=1 -d ${POSTGRES_DB} -U ${POSTGRES_USER} -h ${POSTGRES_HOST
 psql -d ${POSTGRES_DB} -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -c "CREATE VIEW synthese.cor_area_synthese AS SELECT * FROM gn_synthese.cor_area_synthese"
 psql -d ${POSTGRES_DB} -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -c "CREATE VIEW synthese.synthese AS SELECT * FROM gn_synthese.synthese"
 psql -d ${POSTGRES_DB} -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -c "CREATE VIEW synthese.t_nomenclatures AS SELECT * FROM ref_nomenclatures.t_nomenclatures"
-psql -v ON_ERROR_STOP=1 -d ${POSTGRES_DB} -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -f data/gn2/atlas_synthese.sql
 
 # SCRIPTS
 psql -v ON_ERROR_STOP=1 -d ${POSTGRES_DB} -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -f data/atlas/1.atlas.vm_taxref.sql

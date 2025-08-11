@@ -139,6 +139,7 @@ echo "--------------------" &>> log/install_db.log
 export PGPASSWORD=$owner_atlas_pass; psql -d $db_name -U $owner_atlas -h $db_host -p $db_port \
     -v type_maille=$type_maille \
     -v type_territoire=$type_territoire \
+    -v type_code=$type_code \
     -f data/gn2/atlas_ref_geo.sql &>> log/install_db.log
 
 
@@ -149,14 +150,8 @@ export PGPASSWORD=$owner_atlas_pass; psql -d $db_name -U $owner_atlas -h $db_hos
 echo "Creating DB structure"
 # FR: Si j'utilise GeoNature ($geonature_source = True), alors je créé les tables filles en FDW connectées à la BDD de GeoNature
 # EN: If I use GeoNature ($geonature_source = True), then I create the child tables in FDW connected to the GeoNature DB
-if $geonature_source
+if ! $geonature_source
     then
-        sudo cp data/gn2/atlas_synthese.sql /tmp/atlas/atlas_synthese_extended.sql
-        sudo sed -i "s/myuser;$/$owner_atlas;/" /tmp/atlas/atlas_synthese_extended.sql
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/atlas_synthese_extended.sql  &>> log/install_db.log
-# FR: Sinon je créé une table synthese.syntheseff avec 2 observations exemple
-# EN: Otherwise I created a table synthese.syntheseff with 2 observations example
-else
     echo "Creating syntheseff example table"
     export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/without_geonature.sql &>> log/install_db.log
 fi

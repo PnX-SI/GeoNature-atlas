@@ -4,7 +4,7 @@ var customizeMarkerStyle = (customizeMarkerStyle = function(
   feature
 ) {
   return {
-    color: feature.properties.diffusion_level < 5 || feature.properties.diffusion_level != null ? "#3388ff": "#3A9D23"
+    color: feature.properties.cd_sensitivity < 5 || feature.properties.cd_sensitivity != null ? "#3388ff": "#3A9D23"
   };
 });
 

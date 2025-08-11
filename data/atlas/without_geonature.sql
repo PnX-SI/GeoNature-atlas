@@ -10,14 +10,14 @@ CREATE TABLE synthese.syntheseff(
     supprime boolean DEFAULT false,
     the_geom_point geometry('POINT',4326),
     effectif_total integer,
-    diffusion_level integer
+    cd_sensitivity integer
 );
 
 INSERT INTO synthese.syntheseff
-(cd_nom, id_area, observateurs, altitude_retenue, the_geom_point, effectif_total, diffusion_level)
+(cd_nom, id_area, observateurs, altitude_retenue, the_geom_point, effectif_total, cd_sensitivity)
 VALUES (67111, 1, 'Mon observateur', 1254, ST_SetSRID( ST_Point( 6, 42.315), 4326), 3, 5);
 INSERT INTO synthese.syntheseff
-(cd_nom, id_area, observateurs, altitude_retenue, the_geom_point, effectif_total, diffusion_level)
+(cd_nom, id_area, observateurs, altitude_retenue, the_geom_point, effectif_total, cd_sensitivity)
 VALUES (67111, 2, 'Mon observateur 3', 940, ST_SetSRID( ST_Point( 6.1, 42.315), 4326), 2, 5);
 
 

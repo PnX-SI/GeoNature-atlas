@@ -100,7 +100,6 @@ Les paramètres de l'url de la fiche territoire était `url_for('main.ficheCommu
 
 ⚠️ **Notes de version**
 
-<<<<<<< HEAD
 - Il est désormais possible d'installer ou mettre à jour GeoNature uniquement sur Debian 11 et 12.
 - En raison d'un conflit d'URL avec le mode multiligue les pages "statics" (cd paramètre `STATIC_PAGES`) sont désormais préfixées de "/static_pages"
 - Suppression de la possibilité d'installer GeoNature-atlas à partir de couches shapefile. Tous les zonages et les mailles sont basés sur le ``ref_geo`` fourni par GeoNature ou TaxHub. Il est maintenant obligatoire de disposer de TaxHub (dans GeoNature ou à part) pour déployer GeoNature-atlas. Alimenter GeoNature-atlas avec GeoNature reste optionnel.
@@ -108,30 +107,6 @@ Les paramètres de l'url de la fiche territoire était `url_for('main.ficheCommu
 - Le paramètre ``ID_GOOGLE_ANALYTICS`` et l'intégration native d'un script Google analytics sont dépréciés. Se référer à la documentation sur le RGPD ci-dessus si vous suivez la fréquentation de votre GeoNature-atlas avec Google Analytics.
 - Le paramètre ``REMOTE_MEDIAS_PATH`` est deprecié, seul ``REMOTE_MEDIAS_URL`` permet de construire l'URL des médias "locaux" (dont le champs ``chemin`` est rempli).
 - Pour ajouter un lien vers la politique de gestion des données personnelles dans le pied de page (footer), répercuter les `évolutions <https://github.com/PnX-SI/GeoNature-atlas/pull/574/files#diff-05964f85b0bb6f2d285f98fe1e3a56d9343b8a740ddd8c7e6ac85cfd611f62bb>`_ du template de footer dans votre fichier ``custom/templates/footer.html``, copier le fichier `custom/templates/personal-data.html.sample <https://github.com/PnX-SI/GeoNature-atlas/blob/develop/atlas/static/custom/templates/personal-data.html.sample>`_ en ``custom/templates/personal-data.html`` (``cp custom/templates/personal-data.html.sample custom/templates/personal-data.html``), puis adapter le contenu du fichier ``custom/templates/personal-data.html`` à votre contexte 
-=======
-- Le paramètre `ID_GOOGLE_ANALYTICS` et la façon d'integrer un script google analytic sont dépréciés. Se référer à la documentation sur le RGPD et la collecte de cookies : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/cookies_rgpd.rst
-- L'affichage des geométrie de sensibilité est calculé dynamiquement à partir de la table gn_sensitivity.cor_sensitivity_area_type . Pour que l'atlas fonctionne bien, veuillez remplir quel niveau de maille vous souhaitez pour les observations non sensible. Exemple pour l'id_nomenclature_sensitivity correspondant à "non sensible", mettez `id_area_type` (ref_geo.bib_area_type.id_type) des maille 1km.
-- Le fichier de customisation contenant la "navbar" `atlas/static/custom/templates/navbar.html.sample` a été modifié pour y integegrer la recherche multi zonage. 
- Veuillez copiez coller le contenu de `atlas/static/custom/templates/navbar.html.sample` dans `atlas/static/custom/templates/navbar.html` et y appliquer les éventuelles customisation que vous aviez réalisé.
- Seul la partie du formulaire des "zonages" a été modifié : 
- `navbar.html`
-Le `form` devient :
-    ::
-        <form class="form-inline my-2 my-lg-0" method="POST"
-              onsubmit="completeAction('#searchFormAreas', hiddenInputAreas)" id='searchFormAreas'
-              action=""
-              role="search">
-            <div class="form-group has-feedback">
-                <input id="searchAreas" type="text" style="width: 175px;"
-                       class="form-control mr-sm-2 ajax-search small-placeholder"
-                       placeholder="{{ translations.search_area }}&nbsp;&nbsp;&nbsp;">
-            </div>
-            <input id="hiddenInputAreas" type="hidden" name="id_area">
-        </form>
-- La fonction de customisation du style des observations en fonction de la sensibilité à changer de nom (`customizeMarkerStyle`), veuillez vous reporter au fichier `atlas/static/custom/maps-custom.js.sample` et repercuter les changements dans votre fichier `maps-custom.js`. Si vous le l'aviez pas touchez, copiez collez le contenu de `maps-custom.js.sample` dans `maps-custom.js`
-- Si vous aviez des liens vers une commune dans le template `presentation.html`, veuillez les modifier comme suit :  les paramètres de l'url de la fiche commune était `url_for('main.ficheCommune', insee=05090)` et devient `url_for('main.ficheArea', id_area=XXXXXX)` 
-
->>>>>>> origin/to2.0
 
 Si vous mettez à jour GeoNature-atlas, suivez la procédure classique de MAJ décrite dans : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/installation.rst#mise-%C3%A0-jour-de-lapplication
 

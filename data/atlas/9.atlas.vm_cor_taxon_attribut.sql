@@ -11,7 +11,6 @@ CREATE MATERIALIZED VIEW atlas.vm_cor_taxon_attribut AS
     FROM taxonomie.cor_taxon_attribut AS cta
         JOIN taxonomie.bib_attributs AS ba
             ON cta.id_attribut = ba.id_attribut
-    WHERE ba.nom_attribut IN (:taxhub_displayed_attr)
         AND cta.valeur_attribut IS NOT NULL
         AND cta.valeur_attribut != '' ;
 

@@ -10,14 +10,13 @@ class VmObservations(Base):
     __tablename__ = "vm_observations"
     __table_args__ = {"schema": "atlas"}
     id_observation = Column("id_observation", Integer, primary_key=True, unique=True)
-    insee = Column("insee", String(5), index=True)
     dateobs = Column("dateobs", Date, index=True)
     observateurs = Column("observateurs", String(255))
     altitude_retenue = Column("altitude_retenue", Integer, index=True)
     cd_ref = Column("cd_ref", Integer, index=True)
     the_geom_point = Column("the_geom_point", Geometry(geometry_type="POINT", srid=4326))
     geojson_point = Column("geojson_point", Text)
-    cd_sensitivity = Column("diffusion_level", String(5))
+    cd_sensitivity = Column("cd_sensitivity", String(5))
     id_dataset = Column("id_dataset", Integer)
     def as_dict(self):
         return {
@@ -42,4 +41,5 @@ class VmObservationsMailles(Base):
     annee = Column("annee", String(1000), primary_key=True, index=True)
     id_maille = Column("id_maille", Integer, primary_key=True, index=True)
     nbr = Column("nbr", Integer)
+    type_code = Column("nbr", String(10))
     id_observations = Column("id_observations", ARRAY(Integer))

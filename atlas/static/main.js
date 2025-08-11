@@ -82,7 +82,7 @@ autocompleteSearch = function(inputID, urlDestination, nbProposal) {
         let label_for_input = splited_label[0] != '' ? splited_label[0] : splited_label[1];
         $(inputID).val(label_for_input.replace(/<[^>]*>?/gm, ''));
       } else {
-        location.href = configuration.URL_APPLICATION + language  + "/area/" + urlDestination +"/"+ url;
+        location.href = configuration.URL_APPLICATION + language  + "/area/" +"/"+ url;
       }
 
       return false;

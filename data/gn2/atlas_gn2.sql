@@ -17,6 +17,9 @@ IMPORT FOREIGN SCHEMA gn_synthese
 LIMIT TO (gn_synthese.synthese, gn_synthese.cor_area_synthese)
 FROM SERVER geonaturedbserver INTO synthese;
 
+IMPORT FOREIGN SCHEMA gn_sensitivity
+LIMIT TO (cor_sensitivity_area_type)  FROM SERVER geonaturedbserver INTO synthese;
+
 -- Schéma utilisateurs necessaire pour ajouter la dimension organisme à l'atlas
 
 IMPORT FOREIGN SCHEMA utilisateurs
