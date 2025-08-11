@@ -23,7 +23,7 @@ CREATE MATERIALIZED VIEW atlas.vm_cor_area_synthese AS
         )
 WITH DATA;
 
-CREATE UNIQUE INDEX i_vm_cor_area_synthese ON atlas.vm_cor_area_synthese
-USING btree (id_synthese, id_area) ;
-CREATE INDEX i_id_area ON atlas.vm_cor_area_synthese
-USING btree (id_area) ;
+CREATE UNIQUE INDEX i_vm_cor_area_synthese
+    ON atlas.vm_cor_area_synthese USING btree (id_synthese, id_area) ;
+CREATE INDEX i_id_area
+    ON atlas.vm_cor_area_synthese USING btree (id_area) ;
