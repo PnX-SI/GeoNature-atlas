@@ -12,16 +12,16 @@ CHANGELOG
 - Ajout d'une carte territoire dans la page d'acceuil ainsi que la liste de toutes les espèces sur celui-ci. Au dela de 4000 espèces sur votre atlas, il est déconseillé d'activer cette fonctionnalité
 - Changement de la notion de "commune" en notion de "territoire" (#545 @juggler31)
 - Ajout d'un graphique de provenance des données (#538)
-- Ajout de graphiques sur la fiche territoire (le paramètre `AFFICHAGE_TOUT_TERRITOIRE_GRAPH` permet d'afficher ou non la barre du nombre d'espèce sur tout le territoire de l'atlas sur chaque graphique)
-Les changements effectués afin de pouvoir changer la notion de `commune` en `territoire` necessitent un changement dans les fichiers: TODO
-- Ajout de "liens importants" sur les fiches taxons. Cette fonctionnalité permet par exemple de mettre en avant des démarches ou des ressources additionelles sur un taxon: un lien vers une plateforme de contribution collaborative, un lien vers une fiche détaillé sur l'espèce etc... Voir le paramètre `TYPES_MEDIAS_LIENS_IMPORTANTS`
-- Ajout des statuts sur la fiche espèces. Le paramètre de configuration `GROUPES_STATUTS` permet de grouper et de filtrer les statuts que l'on souhaite afficher. Le template `custom/templates/statuts.html` permet de customiser l'affichage des statuts (customisation avancé, à modifier avec précaution)
+- Ajout de graphiques sur la fiche territoire (le paramètre ``AFFICHAGE_TOUT_TERRITOIRE_GRAPH`` permet d'afficher ou non la barre du nombre d'espèce sur tout le territoire de l'atlas sur chaque graphique)
+Les changements effectués afin de pouvoir changer la notion de "commune" en "territoire" necessitent un changement dans les fichiers: TODO
+- Ajout de "liens importants" sur les fiches taxons. Cette fonctionnalité permet par exemple de mettre en avant des démarches ou des ressources additionelles sur un taxon: un lien vers une plateforme de contribution collaborative, un lien vers une fiche détaillé sur l'espèce etc... Voir le paramètre ``TYPES_MEDIAS_LIENS_IMPORTANTS``
+- Ajout des statuts sur la fiche espèces. Le paramètre de configuration ``GROUPES_STATUTS`` permet de grouper et de filtrer les statuts que l'on souhaite afficher. Le template ``custom/templates/statuts.html`` permet de customiser l'affichage des statuts (customisation avancé, à modifier avec précaution)
 
 A VERIFIER : 
 
-`navbar.html`
+``navbar.html``
 Le `form` devient :
-    ::
+::
         <form class="form-inline my-2 my-lg-0" method="POST"
               onsubmit="completeAction('#searchFormAreas', hiddenInputAreas)" id='searchFormAreas'
               action=""
@@ -37,14 +37,14 @@ Le `form` devient :
 `maps-custom`
 La fonction `pointDisplayOptionsFicheCommuneHome` devient `customizeMarkerStyle`
 
-`presentation.html`
-Les paramètres de l'url de la fiche territoire était `url_for('main.ficheCommune', insee=05090)` et devient `url_for('main.ficheArea', id_area=XXXXXX)`
+``presentation.html``
+Les paramètres de l'url de la fiche territoire était ``url_for('main.ficheCommune', insee=05090)`` et devient ``url_for('main.ficheArea', id_area=XXXXXX)``
+
 - Ajout de statistique sur la fiche de "zoning" (#540 @juggler31)
 
 🐛 **Corrections**
 
-- Correction et amélioration de l'affichage de la fenêtre listant les sous-taxons aggrégés (#558 par @jpm-cbna)
-- Correction du lien vers le statut INPN des taxons protégés sur la page organisme (#578 par @marcantoinedupre)
+- 
 
 
 
@@ -67,7 +67,7 @@ Les paramètres de l'url de la fiche territoire était `url_for('main.ficheCommu
 - Ajout du support des cd_nom négatifs sur les fiches espèces et les API (#616 par @andriacap)
 - Ajout des paramètres ``AFFICHAGE_GRAPH_PHENOLOGIE`` et ``AFFICHAGE_GRAPH_ALTITUDES`` pour afficher/masquer les graphiques de phénologie et d'altitude sur les fiches espèces (#568 par @gildeluermoz)
 - Affichage des dates au format "court" et selon la langue du navigateur (#512 et #631 par @geobrun et @xavyeah39)
-- Possibilité de personnaliser les attributs TaxHub du bloc "Informations espèce" sur les fiches espèces (#412 par @jpm-cbna) - rajouter ole paramètre `taxhub_displayed_attr` dans le settings.ini si vous réinstaller la BDD
+- Possibilité de personnaliser les attributs TaxHub du bloc "Informations espèce" sur les fiches espèces (#412 par @jpm-cbna)
 - Ajout de la possibilité d'ajouter un lien externe et d'utiliser un picto sous forme d'image dans la barre de navigation latérale (#520 par @geobrun)
 - Compactage des informations dans les blocs de bas de page sur les fiches espèce (#601 par @bruhnild)
 - Amélioration du responsive design (#609 par @bruhnild)
@@ -87,7 +87,7 @@ Les paramètres de l'url de la fiche territoire était `url_for('main.ficheCommu
 - Correction et amélioration de l'affichage de la fenêtre listant les sous-taxons agrégés sur les fiches espèces (#558 par @jpm-cbna)
 - Prise en charge des cd_nom négatifs (#616 par @andriacap)
 - Correction du lien vers le statut INPN des taxons protégés sur la page organisme (#578 par @marcantoinedupre)
-- Correcion du "lazy-loading" des images sur les page HTML (#590 par @submarcos)
+- Correction du "lazy-loading" des images sur les page HTML (#590 par @submarcos)
 - Suppression de la possibilité de masquer l'URL de TaxHub quand on récupère un média et du paramètre associé ``REMOTE_MEDIAS_PATH`` (#642 par @TheoLechemia)
 - Suppression d'erreurs javascript sur la page d'accueil (#403 par @jpm-cbna)
 - Prise en charge complète du paramètre ``SPLIT_NOM_VERN`` (#514 par @xavyeah39)
@@ -101,12 +101,13 @@ Les paramètres de l'url de la fiche territoire était `url_for('main.ficheCommu
 ⚠️ **Notes de version**
 
 - Il est désormais possible d'installer ou mettre à jour GeoNature uniquement sur Debian 11 et 12.
-- En raison d'un conflit d'URL avec le mode multiligue les pages "statics" (cd paramètre `STATIC_PAGES`) sont désormais préfixées de "/static_pages"
+- En raison d'un conflit d'URL avec le mode multiligue les "pages statiques" (voir paramètre `STATIC_PAGES`) sont désormais préfixées de "/static_pages/"
 - Suppression de la possibilité d'installer GeoNature-atlas à partir de couches shapefile. Tous les zonages et les mailles sont basés sur le ``ref_geo`` fourni par GeoNature ou TaxHub. Il est maintenant obligatoire de disposer de TaxHub (dans GeoNature ou à part) pour déployer GeoNature-atlas. Alimenter GeoNature-atlas avec GeoNature reste optionnel.
 - Veuillez vous référer à la documentation concernant le RGPD et le consentement du recueil de cookies : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/cookies_rgpd.rst. Ces fonctionnalités sont utiles uniquement si vous avez mis en place le recueil de cookies nécessitant le consentement de l'utilisateur (statistiques de fréquentation avec Google Analytics par exemple). 
-- Le paramètre ``ID_GOOGLE_ANALYTICS`` et l'intégration native d'un script Google analytics sont dépréciés. Se référer à la documentation sur le RGPD ci-dessus si vous suivez la fréquentation de votre GeoNature-atlas avec Google Analytics.
+- Le paramètre ``ID_GOOGLE_ANALYTICS`` et l'intégration native d'un script Google analytics sont dépréciés. Se référer à la documentation sur le RGPD ci-dessus si vous suivez la fréquentation de votre GeoNature-atlas avec Google Analytics et devez mettre en place le consentement RGPD. Attention, tous les utilisateurs qui ne valideront pas le consentement ne seront pas comptabilisés et les chiffres de fréquentation seront donc plus faibles que la réalité. Pour suivre la fréquentation d'un portail GeoNature-atlas, il est donc conseillé de plutôt utiliser des solutions compatibles RGPD sans collecte de cookies et donc sans nécessiter de demande consentement, comme Matomo.
 - Le paramètre ``REMOTE_MEDIAS_PATH`` est deprecié, seul ``REMOTE_MEDIAS_URL`` permet de construire l'URL des médias "locaux" (dont le champs ``chemin`` est rempli).
-- Pour ajouter un lien vers la politique de gestion des données personnelles dans le pied de page (footer), répercuter les `évolutions <https://github.com/PnX-SI/GeoNature-atlas/pull/574/files#diff-05964f85b0bb6f2d285f98fe1e3a56d9343b8a740ddd8c7e6ac85cfd611f62bb>`_ du template de footer dans votre fichier ``custom/templates/footer.html``, copier le fichier `custom/templates/personal-data.html.sample <https://github.com/PnX-SI/GeoNature-atlas/blob/develop/atlas/static/custom/templates/personal-data.html.sample>`_ en ``custom/templates/personal-data.html`` (``cp custom/templates/personal-data.html.sample custom/templates/personal-data.html``), puis adapter le contenu du fichier ``custom/templates/personal-data.html`` à votre contexte 
+- Pour ajouter un lien vers la politique de gestion des données personnelles dans le pied de page (footer), répercuter les `évolutions <https://github.com/PnX-SI/GeoNature-atlas/pull/574/files#diff-05964f85b0bb6f2d285f98fe1e3a56d9343b8a740ddd8c7e6ac85cfd611f62bb>`_ du template de footer dans votre fichier ``custom/templates/footer.html``, copier le fichier `custom/templates/personal-data.html.sample <https://github.com/PnX-SI/GeoNature-atlas/blob/develop/atlas/static/custom/templates/personal-data.html.sample>`_ en ``custom/templates/personal-data.html`` (``cp custom/templates/personal-data.html.sample custom/templates/personal-data.html``), puis adapter le contenu du fichier ``custom/templates/personal-data.html`` à votre contexte
+- Rajouter le paramètre ``taxhub_displayed_attr`` dans le fichier ``settings.ini`` si vous devez réinstaller la BDD (https://github.com/PnX-SI/GeoNature-atlas/blob/1.7.0/atlas/configuration/settings.ini.sample#L92)
 
 Si vous mettez à jour GeoNature-atlas, suivez la procédure classique de MAJ décrite dans : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/installation.rst#mise-%C3%A0-jour-de-lapplication
 
