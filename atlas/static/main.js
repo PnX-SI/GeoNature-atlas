@@ -29,8 +29,8 @@ autocompleteSearch = function(inputID, urlDestination, nbProposal) {
       var searchUrl;
       if (urlDestination == "espece") {
         searchUrl = "/api/searchTaxon";
-      } else if (urlDestination == "commune") {
-        searchUrl = "/api/searchCommune";
+      } else if (urlDestination == "area") {
+        searchUrl = "/api/searchArea";
       }
       else {
         searchUrl = "/api/searchArea/"+urlDestination;
@@ -46,9 +46,22 @@ autocompleteSearch = function(inputID, urlDestination, nbProposal) {
       $.get(
         configuration.URL_APPLICATION + searchUrl,
         { search: request.term, limit: nbProposal },
-        function(results) {
-          response(results.slice(0, nbProposal));
-          $(inputID)
+          function(results) {
+              const unique_type_name = [...new Set(results.map(item => item.type_name))].filter(Boolean);
+              if (unique_type_name.length === 0) {
+                  response(results.slice(0, nbProposal));
+              } else {
+                  const items = []
+                  unique_type_name.forEach(u => {
+                      items.push({"type": u})
+                      items.push(
+                          ...results.filter(item => {
+                              return item.type_name === u
+                          }).slice(0, nbProposal))
+                  })
+                  response(items);
+              }
+              $(inputID)
             .attr("loading", "false")
             .css("background-image", "none");
         }
@@ -58,6 +71,9 @@ autocompleteSearch = function(inputID, urlDestination, nbProposal) {
       return false;
     },
     select: function(event, ui) {
+        if (ui.item && ui.item.type) {
+            return false;
+        }
       $(inputID).val(ui.item.label);
       var url = ui.item.value;
       if (urlDestination == "espece") {
@@ -65,21 +81,24 @@ autocompleteSearch = function(inputID, urlDestination, nbProposal) {
         let splited_label = ui.item.label.split(' = ');
         let label_for_input = splited_label[0] != '' ? splited_label[0] : splited_label[1];
         $(inputID).val(label_for_input.replace(/<[^>]*>?/gm, ''));
-      } else if (urlDestination == "commune") {
-        location.href = configuration.URL_APPLICATION + language  + "/commune/" + url;
       } else {
         location.href = configuration.URL_APPLICATION + language  + "/area/" + urlDestination +"/"+ url;
       }
 
       return false;
     },
-    create: function(event, ui) {
-      $(this).data("ui-autocomplete")._renderItem = function(ul, item) {
-        return $("<li>")
-          .append('<a  class="search-bar-item">' + item.label + "</a>")
-          .appendTo(ul);
-      };
-    }
+      create: function(event, ui) {
+          $(this).data("ui-autocomplete")._renderItem = function(ul, item) {
+              if (item && item.type) {
+                  return $("<div class='type_name'>")
+                      .append(`<b>${item.type}</b>`)
+                      .appendTo(ul);
+              }
+              return $("<li>")
+                  .append(`<a  class="search-bar-item"> ${item.label} </a>`)
+                  .appendTo(ul);
+          };
+      }
   });
 };
 
@@ -91,11 +110,11 @@ $("#searchTaxonsStat").focus(function() {
   autocompleteSearch("#searchTaxonsStat", "espece", 10);
 });
 
-$("#searchCommunes").focus(function() {
-  autocompleteSearch("#searchCommunes", "commune", 20);
+$("#searchAreas").focus(function() {
+  autocompleteSearch("#searchAreas", "area", 20);
 });
-$("#searchCommunesStat").focus(function() {
-  autocompleteSearch("#searchCommunesStat", "commune", 10);
+$("#searchAreasStat").focus(function() {
+  autocompleteSearch("#searchAreasStat", "area", 10);
 });
 
 

@@ -6,13 +6,14 @@ from geojson import Feature, FeatureCollection
 from sqlalchemy.sql import text, func, or_
 
 from atlas.modeles import utils
+from atlas.env import db
+from atlas.modeles.repositories import vmMedias
 from atlas.modeles.entities.vmObservations import VmObservations
 
 currentYear = datetime.now().year
 
 
 def searchObservationsChilds(session, cd_ref):
-
     subquery = session.query(func.atlas.find_all_taxons_childs(cd_ref))
     query = session.query(VmObservations).filter(
         or_(
@@ -23,15 +24,11 @@ def searchObservationsChilds(session, cd_ref):
     observations = query.all()
 
     features = []
-    # columns = [c.name for c in db_cols if c.name != "geojson_point"]
     for o in observations:
-        year = o.dateobs.year if o.dateobs else None
-        properties = o.as_dict()
-        properties["year"] = year
         feature = Feature(
             id=o.id_observation,
             geometry=json.loads(o.geojson_point or "{}"),
-            properties=properties,
+            properties=o.as_dict(),
         )
         features.append(feature)
 
@@ -83,21 +80,24 @@ def lastObservations(connection, mylimit, idPhoto):
     return obsList
 
 
-def lastObservationsCommune(connection, mylimit, insee):
+def getObservationsByArea(connection, id_area, limit):
     sql = """SELECT o.*,
             CONCAT(
                 split_part(tax.nom_vern, ',', 1) || ' | ',
                 '<i>',
                 tax.lb_nom,
                 '</i>'
-            ) AS taxon
+            ) AS taxon,
+            o.id_observation
     FROM atlas.vm_observations o
-    JOIN atlas.vm_communes c ON ST_Intersects(o.the_geom_point, c.the_geom)
+    JOIN atlas.vm_cor_area_synthese AS cas  ON cas.id_synthese = o.id_observation
     JOIN atlas.vm_taxons tax ON  o.cd_ref = tax.cd_ref
-    WHERE c.insee = :thisInsee
-    ORDER BY o.dateobs DESC
-    LIMIT 100"""
-    observations = connection.execute(text(sql), {"thisInsee": insee})
+    WHERE cas.id_area = :id_area
+    ORDER BY o.dateobs DESC """
+    if limit:
+        sql += "LIMIT :obsLimit"
+    
+    observations = connection.execute(text(sql), {"obsLimit":limit, "id_area":id_area})
     obsList = list()
     for o in observations:
         temp = {
@@ -109,32 +109,26 @@ def lastObservationsCommune(connection, mylimit, insee):
             "taxon": o.taxon,
         }
         temp["geojson_point"] = json.loads(o.geojson_point or "{}")
+        temp["dateobs"] = o.dateobs
+        temp["id_observation"] = o.id_observation
         obsList.append(temp)
     return obsList
 
 
-def getObservationTaxonCommune(connection, insee, cd_ref):
+def getObservationTaxonArea(connection, id_area, cd_ref):
     sql = """
-        SELECT o.*,
-            COALESCE(split_part(tax.nom_vern, ',', 1) || ' | ', '')
-                || tax.lb_nom AS taxon,
-        o.observateurs
-        FROM (
-            SELECT * FROM atlas.vm_observations o
-            WHERE o.insee = :thisInsee AND o.cd_ref = :thiscdref
-        )  o
-        JOIN (
-            SELECT nom_vern, lb_nom, cd_ref
-            FROM atlas.vm_taxons
-            WHERE cd_ref = :thiscdref
-        ) tax ON tax.cd_ref = tax.cd_ref
+        SELECT 
+        obs.geojson_point,
+        obs.dateobs
+        FROM atlas.vm_observations obs
+        JOIN atlas.vm_cor_area_synthese AS cas  ON cas.id_synthese = obs.id_observation
+        WHERE cas.id_area = :id_area AND obs.cd_ref = :cd_ref
     """
 
-    observations = connection.execute(text(sql), thiscdref=cd_ref, thisInsee=insee)
+    observations = connection.execute(text(sql), cd_ref=cd_ref, id_area=id_area)
     obsList = list()
     for o in observations:
         temp = dict(o)
-        temp.pop("the_geom_point", None)
         temp["geojson_point"] = json.loads(o.geojson_point or "{}")
         temp["dateobs"] = o.dateobs
         obsList.append(temp)
@@ -193,13 +187,14 @@ def getGroupeObservers(connection, groupe):
     return observersParser(req)
 
 
-def getObserversCommunes(connection, insee):
+def getObserversArea(connection, id_area):
     sql = """
         SELECT DISTINCT observateurs
-        FROM atlas.vm_observations
-        WHERE insee = :thisInsee
+        FROM atlas.vm_observations AS obs
+        JOIN atlas.vm_cor_area_synthese AS cas ON cas.id_synthese = obs.id_observation
+        WHERE cas.id_area = :thisIdArea
     """
-    req = connection.execute(text(sql), {"thisInsee": insee})
+    req = connection.execute(text(sql), {"thisIdArea": id_area})
     return observersParser(req)
 
 
@@ -215,9 +210,11 @@ def statIndex(connection):
 
     sql = """
         SELECT COUNT(*) AS count
-        FROM atlas.vm_communes
+        FROM atlas.vm_l_areas AS vla
+        JOIN atlas.vm_bib_areas_types bat ON bat.id_type = vla.id_type
+        WHERE bat.type_code = any(:type_code)
     """
-    req = connection.execute(text(sql))
+    req = connection.execute(text(sql), type_code=current_app.config["TYPE_TERRITOIRE_SHEET"])
     for r in req:
         result["town"] = r.count
 

@@ -101,9 +101,11 @@ NOTES :
     \q
     exit
 
-* GeoNature-atlas fonctionne avec des données géographiques du schema ref_geo (installé avec GeoNature ou TaxHub). Si vous avez installez seulement TaxHub, veuillez d'abord suivre la section 3.1
+* GeoNature-atlas fonctionne avec des données géographiques qui doivent être fournies en amont (mailles, limite de territoire, limite de communes ou zone geographique). Vous avez la possibilité de récupérer ces données directement depuis le référentiel géographique de GeoNature si les données y sont présentes (``use_ref_geo_gn2=true``); ou de fournir des fichiers shapefiles (à mettre dans le répertoire ``data/ref``)
 
-**Attention**  Par défaut le ``ref_geo`` contient l'ensemble des communes de France, ce qui ralentit fortement l'installation lorsqu'on construit la vue matérialisée ``vm_communes`` (qui intersecte les communes avec les limites du territoire).
+**Attention** . Par défaut le ``ref_geo`` contient l'ensemble des communes de France, ce qui ralentit fortement l'installation lorsqu'on construit la table ``zoning`` (qui intersecte les communes avec les limites du territoire).
+
+La table `zoning` doit être remplie en indicant l'identifiant de son type de 'zone' (table `bib_areas_types``).
 
 Pour accelérer l'installation, vous pouvez "désactiver" certaines communes du ``ref_geo``, dont vous ne vous servez pas. Voir l'exemple de requête ci-dessous :
 

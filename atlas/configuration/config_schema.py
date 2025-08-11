@@ -123,7 +123,7 @@ class MapConfig(Schema):
     ENABLE_SLIDER = fields.Boolean(load_default=True)
     ENABLE_SCALE = fields.Boolean(load_default=True)
     MASK_STYLE = fields.Dict(
-        load_default={"fill": False, "fillColor": "#020202", "fillOpacity": 0.3}
+        load_default={"fill": False, "fillColor": "#020202", "fillOpacity": 0.7}
     )
 
 
@@ -149,13 +149,60 @@ class AtlasConfig(Schema):
     OREJIME_TRANSLATIONS = fields.Dict(load_default=orijime_default_translations)
     AFFICHAGE_STAT_GLOBALES = fields.Boolean(load_default=True)
     AFFICHAGE_DERNIERES_OBS = fields.Boolean(load_default=True)
+    AFFICHAGE_TERRITOIRE_OBS = fields.Boolean(load_default=False)
     AFFICHAGE_EN_CE_MOMENT = fields.Boolean(load_default=True)
     AFFICHAGE_RANG_STAT = fields.Boolean(load_default=True)
     AFFICHAGE_NOUVELLES_ESPECES = fields.Boolean(load_default=True)
     AFFICHAGE_RECHERCHE_AVANCEE = fields.Boolean(load_default=False)
     AFFICHAGE_GRAPH_ALTITUDES = fields.Boolean(load_default=True)
     AFFICHAGE_GRAPH_PHENOLOGIE = fields.Boolean(load_default=True)
+    TYPE_TERRITOIRE_SHEET = fields.List(fields.String(), load_default=["COM"])
+    AFFICHAGE_GRAPH_PHENOLOGIE = fields.Boolean(load_default=False)
+    AFFICHAGE_TOUT_TERRITOIRE_GRAPH = fields.Boolean(load_default=False)
+    AFFICHAGE_GRAPH_PROVENANCE_DONNEE = fields.Boolean(load_default=False)
+    COLOR_STACKED_BAR_CHARTS = fields.List(
+        fields.String(), load_default=["#E1CE7A", "#FBFFB9", "#FDD692"]
+    )
+    AFFICHAGE_STATUTS = fields.Boolean(load_default=True)
+    GROUPES_STATUTS = fields.List(
+        fields.Dict,
+        load_default=[
+            {"label": "Monde", "filters": [{"cd_type_statut": "LRM", "cd_sig": "WORLD"}]},
+            {"label": "Europe", "filters": [{"cd_type_statut": "LRE", "cd_sig": "EUROPE"}]},
+            {
+                "label": "France métropolitaine",
+                "filters": [{"cd_type_statut": "LRN", "cd_sig": "TERFXFR"}],
+            },
+        ],
+    )
 
+    COLOR_PIE_CHARTS = fields.List(
+        fields.String(),
+        load_default=[
+            "#E1CE7A",
+            "#FBFFB9",
+            "#FDD692",
+            "#EC7357",
+            "#754F44",
+            "#FB6376",
+            "#B7ADCF",
+            "#DEE7E7",
+            "#F4FAFF",
+            "#383D3B",
+            "#7C7C7C",
+            "#B5F44A",
+            "#D6FF79",
+            "#507255",
+            "#381D2A",
+            "#BA5624",
+            "#FFA552",
+            "#F7FFE0",
+            "#49C6E5",
+            "#54DEFD",
+            "#0B5563",
+            "#54DEFD",
+        ],
+    )
     RANG_STAT = fields.List(
         fields.Dict,
         load_default=[
@@ -192,9 +239,12 @@ class AtlasConfig(Schema):
     ATTR_VIMEO = fields.Integer(load_default=9)
     PROTECTION = fields.Boolean(load_default=False)
     DISPLAY_PATRIMONIALITE = fields.Boolean(load_default=False)
+    AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION = fields.Boolean(load_default=True)
+    AFFICHAGE_TAB_AREA_OBS_ESPECES = fields.Boolean(load_default=True)
     PATRIMONIALITE = fields.Dict(
         load_default={
-            "label": "Patrimonial",
+            "label": "Patrimoniale",
+            "label_pluriel": "Patrimoniales",
             "config": {
                 "oui": {
                     "icon": "custom/images/logo_patrimonial.png",
@@ -215,6 +265,7 @@ class AtlasConfig(Schema):
     )
 
     AFFICHAGE_MAILLE = fields.Boolean(load_default=False)
+    AFFICHAGE_COUCHES_MAP = fields.Dict(load_default={})
     ZOOM_LEVEL_POINT = fields.Integer(load_default=11)
     LIMIT_CLUSTER_POINT = fields.Integer(load_default=1000)
     NB_DAY_LAST_OBS = fields.String(load_default="7")
@@ -227,13 +278,16 @@ class AtlasConfig(Schema):
     SPLIT_NOM_VERN = fields.Boolean(load_default=True)
     INTERACTIVE_MAP_LIST = fields.Boolean(load_default=True)
     AVAILABLE_LANGUAGES = fields.Dict(load_default=LANGUAGES)
+    AFFICHAGE_STATUTS = fields.Boolean(load_default=True)
     # Flask parameter enabling auto reload of templates
     # (no need to restart the atlas service when updating templates)
     # Defaults to False to have the best performance in production
     TEMPLATES_AUTO_RELOAD = fields.Boolean(allow_none=True)
 
+    TYPE_TERRITOIRE_SHEET = fields.List(fields.String(), default=[])
+
     @validates_schema
-    def validate_url_taxhub(self, data, **kwargs):
+    def validate_config(self, data, **kwargs):
         """
         TAXHHUB_URL doit être rempli si REDIMENSIONNEMENT_IMAGE = True
         """
@@ -248,4 +302,10 @@ class AtlasConfig(Schema):
         # the parameter is infered from URL_APPLICATION which is widely use in all the application
         url_application = data["URL_APPLICATION"]
         data["APPLICATION_ROOT"] = url_application if url_application != "/" else "/"
+        #AFFICHAGE_DERNIERES_OBS et AFFICHAGE_TERRITOIRE_OBS ne peuvent pas être True en meme temps
+        if data["AFFICHAGE_DERNIERES_OBS"] and data["AFFICHAGE_TERRITOIRE_OBS"]:
+            raise ValidationError(
+                "Les paramètre AFFICHAGE_DERNIERES_OBS et AFFICHAGE_TERRITOIRE_OBS ne peuvent pas être tous les deux à True"
+            )
         return data
+        

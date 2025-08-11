@@ -34,6 +34,10 @@ owner_atlas_pass=monpassachanger
 # GeoNature-atlas est-il connecté à une BDD GeoNature ? Si oui, renseignez true
 geonature_source=true
 
+# Type de zonage a utiliser dans l'application pour générer les fiches territoires (Pour optimiser et ne pas utiliser toutes les géométries présentes dans ref_geo)
+# voir ref_geo.bib_areas_types
+type_code="'COM,EPCI'"
+
 
 ################################################
 ##### CONNEXION A LA BDD GEONATURE SOURCE ######
@@ -69,9 +73,8 @@ atlas_source_pass=monpassachanger
 ########### Si ref_geo = true ############
 
 # Voir la colonne type_code de la table ref_geo.bib_areas_type
-# Indiquer le code des entités géographiques du ref_geo qui correspondent respectivement aux mailles et aux limites de votre territoire
+# Indiquer le code des entités géographiques du ref_geo qui correspond aux limites de votre territoire
 # Les données doivent préalablement être présentes dans le ref_geo
-type_maille="'M1'"
 type_territoire="'PEC'"
 
 

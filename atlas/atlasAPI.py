@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+import json
 
 from flask import jsonify, Blueprint, request, current_app
 
@@ -8,7 +9,8 @@ from atlas.modeles.repositories import (
     vmObservationsRepository,
     vmObservationsMaillesRepository,
     vmMedias,
-    vmCommunesRepository,
+    vmAreasRepository,
+    vmOrganismsRepository,
 )
 from atlas.env import cache, db
 
@@ -25,14 +27,30 @@ def searchTaxonAPI():
     return jsonify(results)
 
 
-@api.route("/searchCommune", methods=["GET"])
-def searchCommuneAPI():
+@api.route("/searchArea", methods=["GET"])
+def searchAreaAPI():
     session = db.session
     search = request.args.get("search", "")
     limit = request.args.get("limit", 50)
-    results = vmCommunesRepository.searchMunicipalities(session, search, limit)
+    results = vmAreasRepository.searchAreas(session, search, limit)
     session.close()
     return jsonify(results)
+
+
+@api.route("/observationsMailleTerritory", methods=["GET"])
+def getMailleHomeTerritory():
+    """
+    Retourne les mailles de tout le territoire
+    """
+    session = db.session
+    connection = db.engine.connect()
+
+    current_app.logger.debug("start AFFICHAGE_TERRITORY")
+    observations = vmObservationsMaillesRepository.territoryObservationsMailles(connection)
+    current_app.logger.debug("end AFFICHAGE_TERRITORY")
+
+    session.close()
+    return observations
 
 
 if not current_app.config["AFFICHAGE_MAILLE"]:
@@ -94,7 +112,12 @@ def getObservationsGenericApi(cd_ref: int):
         [type]: [description]
     """
     session = db.session
-    if current_app.config["AFFICHAGE_MAILLE"]:
+    if current_app.config["AFFICHAGE_TERRITOIRE_OBS"]:
+        observations = vmObservationsMaillesRepository.getObservationsMaillesTerritorySpecies(
+            session,
+            cd_ref,
+        )
+    elif current_app.config["AFFICHAGE_MAILLE"]:
         observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(
             session,
             cd_ref,
@@ -110,22 +133,40 @@ def getObservationsGenericApi(cd_ref: int):
 
 if not current_app.config["AFFICHAGE_MAILLE"]:
 
-    @api.route("/observations/<insee>/<int(signed=True):cd_ref>", methods=["GET"])
-    def getObservationsCommuneTaxonAPI(insee, cd_ref):
+    @api.route("/observations/<id_area>/<int(signed=True):cd_ref>", methods=["GET"])
+    def getObservationsAreaTaxonAPI(id_area, cd_ref):
         connection = db.engine.connect()
-        observations = vmObservationsRepository.getObservationTaxonCommune(
-            connection, insee, cd_ref
+        observations = vmObservationsRepository.getObservationTaxonArea(
+            connection, id_area, cd_ref
         )
         connection.close()
         return jsonify(observations)
 
 
-@api.route("/observationsMaille/<insee>/<int(signed=True):cd_ref>", methods=["GET"])
-def getObservationsCommuneTaxonMailleAPI(insee, cd_ref):
+@api.route("/observationsMaille/<id_area>/<int(signed=True):cd_ref>", methods=["GET"])
+def getObservationsAreaTaxonMailleAPI(id_area, cd_ref):
     connection = db.engine.connect()
-    observations = vmObservationsMaillesRepository.getObservationsTaxonCommuneMaille(
-        connection, insee, cd_ref
+    observations = vmObservationsMaillesRepository.getObservationsTaxonAreaMaille(
+        connection, id_area, cd_ref
     )
+    connection.close()
+    return jsonify(observations)
+
+
+@api.route("/area/<int(signed=True):id_area>", methods=["GET"])
+def get_observations_area_api(id_area):
+    connection = db.engine.connect()
+
+    limit = request.args.get("limit")
+    if current_app.config["AFFICHAGE_MAILLE"]:
+        observations = vmObservationsMaillesRepository.getObservationsByArea(
+            connection, str(id_area)
+        )
+    else:
+        observations = vmObservationsRepository.getObservationsByArea(
+            connection, id_area, limit
+        )
+
     connection.close()
     return jsonify(observations)
 
@@ -166,4 +207,33 @@ def rank_stat():
     connection = db.engine.connect()
     return jsonify(
         vmObservationsRepository.genericStat(connection, current_app.config["RANG_STAT"])
+    )
+
+
+@api.route("/area_chart_values/<id_area>", methods=["GET"])
+def get_area_chart_valuesAPI(id_area):
+    session = db.session
+    connection = db.engine.connect()
+    species_by_taxonomic_group = vmAreasRepository.get_species_by_taxonomic_group(
+        connection, id_area
+    )
+    observations_by_taxonomic_group = vmAreasRepository.get_nb_observations_taxonomic_group(
+        connection, id_area
+    )
+    nb_species_by_organism = vmOrganismsRepository.get_species_by_organism_on_area(
+        connection, id_area
+    )
+    observations_by_organism = vmOrganismsRepository.get_nb_observations_by_organism_on_area(
+        connection, id_area
+    )
+
+    session.close()
+    connection.close()
+    return jsonify(
+        {
+            "species_by_taxonomic_group": species_by_taxonomic_group,
+            "observations_by_taxonomic_group": observations_by_taxonomic_group,
+            "nb_species_by_organism": nb_species_by_organism,
+            "observations_by_organism": observations_by_organism,
+        }
     )

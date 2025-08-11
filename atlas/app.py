@@ -12,7 +12,7 @@ from werkzeug.wrappers import Response
 from atlas.configuration.config_parser import valid_config_from_dict
 from atlas.configuration.config_schema import AtlasConfig, SecretSchemaConf
 from atlas.env import atlas_static_folder, atlas_template_folder, atlas_config_file_path, db, cache
-from atlas.utils import get_locale
+from atlas.utils import get_locale, get_tranlated_labels
 
 compress = Compress()
 
@@ -62,7 +62,7 @@ def create_app():
         @app.context_processor
         def inject_context():
             configuration = copy.copy(config_valid)
-            return dict(configuration=configuration)
+            return dict(configuration=configuration, translations=get_tranlated_labels())
 
         @app.template_filter("pretty")
         def pretty(val):

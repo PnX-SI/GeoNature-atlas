@@ -1,6 +1,7 @@
 :root {
   --main-color: #c3b528;
   --second-color: #5a7526;
+  --third-color: #2c410a;
   --map-maille-border-color: #ddd;
   --map-maille-lastobs-border-color: #c218d0;
   --map-territory-border-color: #333;
@@ -163,6 +164,29 @@ a {
   border-bottom: 1px solid var(--main-color);
   z-index: 1999;
   height: 60px;
+  flex-wrap: nowrap;
+}
+
+.navbar a.titreAppli {
+  white-space: normal; /* surcharge propriété bootstrap */
+  /* Si titre trop long tronque le contenu au-delà de 2 lignes */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+
+}
+
+#navbarSupportedContent {
+  position: absolute;
+  top: 100%;
+  right: 0;
+}
+
+@media(min-width: 768px) {
+#navbarSupportedContent {
+    position: static;
+}
 }
 
 .logoStructure {
@@ -220,7 +244,27 @@ a {
 }
 
 .ui-autocomplete {
-  z-index: 2000;
+    z-index: 2000;
+
+    div.type_name {
+        background-color: #b6b6b6;
+        width: 100%;
+        text-align: center;
+        font-weight: bold;
+
+        .ui-menu-item-wrapper {
+            font-weight: bold;
+            &.ui-state-active:hover {
+                font-weight: bold;
+                background-color: #b6b6b6 !important;
+                border: none !important;
+            }
+            &.ui-state-active {
+                background-color: #b6b6b6 !important;
+                border: none !important;
+            }
+        }
+    }
 }
 
 /* Sidebar */
@@ -556,6 +600,10 @@ footer {
 
 .clickable {
   cursor: pointer;
+}
+
+#newSpecies .card {
+  height: 100%;
 }
 
 .cover {

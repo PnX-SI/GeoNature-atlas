@@ -9,8 +9,7 @@ if [ "$(id -u)" == "0" ];
         exit 1
 fi
 
-# FR: sudo ls pour demander le mot de passe une fois
-# EN: sudo ls to request the password once
+# sudo ls pour demander le mot de passe une fois
 sudo ls
 
 if [ ! -d 'log' ]
@@ -171,7 +170,6 @@ fi
 echo "----- Creating materialized views ------"
 
 sudo sed -i "s/date - 15$/date - $time/" /tmp/atlas/10.atlas.vm_taxons_plus_observes.sql
-sudo sed -i "s/date + 15$/date - $time/" /tmp/atlas/10.atlas.vm_taxons_plus_observes.sql
 
 # FR: customisation de l'altitude
 # EN: customisation of altitude
@@ -190,25 +188,30 @@ sudo sed -i "s/INSERT_ALTITUDE/${insert}/" /tmp/atlas/4.atlas.vm_altitudes.sql
 # FR: Execution des scripts sql de création des vm de l'atlas
 # EN: Run sql scripts : build atlas vm
 scripts_sql=(
-    "1.atlas.vm_taxref.sql"
-    "2.atlas.vm_observations.sql"
-    "3.atlas.vm_taxons.sql"
-    "4.atlas.vm_altitudes.sql"
-    "5.atlas.vm_search_taxon.sql"
-    "6.atlas.vm_mois.sql"
-    "7.atlas.vm_communes.sql"
-    "8.atlas.vm_medias.sql"
-    "9.atlas.vm_cor_taxon_attribut.sql"
-    "10.atlas.vm_taxons_plus_observes.sql"
-    "11.atlas.vm_cor_taxon_organism.sql"
-    "atlas.refresh_materialized_view_data.sql"
+        "1.atlas.vm_taxref.sql"
+        "1-5.vm_cor_area_synthese.sql"
+        "2.atlas.vm_observations.sql"
+        "3.atlas.vm_taxons.sql"
+        "4.atlas.vm_altitudes.sql"
+        "5.atlas.vm_search_taxon.sql"
+        "6.atlas.vm_mois.sql"
+        "8.atlas.vm_medias.sql"
+        "9.atlas.vm_cor_taxon_attribut.sql"
+        "10.atlas.vm_taxons_plus_observes.sql"
+        "11.atlas.vm_cor_taxon_organism.sql"
+        "13.5.atlas.territory_stats.sql"
+        "15.atlas.vm_bdc_statut.sql"
+        "13.atlas.vm_observations_mailles.sql"
+        "20.grant.sql"
+        "atlas.refresh_materialized_view_data.sql"
 )
 for script in "${scripts_sql[@]}"
 do
     echo "[$(date +'%H:%M:%S')] Creating ${script}..."
     time_temp=$SECONDS
     export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port \
-        -v taxhub_displayed_attr=${taxhub_displayed_attr} \
+             -v type_territoire=$type_territoire \
+             -v type_code=$type_code \
         -f /tmp/atlas/${script} &>> log/install_db.log
     echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 done

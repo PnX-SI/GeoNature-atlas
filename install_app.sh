@@ -102,6 +102,10 @@ if [ ! -f ./atlas/static/custom/templates/navbar.html ]; then
   cp ./atlas/static/custom/templates/navbar.html.sample ./atlas/static/custom/templates/navbar.html
 fi
 
+if [ ! -f ./atlas/static/custom/templates/navbar.html ]; then
+  cp ./atlas/static/custom/templates/statuts.html.sample ./atlas/static/custom/templates/statuts.html
+fi
+
 if [ ! -f ./atlas/static/custom/templates/robots.txt ]; then
   cp ./atlas/static/custom/templates/robots.txt.sample  ./atlas/static/custom/templates/robots.txt
 fi

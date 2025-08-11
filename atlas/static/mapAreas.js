@@ -9,6 +9,10 @@ var currentLayer;
 // Current observation geoJson:  type object
 var myGeoJson;
 
+const id_area = document.location.pathname.split("/")[2]
+displayObs(id_area)
+
+
 // Display limit of the territory
 var areaLayer = L.geoJson(areaInfos.areaGeoJson, {
     style: function () {
@@ -17,7 +21,8 @@ var areaLayer = L.geoJson(areaInfos.areaGeoJson, {
             weight: 2,
             color: areaBorderColor,
             // dashArray: "3",
-            fillOpacity: 0.3
+            fillOpacity: 0.3,
+            invert: true
         };
     }
 }).addTo(map);
@@ -28,15 +33,6 @@ var layerBounds = areaLayer.getBounds();
 bounds.extend(layerBounds);
 map.fitBounds(bounds);
 map.zoom = map.getZoom();
-// Display the 'x' last observations
-// MAILLE
-if (configuration.AFFICHAGE_MAILLE) {
-    displayMailleLayerLastObs(observations);
-}
-// POINT
-else {
-    displayMarkerLayerPointLastObs(observations);
-}
 
 // Generate legends and check configuration to choose which to display (Maille ou Point)
 
@@ -64,58 +60,21 @@ htmlLegend = configuration.AFFICHAGE_MAILLE
 
 generateLegende(htmlLegend);
 
-function displayObsPreciseBaseUrl() {
-    if (sheetType === 'commune') {
-        return configuration.URL_APPLICATION + "/api/observations/" + areaInfos.areaCode
-    } else {
-        return configuration.URL_APPLICATION + "/api/observations/area/" + areaInfos.id_area
-    }
-};
 
-// display observation on click
-function displayObsPreciseBaseUrl(areaCode, cd_ref) {
-    $.ajax({
-        url:
-            displayObsPreciseBaseUrl() +
-            areaCode +
-            "/" +
-            cd_ref,
-        dataType: "json",
-        beforeSend: function () {
-            $("#loaderSpinner").show();
-            // $("#loadingGif").show();
-            // $("#loadingGif").attr(
-            //   "src",
-            //   configuration.URL_APPLICATION + "/static/images/loading.svg"
-            // );
-        }
-    }).done(function (observations) {
-        $("#loaderSpinner").hide();
-        // $("#loadingGif").hide();
-        map.removeLayer(currentLayer);
-        if (configuration.AFFICHAGE_MAILLE) {
-            displayMailleLayerLastObs(observations);
-        } else {
-            displayMarkerLayerPointCommune(observations);
-        }
-    });
-}
+var baseUrl =  configuration.URL_APPLICATION + "/api/observations/" + areaInfos.areaCode
+
 
 function displayObsGridBaseUrl() {
-    if (sheetType === 'commune') {
-        return configuration.URL_APPLICATION + "/api/observationsMaille/"
-    } else {
-        return configuration.URL_APPLICATION + "/api/observationsMaille/area/"
-    }
+    return configuration.URL_APPLICATION + "/api/observationsMaille/"
 }
 
 // display observation on click
-function displayObsTaxon(insee, cd_ref) {
+function displayObsTaxon(id_area, cd_ref) {
   $.ajax({
     url:
       configuration.URL_APPLICATION +
       "/api/observations/" +
-      insee +
+      id_area +
       "/" +
       cd_ref,
     dataType: "json",
@@ -130,13 +89,46 @@ function displayObsTaxon(insee, cd_ref) {
     $("#loadingGif").hide();
     map.removeLayer(currentLayer);
     if (configuration.AFFICHAGE_MAILLE) {
-      displayMailleLayerLastObs(observations);
+        displayMailleLayerLastObs(observations);
+        clearOverlays()
     } else {
-      displayMarkerLayerPointCommune(observations);
+        map.removeLayer(currentLayer);
+        if (configuration.AFFICHAGE_MAILLE) {
+            displayMailleLayerLastObs(observations);
+            clearOverlays()
+        } else {
+            map.removeLayer(currentLayer);
+            displayMarkerLayerPointArea(observations);
+        }
     }
-  });
+    })
 }
 
+function displayObs(id_area) {
+    let url = `/api/area/${id_area}`;
+    // si on est en mode point on rajoute une limite au nombre d'obs
+    // si on est en maille on renvoie toutes les données aggregées par maille
+    if(!configuration.AFFICHAGE_MAILLE) {
+        url +=`?limit=${configuration["NB_LAST_OBS"]}`
+    }
+    $("#loaderSpinner").show();
+    fetch(url)
+        .then(data => {
+            return data.json()
+        })
+        .then(observations => {
+            if (configuration.AFFICHAGE_MAILLE) {
+                displayMailleLayer(observations.observations_features);
+            } else {
+                displayMarkerLayerPointLastObs(observations)
+            }
+            $("#loaderSpinner").hide();
+        })
+        .catch(err => {
+            console.error(err)
+            $("#loaderSpinner").hide();
+        })
+}
 
 function displayObsTaxonMaille(areaCode, cd_ref) {
     $.ajax({
@@ -153,20 +145,22 @@ function displayObsTaxonMaille(areaCode, cd_ref) {
         $("#loaderSpinner").hide();
         // $("#loadingGif").hide();
         map.removeLayer(currentLayer);
-        displayGridLayerArea(observations);
+        clearOverlays()
+        const geojsonMaille = generateGeoJsonMailleLastObs(observations);
+        displayMailleLayerFicheEspece(geojsonMaille);
     });
 }
 
 function refreshObsArea() {
+    console.log("YEP");
+    
     $("#taxonList ul").on("click", "#taxonListItem", function () {
-        $(this)
-            .siblings()
-            .removeClass("current");
-        $(this).addClass("current");
+        document.querySelector("#taxonList .current")?.classList.remove("current")
+        elem.currentTarget.classList.add("current")
         if (configuration.AFFICHAGE_MAILLE) {
-            displayObsTaxonMaille($(this).attr("area-code"), $(this).attr("cdRef"));
+            displayObsTaxonMaille(this.getAttribute("area-code"), this.getAttribute("cdref"));
         } else {
-            displayObsTaxon($(this).attr("area-code"), $(this).attr("cdRef"));
+            displayObsTaxon(this.getAttribute("area-code"), this.getAttribute("cdref"));
         }
         var name = $(this)
             .find("#name")
@@ -182,6 +176,8 @@ function refreshObsArea() {
 $(document).ready(function () {
     $("#loaderSpinner").hide();
     if (configuration.INTERACTIVE_MAP_LIST) {
-        refreshObsArea();
+        $("#taxonList ul").on("click", "#taxonListItem", elem => {
+            refreshObsArea(elem);
+        });
     }
 });

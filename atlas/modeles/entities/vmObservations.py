@@ -17,17 +17,17 @@ class VmObservations(Base):
     cd_ref = Column("cd_ref", Integer, index=True)
     the_geom_point = Column("the_geom_point", Geometry(geometry_type="POINT", srid=4326))
     geojson_point = Column("geojson_point", Text)
-    diffusion_level = Column("diffusion_level")
-
+    cd_sensitivity = Column("diffusion_level", String(5))
+    id_dataset = Column("id_dataset", Integer)
     def as_dict(self):
         return {
-            "id_observation": self.id_observation,
-            "insee": self.insee,
             "dateobs": str(self.dateobs),
+            "year": self.dateobs.year if self.dateobs else None,
+            "id_observation": self.id_observation,
             "observateurs": self.observateurs,
             "altitude_retenue": self.altitude_retenue,
             "cd_ref": self.cd_ref,
-            "diffusion_level": self.diffusion_level,
+            "cd_sensitivity": self.cd_sensitivity,
         }
 
 
