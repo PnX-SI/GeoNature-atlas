@@ -7,7 +7,7 @@ from flask_babel import Babel
 
 babel = Babel()
 
-cache = Cache(config={"CACHE_TYPE": "SimpleCache"})
+cache = Cache()
 
 db = SQLAlchemy()
 

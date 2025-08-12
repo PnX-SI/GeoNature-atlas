@@ -107,7 +107,7 @@ class SecretSchemaConf(Schema):
     )
     GUNICORN_PORT = fields.Integer(load_default=8080)
     SECRET_KEY = fields.String(required=True)
-    CACHE_TIMEOUT = fields.Number(load_default=3600)
+    CACHE_TIMEOUT = fields.Integer(load_default=3600)
 
 
 class MapConfig(Schema):
