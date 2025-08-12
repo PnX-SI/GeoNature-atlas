@@ -44,7 +44,7 @@ function test_settings() {
     echo "Checking the validity of settings.ini"
     for i in "${!fields[@]}"
     do
-        if [ -z ${!fields[$i]} ];
+        if [[ -z "${!fields[$i]}" ]];
             then
                 echo -e "\033\033[31m Error : \033[0m attribut ${fields[$i]} manquant dans settings.ini"
                 exit
