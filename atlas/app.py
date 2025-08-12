@@ -34,7 +34,13 @@ def create_app():
     app.config.update(config_secret_valid)
 
     db.init_app(app)
-    cache.init_app(app)
+    cache.init_app(
+        app,
+        config={
+            "CACHE_TYPE": "SimpleCache",
+            "CACHE_DEFAULT_TIMEOUT": app.config["CACHE_TIMEOUT"],
+        },
+    )
     babel = Babel(app, locale_selector=get_locale)
     compress.init_app(app)
 
