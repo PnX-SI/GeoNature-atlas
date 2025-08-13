@@ -8,7 +8,7 @@ CHANGELOG
 
 🚀 **Nouveautés**
 
-- Ajout du floutage dans l'application (#571 @juggler31)
+- Ajout du floutage des données sensibles (#571 par @juggler31)
 - Ajout d'une carte territoire dans la page d'acceuil ainsi que la liste de toutes les espèces sur celui-ci. Au dela de 4000 espèces sur votre atlas, il est déconseillé d'activer cette fonctionnalité
 - Changement de la notion de "commune" en notion de "territoire" (#545 @juggler31)
 - Ajout d'un graphique de provenance des données (#538)
@@ -40,7 +40,9 @@ La fonction `pointDisplayOptionsFicheCommuneHome` devient `customizeMarkerStyle`
 ``presentation.html``
 Les paramètres de l'url de la fiche territoire était ``url_for('main.ficheCommune', insee=05090)`` et devient ``url_for('main.ficheArea', id_area=XXXXXX)``
 
+- Désampler https://github.com/PnX-SI/GeoNature-atlas/blob/develop/atlas/static/custom/templates/statuts.html.sample / Vérifier que c'est fin lors de l'installation
 - Ajout de statistique sur la fiche de "zoning" (#540 @juggler31)
+- data/atlas/12.atlas.vm_mailles_territoire.sql supprimé. A vérifier ?
 
 🐛 **Corrections**
 
