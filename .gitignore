@@ -19,6 +19,7 @@ atlas/static/custom/glossaire.json
 atlas/static/custom/images/accueil-intro.jpg
 atlas/static/custom/images/logo-structure.png
 atlas/static/custom/images/logo_patrimonial.png
+atlas/static/custom/images/logo-*
 atlas/static/custom/images/picto*.png
 atlas/static/custom/maps-custom.js
 atlas/static/custom/templates/bandeaulogoshome.html
