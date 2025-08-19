@@ -70,7 +70,12 @@ def create_app():
         def inject_context():
             configuration = copy.copy(config_valid)
             now = datetime.now()
-            return dict(configuration=configuration, now=now, timedelta=timedelta, translations=get_tranlated_labels())
+            return dict(
+                configuration=configuration,
+                translations=get_tranlated_labels(),
+                now=now,
+                timedelta=timedelta,
+            )
 
         @app.template_filter("pretty")
         def pretty(val):
