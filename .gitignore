@@ -1,29 +1,18 @@
-*.pyc
-.htpasswd
-log/*
-geonature_atlas.egg-info/
-atlas/debug.py
-robots.txt
-.htaccess
-venv/*
-venv3/*
-.flaskenv
-Makefile.perso.mk
 
+# Atlas configuration files
 atlas/configuration/config.py
 atlas/configuration/settings.ini
 
-atlas/static/conf/custom.js
-
+# Atlas custom files
 atlas/static/custom/custom.css
 atlas/static/custom/glossaire.json
 atlas/static/custom/maps-custom.js
 atlas/static/custom/territoire.json
 
 atlas/static/custom/images/accueil-intro.jpg
+atlas/static/custom/images/external-website.png
 atlas/static/custom/images/favicon.ico
-atlas/static/custom/images/logo-structure.png
-atlas/static/custom/images/logo_patrimonial.png
+atlas/static/custom/images/logo_*
 atlas/static/custom/images/logo-*
 atlas/static/custom/images/picto*.png
 
@@ -33,18 +22,30 @@ atlas/static/custom/templates/footer.html
 atlas/static/custom/templates/introduction.html
 atlas/static/custom/templates/mentions-legales.html
 atlas/static/custom/templates/navbar.html
+atlas/static/custom/templates/presentation.html
+atlas/static/custom/templates/personal-data.html
 atlas/static/custom/templates/statuts.html
 atlas/static/custom/templates/presentation.html
 atlas/static/custom/templates/personal-data.html
 
-atlas/static/node_modules
-
-# Pycharm
+# Directories to ignore
 .idea/
+atlas/static/node_modules/
+log/*
+venv/*
+venv3/*
 
-.vscode
-
+# Other files
 .coverage
+.flaskenv
+.htpasswd
+.htaccess
 .tox
-*.swp
+.vscode
+*.pyc
 *.swo
+*.swp
+atlas/debug.py
+geonature_atlas.egg-info/
+Makefile.perso.mk
+robots.txt
