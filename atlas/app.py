@@ -1,5 +1,6 @@
 import os
 import copy
+from datetime import datetime, timedelta
 from flask import Flask, request, session, redirect, url_for, g
 from flask_compress import Compress
 from flask_sqlalchemy import SQLAlchemy
@@ -68,7 +69,8 @@ def create_app():
         @app.context_processor
         def inject_context():
             configuration = copy.copy(config_valid)
-            return dict(configuration=configuration)
+            now = datetime.now()
+            return dict(configuration=configuration, now=now, timedelta=timedelta)
 
         @app.template_filter("pretty")
         def pretty(val):

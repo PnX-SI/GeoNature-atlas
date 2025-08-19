@@ -15,7 +15,7 @@
 
 <div>
     <small class="text-muted">
-        {{ configuration.NOM_APPLICATION }} - {{ _('atlas.fauna.flora') }} {{ _('from1') }} {{ configuration.STRUCTURE }}, 2021<br/>
+        {{ configuration.NOM_APPLICATION }} - {{ _('atlas.fauna.flora') }} {{ _('from1') }} {{ configuration.STRUCTURE }}, {{ now.year }}<br/>
         <br/>
         {{ _('powered.by') }} <a href="https://github.com/PnX-SI/GeoNature-atlas" target="_blank">GeoNature-atlas</a>, {{ _('developed.by') }}
         <a href="http://www.ecrins-parcnational.fr" target="_blank">
