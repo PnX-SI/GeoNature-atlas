@@ -258,6 +258,7 @@ if ! database_exists $db_name
             "11.atlas.vm_cor_taxon_organism.sql"
             "13.5.atlas.territory_stats.sql"
             "15.atlas.vm_bdc_statut.sql"
+            "13.atlas.vm_observations_mailles.sql"
             "20.grant.sql"
             "atlas.refresh_materialized_view_data.sql"
         )
@@ -273,23 +274,10 @@ if ! database_exists $db_name
         done
 
 
-        # FR: Création de la vue matérialisée vm_mailles_observations (nombre d'observations par maille et par taxon)
-        # EN: Creation of the materialized view vm_meshes_observations (number of observations per mesh and per taxon)
-        echo "[$(date +'%H:%M:%S')] Creating atlas.vm_observations_mailles..."
-        time_temp=$SECONDS
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/13.atlas.vm_observations_mailles.sql  &>> log/install_db.log
-        echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
-
-        # FR: Affectation de droits en lecture sur les VM à l'utilisateur de l'application ($user_pg)
-        # EN: Assign read rights on VMs to the application user ($user_pg)
-        echo "Grant..."
-        sudo sed -i "s/my_reader_user;$/$user_pg;/" /tmp/atlas/20.grant.sql
-        sudo -n -u postgres -s psql -d $db_name -f /tmp/atlas/20.grant.sql &>> log/install_db.log
 
         # Clean file
         echo "Cleaning files..."
         cd data/ref
-        rm -f L*.shp L*.dbf L*.prj L*.sbn L*.sbx L*.shx output_clip.*
         cd ../..
         sudo -n rm -r /tmp/atlas
 
