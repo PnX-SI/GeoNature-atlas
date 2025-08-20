@@ -46,7 +46,7 @@ CREATE MATERIALIZED VIEW atlas.vm_bib_areas_types AS
         t.type_name,
         t.type_desc
     FROM ref_geo.bib_areas_types AS t
-    WHERE type_code IN (SELECT * FROM string_to_table(:type_code, ','));
+    WHERE type_code IN (SELECT * FROM string_to_table(:'type_code', ','));
 
 CREATE INDEX ON atlas.vm_bib_areas_types
     USING btree (id_type);
@@ -94,7 +94,7 @@ CREATE MATERIALIZED VIEW atlas.vm_l_areas AS
             ON st_intersects(layer.the_geom, a.geom_4326)
     WHERE "enable" = TRUE
         AND (
-            b.type_code IN (SELECT * FROM string_to_table(:type_code, ','))
+            b.type_code IN (SELECT * FROM string_to_table(:'type_code', ','))
             OR a.id_type IN (SELECT id_area_type FROM synthese.cor_sensitivity_area_type)
         )
 WITH DATA;

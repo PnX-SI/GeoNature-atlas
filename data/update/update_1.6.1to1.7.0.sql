@@ -31,7 +31,7 @@ CREATE MATERIALIZED VIEW atlas.vm_mailles_territoire AS
         JOIN atlas.t_layer_territoire AS l
             ON ST_intersects(a.geom, st_transform(l.the_geom, find_srid('ref_geo', 'l_areas', 'geom')))
     WHERE a.enable = true
-        AND t.type_code = :type_maille ;
+        AND t.type_code = :'type_maille' ;
 
 CREATE UNIQUE INDEX ON atlas.vm_mailles_territoire
     USING btree (id_maille);
@@ -64,7 +64,7 @@ CREATE INDEX ON atlas.vm_observations_mailles
 
 CREATE INDEX ON atlas.vm_observations_mailles
     USING btree (id_maille, cd_ref);
- 
+
 
 CREATE INDEX index_gist_t_layer_territoire ON atlas.t_layer_territoire USING gist(the_geom);
 CREATE INDEX index_gist_t_layers_communes ON atlas.l_communes USING gist (the_geom);

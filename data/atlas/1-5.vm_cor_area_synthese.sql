@@ -15,7 +15,7 @@ CREATE MATERIALIZED VIEW atlas.vm_cor_area_synthese AS
             ON a.id_type = bat.id_type
     WHERE bat.type_code IN (
             SELECT string_to_table.string_to_table
-            FROM string_to_table(:type_code, ',')
+            FROM string_to_table(:'type_code', ',')
         )
         OR a.id_type IN (SELECT id_area_type FROM synthese.cor_sensitivity_area_type)
 WITH DATA;

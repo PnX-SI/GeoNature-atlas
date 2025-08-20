@@ -36,7 +36,7 @@ geonature_source=true
 
 # Type de zonage a utiliser dans l'application pour générer les fiches territoires (Pour optimiser et ne pas utiliser toutes les géométries présentes dans ref_geo)
 # voir ref_geo.bib_areas_types
-type_code="'COM,EPCI'"
+type_code="COM,EPCI"
 
 
 ################################################
@@ -75,7 +75,7 @@ atlas_source_pass=monpassachanger
 # Voir la colonne type_code de la table ref_geo.bib_areas_type
 # Indiquer le code des entités géographiques du ref_geo qui correspond aux limites de votre territoire
 # Les données doivent préalablement être présentes dans le ref_geo
-type_territoire="'PEC'"
+type_territoire="PEC"
 
 
 # Altitudes
@@ -87,7 +87,7 @@ altitudes=(0 500 1000 1500 2000 2500 3000 3500 4000)
 ### Données TAXONOMIQUES ###
 ############################
 
-#### Liste des codes des types des attributs décrivant les taxons 
+#### Liste des codes des types des attributs décrivant les taxons
 # Les codes correspondent aux valeurs du champs `taxonomie.bib_attributs.nom_attribut`.
 #Ces attributs sont affichés dans le bloc de droite de la fiche espèce (descriptions, commentaire etc...)
 ## !! si changement: modifier également dans main/configuration/config.py

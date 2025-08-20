@@ -29,7 +29,7 @@ CREATE MATERIALIZED VIEW atlas.vm_area_stats AS
             ON area.id_area = cas.id_area
         JOIN atlas.vm_bib_areas_types AS bat
             ON  bat.id_type = area.id_type
-    WHERE bat.type_code = ANY(SELECT * FROM string_to_table(:type_code, ','))
+    WHERE bat.type_code = ANY(SELECT * FROM string_to_table(:'type_code', ','))
     GROUP BY cas.id_area, area.description
 WITH DATA;
 
@@ -57,7 +57,7 @@ CREATE MATERIALIZED VIEW atlas.vm_area_stats_by_taxonomy_group AS
             ON cas.id_synthese = obs.id_observation
         JOIN atlas.vm_taxons AS t
             ON t.cd_ref = obs.cd_ref
-    WHERE cas.type_code = ANY(SELECT * FROM string_to_table(:type_code, ','))
+    WHERE cas.type_code = ANY(SELECT * FROM string_to_table(:'type_code', ','))
     GROUP BY cas.id_area, t.group2_inpn
 WITH DATA;
 
@@ -77,6 +77,6 @@ CREATE MATERIALIZED VIEW atlas.vm_area_stats_by_organism AS
             ON obs.id_dataset = rcda.id_dataset
         JOIN utilisateurs.bib_organismes AS u
             ON rcda.id_organism = u.id_organisme
-    WHERE cas.type_code = ANY(SELECT * FROM string_to_table(:type_code, ','))
+    WHERE cas.type_code = ANY(SELECT * FROM string_to_table(:'type_code', ','))
     GROUP BY cas.id_area, u.nom_organisme
 WITH DATA;
