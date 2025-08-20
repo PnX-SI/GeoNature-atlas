@@ -65,7 +65,7 @@ WITH d AS (
 	SELECT st_union(geom) , b.type_name
 	FROM ref_geo.l_areas l
 	JOIN ref_geo.bib_areas_types b USING(id_type)
-	WHERE REPLACE(b.type_code, ' ', '_') = :type_territoire
+	WHERE REPLACE(b.type_code, ' ', '_') = :'type_territoire'
 	GROUP BY b.type_name
 )
 SELECT
@@ -81,7 +81,7 @@ CREATE INDEX index_gist_t_layer_territoire_the_geom
   ON atlas.t_layer_territoire
   USING gist
   (the_geom);
-  
+
 CREATE UNIQUE INDEX t_layer_territoire_gid_idx
   ON atlas.t_layer_territoire
   USING btree (gid);

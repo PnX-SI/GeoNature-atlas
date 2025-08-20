@@ -138,7 +138,6 @@ echo "--------------------" &>> log/install_db.log
 echo "Creation of layers table from ref_geo of geonaturedb" &>> log/install_db.log
 echo "--------------------" &>> log/install_db.log
 export PGPASSWORD=$owner_atlas_pass; psql -d $db_name -U $owner_atlas -h $db_host -p $db_port \
-    -v type_maille=$type_maille \
     -v type_territoire=$type_territoire \
     -f data/gn2/atlas_ref_geo.sql &>> log/install_db.log
 
@@ -216,8 +215,8 @@ done
 echo "[$(date +'%H:%M:%S')] Creating atlas.vm_mailles_territoire..."
 time_temp=$SECONDS
 export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port  \
--f data/atlas/12.atlas.vm_mailles_territoire.sql \
--v type_maille=$type_maille &>> log/install_db.log
+    -v type_maille=$type_maille \
+    -f data/atlas/12.atlas.vm_mailles_territoire.sql &>> log/install_db.log
 echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 
 # FR: Création de la vue matérialisée vm_mailles_observations (nombre d'observations par maille et par taxon)
