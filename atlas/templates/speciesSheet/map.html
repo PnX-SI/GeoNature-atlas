@@ -1,44 +1,58 @@
 {% block mapCard %}
-    <div class="card mt-4" id="mapPanel mt-4">
-        <div class="row">
-            <div class="col-sm-10" id="mapContainer">
-                <div id="map">
-                    <img id="loadingGif" src="">
-                    {% include 'templates/core/loaderSpinner.html' %}
-                </div>
-            </div>
-            <div class="col-sm-2" id="mapStat">
-                <ul>
-                    <li>
-                        <i class="fas fa-search fa-2x"></i> </br>
-                        <b>{{ taxon.taxonSearch.nb_obs | pretty }}</b></br>
-                        <span style="font-size: 0.90rem">{{ _('observations')|lower if taxon.taxonSearch.nb_obs > 1 else _('observation')|lower }}</span>
-                    </li>
-                    <li>
-                        <i class="fas fa-map-signs fa-2x"></i> <br/>
-                        <b>{{ areas['length']|pretty }}</b><br/>
-                        <span style="font-size: 0.90rem">{{ translations.territories|lower if areas['length'] > 1 else translations.territory|lower }}</span>
-                    </li>
-                    <li>
-                        <i class="fas fa-users fa-2x"></i> <br/>
-                        <b>{{ observers|length|pretty }}</b> <br/>
-                        <span style="font-size: 0.90rem">{{ _('observers')|lower if observers|length > 1 else _('observer')|lower }}</span>
-                        {% if configuration.ORGANISM_MODULE %}
-                        <br/>
-                        <b>{{ organisms|length }} </b> <br/>
-                        <span style="font-size: 0.90rem">{{ _('organisms')|lower if organisms|length > 1 else _('organism')|lower }}</span>
-                        {% endif %}
-                    </li>
-                    <li id="firstObs" class="pointer">
-                        <i class="fas fa-search fa-2x"></i> <br/>
-                        <span style="font-size: 0.90rem">{{ _('first.obs') }}</span><br/><b>{{ taxon.taxonSearch.yearmin|int }}</b>
-                    </li>
-                    <li id="lastObs" class="pointer">
-                        <i class="far fa-clock fa-2x"></i> <br/>
-                        <span style="font-size: 0.90rem">{{ _('last.obs') }}</span><br/><b>{{ taxon.taxonSearch.yearmax|int }}</b>
-                    </li>
-                </ul>
+<div class="card mt-4" id="mapPanel">
+    <div class="row g-0">
+        <div class="col-sm-10" id="mapContainer">
+            <div id="map">
+                <img id="loadingGif" src="">
+                {% include 'templates/core/loaderSpinner.html' %}
             </div>
         </div>
+        <div class="col-sm-2" id="mapStat">
+            <ul>
+                <li>
+                    <i class="fas fa-search fa-2x"></i> <br/>
+                    <b>{{ taxon.taxonSearch.nb_obs | pretty }}</b><br/>
+                    <span style="font-size: 0.90rem">
+                        {{ _('observations')|lower if taxon.taxonSearch.nb_obs > 1 else _('observation')|lower }}
+                    </span>
+                </li>
+
+                <li>
+                    <i class="fas fa-map-signs fa-2x"></i> <br/>
+                    <b>{{ areas['length']|pretty }}</b><br/>
+                    <span style="font-size: 0.90rem">
+                        {{ translations.territories|lower if areas['length'] > 1 else translations.territory|lower }}
+                    </span>
+                </li>
+
+                <li>
+                    <i class="fas fa-users fa-2x"></i> <br/>
+                    <b>{{ observers|length|pretty }}</b><br/>
+                    <span style="font-size: 0.90rem">
+                        {{ _('observers')|lower if observers|length > 1 else _('observer')|lower }}
+                    </span>
+                    {% if configuration.ORGANISM_MODULE %}
+                        <br/>
+                        <b>{{ organisms|length }}</b> <br/>
+                        <span style="font-size: 0.90rem">
+                            {{ _('organisms')|lower if organisms|length > 1 else _('organism')|lower }}
+                        </span>
+                    {% endif %}
+                </li>
+
+                <li id="firstObs" class="pointer">
+                    <i class="fas fa-search fa-2x"></i> <br/>
+                    <span style="font-size: 0.90rem">{{ _('first.obs') }}</span><br/>
+                    <b>{{ taxon.taxonSearch.yearmin|int }}</b>
+                </li>
+
+                <li id="lastObs" class="pointer">
+                    <i class="far fa-clock fa-2x"></i> <br/>
+                    <span style="font-size: 0.90rem">{{ _('last.obs') }}</span><br/>
+                    <b>{{ taxon.taxonSearch.yearmax|int }}</b>
+                </li>
+            </ul>
+        </div>
     </div>
+</div>
 {% endblock %}

@@ -1,53 +1,45 @@
 <small>
     <a href="{{ url_for('main.index') }}">{{ _('home') }}</a> |
     <a href="http://www.ecrins-parcnational.fr" target="_blank">{{ configuration.STRUCTURE }}</a> |
-    <a data-toggle="modal" href="#"
-       data-target="#modalCredits">{{ _('credits') }}</a> |
-    <a data-toggle="modal" href="#"
-       data-target="#modalMentions">{{ _('legal') }}</a>
+    <a href="#" data-bs-toggle="modal" data-bs-target="#modalCredits">{{ _('credits') }}</a> |
+    <a href="#" data-bs-toggle="modal" data-bs-target="#modalMentions">{{ _('legal') }}</a>
     {% if configuration.AFFICHAGE_RGPD and configuration.OREJIME_APPS | length > 0 %}
-    |
-    <a data-toggle="modal" href="#"
-       data-target="#modalPersonalData">{{ _('personal_data') }}</a>
+        | <a href="#" data-bs-toggle="modal" data-bs-target="#modalPersonalData">{{ _('personal_data') }}</a>
         | <a id="preferences-cookies" href="#" onclick="orejime.show()">{{ _('preferences_cookies') }}</a>
     {% endif %}
 </small>
 
 <div>
-<small class="text-muted">
-    {{ configuration.NOM_APPLICATION }} - {{ _('atlas.fauna.flora') }} {{ _('from1') }} {{ configuration.STRUCTURE }}, 2021
-    <br/>
-    {{ _('powered.by') }} <a href="https://github.com/PnX-SI/GeoNature-atlas" target="_blank">GeoNature-atlas</a>, {{ _('developed.by') }}
-    <a href="http://www.ecrins-parcnational.fr" target="_blank">{{ _('ecrins.national.park') }}</a>
-</small>
+    <small class="text-muted">
+        {{ configuration.NOM_APPLICATION }} - {{ _('atlas.fauna.flora') }} {{ _('from1') }} {{ configuration.STRUCTURE }}, 2021
+        <br/>
+        {{ _('powered.by') }} <a href="https://github.com/PnX-SI/GeoNature-atlas" target="_blank" rel="noopener noreferrer">GeoNature-atlas</a>,
+        {{ _('developed.by') }} <a href="http://www.ecrins-parcnational.fr" target="_blank" rel="noopener noreferrer">{{ _('ecrins.national.park') }}</a>
+    </small>
 </div>
 
-<div class="modal fade text-justify" id="modalCredits">
-    <div class="modal-dialog modal-lg" role="document">
+<!-- Modal: Crédits -->
+<div class="modal fade text-justify" id="modalCredits" tabindex="-1" aria-labelledby="modalCreditsLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-
-                <h3>{{ _('credits') }}</h3>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true" class="text-white">&times;</span>
-                </button>
+                <h3 id="modalCreditsLabel">{{ _('credits') }}</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                 {% include 'static/custom/templates/credits.html' %}
+                {% include 'static/custom/templates/credits.html' %}
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade text-justify" id="modalMentions">
-    <div class="modal-dialog modal-lg" role="document">
+<!-- Modal: Mentions légales -->
+<div class="modal fade text-justify" id="modalMentions" tabindex="-1" aria-labelledby="modalMentionsLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-
-                <h3>{{ _('legal') }}</h3>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true" class="text-white">&times;</span>
-                </button>
+                <h3 id="modalMentionsLabel">{{ _('legal') }}</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 {% include 'static/custom/templates/mentions-legales.html' %}
@@ -56,16 +48,14 @@
     </div>
 </div>
 
+<!-- Modal: Données personnelles -->
 {% if configuration.AFFICHAGE_RGPD %}
-<div class="modal fade text-justify" id="modalPersonalData">
-    <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade text-justify" id="modalPersonalData" tabindex="-1" aria-labelledby="modalPersonalDataLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-
-                <h3>{{ _('personal_data') }}</h3>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true" class="text-white">&times;</span>
-                </button>
+                <h3 id="modalPersonalDataLabel">{{ _('personal_data') }}</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 {% include 'static/custom/templates/personal-data.html' %}
