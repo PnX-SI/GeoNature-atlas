@@ -49,12 +49,10 @@ COPY --from=node /dist/node_modules ./static/node_modules
 
 FROM app AS app-pypi
 
-
 COPY /requirements.txt .
 RUN --mount=type=cache,target=/root/.cache \
     pip install -r requirements.txt
 
-COPY --from=build-atlas /build/dist/*.whl .
 COPY --from=build-atlas /build/dist/*.whl .
 
 RUN --mount=type=cache,target=/root/.cache \
