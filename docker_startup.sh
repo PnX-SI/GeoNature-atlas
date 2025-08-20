@@ -11,6 +11,7 @@ export PGPASSWORD=${POSTGRES_PASSWORD}
 if [ "$ATLAS_RESET_SCHEMA" = true ];then
     psql -d ${POSTGRES_DB} -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -t -c "DROP SCHEMA IF EXISTS atlas CASCADE"
     psql -d ${POSTGRES_DB} -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -t -c "DROP SCHEMA IF EXISTS synthese CASCADE"
+    psql -d ${POSTGRES_DB} -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -t -c "DROP SCHEMA IF EXISTS sensitivity CASCADE"
 fi
 
 
@@ -48,11 +49,11 @@ done
 
 # fichiers (avec find ?)
 for custom_file in "templates/footer.html" \
-    "templates/footer.html" \
     "templates/introduction.html" \
     "templates/presentation.html" \
     "templates/credits.html" \
     "templates/mentions-legales.html" \
+    "templates/personal-data.html" \
     "templates/bandeaulogoshome.html" \
     "templates/navbar.html" \
     "templates/robots.txt" \
