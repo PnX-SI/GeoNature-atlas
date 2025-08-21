@@ -8,6 +8,27 @@
 # Connexion de l'application à la BDD (avec l'utilisateur `user_pg` renseigné dans le `settings.ini`)
 SQLALCHEMY_DATABASE_URI = "postgresql://geonatatlas:monpassachanger@localhost:5432/geonatureatlas"
 
+# Ce paramètre avancé permet de configurer la connexion de SQLAlchemy avec la base de données.
+# Ne l'utiliser que si vous savez ce que vous faite !
+# Les paramètres de configuration de la connexion doivent correspondre à ceux utilisé dans la fonction `create_engine`
+# de SQLAlchemy : https://docs.sqlalchemy.org/en/14/core/engines.html#sqlalchemy.create_engine
+# Ci-dessous un exemple de paramètre à adapter selon votre serveur et besoins :
+SQLALCHEMY_ENGINE_OPTIONS = {
+    "pool_recycle": 30,
+    "pool_size": 35,
+    "pool_timeout": 30,
+    "pool_pre_ping": True,
+    "pool_use_lifo": True,
+    "connect_args": {
+        "connect_timeout": 10,
+        "application_name": "atlas",
+        "keepalives": 1,
+        "keepalives_idle": 30,
+        "keepalives_interval": 10,
+        "keepalives_count": 5,
+    },
+}
+
 # Port sur lequel tourne le serveur gunicorn
 GUNICORN_PORT = 8080
 
@@ -215,7 +236,7 @@ AFFICHAGE_GRAPH_PHENOLOGIE = True
 # du nombre d'espèce des fiches zonages
 AFFICHAGE_TOUT_TERRITOIRE_GRAPH = False
 
-# couleurs des diagrames circulaires (provenance des données par organismes et groupes taxonomiques - fiche espèce et zonage) 
+# couleurs des diagrames circulaires (provenance des données par organismes et groupes taxonomiques - fiche espèce et zonage)
 COLOR_PIE_CHARTS = [
     "#981D97",
     "#FBFFB9",
