@@ -122,7 +122,12 @@ def index():
     session = db.session
     connection = db.engine.connect()
 
-    #si AFFICHAGE_TERRITOIRE_OBS on charge les données en AJAX
+    if current_app.config["AFFICHAGE_TERRITOIRE_OBS"]:
+        listTaxons = vmTaxonsRepository.getTaxonsTerritory(connection)
+    else:
+        listTaxons = []
+
+    # si AFFICHAGE_TERRITOIRE_OBS on charge les données en AJAX
     # si AFFICHAGE_DERNIERES_OBS = False, on ne charge pas les obs
     if current_app.config["AFFICHAGE_TERRITOIRE_OBS"] or not current_app.config["AFFICHAGE_DERNIERES_OBS"]:
         observations = []
@@ -157,7 +162,6 @@ def index():
     else:
         lastDiscoveries = []
 
-    listTaxons = vmTaxonsRepository.getTaxonsTerritory(connection)
     connection.close()
     session.close()
 
