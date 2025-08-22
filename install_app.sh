@@ -1,7 +1,7 @@
 #!/bin/bash
 if [ "$(id -u)" == "0" ]; then
-   echo -e "\e[91m\e[1mThis script should NOT be run as root\e[0m" >&2
-   exit 1
+  echo -e "\e[91m\e[1mThis script should NOT be run as root\e[0m" >&2
+  exit 1
 fi
 
 # Make nvm available
@@ -18,8 +18,8 @@ set -a
 set +a
 
 if [ "$(id -u)" == "0" ]; then
-   echo -e "\e[91m\e[1mThis script should NOT be run as root but your user needs sudo rights\e[0m" >&2
-   exit 1
+  echo -e "\e[91m\e[1mThis script should NOT be run as root but your user needs sudo rights\e[0m" >&2
+  exit 1
 fi
 
 echo "Stopping application..."
@@ -67,70 +67,54 @@ sudo systemctl enable geonature-atlas || exit 1
 sudo systemctl start geonature-atlas || exit 1
 
 
-
 echo "Creating custom images folder if it doesnt already exist"
 if [ ! -d ./atlas/static/custom/images/ ]; then
   mkdir -p ./atlas/static/custom/images/
 fi
 
 
-
 echo "Creating customisation files if they dont already exist"
-if [ ! -f ./atlas/static/custom/templates/footer.html ]; then
-  cp ./atlas/static/custom/templates/footer.html.sample ./atlas/static/custom/templates/footer.html
-fi
-if [ ! -f ./atlas/static/custom/templates/introduction.html ]; then
-  cp ./atlas/static/custom/templates/introduction.html.sample ./atlas/static/custom/templates/introduction.html
-fi
-if [ ! -f ./atlas/static/custom/templates/presentation.html ]; then
-  cp ./atlas/static/custom/templates/presentation.html.sample ./atlas/static/custom/templates/presentation.html
-fi
-if [ ! -f ./atlas/static/custom/templates/credits.html ]; then
-  cp ./atlas/static/custom/templates/credits.html.sample ./atlas/static/custom/templates/credits.html
-fi
-if [ ! -f ./atlas/static/custom/templates/mentions-legales.html ]; then
-  cp ./atlas/static/custom/templates/mentions-legales.html.sample ./atlas/static/custom/templates/mentions-legales.html
-fi
-if [ ! -f ./atlas/static/custom/templates/personal-data.html ]; then
- cp ./atlas/static/custom/templates/personal-data.html.sample ./atlas/static/custom/templates/personal-data.html
-fi
-if [ ! -f ./atlas/static/custom/templates/bandeaulogoshome.html ]; then
-  cp ./atlas/static/custom/templates/bandeaulogoshome.html.sample ./atlas/static/custom/templates/bandeaulogoshome.html
-fi
+custom_templates=(
+  "bandeaulogoshome"
+  "credits"
+  "footer"
+  "introduction"
+  "mentions-legales"
+  "navbar"
+  "personal-data"
+  "presentation"
+  "statuts"
+)
+for template_name in "${custom_templates[@]}"; do
+  if [ ! -f "./atlas/static/custom/templates/${template_name}.html" ]; then
+    cp "./atlas/static/custom/templates/${template_name}.html.sample" \
+      "./atlas/static/custom/templates/${template_name}.html"
+  fi
+done
 
-if [ ! -f ./atlas/static/custom/templates/navbar.html ]; then
-  cp ./atlas/static/custom/templates/navbar.html.sample ./atlas/static/custom/templates/navbar.html
-fi
+other_custom_files=(
+  "templates/robots.txt"
+  "custom.css"
+  "glossaire.json"
+  "maps-custom.js"
+)
+for file_path in "${other_custom_files[@]}"; do
+  if [ ! -f "./atlas/static/custom/${file_path}" ]; then
+    cp "./atlas/static/custom/${file_path}.sample" "./atlas/static/custom/${file_path}"
+  fi
+done
 
-if [ ! -f ./atlas/static/custom/templates/navbar.html ]; then
-  cp ./atlas/static/custom/templates/statuts.html.sample ./atlas/static/custom/templates/statuts.html
-fi
-
-if [ ! -f ./atlas/static/custom/templates/robots.txt ]; then
-  cp ./atlas/static/custom/templates/robots.txt.sample  ./atlas/static/custom/templates/robots.txt
-fi
-
-if [ ! -f ./atlas/static/custom/custom.css ]; then
-  cp ./atlas/static/custom/custom.css.sample ./atlas/static/custom/custom.css
-fi
-if [ ! -f ./atlas/static/custom/glossaire.json ]; then
-  cp ./atlas/static/custom/glossaire.json.sample ./atlas/static/custom/glossaire.json
-fi
-if [ ! -f ./atlas/static/custom/images/favicon.ico ]; then
-  cp ./atlas/static/images/sample.favicon.ico ./atlas/static/custom/images/favicon.ico
-fi
-if [ ! -f ./atlas/static/custom/images/accueil-intro.jpg ]; then
-  cp ./atlas/static/images/sample.accueil-intro.jpg ./atlas/static/custom/images/accueil-intro.jpg
-fi
-if [ ! -f ./atlas/static/custom/images/logo-structure.png ]; then
-  cp ./atlas/static/images/sample.logo-structure.png ./atlas/static/custom/images/logo-structure.png
-fi
-if [ ! -f ./atlas/static/custom/images/logo_patrimonial.png ]; then
-  cp ./atlas/static/images/sample.logo_patrimonial.png ./atlas/static/custom/images/logo_patrimonial.png
-fi
-if [ ! -f ./atlas/static/custom/maps-custom.js ]; then
-  cp ./atlas/static/custom/maps-custom.js.sample ./atlas/static/custom/maps-custom.js
-fi
-
-
-
+custom_images=(
+  "accueil-intro.jpg"
+  "external-website.png"
+  "favicon.ico"
+  "logo_patrimonial.png"
+  "logo_protection.png"
+  "logo-structure.png"
+)
+for img_file in "${custom_images[@]}"; do
+  if [ ! -f "./atlas/static/custom/images/${img_file}" ]; then
+    cp "./atlas/static/custom/images/sample.${img_file}" \
+      "./atlas/static/custom/images/${img_file}"
+  fi
+done
