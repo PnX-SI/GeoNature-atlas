@@ -152,8 +152,6 @@ function displayObsTaxonMaille(areaCode, cd_ref) {
 }
 
 function refreshObsArea() {
-    console.log("YEP");
-    
     $("#taxonList ul").on("click", "#taxonListItem", function () {
         document.querySelector("#taxonList .current")?.classList.remove("current")
         elem.currentTarget.classList.add("current")
