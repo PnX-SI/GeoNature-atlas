@@ -41,5 +41,5 @@ class VmObservationsMailles(Base):
     annee = Column("annee", String(1000), primary_key=True, index=True)
     id_maille = Column("id_maille", Integer, primary_key=True, index=True)
     nbr = Column("nbr", Integer)
-    type_code = Column("nbr", String(10))
+    type_code = Column("type_code", String(10))
     id_observations = Column("id_observations", ARRAY(Integer))
