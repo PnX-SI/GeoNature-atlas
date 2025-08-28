@@ -11,15 +11,15 @@ end_of_line = lf
 insert_final_newline = true
 
 # Indentation override for Makefiles
-[Makefile, .mk]
+[{Makefile,*.mk}]
 indent_style = tab
 
-# 4 space indentation
-[*.py]
+# Indentation with 4 spaces
+[*.{py,sql}]
 indent_style = space
 indent_size = 4
 
-# Indentation override for all JS under lib directory
-[*.js, *.css, *.html]
+# Indentation with tabs (2 spaces wide)
+[*.{js,css,html}]
 indent_style = tab
 indent_size = 2
