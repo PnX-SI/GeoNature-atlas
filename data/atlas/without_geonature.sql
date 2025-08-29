@@ -1,6 +1,7 @@
+-- TODO: delete this file ?
 CREATE TABLE synthese.syntheseff(
     id_synthese serial PRIMARY KEY,
-    id_organism integer DEFAULT 2, 
+    id_organism integer DEFAULT 2,
     id_dataset integer,
     cd_nom integer,
     id_area integer,
