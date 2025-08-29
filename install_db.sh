@@ -40,7 +40,7 @@ function database_exists () {
 }
 
 function test_settings() {
-    fields=('owner_atlas' 'user_pg' 'altitudes' 'time' 'taxhub_displayed_attr')
+    fields=('owner_atlas' 'user_pg' 'altitudes' 'time')
     echo "Checking the validity of settings.ini"
     for i in "${!fields[@]}"
     do
