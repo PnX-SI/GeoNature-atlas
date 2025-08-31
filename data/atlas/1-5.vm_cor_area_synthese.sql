@@ -1,5 +1,3 @@
-
-
 CREATE MATERIALIZED VIEW atlas.vm_cor_area_synthese AS
     SELECT
         sa.id_synthese,
@@ -17,7 +15,7 @@ CREATE MATERIALIZED VIEW atlas.vm_cor_area_synthese AS
             SELECT string_to_table.string_to_table
             FROM string_to_table(:'type_code', ',')
         )
-        OR a.id_type IN (SELECT id_area_type FROM synthese.cor_sensitivity_area_type)
+        OR bat.type_code IN (SELECT area_type_code FROM atlas.cor_sensitivity_area_type)
 WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_cor_area_synthese

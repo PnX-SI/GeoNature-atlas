@@ -77,7 +77,7 @@ CREATE INDEX ON atlas.vm_cor_areas
 -- Suppression si temporaire des areas la table existe
 DROP MATERIALIZED VIEW IF EXISTS atlas.vm_l_areas;
 
--- création de la vm l_areas à partir des communes du ref_geo
+-- création de la vm l_areas à partir du ref_geo
 CREATE MATERIALIZED VIEW atlas.vm_l_areas AS
     SELECT
         a.id_area AS id_area,
@@ -88,13 +88,14 @@ CREATE MATERIALIZED VIEW atlas.vm_l_areas AS
         st_asgeojson(st_transform(a.geom, 4326)) AS area_geojson,
         a.description AS "description"
     FROM ref_geo.l_areas AS a
-        JOIN ref_geo.bib_areas_types AS b
-            ON a.id_type = b.id_type
+        JOIN ref_geo.bib_areas_types AS bat
+            ON a.id_type = bat.id_type
         JOIN atlas.t_layer_territoire AS layer
             ON st_intersects(layer.the_geom, a.geom_4326)
     WHERE "enable" = TRUE
         AND (
-            b.type_code IN (SELECT * FROM string_to_table(:'type_code', ','))
+            bat.type_code IN (SELECT * FROM string_to_table(:'type_code', ','))
+            OR bat.type_code = :'type_maille'
             OR a.id_type IN (SELECT id_area_type FROM synthese.cor_sensitivity_area_type)
         )
 WITH DATA;

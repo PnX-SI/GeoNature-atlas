@@ -78,8 +78,13 @@ atlas_source_pass=monpassachanger
 type_territoire="PEC"
 
 
-# Altitudes
-# lister les valeurs des classes d'altitudes
+# Type de zonage à utiliser pour les observations non sensibles.
+# Utiliser pour agrégger les observations dans les mailles pour un affichage
+# synthètique dans la fiche espèce.
+# 🗒 Voir la colonne "type_code" de la table "ref_geo.bib_areas_type".
+type_maille="M5"
+
+# Altitudes : lister les valeurs des classes d'altitudes.
 # si non spécifié les valeurs par défaut seront (0 500 1000 1500 2000 2500 3000 3500 4000)
 altitudes=(0 500 1000 1500 2000 2500 3000 3500 4000)
 

@@ -143,6 +143,7 @@ echo "--------------------" &>> log/install_db.log
 export PGPASSWORD=$owner_atlas_pass; psql -d $db_name -U $owner_atlas -h $db_host -p $db_port \
     -v type_territoire=$type_territoire \
     -v type_code=$type_code \
+    -v type_maille=$type_maille \
     -f data/gn2/atlas_ref_geo.sql &>> log/install_db.log
 
 
@@ -187,6 +188,7 @@ sudo sed -i "s/INSERT_ALTITUDE/${insert}/" /tmp/atlas/4.atlas.vm_altitudes.sql
 # EN: Run sql scripts : build atlas vm
 scripts_sql=(
         "1.atlas.vm_taxref.sql"
+        "1-4.cor_sensitivity_area.sql"
         "1-5.vm_cor_area_synthese.sql"
         "2.atlas.vm_observations.sql"
         "3.atlas.vm_taxons.sql"
@@ -208,9 +210,10 @@ do
     echo "[$(date +'%H:%M:%S')] Creating ${script}..."
     time_temp=$SECONDS
     export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port \
-             -v type_territoire=$type_territoire \
-             -v type_code=$type_code \
+            -v type_territoire=$type_territoire \
+            -v type_code=$type_code \
             -v my_reader_user=$user_pg \
+            -v type_maille=$type_maille \
         -f /tmp/atlas/${script} &>> log/install_db.log
     echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 done
