@@ -1,7 +1,11 @@
-# ................................
-#  GeoNature-atlas
-#  PostgreSQL database settings
-# ................................
+#+-------------------------------------------------------------------------------------------------+
+#  GeoNature-atlas : application de visualisation cartographique des données naturalistes
+#  Paramètres de configuration des scripts d'installation de l'application.
+#+-------------------------------------------------------------------------------------------------+
+
+#+-------------------------------------------------------------------------------------------------+
+# Base de données PostgreSQL/PostGIS
+#+-------------------------------------------------------------------------------------------------+
 
 # Effacer la base de données existante lors de l'installation
 drop_apps_db=false
@@ -27,25 +31,19 @@ owner_atlas=geonatadmin
 # Password du propriétaire de la BDD
 owner_atlas_pass=monpassachanger
 
-#################################################
-##### Configuration de GN-atlas avec un GN ######
-#################################################
-
-# GeoNature-atlas est-il connecté à une BDD GeoNature ? Si oui, renseignez true
+# GeoNature-atlas doit-il avoir sa propre base de donnée et être connecté
+# à une BDD GeoNature externe via ? Si oui, renseignez true.
+# Cela créera des tables en Foreign Data Wrapper (FDW) dans la BDD atlas.
 geonature_source=true
 
-# Type de zonage a utiliser dans l'application pour générer les fiches territoires (Pour optimiser et ne pas utiliser toutes les géométries présentes dans ref_geo)
-# voir ref_geo.bib_areas_types
-type_code="COM,EPCI"
 
+#+-------------------------------------------------------------------------------------------------+
+# Connexion à la BDD GeoNature source
+#+-------------------------------------------------------------------------------------------------+
 
-################################################
-##### CONNEXION A LA BDD GEONATURE SOURCE ######
-################################################
-
-# Paramètres de connexion à la BDD source GeoNature et/ou Taxhub en foreign data wrapper
-# Si vous n'utilisez pas GeoNature, pour les données d'observation, vous pouvez vous inspirer du fichier data/atlas_geonature.sql
-# pour vous connecter à une autre BDD mère
+# 🗒 Paramètres de connexion à la BDD source GeoNature en Foreign Data Wrapper.
+# Si vous n'utilisez pas GeoNature, pour les données d'observation, vous pouvez vous inspirer
+# du fichier data/atlas_geonature.sql pour vous connecter à une autre BDD mère.
 
 # Host de la BDD GeoNature source
 db_source_host=localhost
@@ -57,7 +55,7 @@ db_source_port=5432
 db_source_name=geonature2db
 
 # Nombre d'éléments à récupérer par lot en Foreign Data Wrapper (défaut 100)
-# Note : utiliser 1000000 pour une table synthese avec plusieurs millions d'observations.
+# 🗒 Note : utiliser 1000000 pour une table synthese avec plusieurs millions d'observations.
 db_source_fetch_size=100
 
 # Nom de l'utilisateur atlas dans la BDD GeoNature source (lecture seule)
@@ -66,17 +64,23 @@ atlas_source_user=geonatatlas
 # Pass de l'utilisateur atlas dans la BDD GeoNature source (lecture seule)
 atlas_source_pass=monpassachanger
 
-#############################
-### Données GEOGRAPHIQUES ###
-#############################
 
-########### Si ref_geo = true ############
+#+-------------------------------------------------------------------------------------------------+
+# Paramètres des données géographiques
+#+-------------------------------------------------------------------------------------------------+
 
-# Voir la colonne type_code de la table ref_geo.bib_areas_type
-# Indiquer le code des entités géographiques du ref_geo qui correspond aux limites de votre territoire
-# Les données doivent préalablement être présentes dans le ref_geo
+# 🗒 Voir la colonne "type_code" de la table "ref_geo.bib_areas_type" pour
+# tous les codes de type de zone geographique renseignés ci-dessous
+
+# Indiquer le code du type d'entité géographique correspondant aux limites de votre territoire.
+# Une seule entrée correspondant à ce type doit être présent dans la table "ref_geo.l_areas".
+# 🗒 Voir la colonne "type_code" de la table "ref_geo.bib_areas_type".
 type_territoire="PEC"
 
+# Type de zonage a utiliser dans l'application pour générer les fiches territoires.
+# (Pour optimiser et ne pas utiliser toutes les géométries présentes dans ref_geo).
+# 🗒 Voir la colonne "type_code" de la table "ref_geo.bib_areas_type".
+type_code="COM,EPCI"
 
 # Type de zonage à utiliser pour les observations non sensibles.
 # Utiliser pour agrégger les observations dans les mailles pour un affichage
@@ -88,35 +92,31 @@ type_maille="M5"
 # si non spécifié les valeurs par défaut seront (0 500 1000 1500 2000 2500 3000 3500 4000)
 altitudes=(0 500 1000 1500 2000 2500 3000 3500 4000)
 
-############################
-### Données TAXONOMIQUES ###
-############################
 
-# Paramètre pour la vue atlas.vm_taxons_plus_observes
-# Especes les plus observées sur la periode 'moins X jour, plus X jours par rapport à la date du jour, toutes années confondues'
-# 15 jours par défaut
+#+-------------------------------------------------------------------------------------------------+
+# Paramètres des données taxonomiques
+#+-------------------------------------------------------------------------------------------------+
+
+# Especes les plus observées sur la periode 'moins X jour, plus X jours par rapport
+# à la date du jour, toutes années confondues'.
+# Paramètre utilisé pour la vue "atlas.vm_taxons_plus_observes".
+# Unité : en jours.
+# Par défaut : 15 jours.
 time=15
 
-##################################################
-########## Paramatre administrateur avancé #######
-##################################################
 
-# Ne modifier que si vous savez ce que vous faites
+#+-------------------------------------------------------------------------------------------------+
+# Paramètres administrateur avancés ( ⚠ ne modifier que si vous savez ce que vous faites !)
+#+-------------------------------------------------------------------------------------------------+
 
-
-#####################
-### Gunicorn settings
-#####################
-
+# Parmètres Gunicorn
 gun_num_workers=4
 gun_host=0.0.0.0
 gun_port=8080
 gun_timeout=60
 
-####################
-### Python settings
-####################
-
+# Paramètres Python
+# Nom du dossier de l'environnement virtuel Python
 venv_dir=venv
 # L'atlas est compatible avec Python 3, préferez donc l'utilisation de Python 3.X
 python_executable=/usr/bin/python3
