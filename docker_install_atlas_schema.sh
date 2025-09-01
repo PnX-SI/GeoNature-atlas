@@ -70,7 +70,7 @@ psql -d ${POSTGRES_DB} -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_POR
 psql -d ${POSTGRES_DB} -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -c "CREATE VIEW synthese.t_nomenclatures AS SELECT * FROM ref_nomenclatures.t_nomenclatures"
 psql -d ${POSTGRES_DB} -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -c "CREATE VIEW synthese.bib_nomenclatures_types AS SELECT * FROM ref_nomenclatures.bib_nomenclatures_types"
 psql -d ${POSTGRES_DB} -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -c "CREATE VIEW sensitivity.cor_sensitivity_area_type AS SELECT * FROM gn_sensitivity.cor_sensitivity_area_type"
-
+psql -v ON_ERROR_STOP=1 -d ${POSTGRES_DB} -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -f data/gn2/atlas_synthese.sql
 # Others
 psql -v ON_ERROR_STOP=1 -d ${POSTGRES_DB} -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -f data/atlas/1.atlas.vm_taxref.sql
 psql -v ON_ERROR_STOP=1 -d ${POSTGRES_DB} -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -f data/atlas/2.atlas.vm_observations.sql
