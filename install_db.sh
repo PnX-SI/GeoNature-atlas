@@ -207,29 +207,11 @@ do
     export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port \
              -v type_territoire=$type_territoire \
              -v type_code=$type_code \
+            -v my_reader_user=$user_pg \
         -f /tmp/atlas/${script} &>> log/install_db.log
     echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 done
 
-echo "[$(date +'%H:%M:%S')] Creating atlas.vm_mailles_territoire..."
-time_temp=$SECONDS
-export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port  \
--f data/atlas/12.atlas.vm_mailles_territoire.sql \
--v type_maille=$type_maille &>> log/install_db.log
-echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
-
-# FR: Création de la vue matérialisée vm_mailles_observations (nombre d'observations par maille et par taxon)
-# EN: Creation of the materialized view vm_meshes_observations (number of observations per mesh and per taxon)
-echo "[$(date +'%H:%M:%S')] Creating atlas.vm_observations_mailles..."
-time_temp=$SECONDS
-export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/13.atlas.vm_observations_mailles.sql  &>> log/install_db.log
-echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
-
-# FR: Affectation de droits en lecture sur les VM à l'utilisateur de l'application ($user_pg)
-# EN: Assign read rights on VMs to the application user ($user_pg)
-echo "Grant..."
-sudo sed -i "s/my_reader_user;$/$user_pg;/" /tmp/atlas/14.grant.sql
-sudo -n -u postgres -s psql -d $db_name -f /tmp/atlas/14.grant.sql &>> log/install_db.log
 
 # Clean file
 echo "Cleaning files..."
