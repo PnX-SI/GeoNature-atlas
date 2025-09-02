@@ -188,7 +188,7 @@ sudo sed -i "s/INSERT_ALTITUDE/${insert}/" /tmp/atlas/4.atlas.vm_altitudes.sql
 # EN: Run sql scripts : build atlas vm
 scripts_sql=(
         "1.atlas.vm_taxref.sql"
-        "1-4.cor_sensitivity_area.sql"
+        "1-4.cor_sensitivity_area_type.sql"
         "1-5.vm_cor_area_synthese.sql"
         "2.atlas.vm_observations.sql"
         "3.atlas.vm_taxons.sql"
