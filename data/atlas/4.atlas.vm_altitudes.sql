@@ -8,7 +8,6 @@ CREATE TABLE atlas.bib_altitudes (
     label_altitude character varying(255),
     CONSTRAINT bib_altitudes_pk PRIMARY KEY (id_altitude)
 );
--- TODO: replace INSERT_ALTITUDE by Psql variables if possible or by ${insert_altitude}
 INSERT_ALTITUDE
 UPDATE atlas.bib_altitudes SET label_altitude = '_' || altitude_min || '_' || altitude_max + 1 ;
 
