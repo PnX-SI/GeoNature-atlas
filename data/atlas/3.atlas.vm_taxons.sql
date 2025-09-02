@@ -1,7 +1,4 @@
 -- Tous les taxons ayant au moins une observation
-
--- DROP MATERIALIZED VIEW IF EXISTS atlas.vm_taxons ;
-
 CREATE MATERIALIZED VIEW atlas.vm_taxons AS
     WITH obs_min_taxons AS (
         SELECT

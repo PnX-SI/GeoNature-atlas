@@ -1,5 +1,4 @@
 -- Classic stats
--- DROP materialized view IF EXISTS atlas.vm_area_stats ;
 CREATE MATERIALIZED VIEW atlas.vm_area_stats AS
     SELECT
         cas.id_area,
@@ -34,7 +33,6 @@ CREATE MATERIALIZED VIEW atlas.vm_area_stats AS
 WITH DATA;
 
 -- Graph stats by taxonomy_group
--- DROP materialized view IF EXISTS atlas.vm_area_stats_by_taxonomy_group;
 CREATE MATERIALIZED VIEW atlas.vm_area_stats_by_taxonomy_group AS
     SELECT
         cas.id_area,
@@ -63,7 +61,6 @@ WITH DATA;
 
 
 -- Graph stats by organism
--- DROP materialized view IF EXISTS atlas.vm_area_stats_by_organism;
 CREATE MATERIALIZED VIEW atlas.vm_area_stats_by_organism AS
     SELECT
         cas.id_area,

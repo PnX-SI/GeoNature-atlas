@@ -1,7 +1,5 @@
 -- Copie du contenu de taxref (à partir du schéma taxonomie de TaxHub)
 
--- DROP MATERIALIZED VIEW IF EXISTS taxonomie.vm_taxref ;
-
 CREATE MATERIALIZED VIEW atlas.vm_taxref AS
     SELECT * FROM taxonomie.taxref;
 

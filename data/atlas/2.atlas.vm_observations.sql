@@ -1,5 +1,3 @@
--- DROP MATERIALIZED VIEW IF EXISTS atlas.vm_observations ;
-
 -- Toutes les observations
 CREATE MATERIALIZED VIEW atlas.vm_observations AS
     WITH centroid_synthese AS (
@@ -72,8 +70,6 @@ CREATE INDEX ON atlas.vm_observations
 
 
 -- Table des correspondances observations <> zonages;
--- DROP MATERIALIZED VIEW IF EXISTS atlas.vm_cor_area_observation;
-
 CREATE MATERIALIZED VIEW atlas.vm_cor_area_observation AS
     SELECT
         cas.id_synthese AS id_observation,
