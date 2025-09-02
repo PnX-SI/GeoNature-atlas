@@ -163,18 +163,19 @@ sudo sed -i "s/date - 15$/date - $time/" /tmp/atlas/10.atlas.vm_taxons_plus_obse
 
 # FR: customisation de l'altitude
 # EN: customisation of altitude
-insert=""
-for i in "${!altitudes[@]}"
-    do
-        if [ $i -gt 0 ];
-        then
-            let max=${altitudes[$i]}-1
-            sql="INSERT INTO atlas.bib_altitudes VALUES ($i,${altitudes[$i-1]},$max);"
-            insert="${insert}\n${sql}"
+insert_altitudes_values=""
+for i in "${!altitudes[@]}"; do
+    if [ $i -gt 0 ]; then
+        let max=${altitudes[$i]}-1
+        sql="(${altitudes[$i-1]}, $max)"
+        if  [ $i -eq 1 ]; then
+            insert_altitudes_values=" ${sql}"
+        else
+            insert_altitudes_values="${insert_altitudes_values}, ${sql}"
         fi
-    done
+    fi
+done
 
-sudo sed -i "s/INSERT_ALTITUDE/${insert}/" /tmp/atlas/4.atlas.vm_altitudes.sql
 # FR: Execution des scripts sql de création des vm de l'atlas
 # EN: Run sql scripts : build atlas vm
 scripts_sql=(
@@ -203,11 +204,13 @@ do
     echo "[$(date +'%H:%M:%S')] Creating ${script}..."
     time_temp=$SECONDS
     export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port \
-            -v type_territoire="${type_territoire}" \
-            -v type_code="${type_code}" \
-            -v type_maille="${type_maille}" \
-            -v reader_user="${user_pg}" \
+        -v type_territoire="${type_territoire}" \
+        -v type_code="${type_code}" \
+        -v type_maille="${type_maille}" \
+        -v reader_user="${user_pg}" \
+        -v insert_altitudes_values="${insert_altitudes_values}" \
         -f /tmp/atlas/${script} &>> log/install_db.log
+
     echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 done
 

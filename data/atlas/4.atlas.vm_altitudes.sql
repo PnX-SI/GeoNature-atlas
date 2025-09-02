@@ -1,14 +1,15 @@
 -- +-----------------------------------------------------------------------------------------------+
 -- Classes d'altitudes, modifiables selon votre contexte
-
 CREATE TABLE atlas.bib_altitudes (
-    id_altitude integer NOT NULL,
+    id_altitude SERIAL NOT NULL,
     altitude_min integer NOT NULL,
     altitude_max integer NOT NULL,
     label_altitude character varying(255),
     CONSTRAINT bib_altitudes_pk PRIMARY KEY (id_altitude)
 );
-INSERT_ALTITUDE
+
+INSERT INTO atlas.bib_altitudes (altitude_min, altitude_max) VALUES :insert_altitudes_values ;
+
 UPDATE atlas.bib_altitudes SET label_altitude = '_' || altitude_min || '_' || altitude_max + 1 ;
 
 
