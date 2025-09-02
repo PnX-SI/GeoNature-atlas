@@ -69,6 +69,10 @@ if database_exists $db_name
             then
                 echo "Deleting DB..."
                 sudo -u postgres -s dropdb $db_name  &>> log/install_db.log
+                if [ "$?" -ne "0" ]; then
+                    echo "Please first close all database connexions"
+                    exit 1
+                fi
         fi
 fi
 
