@@ -15,11 +15,6 @@ insert_final_newline = true
 indent_style = tab
 
 # Indentation with 4 spaces
-[*.{py,sql}]
+[*.{py,sql,js,css,html}]
 indent_style = space
 indent_size = 4
-
-# Indentation with tabs (2 spaces wide)
-[*.{js,css,html}]
-indent_style = tab
-indent_size = 2
