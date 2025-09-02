@@ -1,3 +1,4 @@
+-- +-----------------------------------------------------------------------------------------------+
 -- Classic stats
 CREATE MATERIALIZED VIEW atlas.vm_area_stats AS
     SELECT
@@ -32,6 +33,8 @@ CREATE MATERIALIZED VIEW atlas.vm_area_stats AS
     GROUP BY cas.id_area, area.description
 WITH DATA;
 
+
+-- +-----------------------------------------------------------------------------------------------+
 -- Graph stats by taxonomy_group
 CREATE MATERIALIZED VIEW atlas.vm_area_stats_by_taxonomy_group AS
     SELECT
@@ -60,6 +63,7 @@ CREATE MATERIALIZED VIEW atlas.vm_area_stats_by_taxonomy_group AS
 WITH DATA;
 
 
+-- +-----------------------------------------------------------------------------------------------+
 -- Graph stats by organism
 CREATE MATERIALIZED VIEW atlas.vm_area_stats_by_organism AS
     SELECT

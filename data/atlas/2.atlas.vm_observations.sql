@@ -68,7 +68,7 @@ CREATE INDEX ON atlas.vm_observations
 CREATE INDEX ON atlas.vm_observations
     USING gist (the_geom_point);
 
-
+-- +-----------------------------------------------------------------------------------------------+
 -- Table des correspondances observations <> zonages;
 CREATE MATERIALIZED VIEW atlas.vm_cor_area_observation AS
     SELECT

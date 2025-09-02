@@ -1,5 +1,6 @@
--- 12 taxons les plus observés sur la période en cours (par défaut -15 jours +15 jours toutes années confondues)
-
+-- +-----------------------------------------------------------------------------------------------+
+-- Taxons les plus observés sur la période en cours.
+-- Par défaut -15 jours +15 jours toutes années confondues.
 CREATE MATERIALIZED VIEW atlas.vm_taxons_plus_observes AS
     SELECT
         count(*) AS nb_obs,
@@ -27,7 +28,7 @@ CREATE MATERIALIZED VIEW atlas.vm_taxons_plus_observes AS
 CREATE UNIQUE INDEX ON atlas.vm_taxons_plus_observes
     USING btree (cd_ref);
 
-
+-- +-----------------------------------------------------------------------------------------------+
 CREATE OR REPLACE FUNCTION atlas.find_all_taxons_childs(id integer)
   RETURNS SETOF integer
   LANGUAGE plpgsql IMMUTABLE

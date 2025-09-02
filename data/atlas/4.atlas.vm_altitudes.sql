@@ -1,3 +1,4 @@
+-- +-----------------------------------------------------------------------------------------------+
 -- Classes d'altitudes, modifiables selon votre contexte
 
 CREATE TABLE atlas.bib_altitudes (
@@ -11,9 +12,9 @@ INSERT_ALTITUDE
 UPDATE atlas.bib_altitudes SET label_altitude = '_' || altitude_min || '_' || altitude_max + 1 ;
 
 
+-- +-----------------------------------------------------------------------------------------------+
 -- Fonction qui permet de créer la VM contenant le nombre d'observations
--- par classes d'altitude pour chaque taxon.
-
+-- par classes d'altitude.
 CREATE OR REPLACE FUNCTION atlas.create_vm_altitudes()
     RETURNS text
     LANGUAGE plpgsql

@@ -1,5 +1,5 @@
+-- +-----------------------------------------------------------------------------------------------+
 -- Copie du contenu de taxref (à partir du schéma taxonomie de TaxHub)
-
 CREATE MATERIALIZED VIEW atlas.vm_taxref AS
     SELECT * FROM taxonomie.taxref;
 
@@ -21,8 +21,8 @@ CREATE INDEX ON atlas.vm_taxref
 CREATE INDEX ON atlas.vm_taxref
     USING btree (nom_valide);
 
+-- +-----------------------------------------------------------------------------------------------+
 -- Rangs de taxref ordonnés
-
 CREATE TABLE atlas.bib_taxref_rangs (
     id_rang character(4) NOT NULL,
     nom_rang character varying(20) NOT NULL,
