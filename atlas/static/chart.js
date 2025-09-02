@@ -26,16 +26,16 @@ genericChart = function (element, labels, values) {
         },
         options: {
             scales: {
-                yAxes: [{
-                    ticks: {
+                y: {
+                  ticks: {
                         beginAtZero: true
                     }
-                }],
-                xAxes: [{
+                },
+                x: {
                     gridLines: {
                         display: false
                     }
-                }]
+                }
             },
             maintainAspectRatio: false,
             plugins: {
