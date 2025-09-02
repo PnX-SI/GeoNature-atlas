@@ -17,10 +17,10 @@ CREATE MATERIALIZED VIEW atlas.vm_taxons_plus_observes AS
             ON tax.cd_ref = obs.cd_ref
         LEFT JOIN atlas.vm_medias AS m
             ON (m.cd_ref = obs.cd_ref AND m.id_type = 1)
-    WHERE date_part('day'::text, obs.dateobs) >= date_part('day'::text, 'now'::text::date - 15)
-        AND date_part('month'::text, obs.dateobs) = date_part('month'::text, 'now'::text::date - 15)
-        OR date_part('day'::text, obs.dateobs) <= date_part('day'::text, 'now'::text::date + 15)
-        AND date_part('month'::text, obs.dateobs) = date_part('day'::text, 'now'::text::date + 15)
+    WHERE date_part('day', obs.dateobs) >= date_part('day', 'now'::date - :taxon_time)
+        AND date_part('month', obs.dateobs) = date_part('month', 'now'::date - :taxon_time)
+        OR date_part('day', obs.dateobs) <= date_part('day', 'now'::date + :taxon_time)
+        AND date_part('month', obs.dateobs) = date_part('day', 'now'::date + :taxon_time)
     GROUP BY obs.cd_ref, tax.lb_nom, tax.group2_inpn, tax.nom_vern, m.id_media, m.url, m.chemin, m.id_type
     ORDER BY (count(*)) DESC
     LIMIT 12;

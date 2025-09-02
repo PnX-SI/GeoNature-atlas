@@ -159,7 +159,7 @@ fi
 # EN: Creation of Materialized Views (and possible replacement of hard values by parameters)
 echo "----- Creating materialized views ------"
 
-sudo sed -i "s/date - 15$/date - $time/" /tmp/atlas/10.atlas.vm_taxons_plus_observes.sql
+#sudo sed -i "s/date - 15$/date - $time/" /tmp/atlas/10.atlas.vm_taxons_plus_observes.sql
 
 # FR: customisation de l'altitude
 # EN: customisation of altitude
@@ -207,10 +207,10 @@ do
         -v type_territoire="${type_territoire}" \
         -v type_code="${type_code}" \
         -v type_maille="${type_maille}" \
-        -v reader_user="${user_pg}" \
         -v insert_altitudes_values="${insert_altitudes_values}" \
+        -v taxon_time="${time}" \
+        -v reader_user="${user_pg}" \
         -f /tmp/atlas/${script} &>> log/install_db.log
-
     echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 done
 
