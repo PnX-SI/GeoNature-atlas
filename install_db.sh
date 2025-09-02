@@ -94,14 +94,14 @@ if ! database_exists $db_name
 
 fi
 
+
 # Test si la base de donnée contient déja des schéma qui indique que la BDD atlas a déjà été installée
 # schema_already_exists=$(psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -t -c "SELECT count(*) FROM information_schema.schemata WHERE schema_name in ('atlas', 'gn_meta', 'synthese');")
-
-
 # if [[ $schema_already_exists > 0 ]]; then
 #     echo "La base de donnée semble déjà contenir une installation de l'atlas... on s'arrête là"
 #     exit 1
 # fi
+
 
 # FR: Si j'utilise GeoNature ($geonature_source = True), alors je créé les connexions en FWD à la BDD GeoNature
 # EN: If I use GeoNature ($geonature_source = True), then I create the connections in FWD to the GeoNature DB
@@ -114,25 +114,22 @@ if $geonature_source
         sudo -u postgres -s psql -d $db_name -c "CREATE USER MAPPING FOR $owner_atlas SERVER geonaturedbserver OPTIONS (user '$atlas_source_user', password '$atlas_source_pass') ;"  &>> log/install_db.log
         # si geonature source on crée le schéma utilisateur. Si gn_source =false, on a forcément deja taxhub et donc le schéma utilisateur
         sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA utilisateurs AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
-
 fi
 
 # FR: Création des schémas de la BDD
 # EN: Creating DB schemes
-sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA atlas AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
-sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA synthese AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
-sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA gn_meta AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
+sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA IF NOT EXISTS atlas AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
+sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA IF NOT EXISTS synthese AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
+sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA IF NOT EXISTS gn_meta AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
+sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA IF NOT EXISTS ref_geo AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
+sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA IF NOT EXISTS taxonomie AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
+
 
 if $geonature_source
     then
         echo "Creating FDW from GN2" &>> log/install_db.log
         echo "--------------------" &>> log/install_db.log
         export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f data/gn2/atlas_gn2.sql  &>> log/install_db.log
-
-        # FR: Creation des tables filles en FDW
-        # EN: Creation of daughter tables in FDW
-        echo "Creating the connection to GeoNature for the taxonomy tables"
-        psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f data/gn2/atlas_ref_taxonomie.sql  &>> log/install_db.log
 fi
 
 
