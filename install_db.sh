@@ -18,8 +18,6 @@ if [ ! -d 'log' ]
 fi
 
 . atlas/configuration/settings.ini
-sudo mkdir /tmp/atlas
-sudo cp data/atlas/* /tmp/atlas/
 export PGPASSWORD=$owner_atlas_pass;
 
 function print_time () {
@@ -148,7 +146,7 @@ echo "Creating DB structure"
 if ! $geonature_source
     then
     echo "Creating syntheseff example table"
-    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f /tmp/atlas/without_geonature.sql &>> log/install_db.log
+    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f data/atlas/without_geonature.sql &>> log/install_db.log
 fi
 
 
@@ -202,19 +200,15 @@ for script in "${scripts_sql[@]}"; do
     echo "[$(date +'%H:%M:%S')] Creating ${script}..."
     time_temp=$SECONDS
     export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port \
-        -v type_territoire="${type_territoire}" \
-        -v type_code="${type_code}" \
-        -v type_maille="${type_maille}" \
-        -v insert_altitudes_values="${insert_altitudes_values}" \
-        -v taxon_time="${time}" \
-        -v reader_user="${user_pg}" \
-        -f /tmp/atlas/${script} &>> log/install_db.log
+            -v type_territoire="${type_territoire}" \
+            -v type_code="${type_code}" \
+            -v type_maille="${type_maille}" \
+            -v insert_altitudes_values="${insert_altitudes_values}" \
+            -v taxon_time="${time}" \
+            -v reader_user="${user_pg}" \
+        -f data/atlas/${script} &>> log/install_db.log
     echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 done
-
-# Clean file
-echo "Cleaning files..."
-sudo -n rm -r /tmp/atlas
 
 echo "Install finished - Duration :$(($SECONDS/60))m$(($SECONDS%60))s"
 
