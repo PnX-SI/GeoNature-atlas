@@ -136,18 +136,6 @@ if $geonature_source
 fi
 
 
-echo "Creation of geographic tables from the ref_geo schema of from geonature or taxhub"
-echo "--------------------" &>> log/install_db.log
-echo "Creation of layers table from ref_geo of geonaturedb" &>> log/install_db.log
-echo "--------------------" &>> log/install_db.log
-export PGPASSWORD=$owner_atlas_pass; psql -d $db_name -U $owner_atlas -h $db_host -p $db_port \
-    -v type_territoire=$type_territoire \
-    -v type_code=$type_code \
-    -v type_maille=$type_maille \
-    -f data/gn2/atlas_ref_geo.sql &>> log/install_db.log
-
-
-
 ###########################
 ######    Occurence data
 ###########################
@@ -187,7 +175,9 @@ sudo sed -i "s/INSERT_ALTITUDE/${insert}/" /tmp/atlas/4.atlas.vm_altitudes.sql
 # FR: Execution des scripts sql de création des vm de l'atlas
 # EN: Run sql scripts : build atlas vm
 scripts_sql=(
+
         "1.atlas.vm_taxref.sql"
+        "1-1.atlas.ref_geo.sql"
         "1-4.cor_sensitivity_area_type.sql"
         "1-5.vm_cor_area_synthese.sql"
         "2.atlas.vm_observations.sql"
@@ -217,7 +207,6 @@ do
         -f /tmp/atlas/${script} &>> log/install_db.log
     echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 done
-
 
 # Clean file
 echo "Cleaning files..."

@@ -1,9 +1,8 @@
---################################
---################################
---###Territoires
---################################
---################################
 
+-- +-----------------------------------------------------------------------------------------------+
+-- t_layer_territoire
+
+-- If t_layer_territoire is a table, drop it. If it is a view, raise a notice and continue.
 DO $$
 BEGIN
 	DROP TABLE atlas.t_layer_territoire;
@@ -39,6 +38,8 @@ CREATE UNIQUE INDEX ON atlas.t_layer_territoire
     USING btree (gid);
 
 
+-- +-----------------------------------------------------------------------------------------------+
+-- vm_bib_areas_types
 CREATE MATERIALIZED VIEW atlas.vm_bib_areas_types AS
     SELECT
         t.id_type,
@@ -58,9 +59,8 @@ CREATE INDEX ON atlas.vm_bib_areas_types
     USING btree (type_name);
 
 
--- Suppression de la VM atlas.vm_cor_areas si existe
-DROP MATERIALIZED VIEW IF EXISTS atlas.vm_cor_areas CASCADE;
-
+-- +-----------------------------------------------------------------------------------------------+
+-- vm_cor_areas
 CREATE MATERIALIZED VIEW atlas.vm_cor_areas AS
     SELECT
         id_area_group,
@@ -74,9 +74,8 @@ CREATE INDEX ON atlas.vm_cor_areas
     USING btree (id_area);
 
 
--- Suppression si temporaire des areas la table existe
-DROP MATERIALIZED VIEW IF EXISTS atlas.vm_l_areas;
-
+-- +-----------------------------------------------------------------------------------------------+
+-- l_areas
 -- création de la vm l_areas à partir du ref_geo
 CREATE MATERIALIZED VIEW atlas.vm_l_areas AS
     SELECT
@@ -110,12 +109,14 @@ CREATE INDEX ON atlas.vm_l_areas
     USING btree (area_code);
 
 
--- Rafraichissement des vues contenant les données de l'atlas
+-- +-----------------------------------------------------------------------------------------------+
+-- Function refresh_materialized_view_ref_geo()
 CREATE OR REPLACE FUNCTION atlas.refresh_materialized_view_ref_geo()
     RETURNS void
     LANGUAGE plpgsql
 AS
 $function$
+    -- Rafraichissement des vues contenant les données de l'atlas
     BEGIN
         REFRESH MATERIALIZED VIEW atlas.t_layer_territoire ;
     END
