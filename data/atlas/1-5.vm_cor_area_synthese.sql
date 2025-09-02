@@ -1,7 +1,7 @@
 CREATE MATERIALIZED VIEW atlas.vm_cor_area_synthese AS
     SELECT
-        sa.id_synthese,
-        sa.id_area,
+        csa.id_synthese,
+        csa.id_area,
         bat.id_type,
         bat.type_code
     FROM synthese.synthese AS s
