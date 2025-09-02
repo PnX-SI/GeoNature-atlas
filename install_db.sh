@@ -157,7 +157,6 @@ fi
 ###########################
 # FR: Creation des Vues Matérialisées (et remplacement éventuel des valeurs en dur par les paramètres)
 # EN: Creation of Materialized Views (and possible replacement of hard values by parameters)
-echo "----- Creating materialized views ------"
 
 #sudo sed -i "s/date - 15$/date - $time/" /tmp/atlas/10.atlas.vm_taxons_plus_observes.sql
 
@@ -178,8 +177,8 @@ done
 
 # FR: Execution des scripts sql de création des vm de l'atlas
 # EN: Run sql scripts : build atlas vm
+echo "----- Creating materialized views ------"
 scripts_sql=(
-
         "1.atlas.vm_taxref.sql"
         "1-1.atlas.ref_geo.sql"
         "1-4.cor_sensitivity_area_type.sql"
@@ -193,14 +192,13 @@ scripts_sql=(
         "9.atlas.vm_cor_taxon_attribut.sql"
         "10.atlas.vm_taxons_plus_observes.sql"
         "11.atlas.vm_cor_taxon_organism.sql"
+        "13.atlas.vm_observations_mailles.sql"
         "13.5.atlas.territory_stats.sql"
         "15.atlas.vm_bdc_statut.sql"
-        "13.atlas.vm_observations_mailles.sql"
         "20.grant.sql"
         "atlas.refresh_materialized_view_data.sql"
 )
-for script in "${scripts_sql[@]}"
-do
+for script in "${scripts_sql[@]}"; do
     echo "[$(date +'%H:%M:%S')] Creating ${script}..."
     time_temp=$SECONDS
     export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port \
