@@ -2,6 +2,19 @@
 CHANGELOG
 =========
 
+1.7.1 (2025-09-02)
+------------------
+
+
+🚀 **Nouveautés**
+
+* Possibilité d'utiliser la date courante dans les templates via la variable `now` (@jpm-cbna)
+
+🐛 **Corrections**
+
+* Correction de l'image docker (@jpm-cbna)
+* Diverses corrections mineures d'installation
+
 1.7.0 (2025-08-08)
 ------------------
 
