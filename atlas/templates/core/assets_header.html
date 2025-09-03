@@ -26,8 +26,8 @@
     <script src="{{url_for('static', filename='node_modules/leaflet.zoomhome/dist/leaflet.zoomhome.js') }}"></script>
     <link rel="stylesheet" href="{{url_for('static', filename='node_modules/leaflet.zoomhome/src/css/leaflet.zoomhome.css') }}" />
 
-    <script src="{{url_for('static', filename='node_modules/leaflet-fullscreen/dist/Leaflet.fullscreen.min.js') }}"></script>
-    <link rel="stylesheet" href="{{url_for('static', filename='node_modules/leaflet-fullscreen/dist/leaflet.fullscreen.css') }}" />
+    <script src="{{ url_for('static', filename='node_modules/leaflet.fullscreen/Control.FullScreen.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/leaflet.fullscreen/Control.FullScreen.css') }}" />
     <!-- Slick -->
     <script src="{{url_for('static', filename='node_modules/slick-carousel/slick/slick.min.js') }}"></script>
     <link rel="stylesheet" href="{{url_for('static', filename='node_modules/slick-carousel/slick/slick-theme.css') }}" />
