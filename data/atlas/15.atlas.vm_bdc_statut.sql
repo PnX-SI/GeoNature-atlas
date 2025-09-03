@@ -1,5 +1,6 @@
 CREATE MATERIALIZED VIEW IF NOT EXISTS atlas.vm_bdc_statut AS
-SELECT s.cd_ref,
+SELECT ROW_NUMBER() OVER () AS id,
+       s.cd_ref,
        s.rq_statut,
        v.code_statut,
        v.label_statut,

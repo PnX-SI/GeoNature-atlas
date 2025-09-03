@@ -2,20 +2,15 @@
 
 import markdown
 
-from sqlalchemy.sql import text
+from atlas.modeles.entities.vmTaxons import VmCorTaxonAttribut
+from atlas.env import db
 
 
-def getAttributesTaxon(connection, cd_ref, displayed_attr):
-    sql = """
-        SELECT *
-        FROM atlas.vm_cor_taxon_attribut
-        WHERE code = ANY(:displayedAttr)
-            AND cd_ref = :cd_ref
-    """
-    results = connection.execute(
-        text(sql),
-        {"cd_ref": cd_ref, "displayedAttr": displayed_attr},
-    )
+def getAttributesTaxon(cd_ref, displayed_attr):
+    results = db.session.query(VmCorTaxonAttribut).filter(
+        VmCorTaxonAttribut.code.in_(displayed_attr), VmCorTaxonAttribut.cd_ref == cd_ref
+    ).all()
+
     desc_taxon = []
     for row in results:
         desc_taxon.append(

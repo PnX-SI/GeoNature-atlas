@@ -19,21 +19,17 @@ api = Blueprint("api", __name__)
 
 @api.route("/searchTaxon", methods=["GET"])
 def searchTaxonAPI():
-    session = db.session
     search = request.args.get("search", "")
     limit = request.args.get("limit", 50)
-    results = vmSearchTaxonRepository.searchTaxons(session, search, limit)
-    session.close()
+    results = vmSearchTaxonRepository.searchTaxons(search, limit)
     return jsonify(results)
 
 
 @api.route("/searchArea", methods=["GET"])
 def searchAreaAPI():
-    session = db.session
     search = request.args.get("search", "")
     limit = request.args.get("limit", 50)
-    results = vmAreasRepository.searchAreas(session, search, limit)
-    session.close()
+    results = vmAreasRepository.searchAreas(search, limit)
     return jsonify(results)
 
 
@@ -42,14 +38,10 @@ def getMailleHomeTerritory():
     """
     Retourne les mailles de tout le territoire
     """
-    session = db.session
-    connection = db.engine.connect()
-
     current_app.logger.debug("start AFFICHAGE_TERRITORY")
-    observations = vmObservationsMaillesRepository.territoryObservationsMailles(connection)
+    observations = vmObservationsMaillesRepository.territoryObservationsMailles()
     current_app.logger.debug("end AFFICHAGE_TERRITORY")
 
-    session.close()
     return observations
 
 
@@ -62,14 +54,12 @@ if not current_app.config["AFFICHAGE_MAILLE"]:
 
         :returns: dict ({'point:<GeoJson>', 'maille': 'GeoJson})
         """
-        session = db.session
         observations = {
-            "point": vmObservationsRepository.searchObservationsChilds(session, cd_ref),
+            "point": vmObservationsRepository.searchObservationsChilds(cd_ref),
             "maille": vmObservationsMaillesRepository.getObservationsMaillesChilds(
-                session, cd_ref
+                cd_ref
             ),
         }
-        session.close()
         return jsonify(observations)
 
 
@@ -80,14 +70,11 @@ def getObservationsMailleAPI(cd_ref):
 
     :returns: GeoJson
     """
-    session = db.session
     observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(
-        session,
         cd_ref,
         year_min=request.args.get("year_min"),
         year_max=request.args.get("year_max"),
     )
-    session.close()
     return jsonify(observations)
 
 
@@ -95,9 +82,7 @@ if not current_app.config["AFFICHAGE_MAILLE"]:
 
     @api.route("/observationsPoint/<int(signed=True):cd_ref>", methods=["GET"])
     def getObservationsPointAPI(cd_ref):
-        session = db.session
-        observations = vmObservationsRepository.searchObservationsChilds(session, cd_ref)
-        session.close()
+        observations = vmObservationsRepository.searchObservationsChilds(cd_ref)
         return jsonify(observations)
 
 
@@ -111,22 +96,18 @@ def getObservationsGenericApi(cd_ref: int):
     Returns:
         [type]: [description]
     """
-    session = db.session
     if current_app.config["AFFICHAGE_TERRITOIRE_OBS"]:
         observations = vmObservationsMaillesRepository.getObservationsMaillesTerritorySpecies(
-            session,
             cd_ref,
         )
     elif current_app.config["AFFICHAGE_MAILLE"]:
         observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(
-            session,
             cd_ref,
             year_min=request.args.get("year_min"),
             year_max=request.args.get("year_max"),
         )
     else:
         observations = vmObservationsRepository.searchObservationsChilds(session, cd_ref)
-    session.close()
 
     return jsonify(observations)
 
@@ -135,100 +116,83 @@ if not current_app.config["AFFICHAGE_MAILLE"]:
 
     @api.route("/observations/<id_area>/<int(signed=True):cd_ref>", methods=["GET"])
     def getObservationsAreaTaxonAPI(id_area, cd_ref):
-        connection = db.engine.connect()
         observations = vmObservationsRepository.getObservationTaxonArea(
-            connection, id_area, cd_ref
+            id_area, cd_ref
         )
-        connection.close()
         return jsonify(observations)
 
 
 @api.route("/observationsMaille/<id_area>/<int(signed=True):cd_ref>", methods=["GET"])
 def getObservationsAreaTaxonMailleAPI(id_area, cd_ref):
-    connection = db.engine.connect()
     observations = vmObservationsMaillesRepository.getObservationsTaxonAreaMaille(
-        connection, id_area, cd_ref
+        id_area, cd_ref
     )
-    connection.close()
     return jsonify(observations)
 
 
 @api.route("/area/<int(signed=True):id_area>", methods=["GET"])
 def get_observations_area_api(id_area):
-    connection = db.engine.connect()
 
     limit = request.args.get("limit")
     if current_app.config["AFFICHAGE_MAILLE"]:
         observations = vmObservationsMaillesRepository.getObservationsByArea(
-            connection, str(id_area)
+            str(id_area)
         )
     else:
         observations = vmObservationsRepository.getObservationsByArea(
-            connection, id_area, limit
+            id_area, limit
         )
 
-    connection.close()
     return jsonify(observations)
 
 
 @api.route("/photoGroup/<group>", methods=["GET"])
 def getPhotosGroup(group):
-    connection = db.engine.connect()
     photos = vmMedias.getPhotosGalleryByGroup(
-        connection,
         current_app.config["ATTR_MAIN_PHOTO"],
         current_app.config["ATTR_OTHER_PHOTO"],
         group,
     )
-    connection.close()
     return jsonify(photos)
 
 
 @api.route("/photosGallery", methods=["GET"])
 def getPhotosGallery():
-    connection = db.engine.connect()
     photos = vmMedias.getPhotosGallery(
-        connection, current_app.config["ATTR_MAIN_PHOTO"], current_app.config["ATTR_OTHER_PHOTO"]
+        current_app.config["ATTR_MAIN_PHOTO"], current_app.config["ATTR_OTHER_PHOTO"]
     )
-    connection.close()
     return jsonify(photos)
 
 
 @api.route("/main_stat", methods=["GET"])
 @cache.cached()
 def main_stat():
-    connection = db.engine.connect()
-    return vmObservationsRepository.statIndex(connection)
+    return vmObservationsRepository.statIndex()
 
 
 @api.route("/rank_stat", methods=["GET"])
 @cache.cached()
 def rank_stat():
-    connection = db.engine.connect()
     return jsonify(
-        vmObservationsRepository.genericStat(connection, current_app.config["RANG_STAT"])
+        vmObservationsRepository.genericStat(current_app.config["RANG_STAT"])
     )
 
 
 @api.route("/area_chart_values/<id_area>", methods=["GET"])
 def get_area_chart_valuesAPI(id_area):
-    session = db.session
-    connection = db.engine.connect()
     species_by_taxonomic_group = vmAreasRepository.get_species_by_taxonomic_group(
-        connection, id_area
+        id_area
     )
     observations_by_taxonomic_group = vmAreasRepository.get_nb_observations_taxonomic_group(
-        connection, id_area
+        id_area
     )
     nb_species_by_organism = vmOrganismsRepository.get_species_by_organism_on_area(
-        connection, id_area
+        id_area
     )
     observations_by_organism = vmOrganismsRepository.get_nb_observations_by_organism_on_area(
-        connection, id_area
+        id_area
     )
 
-    session.close()
-    connection.close()
     return jsonify(
         {
             "species_by_taxonomic_group": species_by_taxonomic_group,

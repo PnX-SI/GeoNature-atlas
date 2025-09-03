@@ -1,25 +1,11 @@
 # -*- coding:utf-8 -*-
-from sqlalchemy import desc, func
+from sqlalchemy import desc, func, select
 
 from atlas.modeles.entities.vmSearchTaxon import VmSearchTaxon
+from atlas.env import db
 
 
-def listeTaxons(session):
-    """
-    revoie un tableau de dict :
-    label = nom latin et nom francais concatene, value = cd_ref
-
-    TODO Fonction inutile à supprimer !!!
-    """
-    req = session.query(VmSearchTaxon.search_name, VmSearchTaxon.cd_ref).all()
-    taxonList = list()
-    for r in req:
-        temp = {"label": r[0], "value": r[1]}
-        taxonList.append(temp)
-    return taxonList
-
-
-def searchTaxons(session, search, limit=50):
+def searchTaxons(search, limit=50):
     """
     Recherche dans la VmSearchTaxon en ilike
     Utilisé pour l'autocomplétion de la recherche de taxon
@@ -34,20 +20,22 @@ def searchTaxons(session, search, limit=50):
         label = search_name
         value = cd_ref
     """
-    like_search = "%" + search.replace(" ", "%") + "%"
 
+    idx_trgm = func.similarity(VmSearchTaxon.search_name, search).label("idx_trgm")
+    is_ref_nom = (VmSearchTaxon.cd_ref == VmSearchTaxon.cd_nom).label("is_ref_nom")
+    search = search.replace(" ", "%")
     query = (
-        session.query(
+        select(
             VmSearchTaxon.display_name,
             VmSearchTaxon.cd_ref,
             func.similarity(VmSearchTaxon.search_name, search).label("idx_trgm"),
+            (VmSearchTaxon.cd_ref == VmSearchTaxon.cd_nom).label("is_ref_nom")
         )
         .distinct()
-        .filter(func.unaccent(VmSearchTaxon.search_name).ilike(func.unaccent(like_search)))
-        .order_by(desc("idx_trgm"))
-        .order_by(VmSearchTaxon.cd_ref == VmSearchTaxon.cd_nom)
+        .filter(VmSearchTaxon.search_name.ilike("%" + search + "%"))
+        .order_by(desc(idx_trgm), desc(is_ref_nom))
         .limit(limit)
     )
-    results = query.all()
+    data = db.session.execute(query).all()
 
-    return [{"label": r[0], "value": r[1]} for r in results]
+    return [{"label": d[0], "value": d[1]} for d in data]
