@@ -33,28 +33,26 @@ redirectOutput ./log/install_db.log
 
 # FR: S'assurer que le script n'est pas lancer en root (utilisation de whoami)
 # EN: Make sure the script is not runn with root (use whoami)
-if [ "$(id -u)" == "0" ];
-    then
-        echo -e "\e[91m\e[1mThis script should NOT be run as root\e[0m" >&2
-        exit 1
+if [[ "$(id -u)" == "0" ]]; then
+    echo -e "\e[91m\e[1mThis script should NOT be run as root\e[0m" >&2
+    exit 1
 fi
 
 # sudo ls pour demander le mot de passe une fois
 sudo ls
 
 . atlas/configuration/settings.ini
-export PGPASSWORD=$owner_atlas_pass;
+export PGPASSWORD="${owner_atlas_pass}";
 
-function print_time () {
+function print_time() {
     echo $(date +'%H:%M:%S')
 }
 
-function database_exists () {
+function database_exists() {
     # /!\ Will return false if psql can't list database. Edit your pg_hba.conf as appropriate.
-    if [ -z $1 ]
-        then
+    if [[ -z $1 ]]; then
         # Argument is null
-            return 0
+        return 0
     else
         # Grep db name in the list of database
         sudo -u postgres -s -- psql -tAl | grep -q "^$1|"
@@ -65,12 +63,10 @@ function database_exists () {
 function test_settings() {
     fields=('owner_atlas' 'user_pg' 'altitudes' 'time')
     echo "Checking the validity of settings.ini"
-    for i in "${!fields[@]}"
-    do
-        if [[ -z "${!fields[$i]}" ]];
-            then
-                echo -e "\033\033[31m Error : \033[0m attribut ${fields[$i]} manquant dans settings.ini"
-                exit
+    for i in "${!fields[@]}"; do
+        if [[ -z "${!fields[$i]}" ]]; then
+            echo -e "\033\033[31m Error : \033[0m attribut ${fields[$i]} manquant dans settings.ini"
+            exit
         fi
     done
 }
@@ -101,19 +97,20 @@ fi
 
 # FR: Sinon je créé la BDD
 # EN: Else I create the DB
-if ! database_exists $db_name
-    then
-        print_time
-        echo "Creating DB..."
+if ! database_exists $db_name; then
+    print_time
+    echo "Creating users..."
+    sudo -u postgres psql -c "CREATE USER $owner_atlas WITH PASSWORD '$owner_atlas_pass' "
+    sudo -u postgres psql -c "CREATE USER $user_pg WITH PASSWORD '$user_pg_pass' "
 
-        sudo -u postgres psql -c "CREATE USER $owner_atlas WITH PASSWORD '$owner_atlas_pass' "
-        sudo -u postgres psql -c "CREATE USER $user_pg WITH PASSWORD '$user_pg_pass' "
-        sudo -u postgres -s createdb -O $owner_atlas $db_name
-        echo "Adding postGIS and  pgSQL to DB"
-        sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgis;"
-        sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog; COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';"
-        sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
-        sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS unaccent;"
+    echo "Creating DB..."
+    sudo -u postgres -s createdb -O $owner_atlas $db_name
+
+    echo "Adding extensions to DB..."
+    sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgis;"
+    sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog; COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';"
+    sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
+    sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS unaccent;"
 fi
 
 
@@ -127,15 +124,14 @@ fi
 
 # FR: Si j'utilise GeoNature ($geonature_source = True), alors je créé les connexions en FWD à la BDD GeoNature
 # EN: If I use GeoNature ($geonature_source = True), then I create the connections in FWD to the GeoNature DB
-if $geonature_source
-    then
-        echo "Adding FDW and connection to the GeoNature parent DB"
-        sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgres_fdw;"
-        sudo -u postgres -s psql -d $db_name -c "CREATE SERVER geonaturedbserver FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$db_source_host', dbname '$db_source_name', port '$db_source_port', fetch_size '$db_source_fetch_size');"
-        sudo -u postgres -s psql -d $db_name -c "ALTER SERVER geonaturedbserver OWNER TO $owner_atlas;"
-        sudo -u postgres -s psql -d $db_name -c "CREATE USER MAPPING FOR $owner_atlas SERVER geonaturedbserver OPTIONS (user '$atlas_source_user', password '$atlas_source_pass') ;"
-        # si geonature source on crée le schéma utilisateur. Si gn_source =false, on a forcément deja taxhub et donc le schéma utilisateur
-        sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA utilisateurs AUTHORIZATION "$owner_atlas";"
+if ${geonature_source}; then
+    echo "Adding FDW and connection to the GeoNature parent DB..."
+    sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgres_fdw;"
+    sudo -u postgres -s psql -d $db_name -c "CREATE SERVER geonaturedbserver FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$db_source_host', dbname '$db_source_name', port '$db_source_port', fetch_size '$db_source_fetch_size');"
+    sudo -u postgres -s psql -d $db_name -c "ALTER SERVER geonaturedbserver OWNER TO $owner_atlas;"
+    sudo -u postgres -s psql -d $db_name -c "CREATE USER MAPPING FOR $owner_atlas SERVER geonaturedbserver OPTIONS (user '$atlas_source_user', password '$atlas_source_pass') ;"
+    # si geonature source on crée le schéma utilisateur. Si gn_source =false, on a forcément deja taxhub et donc le schéma utilisateur
+    sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA utilisateurs AUTHORIZATION "$owner_atlas";"
 fi
 
 # FR: Création des schémas de la BDD
@@ -147,24 +143,24 @@ sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA IF NOT EXISTS ref_geo AUT
 sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA IF NOT EXISTS taxonomie AUTHORIZATION "$owner_atlas";"
 
 
-if $geonature_source
-    then
-        echo "Creating FDW from GN2"
-        echo "--------------------"
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f data/gn2/atlas_gn2.sql
+if ${geonature_source}; then
+    echo "Creating FDW from GN2..."
+    echo "------------------------"
+    export PGPASSWORD=$owner_atlas_pass ; psql -d $db_name -U $owner_atlas -h $db_host -p $db_port \
+        -f data/gn2/atlas_gn2.sql
 fi
 
 
 ###########################
 ######    Occurence data
 ###########################
-echo "Creating DB structure"
+echo "Creating DB structure..."
 # FR: Si j'utilise GeoNature ($geonature_source = True), alors je créé les tables filles en FDW connectées à la BDD de GeoNature
 # EN: If I use GeoNature ($geonature_source = True), then I create the child tables in FDW connected to the GeoNature DB
-if ! $geonature_source
-    then
-    echo "Creating syntheseff example table"
-    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f data/atlas/without_geonature.sql
+if ! ${geonature_source}; then
+    echo "Creating syntheseff example table..."
+    export PGPASSWORD=$owner_atlas_pass ; psql -d $db_name -U $owner_atlas -h $db_host -p $db_port \
+        -f data/atlas/without_geonature.sql
 fi
 
 
@@ -180,10 +176,10 @@ fi
 # EN: customisation of altitude
 insert_altitudes_values=""
 for i in "${!altitudes[@]}"; do
-    if [ $i -gt 0 ]; then
+    if [[ $i -gt 0 ]]; then
         let max=${altitudes[$i]}-1
         sql="(${altitudes[$i-1]}, $max)"
-        if  [ $i -eq 1 ]; then
+        if [[ $i -eq 1 ]]; then
             insert_altitudes_values=" ${sql}"
         else
             insert_altitudes_values="${insert_altitudes_values}, ${sql}"
