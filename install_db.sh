@@ -1,6 +1,36 @@
 #!/bin/bash
 SECONDS=0
 
+# DESC: Redirect output
+#       Send stdout and stderr in Terminal and a log file
+#       In Terminal replace "--> " by empty string
+#       In logfile replace "--> " by a separator line and remove color characters.
+# ARGS: $1 (required): Log file path.
+# OUTS: None
+# NOTE: Directories on log file path will be create if not exist.
+#       All lines with a carriage return "\r" will be removed from log file.
+#       In script use :
+#           `>&3` to redirect to original stdOut
+#           `>&4` to redirect to original stdErr
+# SOURCE: https://stackoverflow.com/a/20564208
+function redirectOutput() {
+    if [[ $# -lt 1 ]]; then
+        exitScript "Missing required argument to ${FUNCNAME[0]}()!" 2
+    fi
+    local log_file="${1}"
+    local log_file_dir="$(dirname "${log_file}")"
+    if [[ ! -d "${log_file_dir}" ]]; then
+        echo "Create log directory..."
+        mkdir -p "${log_file_dir}"
+    fi
+
+    exec 3>&1 4>&2 1>&>(sed -r "s/--> //g") 1>&2>&>(tee -a >(grep -v $'\r' | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g' | sed -r "s/--> /${sep}/g" > "$1"))
+}
+
+# FR: Création du fichier de log d'installation vide.
+# EN: Create an empty install log file.
+redirectOutput ./log/install_db.log
+
 # FR: S'assurer que le script n'est pas lancer en root (utilisation de whoami)
 # EN: Make sure the script is not runn with root (use whoami)
 if [ "$(id -u)" == "0" ];
@@ -11,11 +41,6 @@ fi
 
 # sudo ls pour demander le mot de passe une fois
 sudo ls
-
-if [ ! -d 'log' ]
-  then
-        mkdir log
-fi
 
 . atlas/configuration/settings.ini
 export PGPASSWORD=$owner_atlas_pass;
@@ -52,12 +77,6 @@ function test_settings() {
 
 test_settings
 
-# FR: Suppression du fichier de log d'installation s'il existe déjà puis création de ce fichier vide.
-# EN: Delete the install log file if it already exists and create this empty file.
-
-rm  -f ./log/install_db.log
-touch ./log/install_db.log
-
 
 # FR: Si la BDD existe, je verifie le parametre qui indique si je dois la supprimer ou non
 # EN: If the DB exists, I check the parameter that indicates whether I should delete it or not
@@ -87,15 +106,14 @@ if ! database_exists $db_name
         print_time
         echo "Creating DB..."
 
-        sudo -u postgres psql -c "CREATE USER $owner_atlas WITH PASSWORD '$owner_atlas_pass' "  &>> log/install_db.log
-        sudo -u postgres psql -c "CREATE USER $user_pg WITH PASSWORD '$user_pg_pass' "  &>> log/install_db.log
+        sudo -u postgres psql -c "CREATE USER $owner_atlas WITH PASSWORD '$owner_atlas_pass' "
+        sudo -u postgres psql -c "CREATE USER $user_pg WITH PASSWORD '$user_pg_pass' "
         sudo -u postgres -s createdb -O $owner_atlas $db_name
         echo "Adding postGIS and  pgSQL to DB"
-        sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgis;"  &>> log/install_db.log
-        sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog; COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';"  &>> log/install_db.log
-        sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;" &>> log/install_db.log
-        sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS unaccent;"  &>> log/install_db.log
-
+        sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgis;"
+        sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog; COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';"
+        sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
+        sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS unaccent;"
 fi
 
 
@@ -112,28 +130,28 @@ fi
 if $geonature_source
     then
         echo "Adding FDW and connection to the GeoNature parent DB"
-        sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgres_fdw;"  &>> log/install_db.log
-        sudo -u postgres -s psql -d $db_name -c "CREATE SERVER geonaturedbserver FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$db_source_host', dbname '$db_source_name', port '$db_source_port', fetch_size '$db_source_fetch_size');"  &>> log/install_db.log
-        sudo -u postgres -s psql -d $db_name -c "ALTER SERVER geonaturedbserver OWNER TO $owner_atlas;"  &>> log/install_db.log
-        sudo -u postgres -s psql -d $db_name -c "CREATE USER MAPPING FOR $owner_atlas SERVER geonaturedbserver OPTIONS (user '$atlas_source_user', password '$atlas_source_pass') ;"  &>> log/install_db.log
+        sudo -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgres_fdw;"
+        sudo -u postgres -s psql -d $db_name -c "CREATE SERVER geonaturedbserver FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$db_source_host', dbname '$db_source_name', port '$db_source_port', fetch_size '$db_source_fetch_size');"
+        sudo -u postgres -s psql -d $db_name -c "ALTER SERVER geonaturedbserver OWNER TO $owner_atlas;"
+        sudo -u postgres -s psql -d $db_name -c "CREATE USER MAPPING FOR $owner_atlas SERVER geonaturedbserver OPTIONS (user '$atlas_source_user', password '$atlas_source_pass') ;"
         # si geonature source on crée le schéma utilisateur. Si gn_source =false, on a forcément deja taxhub et donc le schéma utilisateur
-        sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA utilisateurs AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
+        sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA utilisateurs AUTHORIZATION "$owner_atlas";"
 fi
 
 # FR: Création des schémas de la BDD
 # EN: Creating DB schemes
-sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA IF NOT EXISTS atlas AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
-sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA IF NOT EXISTS synthese AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
-sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA IF NOT EXISTS gn_meta AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
-sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA IF NOT EXISTS ref_geo AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
-sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA IF NOT EXISTS taxonomie AUTHORIZATION "$owner_atlas";"  &>> log/install_db.log
+sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA IF NOT EXISTS atlas AUTHORIZATION "$owner_atlas";"
+sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA IF NOT EXISTS synthese AUTHORIZATION "$owner_atlas";"
+sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA IF NOT EXISTS gn_meta AUTHORIZATION "$owner_atlas";"
+sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA IF NOT EXISTS ref_geo AUTHORIZATION "$owner_atlas";"
+sudo -u postgres -s psql -d $db_name -c "CREATE SCHEMA IF NOT EXISTS taxonomie AUTHORIZATION "$owner_atlas";"
 
 
 if $geonature_source
     then
-        echo "Creating FDW from GN2" &>> log/install_db.log
-        echo "--------------------" &>> log/install_db.log
-        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f data/gn2/atlas_gn2.sql  &>> log/install_db.log
+        echo "Creating FDW from GN2"
+        echo "--------------------"
+        export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f data/gn2/atlas_gn2.sql
 fi
 
 
@@ -146,7 +164,7 @@ echo "Creating DB structure"
 if ! $geonature_source
     then
     echo "Creating syntheseff example table"
-    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f data/atlas/without_geonature.sql &>> log/install_db.log
+    export PGPASSWORD=$owner_atlas_pass;psql -d $db_name -U $owner_atlas -h $db_host -p $db_port -f data/atlas/without_geonature.sql
 fi
 
 
@@ -206,7 +224,7 @@ for script in "${scripts_sql[@]}"; do
             -v insert_altitudes_values="${insert_altitudes_values}" \
             -v taxon_time="${time}" \
             -v reader_user="${user_pg}" \
-        -f data/atlas/${script} &>> log/install_db.log
+        -f data/atlas/${script}
     echo "[$(date +'%H:%M:%S')] Passed - Duration : $((($SECONDS-$time_temp)/60))m$((($SECONDS-$time_temp)%60))s"
 done
 
