@@ -128,7 +128,6 @@ function stackedBarChartConfig(element, data) {
 }
 
 function formatStackedBarChart(values, element) {
-    console.log("AREA", areaInfos);
     const labels = []
     const nb_species = []
     const nb_patrimonial = []
@@ -237,41 +236,42 @@ if (dataSourceChartElement) {
     const organismChart = pieChartConfig(dataSourceChartElement, formatPieData(organism_stats, dataSourceChartElement));
 }
 
-const areaCode = areaInfos.areaCode;
+if (typeof areaInfos !== 'undefined') {
+    const areaCode = areaInfos.areaCode;
 
-fetch(`/api/area_chart_values/${areaCode}`)
-    .then(response => response.json())
-    .then(data => {
-        $("#spinnerChart").hide();
-        species_by_taxonomic_group = data.species_by_taxonomic_group
-        observations_by_taxonomic_group = data.observations_by_taxonomic_group
-        nb_species_by_organism = data.nb_species_by_organism
-        observations_by_organism = data.observations_by_organism
-// Onglet observations et espèces
+    fetch(`/api/area_chart_values/${areaCode}`)
+        .then(response => response.json())
+        .then(data => {
+            $("#spinnerChart").hide();
+            species_by_taxonomic_group = data.species_by_taxonomic_group
+            observations_by_taxonomic_group = data.observations_by_taxonomic_group
+            nb_species_by_organism = data.nb_species_by_organism
+            observations_by_organism = data.observations_by_organism
 
-        const biodiversityChartElement = document.getElementById('biodiversityChart');
-        if (biodiversityChartElement) {
-            const organismChart = stackedBarChartConfig(biodiversityChartElement, formatStackedBarChart(species_by_taxonomic_group, biodiversityChartElement));
-        }
+            // Onglet observations et espèces
+            const biodiversityChartElement = document.getElementById('biodiversityChart');
+            if (biodiversityChartElement) {
+                const organismChart = stackedBarChartConfig(biodiversityChartElement, formatStackedBarChart(species_by_taxonomic_group, biodiversityChartElement));
+            }
 
-        const observationsChartElement = document.getElementById('observationsChart');
-        if (observationsChartElement) {
-            const organismChart = pieChartConfig(observationsChartElement, formatPieData(observations_by_taxonomic_group, observationsChartElement));
-        }
+            const observationsChartElement = document.getElementById('observationsChart');
+            if (observationsChartElement) {
+                const organismChart = pieChartConfig(observationsChartElement, formatPieData(observations_by_taxonomic_group, observationsChartElement));
+            }
 
-// Onglet provenance des données
+            // Onglet provenance des données
+            const biodiversityByTerritoryChartElement = document.getElementById('biodiversity_by_territoryChart');
+            if (biodiversityByTerritoryChartElement) {
+                const organismChart = barChartConfig(biodiversityByTerritoryChartElement, formatBarChart(nb_species_by_organism, biodiversityByTerritoryChartElement, "Espèces"));
+            }
 
-        const biodiversityByTerritoryChartElement = document.getElementById('biodiversity_by_territoryChart');
-        if (biodiversityByTerritoryChartElement) {
-            const organismChart = barChartConfig(biodiversityByTerritoryChartElement, formatBarChart(nb_species_by_organism, biodiversityByTerritoryChartElement, "Espèces"));
-        }
-
-        const observationsByTerritoryChartElement = document.getElementById('observations_by_territoryChart');
-        if (observationsByTerritoryChartElement) {
-            const organismChart = barChartConfig(observationsByTerritoryChartElement, formatBarChart(observations_by_organism, observationsByTerritoryChartElement, "Observations"));
-        }
-    })
-    .catch(error => {
-        console.log('Error fetching data: ', error);
-    });
+            const observationsByTerritoryChartElement = document.getElementById('observations_by_territoryChart');
+            if (observationsByTerritoryChartElement) {
+                const organismChart = barChartConfig(observationsByTerritoryChartElement, formatBarChart(observations_by_organism, observationsByTerritoryChartElement, "Observations"));
+            }
+        })
+        .catch(error => {
+            console.log('Error fetching data: ', error);
+        });
+}
 
