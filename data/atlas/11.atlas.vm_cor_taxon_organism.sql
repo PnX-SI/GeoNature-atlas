@@ -5,7 +5,7 @@ CREATE MATERIALIZED VIEW atlas.vm_cor_taxon_organism AS
         SELECT
             obs.cd_ref,
             rcda.id_organism,
-            count(DISTINCT obs.id_observation) AS nb_obs,
+            count(DISTINCT obs.id_observation) AS nb_obs
         FROM atlas.vm_observations AS obs
             JOIN gn_meta.cor_dataset_actor AS rcda
                 ON obs.id_dataset = rcda.id_dataset
