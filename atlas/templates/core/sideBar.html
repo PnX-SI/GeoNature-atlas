@@ -1,41 +1,70 @@
 <ul id="sidebar_menu" class="sidebar-nav">
-    <a href="{{ url_for('main.index') }}" id="menu-toggle" data-toggle="tooltip"
-       data-original-title="{{ _('back.to.home') }}" data-placement="right">
-        <li class="sidebar-brand"><span id="main_icon" class="fa fa-home"></span></li>
-    </a>
+
+    <li class="sidebar-brand">
+        <a href="{{ url_for('main.index') }}" id="menu-toggle"
+           class="d-flex justify-content-center align-items-center p-3 w-100 h-100"
+           data-bs-toggle="tooltip"
+           title="{{ _('back.to.home') }}"
+           data-bs-placement="right">
+            <span id="main_icon" class="fa fa-home"></span>
+        </a>
+    </li>
+
     {% for page_key, page_values in configuration.STATIC_PAGES.items()|sort(attribute='1.order') %}
         {% if 'url' in page_values %}
-            <a href="{{ page_values.url }}" target="_blank" data-toggle="tooltip" data-original-title="{{ page_values.title }}" data-placement="right">
-                <li class="sidebar-brand">
-        		{% if 'customized_picto' in page_values %}
-	        		<span><img src="/static/custom/images/{{ page_values.customized_picto }}" height="{{ page_values.picto_height}}"></img></span>
-			{% else %}
-				<span class="fas {{ page_values.picto }}"></span>
-			{% endif %}
-		</li>
-            </a>
+            <li class="sidebar-brand">
+                <a href="{{ page_values.url }}" target="_blank"
+                   class="d-flex justify-content-center align-items-center p-3 w-100 h-100"
+                   data-bs-toggle="tooltip"
+                   title="{{ page_values.title }}"
+                   data-bs-placement="right">
+                    {% if 'customized_picto' in page_values %}
+                        <span>
+                            <img src="/static/custom/images/{{ page_values.customized_picto }}" height="{{ page_values.picto_height }}">
+                        </span>
+                    {% else %}
+                        <span class="fas {{ page_values.picto }}"></span>
+                    {% endif %}
+                </a>
+            </li>
         {% else %}
-            <a href="{{ url_for('main.get_staticpages', page=page_key) }}" data-toggle="tooltip" data-original-title="{{ page_values.title }}" data-placement="right">
-                <li class="sidebar-brand">
-		        {% if 'customized_picto' in page_values %}
-			        <span><img src="/static/custom/images/{{ page_values.customized_picto }}" height="{{ page_values.picto_height}}"></img></span>
-			{% else %}
-				<span class="fas {{ page_values.picto }}"></span>
-			{% endif %}
-		</li>
-            </a>
+            <li class="sidebar-brand">
+                <a href="{{ url_for('main.get_staticpages', page=page_key) }}"
+                   class="d-flex justify-content-center align-items-center p-3 w-100 h-100"
+                   data-bs-toggle="tooltip"
+                   title="{{ page_values.title }}"
+                   data-bs-placement="right">
+                    {% if 'customized_picto' in page_values %}
+                        <span>
+                            <img src="/static/custom/images/{{ page_values.customized_picto }}" height="{{ page_values.picto_height }}">
+                        </span>
+                    {% else %}
+                        <span class="fas {{ page_values.picto }}"></span>
+                    {% endif %}
+                </a>
+            </li>
         {% endif %}
     {% endfor %}
     {% if configuration.AFFICHAGE_RECHERCHE_AVANCEE %}
-        <a href="{{ url_for('main.advanced_search') }}" data-toggle="tooltip" data-original-title="{{ _('advanced_search') }}"
-        data-placement="right">
-            <li class="sidebar-brand"><span class="fa fa-search"></span></li>
-        </a>
+        <li class="sidebar-brand">
+            <a href="{{ url_for('main.advanced_search') }}"
+               class="d-flex justify-content-center align-items-center p-3 w-100 h-100"
+               data-bs-toggle="tooltip"
+               title="{{ _('advanced_search') }}"
+               data-bs-placement="right">
+                <span class="fa fa-search"></span>
+            </a>
+        </li>
     {% endif %}
-    <a href="{{ url_for('main.photos') }}" data-toggle="tooltip" data-original-title="{{ _('gallery.title') }}"
-       data-placement="right">
-        <li class="sidebar-brand"><span class="fa fa-camera"></span></li>
-    </a>
 
+    <li class="sidebar-brand">
+        <a href="{{ url_for('main.photos') }}"
+           class="d-flex justify-content-center align-items-center p-3 w-100 h-100"
+           data-bs-toggle="tooltip"
+           title="{{ _('gallery.title') }}"
+           data-bs-placement="right">
+            <span class="fa fa-camera"></span>
+        </a>
+    </li>
 
 </ul>

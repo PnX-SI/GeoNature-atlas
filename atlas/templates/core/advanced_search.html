@@ -13,10 +13,10 @@
     <script src="{{ url_for('static', filename='node_modules/leaflet.markercluster/dist/leaflet.markercluster.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/leaflet.markercluster/dist/MarkerCluster.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css') }}"/>
-
-    <!-- DataTable -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='lib/datatables/datatables.min.css') }}"/>
-    <link rel="stylesheet" href="{{ url_for('static', filename='lib/datatables/dataTables.bootstrap4.min.css') }}"/>
+    <!-- DataTable Bootstrap 5 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/datatables/media/css/jquery.dataTables.min.css') }}"/>
+    <!-- Bootstrap 5 DataTables integration -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/listEspeces.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/icones.css') }}"/>
     <!-- development version, includes helpful console warnings -->
@@ -36,10 +36,9 @@
             z-index: 999;
         }
 
-
         .v-select {
             width: 100%;
-            background-color: var(--white);
+            background-color: var(--bs-white);
         }
 
         .v-select .dropdown li {
@@ -61,11 +60,8 @@
         .v-select .dropdown-menu .active > a {
             color: #fff;
         }
-
     </style>
 {% endblock %}
-
-
 
 {% block additionalFooterAssets %}
     {# Ajoutez ici les assets complémentaires qui seront en bas de page #}
@@ -80,9 +76,10 @@
 
         $("#loaderSpinner").hide();
         $(document).ready(function () {
-            $("#infoModal").modal('show');
+            // Bootstrap 5 Modal
+            var infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
+            infoModal.show();
         });
-
 
         function getRandomColor() {
             var letters = '0123456789ABCDEF'.split('');
@@ -128,8 +125,7 @@
             var typeData = 'maille';
         } else {
             var typeData = 'point'
-        }
-        ;
+        };
 
         var polygonLayerToCentroid = function (geoJson) {
             geoJson;
@@ -200,8 +196,7 @@
                             this.alertLimit = false;
                         }
                     }, 3000);
-                }
-                ,
+                },
                 getMedias: async function (cdRef) {
                     var mediaUrl = null;
                     var idMedia = null;
@@ -228,9 +223,6 @@
                                 $("#loaderSpinner").show();
                             }
                         }).done(function (observations) {
-                            // $("#loadingGif").hide();
-                            {#map.removeLayer(currentLayer);#}
-
                             if (configuration.AFFICHAGE_MAILLE) {
                                 var geoJsonDatas = observations['maille'];
                                 polygonLayerToCentroid(geoJsonDatas);
@@ -248,7 +240,6 @@
                             if (geoJsonDatas.features.length > 0) {
                                 map.fitBounds(layer[i].getBounds());
                             }
-
                         });
                         displayObsTaxonMaille(list[i]);
                     }
@@ -269,7 +260,6 @@
                         if ((observations['features'][0]['geometry']['type']).toLowerCase() != 'point') {
                             polygonLayerToCentroid(geoJsonDatas);
                         }
-                        //var color = getRandomColor();
 
                         var layer = L.geoJSON(geoJsonDatas, {
                             style: function (feature) {
@@ -288,7 +278,6 @@
                     $("#loaderSpinner").hide();
                 },
                 getTaxaImage: function (cd_nom) {
-
                 }
             },
             watch: {
@@ -298,8 +287,7 @@
                 selectedTaxa: function (val) {
                     if (this.items.length === 3) {
                         this.displayAlertLimit();
-                    }
-                    ;
+                    };
                     if (val && this.items.length < 3) {
                         var self = this;
                         var color = getRandomColor();
@@ -321,72 +309,62 @@
                                 self.items.push(newItem);
                                 self.addMapDatas(newItem.cd_nom, color);
                             });
-
-
-                    }
-                    ;
+                    };
                     this.selectedTaxa = null;
                 }
             },
             mounted() {
             }
         })
-
-
     </script>
 {% endblock %}
-
 
 {% block content %}
     {# Ajoutez ici coeur de la page #}
     <div class="row h-100 flex-grow-1 p-0 m-0 border-bottom">
         <div id="advancedSearch" class="col-sm-12 col-md-5 col-lg-4 col-xl-3 d-flex flex-column m-0 p-0">
-            <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
+            <!-- Modal Bootstrap 5 -->
+            <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title text-info" id="infoModalLabel"><i class="fas fa-info-circle "></i>
-                                {{ _('information') }}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="{{ _('close') }}">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                            <h5 class="modal-title text-info" id="infoModalLabel">
+                                <i class="fas fa-info-circle"></i> {{ _('information') }}
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ _('close') }}"></button>
                         </div>
                         <div class="modal-body">
-                            <p>
-                            {{ _('asearch.information') }}
-                            </p>
+                            <p>{{ _('asearch.information') }}</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ _('close') }}</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('close') }}</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="bg-light border-bottom border-right p-2">
+
+            <div class="bg-light border-bottom border-end p-2">
                 <div class="text-center">
-                    <span class="float-right ">
-                       <span data-toggle="modal"
-                             data-target="#infoModal">
-                           <a data-toggle="tooltip"
-                              data-target="#infoModal" data-placement="left"
-                              title="{{ _('page.information') }}">
-                            <i class="fas fa-info-circle"></i>
-                        </a>
-                           </span>
-                        <a class="text-danger" href="#" @click="resetItems" data-toggle="tooltip" data-placement="left"
+                    <span class="float-end">
+                        <span data-bs-toggle="modal" data-bs-target="#infoModal">
+                            <a data-bs-toggle="tooltip" data-bs-target="#infoModal" data-bs-placement="left"
+                               title="{{ _('page.information') }}">
+                                <i class="fas fa-info-circle"></i>
+                            </a>
+                        </span>
+                        <a class="text-danger" href="#" @click="resetItems" data-bs-toggle="tooltip" data-bs-placement="left"
                            title="Purger la liste">
                              <i class="fas fa-trash-alt"></i>
                         </a>
                     </span>
                     <h4><b>{{ _('advanced_search') }}</b></h4>
-                    <div v-if="alertLimit" class="alert alert-danger alert-dismissible fade show sticky-top"
-                         role="alert">
+                    
+                    <!-- Alert Bootstrap 5 -->
+                    <div v-if="alertLimit" class="alert alert-danger alert-dismissible fade show sticky-top" role="alert">
                         {{ _('asearch.max') }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
+                    
                     <div class="input-group w-100">
                         <v-select label="label" v-model="selectedTaxa" :filterable="false" :options="options"
                                   placeholder="{{ _('asearch.search.species') }}"
@@ -395,52 +373,50 @@
                                 {{ _('asearch.search.start') }}
                             </template>
                             <template slot="option" slot-scope="option">
-                                <div class="d-center" v-html="option.label">
-                                </div>
+                                <div class="d-center" v-html="option.label"></div>
                             </template>
                             <template slot="selected-option" slot-scope="option">
-                                <div class="selected d-center" v-html="option.label">
-                                </div>
+                                <div class="selected d-center" v-html="option.label"></div>
                             </template>
                         </v-select>
                     </div>
+                    
                     <div v-if="items.length > 3" class="text-danger">
                         <i class="fa fa-info-circle fa-fw"></i> {{ _('asearch.max') }}
                     </div>
-
                 </div>
             </div>
+            
             <div id="list" class="bg-white flex-grow-1">
                 <ul class="list-unstyled">
-                    <li v-for="(item, key)  in items" :key="key" class="media border-bottom px-0 py-0">
-                        <img class="mr-3" v-bind:src="item.media" alt="Generic placeholder image">
-                        <div class="media-body p-2">
-                            <span class="float-right text-danger" data-toggle="tooltip" data-placement="left"
+                    <li v-for="(item, key) in items" :key="key" class="d-flex border-bottom px-0 py-0">
+                        <img class="me-3" v-bind:src="item.media" alt="Generic placeholder image">
+                        <div class="flex-grow-1 p-2">
+                            <span class="float-end text-danger" data-bs-toggle="tooltip" data-bs-placement="left"
                                   title="{{ _('asearch.remove.selection') }}" href="#"
-                                  v-on:click="removeElement(key)"><i
-                                    class="fas fa-times-circle"></i></span>
-                            <h5 class="mt-0 mb-1"><i class="far fa-circle fa-fw"
-                                                     v-bind:style="{ color: item.marker_color}"></i>[[item.nom_vern]]
+                                  v-on:click="removeElement(key)">
+                                <i class="fas fa-times-circle"></i>
+                            </span>
+                            <h5 class="mt-0 mb-1">
+                                <i class="far fa-circle fa-fw" v-bind:style="{ color: item.marker_color}"></i>
+                                [[item.nom_vern]]
                             </h5>
-                            <span class="float-right">
-                    <a class="badge badge-primary" :href="url_for('main.ficheEspece', cd_nom=item.cd_nom)" data-toggle="tooltip"
-                       title="{{ _('species.sheet') }}"
-                       data-placement="left">
-                        <i class="fas fa-list fa-fw"></i> {{ _('check.species.sheet') }}</i>
-                    </a>
+                            <span class="float-end">
+                                <a class="badge bg-primary" :href="url_for('main.ficheEspece', cd_nom=item.cd_nom)" 
+                                   data-bs-toggle="tooltip" title="{{ _('species.sheet') }}" data-bs-placement="left">
+                                    <i class="fas fa-list fa-fw"></i> {{ _('check.species.sheet') }}
+                                </a>
                             </span>
                             <p class="mt-0 mb-1 text-info"><small>[[item.nom_sci]]</small></p>
-
                         </div>
                     </li>
                 </ul>
             </div>
-
         </div>
+        
         <div class="col-sm-12 col-md-7 col-lg-8 col-xl-9 d-flex flex-column m-0 p-0">
             <div class="d-flex align-content-stretch bg-warning flex-grow-1">
                 <div class="d-flex flex-grow-1">
-
                     <div id="map" style="height: unset;flex:1;"></div>
                     {% include 'templates/core/loaderSpinner.html' %}
                 </div>
