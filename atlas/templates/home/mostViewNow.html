@@ -3,26 +3,26 @@
         <div class="card-body">
 
             <h3 class="title-spaced">{{ _('see.at.the.moment') }}
-                <span data-toggle="tooltip"
-                      data-original-title="{{ _('species.most.obs.last.15.days') }}"
-                      data-placement="right">
+                <span data-bs-toggle="tooltip"
+                      title="{{ _('species.most.obs.last.15.days') }}"
+                      data-bs-placement="right">
                     <a class="fa fa-question-circle helpTip"></a>
                 </span>
             </h3>
             <div class="row thumbnail-row">
                 {% for tax in mostViewTaxon %}
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumbnail-col">
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 thumbnail-col">
                         <div class="hovereffect">
                             {% if tax.path == None %}
-                                <img class="default-logo "
+                                <img class="default-logo"
                                      src="{{ url_for('static', filename='images/picto_' + tax.group2_inpn | replace(" ", "_") +'.png') }}"
                                      alt="">
                             {% else %}
                                 {% if configuration.REDIMENSIONNEMENT_IMAGE %}
                                     <div class="pictoImg pictoImgMedium"
                                          style="background-image:url({{ configuration.TAXHUB_URL }}/api/tmedias/thumbnail/{{ tax.id_media }}?h=500&w=500);"
-                                         data-toggle="tooltip" data-original-title="{{ tax.group2_inpn }}"
-                                         data-placement="left"></div>
+                                         data-bs-toggle="tooltip" title="{{ tax.group2_inpn }}"
+                                         data-bs-placement="left"></div>
                                 {% else %}
                                     <div class="img-responsive-logo"
                                          style="background-image:url({{ tax.path }})"></div>

@@ -118,6 +118,17 @@ p.imgDescription.main {
     padding-right: 0px;
 }
 
+#area a {
+    text-decoration: none;
+    color: var(--main-color);
+    transition: color 0.2s ease-in-out;
+}
+
+#area a:hover {
+    text-decoration: underline;
+    color: var(--third-color);
+}
+
 /* Slider temporel sur la carte */
 
 #mapContainer .leaflet-bar.leaflet-control.leaflet-slider-control {

@@ -1,87 +1,71 @@
 {% block logohome %}
 <!-- Carousel avec logos en page d'accueil -->
 
-					<div class="card mt-4">
-  					  <div class="card-body">
-    					    <h3 class="card-title"><i class="fas fa-handshake icon-color-title">&nbsp;</i> {{ _('home.partners') }}</h3>
-						</div>
-						<div class="panel-body" style="background-color: white;">
-							<div class="row" style="padding: 1%;">
+<div class="card mt-4">
+  <div class="card-body">
+    <h3 class="card-title">
+      <i class="fas fa-handshake icon-color-title">&nbsp;</i> {{ _('home.partners') }}
+    </h3>
+  </div>
 
-								<div class="container-fluid" style="padding: 0px 2% 0px 2%;">
-								  <section class="partner-logos slidepartenaireindexr">
+  <!-- Remplace "panel-body" (Bootstrap 3) par une div simple -->
+  <div class="bg-white">
+    <div class="row p-3">
+      <div class="container-fluid px-3">
+        <section class="partner-logos slidepartenaireindexr">
 
-								    <!--Logo 1-->
-								    <div class="slidepartenaireindex">
-									<img src="{{url_for('static', filename='custom/images/logo-structure.png') }}">
-								    </div>
+          <!--Logo 1-->
+          <div class="slidepartenaireindex">
+            <img src="{{ url_for('static', filename='custom/images/logo-structure.png') }}" class="img-fluid" alt="logo 1">
+          </div>
 
-								    <!--Logo 2-->
-								    <div class="slidepartenaireindex">
-									<img src="{{url_for('static', filename='custom/images/logo-structure.png') }}">
-								    </div>
+          <!--Logo 2-->
+          <div class="slidepartenaireindex">
+            <img src="{{ url_for('static', filename='custom/images/logo-structure.png') }}" class="img-fluid" alt="logo 2">
+          </div>
 
-								    <!--Logo 3-->
-								    <div class="slidepartenaireindex">
-									<img src="{{url_for('static', filename='custom/images/logo-structure.png') }}">
-								    </div>
+          <!--Logo 3-->
+          <div class="slidepartenaireindex">
+            <img src="{{ url_for('static', filename='custom/images/logo-structure.png') }}" class="img-fluid" alt="logo 3">
+          </div>
 
-								    <!--Logo 4-->
-								    <div class="slidepartenaireindex">
-									<img src="{{url_for('static', filename='custom/images/logo-structure.png') }}">
-								    </div>
+          <!--Logo 4-->
+          <div class="slidepartenaireindex">
+            <img src="{{ url_for('static', filename='custom/images/logo-structure.png') }}" class="img-fluid" alt="logo 4">
+          </div>
 
-								    <!--Logo 5-->
-								    <div class="slidepartenaireindex">
-									<img src="{{url_for('static', filename='custom/images/logo-structure.png') }}">
-								    </div>
+          <!--Logo 5-->
+          <div class="slidepartenaireindex">
+            <img src="{{ url_for('static', filename='custom/images/logo-structure.png') }}" class="img-fluid" alt="logo 5">
+          </div>
 
-								    <!--Logo 6-->
-								    <div class="slidepartenaireindex">
-									<img src="{{url_for('static', filename='custom/images/logo-structure.png') }}">
-								    </div>
-								    
-								  </section>
+          <!--Logo 6-->
+          <div class="slidepartenaireindex">
+            <img src="{{ url_for('static', filename='custom/images/logo-structure.png') }}" class="img-fluid" alt="logo 6">
+          </div>
 
-							  	</div>
-							</div>
-						</div>
-					</div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
 
-
-  <script type="text/javascript">
-		$(document).ready(function(){
-		  $('.partner-logos').slick({
-		  	  infinite: true,
-		  	  dots: false,
-			  slidesToShow: 5,
-			  slidesToScroll: 1,
-			  centerMode: false,
-			  autoplay: true,
-  			  autoplaySpeed: 2000,
-				responsive: [
-				    {
-				      breakpoint: 1024,
-				      settings: {
-				        slidesToShow: 3
-				      }
-				    },
-				    {
-				      breakpoint: 600,
-				      settings: {
-				        slidesToShow: 2
-				      }
-				    },
-				    {
-				      breakpoint: 480,
-				      settings: {
-				        slidesToShow: 1				   
-				      }
-				    }
-				  ]
-			});
-		});
-  </script>
-
-  
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.partner-logos').slick({
+      infinite: true,
+      dots: false,
+      slidesToShow: 5,
+      slidesToScroll: 1,
+      centerMode: false,
+      autoplay: true,
+      autoplaySpeed: 2000,
+      responsive: [
+        { breakpoint: 1024, settings: { slidesToShow: 3 }},
+        { breakpoint: 600,  settings: { slidesToShow: 2 }},
+        { breakpoint: 480,  settings: { slidesToShow: 1 }}
+      ]
+    });
+  });
+</script>
 {% endblock %}

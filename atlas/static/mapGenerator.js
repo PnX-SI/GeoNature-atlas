@@ -185,9 +185,9 @@ function generateMap(zoomHomeButton) {
             container.style.height = "50px";
             container.style.border = "solid white 1px";
             container.style.cursor = "pointer";
-            $(container).attr("data-placement", "right");
-            $(container).attr("data-toggle", "tooltip");
-            $(container).attr("data-original-title", "Photos aérienne");
+            $(container).attr("data-bs-placement", "right");
+            $(container).attr("data-bs-toggle", "tooltip");
+            $(container).attr("title", "Photos aérienne");
 
             container.onclick = function () {
                 if (currentTileMap == "topo") {
@@ -195,7 +195,7 @@ function generateMap(zoomHomeButton) {
                         "url(" +
                         configuration.URL_APPLICATION +
                         "/static/images/logo_topo_map.PNG)";
-                    $(container).attr("data-original-title", "Plan");
+                    $(container).attr("title", "Plan");
                     map.removeLayer(firstMapTile);
                     orthoMap.addTo(map);
                     currentTileMap = "earth";
@@ -204,7 +204,7 @@ function generateMap(zoomHomeButton) {
                         "url(" +
                         configuration.URL_APPLICATION +
                         "/static/images/logo_earth_map.PNG)";
-                    $(container).attr("data-original-title", "Photos aérienne");
+                    $(container).attr("title", "Photos aérienne");
                     map.removeLayer(orthoMap);
                     firstMapTile.addTo(map);
                     currentTileMap = "topo";
@@ -219,9 +219,9 @@ function generateMap(zoomHomeButton) {
     // add tooltip on fullScreen button
 
     fullScreenButton = $(".leaflet-control-fullscreen");
-    fullScreenButton.attr("data-placement", "right");
-    fullScreenButton.attr("data-toggle", "tooltip");
-    fullScreenButton.attr("data-original-title", "Fullscreen");
+    fullScreenButton.attr("data-bs-placement", "right");
+    fullScreenButton.attr("data-bs-toggle", "tooltip");
+    fullScreenButton.attr("title", "Fullscreen");
     $(".leaflet-control-fullscreen-button").removeAttr("title");
 
     // Add scale depending on the configuration
@@ -863,9 +863,9 @@ function generateLegende(htmlLegend) {
                 configuration.URL_APPLICATION +
                 "/static/images/info.png' alt='Légende'>"
             );
-            $(container).attr("data-placement", "right");
-            $(container).attr("data-toggle", "tooltip");
-            $(container).attr("data-original-title", "Legend");
+            $(container).attr("data-bs-placement", "right");
+            $(container).attr("data-bs-toggle", "tooltip");
+            $(container).attr("title", "Legend");
 
             container.onclick = function () {
                 if (legendActiv == false) {

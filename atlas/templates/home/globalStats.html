@@ -3,72 +3,74 @@
     <div class="card-body">
         <h3 class="card-title"><i class="fas fa-chart-line icon-color-title">&nbsp;</i> {{ _('home.insomefigures') }}
              <div id="mainstat-spinner" class="spinner-border" role="status">
-                <span class="sr-only">Loading...</span>
-            </div> </h3>
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </h3>
+
         <div class="row">
-            <div class="col-lg-3 col-md-6 col-xs-12 stat-object">
-                <div class="stat-thumbnail border-right">
-                    <i class="fas fa-search fa-3x blue"></i> <input id="hiddenInputTaxonStat" type="hidden"
-                        name="cd_ref">
-                    <h1 class="large text-muted" id="nbObs">
-                    </h1>
-                    <h4 class="text-muted text-uppercase font-weight-bold">
-                        {{ _('observations') }}</h4>
+            <div class="col-12 col-md-6 col-lg-3 stat-object">
+                <div class="stat-thumbnail border-end">
+                    <i class="fas fa-search fa-3x blue"></i>
+                    <input id="hiddenInputTaxonStat" type="hidden" name="cd_ref">
+                    <h1 class="large text-muted" id="nbObs"></h1>
+                    <h4 class="text-muted text-uppercase font-weight-bold">{{ _('observations') }}</h4>
+
                     {% if configuration.AFFICHAGE_DERNIERES_OBS %}
-                        <p><a id="localScroll" href="#DernieresObservations" class="btn btn-default" role="button"> {{ _('home.seelatestobs') }}</a></p>
+                        <p><a id="localScroll" href="#DernieresObservations" class="btn btn-secondary" role="button">{{ _('home.seelatestobs') }}</a></p>
                     {% endif %}
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 col-xs-12 stat-object">
-                <div class="stat-thumbnail border-right">
+
+            <div class="col-12 col-md-6 col-lg-3 stat-object">
+                <div class="stat-thumbnail border-end">
                     <i class="fas fa-leaf fa-3x"></i>
-                    <h1 class="large text-muted" id="nbTaxons">
-                    </h1>
-                    <h4 class="text-muted text-uppercase font-weight-bold">
-                        {{ _('species')}}</h4>
+                    <h1 class="large text-muted" id="nbTaxons"></h1>
+                    <h4 class="text-muted text-uppercase font-weight-bold">{{ _('species') }}</h4>
+
                     <form method="POST" class="navbar-form" role="search">
                         <div class="form-group has-feedback center-input">
                             <span class="addon">
                                 <i class="fas fa-search"></i>
                             </span>
                             <input id="searchTaxonsStat" type="text" class="form-control"
-                                placeholder="{{ _('search.species') }}&nbsp; &nbsp; &nbsp;" loading="false" />
+                                   placeholder="{{ _('search.species') }}&nbsp;&nbsp;&nbsp;" loading="false" />
                             <input id="hiddenInputTaxonStat" type="hidden" name="cd_ref">
                         </div>
                     </form>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 col-xs-12 stat-object">
-                <div class="stat-thumbnail border-right">
+
+            <div class="col-12 col-md-6 col-lg-3 stat-object">
+                <div class="stat-thumbnail border-end">
                     <i class="fas fa-map-signs fa-3x blue"></i>
-                    <h1 class="large text-muted" id="nbTown">
-                    </h1>
-                    <h4 class="text-muted  text-uppercase font-weight-bold">
-                        {{ translations.territories }}</h4>
+                    <h1 class="large text-muted" id="nbTown"></h1>
+                    <h4 class="text-muted text-uppercase font-weight-bold">{{ translations.territories }}</h4>
+
                     <form method="POST" onsubmit="completeAction('#searchFormAreasStat', hiddenInputAreasStat)"
-                        id='searchFormAreasStat' action="" class="navbar-form center-input" role="search">
+                          id='searchFormAreasStat' action="" class="navbar-form center-input" role="search">
                         <div class="form-group has-feedback">
                             <span class="addon">
                                 <i class="fas fa-search" aria-hidden="true"></i>
                             </span>
                             <input id="searchAreasStat" type="text" class="form-control"
-                                placeholder="{{ translations.search_area }}&nbsp;&nbsp;&nbsp;">
+                                   placeholder="{{ translations.search_area }}&nbsp;&nbsp;&nbsp;">
                         </div>
                         <input id="hiddenInputAreasStat" type="hidden" name="id_area">
                     </form>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 col-xs-12 stat-object">
+
+            <div class="col-12 col-md-6 col-lg-3 stat-object">
                 <div class="stat-thumbnail">
                     <i class="fas fa-camera fa-3x"></i>
-                    <h1 class="large text-muted" id="nbPictures">
-                    </h1>
-                    <h4 class="text-muted  text-uppercase font-weight-bold">
-                        {{ _('photos') }}</h4>
-                    <p><a href="{{ url_for('main.photos') }}" class="btn btn-default" role="button">{{ _('gallery.title') }}</a></p>
+                    <h1 class="large text-muted" id="nbPictures"></h1>
+                    <h4 class="text-muted text-uppercase font-weight-bold">{{ _('photos') }}</h4>
+
+                    <p><a href="{{ url_for('main.photos') }}" class="btn btn-secondary" role="button">{{ _('gallery.title') }}</a></p>
                 </div>
             </div>
         </div>
+
     </div>
 </div>
 {% endblock %}
