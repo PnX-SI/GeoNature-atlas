@@ -10,18 +10,16 @@
 {% endblock %}
 
 {% block additionalHeaderAssets %}
-    {# Ajoutez ici les assets complémentaires qui seront dans le bloc <head></head> #}s
-    <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/datatables.net-bs4/css/dataTables.bootstrap4.css') }}"/>
-    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-bs4/js/dataTables.bootstrap4.js') }}"></script>
+    {# Ajoutez ici les assets complémentaires qui seront dans le bloc <head></head> #}
+    <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/datatables.net-bs5/css/dataTables.bootstrap5.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-bs5/js/dataTables.bootstrap5.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/listEspeces.css') }}"/>
-
 {% endblock %}
-
 
 {% block additionalFooterAssets %}
     {# Ajoutez ici les assets complémentaires qui seront en bas de page #}
     <script type="text/javascript">
-        var configuration = {{configuration|tojson}};
+        var configuration = {{ configuration | tojson }};
         //calcul du nb de colonnes pour le fonctionnement de dataTables.js
         var nbColumn = 6;
         {% if configuration.DISPLAY_PATRIMONIALITE %} nbColumn = nbColumn + 1;{% endif %}
@@ -29,21 +27,17 @@
         var noSordedColumns = [nbColumn - 1]; //var for dataTables js lib
         var defaultSortedColumn = nbColumn - 3; //var for dataTables js lib
     </script>
-
-    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-bs4/js/dataTables.bootstrap4.js') }}"></script>
-    <script type="text/javascript"
-            src="{{ url_for('static', filename='node_modules/datatables.net-bs4/js/dataTables.bootstrap4.js') }}"></script>
-
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables/media/js/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ url_for('static', filename='listeEspeces.js') }}"></script>
 {% endblock %}
-
 
 {% block content %}
     {# Ajoutez ici coeur de la page #}
 
     <div class="row h-100 flex-grow-1 p-0 m-0 border-bottom">
         <div class="col-12 d-flex flex-column m-0 p-0">
-            <div class="bg-light text-center border-bottom border-right p-2">
+            <div class="bg-light text-center border-bottom border-end p-2">
                 <h1> Les {{ referenciel }} </h1>
                 {% include 'templates/core/statHierarchy.html' %}
             </div>
@@ -54,13 +48,14 @@
                         <a href="{{ url_for('main.ficheGroupe', groupe=group.groupAccent ) }}">
                             <img class="INPNgroup"
                                  src="{{ url_for('static', filename='images/picto_' + group.group | replace(" ", "_") +'.png') }}"
-                                 alt="{{ group.groupAccent }}" data-toggle="tooltip" data-original-
-                                 title="{{ group.groupAccent }}" data-placement="top">
+                                 alt="{{ group.groupAccent }}" data-bs-toggle="tooltip" title="{{ group.groupAccent }}" data-bs-placement="top">
                         </a>
                     </li>
                 {% endfor %}
             </div>
-                {% include 'templates/core/listTaxons.html' %}
 
+            {% include 'templates/core/listTaxons.html' %}
+        </div>
+    </div>
 
 {% endblock %}

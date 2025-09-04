@@ -3,22 +3,27 @@
     <div class="card container info_card">
         <ul class="nav nav-tabs">
             {% if configuration.AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION and stats_area.description %}
-                <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#general_presentation">{{ _('general_presentation') }}</a></li>
+                <li class="nav-item">
+                    <a class="nav-link active" data-bs-toggle="tab" href="#general_presentation">{{ _('general_presentation') }}</a>
+                </li>
             {% endif %}
             {% if configuration.AFFICHAGE_TAB_AREA_OBS_ESPECES %}
-                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#observations_and_species">{{ _('observations_and_species') }}</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#observations_and_species">{{ _('observations_and_species') }}</a>
+                </li>
             {% endif %}
             {% if configuration.ORGANISM_MODULE %}
-                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#data_sources">{{ _('data_sources') }}</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#data_sources">{{ _('data_sources') }}</a>
+                </li>
             {% endif %}
         </ul>
 
         <div class="tab-content">
 
             <div id="spinnerChart" class="spinner-grow text-primary" role="status">
-                <span class="sr-only">Loading...</span>
-              </div>
- 
+                <span class="visually-hidden">Loading...</span>
+            </div>
 
             {% if configuration.AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION and stats_area.description %}
                 <div id="general_presentation" class="tab-pane fade show active">
@@ -62,5 +67,5 @@
 {% endblock %}
 <script>
     // Click on first tab to activate it
-    document.querySelectorAll('.info_card .nav-link')[0].click()
+    document.querySelectorAll('.info_card .nav-link')[0].click();
 </script>
