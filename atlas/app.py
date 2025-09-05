@@ -1,5 +1,6 @@
 import os
 import copy
+from datetime import datetime, timedelta
 from flask import Flask, request, session, redirect, url_for, g
 from flask_compress import Compress
 from flask_sqlalchemy import SQLAlchemy
@@ -34,7 +35,13 @@ def create_app():
     app.config.update(config_secret_valid)
 
     db.init_app(app)
-    cache.init_app(app)
+    cache.init_app(
+        app,
+        config={
+            "CACHE_TYPE": "SimpleCache",
+            "CACHE_DEFAULT_TIMEOUT": app.config["CACHE_TIMEOUT"],
+        },
+    )
     babel = Babel(app, locale_selector=get_locale)
     compress.init_app(app)
 
@@ -62,7 +69,8 @@ def create_app():
         @app.context_processor
         def inject_context():
             configuration = copy.copy(config_valid)
-            return dict(configuration=configuration, translations=get_tranlated_labels())
+            now = datetime.now()
+            return dict(configuration=configuration, now=now, timedelta=timedelta, translations=get_tranlated_labels())
 
         @app.template_filter("pretty")
         def pretty(val):

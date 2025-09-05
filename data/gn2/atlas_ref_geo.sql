@@ -17,7 +17,7 @@ WITH d AS (
 	SELECT st_union(geom) , b.type_name
 	FROM ref_geo.l_areas l
 	JOIN ref_geo.bib_areas_types b USING(id_type)
-	WHERE REPLACE(b.type_code, ' ', '_') = :type_territoire
+	WHERE REPLACE(b.type_code, ' ', '_') = :'type_territoire'
 	GROUP BY b.type_name
 )
 SELECT

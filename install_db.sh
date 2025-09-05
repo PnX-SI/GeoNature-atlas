@@ -141,7 +141,6 @@ echo "--------------------" &>> log/install_db.log
 echo "Creation of layers table from ref_geo of geonaturedb" &>> log/install_db.log
 echo "--------------------" &>> log/install_db.log
 export PGPASSWORD=$owner_atlas_pass; psql -d $db_name -U $owner_atlas -h $db_host -p $db_port \
-    -v type_maille=$type_maille \
     -v type_territoire=$type_territoire \
     -v type_code=$type_code \
     -f data/gn2/atlas_ref_geo.sql &>> log/install_db.log

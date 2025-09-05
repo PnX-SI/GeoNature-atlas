@@ -55,7 +55,6 @@ RUN --mount=type=cache,target=/root/.cache \
     pip install -r requirements.txt
 
 COPY --from=build-atlas /build/dist/*.whl .
-COPY --from=build-atlas /build/dist/*.whl .
 
 RUN --mount=type=cache,target=/root/.cache \
     pip install *.whl
