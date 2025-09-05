@@ -127,6 +127,11 @@ class MapConfig(Schema):
     )
 
 
+class MediaTypeImportantLink(Schema):
+    type_media_id = fields.Integer(required=True)
+    icon = fields.String(required=False)
+
+
 class AtlasConfig(Schema):
     class Meta:
         unknown = EXCLUDE
@@ -284,7 +289,9 @@ class AtlasConfig(Schema):
     # Defaults to False to have the best performance in production
     TEMPLATES_AUTO_RELOAD = fields.Boolean(allow_none=True)
 
-    TYPE_TERRITOIRE_SHEET = fields.List(fields.String(), load_default=[])
+    TYPES_MEDIAS_LIENS_IMPORTANTS = fields.List(
+        fields.Nested(MediaTypeImportantLink), load_default=None
+    )
 
     @validates_schema
     def validate_config(self, data, **kwargs):
@@ -302,10 +309,9 @@ class AtlasConfig(Schema):
         # the parameter is infered from URL_APPLICATION which is widely use in all the application
         url_application = data["URL_APPLICATION"]
         data["APPLICATION_ROOT"] = url_application if url_application != "/" else "/"
-        #AFFICHAGE_DERNIERES_OBS et AFFICHAGE_TERRITOIRE_OBS ne peuvent pas être True en meme temps
+        # AFFICHAGE_DERNIERES_OBS et AFFICHAGE_TERRITOIRE_OBS ne peuvent pas être True en meme temps
         if data["AFFICHAGE_DERNIERES_OBS"] and data["AFFICHAGE_TERRITOIRE_OBS"]:
             raise ValidationError(
                 "Les paramètre AFFICHAGE_DERNIERES_OBS et AFFICHAGE_TERRITOIRE_OBS ne peuvent pas être tous les deux à True"
             )
         return data
-

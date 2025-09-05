@@ -61,8 +61,10 @@ sed "s/date + 15$/date - ${ATLAS_MOST_OBSERVED_TIME:-'15'}/" \
 
 # REFGEO
 psql -v ON_ERROR_STOP=1 -d ${POSTGRES_DB} -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} \
+    -v type_maille=$ATLAS_TYPE_MAILLE \
+    -v type_code=$ATLAS_TYPE_CODE \
     -v type_territoire=$ATLAS_TYPE_TERRITOIRE \
-    -f data/gn2/atlas_ref_geo.sql
+    -f data/atlas/1-1.atlas.ref_geo.sql
 
 # Create views instead of FDW table in "synthese" and "senitivity" schema
 psql -d ${POSTGRES_DB} -U ${POSTGRES_USER} -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -c "CREATE VIEW synthese.cor_area_synthese AS SELECT * FROM gn_synthese.cor_area_synthese"

@@ -17,7 +17,6 @@ def getObservationsMaillesTerritorySpecies(session, cd_ref):
     query = func.atlas.find_all_taxons_childs(cd_ref)
     taxons_ids = session.scalars(query).all()
     taxons_ids.append(cd_ref)
-
     query = (
         session.query(
             VmObservationsMailles.id_maille,
@@ -82,30 +81,23 @@ def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
         session.query(
             VmObservationsMailles.id_maille,
             VmAreas.area_geojson,
-            func.max(extract("year", VmObservations.dateobs)).label("last_obs_year"),
-            func.count(VmObservations.id_observation).label("obs_nbr"),
             VmObservationsMailles.type_code,
-        )
-        .join(
-            VmObservations,
-            VmObservations.id_observation == any_(VmObservationsMailles.id_observations),
+            func.max(VmObservationsMailles.annee).label("last_obs_year"),
+            func.sum(VmObservationsMailles.nbr).label("obs_nbr"),
         )
         .join(
             VmAreas,
             VmAreas.id_area == VmObservationsMailles.id_maille,
         )
-        .filter(VmObservations.cd_ref == any_(taxons_ids))
+        .filter(VmObservationsMailles.cd_ref == any_(taxons_ids))
         .group_by(
             VmObservationsMailles.id_maille,
             VmAreas.area_geojson,
-            VmObservationsMailles.nbr,
             VmObservationsMailles.type_code,
         )
     )
     if year_min and year_max:
-        query = query.filter(
-            VmObservations.dateobs.between(str(year_min) + "-01-01", str(year_max) + "-12-31")
-        )
+        query = query.filter(VmObservationsMailles.annee.between(str(year_min), str(year_max)))
 
     return FeatureCollection(
         [
@@ -147,7 +139,7 @@ def territoryObservationsMailles(connection):
             JOIN atlas.vm_taxons AS t ON t.cd_ref = o.cd_ref
     GROUP BY obs.type_code, obs.id_maille, vla.the_geom) AS features
   """
-    
+
     observations = connection.execute(text(sql)).fetchone()
     return dict(observations[0])
 
