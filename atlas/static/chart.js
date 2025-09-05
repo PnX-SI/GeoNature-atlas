@@ -135,11 +135,9 @@ function formatStackedBarChart(values, element) {
     Object.keys(values).forEach(key => {
         labels.push(key);
         if(configuration.DISPLAY_PATRIMONIALITE) {
-            nb_species.push(values[key].nb_species)
-        }
-        if(configuration.DISPLAY_PATRIMONIALITE) {
             nb_patrimonial.push(values[key].nb_patrimonial)
         }
+        nb_species.push(values[key].nb_species)
         nb_species_in_teritory.push(values[key].nb_species_in_teritory)
     })
 
@@ -239,7 +237,7 @@ if (dataSourceChartElement) {
 if (typeof areaInfos !== 'undefined') {
     const areaCode = areaInfos.areaCode;
 
-    fetch(`/api/area_chart_values/${areaCode}`)
+    fetch(`${configuration.URL_APPLICATION}/api/area_chart_values/${areaCode}`)
         .then(response => response.json())
         .then(data => {
             $("#spinnerChart").hide();
