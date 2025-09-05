@@ -1,23 +1,26 @@
 # -*- coding:utf-8 -*-
 
-from sqlalchemy.sql import text
+from sqlalchemy.sql import func, select, or_
+from atlas.modeles.entities.vmMois import VmMois
+from atlas.env import db
 
 
-def getMonthlyObservationsChilds(connection, cd_ref):
-    sql = """
-    SELECT
-        SUM(_01) AS _01, SUM(_02) AS _02, SUM(_03) AS _03,
-        SUM(_04) AS _04, SUM(_05) AS _05, SUM(_06) AS _06,
-        SUM(_07) AS _07, SUM(_08) AS _08, SUM(_09) AS _09,
-        SUM(_10) AS _10, SUM(_11) AS _11, SUM (_12) AS _12
-    FROM atlas.vm_mois mois
-    WHERE mois.cd_ref IN (
-            SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
-        )
-        OR mois.cd_ref = :thiscdref
-    """
-
-    mesMois = connection.execute(text(sql), {"thiscdref": cd_ref})
+def getMonthlyObservationsChilds(cd_ref):
+    childs_ids = select(func.atlas.find_all_taxons_childs(cd_ref))
+    mesMois = db.session.query(
+        func.sum(VmMois._01).label("_01"),
+        func.sum(VmMois._02).label("_02"),
+        func.sum(VmMois._03).label("_03"),
+        func.sum(VmMois._04).label("_04"),
+        func.sum(VmMois._05).label("_05"),
+        func.sum(VmMois._06).label("_06"),
+        func.sum(VmMois._07).label("_07"),
+        func.sum(VmMois._08).label("_08"),
+        func.sum(VmMois._09).label("_09"),
+        func.sum(VmMois._10).label("_10"),
+        func.sum(VmMois._11).label("_11"),
+        func.sum(VmMois._12).label("_12"),
+    ).filter(or_(VmMois.cd_ref.in_(childs_ids), VmMois.cd_ref == cd_ref))
     for inter in mesMois:
         return [
             {"mois": "Janvier", "value": inter._01},

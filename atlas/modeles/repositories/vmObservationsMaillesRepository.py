@@ -1,25 +1,30 @@
 import json
 
 from geojson import Feature, FeatureCollection
-from sqlalchemy.sql import text, func, any_, extract
+from sqlalchemy.sql import text, func, any_, extract, literal, cast, select
+from sqlalchemy import Interval
 
 from atlas.modeles.entities.vmObservations import VmObservations, VmObservationsMailles
-from atlas.modeles.entities.vmAreas import VmAreas
+from atlas.modeles.entities.vmAreas import VmAreas, VmCorAreaSynthese
 from atlas.modeles.entities.vmTaxons import VmTaxons
+from atlas.modeles.entities.vmMedias import VmMedias
 from atlas.modeles.utils import deleteAccent, findPath
+from atlas.app import create_app
+from atlas.env import db
+from flask import current_app
 
 
-def getObservationsMaillesTerritorySpecies(session, cd_ref):
+def getObservationsMaillesTerritorySpecies(cd_ref):
     """
     Retourne les mailles et le nombre d'observation par maille pour un taxon et ses enfants
     sous forme d'un geojson
     """
     query = func.atlas.find_all_taxons_childs(cd_ref)
-    taxons_ids = session.scalars(query).all()
+    taxons_ids = db.session.scalars(query).all()
     taxons_ids.append(cd_ref)
 
     query = (
-        session.query(
+        db.session.query(
             VmObservationsMailles.id_maille,
             VmAreas.area_geojson,
             func.max(extract("year", VmObservations.dateobs)).label("last_obs_year"),
@@ -69,17 +74,17 @@ def format_taxon_name(observation):
     return taxon_name_formated
 
 
-def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
+def getObservationsMaillesChilds(cd_ref, year_min=None, year_max=None):
     """
     Retourne les mailles et le nombre d'observation par maille pour un taxon et ses enfants
     sous forme d'un geojson
     """
     query = func.atlas.find_all_taxons_childs(cd_ref)
-    taxons_ids = session.scalars(query).all()
+    taxons_ids = db.session.scalars(query).all()
     taxons_ids.append(cd_ref)
 
     query = (
-        session.query(
+        db.session.query(
             VmObservationsMailles.id_maille,
             VmAreas.area_geojson,
             func.max(extract("year", VmObservations.dateobs)).label("last_obs_year"),
@@ -124,141 +129,187 @@ def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
     )
 
 
-def territoryObservationsMailles(connection):
-    sql = """
-    SELECT
-        json_build_object(
-                'type', 'FeatureCollection',
-                'features', json_agg(ST_AsGeoJSON(features.*)::json)
-        ) AS observations_features
-        FROM (
-    SELECT
-        COUNT(o.id_observation) AS nb_observations,
-        COUNT(DISTINCT o.cd_ref) AS nb_cd_ref,
-        json_agg(DISTINCT jsonb_build_object(
-                'name', (COALESCE(t.nom_vern || ' | ', '') || t.lb_nom),
-                'cdRef', t.cd_ref)) AS taxons,
-        obs.type_code,
-        obs.id_maille,
-        vla.the_geom
-    FROM atlas.vm_observations o
-            JOIN atlas.vm_observations_mailles obs ON o.id_observation = ANY(obs.id_observations)
-            JOIN atlas.vm_l_areas vla ON vla.id_area=obs.id_maille
-            JOIN atlas.vm_taxons AS t ON t.cd_ref = o.cd_ref
-    GROUP BY obs.type_code, obs.id_maille, vla.the_geom) AS features
-  """
-    
-    observations = connection.execute(text(sql)).fetchone()
-    return dict(observations[0])
+def territoryObservationsMailles():
+    features = (
+        db.session.query(
+            func.count(VmObservations.id_observation).label("nb_observations"),
+            func.count(func.distinct(VmObservations.cd_ref)).label("nb_cd_ref"),
+            func.json_agg(
+                func.distinct(
+                    func.jsonb_build_object(
+                        'name', func.concat_ws(' | ', VmTaxons.nom_vern, VmTaxons.lb_nom),
+                        'cdRef', VmTaxons.cd_ref
+                    )
+                )
+            ).label("taxons"),
+            VmObservationsMailles.type_code,
+            VmObservationsMailles.id_maille,
+            VmAreas.area_geojson
+        )
+        .join(VmObservationsMailles, 
+              VmObservations.id_observation == func.any(VmObservationsMailles.id_observations))
+        .join(VmAreas, VmAreas.id_area == VmObservationsMailles.id_maille)
+        .join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
+        .group_by(VmObservationsMailles.type_code, VmObservationsMailles.id_maille, VmAreas.area_geojson)
+    )
+    return json.dumps(
+        FeatureCollection(
+            [
+                Feature(
+                    id=o.id_maille,
+                    geometry=json.loads(o.area_geojson),
+                    properties={
+                        "nb_observations": o.nb_observations,
+                        "nb_cd_ref": o.nb_cd_ref,
+                        "taxons": o.taxons,
+                        "type_code": o.type_code,
+                        "id_maille": o.id_maille 
+                    }
+                )
+                for o in features.all()
+            ]
+        ),
+        ensure_ascii = False # Empêche la sortie de caractères spéciaux au niveau de taxons
+    ) 
 
 
 # last observation for index.html
-def lastObservationsMailles(connection, mylimit, idPhoto):
-    sql = """
-        SELECT obs.*,
-        tax.lb_nom, tax.nom_vern, tax.group2_inpn,
-        o.dateobs, o.altitude_retenue, o.id_observation, o.cd_ref,
-        medias.url, medias.chemin, medias.id_media,
-        vla.area_geojson
-        FROM atlas.vm_observations_mailles obs
-        JOIN atlas.vm_observations o ON o.id_observation=ANY(obs.id_observations)
-        JOIN atlas.vm_taxons tax ON tax.cd_ref = o.cd_ref
-        JOIN atlas.vm_l_areas vla ON vla.id_area=obs.id_maille
-        LEFT JOIN atlas.vm_medias medias
-            ON medias.cd_ref = o.cd_ref AND medias.id_type = :thisID
-        WHERE  o.dateobs >= (CURRENT_TIMESTAMP - INTERVAL :thislimit)
-        ORDER BY o.dateobs DESC
-    """
+def lastObservationsMailles(mylimit, idPhoto):
+    query = (
+        select(
+            VmObservationsMailles,
+            VmTaxons.lb_nom, VmTaxons.nom_vern, VmTaxons.group2_inpn,
+            VmObservations.dateobs, VmObservations.altitude_retenue,
+            VmObservations.id_observation, VmObservations.cd_ref,
+            VmMedias.url,  VmMedias.chemin, VmMedias.id_media,
+            VmAreas.area_geojson
 
-    observations = connection.execute(text(sql), thislimit=mylimit, thisID=idPhoto)
+        )
+        .join(VmObservations, 
+              VmObservations.id_observation == func.any(VmObservationsMailles.id_observations))
+        .join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
+        .join(VmAreas, VmAreas.id_area == VmObservationsMailles.id_maille)
+        .outerjoin(
+            VmMedias, (VmMedias.cd_ref == VmObservations.cd_ref) & (VmMedias.id_type == idPhoto)
+        )
+        .filter(VmObservations.dateobs >= (func.current_timestamp() - cast(literal(mylimit), Interval)))
+        .order_by(VmObservations.dateobs.desc())
+    )
+
+    results = db.session.execute(query).mappings().all()
     obsList = list()
-    for o in observations:
-        if o.nom_vern:
-            inter = o.nom_vern.split(",")
-            taxon = inter[0] + " | <i>" + o.lb_nom + "</i>"
+    for row in results:
+        obj = row["VmObservationsMailles"] # Objet ORM VmObservationsMailles
+        if row.nom_vern:
+            inter = row.nom_vern.split(",")
+            taxon = inter[0] + " | <i>" + row.lb_nom + "</i>"
         else:
-            taxon = "<i>" + o.lb_nom + "</i>"
+            taxon = "<i>" + row.lb_nom + "</i>"
         temp = {
-            "id_observation": o.id_observation,
-            "id_maille": o.id_maille,
-            "type_code": o.type_code,
-            "cd_ref": o.cd_ref,
-            "dateobs": o.dateobs,
-            "altitude_retenue": o.altitude_retenue,
+            "id_observation": row.id_observation,
+            "id_maille": obj.id_maille,
+            "type_code": obj.type_code,
+            "cd_ref": row.cd_ref,
+            "dateobs": row.dateobs,
+            "altitude_retenue": row.altitude_retenue,
             "taxon": taxon,
-            "geojson_maille": json.loads(o.area_geojson),
-            "group2_inpn": deleteAccent(o.group2_inpn),
-            "pathImg": findPath(o),
-            "id_media": o.id_media,
+            "geojson_maille": json.loads(row.area_geojson),
+            "group2_inpn": deleteAccent(row.group2_inpn),
+            "pathImg": findPath(row),
+            "id_media": row.id_media,
         }
         obsList.append(temp)
 
     return obsList
 
 
-def getObservationsByArea(connection, id_area):
-    sql = """
-    WITH obs_in_area AS (
-        SELECT
-            obs.id_observation,
-            obs.cd_ref,
-            date_part('year', obs.dateobs) AS annee
-        FROM atlas.vm_observations obs
-                JOIN atlas.vm_cor_area_synthese AS cas  ON cas.id_synthese = obs.id_observation
-        WHERE cas.id_area = :id_area
+def getObservationsByArea(id_area):
+    obs_in_area = (
+        select(
+            VmObservations.id_observation,
+            VmObservations.cd_ref,
+            func.date_part('year', VmObservations.dateobs).label("annee")
+        )
+        .join(VmCorAreaSynthese, 
+              VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
+        .filter(VmCorAreaSynthese.id_area == id_area)
+        .subquery("obs_in_area")
     )
-    SELECT
-        json_build_object(
-                'type', 'FeatureCollection',
-                'features', json_agg(ST_AsGeoJSON(features.*)::json)
-        ) AS observations_features
-        FROM (
-    SELECT
-        COUNT(obs_in_area.id_observation) AS nb_observations,
-        COUNT(DISTINCT obs_in_area.cd_ref) AS nb_cd_ref,
-        json_agg(DISTINCT jsonb_build_object(
-                'name', (COALESCE(t.nom_vern || ' | ', '') || t.lb_nom),
-                'cdRef', t.cd_ref)) AS taxons,
-        obs.type_code,
-        obs.id_maille,
-        vla.the_geom
-    FROM obs_in_area
-            JOIN atlas.vm_observations_mailles obs ON obs_in_area.id_observation = ANY(obs.id_observations)
-            JOIN atlas.vm_l_areas vla ON vla.id_area=obs.id_maille
-            JOIN atlas.vm_taxons AS t ON t.cd_ref = obs_in_area.cd_ref
-    GROUP BY obs.type_code, obs.id_maille, vla.the_geom) AS features
-    """
-    query = connection.execute(text(sql), id_area=id_area)
-    return dict(query.all()[0])
+    features = (
+        db.session.query(
+            func.count(obs_in_area.c.id_observation).label("nb_observations"),
+            func.count(func.distinct(obs_in_area.c.cd_ref)).label("nb_cd_ref"),
+            func.json_agg(
+                func.distinct(
+                    func.jsonb_build_object(
+                        'name', (func.concat(func.coalesce(VmTaxons.nom_vern + ' | ', '') + VmTaxons.lb_nom)),
+                        'cdRef', VmTaxons.cd_ref
+                    ) 
+                )
+            ).label('taxons'),
+            VmObservationsMailles.type_code,
+            VmObservationsMailles.id_maille,
+            VmAreas.area_geojson
+        )
+        .join(VmObservationsMailles, obs_in_area.c.id_observation == func.any(VmObservationsMailles.id_observations))
+        .join(VmAreas, VmAreas.id_area == VmObservationsMailles.id_maille)
+        .join(VmTaxons, VmTaxons.cd_ref == obs_in_area.c.cd_ref)
+        .group_by(VmObservationsMailles.type_code, VmObservationsMailles.id_maille, VmAreas.area_geojson)
+    )
+
+    return json.dumps(
+        FeatureCollection(
+            [
+                Feature(
+                    id=o.id_maille,
+                    geometry = json.loads(o.area_geojson),
+                    properties={
+                        "nb_observations": o.nb_observations,
+                        "nb_cd_ref": o.nb_cd_ref,
+                        "taxons": o.taxons,
+                        "type_code": o.type_code,
+                        "id_maille": o.id_maille
+                    }
+                )
+                for o in features.all()
+            ]
+        ),
+        ensure_ascii=False 
+    ) 
 
 
 # Use for API
-def getObservationsTaxonAreaMaille(connection, id_area, cd_ref):
-    sql = """
-WITH obs_in_area AS (
-    SELECT
-        obs.id_observation,
-        obs.cd_ref,
-        date_part('year', obs.dateobs) AS annee
-    FROM atlas.vm_observations obs
-             JOIN atlas.vm_cor_area_synthese AS cas  ON cas.id_synthese = obs.id_observation
-    WHERE cas.id_area = :thisIdArea AND obs.cd_ref = :thiscdref
-)
-SELECT
-    obs_in_area.cd_ref,
-    obs_in_area.annee,
-    obs.type_code,
-    obs.id_maille,
-    vla.area_geojson,
-    t.nom_vern,
-    t.lb_nom
-FROM obs_in_area
-         JOIN atlas.vm_observations_mailles obs ON obs_in_area.id_observation = ANY(obs.id_observations)
-         JOIN atlas.vm_l_areas vla ON vla.id_area=obs.id_maille
-         JOIN atlas.vm_taxons AS t ON t.cd_ref = obs_in_area.cd_ref
-ORDER BY annee DESC;
-    """
-    observations = connection.execute(text(sql), thisIdArea=id_area, thiscdref=cd_ref)
+def getObservationsTaxonAreaMaille(id_area, cd_ref):
+    obs_in_area = (
+        select(
+            VmObservations.id_observation,
+            VmObservations.cd_ref,
+            func.date_part('year', VmObservations.dateobs).label("annee"),
+            func.count(VmObservations.id_observation).label("nb_observations")
+        )
+        .join(VmCorAreaSynthese, VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
+        .filter(VmCorAreaSynthese.id_area == id_area, VmObservations.cd_ref == cd_ref)
+        .group_by(VmObservations.id_observation, VmObservations.cd_ref, func.date_part('year', VmObservations.dateobs))
+        .subquery("obs_in_area")
+    ) 
+    query = (
+        select(
+            obs_in_area.c.cd_ref,
+            obs_in_area.c.annee,
+            obs_in_area.c.nb_observations,
+            VmObservationsMailles.type_code,
+            VmObservationsMailles.id_maille,
+            VmAreas.area_geojson,
+            VmTaxons.nom_vern,
+            VmTaxons.lb_nom
+        )
+        .join(VmObservationsMailles, 
+              obs_in_area.c.id_observation == func.any(VmObservationsMailles.id_observations))
+        .join(VmAreas, VmAreas.id_area == VmObservationsMailles.id_maille)
+        .join(VmTaxons, VmTaxons.cd_ref == obs_in_area.c.cd_ref)
+        .order_by(obs_in_area.c.annee.desc())
+    )
+    observations = db.session.execute(query).all()
     tabObs = list()
     for o in observations:
         temp = {
@@ -266,7 +317,7 @@ ORDER BY annee DESC;
             "cd_ref": o.cd_ref,
             "taxon": format_taxon_name(o),
             "type_code": o.type_code,
-            "nb_observations": 1,
+            "nb_observations": o.nb_observations,
             "annee": o.annee,
             "geojson_maille": json.loads(o.area_geojson),
         }
