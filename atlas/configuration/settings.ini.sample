@@ -32,7 +32,7 @@ owner_atlas=geonatadmin
 owner_atlas_pass=monpassachanger
 
 # GeoNature-atlas doit-il avoir sa propre base de donnée et être connecté
-# à une BDD GeoNature externe via ? Si oui, renseignez true.
+# à une BDD GeoNature externe ? Si oui, renseignez true.
 # Cela créera des tables en Foreign Data Wrapper (FDW) dans la BDD atlas.
 geonature_source=true
 
@@ -77,7 +77,7 @@ atlas_source_pass=monpassachanger
 # 🗒 Voir la colonne "type_code" de la table "ref_geo.bib_areas_type".
 type_territoire="PEC"
 
-# Type de zonage a utiliser dans l'application pour générer les fiches territoires.
+# Type de zonage à utiliser dans l'application pour générer les fiches territoires.
 # (Pour optimiser et ne pas utiliser toutes les géométries présentes dans ref_geo).
 # 🗒 Voir la colonne "type_code" de la table "ref_geo.bib_areas_type".
 type_code="COM,EPCI"
