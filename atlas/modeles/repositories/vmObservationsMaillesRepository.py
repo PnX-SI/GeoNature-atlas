@@ -249,12 +249,11 @@ def getObservationsByArea(id_area):
         .group_by(VmObservationsMailles.type_code, VmObservationsMailles.id_maille, VmAreas.area_geojson)
     )
 
-    return json.dumps(
-        FeatureCollection(
+    return FeatureCollection(
             [
                 Feature(
                     id=o.id_maille,
-                    geometry = json.loads(o.area_geojson),
+                    geometry=json.loads(o.area_geojson),
                     properties={
                         "nb_observations": o.nb_observations,
                         "nb_cd_ref": o.nb_cd_ref,
@@ -265,9 +264,7 @@ def getObservationsByArea(id_area):
                 )
                 for o in features.all()
             ]
-        ),
-        ensure_ascii=False 
-    ) 
+        )
 
 
 # Use for API
