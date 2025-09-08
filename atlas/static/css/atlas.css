@@ -720,6 +720,23 @@ footer {
   cursor: pointer;
 }
 
+.overlay-obs {
+  color: #fff;
+  text-align: center;
+  position: relative;
+  top: 150px;
+  font-size: 13px;
+  background: rgba(0, 0, 0, 0.6);
+  -webkit-transform: translatey(-100px);
+  -ms-transform: translatey(-100px);
+  transform: translatey(-100px);
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  padding: 10px;
+  text-decoration: none;
+  margin-top: 10px;
+}
+
 /* END Galerie photos */
 
 /* Search bar */
@@ -751,23 +768,6 @@ footer {
   left: 50%;
   top: 50%;
   z-index: 999;
-}
-
-.overlay-obs {
-  color: #fff;
-  text-align: center;
-  position: relative;
-  top: 100px;
-  font-size: 13px;
-  background: rgba(0, 0, 0, 0.6);
-  -webkit-transform: translatey(-100px);
-  -ms-transform: translatey(-100px);
-  transform: translatey(-100px);
-  -webkit-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
-  padding: 10px;
-  text-decoration: none;
-  margin-top: 10px;
 }
 
 .overlay-link {
