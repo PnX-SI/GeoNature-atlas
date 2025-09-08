@@ -206,15 +206,37 @@ a {
 
 #searchTaxons,
 #searchAreas {
-  min-width: 180px;
-  width: 20vw;
+  min-width: 125px;
+  width: 16vw;
   max-width: 400px;
 }
+
+@media (max-width: 1065px) {
+    .ui-autocomplete {
+        font-size: .8rem;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1065px) {
+    #searchTaxons::placeholder,
+    #searchAreas::placeholder {
+        white-space:pre-line;
+        position: relative;
+        top: -8px;
+        font-size: .7rem;
+        color: #666;
+    }
+    #searchTaxons,
+    #searchAreas {
+        font-size: .8rem;
+    }
+}
+
 
 @media (max-width: 767px) {
   .navbar-collapse {
     padding: 10px;
-    background-color: #666;
+    background-color: rgba(51, 51, 51, .75);
   }
 
   .navbar-collapse .fa-search {
@@ -223,6 +245,11 @@ a {
 
   .navbar-toggler {
     margin-right: 15px;
+  }
+
+  #searchTaxons,
+  #searchAreas {
+    width: 35vw;
   }
 
   main h1 {
@@ -599,7 +626,7 @@ footer {
   height: 250px;
   width: 100%;
   background-position: center center;
-  background-size: cover; 
+  background-size: cover;
 
   -webkit-transition: 0.3s ease-in-out;
   transition: 0.3s ease-in-out;
@@ -795,12 +822,12 @@ footer {
 /* Position de la bannière de cookies */
 
 #orejime {
-  position: relative; 
+  position: relative;
   z-index: 1999;
 }
 
 /* Vignettes du bloc "Nouvelles espèces observées" à la même hauteur */
 
-#newSpecies .card { 
-  height: 100%; 
+#newSpecies .card {
+  height: 100%;
 }
