@@ -40,22 +40,17 @@ $.ajax({
     // affichage des mailles
     displayMailleLayerFicheEspece(observations, taxonYearMin, YEARMAX);
 
-    //display nb observations
-    $("#nbObsLateral").html(
-        "<b>" + observations.length + " </b> </br> Observations"
-    );
-
     // pointer on first and last obs
     $(".pointer").css("cursor", "pointer");
+
     //display nb observations
     nbObs = 0;
-    myGeoJson.features.forEach(function(l) {
+    observations.features.forEach(function(l) {
         nbObs += l.properties.nb_observations;
     });
     $("#nbObs").html("Nombre d'observation(s): " + nbObs);
 
     // Slider event
-
     mySlider.on("slideStop", function() {
         years = mySlider.getValue();
         yearMin = years[0];

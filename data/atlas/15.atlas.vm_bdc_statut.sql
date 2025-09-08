@@ -21,3 +21,6 @@ WHERE t.ENABLE = true;
 
 CREATE INDEX ON atlas.vm_bdc_statut
     USING btree (cd_ref);
+
+CREATE UNIQUE INDEX ON atlas.vm_bdc_statut
+    USING btree (id);

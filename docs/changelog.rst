@@ -17,7 +17,7 @@ CHANGELOG
 - Ajout de "liens importants" sur les fiches taxons. Cette fonctionnalité permet par exemple de mettre en avant des démarches ou des ressources additionelles sur un taxon: un lien vers une plateforme de contribution collaborative, un lien vers une fiche détaillé sur l'espèce etc... Voir le paramètre ``TYPES_MEDIAS_LIENS_IMPORTANTS``
 - Ajout des statuts sur la fiche espèces. Le paramètre de configuration ``GROUPES_STATUTS`` permet de grouper et de filtrer les statuts que l'on souhaite afficher. Le template ``custom/templates/statuts.html`` permet de customiser l'affichage des statuts (customisation avancé, à modifier avec précaution)
 
-A VERIFIER : 
+A VERIFIER :
 
 ``navbar.html``
 Le `form` devient :
@@ -46,9 +46,27 @@ Les paramètres de l'url de la fiche territoire était ``url_for('main.ficheComm
 
 🐛 **Corrections**
 
-- 
+-
+
+⚠️ **Notes de version**
+
+Vous pouvez supprimer les paramètres suivants du fichier ``settings.ini`` :
+
+- ``taxhub_displayed_attr``
 
 
+1.7.1 (2025-09-02)
+------------------
+
+
+🚀 **Nouveautés**
+
+* Possibilité d'utiliser la date courante dans les templates via la variable `now` (@jpm-cbna)
+
+🐛 **Corrections**
+
+* Correction de l'image docker (@jpm-cbna)
+* Diverses corrections mineures d'installation
 
 1.7.0 (2025-08-08)
 ------------------
@@ -105,7 +123,7 @@ Les paramètres de l'url de la fiche territoire était ``url_for('main.ficheComm
 - Il est désormais possible d'installer ou mettre à jour GeoNature uniquement sur Debian 11 et 12.
 - En raison d'un conflit d'URL avec le mode multiligue les "pages statiques" (voir paramètre `STATIC_PAGES`) sont désormais préfixées de "/static_pages/"
 - Suppression de la possibilité d'installer GeoNature-atlas à partir de couches shapefile. Tous les zonages et les mailles sont basés sur le ``ref_geo`` fourni par GeoNature ou TaxHub. Il est maintenant obligatoire de disposer de TaxHub (dans GeoNature ou à part) pour déployer GeoNature-atlas. Alimenter GeoNature-atlas avec GeoNature reste optionnel.
-- Veuillez vous référer à la documentation concernant le RGPD et le consentement du recueil de cookies : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/cookies_rgpd.rst. Ces fonctionnalités sont utiles uniquement si vous avez mis en place le recueil de cookies nécessitant le consentement de l'utilisateur (statistiques de fréquentation avec Google Analytics par exemple). 
+- Veuillez vous référer à la documentation concernant le RGPD et le consentement du recueil de cookies : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/cookies_rgpd.rst. Ces fonctionnalités sont utiles uniquement si vous avez mis en place le recueil de cookies nécessitant le consentement de l'utilisateur (statistiques de fréquentation avec Google Analytics par exemple).
 - Le paramètre ``ID_GOOGLE_ANALYTICS`` et l'intégration native d'un script Google analytics sont dépréciés. Se référer à la documentation sur le RGPD ci-dessus si vous suivez la fréquentation de votre GeoNature-atlas avec Google Analytics et devez mettre en place le consentement RGPD. Attention, tous les utilisateurs qui ne valideront pas le consentement ne seront pas comptabilisés et les chiffres de fréquentation seront donc plus faibles que la réalité. Pour suivre la fréquentation d'un portail GeoNature-atlas, il est donc conseillé de plutôt utiliser des solutions compatibles RGPD sans collecte de cookies et donc sans nécessiter de demande consentement, comme Matomo.
 - Le paramètre ``REMOTE_MEDIAS_PATH`` est deprecié, seul ``REMOTE_MEDIAS_URL`` permet de construire l'URL des médias "locaux" (dont le champs ``chemin`` est rempli).
 - Pour ajouter un lien vers la politique de gestion des données personnelles dans le pied de page (footer), répercuter les `évolutions <https://github.com/PnX-SI/GeoNature-atlas/pull/574/files#diff-05964f85b0bb6f2d285f98fe1e3a56d9343b8a740ddd8c7e6ac85cfd611f62bb>`_ du template de footer dans votre fichier ``custom/templates/footer.html``, copier le fichier `custom/templates/personal-data.html.sample <https://github.com/PnX-SI/GeoNature-atlas/blob/develop/atlas/static/custom/templates/personal-data.html.sample>`_ en ``custom/templates/personal-data.html`` (``cp custom/templates/personal-data.html.sample custom/templates/personal-data.html``), puis adapter le contenu du fichier ``custom/templates/personal-data.html`` à votre contexte

@@ -11,7 +11,7 @@ class Base(DeclarativeBase):
 
 babel = Babel()
 
-cache = Cache(config={"CACHE_TYPE": "SimpleCache"})
+cache = Cache()
 
 db = SQLAlchemy(model_class=Base)
 

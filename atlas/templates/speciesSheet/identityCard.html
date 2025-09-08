@@ -105,7 +105,7 @@
                 </div>
 
                 {% if configuration.AFFICHAGE_STATUTS and groupesStatuts|length != 0 %}
-                    {% include url_for('static', filename='custom/templates/statuts.html') %}
+                    {% include 'static/custom/templates/statuts.html' %}
                 {% endif %}
 
                 {% if taxon.listTaxonsChild|length > 0 %}

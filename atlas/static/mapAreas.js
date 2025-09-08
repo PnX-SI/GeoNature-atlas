@@ -105,10 +105,10 @@ function displayObsTaxon(id_area, cd_ref) {
 }
 
 function displayObs(id_area) {
-    let url = `/api/area/${id_area}`;
+    let url = `${configuration.URL_APPLICATION}/api/area/${id_area}`;
     // si on est en mode point on rajoute une limite au nombre d'obs
     // si on est en maille on renvoie toutes les données aggregées par maille
-    if(!configuration.AFFICHAGE_MAILLE) {
+    if (!configuration.AFFICHAGE_MAILLE) {
         url +=`?limit=${configuration["NB_LAST_OBS"]}`
     }
     $("#loaderSpinner").show();
@@ -151,9 +151,7 @@ function displayObsTaxonMaille(areaCode, cd_ref) {
     });
 }
 
-function refreshObsArea() {
-    console.log("YEP");
-    
+function refreshObsArea(elem) {
     $("#taxonList ul").on("click", "#taxonListItem", function () {
         document.querySelector("#taxonList .current")?.classList.remove("current")
         elem.currentTarget.classList.add("current")
