@@ -46,8 +46,7 @@ CREATE MATERIALIZED VIEW atlas.vm_bib_areas_types AS
         t.type_code,
         t.type_name,
         t.type_desc
-    FROM ref_geo.bib_areas_types AS t
-    WHERE type_code IN (SELECT * FROM string_to_table(:'type_code', ','));
+    FROM ref_geo.bib_areas_types AS t;
 
 CREATE INDEX ON atlas.vm_bib_areas_types
     USING btree (id_type);
