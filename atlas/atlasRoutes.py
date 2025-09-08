@@ -13,12 +13,9 @@ from flask import (
     make_response,
     request,
     url_for,
-    session,
 )
-from flask_babel import gettext
 
 from atlas.env import db
-from atlas import utils
 from atlas.modeles.entities import vmTaxons, vmAreas
 from atlas.modeles.repositories import (
     vmOrganismsRepository,
@@ -116,7 +113,7 @@ if current_app.config["ORGANISM_MODULE"]:
 def index():
 
     if current_app.config["AFFICHAGE_TERRITOIRE_OBS"]:
-        listTaxons = vmTaxonsRepository.getTaxonsTerritory(connection)
+        listTaxons = vmTaxonsRepository.getTaxonsTerritory()
     else:
         listTaxons = []
 
@@ -307,7 +304,6 @@ def ficheArea(id_area):
     listTaxons = vmTaxonsRepository.getTaxonsAreas(id_area)
     area = vmAreasRepository.getAreaFromIdArea(id_area)
     stats_area = vmAreasRepository.getStatsByArea(id_area)
-
     return render_template(
         "templates/areaSheet/_main.html",
         listTaxons=listTaxons,

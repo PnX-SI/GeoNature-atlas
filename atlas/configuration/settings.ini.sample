@@ -80,6 +80,7 @@ type_territoire="PEC"
 # Type de zonage à utiliser dans l'application pour générer les fiches territoires.
 # (Pour optimiser et ne pas utiliser toutes les géométries présentes dans ref_geo).
 # 🗒 Voir la colonne "type_code" de la table "ref_geo.bib_areas_type".
+# ATTENTION : ne pas mettre d'espace entre les valeurs
 type_code="COM,EPCI"
 
 # Type de zonage à utiliser pour les observations non sensibles.

@@ -144,8 +144,7 @@ def territoryObservationsMailles():
         .join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
         .group_by(VmObservationsMailles.type_code, VmObservationsMailles.id_maille, VmAreas.area_geojson)
     )
-    return json.dumps(
-        FeatureCollection(
+    return FeatureCollection(
             [
                 Feature(
                     id=o.id_maille,
@@ -160,9 +159,7 @@ def territoryObservationsMailles():
                 )
                 for o in features.all()
             ]
-        ),
-        ensure_ascii = False # Empêche la sortie de caractères spéciaux au niveau de taxons
-    ) 
+        )
 
 
 # last observation for index.html

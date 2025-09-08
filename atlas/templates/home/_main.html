@@ -13,7 +13,7 @@
             url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
     </script>
     <script src="{{ url_for('static', filename='main.js') }}"></script>
-    {% if configuration.AFFICHAGE_DERNIERES_OBS %}
+    {% if configuration.AFFICHAGE_DERNIERES_OBS or configuration.AFFICHAGE_TERRITOIRE_OBS %}
         <script src="{{ url_for('static', filename='custom/maps-custom.js') }}"></script>
         <script src="{{ url_for('static', filename='mapGenerator.js') }}"></script>
         <script src="{{ url_for('static', filename='mapHome.js') }}"></script>
