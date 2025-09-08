@@ -55,15 +55,17 @@ main {
 
 .title-bar {
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 1rem;
+  position: relative;
 }
+
 .title-bar::before,
 .title-bar::after {
   content: "";
   border-top: 1px solid rgba(2, 2, 2, 0.158);
-  transform: translateY(1px);
-  flex-grow: 1;
+  width: 3rem;
+  margin: 0 1rem;
 }
 
 .border {
@@ -134,13 +136,14 @@ a {
   transition: all 0.5s ease;
 }
 
-.btn.btn-default {
+/* # btn.btn-default n'existe plus en bs5 */
+.btn.btn-secondary {
   color: white;
   border-color: var(--main-color);
   background-color: var(--main-color) !important;
 }
 
-.btn.btn-default:hover {
+.btn.btn-secondary:hover {
   background-color: white !important;
   color: black;
   border-color: var(--main-color);
@@ -184,15 +187,14 @@ a {
 }
 
 @media(min-width: 768px) {
-#navbarSupportedContent {
-    position: static;
-}
+    #navbarSupportedContent {
+        position: static;
+    }
 }
 
 .logoStructure {
   height: 60px;
   max-height: 60px;
-  margin: -15px;
   padding-right: 15px;
 }
 
@@ -203,15 +205,24 @@ a {
 }
 
 #searchTaxons,
-#searchCommunes {
-  min-width: 175px;
+#searchAreas {
+  min-width: 180px;
   width: 20vw;
   max-width: 400px;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 767px) {
   .navbar-collapse {
-    background-color: #333;
+    padding: 10px;
+    background-color: #666;
+  }
+
+  .navbar-collapse .fa-search {
+    color: white;
+  }
+
+  .navbar-toggler {
+    margin-right: 15px;
   }
 
   main h1 {
@@ -588,6 +599,7 @@ footer {
   height: 250px;
   width: 100%;
   background-position: center center;
+  background-size: cover; 
 
   -webkit-transition: 0.3s ease-in-out;
   transition: 0.3s ease-in-out;

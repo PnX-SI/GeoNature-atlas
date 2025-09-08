@@ -1,50 +1,72 @@
 {% block blocInfos %}
     {% if configuration.GLOSSAIRE %}
         <!-- Jquery Glossarizer -->
-        <script src="{{url_for('static', filename='node_modules/glossarizer/tooltip/tooltip.js') }}"></script>
-        <script src="{{url_for('static', filename='node_modules/glossarizer/jquery.glossarize.js') }}"></script>
-        <link rel="stylesheet" href="{{url_for('static', filename='node_modules/glossarizer/tooltip/tooltip.css') }}" />
+        <script src="{{ url_for('static', filename='node_modules/glossarizer/tooltip/tooltip.js') }}"></script>
+        <script src="{{ url_for('static', filename='node_modules/glossarizer/jquery.glossarize.js') }}"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/glossarizer/tooltip/tooltip.css') }}" />
     {% endif %}
 
     <div class="card mt-4" id="blocInfos">
-        <h4 class="title-bar center">
+        <h4 class="title-bar text-center">
             <strong>{{ _('species.infos') }}</strong>
         </h4>
-        <ul class="nav nav-tabs">
+
+        <!-- Onglets -->
+        <ul class="nav nav-tabs" role="tablist">
             {% for desc in taxonAttrs %}
-                <li class="nav-item">
-                    <a
+                <li class="nav-item" role="presentation">
+                    <button
                         class="nav-link {% if loop.index == 1 %}active{% endif %}"
-                        data-toggle="tab"
-                        href="#{{desc.code}}"
+                        id="tab-{{desc.code}}"
+                        data-bs-toggle="tab"
+                        data-bs-target="#{{desc.code}}"
+                        type="button"
+                        role="tab"
+                        aria-controls="{{desc.code}}"
+                        aria-selected="{% if loop.index == 1 %}true{% else %}false{% endif %}"
                     >
                         {{ _(desc.title) }}
-                    </a>
+                    </button>
                 </li>
             {% endfor %}
-            <li class="nav-item">
-                <a class="nav-link {% if taxonAttrs|length == 0 %}active{% endif %}" data-toggle="tab" href="#synonymes">
+            <li class="nav-item" role="presentation">
+                <button
+                    class="nav-link {% if taxonAttrs|length == 0 %}active{% endif %}"
+                    id="tab-synonymes"
+                    data-bs-toggle="tab"
+                    data-bs-target="#synonymes"
+                    type="button"
+                    role="tab"
+                    aria-controls="synonymes"
+                    aria-selected="{% if taxonAttrs|length == 0 %}true{% else %}false{% endif %}"
+                >
                     {{ _('synonyms') }}
-                </a>
+                </button>
             </li>
         </ul>
 
+        <!-- Contenu des onglets -->
         <div class="tab-content">
             {% for desc in taxonAttrs %}
                 <div
                     id="{{desc.code}}"
                     class="tab-pane fade {% if loop.index == 1 %}show active{% endif %}"
+                    role="tabpanel"
+                    aria-labelledby="tab-{{desc.code}}"
                 >
-                {% if desc.value == None %}
-                    {{ _('not.resigned.for.the.moment') }}
-                {% else %}
-                    {{ desc.value | safe }}
-                {% endif %}
-            </div>
+                    {% if desc.value == None %}
+                        {{ _('not.resigned.for.the.moment') }}
+                    {% else %}
+                        {{ desc.value | safe }}
+                    {% endif %}
+                </div>
             {% endfor %}
+
             <div
                 id="synonymes"
                 class="tab-pane fade {% if taxonAttrs|length == 0 %}show active{% endif %}"
+                role="tabpanel"
+                aria-labelledby="tab-synonymes"
             >
                 {% if synonyme | length == 1 %}
                     {{ _('no.synonym.for.this.taxon') }}
