@@ -808,11 +808,12 @@ function generateGeoJsonMailleLastObs(observations, isRefresh=false) {
 }
 
 function displayMailleLayer(observationsMaille) {
+    
     // Get all different type code
-    Object.values(observationsMaille.features).forEach(elem => {
-            if (!current_type_code.includes(elem.properties.type_code)) {
-                current_type_code.push(elem.properties.type_code)
-            }
+    observationsMaille.features.forEach(elem => {
+        if (!current_type_code.includes(elem.properties.type_code)) {
+            current_type_code.push(elem.properties.type_code)
+        }
     })
     createMailleSelector()
     currentLayer = L.geoJson(observationsMaille, {

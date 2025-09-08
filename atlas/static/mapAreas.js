@@ -117,8 +117,8 @@ function displayObs(id_area) {
             return data.json()
         })
         .then(observations => {
+                
             if (configuration.AFFICHAGE_MAILLE) {
-                displayMailleLayer(observations.observations_features);
             } else {
                 displayMarkerLayerPointLastObs(observations)
             }
@@ -151,30 +151,26 @@ function displayObsTaxonMaille(areaCode, cd_ref) {
     });
 }
 
-function refreshObsArea(elem) {
-    $("#taxonList ul").on("click", "#taxonListItem", function () {
+function refreshObsArea(elem) {        
         document.querySelector("#taxonList .current")?.classList.remove("current")
         elem.currentTarget.classList.add("current")
         if (configuration.AFFICHAGE_MAILLE) {
-            displayObsTaxonMaille(this.getAttribute("area-code"), this.getAttribute("cdref"));
+            displayObsTaxonMaille(elem.currentTarget.getAttribute("area-code"), elem.currentTarget.getAttribute("cdref"));
         } else {
-            displayObsTaxon(this.getAttribute("area-code"), this.getAttribute("cdref"));
+            displayObsTaxon(elem.currentTarget.getAttribute("area-code"), elem.currentTarget.getAttribute("cdref"));
         }
-        var name = $(this)
+        var name = $(elem.currentTarget)
             .find("#name")
             .html();
-        $("#titleMap").fadeOut(500, function () {
-            $(this)
-                .html("Observations du taxon&nbsp;:&nbsp;" + name)
-                .fadeIn(500);
-        });
-    });
+        $("#titleMap").html("Observations du taxon&nbsp;:&nbsp;" + name)
+
 }
 
 $(document).ready(function () {
     $("#loaderSpinner").hide();
     if (configuration.INTERACTIVE_MAP_LIST) {
         $("#taxonList ul").on("click", "#taxonListItem", elem => {
+            
             refreshObsArea(elem);
         });
     }
