@@ -96,8 +96,8 @@ def getObservationsByArea(connection, id_area, limit):
     ORDER BY o.dateobs DESC """
     if limit:
         sql += "LIMIT :obsLimit"
-    
-    observations = connection.execute(text(sql), {"obsLimit":limit, "id_area":id_area})
+
+    observations = connection.execute(text(sql), {"obsLimit": limit, "id_area": id_area})
     obsList = list()
     for o in observations:
         temp = {
