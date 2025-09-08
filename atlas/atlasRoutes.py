@@ -129,7 +129,10 @@ def index():
 
     # si AFFICHAGE_TERRITOIRE_OBS on charge les données en AJAX
     # si AFFICHAGE_DERNIERES_OBS = False, on ne charge pas les obs
-    if current_app.config["AFFICHAGE_TERRITOIRE_OBS"] or not current_app.config["AFFICHAGE_DERNIERES_OBS"]:
+    if (
+        current_app.config["AFFICHAGE_TERRITOIRE_OBS"]
+        or not current_app.config["AFFICHAGE_DERNIERES_OBS"]
+    ):
         observations = []
     elif current_app.config["AFFICHAGE_DERNIERES_OBS"]:
         if current_app.config["AFFICHAGE_MAILLE"]:

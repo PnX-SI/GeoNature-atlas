@@ -93,15 +93,9 @@ function displayObsTaxon(id_area, cd_ref) {
         clearOverlays()
     } else {
         map.removeLayer(currentLayer);
-        if (configuration.AFFICHAGE_MAILLE) {
-            displayMailleLayerLastObs(observations);
-            clearOverlays()
-        } else {
-            map.removeLayer(currentLayer);
-            displayMarkerLayerPointArea(observations);
-        }
+        displayMarkerLayerPointArea(observations);
     }
-    })
+  });
 }
 
 function displayObs(id_area) {
@@ -152,22 +146,18 @@ function displayObsTaxonMaille(areaCode, cd_ref) {
 }
 
 function refreshObsArea(elem) {
-    $("#taxonList ul").on("click", "#taxonListItem", function () {
         document.querySelector("#taxonList .current")?.classList.remove("current")
         elem.currentTarget.classList.add("current")
-        if (configuration.AFFICHAGE_MAILLE) {
-            displayObsTaxonMaille(this.getAttribute("area-code"), this.getAttribute("cdref"));
-        } else {
-            displayObsTaxon(this.getAttribute("area-code"), this.getAttribute("cdref"));
-        }
-        var name = $(this)
-            .find("#name")
-            .html();
-        $("#titleMap").fadeOut(500, function () {
-            $(this)
-                .html("Observations du taxon&nbsp;:&nbsp;" + name)
-                .fadeIn(500);
-        });
+    if (configuration.AFFICHAGE_MAILLE) {
+        displayObsTaxonMaille(elem.currentTarget.getAttribute("area-code"), elem.currentTarget.getAttribute("cdref"));
+    } else {
+        displayObsTaxon(elem.currentTarget.getAttribute("area-code"), elem.currentTarget.getAttribute("cdref"));
+    }
+    const name = elem.currentTarget.querySelector("#name").innerHTML;
+    $("#titleMap").fadeOut(500, function () {
+        $(this)
+            .html("Observations du taxon&nbsp;:&nbsp;" + name)
+            .fadeIn(500);
     });
 }
 

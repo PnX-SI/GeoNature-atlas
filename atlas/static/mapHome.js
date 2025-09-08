@@ -46,6 +46,7 @@ function refreshTerritoryArea(elem) {
 
 
 $(document).ready(function () {
+    $("#loaderSpinner").hide();
     if (configuration.INTERACTIVE_MAP_LIST) {
         $("#taxonList").on("click", "#taxonListItem", function (elem) {
             refreshTerritoryArea(elem);
@@ -66,19 +67,20 @@ htmlLegend = configuration.AFFICHAGE_MAILLE ? htmlLegendMaille : htmlLegendPoint
 generateLegende(htmlLegend);
 
 // Add territory obs on map
- if (configuration.AFFICHAGE_TERRITOIRE_OBS){
+    if (configuration.AFFICHAGE_TERRITOIRE_OBS){
         $("#loaderSpinner").show();
 
         // display maille layer
         fetch(`/api/observationsMailleTerritory`)
             .then(response => response.json())
-            .then(data => {
-                observations = data
+            .then(observations => {
                 displayMailleLayer(observations);
-                $("#loaderSpinner").hide();
-
             })
+            .catch(error => {
+                console.log('Error fetching observations: ', error);
+            });
 
+        $("#loaderSpinner").hide();
 
         // interaction list - map
         $('.lastObslistItem').click(function(elem){

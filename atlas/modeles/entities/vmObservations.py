@@ -18,6 +18,7 @@ class VmObservations(Base):
     geojson_point = Column("geojson_point", Text)
     cd_sensitivity = Column("cd_sensitivity", String(5))
     id_dataset = Column("id_dataset", Integer)
+
     def as_dict(self):
         return {
             "dateobs": str(self.dateobs),

@@ -81,23 +81,30 @@ def getObservationsMaillesChilds(session, cd_ref, year_min=None, year_max=None):
         session.query(
             VmObservationsMailles.id_maille,
             VmAreas.area_geojson,
+            func.max(extract("year", VmObservations.dateobs)).label("last_obs_year"),
+            func.count(VmObservations.id_observation).label("obs_nbr"),
             VmObservationsMailles.type_code,
-            func.max(VmObservationsMailles.annee).label("last_obs_year"),
-            func.sum(VmObservationsMailles.nbr).label("obs_nbr"),
+        )
+        .join(
+            VmObservations,
+            VmObservations.id_observation == any_(VmObservationsMailles.id_observations),
         )
         .join(
             VmAreas,
             VmAreas.id_area == VmObservationsMailles.id_maille,
         )
-        .filter(VmObservationsMailles.cd_ref == any_(taxons_ids))
+        .filter(VmObservations.cd_ref == any_(taxons_ids))
         .group_by(
             VmObservationsMailles.id_maille,
             VmAreas.area_geojson,
+            VmObservationsMailles.nbr,
             VmObservationsMailles.type_code,
         )
     )
     if year_min and year_max:
-        query = query.filter(VmObservationsMailles.annee.between(str(year_min), str(year_max)))
+        query = query.filter(
+            VmObservations.dateobs.between(str(year_min) + "-01-01", str(year_max) + "-12-31")
+        )
 
     return FeatureCollection(
         [
@@ -122,7 +129,7 @@ def territoryObservationsMailles(connection):
         json_build_object(
                 'type', 'FeatureCollection',
                 'features', json_agg(ST_AsGeoJSON(features.*)::json)
-        ) AS observations_features
+        )
         FROM (
     SELECT
         COUNT(o.id_observation) AS nb_observations,
