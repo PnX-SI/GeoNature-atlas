@@ -43,7 +43,7 @@ class VmCorTaxonAttribut(db.Model):
     __table_args__ = {"schema": "atlas"}
 
     cd_ref: Mapped[int] = mapped_column(ForeignKey("atlas.vm_taxons.cd_ref"), primary_key=True)
-    code: Mapped[str] = mapped_column(String(255))
+    code: Mapped[str] = mapped_column(String(255), primary_key=True)
     title: Mapped[str] = mapped_column(String(50))
     value: Mapped[str] = mapped_column(Text)
     taxon: Mapped["VmTaxons"] = relationship("VmTaxons", back_populates="attributs")
