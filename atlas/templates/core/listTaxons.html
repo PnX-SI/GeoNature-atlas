@@ -17,7 +17,8 @@
     <div id="taxonList" class="d-flex align-content-stretch bg-white flex-grow-1">
         <ul class="list-group w-100">
             {% for taxon in listTaxons.taxons %}
-                <li id="taxonListItem" class="d-flex border-bottom p-2" area-code="{{ id_area }}"
+                <li id="taxonListItem" class="d-flex border-bottom p-2 {% if configuration.AFFICHAGE_MENACE and taxon.cd_ref in statutByCdRef %} border border-danger bg-danger-subtle {% endif %}"  
+                    area-code="{{ id_area }}"
                     cdRef="{{ taxon.cd_ref }}" 
                     {% if configuration.INTERACTIVE_MAP_LIST %} 
                         data-bs-toggle="tooltip" title="{{ _('display.municipality.obs') }}"
@@ -60,6 +61,17 @@
                                          data-bs-placement="left" data-bs-toggle="tooltip"
                                          title="{{ configuration.PATRIMONIALITE.config[taxon.patrimonial].text }}"
                                          alt=" " />
+                                {% endif %}
+                            {% endif %}
+                            
+                            {% if configuration.AFFICHAGE_MENACE %}
+                                {% set statut = statutByCdRef.get(taxon.cd_ref) %}    
+                                {% if statut in ['CR','EN','VU'] %}
+                                    <img src="{{ url_for('static', filename='images/Status_iucn_' ~ statut ~ '.png') }}"
+                                        alt="{{ _('threatened') }}"
+                                        style="width:30px; height:30px; margin-left:10px;"
+                                        data-bs-toggle="tooltip"
+                                        title="{{ _('threatened.' ~ statut) }}" />
                                 {% endif %}
                             {% endif %}
                         </span>

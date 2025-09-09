@@ -61,6 +61,18 @@ MAP = {
 
 ###########################
 ###########################
+###### Liste Rouge  #######
+###########################
+###########################
+
+# Un taxon est considéré comme menacé si son code de statut (code_statut) est : 
+# CR (En danger critique), EN (En danger) ou VU (Vunérable) dans ce périmètre.
+PERIMETRE_LISTE_ROUGE = 'ETATFRA'
+# Afficher les statistiques des espèces menacées.
+AFFICHAGE_MENACE = False
+
+###########################
+###########################
 #### Security  Config #####
 ###########################
 ###########################

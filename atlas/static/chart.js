@@ -1,6 +1,9 @@
 // ChartJS Graphs
 const chartMainColor = getComputedStyle(document.documentElement).getPropertyValue('--main-color');
 const chartHoverMainColor = getComputedStyle(document.documentElement).getPropertyValue('--second-color');
+const colors = configuration.COLOR_PIE_CHARTS;
+const chartMainColorThreatened = colors[5];
+const chartMainColorNoThreatened = colors.at(-1);
 
 const getChartDatas = function (data, key) {
     let values = [];
@@ -9,6 +12,13 @@ const getChartDatas = function (data, key) {
     }
     return values
 };
+
+hexToRgba = function (hex, alpha = 1) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
 
 //Generic vertical bar graph
 genericChart = function (element, labels, values) {
@@ -220,6 +230,104 @@ function formatBarChart(values, element, dataName) {
     return data
 }
 
+function threatenedBarChartConfig(element, total, threatened) {
+    const others = total - threatened;
+
+    const data = {
+        labels: ["Espèces"],
+        datasets: [
+            {
+                label: "Espèces menacées",
+                data: [threatened],
+                backgroundColor: hexToRgba(chartMainColorThreatened, 0.2),
+                borderColor: hexToRgba(chartMainColorThreatened),
+                borderWidth: 3,
+                stack: "0"
+            },
+            {
+                label: "Autres espèces",
+                data: [others],
+                backgroundColor: hexToRgba(chartMainColorNoThreatened, 0.2),
+                borderColor: hexToRgba(chartMainColorNoThreatened),
+                borderWidth: 1,
+                stack: "0"
+            }
+        ]
+    };
+
+    return new Chart(element, {
+        type: 'bar',
+        data: data,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'top' },
+                title: {
+                    display: true,
+                    text: "Répartition des espèces (menacées / autres)"
+                }
+            },
+            scales: {
+                x: { stacked: true },
+                y: { stacked: true, beginAtZero: true }
+            }
+        }
+    });
+}
+
+function threatenedByTaxoGroupChartConfig(element, values) {
+    const labels = [];
+    const threatened = [];
+    const notThreatened = [];
+
+    Object.keys(values).forEach(key => {
+        labels.push(key);
+        threatened.push(values[key].nb_threatened);
+        notThreatened.push(values[key].nb_species - values[key].nb_threatened);
+    });
+
+    const data = {
+        labels: labels,
+        datasets: [
+            {
+                label: "Espèces menacées",
+                data: threatened,
+                backgroundColor: hexToRgba(chartMainColorThreatened, 0.2),
+                borderColor: hexToRgba(chartMainColorThreatened),
+                borderWidth: 3
+            },
+            {
+                label: "Autres espèces",
+                data: notThreatened,
+                backgroundColor: hexToRgba(chartMainColorNoThreatened, 0.2),
+                borderColor: hexToRgba(chartMainColorNoThreatened),
+                borderWidth: 1
+            }
+        ]
+    };
+
+    return new Chart(element, {
+        type: 'bar',
+        data: data,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'top' },
+                title: {
+                    display: true,
+                    text: "Nombre d'espèces observées par groupe taxonomique"
+                }
+            },
+            scales: {
+                x: { stacked: true },
+                y: { stacked: true, beginAtZero: true }
+            }
+        }
+    });
+}
+
 var monthChartElement = document.getElementById('monthChart');
 if (monthChartElement) {
     const monthChart = genericChart(monthChartElement, months_name, getChartDatas(months_value, 'value'));
@@ -245,6 +353,8 @@ if (typeof areaInfos !== 'undefined') {
             observations_by_taxonomic_group = data.observations_by_taxonomic_group
             nb_species_by_organism = data.nb_species_by_organism
             observations_by_organism = data.observations_by_organism
+            nb_species = data.nb_species
+            nb_threatened_species = data.nb_threatened_species
 
             // Onglet observations et espèces
             const biodiversityChartElement = document.getElementById('biodiversityChart');
@@ -255,6 +365,21 @@ if (typeof areaInfos !== 'undefined') {
             const observationsChartElement = document.getElementById('observationsChart');
             if (observationsChartElement) {
                 const organismChart = pieChartConfig(observationsChartElement, formatPieData(observations_by_taxonomic_group, observationsChartElement));
+            }
+
+            // Onglet Espèces menacées
+            const threatenedSpeciesChartElement = document.getElementById('threatenedSpeciesChart');
+            if (threatenedSpeciesChartElement) {
+                threatenedBarChartConfig(
+                    threatenedSpeciesChartElement,
+                    nb_species,
+                    nb_threatened_species
+                );
+            }
+            
+            const threatenedByTaxoGroupElement = document.getElementById('threatenedSpeciesByTaxoGroupChart');
+            if (threatenedByTaxoGroupElement) {
+                threatenedByTaxoGroupChartConfig(threatenedByTaxoGroupElement, species_by_taxonomic_group);
             }
 
             // Onglet provenance des données

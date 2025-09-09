@@ -6,8 +6,11 @@ SELECT ROW_NUMBER() OVER () AS id,
        v.label_statut,
        t.cd_type_statut,
        ty.lb_type_statut,
+	  ty.regroupement_type,
        t.cd_sig,
-       t.lb_adm_tr
+       t.lb_adm_tr,
+	  t.full_citation,
+	  t.doc_url
 FROM taxonomie.bdc_statut_taxons AS s
          JOIN taxonomie.bdc_statut_cor_text_values AS c
               ON s.id_value_text = c.id_value_text

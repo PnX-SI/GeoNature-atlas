@@ -107,7 +107,7 @@ def getObservationsGenericApi(cd_ref: int):
             year_max=request.args.get("year_max"),
         )
     else:
-        observations = vmObservationsRepository.searchObservationsChilds(session, cd_ref)
+        observations = vmObservationsRepository.searchObservationsChilds(cd_ref)
 
     return jsonify(observations)
 
@@ -180,6 +180,10 @@ def rank_stat():
 
 @api.route("/area_chart_values/<id_area>", methods=["GET"])
 def get_area_chart_valuesAPI(id_area):
+    stats = vmAreasRepository.getStatsByArea(id_area)
+    nb_species = stats["nb_species"]
+    nb_threatened_species = stats["nb_taxon_threatened"]
+
     species_by_taxonomic_group = vmAreasRepository.get_species_by_taxonomic_group(
         id_area
     )
@@ -199,5 +203,7 @@ def get_area_chart_valuesAPI(id_area):
             "observations_by_taxonomic_group": observations_by_taxonomic_group,
             "nb_species_by_organism": nb_species_by_organism,
             "observations_by_organism": observations_by_organism,
+            "nb_species": nb_species,
+            "nb_threatened_species": nb_threatened_species,
         }
     )

@@ -31,14 +31,27 @@
     }
 }
 @media (min-width: 900px) {
-    #observations_and_species.active {
+    #observations_and_species.active,
+    #threatened_species.active  {
         display: flex;
+        flex-wrap: wrap;
     }
 
     .infos_biodiversity, .infos_observations {
         flex-grow: 1;
         flex-shrink: 1;
         max-width: 50%;
+    }
+
+    #threatened_species .card {
+        flex-basis: 100%;
+        width: 100%;
+    }
+
+    #threatened_species .card-header {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.9rem;
+        line-height: 1.2;
     }
 }
 

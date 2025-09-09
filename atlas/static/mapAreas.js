@@ -9,7 +9,7 @@ var currentLayer;
 // Current observation geoJson:  type object
 var myGeoJson;
 
-const id_area = document.location.pathname.split("/")[2]
+const id_area = areaInfos.areaCode
 displayObs(id_area)
 
 

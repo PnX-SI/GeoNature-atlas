@@ -1,15 +1,14 @@
 # -*- coding:utf-8 -*-
 
 from flask import current_app
-from sqlalchemy.sql import text, select, distinct, func, text
+from sqlalchemy.sql import select, distinct, func
 from atlas.modeles.entities.vmObservations import VmObservations
-from atlas.modeles.entities.vmAreas import VmCorAreaSynthese
 from atlas.modeles.entities.vmMedias import VmMedias
-from atlas.modeles.entities.vmTaxons import VmTaxons
+from atlas.modeles.entities.vmTaxons import VmTaxons, VmTaxonsAreas
 from atlas.modeles.entities.tBibTaxrefRang import TBibTaxrefRang
 
+from atlas.configuration import config
 from atlas.modeles import utils
-from atlas.app import create_app
 from atlas.env import db
 
 
@@ -71,18 +70,15 @@ def getTaxonsTerritory():
 # With distinct the result in a array not an object, 0: lb_nom, 1: nom_vern
 def getTaxonsAreas(id_area):
     id_photo = current_app.config["ATTR_MAIN_PHOTO"]
-    obs_in_area = (
-        select(distinct(VmObservations.id_observation).label("id_observation"))
-        .join(VmCorAreaSynthese, VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
-        .filter(VmCorAreaSynthese.id_area == id_area)
-    ).subquery()
     req = (
         select(
-            VmObservations.cd_ref,
-            func.max(func.date_part("year", VmObservations.dateobs)).label("last_obs"),
-            func.count(distinct(VmObservations.id_observation)).label("nb_obs"),
+            VmTaxonsAreas.cd_ref,
+            func.max(func.date_part("year", VmTaxonsAreas.dateobs)).label("last_obs"),
+            func.count(distinct(VmTaxonsAreas.id_observation)).label("nb_obs"),
+            func.count(distinct(VmTaxonsAreas.observateurs)).label("nb_observers"),
             VmTaxons.nom_complet_html,
             VmTaxons.nom_vern,
+            VmTaxons.lb_nom,
             VmTaxons.group2_inpn,
             VmTaxons.patrimonial,
             VmTaxons.protection_stricte,
@@ -91,15 +87,15 @@ def getTaxonsAreas(id_area):
             VmMedias.id_media,
         )
         .distinct()
-        .select_from(obs_in_area)
-        .join(VmObservations, VmObservations.id_observation == obs_in_area.c.id_observation)
-        .join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
+        .join(VmTaxons, VmTaxonsAreas.cd_ref == VmTaxons.cd_ref)
         .outerjoin(
-            VmMedias, (VmMedias.cd_ref == VmObservations.cd_ref) & (VmMedias.id_type == id_photo)
+            VmMedias, (VmMedias.cd_ref == VmTaxonsAreas.cd_ref) & (VmMedias.id_type == id_photo)
         )
+        .filter(VmTaxonsAreas.id_area == id_area)
         .group_by(
-            VmObservations.cd_ref,
+            VmTaxonsAreas.cd_ref,
             VmTaxons.nom_vern,
+            VmTaxons.lb_nom,
             VmTaxons.nom_complet_html,
             VmTaxons.group2_inpn,
             VmTaxons.patrimonial,
@@ -108,7 +104,9 @@ def getTaxonsAreas(id_area):
             VmMedias.chemin,
             VmMedias.id_media,
         )
-        .order_by(func.count(distinct(VmObservations.id_observation)).desc())
+        .order_by(
+            func.count(distinct(VmTaxonsAreas.id_observation)).desc()
+        )
     )
     results = db.session.execute(req).all()
     taxonAreasList = list()
@@ -117,7 +115,9 @@ def getTaxonsAreas(id_area):
         temp = {
             "nom_complet_html": r.nom_complet_html,
             "nb_obs": r.nb_obs,
+            "nb_observers": r.nb_observers,
             "nom_vern": r.nom_vern,
+            "lb_nom": r.lb_nom,
             "cd_ref": r.cd_ref,
             "last_obs": r.last_obs,
             "group2_inpn": utils.deleteAccent(r.group2_inpn),
@@ -129,6 +129,42 @@ def getTaxonsAreas(id_area):
         taxonAreasList.append(temp)
         nbObsTotal = nbObsTotal + r.nb_obs
     return {"taxons": taxonAreasList, "nbObsTotal": nbObsTotal}
+
+
+def getThreatenedTaxonsAreas(id_area, perimetre_liste_rouge):
+    req = (
+        select(
+            VmTaxonsAreas.cd_ref,
+            VmTaxonsAreas.threatened,
+            VmTaxonsAreas.code_statut,
+        )
+        .filter(
+            VmTaxonsAreas.cd_sig == perimetre_liste_rouge,
+            VmTaxonsAreas.threatened == True,
+            VmTaxonsAreas.id_area == id_area,
+        )
+        .group_by(
+            VmTaxonsAreas.cd_ref,
+            VmTaxonsAreas.threatened,
+            VmTaxonsAreas.code_statut
+        )
+    )
+    results = db.session.execute(req).all()
+    taxonThreatenedAreasList = list()
+    statutByCdRef = dict()
+    for r in results:
+        temp = {
+            "cd_ref": r.cd_ref,
+            "threatened": r.threatened,
+            "code_statut": r.code_statut, 
+        }
+        taxonThreatenedAreasList.append(temp)
+        statutByCdRef[r.cd_ref] = r.code_statut
+    return {
+        "threatened_taxons": taxonThreatenedAreasList, 
+        "nb_threatened_species": len(taxonThreatenedAreasList) ,
+        "statut_by_cd_ref": statutByCdRef,
+    }
 
 
 def getTaxonsChildsList(cd_ref):
