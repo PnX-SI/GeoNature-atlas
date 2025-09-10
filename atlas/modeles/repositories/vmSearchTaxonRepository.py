@@ -21,19 +21,18 @@ def searchTaxons(search, limit=50):
         value = cd_ref
     """
 
-    idx_trgm = func.similarity(VmSearchTaxon.search_name, search).label("idx_trgm")
-    is_ref_nom = (VmSearchTaxon.cd_ref == VmSearchTaxon.cd_nom).label("is_ref_nom")
-    search = search.replace(" ", "%")
+    like_search = "%" + search.replace(" ", "%") + "%"
+    # WARNING: for order_by() use label name as string in desc() function.
     query = (
         select(
             VmSearchTaxon.display_name,
             VmSearchTaxon.cd_ref,
             func.similarity(VmSearchTaxon.search_name, search).label("idx_trgm"),
-            (VmSearchTaxon.cd_ref == VmSearchTaxon.cd_nom).label("is_ref_nom")
+            (VmSearchTaxon.cd_ref == VmSearchTaxon.cd_nom).label("is_ref_nom"),
         )
         .distinct()
-        .filter(VmSearchTaxon.search_name.ilike("%" + search + "%"))
-        .order_by(desc(idx_trgm), desc(is_ref_nom))
+        .filter(func.unaccent(VmSearchTaxon.search_name).ilike(func.unaccent(like_search)))
+        .order_by(desc("idx_trgm"), desc("is_ref_nom"))
         .limit(limit)
     )
     data = db.session.execute(query).all()
