@@ -97,23 +97,27 @@ function checkOs() {
     OS_VERSION="${VERSION_ID}"
     OS_BITS="$(getconf LONG_BIT)"
 
-    if [ !"$OS_BITS" == "64" ]; then
-        exitScript "GeoNature must be installed on a 64-bits operating system ; your is $OS_BITS-bits" 1
+    if [ !"${OS_BITS}" == "64" ]; then
+        exitScript "GeoNature must be installed on a 64-bits operating system ; your is ${OS_BITS}-bits" 1
     else
-        printVerbose "Operating system is $OS_BITS-bits: ${Gre}OK"
+        printVerbose ">Operating system is ${OS_BITS}-bits: ${Gre}OK"
     fi
 
     supported_version=("12" "11")
     os_version_supported=false
     # Check if OS_VERSION is in supported_version
     for version in "${supported_version[@]}"; do
-        if [[ "$OS_VERSION" == "$version" ]]; then
+        if [[ "${OS_VERSION}" == "${version}" ]]; then
             os_version_supported=true
             break
         fi
     done
-    if [[ "$os_version_supported" == "false" ]]; then
-        exitScript "ERROR: OS version '${OS_VERSION}' is not supported. Supported versions are: ${supported_version[*]}" 1
+    if [[ "${OS_NAME}" != "debian" ]] || [[ "${os_version_supported}" == "false" ]]; then
+        printError ">WARNING: your OS ${OS_NAME^} v${OS_VERSION} is not supported."
+        printError ">Supported Debian OS in versions: ${supported_version[*]}"
+        printError ">The script continues but we do not guarantee its operation..."
+    else
+        printVerbose ">Your Operating system is ${OS_NAME^} v${OS_VERSION}: ${Gre}OK"
     fi
 }
 
