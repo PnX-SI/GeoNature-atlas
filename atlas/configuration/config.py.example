@@ -290,12 +290,12 @@ GROUPES_STATUTS = [
     {
         "label": "Région",
         "filters": [
-            {"cd_type_statut": "LRR", "cd_sig": <votre code région>}  # par exemple "INSEER52"
+            {"cd_type_statut": "LRR", "cd_sig": "<votre code région>"}  # par exemple "INSEER52"
         ]
     },
     {
         "filters": [
-            {"cd_type_statut": "ZDET", "cd_sig": <votre code département>}  # par exemple "INSEED44"
+            {"cd_type_statut": "ZDET", "cd_sig": "<votre code département>"}  # par exemple "INSEED44"
         ]
     }
 ]
