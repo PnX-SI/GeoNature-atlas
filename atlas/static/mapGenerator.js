@@ -80,7 +80,7 @@ function generateObservationPopup(feature, linkSpecies = false) {
 function createMailleSelector(selectedAllLayer = false) {
     if(!mailleSelectorrGenerated) {
         const defaultActiveLayer = []
-    
+
         current_type_code.forEach(elem => {
             if (configuration.AFFICHAGE_COUCHES_MAP[elem]) {
                 if (configuration.AFFICHAGE_COUCHES_MAP[elem].selected || selectedAllLayer) {
@@ -92,10 +92,10 @@ function createMailleSelector(selectedAllLayer = false) {
                 overlays[elem] = L.featureGroup()
             }
         });
-    
+
         // Add layers
         control = L.control.layers(null, overlays).addTo(map);
-    
+
         // Activate layers
         Object.entries(overlays).forEach((e, key) => {
             if (defaultActiveLayer.includes(e[0])) {
@@ -500,7 +500,7 @@ function displayMarkerLayerFicheEspece(
         yearMax,
         sliderTouch
     );
-    
+
 
     if (typeof customizeMarkerStyle == "undefined") {
         customizeMarkerStyle = function (feature) {
@@ -808,7 +808,7 @@ function generateGeoJsonMailleLastObs(observations, isRefresh=false) {
 }
 
 function displayMailleLayer(observationsMaille) {
-    
+
     // Get all different type code
     observationsMaille.features.forEach(elem => {
         if (!current_type_code.includes(elem.properties.type_code)) {

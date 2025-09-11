@@ -131,8 +131,19 @@ def getObservationsByArea(id_area, limit):
 
 def getObservationTaxonArea(id_area, cd_ref):
     req = (
-        select(VmObservations.geojson_point, VmObservations.dateobs)
+        select(
+            VmObservations.geojson_point,
+            VmObservations.dateobs,
+            VmObservations.observateurs,
+            VmObservations.altitude_retenue,
+            VmObservations.cd_ref,
+            func.concat(
+                func.coalesce(func.concat(func.split_part(VmTaxons.nom_vern, ",", 1), " | "), ""),
+                VmTaxons.lb_nom,
+            ).label("taxon"),
+        )
         .join(VmCorAreaSynthese, VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
+        .join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
         .filter(VmCorAreaSynthese.id_area == id_area, VmObservations.cd_ref == cd_ref)
     )
     results = db.session.execute(req).mappings().all()
@@ -171,7 +182,7 @@ def observersParser(req):
 
 def getObservers(cd_ref):
     childs_ids = db.session.execute(select(func.atlas.find_all_taxons_childs(cd_ref))).scalars().all()
-    taxons = [cd_ref] + childs_ids  
+    taxons = [cd_ref] + childs_ids
 
     req = select(distinct(VmObservations.observateurs).label("observateurs")).filter(
         VmObservations.cd_ref == func.any(array(taxons))

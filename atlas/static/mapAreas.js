@@ -87,19 +87,14 @@ function displayObsTaxon(id_area, cd_ref) {
     }
   }).done(function(observations) {
     $("#loadingGif").hide();
-    map.removeLayer(currentLayer);
+    if (currentLayer) {
+      map.removeLayer(currentLayer);
+    }
     if (configuration.AFFICHAGE_MAILLE) {
         displayMailleLayerLastObs(observations);
         clearOverlays()
     } else {
-        map.removeLayer(currentLayer);
-        if (configuration.AFFICHAGE_MAILLE) {
-            displayMailleLayerLastObs(observations);
-            clearOverlays()
-        } else {
-            map.removeLayer(currentLayer);
-            displayMarkerLayerPointArea(observations);
-        }
+        displayMarkerLayerPointArea(observations);
     }
     })
 }
@@ -117,7 +112,7 @@ function displayObs(id_area) {
             return data.json()
         })
         .then(observations => {
-                
+
             if (configuration.AFFICHAGE_MAILLE) {
             } else {
                 displayMarkerLayerPointLastObs(observations)
@@ -143,15 +138,16 @@ function displayObsTaxonMaille(areaCode, cd_ref) {
         }
     }).done(function (observations) {
         $("#loaderSpinner").hide();
-        // $("#loadingGif").hide();
-        map.removeLayer(currentLayer);
-        clearOverlays()
+        if (currentLayer) {
+            map.removeLayer(currentLayer);
+        }
+        clearOverlays();
         const geojsonMaille = generateGeoJsonMailleLastObs(observations);
         displayMailleLayerFicheEspece(geojsonMaille);
     });
 }
 
-function refreshObsArea(elem) {        
+function refreshObsArea(elem) {
         document.querySelector("#taxonList .current")?.classList.remove("current")
         elem.currentTarget.classList.add("current")
         if (configuration.AFFICHAGE_MAILLE) {
@@ -170,7 +166,6 @@ $(document).ready(function () {
     $("#loaderSpinner").hide();
     if (configuration.INTERACTIVE_MAP_LIST) {
         $("#taxonList ul").on("click", "#taxonListItem", elem => {
-            
             refreshObsArea(elem);
         });
     }
