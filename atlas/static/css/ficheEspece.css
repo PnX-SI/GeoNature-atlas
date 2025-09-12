@@ -64,9 +64,14 @@ p.imgDescription.main {
     padding: 5px;
     text-decoration: none;
 }
-
+.imgWrapper {
+    position: relative;
+}
 .imgWrapper:hover p.imgDescription {
     visibility: visible;
+}
+.imgWrapper:hover #zoomPhotos {
+    display: none;
 }
 
 #zoomPhotos {
@@ -75,8 +80,6 @@ p.imgDescription.main {
     left: 95%;
     color: white;
 }
-
-/*  */
 
 #groupLogoCol {
     padding-left: 0px;
@@ -404,7 +407,7 @@ text {
 
 div#statut-bdc span.NT {
 	background-color: #fbf2ca ;
-} 
+}
 
 div#statut-bdc span.LC {
 	background-color: #78b74a ;
