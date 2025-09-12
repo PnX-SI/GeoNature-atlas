@@ -150,8 +150,6 @@ def index():
     else:
         lastDiscoveries = []
 
-    listTaxons = vmTaxonsRepository.getTaxonsTerritory()
-
     personal_data = False
     args_personal_data = request.args.get("personal_data")
     if args_personal_data and args_personal_data.lower() == "true":
