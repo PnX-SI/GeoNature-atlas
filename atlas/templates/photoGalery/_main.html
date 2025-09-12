@@ -13,64 +13,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/lightbox2/dist/css/lightbox.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/galleryPhoto.css') }}"/>
     {# Ajoutez ici les assets complémentaires qui seront dans le bloc <head></head> #}
-    <style>
-    #page {
-        padding-left: 0;
-        padding-right: 0;
-    }
-
-    footer {
-        margin-top: 0;
-    }
-
-    #insertPhotos {
-        flex: 1 1 0;
-        overflow: auto;
-    }
-
-    .bg-light.text-center.border-bottom.border-end.p-2 {
-        padding: 0.5rem !important; /* réduit le padding */
-    }
-
-    h1.title {
-        font-size: 1.5rem;
-        margin-bottom: 0.5rem;
-    }
-
-    #filtresPhotos ul {
-        margin-bottom: 0.5rem;
-    }
-
-    #nbPhotos {
-        font-size: 1.25rem;
-        margin: 0.5rem 0;
-    }
-
-    .INPNgroup {
-        max-height: 32px; 
-    }
-
-    #allGroups,
-    #orderPhotos,
-    #searchPhotos {
-        font-size: 0.875rem;
-        padding: 0.25rem 0.5rem;
-    }
-
-    #orderPhotos {
-        width: 40px;
-        text-align: center;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    #orderPhotos i {
-        width: 16px;
-        text-align: center;
-        display: inline-block;
-    }
-</style>
 {% endblock %}
 
 
@@ -134,9 +76,7 @@
                 <h3 id="nbPhotos"></h3>
             </div>
 
-            <div id="insertPhotos" class="d-flex flex-wrap bg-white flex-grow-1">
-
-            </div>
+            <div id="insertPhotos" class="d-flex flex-wrap bg-white flex-grow-1"></div>
         </div>
     </div>
 {% endblock %}

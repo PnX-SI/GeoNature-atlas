@@ -400,10 +400,7 @@ td.singleTaxon.detail {
 }
 
 .thumbnail-col {
-  /* padding-left: 5px;
-  padding-right: 5px;
-  padding-bottom: 5px; */
-  padding: 0px;
+  padding: 0;
 }
 
 .higlight {

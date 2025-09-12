@@ -439,13 +439,6 @@ input {
   background-size: cover;
 }
 
-#photos {
-}
-
-.photo-espece {
-  padding: 0px;
-}
-
 /* Effect on hover*/
 
 .hovereffect {
@@ -571,7 +564,7 @@ footer {
 .INPNgroup {
   cursor: pointer;
   height: 50px;
-    width: auto;
+  width: auto;
 }
 
 .INPNgroup img {
@@ -579,7 +572,27 @@ footer {
 }
 
 .zoom-wrapper {
+  position: relative;
   overflow: hidden;
+  height: 250px;
+  margin: 3px;
+  border-radius: 5px;
+}
+
+.zoom-wrapper:hover .img-custom-medias {
+  transform: scale(1.1);
+}
+
+.zoom-wrapper:hover .stat-medias-hovereffet {
+  display: block;
+}
+
+.img-custom-medias {
+  height: 100%;
+  width: 100%;
+  background-position: center center;
+  /*background-size: cover;*/
+  transition: 0.3s ease-in-out;
 }
 
 .stat-medias-hovereffet {
@@ -591,10 +604,6 @@ footer {
   width: 100%;
 }
 
-.zoom-wrapper:hover .stat-medias-hovereffet {
-  display: block;
-}
-
 .stat-medias-hovereffet img {
   position: relative;
   top: 10px;
@@ -602,36 +611,9 @@ footer {
 }
 
 .thumbnail-stat-medias .stat-medias-hovereffet img {
-  left: 0%;
+  left: 0;
 }
 
-/*.overlay-obs {*/
-/*    color: #fff;*/
-/*    text-align: center;*/
-/*    position: relative;*/
-/*    top: 120px;*/
-/*    font-size: 13px;*/
-/*    background: rgba(0, 0, 0, 0.6);*/
-/*    -webkit-transform: translatey(-100px);*/
-/*    -ms-transform: translatey(-100px);*/
-/*    transform: translatey(-100px);*/
-/*    -webkit-transition: all 0.2s ease-in-out;*/
-/*    transition: all 0.2s ease-in-out;*/
-/*    padding: 10px;*/
-/*    text-decoration: none;*/
-/*    margin-top: 10px;*/
-/*}*/
-
-.img-custom-medias {
-  height: 250px;
-  width: 100%;
-  background-position: center center;
-  background-size: cover;
-
-  -webkit-transition: 0.3s ease-in-out;
-  transition: 0.3s ease-in-out;
-  -ms-transition: 0.3s ease-in-out;
-}
 
 .italic {
   font-style: italic;
@@ -654,12 +636,6 @@ footer {
 }
 .background-center {
   background-position: center;
-}
-
-.zoom-wrapper:hover .img-custom-medias {
-  -ms-transform: scale(1.1);
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
 }
 
 #allGroups {
@@ -724,7 +700,7 @@ footer {
   color: #fff;
   text-align: center;
   position: relative;
-  top: 150px;
+  top: 120px;
   font-size: 13px;
   background: rgba(0, 0, 0, 0.6);
   -webkit-transform: translatey(-100px);
@@ -736,6 +712,7 @@ footer {
   text-decoration: none;
   margin-top: 10px;
 }
+
 
 /* END Galerie photos */
 
