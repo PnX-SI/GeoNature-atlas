@@ -73,3 +73,9 @@ h1.title {
     text-align: center;
     display: inline-block;
 }
+
+.zoom-wrapper {
+  margin: 0px!important;
+  border-radius: 0px!important;
+}
+

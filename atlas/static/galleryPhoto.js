@@ -46,7 +46,7 @@ function generateHtmlPhoto(photos, redimentionnement, taxhub_url) {
             let licence = `${stripHtml(photo.licence)} ${stripHtml(photo.source)}`;
             let datatitle = `${subject} ${description} ${author} ${licence}`;
             onePhoto = `
-                <div class="col-lg-3 col-md-4 col-sm-6 col-12 thumbnail-col">
+                <div class="col-lg-3 col-md-4 col-sm-6 col-12 thumbnail-col" style="padding-left:0px; padding-right: 0px">
                     <div class="zoom-wrapper">
                         <a
                             href="${photo.path}"
