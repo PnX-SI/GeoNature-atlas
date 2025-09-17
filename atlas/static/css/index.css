@@ -2,17 +2,11 @@
   border-color: transparent !important;
 }
 
-.my-shadow {
-  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-    0 1px 5px 0 rgba(0, 0, 0, 0.12);
-}
 
 h4.title-spaced {
   margin-top: 0px;
 }
-.center {
-  text-align: center;
-}
+
 #overlay {
   /* position: absolute; */
   padding: 10px;
@@ -60,6 +54,11 @@ h4 {
   padding-top: 5px;
   padding-left: 5px;
   padding-bottom: 5px;
+}
+
+.no-padding {
+  padding-right: 0px;;
+  padding-left: 0px;;
 }
 
 .large {
@@ -121,7 +120,6 @@ h3.title-spaced {
 
 .stat-object {
   min-height: 200px;
-  padding: 0px;
 }
 
 .stat-object .form-control {
@@ -205,55 +203,12 @@ h3.title-spaced {
     0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 
-.thumbnail-caption-medias {
-  padding-top: 5px;
-  padding-right: 5px;
-  padding-left: 5px;
+.card-body{
+  padding: 5px 5px 5px 5px;
 }
 
-.col-stat-medias {
-  padding-right: 5px;
-  padding-left: 5px;
-}
 
-.zoom-wrapper a:link {
-  text-decoration: none;
-}
 
-.zoom-wrapper {
-  overflow: hidden;
-}
-
-.img-custom-medias {
-  /* Override atlas.css class */
-  height: 150px;
-}
-
-@media (max-width: 992px) {
-  .img-custom-medias {
-    height: 400px;
-  }
-}
-
-.stat-medias-hovereffet {
-  display: none;
-  position: absolute;
-  overflow: hidden;
-  top: 0;
-  left: 0;
-  padding: 6px;
-  width: 100%;
-}
-
-.zoom-wrapper:hover .stat-medias-hovereffet {
-  display: block;
-}
-
-.zoom-wrapper:hover .img-custom-medias {
-  -ms-transform: scale(1.1);
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
-}
 
 .stat-object a {
   -webkit-transition: all 0.5s ease;
@@ -399,10 +354,6 @@ td.singleTaxon.detail {
   margin-top: 10px;
 }
 
-.thumbnail-col {
-  padding: 0;
-}
-
 .higlight {
   font-size: 20px;
 }
@@ -412,4 +363,8 @@ td.singleTaxon.detail {
   font-size: 16px;
   top: -5px;
   left: 3px;
+}
+
+.rank-stat-medias-cover {
+  height: 200px;
 }

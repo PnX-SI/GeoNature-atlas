@@ -74,8 +74,21 @@ h1.title {
     display: inline-block;
 }
 
-.zoom-wrapper {
+/* .img-wrapper {
+  position: relative;
+  border-radius: 5px;
   margin: 0px!important;
   border-radius: 0px!important;
+} */
+
+.gallery-photo-cover {
+    height: 250px;
+
 }
 
+/* override of zoom-effect-wrapper in atlas.css */
+.zoom-effect-wrapper {
+    display: block;
+    height: 250px;
+    position: relative;
+}

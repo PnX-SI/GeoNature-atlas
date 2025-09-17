@@ -46,28 +46,26 @@ function generateHtmlPhoto(photos, redimentionnement, taxhub_url) {
             let licence = `${stripHtml(photo.licence)} ${stripHtml(photo.source)}`;
             let datatitle = `${subject} ${description} ${author} ${licence}`;
             onePhoto = `
-                <div class="col-lg-3 col-md-4 col-sm-6 col-12 thumbnail-col" style="padding-left:0px; padding-right: 0px">
-                    <div class="zoom-wrapper">
+                <div class="col-lg-3 col-md-4 col-sm-6 col-12" style="padding-left:0px; padding-right: 0px">
                         <a
+                            class="zoom-effect-wrapper"
                             href="${photo.path}"
                             data-lightbox="imageSet"
                             data-title="${datatitle}"
                             data-alt="${photo.cd_ref}"
                         >
                             <div
-                                class="img-custom-medias"
+                                class="zoom-effect cover gallery-photo-cover"
                                 style="background-image:url('${photo_url}')"
                                 alt="${photo.name}"
                             ></div>
-                            <div class="stat-medias-hovereffet">
-                                <h2 class="overlay-obs">
-                                    ${photo.name}</br><br/>
+                            <div class="zoom-effect-overlay text-white fw-bold">
+                                <div class="center">
+                                    ${photo.name} </br>
                                     ${photo.nb_obs} observations
-                                </h2>
-                                <img src="${configuration.URL_APPLICATION}/static/images/eye.png" />
+                                </div>
                             </div>
                         </a>
-                    </div>
                 </div>`;
 
             htmlPhoto += onePhoto;
