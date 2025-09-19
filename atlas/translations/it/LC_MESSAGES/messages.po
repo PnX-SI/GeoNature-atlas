@@ -555,6 +555,26 @@ msgstr "Scheda organismo"
 msgid "species.obs.for.tax"
 msgstr "Scheda delle species per taxon"
 
+#: atlas/templates/areaSheet/_main.html:36
+msgid "all.taxa"
+msgstr "Tutti i taxa"
+
+#: atlas/templates/areaSheet/_main.html:37
+msgid "clear"
+msgstr "Cancella"
+
+#: atlas/templates/areaSheet/_main.html:38
+msgid "apply"
+msgstr "Applica"
+
+#: atlas/templates/areaSheet/_main.html:39
+msgid "threatened.plural"
+msgstr "Minacciati"
+
+#: atlas/templates/areaSheet/_main.html:40
+msgid "all"
+msgstr "Tutti"
+
 #~ msgid "photo"
 #~ msgstr "Foto"
 

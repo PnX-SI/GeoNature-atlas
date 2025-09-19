@@ -29,9 +29,17 @@
         var configuration = {{configuration|tojson}};
         var areaInfos = {{ areaInfos | tojson }};
         var url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
+        const taxonsData = {{ listTaxons.taxons | tojson | safe }};
+        const threatenedTaxons = []; 
         const translations = {
-            "nb_observations": `{{ _('obs.number.s') }}`
+            "nb_observations": `{{ _('obs.number.s') }}`,
+            "all_taxa": `{{ _('all.taxa') }}`, 
+            "clear": `{{ _('clear') }}`,
+            "apply": `{{ _('apply') }}`,
+            "threatened": `{{ _('threatened.plural') }}`,
+            "all": `{{ _('all') }}`
         };
+        const affichage_menace_enabled = {{ 'true' if configuration.AFFICHAGE_MENACE else 'false' }};
     </script>
     <script src="{{ url_for('static', filename='custom/maps-custom.js') }}"></script>
     <script src="{{ url_for('static', filename='listeEspeces.js') }}"></script>

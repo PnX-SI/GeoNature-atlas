@@ -77,3 +77,21 @@ img.statut_icon {
     left: 50%;
     top: 50%; 
 }
+
+/* Garde le style actif quand le menu est ouvert */
+.btn-outline-secondary.dropdown-toggle[aria-expanded="true"] {
+  background-color: var(--main-color);
+  color: white;
+  border-color: var(--main-color);
+}
+
+.dropdown-menu .form-check-label {
+  width: 100%;         
+  cursor: pointer;
+}
+
+.dropdown-menu .form-check:hover {
+  background-color: #e0e0e0;
+  border-radius: 4px;
+}
+

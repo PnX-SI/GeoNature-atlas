@@ -149,6 +149,18 @@ a {
   border-color: var(--main-color);
 }
 
+.btn-outline-secondary {
+  color: black;
+  background-color: white;
+  border-color: var(--main-color);
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--main-color);
+  color: white;
+  border-color: var(--main-color);
+}
+
 .rowMargin {
   margin-left: 0px;
   margin-right: 0px;
