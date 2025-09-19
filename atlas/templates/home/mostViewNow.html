@@ -15,7 +15,7 @@
                         <div class="hovereffect">
                             {% if tax.path == None %}
                                 <img class="default-logo"
-                                     src="{{ url_for('static', filename='images/picto_' + tax.group2_inpn | replace(" ", "_") +'.png') }}"
+                                     src="{{ url_for('static', filename='images/picto_' + tax.group2_inpn | replace(' ', '_') + '.png') }}"
                                      alt="">
                             {% else %}
                                 {% if configuration.REDIMENSIONNEMENT_IMAGE %}

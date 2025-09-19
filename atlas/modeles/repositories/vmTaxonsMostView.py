@@ -1,13 +1,16 @@
 # -*- coding:utf-8 -*-
 
 from atlas.modeles import utils
-from sqlalchemy.sql import select
+from sqlalchemy.sql import select, func
 from atlas.modeles.entities.vmTaxons import VmTaxonsMostView
 from atlas.env import db
 
 
 def mostViewTaxon():
-    req = select(VmTaxonsMostView)
+    req = (select(VmTaxonsMostView)
+        .filter(VmTaxonsMostView.day_of_year == func.date_part('doy', func.now()))
+        .order_by(VmTaxonsMostView.nb_obs.desc())
+    )
     results = db.session.execute(req).mappings().all()
     tabTax = list()
     for r in results:
