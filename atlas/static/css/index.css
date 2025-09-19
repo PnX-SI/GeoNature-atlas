@@ -247,24 +247,12 @@ h3.title-spaced {
   }
 }
 
-.pictoImg {
-  width: 100%;
-  background-position: center center;
-  height: 60px;
-  min-width: 60px;
-}
-
-.picto-img-no-resize {
-  background-size: cover;
-}
 
 .pictoImgSmall {
   height: 60px;
 }
 
-.pictoImgMedium {
-  height: 250px;
-}
+
 
 #lastObsList {
   display: block;
