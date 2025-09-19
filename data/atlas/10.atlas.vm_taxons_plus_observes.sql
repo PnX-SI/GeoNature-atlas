@@ -1,32 +1,112 @@
 -- +-----------------------------------------------------------------------------------------------+
--- Taxons les plus observés sur la période en cours.
--- Par défaut -15 jours +15 jours toutes années confondues.
+-- Taxa most viewed on a selected period for each day of year.
+-- Used a leap year (2024) to take into account 29th February => 366 days.
+-- By default, -15 days +15 days for each day of year for all years in database.
 CREATE MATERIALIZED VIEW atlas.vm_taxons_plus_observes AS
+    WITH period_dates AS (
+        SELECT
+            generate_series(1, ceiling(366 * 1.0 / (2 * :taxon_time)), 1) AS id_period,
+            generate_series(
+                '2024-01-01 00:00'::timestamp,
+                '2024-12-31 23:59'::timestamp,
+                CONCAT(2 * :taxon_time, ' day')::interval
+            )::date AS period_date
+    ),
+    perpetual_calendar AS (
+        SELECT
+            id_period,
+            date_part('day', p.period_date) AS day_start,
+            date_part('month', p.period_date) AS month_start,
+            date_part('day', p.period_date + (2 * :taxon_time)) AS day_end,
+            date_part('month', p.period_date + (2 * :taxon_time)) AS month_end
+        FROM period_dates
+    )
     SELECT
-        count(*) AS nb_obs,
-        obs.cd_ref,
-        tax.lb_nom,
-        tax.group2_inpn,
-        tax.nom_vern,
+        pc.id_period,
+        pc.day_start,
+        pc.month_start,
+        pc.day_end,
+        pc.month_end,
+        c.cd_ref,
+        t.lb_nom,
+        t.group2_inpn,
+        t.nom_vern,
         m.id_media,
         m.url,
         m.chemin,
-        m.id_type
-    FROM atlas.vm_observations AS obs
-        JOIN atlas.vm_taxons AS tax
-            ON tax.cd_ref = obs.cd_ref
+        m.id_type,
+        c.nb_obs
+    FROM perpetual_calendar AS pc
+        JOIN LATERAL (
+            (
+                SELECT
+                    o.cd_ref,
+                    count(*) AS nb_obs
+                FROM atlas.vm_observations AS o
+                    JOIN atlas.vm_taxons AS t
+                        ON t.cd_ref = o.cd_ref
+                WHERE (
+                        (date_part('day', o.dateobs) >= pc.day_start
+                        AND date_part('month', o.dateobs) = pc.month_start)
+                        OR
+                        (date_part('day', o.dateobs) < pc.day_end
+                        AND date_part('month', o.dateobs) = pc.month_end)
+                    )
+                    AND t.regne = 'Animalia'
+                GROUP BY o.cd_ref
+                ORDER BY "nb_obs" DESC
+                LIMIT 12
+            )
+            UNION
+            (
+                SELECT
+                    o.cd_ref,
+                    count(*) AS nb_obs
+                FROM atlas.vm_observations AS o
+                    JOIN atlas.vm_taxons AS t
+                        ON t.cd_ref = o.cd_ref
+                WHERE (
+                        (date_part('day', o.dateobs) >= pc.day_start
+                        AND date_part('month', o.dateobs) = pc.month_start)
+                        OR
+                        (date_part('day', o.dateobs) < pc.day_end
+                        AND date_part('month', o.dateobs) = pc.month_end)
+                    )
+                    AND t.regne = 'Plantae'
+                GROUP BY o.cd_ref
+                ORDER BY "nb_obs" DESC
+                LIMIT 12
+            )
+            UNION
+            (
+                SELECT
+                    o.cd_ref,
+                    count(*) AS nb_obs
+                FROM atlas.vm_observations AS o
+                    JOIN atlas.vm_taxons AS t
+                        ON t.cd_ref = o.cd_ref
+                WHERE (
+                        (date_part('day', o.dateobs) >= pc.day_start
+                        AND date_part('month', o.dateobs) = pc.month_start)
+                        OR
+                        (date_part('day', o.dateobs) < pc.day_end
+                        AND date_part('month', o.dateobs) = pc.month_end)
+                    )
+                    AND t.regne NOT IN ('Animalia', 'Plantae')
+                GROUP BY o.cd_ref
+                ORDER BY "nb_obs" DESC
+                LIMIT 12
+            )
+        ) AS c ON TRUE
+        JOIN atlas.vm_taxons AS t
+            ON t.cd_ref = c.cd_ref
         LEFT JOIN atlas.vm_medias AS m
-            ON (m.cd_ref = obs.cd_ref AND m.id_type = 1)
-    WHERE date_part('day', obs.dateobs) >= date_part('day', 'now'::date - :taxon_time)
-        AND date_part('month', obs.dateobs) = date_part('month', 'now'::date - :taxon_time)
-        OR date_part('day', obs.dateobs) <= date_part('day', 'now'::date + :taxon_time)
-        AND date_part('month', obs.dateobs) = date_part('day', 'now'::date + :taxon_time)
-    GROUP BY obs.cd_ref, tax.lb_nom, tax.group2_inpn, tax.nom_vern, m.id_media, m.url, m.chemin, m.id_type
-    ORDER BY (count(*)) DESC
-    LIMIT 12;
+            ON (m.cd_ref = c.cd_ref AND m.id_type = 1)
+    ORDER BY id_period ASC, nb_obs DESC;
 
 CREATE UNIQUE INDEX ON atlas.vm_taxons_plus_observes
-    USING btree (cd_ref);
+    USING btree (id_period, cd_ref);
+
 
 -- +-----------------------------------------------------------------------------------------------+
 CREATE OR REPLACE FUNCTION atlas.find_all_taxons_childs(id integer)

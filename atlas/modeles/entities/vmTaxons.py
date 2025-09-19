@@ -53,12 +53,17 @@ class VmTaxonsMostView(db.Model):
     __tablename__ = "vm_taxons_plus_observes"
     __table_args__ = {"schema": "atlas"}
 
+    id_period: Mapped[int] = mapped_column(primary_key=True)
     cd_ref: Mapped[int] = mapped_column(primary_key=True)
+    day_start: Mapped[int] = mapped_column()
+    month_start: Mapped[int] = mapped_column()
+    day_end: Mapped[int] = mapped_column()
+    month_end: Mapped[int] = mapped_column()
     nb_obs: Mapped[int] = mapped_column()
     lb_nom: Mapped[str] = mapped_column(String(250))
-    group2_inpn: Mapped[str] = mapped_column(String(50))
     nom_vern: Mapped[str] = mapped_column(String(1000))
+    group2_inpn: Mapped[str] = mapped_column(String(50))
     id_media: Mapped[int] = mapped_column()
+    id_type: Mapped[int] = mapped_column()
     url: Mapped[str] = mapped_column(String(255))
     chemin: Mapped[str] = mapped_column(String(255))
-    id_type: Mapped[int] = mapped_column()
