@@ -119,5 +119,3 @@ gun_timeout=60
 # Paramètres Python
 # Nom du dossier de l'environnement virtuel Python
 venv_dir=venv
-# L'atlas est compatible avec Python 3, préferez donc l'utilisation de Python 3.X
-python_executable=/usr/bin/python3
