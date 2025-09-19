@@ -12,6 +12,11 @@
                     <a class="nav-link" data-bs-toggle="tab" href="#observations_and_species">{{ _('observations_and_species') }}</a>
                 </li>
             {% endif %}
+            {% if configuration.AFFICHAGE_MENACE %}
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#threatened_species">{{ _('threatened.species') }}</a>
+                </li>
+            {% endif %}
             {% if configuration.ORGANISM_MODULE %}
                 <li class="nav-item">
                     <a class="nav-link" data-bs-toggle="tab" href="#data_sources">{{ _('data_sources') }}</a>
@@ -45,6 +50,42 @@
                         </div>
                     </div>
                 </div>
+            {% endif %}
+            {% if configuration.AFFICHAGE_MENACE %}
+            <div id="threatened_species" class="tab-pane fade">
+                <!-- Bloc d'informations -->
+                <div class="card border-primary mb-0 shadow">
+                    <div class="card-header info">
+                        <i class="fas fa-info text-primary"></i>
+                        {{ _('threatened.chart.intro')}}
+                        <abbr
+                        class="fw-bold"
+                        style="text-decoration: underline dotted #0d6efd; cursor: help;"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="bottom"
+                        title="{{ _('threatened.species.tooltip') }}"
+                        >{{ _('threatened.species') | lower }}</abbr
+                        >
+                        {{ _('of.the.territory') }} ({{ _('species.red.list') | lower }} :
+                        <u>CR</u> = {{ _('status.CR') }}, 
+                        <u>EN</u> = {{ _('status.EN') }} {{ _('or') }} 
+                        <u>VU</u> = {{ _('status.VU') }}).
+                    </div>
+                </div>
+                <!-- Graphiques -->
+                <div class="infos_biodiversity">
+                    <div><strong>{{ _('number.threatened.species') }}</strong> {{ _('in.the.territory') }}</div>
+                    <div class="chart-container" style="position: relative;">
+                        <canvas id="threatenedSpeciesChart" style="padding: 0.5rem;"></canvas>
+                    </div>
+                </div>
+                <div class="infos_observations">
+                    <div><strong>{{ _('number.threatened.species') }}</strong> {{ _('by.taxonomic.group') }}</div>
+                    <div class="chart-container" style="position: relative;">
+                        <canvas id="threatenedSpeciesByTaxoGroupChart" style="padding: 0.5rem;"></canvas>
+                    </div>
+                </div>
+            </div>
             {% endif %}
             {% if configuration.ORGANISM_MODULE %}
                 <div id="data_sources" class="tab-pane fade">

@@ -555,6 +555,60 @@ msgstr "Organism sheet"
 msgid "species.obs.for.tax"
 msgstr "Specific observations for this taxon"
 
+#: atlas/templates/core/listTaxons.html:73
+msgid "threatened.specie"
+msgstr "Threatened species"
+
+#: atlas/templates/areaSheet/statArea.html:56
+msgid "threatened.species"
+msgstr "Threatened species"
+
+#: atlas/templates/core/listTaxons.html:70
+msgid "threatened"
+msgstr "Threatened"
+
+msgid "threatened.species.tooltip"
+msgstr "Species with unfavorable conservation status"
+
+msgid "threatened.chart.intro"
+msgstr "The following charts show the state of"
+
+msgid "species.red.list"
+msgstr "Species with a national and regional red list status"
+
+msgid "of.the.territory"
+msgstr "of the territory"
+
+msgid "status.CR"
+msgstr "Critically Endangered"
+
+msgid "status.EN"
+msgstr "Endangered"
+
+msgid "status.VU"
+msgstr "Vulnerable"
+
+msgid "or"
+msgstr "or"
+
+msgid "number.threatened.species"
+msgstr "Number of observed threatened species"
+
+msgid "in.the.territory"
+msgstr "in the territory"
+
+msgid "by.taxonomic.group"
+msgstr "by taxonomic group"
+
+msgid "threatened.CR"
+msgstr "Critically Endangered species"
+
+msgid "threatened.EN"
+msgstr "Endangered species"
+
+msgid "threatened.VU"
+msgstr "Vulnerable species"
+
 #~ msgid "photo"
 #~ msgstr "Photo"
 

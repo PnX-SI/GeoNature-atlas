@@ -1,10 +1,11 @@
 # -*- coding:utf-8 -*-
-from sqlalchemy import String, Float, Text, ForeignKey
+from sqlalchemy import String, Float, Text, ForeignKey, Boolean
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.orm import relationship
 from atlas.env import db
 
 from typing import List
+import datetime
 
 
 class VmTaxons(db.Model):
@@ -36,6 +37,9 @@ class VmTaxons(db.Model):
     attributs: Mapped[List["VmCorTaxonAttribut"]] = relationship(
         "VmCorTaxonAttribut", back_populates="taxon"
     )
+    areas: Mapped[List["VmTaxonsAreas"]] = relationship(
+        "VmTaxonsAreas", back_populates="taxon"
+    )
 
 
 class VmCorTaxonAttribut(db.Model):
@@ -62,3 +66,22 @@ class VmTaxonsMostView(db.Model):
     url: Mapped[str] = mapped_column(String(255))
     chemin: Mapped[str] = mapped_column(String(255))
     id_type: Mapped[int] = mapped_column()
+
+
+class VmTaxonsAreas(db.Model):
+    __tablename__ = "vm_taxons_areas"
+    __table_args__= {"schema" : "atlas"}
+    
+    id: Mapped[int] = mapped_column(primary_key=True)
+    id_area: Mapped[int] = mapped_column()
+    id_observation: Mapped[int] = mapped_column()
+    id_dataset: Mapped[int] = mapped_column()
+    cd_ref: Mapped[int] = mapped_column(ForeignKey("atlas.vm_taxons.cd_ref"))
+    dateobs: Mapped[datetime.date] = mapped_column()
+    observateurs: Mapped[str] = mapped_column(String(100))
+    type_code: Mapped[str] = mapped_column(String(25))
+    code_statut: Mapped[str] = mapped_column(String(50))
+    cd_type_statut: Mapped[str] = mapped_column(String(50))
+    cd_sig: Mapped[str] = mapped_column(String(50))
+    threatened: Mapped[bool] = mapped_column(Boolean)
+    taxon:  Mapped["VmTaxons"] = relationship("VmTaxons", back_populates="areas")

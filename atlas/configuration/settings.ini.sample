@@ -93,6 +93,13 @@ type_maille="M5"
 # si non spécifié les valeurs par défaut seront (0 500 1000 1500 2000 2500 3000 3500 4000)
 altitudes=(0 500 1000 1500 2000 2500 3000 3500 4000)
 
+# Définition du paramètre pour la prise en compte du périmètre des listes rouges.
+# Un taxon est considéré comme menacé si son code de statut (code_statut) est : 
+# CR (En danger critique), EN (En danger) ou VU (Vunérable) dans ce périmètre.
+# 🗒 Voir la colonne "cd_sig" de la table "taxonomie.bdc_statut_text".
+# Ex : INSEER04 -> Espèces Menacées à la Réunion; INSEER11 -> En Île-de-France etc..
+perimetre_liste_rouge="ETATFRA"
+
 
 #+-------------------------------------------------------------------------------------------------+
 # Paramètres des données taxonomiques

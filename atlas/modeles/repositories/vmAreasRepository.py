@@ -141,6 +141,7 @@ def get_species_by_taxonomic_group(id_area):
             VmAreaStatTaxonomyGroup.nb_species.label("nb_species"),
             VmAreaStatTaxonomyGroup.group2_inpn.label("group2_inpn"),
             VmAreaStatTaxonomyGroup.nb_patrominal.label("nb_patrominal"),
+            VmAreaStatTaxonomyGroup.nb_taxon_threatened.label("nb_threatened"),
             VmAreaStatTaxonomyGroup.nb_species_in_teritory.label("nb_species_in_teritory"),
         )
         .filter(VmAreaStatTaxonomyGroup.id_area == id_area)
@@ -151,6 +152,7 @@ def get_species_by_taxonomic_group(id_area):
         info_chart[r.group2_inpn] = {
             "nb_species": r.nb_species,
             "nb_patrimonial": r.nb_patrominal,
+            "nb_threatened": r.nb_threatened, 
             "nb_species_in_teritory": r.nb_species_in_teritory,
         }
     return info_chart

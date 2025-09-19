@@ -556,6 +556,60 @@ msgstr "Fiche organisme"
 msgid "species.obs.for.tax"
 msgstr "Observation pour le taxon"
 
+#: atlas/templates/core/listTaxons.html:73
+msgid "threatened.specie"
+msgstr "Espèce menacée"
+
+#: atlas/templates/areaSheet/statArea.html:56
+msgid "threatened.species"
+msgstr "Espèces menacées"
+
+#: atlas/templates/core/listTaxons.html:70
+msgid "threatened"
+msgstr "Menacée"
+
+msgid "threatened.species.tooltip"
+msgstr "Espèces à statuts de conservation défavorable"
+
+msgid "threatened.chart.intro"
+msgstr "Les graphiques suivants font l'état des"
+
+msgid "species.red.list"
+msgstr "Espèces disposant d'un statut liste rouge national et régional"
+
+msgid "of.the.territory"
+msgstr "du territoire"
+
+msgid "status.CR"
+msgstr "En danger critique"
+
+msgid "status.EN"
+msgstr "En danger"
+
+msgid "status.VU"
+msgstr "Vulnérable"
+
+msgid "or"
+msgstr "ou"
+
+msgid "number.threatened.species"
+msgstr "Nombre d'espèces observées menacées"
+
+msgid "in.the.territory"
+msgstr "sur le territoire"
+
+msgid "by.taxonomic.group"
+msgstr "par groupe taxonomique"
+
+msgid "threatened.CR"
+msgstr "Espèce en danger critique"
+
+msgid "threatened.EN"
+msgstr "Espèce en danger"
+
+msgid "threatened.VU"
+msgstr "Espèce vulnérable"
+
 #~ msgid "photo"
 #~ msgstr "Photo"
 
