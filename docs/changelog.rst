@@ -55,17 +55,24 @@ Vous pouvez supprimer les paramètres suivants du fichier ``settings.ini`` :
 - ``taxhub_displayed_attr``
 
 
-1.7.1 (2025-09-02)
+1.7.2 (2025-09-17)
 ------------------
-
-
-🚀 **Nouveautés**
-
-* Possibilité d'utiliser la date courante dans les templates via la variable `now` (@jpm-cbna)
 
 🐛 **Corrections**
 
-* Correction de l'image docker (@jpm-cbna)
+* Correction du script de migration `1.6.1to1.7.0.sql`
+* Correction du chemin vers les audio et vidéo hebergées depuis TaxHub (@gildeluermoz)
+
+1.7.1 (2025-09-02)
+------------------
+
+🚀 **Nouveautés**
+
+* Possibilité d'utiliser la date courante dans les templates via la variable `now` (#660 par @jpm-cbna)
+
+🐛 **Corrections**
+
+* Correction de l'image docker (#660 par @jpm-cbna)
 * Diverses corrections mineures d'installation
 
 1.7.0 (2025-08-08)

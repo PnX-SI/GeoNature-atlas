@@ -155,6 +155,7 @@ CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS
 		JOIN names AS n
 			ON t.cd_ref = n.cd_ref ;
 
+
 CREATE UNIQUE INDEX ON atlas.vm_search_taxon(fid);
 CREATE INDEX ON atlas.vm_search_taxon(cd_nom);
 CREATE INDEX ON atlas.vm_search_taxon(cd_ref);
@@ -162,16 +163,39 @@ CREATE INDEX trgm_idx ON atlas.vm_search_taxon USING GIST (search_name gist_trgm
 CREATE UNIQUE INDEX ON atlas.vm_search_taxon (cd_nom, search_name);
 
 
+DROP MATERIALIZED VIEW IF EXISTS atlas.vm_cor_taxon_attribut ;
+
+IMPORT FOREIGN SCHEMA taxonomie
+LIMIT TO (taxonomie.bib_attributs)
+FROM SERVER geonaturedbserver INTO taxonomie ;
+
+-- Attributs TaxHub de chaque taxon
+CREATE MATERIALIZED VIEW atlas.vm_cor_taxon_attribut AS
+    SELECT cta.cd_ref,
+        ba.nom_attribut AS code,
+        ba.label_attribut AS title,
+        CASE
+            WHEN ba.type_attribut = 'text' AND ba.type_widget = 'select'
+                THEN REPLACE(cta.valeur_attribut, '&', '|')
+            ELSE cta.valeur_attribut
+        END AS "value"
+    FROM taxonomie.cor_taxon_attribut AS cta
+        JOIN taxonomie.bib_attributs AS ba
+            ON cta.id_attribut = ba.id_attribut
+    WHERE cta.valeur_attribut IS NOT NULL
+        AND cta.valeur_attribut != '' ;
+
+CREATE UNIQUE INDEX ON atlas.vm_cor_taxon_attribut (cd_ref, code);
+
+
+
 GRANT SELECT ON TABLE atlas.vm_taxons_plus_observes TO geonatatlas;
 GRANT SELECT ON TABLE atlas.vm_observations_mailles TO geonatatlas;
 GRANT SELECT ON TABLE atlas.vm_mailles_territoire TO geonatatlas;
 GRANT SELECT ON TABLE atlas.vm_medias TO geonatatlas;
 GRANT SELECT ON TABLE atlas.vm_search_taxon TO geonatatlas;
+GRANT SELECT ON TABLE taxonomie.bib_attributs TO geonatatlas;
+GRANT SELECT ON TABLE atlas.vm_cor_taxon_attribut TO geonatatlas;
 
 
--- Faut faire des GRAND SELECT sur les 3 VM créées ?
--- Voir https://github.com/PnX-SI/GeoNature-atlas/pull/629/files#diff-e53167aeace735e10049b339b3f045aa65f7f994bfd6f0d6143861d4110ec186R39
--- Mais on ne connait pas le nom de l'utilisateur qui n'est pas forcément geonatatlas ?
--- Dans les précédentes UPDATE, on le mettait quand même en dur car quasiment tout le monde utilise ce nom... https://github.com/PnX-SI/GeoNature-atlas/blob/develop/data/update/update_1.5.2to1.6.0.sql#L85
--- Donc on peut faire ça je pense
 
