@@ -53,6 +53,7 @@ class VmTaxonsMostView(db.Model):
     __tablename__ = "vm_taxons_plus_observes"
     __table_args__ = {"schema": "atlas"}
 
+    day_of_year: Mapped[int] = mapped_column(primary_key=True)
     cd_ref: Mapped[int] = mapped_column(primary_key=True)
     nb_obs: Mapped[int] = mapped_column()
     lb_nom: Mapped[str] = mapped_column(String(250))
