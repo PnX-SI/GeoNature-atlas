@@ -194,7 +194,8 @@ GRANT SELECT ON TABLE atlas.vm_observations_mailles TO geonatatlas;
 GRANT SELECT ON TABLE atlas.vm_mailles_territoire TO geonatatlas;
 GRANT SELECT ON TABLE atlas.vm_medias TO geonatatlas;
 GRANT SELECT ON TABLE atlas.vm_search_taxon TO geonatatlas;
-GRANT SELECT ON TABLE taxonomie.bib_attributs TO geonatatlas
+GRANT SELECT ON TABLE taxonomie.bib_attributs TO geonatatlas;
+GRANT SELECT ON TABLE atlas.vm_cor_taxon_attribut TO geonatatlas;
 
 
 
