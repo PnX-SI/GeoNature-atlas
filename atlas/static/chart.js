@@ -27,7 +27,7 @@ genericChart = function (element, labels, values) {
         data: {
             labels: labels,
             datasets: [{
-                label: 'observations',
+                label: translations.observations,
                 data: values,
                 backgroundColor: chartMainColor,
                 hoverBackgroundColor: chartHoverMainColor,
@@ -93,7 +93,7 @@ function formatPieData(data) {
         labels: labels,
         datasets: [
             {
-                label: `${translations.nb_observations}`,
+                label: translations.nb_observations,
                 data: data_count,
                 backgroundColor: configuration.COLOR_PIE_CHARTS,
                 hoverOffset: 25
@@ -155,7 +155,7 @@ function formatStackedBarChart(values, element) {
 
     if(configuration.DISPLAY_PATRIMONIALITE) {
         datasets.push({
-            label: `Nombre d'espèces ${configuration.PATRIMONIALITE.label_pluriel.toLowerCase()}`,
+            label: `${translations.nb_species} ${configuration.PATRIMONIALITE.label_pluriel.toLowerCase()}`,
             data: nb_patrimonial,
             backgroundColor: [configuration.COLOR_STACKED_BAR_CHARTS[1]],
             stack: "2",
@@ -164,7 +164,7 @@ function formatStackedBarChart(values, element) {
 
     datasets.push(
             {
-                label: `Nombre d'espèces (${areaInfos.areaName})`,
+                label: `${translations.nb_species} (${areaInfos.areaName})`,
                 data: nb_species,
                 backgroundColor: [configuration.COLOR_STACKED_BAR_CHARTS[0]],
                 stack: "0",
@@ -173,7 +173,7 @@ function formatStackedBarChart(values, element) {
     )
     if(configuration.AFFICHAGE_TOUT_TERRITOIRE_GRAPH) {
         datasets.push({
-            label: "Nombre d'espèces sur tout le territoire",
+            label: translations.nb_species_territory,
             data: nb_species_in_teritory,
             backgroundColor: [configuration.COLOR_STACKED_BAR_CHARTS[2]],
             stack: "1",
@@ -234,10 +234,10 @@ function threatenedBarChartConfig(element, total, threatened) {
     const others = total - threatened;
 
     const data = {
-        labels: ["Espèces"],
+        labels: [translations.species],
         datasets: [
             {
-                label: "Espèces menacées",
+                label: translations.threatened_species,
                 data: [threatened],
                 backgroundColor: hexToRgba(chartMainColorThreatened, 0.2),
                 borderColor: hexToRgba(chartMainColorThreatened),
@@ -245,7 +245,7 @@ function threatenedBarChartConfig(element, total, threatened) {
                 stack: "0"
             },
             {
-                label: "Autres espèces",
+                label: translations.other_species,
                 data: [others],
                 backgroundColor: hexToRgba(chartMainColorNoThreatened, 0.2),
                 borderColor: hexToRgba(chartMainColorNoThreatened),
@@ -265,7 +265,7 @@ function threatenedBarChartConfig(element, total, threatened) {
                 legend: { position: 'top' },
                 title: {
                     display: true,
-                    text: "Répartition des espèces (menacées / autres)"
+                    text: translations.threatened_species_repartition
                 }
             },
             scales: {
@@ -291,14 +291,14 @@ function threatenedByTaxoGroupChartConfig(element, values) {
         labels: labels,
         datasets: [
             {
-                label: "Espèces menacées",
+                label: translations.threatened_species,
                 data: threatened,
                 backgroundColor: hexToRgba(chartMainColorThreatened, 0.2),
                 borderColor: hexToRgba(chartMainColorThreatened),
                 borderWidth: 3
             },
             {
-                label: "Autres espèces",
+                label: translations.other_species,
                 data: notThreatened,
                 backgroundColor: hexToRgba(chartMainColorNoThreatened, 0.2),
                 borderColor: hexToRgba(chartMainColorNoThreatened),
@@ -317,7 +317,7 @@ function threatenedByTaxoGroupChartConfig(element, values) {
                 legend: { position: 'top' },
                 title: {
                     display: true,
-                    text: "Nombre d'espèces observées par groupe taxonomique"
+                    text: translations.nb_species_taxonomic_group
                 }
             },
             scales: {

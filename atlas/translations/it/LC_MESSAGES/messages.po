@@ -609,6 +609,24 @@ msgstr "Specie in pericolo"
 msgid "threatened.VU"
 msgstr "Specie vulnerabile"
 
+msgid "species"
+msgstr "Specie"
+
+msgid "other.species"
+msgstr "Altre specie"
+
+msgid "number.species"
+msgstr "Numero di specie"
+
+msgid "number.species.territory"
+msgstr "Numero di specie su tutto il territorio"
+
+msgid "threatened.species.repartition"
+msgstr "Distribuzione delle specie (minacciate / altre)"
+
+msgid "number.species.taxonomic.group"
+msgstr "Numero di specie osservate per gruppo tassonomico"
+
 #~ msgid "photo"
 #~ msgstr "Foto"
 
