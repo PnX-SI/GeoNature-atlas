@@ -36,7 +36,7 @@ function generateHtmlPhoto(photos, redimentionnement, taxhub_url) {
                     taxhub_url +
                     "/api/tmedias/thumbnail/" +
                     photo.id_media +
-                    "?h=500&w=500";
+                    "?h=500";
             }
             let subject = `${stripHtml(photo.title)}<br/>`;
             let description = photo.description
