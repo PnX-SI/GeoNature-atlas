@@ -170,7 +170,6 @@ function installPython() {
     sudo apt-get install -y python3-setuptools
     sudo apt-get install -y python3-pip
     sudo apt-get install -y python3-gdal gdal-bin
-    sudo apt-get install -y python3-virtualenv virtualenv
 }
 
 function installNvm() {

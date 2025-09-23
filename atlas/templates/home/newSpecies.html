@@ -13,22 +13,27 @@
             </div>
             <div class="row">
                 {% for species in lastDiscoveries %}
-                <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-                    <div class="card my-shadow mb-2">
-                        {% if species.media_path != None %}
-                            {% if configuration.REDIMENSIONNEMENT_IMAGE %}
-                                {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+species.id_media|string+'?h=500' %}
+                <div class="col-12 col-sm-6 col-md-4 col-lg-2 padding-sm">
+                    <div class="card mb-2">
+                        <a class="zoom-effect-wrapper" href="{{ url_for('main.ficheEspece', cd_nom=species.cd_ref) }}">
+                            {% if species.media_path != None %}
+                                {% if configuration.REDIMENSIONNEMENT_IMAGE %}
+                                    {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+species.id_media|string+'?h=500' %}
+                                {% else %}
+                                    {% set img_path = species.media_path %}
+                                {% endif %}
+                                <div class="zoom-effect cover" style="height: 150px; background-image: url({{ img_path }})">
+                                </div>
                             {% else %}
-                                {% set img_path = species.media_path %}
+                                <div class="no-repeat background-center"
+                                     style="height: 150px;
+                                            background-image: url({{ url_for('static', filename='images/picto_' + species.group2_inpn | replace(" ", "_") +'.png') }})">
+                                </div>
                             {% endif %}
-                            <div class="cover" style="height: 150px; background-image: url({{ img_path }})">
+                            <div class="zoom-effect-overlay d-flex justify-content-center text-white fw-bold">
+                                 {{ species.date | dateformat("short") }}
                             </div>
-                        {% else %}
-                            <div class="no-repeat background-center"
-                                 style="height: 150px;
-                                        background-image: url({{ url_for('static', filename='images/picto_' + species.group2_inpn | replace(" ", "_") +'.png') }})">
-                            </div>
-                        {% endif %}
+                        </a>
 
                         <a href="{{ url_for('main.ficheEspece', cd_nom=species.cd_ref) }}"></a>
 
@@ -42,10 +47,6 @@
                             <a href="{{ url_for('main.ficheEspece', cd_nom=species.cd_ref) }}"
                                class="btn btn-secondary" role="button">{{ _('species.sheet') }}
                             </a>
-                        </div>
-
-                        <div class="card-footer center text-muted">
-                            {{ species.date | dateformat("short") }}
                         </div>
 
                     </div>

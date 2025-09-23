@@ -9,9 +9,9 @@
                     <a class="fa fa-question-circle helpTip"></a>
                 </span>
             </h3>
-            <div class="row thumbnail-row">
+            <div class="row p-4">
                 {% for tax in mostViewTaxon %}
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 thumbnail-col">
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 no-padding">
                         <div class="hovereffect">
                             {% if tax.path == None %}
                                 <img class="default-logo"
@@ -19,14 +19,14 @@
                                      alt="">
                             {% else %}
                                 {% if configuration.REDIMENSIONNEMENT_IMAGE %}
-                                    <div class="pictoImg pictoImgMedium"
-                                         style="background-image:url({{ configuration.TAXHUB_URL }}/api/tmedias/thumbnail/{{ tax.id_media }}?h=500&w=500);"
+                                    {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+tax.id_media|string+'?h=500' %}
+                                {% else %}
+                                    {% set img_path = tax.path %}
+                                {% endif %}
+                                    <div class="cover"
+                                         style="background-image:url({{img_path}});height: 250px;"
                                          data-bs-toggle="tooltip" title="{{ tax.group2_inpn }}"
                                          data-bs-placement="left"></div>
-                                {% else %}
-                                    <div class="img-responsive-logo"
-                                         style="background-image:url({{ tax.path }})"></div>
-                                {% endif %}
                             {% endif %}
                             <div class="overlay">
                                 <h2>{{ tax.taxonName|safe }}</h2>

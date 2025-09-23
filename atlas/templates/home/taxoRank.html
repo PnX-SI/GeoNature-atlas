@@ -12,7 +12,7 @@
                     </h3>
                 </div>
             </div>
-            <div class="row row-medias">
+            <div class="row">
 
                 {% for i in range(customStatMedias | length) %}
 {#                    <div class="col-12 col-lg-4 stat-medias-wrapper">#}
@@ -34,25 +34,22 @@
                         <div class="row">
                             {% for j in range(2) %}
                                 {% if loop.index <= customStatMedias[i] | length %}
-                                    <div class="col-12 col-md-6 col-stat-medias">
-                                        <div class="thumbnail-stat-medias">
-                                            <div class="zoom-wrapper">
-                                                <a href="{{ url_for('main.ficheEspece', cd_nom=customStatMedias[i][j].cd_ref) }}">
-                                                    {% if configuration.REDIMENSIONNEMENT_IMAGE %}
-                                                        <div class="img-custom-medias cover"
-                                                             style="background-image: url({{ configuration.TAXHUB_URL }}/api/tmedias/thumbnail/{{ customStatMedias[i][j].id_media }}?h=500&w=500); height:200px;">
+                                    <div class="col-12 col-md-6 padding-sm">
+                                        <div class="card">
+                                            {% if configuration.REDIMENSIONNEMENT_IMAGE %}
+                                                {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+customStatMedias[i][j].id_media|string+'?h=500' %}
+                                            {% else %}
+                                                {% set img_path =  customStatMedias[i][j].path%}
+                                            {% endif %}
+                                                <a class="zoom-effect-wrapper" href="{{ url_for('main.ficheEspece', cd_nom=customStatMedias[i][j].cd_ref) }}">
+                                                        <div class="zoom-effect cover rank-stat-medias-cover"
+                                                             style="background-image: url({{img_path}})">
                                                         </div>
-                                                    {% else %}
-                                                        <div class="img-custom-medias cover"
-                                                             style="background-image: url({{ customStatMedias[i][j].path }}); height:200px;">
-                                                        </div>
-                                                    {% endif %}
-                                                    <div class="stat-medias-hovereffet d-flex justify-content-center align-items-center text-white fw-bold">
+                                                    <div class="zoom-effect-overlay text-white fw-bold">
                                                         <i class="fas fa-eye me-2"></i> {{ customStatMedias[i][j].nb_obs | pretty }} {{ _('observations') }}
                                                     </div>
                                                 </a>
-                                            </div>
-                                            <div class="thumbnail-caption-medias">
+                                            <div class="card-body">
                                                 <p>
                                                     {% if customStatMedias[i][j].nom_vern != None %}
                                                         <b>{{ customStatMedias[i][j].nom_vern }}</b>

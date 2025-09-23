@@ -97,7 +97,7 @@ def switchMedia(row):
     if not row.chemin and not row.url:
         return None
     elif row.chemin:
-        goodPath = row.chemin
+        goodPath = utils.findPath(row)
     else:
         goodPath = row.url
 

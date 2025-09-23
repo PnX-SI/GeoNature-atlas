@@ -35,11 +35,11 @@ GUNICORN_PORT = 8080
 # Recharger automatiquement les templates
 TEMPLATES_AUTO_RELOAD = False
 
-#################################
-#################################
-### Customisation application ###
-#################################
-#################################
+#########################################
+#########################################
+### Personnalisation de l'application ###
+#########################################
+#########################################
 
 # Nom de la structure
 STRUCTURE = "Nom de la structure"
@@ -86,7 +86,7 @@ LANGUAGES = {
     'fr': {
         'name' : 'Français',
         'flag_icon' : 'flag-icon-fr',
-        'months' : ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Decembre']
+        'months' : ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
         },
     'it': {
         'name' : 'Italiano',
@@ -223,7 +223,7 @@ RANG_STAT = [{'phylum': ["Arthropoda", "Mollusca", "Annelida", "Cnidaria", "Plat
 RANG_STAT_FR = ['Faune invertébrée', 'Faune vertébrée', 'Flore']
 
 ############################
-####### FICHE ESPECE #######
+####### FICHE ESPÈCE #######
 ############################
 
 # Afficher le graphique des altitudes. Affichage True/False
@@ -231,10 +231,6 @@ AFFICHAGE_GRAPH_ALTITUDES = True
 
 # Afficher le graphique de la phénologie. Affichage True/False
 AFFICHAGE_GRAPH_PHENOLOGIE = True
-
-# Affiche ou non la barre "tout le terrtoire" sur les graphiques
-# du nombre d'espèce des fiches zonages
-AFFICHAGE_TOUT_TERRITOIRE_GRAPH = False
 
 # couleurs des diagrames circulaires (provenance des données par organismes et groupes taxonomiques - fiche espèce et zonage)
 COLOR_PIE_CHARTS = [
@@ -303,9 +299,9 @@ GROUPES_STATUTS = [
 # Rang taxonomique qui fixe jusqu'à quel taxon remonte la filiation taxonomique (hierarchie dans la fiche d'identite : Famille, Ordre etc... )
 LIMIT_RANG_TAXONOMIQUE_HIERARCHIE = 13
 
-# Rang taxonomique qui fixe la limite de l'affichage de la fiche espece ou de la liste
+# Rang taxonomique qui fixe la limite de l'affichage de la fiche espèce ou de la liste
 # 35 = ESPECE
-# On prend alors tout ce qui est inferieur ou egal a l'espece pour faire des fiches et ce qui est superieur pour les listes
+# On prend alors tout ce qui est inferieur ou egal a l'espèce pour faire des fiches et ce qui est superieur pour les listes
 LIMIT_FICHE_LISTE_HIERARCHY = 28
 
 # URL d'accès aux photos et autres médias (URL racine). Dans la vm_medias, il est uniquement stocké le nom du fichier. Il est donc necessaire de préciser l'URL de stockage des médias, pour construire le chemin complet d'accès à l'image. Par exemple l'url d'accès à Taxhub.
@@ -390,14 +386,18 @@ PATRIMONIALITE = {
     }
 }
 
-# Liste des type de territoire pour les fichies territoires (code bib_area_type)
+# Liste des type de territoire pour les fiches territoires (code bib_area_type)
 # ex : TYPE_TERRITOIRE_SHEET = ['COM', 'EPCI']
 TYPE_TERRITOIRE_SHEET = []
 
-# liste des application dont "orejime" controle la dépose de cookie
+# Affiche ou non la barre "tout le territoire" sur les graphiques
+# du nombre d'espèce des fiches zonages
+AFFICHAGE_TOUT_TERRITOIRE_GRAPH = False
+
+# Liste des application dont "orejime" controle la dépose de cookie
 OREJIME_APPS = []
 
-# traduction orejime (voir la doc cookie et RGPD pour comment le remplir)
+# Traductions orejime (voir la doc cookie et RGPD pour comment le remplir)
 OREJIME_TRANSLATIONS = {}
 
 #############################
@@ -418,10 +418,10 @@ STATIC_PAGES = {
     'pne': {'url':'https://www.ecrins-parcnational.fr/', 'title': "Parc national des Ecrins", 'customized_picto': 'sample.external-website.png', 'picto_height': 16, 'order': 1}
 }
 
-###########################
-###########################
-#### Security  Config #####
-###########################
-###########################
+####################################
+####################################
+#### Configuration de sécurité #####
+####################################
+####################################
 
 SECRET_KEY = '282799166744079489444397'

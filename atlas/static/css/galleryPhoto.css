@@ -60,6 +60,10 @@ h1.title {
     padding: 0.25rem 0.5rem;
 }
 
+#searchPhotos {
+    width: 20rem;
+}
+
 #orderPhotos {
     width: 40px;
     text-align: center;
@@ -74,8 +78,39 @@ h1.title {
     display: inline-block;
 }
 
-.zoom-wrapper {
+/* .img-wrapper {
+  position: relative;
+  border-radius: 5px;
   margin: 0px!important;
   border-radius: 0px!important;
+} */
+
+.gallery-photo-cover {
+    height: 250px;
+
 }
+
+/* override of zoom-effect-wrapper in atlas.css */
+.zoom-effect-wrapper {
+    display: block;
+    height: 250px;
+    position: relative;
+}
+
+footer, #pictoAndSort{
+    display: none!important;
+}
+
+@media (min-width: 768px) {
+    footer, #pictoAndSort {
+        display: block!important
+    }
+}
+
+@media (min-width: 768px) {
+     #pictoAndSort {
+        display: flex!important
+    }
+}
+
 
