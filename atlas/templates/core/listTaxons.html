@@ -12,7 +12,7 @@
          <div class="row g-2">
             <div class="col-auto dropdown">
             <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="groupFilterDropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-                Filtre : <span id="currentGroupLabel">Tous</span>
+                {{ _('filter') }} : <span id="currentGroupLabel">{{ _('all') }}</span>
             </button>
             <ul class="dropdown-menu p-2" id="groupFilterList" aria-labelledby="groupFilterDropdown" style="min-width: 260px">
                 <!-- Groupes injectés dynamiquement -->

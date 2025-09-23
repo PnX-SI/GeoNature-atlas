@@ -575,6 +575,9 @@ msgstr "Threatened"
 msgid "all"
 msgstr "All"
 
+msgid "filter"
+msgstr "Filter"
+
 #~ msgid "photo"
 #~ msgstr "Photo"
 
