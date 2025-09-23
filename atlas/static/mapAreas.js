@@ -114,6 +114,7 @@ function displayObs(id_area) {
         .then(observations => {
 
             if (configuration.AFFICHAGE_MAILLE) {
+                displayMailleLayer(observations);
             } else {
                 displayMarkerLayerPointLastObs(observations)
             }
