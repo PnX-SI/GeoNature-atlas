@@ -160,9 +160,11 @@ jQuery(function () {
         url: configuration.URL_APPLICATION + "/api/photosGallery",
         dataType: "json",
         beforeSend: function () {
-            // $('#loadingGif').attr("src", configuration.URL_APPLICATION+'/static/images/loading.svg')
+            $("#loaderSpinner").show();
         },
     }).done(function (photos) {
+        $("#loaderSpinner").hide();
+
         generateHtmlPhoto(
             photos,
             configuration.REDIMENSIONNEMENT_IMAGE,

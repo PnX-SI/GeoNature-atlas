@@ -46,7 +46,7 @@
                                          data-bs-placement="top">
                                 </li>
                             {% endfor %}
-    
+
                             <li>
                                 <a id="allGroups" class="btn btn-secondary"
                                    role="button"
@@ -77,7 +77,9 @@
                 <h3 id="nbPhotos"></h3>
             </div>
 
-            <div id="insertPhotos" class="d-flex flex-wrap bg-white flex-grow-1"></div>
+            <div id="insertPhotos" class="d-flex flex-wrap bg-white flex-grow-1">
+                {% include 'templates/core/loaderSpinner.html' %}
+            </div>
         </div>
     </div>
 {% endblock %}

@@ -70,8 +70,9 @@
                 </div>
                 <div class="d-flex align-content-stretch bg-warning flex-grow-1">
                     <div class="d-flex flex-grow-1">
-                        {% include 'templates/core/loaderSpinner.html' %}
-                        <div id="map" style="height: unset;flex:1;"></div>
+                        <div id="map" style="height:unset; flex:1;">
+                            {% include 'templates/core/loaderSpinner.html' %}
+                        </div>
                     </div>
                 </div>
             </div>

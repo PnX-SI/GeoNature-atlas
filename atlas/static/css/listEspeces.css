@@ -125,23 +125,6 @@ ul#statHierarchy {
     font-size: 2em;
 }
 
-/* 
-.eye {
-	padding-left: 20%
-}
-
-.displayObs {
-	cursor: pointer;
-}
-*/
-
-#loadingGif {
-    z-index: 1000000;
-    position: absolute;
-    left: 40%;
-    top: 40%;
-}
-
 .hiddenSpan {
     visibility: hidden;
 }

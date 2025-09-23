@@ -29,10 +29,7 @@ $.ajax({
     url: configuration.URL_APPLICATION + "/api/observationsMaille/" + cd_ref,
     dataType: "json",
     beforeSend: function() {
-        // // $("#loadingGif").attr(
-        //   "src",
-        //   configuration.URL_APPLICATION + "/static/images/loading.svg"
-        // );
+        $("#loaderSpinner").show();
     }
 }).done(function(observations) {
     $("#loaderSpinner").hide();
@@ -66,10 +63,10 @@ $.ajax({
                 year_max: yearMax
             },
             beforeSend: function() {
-                $("#loadingGif").show();
+                $("#loaderSpinner").show();
             }
         }).done(function(observations) {
-            $("#loadingGif").hide();
+            $("#loaderSpinner").hide();
             observationsMaille = observations;
 
             // desactivation de l'event precedent

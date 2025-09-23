@@ -78,15 +78,11 @@ function displayObsTaxon(id_area, cd_ref) {
       "/" +
       cd_ref,
     dataType: "json",
-    beforeSend: function() {
-      $("#loadingGif").show();
-      $("#loadingGif").attr(
-        "src",
-        configuration.URL_APPLICATION + "/static/images/loading.svg"
-      );
+      beforeSend: function () {
+          $("#loaderSpinner").show();
     }
-  }).done(function(observations) {
-    $("#loadingGif").hide();
+  }).done(function (observations) {
+    $("#loaderSpinner").hide();
     if (currentLayer) {
       map.removeLayer(currentLayer);
     }
