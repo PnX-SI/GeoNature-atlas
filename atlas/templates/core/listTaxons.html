@@ -63,16 +63,15 @@
                                          alt=" " />
                                 {% endif %}
                             {% endif %}
-                            
                             {% if configuration.AFFICHAGE_MENACE %}
-                                {% set statut = statutByCdRef.get(taxon.cd_ref) %}    
-                                {% if statut in ['CR','EN','VU'] %}
-                                    <img src="{{ url_for('static', filename='images/Status_iucn_' ~ statut ~ '.png') }}"
-                                        alt="{{ _('threatened') }}"
-                                        style="width:30px; height:30px; margin-left:10px;"
-                                        data-bs-toggle="tooltip"
-                                        title="{{ _('threatened.' ~ statut) }}" />
-                                {% endif %}
+                                {% set statut = taxon.statut %}
+                                    {% if statut in ['CR','EN','VU'] %}
+                                        <img src="{{ url_for('static', filename='images/Status_iucn_' ~ statut ~ '.png') }}"
+                                            alt="{{ _('threatened') }}"
+                                            style="width:30px; height:30px; margin-left:10px;"
+                                            data-bs-toggle="tooltip"
+                                            title="{{ _('threatened.' ~ statut) }}" />
+                                    {% endif %}
                             {% endif %}
                         </span>
 

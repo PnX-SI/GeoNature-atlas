@@ -21,6 +21,7 @@ CREATE INDEX ON atlas.vm_taxref
 CREATE INDEX ON atlas.vm_taxref
     USING btree (nom_valide);
 
+
 -- +-----------------------------------------------------------------------------------------------+
 -- Rangs de taxref ordonnés
 CREATE TABLE atlas.bib_taxref_rangs (

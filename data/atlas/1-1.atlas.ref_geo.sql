@@ -95,6 +95,7 @@ CREATE MATERIALIZED VIEW atlas.vm_l_areas AS
             bat.type_code IN (SELECT * FROM string_to_table(:'type_code', ','))
             OR bat.type_code = :'type_maille'
             OR a.id_type IN (SELECT id_area_type FROM synthese.cor_sensitivity_area_type)
+            OR bat.type_code = 'DEP' -- necessaire pour les statuts (protection, listes rouge)
         )
 WITH DATA;
 

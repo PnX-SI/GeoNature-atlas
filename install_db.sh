@@ -289,7 +289,6 @@ function createDatabaseEntities() {
                 -v type_territoire="${type_territoire}" \
                 -v type_code="${type_code}" \
                 -v type_maille="${type_maille}" \
-                -v perimetre_liste_rouge="${perimetre_liste_rouge}" \
                 -v insert_altitudes_values="${insert_altitudes_values}" \
                 -v taxon_time="${time}" \
                 -v reader_user="${user_pg}" \
