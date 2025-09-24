@@ -49,6 +49,7 @@ CREATE MATERIALIZED VIEW atlas.vm_area_stats_by_taxonomy_group AS
         JOIN atlas.vm_taxons AS t
             ON t.cd_ref = ta.cd_ref
     WHERE ta.type_code = ANY(SELECT * from string_to_table(:'type_code', ','))
+        AND t.group2_inpn IS NOT NULL
     GROUP BY ta.id_area, t.group2_inpn
 WITH DATA;
 
