@@ -105,25 +105,56 @@ generateLegende(htmlLegend);
         });
     }
 
-    // Display point layer
-    else{
-        displayMarkerLayerPointLastObs(observations);
 
-        // interaction list - map
-        $('.lastObslistItem').click(function(){
-            $(this).siblings().removeClass('current');
-            $(this).addClass('current');
-            var id_observation = $(this).attr('idSynthese');
+    if(configuration.AFFICHAGE_DERNIERES_OBS) {
+        if(configuration.AFFICHAGE_MAILLE) {
+            // display maille layer
+            displayMailleLayerLastObs(observations);
 
-            var p = (currentLayer._layers);
-            var selectLayer;
-            for (var key in p) {
-                if (p[key].feature.properties.id_observation == id_observation){
-                    selectLayer = p[key];
+            // interaction list - map
+            $('.lastObslistItem').click(function(){
+                $(this).siblings().removeClass('bg-light');
+                $(this).addClass('bg-light');
+                var id_observation = $(this).attr('idSynthese');
+                p = (currentLayer._layers);
+                var selectLayer;
+                for (var key in p) {
+                    if (find_id_observation_in_array(p[key].feature.properties.list_id_observation, id_observation) ){
+                        selectLayer = p[key];
+                    }
                 }
-            }
-            selectLayer.openPopup();
-            selectLayer.openPopup(selectLayer._latlng);
-            map.setView(selectLayer._latlng, 14);
-        })
+
+                selectLayer.openPopup();
+                var bounds = L.latLngBounds();
+                var layerBounds = selectLayer.getBounds();
+                bounds.extend(layerBounds);
+                map.fitBounds(bounds, {
+                maxZoom : 12
+                });
+            });
+        } else {
+            // Display point layer
+            displayMarkerLayerPointLastObs(observations);
+            // interaction list - map
+            $('.lastObslistItem').click(function(){
+                $(this).siblings().removeClass('current');
+                $(this).addClass('current');
+                var id_observation = $(this).attr('idSynthese');
+        
+                var p = (currentLayer._layers);
+                var selectLayer;
+                for (var key in p) {
+                    if (p[key].feature.properties.id_observation == id_observation){
+                        selectLayer = p[key];
+                    }
+                }
+                selectLayer.openPopup();
+                selectLayer.openPopup(selectLayer._latlng);
+                map.setView(selectLayer._latlng, 14);
+            })
+
+        }
     }
+
+
+

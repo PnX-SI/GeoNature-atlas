@@ -940,3 +940,12 @@ function generateSliderOnMap() {
     $("#yearMax").html("&nbsp;&nbsp;&nbsp;&nbsp;" + YEARMAX);
     $("#yearMin").html(taxonYearMin + "&nbsp;&nbsp;&nbsp;&nbsp");
 }
+
+
+function find_id_observation_in_array(tab_id, id_observation) {
+  i = 0;
+  while (i < tab_id.length && tab_id[i] != id_observation) {
+    i = i + 1;
+  }
+  return i != tab_id.length;
+}
