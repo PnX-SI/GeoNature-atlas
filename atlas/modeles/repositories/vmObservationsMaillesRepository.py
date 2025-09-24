@@ -1,7 +1,7 @@
 import json
 
 from geojson import Feature, FeatureCollection
-from sqlalchemy.sql import text, func, any_, extract, literal, cast, select
+from sqlalchemy.sql import text, func, any_, extract, literal, cast, select, and_
 from sqlalchemy import Interval
 
 from atlas.modeles.entities.vmObservations import VmObservations, VmObservationsMailles
@@ -138,7 +138,7 @@ def territoryObservationsMailles():
             VmObservationsMailles.id_maille,
             VmAreas.area_geojson
         )
-        .join(VmObservationsMailles, 
+        .join(VmObservationsMailles,
               VmObservations.id_observation == func.any(VmObservationsMailles.id_observations))
         .join(VmAreas, VmAreas.id_area == VmObservationsMailles.id_maille)
         .join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
@@ -154,7 +154,7 @@ def territoryObservationsMailles():
                         "nb_cd_ref": o.nb_cd_ref,
                         "taxons": o.taxons,
                         "type_code": o.type_code,
-                        "id_maille": o.id_maille 
+                        "id_maille": o.id_maille
                     }
                 )
                 for o in features.all()
@@ -174,7 +174,7 @@ def lastObservationsMailles(mylimit, idPhoto):
             VmAreas.area_geojson
 
         )
-        .join(VmObservations, 
+        .join(VmObservations,
               VmObservations.id_observation == func.any(VmObservationsMailles.id_observations))
         .join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
         .join(VmAreas, VmAreas.id_area == VmObservationsMailles.id_maille)
@@ -219,7 +219,7 @@ def getObservationsByArea(id_area):
             VmObservations.cd_ref,
             func.date_part('year', VmObservations.dateobs).label("annee")
         )
-        .join(VmCorAreaSynthese, 
+        .join(VmCorAreaSynthese,
               VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
         .filter(VmCorAreaSynthese.id_area == id_area)
         .subquery("obs_in_area")
@@ -233,7 +233,7 @@ def getObservationsByArea(id_area):
                     func.jsonb_build_object(
                         'name', (func.concat(func.coalesce(VmTaxons.nom_vern + ' | ', '') + VmTaxons.lb_nom)),
                         'cdRef', VmTaxons.cd_ref
-                    ) 
+                    )
                 )
             ).label('taxons'),
             VmObservationsMailles.type_code,
@@ -266,36 +266,41 @@ def getObservationsByArea(id_area):
 
 # Use for API
 def getObservationsTaxonAreaMaille(id_area, cd_ref):
-    obs_in_area = (
-        select(
-            VmObservations.id_observation,
-            VmObservations.cd_ref,
-            func.date_part('year', VmObservations.dateobs).label("annee"),
-            func.count(VmObservations.id_observation).label("nb_observations")
-        )
-        .join(VmCorAreaSynthese, VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
-        .filter(VmCorAreaSynthese.id_area == id_area, VmObservations.cd_ref == cd_ref)
-        .group_by(VmObservations.id_observation, VmObservations.cd_ref, func.date_part('year', VmObservations.dateobs))
-        .subquery("obs_in_area")
-    ) 
     query = (
         select(
-            obs_in_area.c.cd_ref,
-            obs_in_area.c.annee,
-            obs_in_area.c.nb_observations,
-            VmObservationsMailles.type_code,
-            VmObservationsMailles.id_maille,
-            VmAreas.area_geojson,
+            VmObservations.cd_ref,
             VmTaxons.nom_vern,
-            VmTaxons.lb_nom
+            VmTaxons.lb_nom,
+            VmObservationsMailles.id_maille,
+            VmObservationsMailles.type_code,
+            VmObservationsMailles.annee,
+            VmAreas.area_geojson,
+            func.count(VmObservations.id_observation).label("nb_observations"),
         )
-        .join(VmObservationsMailles, 
-              obs_in_area.c.id_observation == func.any(VmObservationsMailles.id_observations))
+        .join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
+        .join(VmCorAreaSynthese, VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
+        .join(
+            VmObservationsMailles,
+            and_(
+                VmObservations.id_observation == func.any(VmObservationsMailles.id_observations),
+                VmObservationsMailles.cd_ref == VmObservations.cd_ref,
+            ),
+        )
         .join(VmAreas, VmAreas.id_area == VmObservationsMailles.id_maille)
-        .join(VmTaxons, VmTaxons.cd_ref == obs_in_area.c.cd_ref)
-        .order_by(obs_in_area.c.annee.desc())
+        .filter(VmCorAreaSynthese.id_area == id_area, VmObservations.cd_ref == cd_ref)
+        .group_by(
+            VmObservations.cd_ref,
+            VmTaxons.nom_vern,
+            VmTaxons.lb_nom,
+            VmObservationsMailles.id_maille,
+            VmObservationsMailles.type_code,
+            VmObservationsMailles.annee,
+            VmAreas.area_geojson,
+        )
+        .order_by(VmObservationsMailles.id_maille, VmObservationsMailles.annee.desc())
     )
     observations = db.session.execute(query).all()
+
     tabObs = list()
     for o in observations:
         temp = {
@@ -308,5 +313,4 @@ def getObservationsTaxonAreaMaille(id_area, cd_ref):
             "geojson_maille": json.loads(o.area_geojson),
         }
         tabObs.append(temp)
-
     return tabObs

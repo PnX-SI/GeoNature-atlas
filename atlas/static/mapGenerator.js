@@ -773,8 +773,8 @@ function generateGeoJsonMailleLastObs(observations, isRefresh=false) {
                     type_code: obs.type_code,
                     last_observation: obs.annee,
                     meshId: obs.id_maille,
-                    list_id_observation: [obs.id_observation],
-                    nb_observations: 1,
+                    //list_id_observation: [obs.id_observation],
+                    nb_observations: obs.nb_observations,
                     taxons: [
                         {
                             cdRef: obs.cd_ref,
@@ -795,10 +795,10 @@ function generateGeoJsonMailleLastObs(observations, isRefresh=false) {
             if (findedFeature.properties.last_observation < obs.annee) {
                 findedFeature.properties.last_observation = obs.annee
             }
-            findedFeature.properties.nb_observations += 1
+            findedFeature.properties.nb_observations += obs.nb_observations
         }
         else {
-            findedFeature.properties.nb_observations += 1
+            findedFeature.properties.nb_observations += obs.nb_observations
         }
     });
     return {
