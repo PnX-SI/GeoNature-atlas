@@ -9,12 +9,9 @@ CREATE MATERIALIZED VIEW atlas.vm_area_stats AS
         count(DISTINCT u.id_organisme) AS nb_organism,
         min(extract(YEAR FROM obs.dateobs)) AS yearmin,
         max(extract(YEAR FROM obs.dateobs)) AS yearmax,
-        count(
-            DISTINCT CASE t.patrimonial WHEN 'oui' THEN t.cd_ref ELSE NULL END
-        ) AS nb_taxon_patrimonial,
-        count(
-            DISTINCT CASE t.protection_stricte WHEN 'oui' THEN t.cd_ref ELSE NULL END
-        ) AS nb_taxon_protege,
+        count(DISTINCT t.cd_ref) FILTER (WHERE t.patrimonial = 'oui') AS nb_taxon_patrimonial,
+        count(DISTINCT t.cd_ref) FILTER (WHERE t.protection_stricte = 'oui') AS nb_taxon_protege,
+        count(DISTINCT tam.cd_ref) as nb_taxon_threatened, 
         area.description
     FROM atlas.vm_cor_area_synthese AS cas
         JOIN atlas.vm_observations AS obs
@@ -27,6 +24,8 @@ CREATE MATERIALIZED VIEW atlas.vm_area_stats AS
             ON rcda.id_organism = u.id_organisme
         LEFT JOIN atlas.vm_l_areas AS area
             ON area.id_area = cas.id_area
+        LEFT JOIN atlas.cor_taxon_area_menace AS tam 
+            ON tam.cd_ref = t.cd_ref
         JOIN atlas.vm_bib_areas_types AS bat
             ON  bat.id_type = area.id_type
     WHERE bat.type_code = ANY(SELECT * FROM string_to_table(:'type_code', ','))
@@ -42,12 +41,9 @@ CREATE MATERIALIZED VIEW atlas.vm_area_stats_by_taxonomy_group AS
         count(DISTINCT obs.id_observation) AS nb_obs,
         count(DISTINCT obs.cd_ref) AS nb_species,
         t.group2_inpn,
-        count(
-            DISTINCT case t.patrimonial WHEN 'oui' THEN t.cd_ref ELSE NULL END
-        ) AS nb_patrominal,
-        count(
-            DISTINCT case t.protection_stricte WHEN 'oui' THEN t.cd_ref ELSE NULL END
-        ) AS nb_taxon_protege,
+        count(DISTINCT t.cd_ref) FILTER (WHERE t.patrimonial = 'oui') AS nb_patrominal,
+        count(DISTINCT t.cd_ref) FILTER (WHERE t.protection_stricte = 'oui') AS nb_taxon_protege,
+        count(DISTINCT tam.cd_ref) as nb_taxon_threatened, 
         (
             SELECT count(*)
             FROM atlas.vm_taxons AS taxon
@@ -58,6 +54,8 @@ CREATE MATERIALIZED VIEW atlas.vm_area_stats_by_taxonomy_group AS
             ON cas.id_synthese = obs.id_observation
         JOIN atlas.vm_taxons AS t
             ON t.cd_ref = obs.cd_ref
+        LEFT JOIN atlas.cor_taxon_area_menace AS tam 
+            ON tam.cd_ref = t.cd_ref
     WHERE cas.type_code = ANY(SELECT * FROM string_to_table(:'type_code', ','))
         AND t.group2_inpn IS NOT NULL
     GROUP BY cas.id_area, t.group2_inpn

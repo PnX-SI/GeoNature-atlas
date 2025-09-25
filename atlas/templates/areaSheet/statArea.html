@@ -48,7 +48,14 @@
                 <br>{{ _('species')|lower }} {{ config.PATRIMONIALITE.label_pluriel|lower }}
             </div>
             {% endif %}
-
+            {% if configuration.AFFICHAGE_MENACE %}
+            <div class="col-sm text-center border-start">
+                <img class="statut_icon" style="width:32px; height:32px;"
+                    src="{{ url_for('static', filename='images/picto_menace.png') }}"/>
+                <br><strong>{{ stats_area.nb_taxon_threatened }}</strong>
+                <br>{{ _('threatened.species')|lower }}
+            </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

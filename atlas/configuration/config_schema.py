@@ -244,7 +244,6 @@ class AtlasConfig(Schema):
     ATTR_VIMEO = fields.Integer(load_default=9)
     PROTECTION = fields.Boolean(load_default=False)
     AFFICHAGE_MENACE = fields.Boolean(load_default=True)
-    PERIMETRE_LISTE_ROUGE = fields.String(load_default="ETATFRA")
     DISPLAY_PATRIMONIALITE = fields.Boolean(load_default=False)
     AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION = fields.Boolean(load_default=True)
     AFFICHAGE_TAB_AREA_OBS_ESPECES = fields.Boolean(load_default=True)

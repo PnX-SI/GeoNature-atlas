@@ -224,11 +224,6 @@ function updatePythonConfigFile() {
     if [[ $? -eq 0 ]]; then
         printVerbose ">GUNICORN_PORT ${Gre}updated${RCol} in ${conf_file}"
     fi
-
-    sed -i "s/PERIMETRE_LISTE_ROUGE = .*$/PERIMETRE_LISTE_ROUGE = \"${perimetre_liste_rouge}\"/" "${conf_path}"
-    if [[ $? -eq 0 ]]; then
-        printVerbose ">PERIMETRE_LISTE_ROUGE ${Gre}updated${RCol} in ${conf_file}"
-    fi
 }
 
 function createCustomTemplates() {

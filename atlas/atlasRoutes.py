@@ -300,15 +300,11 @@ def _make_groupes_statuts(statuts):
 @main.route("/area/<int:id_area>", methods=["GET", "POST"])
 def ficheArea(id_area):
     listTaxons = vmTaxonsRepository.getTaxonsAreas(id_area)
-    # statutByCdRef = vmTaxonsRepository.getThreatenedTaxonsAreas(
-    #     id_area, current_app.config["PERIMETRE_LISTE_ROUGE"]
-    # )["statut_by_cd_ref"]
     area = vmAreasRepository.getAreaFromIdArea(id_area)
     stats_area = vmAreasRepository.getStatsByArea(id_area)
     return render_template(
         "templates/areaSheet/_main.html",
         listTaxons=listTaxons,
-        # statutByCdRef = statutByCdRef,
         stats_area=stats_area,
         areaInfos=area,
         DISPLAY_EYE_ON_LIST=True,

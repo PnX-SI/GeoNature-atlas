@@ -3,15 +3,14 @@
 from flask import current_app
 from sqlalchemy import desc
 from sqlalchemy.sql import select, distinct, func
+from atlas.modeles.entities.vmStatutBdc import CorTaxonAreaMenace, TOrdreListeRouge
+from atlas.modeles.entities.tBibTaxrefRang import TBibTaxrefRang
 from atlas.modeles.entities.vmObservations import VmObservations
+from atlas.modeles.entities.vmAreas import VmCorAreaSynthese
 from atlas.modeles.entities.vmMedias import VmMedias
 from atlas.modeles.entities.vmTaxons import VmTaxons
-from atlas.modeles.entities.tBibTaxrefRang import TBibTaxrefRang
-from atlas.modeles.entities.vmAreas import VmCorAreaSynthese
-from atlas.modeles.entities.vmStatutBdc import CorTaxonAreaMenace, TOrdreListeRouge
+from atlas.modeles.entities.vmAreas import VmAreas
 
-
-from atlas.configuration import config
 from atlas.modeles import utils
 from atlas.env import db
 
@@ -70,7 +69,7 @@ def getTaxonsTerritory():
         nbObsTotal = nbObsTotal + r.nb_obs
     return {"taxons": taxonCommunesList, "nbObsTotal": nbObsTotal}
 
-from atlas.modeles.entities.vmAreas import VmAreas
+
 # With distinct the result in a array not an object, 0: lb_nom, 1: nom_vern
 def getTaxonsAreas(id_area):
     id_photo = current_app.config["ATTR_MAIN_PHOTO"]
@@ -128,7 +127,6 @@ def getTaxonsAreas(id_area):
         )
         .order_by(desc(obs_in_area.c.nb_obs))
     )
-    print(req)
     results = db.session.execute(req).all()
     taxonAreasList = list()
     nbObsTotal = 0
@@ -149,44 +147,7 @@ def getTaxonsAreas(id_area):
         }
         taxonAreasList.append(temp)
         nbObsTotal = nbObsTotal + r.nb_obs
-        # print(temp)
     return {"taxons": taxonAreasList, "nbObsTotal": nbObsTotal}
-
-
-# def getThreatenedTaxonsAreas(id_area, perimetre_liste_rouge):
-#     req = (
-#         select(
-#             VmTaxonsAreas.cd_ref,
-#             VmTaxonsAreas.threatened,
-#             VmTaxonsAreas.code_statut,
-#         )
-#         .filter(
-#             VmTaxonsAreas.cd_sig == perimetre_liste_rouge,
-#             VmTaxonsAreas.threatened == True,
-#             VmTaxonsAreas.id_area == id_area,
-#         )
-#         .group_by(
-#             VmTaxonsAreas.cd_ref,
-#             VmTaxonsAreas.threatened,
-#             VmTaxonsAreas.code_statut
-#         )
-#     )
-#     results = db.session.execute(req).all()
-#     taxonThreatenedAreasList = list()
-#     statutByCdRef = dict()
-#     for r in results:
-#         temp = {
-#             "cd_ref": r.cd_ref,
-#             "threatened": r.threatened,
-#             "code_statut": r.code_statut, 
-#         }
-#         taxonThreatenedAreasList.append(temp)
-#         statutByCdRef[r.cd_ref] = r.code_statut
-#     return {
-#         "threatened_taxons": taxonThreatenedAreasList, 
-#         "nb_threatened_species": len(taxonThreatenedAreasList) ,
-#         "statut_by_cd_ref": statutByCdRef,
-#     }
 
 
 def getTaxonsChildsList(cd_ref):

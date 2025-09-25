@@ -17,7 +17,7 @@
     <div id="taxonList" class="d-flex align-content-stretch bg-white flex-grow-1">
         <ul class="list-group w-100">
             {% for taxon in listTaxons.taxons %}
-                <li id="taxonListItem" class="d-flex border-bottom p-2 {% if configuration.AFFICHAGE_MENACE and taxon.cd_ref in statutByCdRef %} border border-danger bg-danger-subtle {% endif %}"  
+                <li id="taxonListItem" class="d-flex border-bottom p-2 {% if configuration.AFFICHAGE_MENACE and taxon.statut in ['CR', 'EN', 'VU'] %} border border-danger bg-danger-subtle {% endif %}"  
                     area-code="{{ id_area }}"
                     cdRef="{{ taxon.cd_ref }}" 
                     {% if configuration.INTERACTIVE_MAP_LIST %} 
