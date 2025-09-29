@@ -1,90 +1,93 @@
 -- Tous les taxons ayant au moins une observation
 CREATE MATERIALIZED VIEW atlas.vm_taxons AS
-    WITH obs_min_taxons AS (
+    WITH observations_stats AS (
         SELECT
-            vm_observations.cd_ref,
-            min(date_part('year'::text, vm_observations.dateobs)) AS yearmin,
-            max(date_part('year'::text, vm_observations.dateobs)) AS yearmax,
-            COUNT(vm_observations.id_observation) AS nb_obs
+            cd_ref,
+            min(date_part('year'::text, dateobs)) AS yearmin,
+            max(date_part('year'::text, dateobs)) AS yearmax,
+            count(id_observation) AS nb_obs
         FROM atlas.vm_observations
-        GROUP BY vm_observations.cd_ref
+        GROUP BY cd_ref
     ),
-    tx_ref AS (
+    taxons_infos AS (
         SELECT
-            tx_1.cd_ref,
-            tx_1.regne,
-            tx_1.phylum,
-            tx_1.classe,
-            tx_1.ordre,
-            tx_1.famille,
-            tx_1.cd_taxsup,
-            tx_1.lb_nom,
-            tx_1.lb_auteur,
-            tx_1.nom_complet,
-            tx_1.nom_valide,
-            tx_1.nom_vern,
-            tx_1.nom_vern_eng,
-            tx_1.group1_inpn,
-            tx_1.group2_inpn,
-            tx_1.nom_complet_html,
-            tx_1.id_rang
-        FROM atlas.vm_taxref tx_1
-        WHERE tx_1.cd_ref IN (SELECT obs_min_taxons.cd_ref FROM obs_min_taxons)
-            AND tx_1.cd_nom = tx_1.cd_ref
+            cd_ref,
+            regne,
+            phylum,
+            classe,
+            ordre,
+            famille,
+            cd_taxsup,
+            lb_nom,
+            lb_auteur,
+            nom_complet,
+            nom_valide,
+            nom_vern,
+            nom_vern_eng,
+            group1_inpn,
+            group2_inpn,
+            nom_complet_html,
+            id_rang
+        FROM atlas.vm_taxref
+        WHERE cd_ref IN (SELECT cd_ref FROM observations_stats)
+            AND cd_nom = cd_ref
     ),
-    my_taxons AS (
+    taxons_attributes AS (
         SELECT DISTINCT
-            n.cd_ref,
+            ti.cd_ref,
             pat.valeur_attribut AS patrimonial
-        FROM tx_ref n
+        FROM taxons_infos AS ti
             LEFT JOIN taxonomie.cor_taxon_attribut AS pat
-                ON (pat.cd_ref = n.cd_ref AND pat.id_attribut = 1)
-            JOIN obs_min_taxons obs ON obs.cd_ref = n.cd_ref
+                ON (pat.cd_ref = ti.cd_ref AND pat.id_attribut = 1)
+            JOIN observations_stats AS os ON os.cd_ref = ti.cd_ref
     ),
-    menace_protege AS (
-    SELECT 
-        s.cd_ref,
-        -- Menacé si au moins un statut de type "menace" est trouvé
-        CASE WHEN SUM(CASE WHEN s.code_statut in ('VU', 'EN', 'CR', 'CR*') THEN 1 ELSE 0 END) > 0 
-            THEN TRUE ELSE FALSE END AS menace,
-        -- Protégé si au moins un statut de type "protection" est trouvé
-        CASE WHEN SUM(CASE WHEN s.regroupement_type = 'Protection' THEN 1 ELSE 0 END) > 0 
-            THEN TRUE ELSE FALSE END AS protege
-    FROM atlas.vm_bdc_statut s
-    GROUP BY s.cd_ref
+    threat_protection_status AS (
+        SELECT
+            cd_ref,
+            -- Menacé si au moins un statut de type "menace" est trouvé
+            CASE WHEN SUM(CASE WHEN code_statut in ('VU', 'EN', 'CR', 'CR*') THEN 1 ELSE 0 END) > 0
+                THEN TRUE
+                ELSE FALSE
+            END AS threat,
+            -- Protégé si au moins un statut de type "protection" est trouvé
+            CASE WHEN SUM(CASE WHEN regroupement_type = 'Protection' THEN 1 ELSE 0 END) > 0
+                THEN TRUE
+                ELSE FALSE
+            END AS protection
+        FROM atlas.vm_bdc_statut
+        GROUP BY cd_ref
     )
     SELECT
-        tx.cd_ref,
-        tx.regne,
-        tx.phylum,
-        tx.classe,
-        tx.ordre,
-        tx.famille,
-        tx.cd_taxsup,
-        tx.lb_nom,
-        tx.lb_auteur,
-        tx.nom_complet,
-        tx.nom_valide,
-        tx.nom_vern,
-        tx.nom_vern_eng,
-        tx.group1_inpn,
-        tx.group2_inpn,
-        tx.nom_complet_html,
-        tx.id_rang,
-        t.patrimonial,
-        -- menace / protege à l'echelle de l'atlas (tous les statut where ENABLE = TRUE)
-        -- un taxon peut ensuite ne pas être menacé / protegé au niveau reg
-        menace_protege.protege AS protection_stricte,
-        menace_protege.menace AS menace,
-        omt.yearmin,
-        omt.yearmax,
-        omt.nb_obs
-    FROM tx_ref tx
-        LEFT JOIN obs_min_taxons AS omt
-            ON omt.cd_ref = tx.cd_ref
-        LEFT JOIN my_taxons AS t
-            ON t.cd_ref = tx.cd_ref
-        LEFT JOIN menace_protege ON menace_protege.cd_ref = tx.cd_ref
+        ti.cd_ref,
+        ti.regne,
+        ti.phylum,
+        ti.classe,
+        ti.ordre,
+        ti.famille,
+        ti.cd_taxsup,
+        ti.lb_nom,
+        ti.lb_auteur,
+        ti.nom_complet,
+        ti.nom_valide,
+        ti.nom_vern,
+        ti.nom_vern_eng,
+        ti.group1_inpn,
+        ti.group2_inpn,
+        ti.nom_complet_html,
+        ti.id_rang,
+        ta.patrimonial,
+        tps.protection AS protection_stricte,
+        tps.threat AS menace,
+        os.yearmin,
+        os.yearmax,
+        os.nb_obs
+    FROM taxons_infos AS ti
+        LEFT JOIN observations_stats AS os
+            ON os.cd_ref = ti.cd_ref
+        LEFT JOIN taxons_attributes AS ta
+            ON ta.cd_ref = ti.cd_ref
+        LEFT JOIN threat_protection_status AS tps
+            ON tps.cd_ref = ti.cd_ref
 WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_taxons

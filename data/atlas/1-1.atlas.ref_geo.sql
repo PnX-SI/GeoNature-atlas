@@ -12,24 +12,26 @@ END$$;
 
 
 CREATE MATERIALIZED VIEW atlas.t_layer_territoire AS
-    WITH d AS (
+    WITH territory AS (
         SELECT
-            st_union(geom),
-            b.type_name
-        FROM ref_geo.l_areas AS l
-            JOIN ref_geo.bib_areas_types AS b
+            t.type_name,
+            st_union(a.geom) AS geom -- Don't use projected SRID like 4326
+        FROM ref_geo.l_areas AS a
+            JOIN ref_geo.bib_areas_types AS t
                 USING(id_type)
-        WHERE REPLACE(b.type_code, ' ', '_') = :'type_territoire'
-        GROUP BY b.type_name
+        WHERE REPLACE(t.type_code, ' ', '_') = :'type_territoire'
+            AND a."enable" = TRUE
+        GROUP BY t.type_name
     )
     SELECT
         1::int AS gid,
         type_name AS nom,
-        st_area(st_union)/10000 AS surf_ha,
-        st_area(st_union)/1000000 AS surf_km2,
-        ST_Perimeter(st_union)/1000 AS perim_km,
-        st_transform(st_union, 4326) AS  the_geom
-    FROM d;
+        st_area(geom)/10000 AS surf_ha,
+        st_area(geom)/1000000 AS surf_km2,
+        ST_Perimeter(geom)/1000 AS perim_km,
+        st_transform(geom, 4326) AS the_geom -- Using ST_Transform to convert to 4326 is faster than using ST_Union on geom_4326.
+    FROM territory
+WITH DATA;
 
 CREATE INDEX ON atlas.t_layer_territoire
     USING gist (the_geom);
@@ -42,11 +44,12 @@ CREATE UNIQUE INDEX ON atlas.t_layer_territoire
 -- vm_bib_areas_types
 CREATE MATERIALIZED VIEW atlas.vm_bib_areas_types AS
     SELECT
-        t.id_type,
-        t.type_code,
-        t.type_name,
-        t.type_desc
-    FROM ref_geo.bib_areas_types AS t;
+        id_type,
+        type_code,
+        type_name,
+        "type_desc"
+    FROM ref_geo.bib_areas_types
+WITH DATA;
 
 CREATE INDEX ON atlas.vm_bib_areas_types
     USING btree (id_type);
@@ -64,7 +67,8 @@ CREATE MATERIALIZED VIEW atlas.vm_cor_areas AS
     SELECT
         id_area_group,
         id_area
-    FROM ref_geo.cor_areas;
+    FROM ref_geo.cor_areas
+WITH DATA;
 
 CREATE INDEX ON atlas.vm_cor_areas
     USING btree (id_area_group);
@@ -82,15 +86,15 @@ CREATE MATERIALIZED VIEW atlas.vm_l_areas AS
         a.area_code AS area_code,
         a.area_name AS area_name,
         a.id_type AS id_type,
-        a.geom as geom_local,
-        st_transform(a.geom, 4326) AS the_geom,
-        st_asgeojson(st_transform(a.geom, 4326)) AS area_geojson,
+        a.geom_local AS geom_local,
+        a.geom_4326 AS the_geom,
+        st_asgeojson(a.geom_4326) AS area_geojson,
         a.description AS "description"
     FROM ref_geo.l_areas AS a
         JOIN ref_geo.bib_areas_types AS bat
             ON a.id_type = bat.id_type
-        JOIN atlas.t_layer_territoire AS layer
-            ON st_intersects(layer.the_geom, a.geom_4326)
+        JOIN atlas.t_layer_territoire AS t
+            ON st_intersects(t.the_geom, a.geom_4326)
     WHERE "enable" = TRUE
         AND (
             bat.type_code IN (SELECT * FROM string_to_table(:'type_code', ','))
@@ -122,7 +126,3 @@ $function$
         REFRESH MATERIALIZED VIEW atlas.t_layer_territoire ;
     END
 $function$ ;
-
-
-
-

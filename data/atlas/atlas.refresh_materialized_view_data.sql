@@ -32,19 +32,20 @@ AS
 $function$
     -- Rafraichissement des vues contenant les données de l'atlas
     BEGIN
-        REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_cor_area_synthese;
         REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_observations;
-        REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_observations_mailles;
-        REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_cor_taxon_organism;
-        REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_mois;
-
-        REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_altitudes;
-
+        REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_cor_area_synthese;
         REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_taxons;
-        REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_cor_taxon_attribut;
+        REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_altitudes;
         REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_search_taxon;
+        REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_mois;
         REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_medias;
+        REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_cor_taxon_attribut;
         REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_taxons_plus_observes;
+        REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_cor_taxon_organism;
+        REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_observations_mailles;
+        REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_area_stats;
+        REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_area_stats_by_taxonomy_group;
+        REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_area_stats_by_organism;
         REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_bdc_statut;
     END
 $function$ ;

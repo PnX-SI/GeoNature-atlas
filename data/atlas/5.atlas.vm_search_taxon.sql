@@ -68,7 +68,8 @@ CREATE MATERIALIZED VIEW atlas.vm_search_taxon AS
         n.display_name
     FROM atlas.vm_taxons AS t
         JOIN names AS n
-            ON t.cd_ref = n.cd_ref ;
+            ON t.cd_ref = n.cd_ref
+WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_search_taxon
     USING btree (fid);

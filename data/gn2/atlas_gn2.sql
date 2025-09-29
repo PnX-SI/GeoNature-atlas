@@ -36,6 +36,5 @@ LIMIT TO (
     taxonomie.bdc_statut_values,
     taxonomie.bdc_statut_type,
     taxonomie.bdc_statut_cor_text_area
-
 )
 FROM SERVER geonaturedbserver INTO taxonomie ;
