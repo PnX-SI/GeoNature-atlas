@@ -2,6 +2,18 @@
 CHANGELOG
 =========
 
+1.7.3 (2025-09-xx)
+------------------
+
+🐛 **Corrections**
+
+* Gain de performance sur la vue `synthese.syntheseff` 
+
+⚠️ **Notes de version**
+
+- Exécutez le script SQL de mise à jour de la BDD : https://github.com/PnX-SI/GeoNature-atlas/blob/master/data/update/update_1.7.2to1.7.3.sql
+
+
 1.7.2 (2025-09-17)
 ------------------
 
