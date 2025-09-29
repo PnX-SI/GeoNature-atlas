@@ -268,7 +268,6 @@ function createDatabaseEntities() {
         "10.atlas.vm_taxons_plus_observes.sql"
         "11.atlas.vm_cor_taxon_organism.sql"
         "12.atlas.vm_bdc_statut.sql"
-        "12.5.atlas.vm_taxons_areas.sql"
         "13.atlas.vm_observations_mailles.sql"
         "13.5.atlas.territory_stats.sql"
         "20.grant.sql"

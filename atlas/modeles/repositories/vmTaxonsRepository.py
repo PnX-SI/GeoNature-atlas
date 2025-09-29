@@ -76,7 +76,7 @@ def getTaxonsAreas(id_area):
     # get departement(s) of area to caculate threat level
     deps_of_id_area = db.session.execute(
         select(VmAreas.id_area).where(
-                func.st_intersects(VmAreas.the_geom, select(VmAreas.the_geom).where(VmAreas.id_area == id_area).subquery())
+                func.st_intersects(VmAreas.the_geom, select(VmAreas.the_geom).where(VmAreas.id_area == id_area).scalar_subquery())
             ).where(VmAreas.type.has(type_code='DEP'))
     ).scalars()
 
