@@ -35,14 +35,23 @@ CREATE MATERIALIZED VIEW atlas.vm_taxons AS
     my_taxons AS (
         SELECT DISTINCT
             n.cd_ref,
-            pat.valeur_attribut AS patrimonial,
-            pr.valeur_attribut  AS protection_stricte
+            pat.valeur_attribut AS patrimonial
         FROM tx_ref n
             LEFT JOIN taxonomie.cor_taxon_attribut AS pat
                 ON (pat.cd_ref = n.cd_ref AND pat.id_attribut = 1)
-            LEFT JOIN taxonomie.cor_taxon_attribut AS pr
-                ON (pr.cd_ref = n.cd_ref AND pr.id_attribut = 2)
-        WHERE n.cd_ref IN (SELECT obs_min_taxons.cd_ref FROM obs_min_taxons)
+            JOIN obs_min_taxons obs ON obs.cd_ref = n.cd_ref
+    ),
+    menace_protege AS (
+    SELECT 
+        s.cd_ref,
+        -- Menacé si au moins un statut de type "menace" est trouvé
+        CASE WHEN SUM(CASE WHEN s.code_statut in ('VU', 'EN', 'CR', 'CR*') THEN 1 ELSE 0 END) > 0 
+            THEN TRUE ELSE FALSE END AS menace,
+        -- Protégé si au moins un statut de type "protection" est trouvé
+        CASE WHEN SUM(CASE WHEN s.regroupement_type = 'Protection' THEN 1 ELSE 0 END) > 0 
+            THEN TRUE ELSE FALSE END AS protege
+    FROM atlas.vm_bdc_statut s
+    GROUP BY s.cd_ref
     )
     SELECT
         tx.cd_ref,
@@ -63,7 +72,10 @@ CREATE MATERIALIZED VIEW atlas.vm_taxons AS
         tx.nom_complet_html,
         tx.id_rang,
         t.patrimonial,
-        t.protection_stricte,
+        -- menace / protege à l'echelle de l'atlas (tous les statut where ENABLE = TRUE)
+        -- un taxon peut ensuite ne pas être menacé / protegé au niveau reg
+        menace_protege.protege AS protection_stricte,
+        menace_protege.menace AS menace,
         omt.yearmin,
         omt.yearmax,
         omt.nb_obs
@@ -72,6 +84,7 @@ CREATE MATERIALIZED VIEW atlas.vm_taxons AS
             ON omt.cd_ref = tx.cd_ref
         LEFT JOIN my_taxons AS t
             ON t.cd_ref = tx.cd_ref
+        LEFT JOIN menace_protege ON menace_protege.cd_ref = tx.cd_ref
 WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_taxons

@@ -61,7 +61,7 @@ def searchEspece(cd_ref):
             "yearmax": r.yearmax,
             "nb_obs": r.nb_obs,
             "patrimonial": r.patrimonial,
-            "protection": r.protection_stricte,
+            "protection_stricte": r.protection_stricte,
         }
 
     childs_ids = select(func.atlas.find_all_taxons_childs(cd_ref))

@@ -67,7 +67,7 @@
                 </div>
 
                 <div id="statuts-and-links-container">
-                    {% if taxon.taxonSearch.protection == 'oui' %}
+                    {% if taxon.taxonSearch.protection_stricte %}
                         <a href="https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.taxonSearch.cd_ref }}/tab/statut" target="_blank">
                             <img class="caractEspece" width="100px"
                                  src="{{ url_for('static', filename='images/logo_protection.png') }}"

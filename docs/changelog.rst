@@ -16,6 +16,8 @@ CHANGELOG
   Les changements effectués afin de pouvoir changer la notion de "commune" en "territoire" necessitent un changement dans les fichiers: TODO
 - Ajout de "liens importants" sur les fiches taxons. Cette fonctionnalité permet par exemple de mettre en avant des démarches ou des ressources additionelles sur un taxon: un lien vers une plateforme de contribution collaborative, un lien vers une fiche détaillé sur l'espèce etc... Voir le paramètre ``TYPES_MEDIAS_LIENS_IMPORTANTS``
 - Ajout des statuts sur la fiche espèces. Le paramètre de configuration ``GROUPES_STATUTS`` permet de grouper et de filtrer les statuts que l'on souhaite afficher. Le template ``custom/templates/statuts.html`` permet de customiser l'affichage des statuts (customisation avancé, à modifier avec précaution)
+- Ajout de la notion d'espèce menacée et de graphiques associés sur les fiches territoire (@Orangetine) #669
+- Le statut d'espèce protégée n'est plus calculé à partir d'un attribut TaxHub mais à partir de la BDC statuts #135
 
 A VERIFIER :
 

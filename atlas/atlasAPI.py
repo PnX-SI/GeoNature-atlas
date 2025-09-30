@@ -149,7 +149,7 @@ def rank_stat():
 def get_area_chart_valuesAPI(id_area):
     stats = vmAreasRepository.getStatsByArea(id_area)
     nb_species = stats["nb_species"]
-    nb_threatened_species = stats["nb_taxon_threatened"]
+    nb_threatened_species = stats["nb_taxon_menace"]
 
     species_by_taxonomic_group = vmAreasRepository.get_species_by_taxonomic_group(
         id_area

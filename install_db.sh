@@ -256,6 +256,7 @@ function createDatabaseEntities() {
     local scripts_sql=(
         "1.atlas.vm_taxref.sql"
         "1-1.atlas.ref_geo.sql"
+        "1.2.atlas.vm_bdc_statut.sql"
         "1-4.cor_sensitivity_area_type.sql"
         "1-5.vm_cor_area_synthese.sql"
         "2.atlas.vm_observations.sql"
@@ -267,7 +268,6 @@ function createDatabaseEntities() {
         "9.atlas.vm_cor_taxon_attribut.sql"
         "10.atlas.vm_taxons_plus_observes.sql"
         "11.atlas.vm_cor_taxon_organism.sql"
-        "12.atlas.vm_bdc_statut.sql"
         "13.atlas.vm_observations_mailles.sql"
         "13.5.atlas.territory_stats.sql"
         "20.grant.sql"

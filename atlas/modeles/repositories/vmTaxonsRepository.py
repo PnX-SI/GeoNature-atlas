@@ -3,7 +3,7 @@
 from flask import current_app
 from sqlalchemy import desc
 from sqlalchemy.sql import select, distinct, func
-from atlas.modeles.entities.vmStatutBdc import CorTaxonAreaMenace, TOrdreListeRouge
+from atlas.modeles.entities.vmStatutBdc import CorTaxonStatutArea, TOrdreListeRouge
 from atlas.modeles.entities.tBibTaxrefRang import TBibTaxrefRang
 from atlas.modeles.entities.vmObservations import VmObservations
 from atlas.modeles.entities.vmAreas import VmCorAreaSynthese
@@ -100,14 +100,16 @@ def getTaxonsAreas(id_area):
             VmMedias.url,
             VmMedias.chemin,
             VmMedias.id_media,
-            CorTaxonAreaMenace.code_statut
+            CorTaxonStatutArea.statut_menace,
+            CorTaxonStatutArea.niveau_application_menace,
+            CorTaxonStatutArea.protege,
         )
         .select_from(VmTaxons)
         .join(obs_in_area, obs_in_area.c.cd_ref == VmTaxons.cd_ref)
         .outerjoin(
-            CorTaxonAreaMenace,
-            (CorTaxonAreaMenace.cd_ref == VmTaxons.cd_ref) & 
-            (CorTaxonAreaMenace.id_area == id_area)   
+            CorTaxonStatutArea,
+            (CorTaxonStatutArea.cd_ref == VmTaxons.cd_ref) & 
+            (CorTaxonStatutArea.id_area == id_area)   
         )
         .outerjoin(
             VmMedias, (VmMedias.cd_ref == VmTaxons.cd_ref) & (VmMedias.id_type == id_photo)
@@ -126,10 +128,11 @@ def getTaxonsAreas(id_area):
             "last_obs": r.last_obs,
             "group2_inpn": utils.deleteAccent(r.group2_inpn),
             "patrimonial": r.patrimonial,
-            "protection_stricte": r.protection_stricte,
+            "protection_stricte": r.protege,
             "path": utils.findPath(r),
             "id_media": r.id_media,
-            "statut": r.code_statut,
+            "statut_menace": r.statut_menace,
+            "niveau_application_menace": r.niveau_application_menace,
         }
         taxonAreasList.append(temp)
         nbObsTotal = nbObsTotal + r.nb_obs

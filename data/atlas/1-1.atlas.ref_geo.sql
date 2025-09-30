@@ -82,6 +82,7 @@ CREATE MATERIALIZED VIEW atlas.vm_l_areas AS
         a.area_code AS area_code,
         a.area_name AS area_name,
         a.id_type AS id_type,
+        a.geom as geom_local,
         st_transform(a.geom, 4326) AS the_geom,
         st_asgeojson(st_transform(a.geom, 4326)) AS area_geojson,
         a.description AS "description"

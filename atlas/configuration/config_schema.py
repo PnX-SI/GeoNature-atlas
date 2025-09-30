@@ -242,7 +242,7 @@ class AtlasConfig(Schema):
     ATTR_YOUTUBE = fields.Integer(load_default=7)
     ATTR_DAILYMOTION = fields.Integer(load_default=8)
     ATTR_VIMEO = fields.Integer(load_default=9)
-    PROTECTION = fields.Boolean(load_default=False)
+    PROTECTION = fields.Boolean(load_default=True)
     AFFICHAGE_MENACE = fields.Boolean(load_default=True)
     DISPLAY_PATRIMONIALITE = fields.Boolean(load_default=False)
     AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION = fields.Boolean(load_default=True)
