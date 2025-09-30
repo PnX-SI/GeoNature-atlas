@@ -70,14 +70,16 @@ generateLegende(htmlLegend);
         $("#loaderSpinner").show();
 
         // display maille layer
-        fetch(`/api/observationsMailleTerritory`)
-            .then(response => response.json())
-            .then(data => {
-                observations = data
-                displayMailleLayer(observations);
-                $("#loaderSpinner").hide();
+        fetch(`/api/observationsMaille?`+ new URLSearchParams({
+            "with_taxons": true
+        }))
+        .then(response => response.json())
+        .then(data => {
+            observations = data
+            displayMailleLayer(observations);
+            $("#loaderSpinner").hide();
 
-            })
+        })
 
 
         // interaction list - map

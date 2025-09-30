@@ -48,3 +48,16 @@ class VmObservationsMailles(db.Model):
     annee: Mapped[int] = mapped_column()
     id_observations: Mapped[List[int]] = mapped_column(ARRAY(Integer))
     type_code: Mapped[str] = mapped_column(String(25))
+
+
+class VMCorMailleObservation(db.Model):
+    """
+    Table des observations par maille
+    """
+
+    __tablename__ = "vm_cor_maille_observation"
+    __table_args__ = {"schema": "atlas"}
+
+    id_maille: Mapped[int] = mapped_column(primary_key=True)
+    id_observation: Mapped[int] = mapped_column(primary_key=True)
+    type_code: Mapped[str] = mapped_column(String(25))

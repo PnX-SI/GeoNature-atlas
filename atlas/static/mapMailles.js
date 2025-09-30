@@ -26,7 +26,7 @@ var myGeoJson;
 var compteurLegend = 0; // compteur pour ne pas rajouter la légende à chaque fois
 
 $.ajax({
-    url: configuration.URL_APPLICATION + "/api/observationsMaille/" + cd_ref,
+    url: configuration.URL_APPLICATION + "/api/observationsMaille?cd_ref=" + cd_ref,
     dataType: "json",
     beforeSend: function() {
         $("#loaderSpinner").show();
@@ -55,10 +55,11 @@ $.ajax({
         map.removeLayer(currentLayer);
         clearOverlays()
         $.ajax({
-            url: configuration.URL_APPLICATION + "/api/observationsMaille/" + cd_ref,
+            url: configuration.URL_APPLICATION + "/api/observationsMaille",
             dataType: "json",
             type: "get",
             data: {
+                cd_ref: cd_ref,
                 year_min: yearMin,
                 year_max: yearMax
             },
