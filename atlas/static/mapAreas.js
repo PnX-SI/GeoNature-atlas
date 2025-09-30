@@ -64,10 +64,6 @@ generateLegende(htmlLegend);
 var baseUrl =  configuration.URL_APPLICATION + "/api/observations/" + areaInfos.areaCode
 
 
-function displayObsGridBaseUrl() {
-    return configuration.URL_APPLICATION + "/api/observationsMaille/"
-}
-
 // display observation on click
 function displayObsTaxon(id_area, cd_ref) {
   $.ajax({
@@ -96,12 +92,13 @@ function displayObsTaxon(id_area, cd_ref) {
 }
 
 function displayObs(id_area) {
-    let url = `${configuration.URL_APPLICATION}/api/area/${id_area}`;
+    let url = `${configuration.URL_APPLICATION}/api/observationsMaille?id_area=${id_area}&with_taxons=true`;
     // si on est en mode point on rajoute une limite au nombre d'obs
     // si on est en maille on renvoie toutes les données aggregées par maille
-    if (!configuration.AFFICHAGE_MAILLE) {
-        url +=`?limit=${configuration["NB_LAST_OBS"]}`
-    }
+
+    // if (!configuration.AFFICHAGE_MAILLE) {
+    //     url +=`?limit=${configuration["NB_LAST_OBS"]}`
+    // }
     $("#loaderSpinner").show();
     fetch(url)
         .then(data => {
@@ -125,10 +122,11 @@ function displayObs(id_area) {
 function displayObsTaxonMaille(areaCode, cd_ref) {
     $.ajax({
         url:
-            displayObsGridBaseUrl() +
-            areaCode +
-            "/" +
-            cd_ref,
+        configuration.URL_APPLICATION + "/api/observationsMaille",
+        data: {
+            "id_area": areaCode,
+            "cd_ref": cd_ref
+        },
         dataType: "json",
         beforeSend: function () {
             $("#loaderSpinner").show();
@@ -139,8 +137,8 @@ function displayObsTaxonMaille(areaCode, cd_ref) {
             map.removeLayer(currentLayer);
         }
         clearOverlays();
-        const geojsonMaille = generateGeoJsonMailleLastObs(observations);
-        displayMailleLayerFicheEspece(geojsonMaille);
+        // const geojsonMaille = generateGeoJsonMailleLastObs(observations);
+        displayMailleLayerFicheEspece(observations);
     });
 }
 

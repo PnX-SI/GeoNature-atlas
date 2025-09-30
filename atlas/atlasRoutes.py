@@ -113,7 +113,8 @@ if current_app.config["ORGANISM_MODULE"]:
 def index():
 
     if current_app.config["AFFICHAGE_TERRITOIRE_OBS"]:
-        listTaxons = vmTaxonsRepository.getTaxonsTerritory()
+        # listTaxons = vmTaxonsRepository.getTaxonsTerritory()
+        listTaxons = []
     else:
         listTaxons = []
 
