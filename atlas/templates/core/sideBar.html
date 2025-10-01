@@ -20,7 +20,7 @@
                    data-bs-placement="right">
                     {% if 'customized_picto' in page_values %}
                         <span>
-                            <img src="/static/custom/images/{{ page_values.customized_picto }}" height="{{ page_values.picto_height }}">
+                            <img src="{{ url_for('static', filename='custom/images/' ~ page_values.customized_picto) }}" height="{{ page_values.picto_height }}">
                         </span>
                     {% else %}
                         <span class="fas {{ page_values.picto }}"></span>
@@ -36,7 +36,7 @@
                    data-bs-placement="right">
                     {% if 'customized_picto' in page_values %}
                         <span>
-                            <img src="/static/custom/images/{{ page_values.customized_picto }}" height="{{ page_values.picto_height }}">
+                            <img src="{{ url_for('static', filename='custom/images/' ~ page_values.customized_picto) }}" height="{{ page_values.picto_height }}">
                         </span>
                     {% else %}
                         <span class="fas {{ page_values.picto }}"></span>
