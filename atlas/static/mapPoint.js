@@ -76,13 +76,13 @@ $.ajax({
                     $.ajax({
                         url:
                             configuration.URL_APPLICATION +
-                            "/api/observationsMaille/" +
-                            cd_ref,
-                        dataType: "json",
-                        type: "get",
-                        data: {
-                            year_min: yearMin,
-                            year_max: yearMax
+                            "/api/observationsMaille",
+                            dataType: "json",
+                            type: "get",
+                            data: {
+                                cd_ref: cd_ref,
+                                year_min: yearMin,
+                                year_max: yearMax
                         },
                         beforeSend: function () {
                             $("#loaderSpinner").show();

@@ -38,6 +38,10 @@ class VmTaxons(db.Model):
         "VmCorTaxonAttribut", back_populates="taxon"
     )
 
+    def shorten_name(self):
+        shorten_nom_vern = self.nom_vern.split(",")[0] if self.nom_vern else ""
+        return shorten_nom_vern + " | <i>" + self.lb_nom + " </i>"
+
 
 class VmCorTaxonAttribut(db.Model):
     __tablename__ = "vm_cor_taxon_attribut"

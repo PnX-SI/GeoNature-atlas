@@ -24,7 +24,7 @@ GRANT SELECT ON TABLE atlas.vm_cor_taxon_attribut TO :reader_user ;
 GRANT SELECT ON TABLE atlas.vm_taxons_plus_observes TO :reader_user ;
 GRANT EXECUTE ON FUNCTION atlas.find_all_taxons_childs(integer) TO :reader_user ;
 GRANT SELECT ON TABLE atlas.vm_cor_taxon_organism TO :reader_user ;
-GRANT SELECT ON TABLE atlas.vm_observations_mailles TO :reader_user ;
+GRANT SELECT ON TABLE atlas.vm_cor_maille_observation TO :reader_user ;
 GRANT SELECT ON TABLE atlas.vm_area_stats TO :reader_user ;
 GRANT SELECT ON TABLE atlas.vm_area_stats_by_taxonomy_group TO :reader_user ;
 GRANT SELECT ON TABLE atlas.vm_area_stats_by_organism TO :reader_user ;

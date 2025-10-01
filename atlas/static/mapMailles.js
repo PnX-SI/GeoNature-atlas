@@ -26,13 +26,10 @@ var myGeoJson;
 var compteurLegend = 0; // compteur pour ne pas rajouter la légende à chaque fois
 
 $.ajax({
-    url: configuration.URL_APPLICATION + "/api/observationsMaille/" + cd_ref,
+    url: configuration.URL_APPLICATION + "/api/observationsMaille?cd_ref=" + cd_ref,
     dataType: "json",
     beforeSend: function() {
-        // // $("#loadingGif").attr(
-        //   "src",
-        //   configuration.URL_APPLICATION + "/static/images/loading.svg"
-        // );
+        $("#loaderSpinner").show();
     }
 }).done(function(observations) {
     $("#loaderSpinner").hide();
@@ -58,18 +55,19 @@ $.ajax({
         map.removeLayer(currentLayer);
         clearOverlays()
         $.ajax({
-            url: configuration.URL_APPLICATION + "/api/observationsMaille/" + cd_ref,
+            url: configuration.URL_APPLICATION + "/api/observationsMaille",
             dataType: "json",
             type: "get",
             data: {
+                cd_ref: cd_ref,
                 year_min: yearMin,
                 year_max: yearMax
             },
             beforeSend: function() {
-                $("#loadingGif").show();
+                $("#loaderSpinner").show();
             }
         }).done(function(observations) {
-            $("#loadingGif").hide();
+            $("#loaderSpinner").hide();
             observationsMaille = observations;
 
             // desactivation de l'event precedent

@@ -36,7 +36,7 @@ function generateHtmlPhoto(photos, redimentionnement, taxhub_url) {
                     taxhub_url +
                     "/api/tmedias/thumbnail/" +
                     photo.id_media +
-                    "?h=500&w=500";
+                    "?h=500";
             }
             let subject = `${stripHtml(photo.title)}<br/>`;
             let description = photo.description
@@ -160,9 +160,11 @@ jQuery(function () {
         url: configuration.URL_APPLICATION + "/api/photosGallery",
         dataType: "json",
         beforeSend: function () {
-            // $('#loadingGif').attr("src", configuration.URL_APPLICATION+'/static/images/loading.svg')
+            $("#loaderSpinner").show();
         },
     }).done(function (photos) {
+        $("#loaderSpinner").hide();
+
         generateHtmlPhoto(
             photos,
             configuration.REDIMENSIONNEMENT_IMAGE,

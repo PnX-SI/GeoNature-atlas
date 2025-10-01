@@ -16,6 +16,7 @@ from atlas.env import db
 
 
 def getTaxonsTerritory():
+    """ Renvoie la liste de taxon de tout le terrtoire de l'atlas"""
     id_type = current_app.config["ATTR_MAIN_PHOTO"]
     req = (
         select(
@@ -50,7 +51,7 @@ def getTaxonsTerritory():
         .distinct()
     )
     results = db.session.execute(req).all()
-    taxonCommunesList = list()
+    taxon_list = list()
     nbObsTotal = 0
     for r in results:
         temp = {
@@ -65,9 +66,9 @@ def getTaxonsTerritory():
             "path": utils.findPath(r),
             "id_media": r.id_media,
         }
-        taxonCommunesList.append(temp)
+        taxon_list.append(temp)
         nbObsTotal = nbObsTotal + r.nb_obs
-    return {"taxons": taxonCommunesList, "nbObsTotal": nbObsTotal}
+    return {"taxons": taxon_list, "nbObsTotal": nbObsTotal}
 
 
 # With distinct the result in a array not an object, 0: lb_nom, 1: nom_vern

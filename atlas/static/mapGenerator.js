@@ -566,15 +566,14 @@ function generateGeojsonPointLastObs(observationsPoint) {
     return myGeoJson;
 }
 
-function displayMarkerLayerPointLastObs(observationsPoint) {
-  myGeoJson = generateGeojsonPointLastObs(observationsPoint);
-  if (typeof customizeMarkerStyle == "undefined") {
+function displayGeoJsonPoint(geojson) {
+if (typeof customizeMarkerStyle == "undefined") {
     customizeMarkerStyle = function (feature) {
       return {};
     };
   }
 
-  currentLayer = L.geoJson(myGeoJson, {
+  currentLayer = L.geoJson(geojson, {
     onEachFeature: onEachFeaturePointLastObs,
     pointToLayer: function (feature, latlng) {
       return L.circleMarker(
@@ -583,35 +582,13 @@ function displayMarkerLayerPointLastObs(observationsPoint) {
       );
     },
   });
-
   map.addLayer(currentLayer);
-  if (typeof divLegendeFicheAreaHome !== "undefined") {
-    legend.onAdd = function (map) {
-      var div = L.DomUtil.create("div", "info legend");
-      div.innerHTML = divLegendeFicheAreaHome;
-      return div;
-    };
-    legend.addTo(map);
-  }
 }
 
-function displayMarkerLayerPointArea(observationsPoint) {
+function displayMarkerLayerPointLastObs(observationsPoint) {  
+      
   myGeoJson = generateGeojsonPointLastObs(observationsPoint);
-  if (typeof customizeMarkerStyle == "undefined") {
-    customizeMarkerStyle = function (feature) {
-      return {};
-    };
-  }
-
-  currentLayer = L.geoJson(myGeoJson, {
-    onEachFeature: onEachFeaturePointArea,
-    pointToLayer: function (feature, latlng) {
-      return L.circleMarker(
-        latlng,
-        customizeMarkerStyle(feature)
-      );
-    },
-  });
+  displayGeoJsonPoint(myGeoJson)
 
   map.addLayer(currentLayer);
   if (typeof divLegendeFicheAreaHome !== "undefined") {
@@ -623,6 +600,7 @@ function displayMarkerLayerPointArea(observationsPoint) {
     legend.addTo(map);
   }
 }
+
 
 //  ** MAILLE ***
 
@@ -807,7 +785,7 @@ function generateGeoJsonMailleLastObs(observations, isRefresh=false) {
     };
 }
 
-function displayMailleLayer(observationsMaille) {
+function displayGeojsonMailles(observationsMaille) {
 
     // Get all different type code
     observationsMaille.features.forEach(elem => {
@@ -939,4 +917,13 @@ function generateSliderOnMap() {
 
     $("#yearMax").html("&nbsp;&nbsp;&nbsp;&nbsp;" + YEARMAX);
     $("#yearMin").html(taxonYearMin + "&nbsp;&nbsp;&nbsp;&nbsp");
+}
+
+
+function find_id_observation_in_array(tab_id, id_observation) {
+  i = 0;
+  while (i < tab_id.length && tab_id[i] != id_observation) {
+    i = i + 1;
+  }
+  return i != tab_id.length;
 }
