@@ -9,8 +9,8 @@ CREATE TABLE atlas.cor_sensitivity_area_type AS
         SELECT
             n.cd_nomenclature AS sensitivity_code,
             bat.type_code AS area_type_code
-        FROM synthese.cor_sensitivity_area_type AS sat
-            JOIN synthese.t_nomenclatures AS n
+        FROM gn_sensitivity.cor_sensitivity_area_type AS sat
+            JOIN ref_nomenclatures.t_nomenclatures AS n
                 ON n.id_nomenclature = sat.id_nomenclature_sensitivity
             JOIN ref_geo.bib_areas_types AS bat
                 ON bat.id_type = sat.id_area_type

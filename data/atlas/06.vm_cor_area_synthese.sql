@@ -16,7 +16,7 @@ CREATE MATERIALIZED VIEW atlas.vm_cor_area_synthese AS
             bat.type_code,
             bat.size_hierarchy
         FROM atlas.vm_observations AS o
-            JOIN synthese.cor_area_synthese AS csa
+            JOIN gn_synthese.cor_area_synthese AS csa
                 ON csa.id_synthese = o.id_observation
             JOIN ref_geo.l_areas AS a
                 ON a.id_area = csa.id_area
@@ -41,7 +41,7 @@ CREATE MATERIALIZED VIEW atlas.vm_cor_area_synthese AS
             bat.type_code,
             bat.size_hierarchy
         FROM atlas.vm_observations AS o
-            JOIN synthese.cor_area_synthese AS csa
+            JOIN gn_synthese.cor_area_synthese AS csa
                 ON csa.id_synthese = o.id_observation
             JOIN ref_geo.l_areas AS a
                 ON a.id_area = csa.id_area

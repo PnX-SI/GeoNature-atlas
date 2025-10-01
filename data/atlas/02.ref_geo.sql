@@ -1,13 +1,12 @@
-
 -- +-----------------------------------------------------------------------------------------------+
 -- t_layer_territoire
 
 -- If t_layer_territoire is a table, drop it. If it is a view, raise a notice and continue.
 DO $$
 BEGIN
-	DROP TABLE atlas.t_layer_territoire;
+    DROP TABLE atlas.t_layer_territoire;
 EXCEPTION WHEN others THEN
-	RAISE NOTICE 'view atlas.t_layer_territoire does not exist';
+    RAISE NOTICE 'view atlas.t_layer_territoire does not exist';
 END$$;
 
 
@@ -79,7 +78,6 @@ CREATE INDEX ON atlas.vm_cor_areas
 
 -- +-----------------------------------------------------------------------------------------------+
 -- l_areas
--- création de la vm l_areas à partir du ref_geo
 CREATE MATERIALIZED VIEW atlas.vm_l_areas AS
     SELECT
         a.id_area AS id_area,
@@ -99,8 +97,8 @@ CREATE MATERIALIZED VIEW atlas.vm_l_areas AS
         AND (
             bat.type_code IN (SELECT * FROM string_to_table(:'type_code', ','))
             OR bat.type_code = :'type_maille'
-            OR a.id_type IN (SELECT id_area_type FROM synthese.cor_sensitivity_area_type)
-            OR bat.type_code = 'DEP' -- necessaire pour les statuts (protection, listes rouge)
+            OR a.id_type IN (SELECT id_area_type FROM gn_sensitivity.cor_sensitivity_area_type)
+            OR bat.type_code = 'DEP' -- Mandatory for status (protection, red lists)
         )
 WITH DATA;
 
