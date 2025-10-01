@@ -179,12 +179,15 @@ function createDatabase() {
     printMsg "Creating users..."
     set +e
     sudo -u postgres psql -c "CREATE USER ${owner_atlas} WITH PASSWORD '${owner_atlas_pass}' ;"
-    sudo -u postgres psql -c "CREATE USER ${user_pg} WITH PASSWORD '{$user_pg_pass}' ;"
+    sudo -u postgres psql -c "CREATE USER ${user_pg} WITH PASSWORD '${user_pg_pass}' ;"
     set -e
 
     printMsg "Creating DB..."
     sudo -u postgres -s createdb -O "${owner_atlas}" "${db_name}"
+    createDatabaseExtensions
+}
 
+function createDatabaseExtensions() {
     printMsg "Adding extensions to DB..."
     executeQuery "CREATE EXTENSION IF NOT EXISTS postgis;"
     executeQuery "CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;"
@@ -195,7 +198,7 @@ function createDatabase() {
 
 # Test si la base de donnée contient déja des schéma qui indique que la BDD atlas a déjà été installée
 function checkDatabaseInstalled() {
-    local query_schemas="SELECT count(*) FROM information_schema.schemata WHERE schema_name IN ('atlas', 'gn_meta', 'synthese');"
+    local query_schemas="SELECT count(*) FROM information_schema.schemata WHERE schema_name = 'atlas';"
     local schema_already_exists=$(executeQuery "${query_schemas}")
     if [[ $schema_already_exists -gt 0 ]]; then
         exitScript "La base de donnée semble déjà contenir une installation de l'atlas... on s'arrête là"

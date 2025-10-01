@@ -65,7 +65,7 @@ function main() {
     checkSuperuser
 
     #+-------------------------------------------------------------------------+
-    # Start install env
+    # Start install
     printInfo "${__script_name__} script started at: ${__fmt_time_start__}"
 
     createDefaultSettingsFile
@@ -190,7 +190,7 @@ function disableVenv() {
 
 function installNodePackages() {
     printMsg "Installing required Node packages..."
-    cd "${__root_dir__}/atlas/static/"
+    cd "${__static_dir__}/"
     nvm use
     npm install
     cd "${__root_dir__}/"
@@ -259,7 +259,7 @@ function createCustomTemplates() {
         "statuts"
     )
     local tpl_name
-    local tpl_dir="${__custom_dir__}/templates/"
+    local tpl_dir="${__custom_dir__}/templates"
     for tpl_name in "${custom_templates[@]}"; do
         if [[ ! -f "${tpl_dir}/${tpl_name}.html" ]]; then
             cp "${tpl_dir}/${tpl_name}.html.sample" "${tpl_dir}/${tpl_name}.html"
@@ -271,7 +271,7 @@ function createCustomTemplates() {
 function createCustomImages() {
     printMsg "Creating custom images if they don't already exists..."
 
-    local img_dir="${__custom_dir__}/images/"
+    local img_dir="${__custom_dir__}/images"
     if [[ ! -d "${img_dir}/" ]]; then
         printVerbose "Creating custom images folder..."
         mkdir -p "${img_dir}/"

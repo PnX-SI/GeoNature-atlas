@@ -43,8 +43,8 @@ function initScript() {
 
     #+------------------------------------------------------------------      +
     # Directories pathes
-    readonly __root_dir__="$(realpath ${__script_dir__}/)"
-    readonly __src_dir__="${__root_dir__}/atlas/"
+    readonly __root_dir__="$(realpath ${__script_dir__})"
+    readonly __src_dir__="${__root_dir__}/atlas"
     readonly __conf_dir__="${__src_dir__}/configuration"
     readonly __data_dir__="${__root_dir__}/data"
     readonly __log_dir__="${__root_dir__}/log"
@@ -72,6 +72,7 @@ function initScript() {
     # Important to always set as we use it in the exit handler
     readonly __ta_none__="$(tput sgr0 2> /dev/null || true)"
 }
+
 # DESC: Exit script with the given message
 # ARGS: $1 (required): Message to print on exit
 #       $2 (optional): Exit code (defaults to 0)
