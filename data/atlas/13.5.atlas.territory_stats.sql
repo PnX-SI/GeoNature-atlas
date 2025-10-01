@@ -26,6 +26,7 @@ CREATE MATERIALIZED VIEW atlas.vm_area_stats AS
             ON area.id_area = cas.id_area
         LEFT JOIN atlas.cor_taxon_area_menace AS tam 
             ON tam.cd_ref = t.cd_ref
+            AND cas.id_area = tam.id_area
         JOIN atlas.vm_bib_areas_types AS bat
             ON  bat.id_type = area.id_type
     WHERE bat.type_code = ANY(SELECT * FROM string_to_table(:'type_code', ','))
@@ -56,6 +57,7 @@ CREATE MATERIALIZED VIEW atlas.vm_area_stats_by_taxonomy_group AS
             ON t.cd_ref = obs.cd_ref
         LEFT JOIN atlas.cor_taxon_area_menace AS tam 
             ON tam.cd_ref = t.cd_ref
+            AND cas.id_area = tam.id_area
     WHERE cas.type_code = ANY(SELECT * FROM string_to_table(:'type_code', ','))
         AND t.group2_inpn IS NOT NULL
     GROUP BY cas.id_area, t.group2_inpn

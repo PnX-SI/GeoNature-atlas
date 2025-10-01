@@ -73,13 +73,7 @@ def getTaxonsTerritory():
 # With distinct the result in a array not an object, 0: lb_nom, 1: nom_vern
 def getTaxonsAreas(id_area):
     id_photo = current_app.config["ATTR_MAIN_PHOTO"]
-    # get departement(s) of area to caculate threat level
-    deps_of_id_area = db.session.execute(
-        select(VmAreas.id_area).where(
-                func.st_intersects(VmAreas.the_geom, select(VmAreas.the_geom).where(VmAreas.id_area == id_area).scalar_subquery())
-            ).where(VmAreas.type.has(type_code='DEP'))
-    ).scalars()
-
+    
     # sub query to get statistics by cd_ref
     obs_in_area = (
         select(
@@ -91,16 +85,6 @@ def getTaxonsAreas(id_area):
         .filter(VmCorAreaSynthese.id_area == id_area)
         .group_by(VmObservations.cd_ref)
     ).subquery()
-
-    # subquery of max threat statut for departements
-    max_threat_by_area = select(
-        CorTaxonAreaMenace.cd_ref,
-        func.max(TOrdreListeRouge.code_statut).label("statut")
-    ).join(
-        TOrdreListeRouge, TOrdreListeRouge.code_statut == CorTaxonAreaMenace.code_statut
-    ).where(
-        CorTaxonAreaMenace.id_area.in_(deps_of_id_area)
-    ).group_by(CorTaxonAreaMenace.cd_ref).subquery()
 
     req = (
         select(
@@ -115,12 +99,14 @@ def getTaxonsAreas(id_area):
             VmMedias.url,
             VmMedias.chemin,
             VmMedias.id_media,
-            max_threat_by_area.c.statut
+            CorTaxonAreaMenace.code_statut
         )
         .select_from(VmTaxons)
         .join(obs_in_area, obs_in_area.c.cd_ref == VmTaxons.cd_ref)
         .outerjoin(
-            max_threat_by_area, max_threat_by_area.c.cd_ref == VmTaxons.cd_ref
+            CorTaxonAreaMenace,
+            (CorTaxonAreaMenace.cd_ref == VmTaxons.cd_ref) & 
+            (CorTaxonAreaMenace.id_area == id_area)   
         )
         .outerjoin(
             VmMedias, (VmMedias.cd_ref == VmTaxons.cd_ref) & (VmMedias.id_type == id_photo)
@@ -142,8 +128,7 @@ def getTaxonsAreas(id_area):
             "protection_stricte": r.protection_stricte,
             "path": utils.findPath(r),
             "id_media": r.id_media,
-            "statut": "",
-            "statut": r.statut,
+            "statut": r.code_statut,
         }
         taxonAreasList.append(temp)
         nbObsTotal = nbObsTotal + r.nb_obs
