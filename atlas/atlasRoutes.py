@@ -113,8 +113,7 @@ if current_app.config["ORGANISM_MODULE"]:
 def index():
 
     if current_app.config["AFFICHAGE_TERRITOIRE_OBS"]:
-        # listTaxons = vmTaxonsRepository.getTaxonsTerritory()
-        listTaxons = []
+        listTaxons = vmTaxonsRepository.getTaxonsTerritory()
     else:
         listTaxons = []
 
@@ -355,14 +354,6 @@ def photos():
     return render_template("templates/photoGalery/_main.html", groups=groups)
 
 
-if current_app.config["AFFICHAGE_RECHERCHE_AVANCEE"]:
-
-    @main.route("/<lang_code>/recherche", methods=["GET"])
-    @main.route("/recherche", methods=["GET"])
-    def advanced_search():
-        return render_template(
-            "templates/core/advanced_search.html",
-        )
 
 
 @main.route("/<lang_code>/static/<page>", methods=["GET", "POST"])

@@ -24,10 +24,10 @@ def format_taxon_name(observation):
     return taxon_name_formated
 
 
-def getObservationsMaillesChilds(filters={}, with_taxons=False, with_media=False):
+def getObservationsMaillesChilds(filters={}, with_taxons=False):
     """
     Retourne un geojson sous forme de maille des observations
-    Le geojson contient les paramètre suivant :
+    Le geojson contient les propriétés suivantes :
         - id_maille
         - type_code : le type de maille à la laquelle la géométrie a floutée
         - last_obs_year : l'année à laquel la dernière observation a été faite dans la maille
@@ -97,7 +97,6 @@ def getObservationsMaillesChilds(filters={}, with_taxons=False, with_media=False
                 datetime(int(filters["year_min"]), 1,1), datetime(int(filters["year_max"]), 12, 31))
             )
     if "id_area" in filters and filters["id_area"]:
-        print(filters["id_area"])
         query = query.where(exists(
                 select(true()).select_from(VmCorAreaSynthese).where(
                     (VmCorAreaSynthese.id_area == filters["id_area"]) & (VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
