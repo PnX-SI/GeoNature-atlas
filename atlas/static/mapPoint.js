@@ -76,7 +76,7 @@ $.ajax({
                     $.ajax({
                         url:
                             configuration.URL_APPLICATION +
-                            "/api/observationsMaille" +
+                            "/api/observationsMaille",
                             dataType: "json",
                             type: "get",
                             data: {

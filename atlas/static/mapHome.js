@@ -10,23 +10,6 @@ $('#map').click(function(){
 })
 
 
-
-function displayObsTaxonMaille(cd_ref) {
-    $.ajax({
-        url: `${configuration.URL_APPLICATION}/api/observations/${cd_ref}`,
-        dataType: "json",
-        beforeSend: function () {
-            $("#loaderSpinner").show();
-        }
-    }).done(function (observations) {
-        $("#loaderSpinner").hide();
-        map.removeLayer(currentLayer);
-        clearOverlays()
-
-        displayMailleLayerFicheEspece(observations);
-    });
-}
-
 function refreshTerritoryArea(elem) {
     document.querySelector("#taxonList .current")?.classList.remove("current")
     elem.currentTarget.classList.add('current');
@@ -76,7 +59,7 @@ generateLegende(htmlLegend);
         .then(response => response.json())
         .then(data => {
             observations = data
-            displayMailleLayer(observations);
+            displayGeojsonMailles(observations);
             $("#loaderSpinner").hide();
 
         })

@@ -44,9 +44,9 @@ if not current_app.config["AFFICHAGE_MAILLE"]:
         :returns: dict ({'point:<GeoJson>', 'maille': 'GeoJson})
         """
         observations = {
-            "point": vmObservationsRepository.searchObservationsChilds(cd_ref),
+            "point": vmObservationsRepository.getObservationsChilds(filters={"cd_ref": cd_ref}),
             "maille": vmObservationsMaillesRepository.getObservationsMaillesChilds(
-                fiters={"cd_ref": cd_ref}
+                filters={"cd_ref": cd_ref}
             ),
         }
         return jsonify(observations)
@@ -83,44 +83,33 @@ def getObservationsMailleAPI():
 
 if not current_app.config["AFFICHAGE_MAILLE"]:
 
-    @api.route("/observationsPoint/<int(signed=True):cd_ref>", methods=["GET"])
-    def getObservationsPointAPI(cd_ref):
-        observations = vmObservationsRepository.searchObservationsChilds(cd_ref)
-        return jsonify(observations)
+    @api.route("/observationsPoint", methods=["GET"])
+    def getObservationsPointAPI():
+        """
+        Retourne un geojson des observations en point
+        Le geojson contient les propriétés présentes dans VMObservation
+        + taxon (optionnel: si with taxon est True) : le taxon de l'observation sous forme 'nom_vern | lb_nom'
 
+        Parameters
+        ----------
+        filters : dict, optional
+            dictionnaire des filtres de la query
+            Filtres disponible :
+                - year_min / year_max : filtre les observation dans des bornes d'année
+                - cd_ref : renvoie que les observation de ce taxon et de ces enfants
+                - id_area : renvoie uniquement les observations présente dans l'aire demandée
+                - limit : limite le nombre de résultat
 
-@api.route("/observations/<int(signed=True):cd_ref>", methods=["GET"])
-def getObservationsGenericApi(cd_ref: int):
-    """[summary]
-
-    Args:
-        cd_ref (int):
-
-    Returns:
-        [type]: [description]
-    """
-    if current_app.config["AFFICHAGE_MAILLE"]:
-        observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(
-            filters={
-                "cd_ref": cd_ref,
-                "year_min": request.args.get("year_min"),
-                "year_max": request.args.get("year_max"),
-            }
-        )
-    else:
-        observations = vmObservationsRepository.searchObservationsChilds(session, cd_ref)
-
-    return jsonify(observations)
-
-
-if not current_app.config["AFFICHAGE_MAILLE"]:
-
-    @api.route("/observations/<id_area>/<int(signed=True):cd_ref>", methods=["GET"])
-    def getObservationsAreaTaxonAPI(id_area, cd_ref):
-        observations = vmObservationsRepository.getObservationTaxonArea(
-            id_area, cd_ref
+        Returns
+        -------
+        Geosjon
+        """
+        observations = vmObservationsRepository.getObservationsChilds(
+            request.args,
+            with_taxons=request.args.get("with_taxons", False)
         )
         return jsonify(observations)
+
 
 
 
