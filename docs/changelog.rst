@@ -18,6 +18,8 @@ CHANGELOG
 - Ajout des statuts sur la fiche espèces. Le paramètre de configuration ``GROUPES_STATUTS`` permet de grouper et de filtrer les statuts que l'on souhaite afficher. Le template ``custom/templates/statuts.html`` permet de customiser l'affichage des statuts (customisation avancé, à modifier avec précaution)
 - Ajout de la notion d'espèce menacée et de graphiques associés sur les fiches territoire (@Orangetine) #669
 - Le statut d'espèce protégée n'est plus calculé à partir d'un attribut TaxHub mais à partir de la BDC statuts #135
+- Déplacement des fichiers de personnalisation ``sample`` dans le dossier ``static/sample/``. Le dossier ``static/custom/`` est à utiliser pour surcoucher les fichiers de ``static/sample/``.
+
 
 A VERIFIER :
 
@@ -42,9 +44,7 @@ La fonction `pointDisplayOptionsFicheCommuneHome` devient `customizeMarkerStyle`
 ``presentation.html``
 Les paramètres de l'url de la fiche territoire était ``url_for('main.ficheCommune', insee=05090)`` et devient ``url_for('main.ficheArea', id_area=XXXXXX)``
 
-- Désampler https://github.com/PnX-SI/GeoNature-atlas/blob/develop/atlas/static/custom/templates/statuts.html.sample / Vérifier que c'est fin lors de l'installation
 - Ajout de statistique sur la fiche de "zoning" (#540 @juggler31)
-- data/atlas/12.atlas.vm_mailles_territoire.sql supprimé. A vérifier ?
 
 🐛 **Corrections**
 

@@ -50,6 +50,7 @@ function initScript() {
     readonly __log_dir__="${__root_dir__}/log"
     readonly __static_dir__="${__src_dir__}/static"
     readonly __custom_dir__="${__static_dir__}/custom"
+    readonly __sample_dir__="${__static_dir__}/sample"
 
     #+------------------------------------------------------------------------+
     # Shell colors
