@@ -201,9 +201,6 @@ function printVerbose() {
 # OUTS: None
 # NOTE: Directories on log file path will be create if not exist.
 #       All lines with a carriage return "\r" will be removed from log file.
-#       In script use :
-#           `>&3` to redirect to original stdOut
-#           `>&4` to redirect to original stdErr
 # SOURCE: https://stackoverflow.com/a/20564208
 function redirectOutput() {
     if [[ $# -lt 1 ]]; then
@@ -218,7 +215,13 @@ function redirectOutput() {
         mkdir -p "${log_file_dir}"
     fi
     printVerbose ">Performing redirection of all output to the log file......"
-    exec > >(tee -a >(sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g' | sed -r "s/--> /${__sep__}/g" > "${log_file}") | sed -r "s/--> //g" >&2)
+    exec &> >( \
+        tee >( \
+            sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g' | \
+            sed -r "s/--> /${__sep__}/g" >> "${log_file}" \
+        ) | \
+        sed -r "s/--> //g" >&1 \
+    )
 }
 
 # DESC: Check a binary exists in the search path
