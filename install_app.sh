@@ -16,6 +16,7 @@ Usage: ./$(basename $BASH_SOURCE)[options]
      -h | --help: display this help
      -v | --verbose: display more infos
      -x | --debug: display debug script infos
+     -d | --docker: run script in a docker container
 EOF
     exit 0
 }
@@ -31,16 +32,18 @@ function parseScriptOptions() {
             "--help") set -- "${@}" "-h" ;;
             "--verbose") set -- "${@}" "-v" ;;
             "--debug") set -- "${@}" "-x" ;;
+            "--docker") set -- "${@}" "-d" ;;
             "--"*) exitScript "ERROR: parameter '${arg}' invalid ! Use -h option to know more." 1 ;;
             *) set -- "${@}" "${arg}"
         esac
     done
 
-    while getopts "hvx" option; do
+    while getopts "hvxd" option; do
         case "${option}" in
             "h") printScriptUsage ;;
             "v") readonly verbose=true ;;
             "x") readonly debug=true; set -x ;;
+            "d") readonly docker=true ;;
             *) exitScript "ERROR: parameter invalid ! Use -h option to know more." 1 ;;
         esac
     done
@@ -59,14 +62,30 @@ function main() {
     # Init script
     initScript "${@}"
     parseScriptOptions "${@}"
-    redirectOutput "${__log_dir__}/install_app.log"
-
-    checkNoUserRoot
-    checkSuperuser
+    if [[ "${docker:-false}" == false ]]; then
+        redirectOutput "${__log_dir__}/install_app.log"
+    fi
 
     #+-------------------------------------------------------------------------+
     # Start install
     printInfo "${__script_name__} script started at: ${__fmt_time_start__}"
+
+    if [[ "${docker:-false}" == true ]]; then
+        runDockerInstall
+    else
+        runDefaultInstall
+    fi
+
+    #+--------------------------------------------------------------------------------------------+
+    # Display script execution infos
+    displayTimeElapsed
+}
+
+function runDefaultInstall() {
+    printVerbose "Running default install..."
+
+    checkNoUserRoot
+    checkSuperuser
 
     createDefaultSettingsFile
     loadSettings
@@ -89,10 +108,14 @@ function main() {
 
     createAtlasService
     startAtlasService
+}
 
-    #+--------------------------------------------------------------------------------------------+
-    # Display script execution infos
-    displayTimeElapsed
+function runDockerInstall() {
+    printVerbose "Running Docker install..."
+
+    createCustomTemplates
+    createCustomImages
+    createOtherCustomFiles
 }
 
 function createDefaultSettingsFile() {
