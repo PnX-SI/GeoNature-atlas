@@ -4,6 +4,10 @@
 #
 #    pip-compile requirements.in
 #
+# Compile with the lowest Python version available to get the most compatible.
+# To update, use Docker with lowest Python version available. Ex. for Python 3.9:
+# docker run --rm -v "$(pwd)":/app -w /app python:3.9-slim sh -c "apt-get update && apt-get install -y libpq-dev build-essential && pip install pip-tools && pip-compile requirements.in"
+#
 babel==2.17.0
     # via flask-babel
 backports-datetime-fromisoformat==2.0.3

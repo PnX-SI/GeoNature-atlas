@@ -1,3 +1,37 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "geonature-atlas"
+description = "Atlas WEB dynamique Faune-Flore basé sur les données présentes dans la synthèse de GeoNature"
+readme = "README.rst"
+requires-python = ">=3"
+license = { text = "GNU General Public License v3" }
+maintainers = [
+    { name = "Parcs nationaux des Écrins et des Cévennes", email = "geonature@ecrins-parcnational.fr" },
+]
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3",
+    "Operating System :: OS Independent",
+]
+dynamic = ["version", "dependencies"]
+
+[project.urls]
+Homepage = "https://github.com/PnX-SI/GeoNature-Atlas"
+
+[tool.setuptools.dynamic]
+version = { file = "VERSION" }
+dependencies = { file = "requirements.in" }
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["docs*", "tests*"]
+
 [tool.black]
 line-length = 99
 exclude ='''
@@ -17,5 +51,25 @@ exclude ='''
     | venv
     | dependencies
   )/
-)
 '''
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = clean,py39,py311
+
+[testenv]
+description = Run tests with pytest
+deps =
+    -r requirements.txt
+    pytest
+    pytest-cov
+    pytest-flask
+commands =
+    pytest --cov=atlas
+
+[testenv:clean]
+deps = coverage
+skip_install = true
+commands = coverage erase
+"""
