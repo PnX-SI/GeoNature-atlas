@@ -3,7 +3,7 @@ FROM python:3.11.9-bookworm AS build
 ENV PIP_ROOT_USER_ACTION=ignore
 
 RUN --mount=type=cache,target=/root/.cache \
-    pip install --upgrade pip setuptools wheel
+    pip install --upgrade pip build
 
 WORKDIR /build/
 
@@ -14,9 +14,9 @@ COPY /MANIFEST.in .
 COPY /pyproject.toml .
 COPY /README.rst .
 COPY /requirements.in .
-COPY /setup.py .
+COPY /pyproject.toml .
 COPY /VERSION .
-RUN python setup.py bdist_wheel
+RUN python -m build
 
 
 FROM node:alpine AS node
@@ -55,7 +55,7 @@ RUN --mount=type=cache,target=/root/.cache \
 
 COPY --from=build /build/dist/*.whl .
 RUN --mount=type=cache,target=/root/.cache \
-    pip install *.whl
+    pip install --no-deps *.whl
 
 WORKDIR /dist/
 
