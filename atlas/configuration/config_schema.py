@@ -163,6 +163,10 @@ class AtlasConfig(Schema):
     AFFICHAGE_GRAPH_PHENOLOGIE = fields.Boolean(load_default=True)
     TYPE_TERRITOIRE_SHEET = fields.List(fields.String(), load_default=["COM"])
     AFFICHAGE_GRAPH_PHENOLOGIE = fields.Boolean(load_default=False)
+    ALTITUDE_RANGES = fields.List(
+        fields.Integer(),
+        load_default=[0, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000],
+    )
     AFFICHAGE_TOUT_TERRITOIRE_GRAPH = fields.Boolean(load_default=False)
     AFFICHAGE_GRAPH_PROVENANCE_DONNEE = fields.Boolean(load_default=False)
     COLOR_STACKED_BAR_CHARTS = fields.List(
