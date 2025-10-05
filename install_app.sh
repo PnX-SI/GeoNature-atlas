@@ -214,15 +214,34 @@ function updatePythonConfigFile() {
     local conf_file="config.py"
     local conf_path="${__conf_dir__}/${conf_file}"
 
-    local pg_uri="postgresql:\/\/${user_pg}:${user_pg_pass}@${db_host}:${db_port}\/${db_name}"
-    sed -i "s/SQLALCHEMY_DATABASE_URI = .*$/SQLALCHEMY_DATABASE_URI = \"${pg_uri}\"/" "${conf_path}"
-    if [[ $? -eq 0 ]]; then
-        printVerbose ">SQLALCHEMY_DATABASE_URI ${Gre}updated${RCol} in ${conf_file}"
+    local pg_uri="postgresql://${user_pg}:${user_pg_pass}@${db_host}:${db_port}/${db_name}"
+    if grep -q "SQLALCHEMY_DATABASE_URI" "${conf_path}"; then
+        sed -i "s#SQLALCHEMY_DATABASE_URI = .*\$#SQLALCHEMY_DATABASE_URI = \"${pg_uri}\"#" "${conf_path}"
+        if [[ $? -eq 0 ]]; then
+            printVerbose ">SQLALCHEMY_DATABASE_URI ${Gre}updated${Gra} in ${Std}${conf_file}${Gra}"
+        fi
+    else
+        echo "SQLALCHEMY_DATABASE_URI = \"${pg_uri}\"" >> "${conf_path}"
+        local msg=">SQLALCHEMY_DATABASE_URI not found in ${Std}${conf_file}${Gra}, "
+        msg+="${Gre}we added it to the end of the file${Gra}."
+        printVerbose "${msg}"
     fi
 
-    sed -i "s/GUNICORN_PORT = .*$/GUNICORN_PORT = \"${gun_port}\"/"  "${conf_path}"
-    if [[ $? -eq 0 ]]; then
-        printVerbose ">GUNICORN_PORT ${Gre}updated${RCol} in ${conf_file}"
+    # Convert the bash array 'altitudes' into a comma-separated string
+    local old_ifs=$IFS
+    IFS=','
+    local altitudes_str="${altitudes[*]}"
+    IFS=$old_ifs
+    if grep -q "ALTITUDE_RANGES" "${conf_path}"; then
+        sed -i "s/ALTITUDE_RANGES = .*$/ALTITUDE_RANGES = [${altitudes_str}]/"  "${conf_path}"
+        if [[ $? -eq 0 ]]; then
+            printVerbose ">ALTITUDE_RANGES ${Gre}updated${Gra} in ${Std}${conf_file}${Gra}"
+        fi
+    else
+        echo "ALTITUDE_RANGES = [${altitudes_str}]" >> "${conf_path}"
+        local msg=">ALTITUDE_RANGES not found in ${Std}${conf_file}${Gra}, "
+        msg+="${Gre}we added it to the end of the file${Gra}."
+        printVerbose "${msg}"
     fi
 }
 
@@ -317,4 +336,3 @@ function startAtlasService() {
 }
 
 main "${@}"
-
