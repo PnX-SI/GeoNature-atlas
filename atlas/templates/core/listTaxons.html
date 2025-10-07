@@ -44,54 +44,40 @@
                     </div>
 
                     <div class="flex-grow-1">
-
-                        <span class="float-end">
-                            {% if configuration.PROTECTION %}
-                                {% if taxon.protection_stricte %}
-                                    <a href="https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.cd_ref }}/tab/statut" target="_blank">
-                                        <img src="{{ url_for('static', filename='images/logo_protection.png') }}"
-                                             style="width: 30px; height: 30px" 
-                                             data-bs-placement="left" data-bs-toggle="tooltip"
-                                             title="{{ _('this.taxon.has.a.protected.status') }}" alt=" " />
-                                    </a>
-                                {% endif %}
-                            {% endif %}
-
-                            {% if configuration.DISPLAY_PATRIMONIALITE %}
-                                {% if taxon.patrimonial in configuration.PATRIMONIALITE.config %}
-                                    <img src="{{ url_for('static', filename=configuration.PATRIMONIALITE.config[taxon.patrimonial].icon) }}"
-                                         style="width: 30px; height: 30px" 
-                                         data-bs-placement="left" data-bs-toggle="tooltip"
-                                         title="{{ configuration.PATRIMONIALITE.config[taxon.patrimonial].text }}"
-                                         alt=" " />
-                                {% endif %}
-                            {% endif %}
-                            {% if configuration.AFFICHAGE_MENACE %}
-                                {% set statut_menace = taxon.statut_menace %}
-                                    {% if statut_menace in ['CR','EN','VU'] %}
-                                        <img src="{{ url_for('static', filename='images/Status_iucn_' ~ statut_menace ~ '.png') }}"
-                                            alt="{{ _('threatened') }}"
-                                            style="width:30px; height:30px;"
-                                            data-bs-toggle="tooltip"
-                                            title="{{ _('threatened.' ~ statut_menace) }} - {{taxon.niveau_application_menace}}" />
+                        {% if dispay_picto %}
+                            <span class="float-end">
+                                {% if configuration.PROTECTION %}
+                                    {% if taxon.protection_stricte %}
+                                        <a href="https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.cd_ref }}/tab/statut" target="_blank">
+                                            <img src="{{ url_for('static', filename='images/logo_protection.png') }}"
+                                                style="width: 30px; height: 30px" 
+                                                data-bs-placement="left" data-bs-toggle="tooltip"
+                                                title="{{ _('this.taxon.has.a.protected.status') }}" alt=" " />
+                                        </a>
                                     {% endif %}
-                            {% endif %}
-                        </span>
-
-                        <h5 class="mt-0 mb-1">
-                            {% if DISPLAY_EYE_ON_LIST %}
-                                <a data-bs-toggle="tooltip" data-bs-placement="right">
-                                    <i class="fas fa-eye fa-fw"></i>
-                                </a>
-                            {% endif %}
-                            <strong>
-                                {% if taxon.nom_vern == None %}
-                                    -
-                                {% else %}
-                                    {{ taxon.nom_vern.split(',')[0].strip() }}
                                 {% endif %}
-                            </strong>
-                        </h5>
+
+                                {% if configuration.DISPLAY_PATRIMONIALITE %}
+                                    {% if taxon.patrimonial in configuration.PATRIMONIALITE.config %}
+                                        <img src="{{ url_for('static', filename=configuration.PATRIMONIALITE.config[taxon.patrimonial].icon) }}"
+                                            style="width: 30px; height: 30px" 
+                                            data-bs-placement="left" data-bs-toggle="tooltip"
+                                            title="{{ configuration.PATRIMONIALITE.config[taxon.patrimonial].text }}"
+                                            alt=" " />
+                                    {% endif %}
+                                {% endif %}
+                                {% if configuration.AFFICHAGE_MENACE %}
+                                    {% set statut_menace = taxon.statut_menace %}
+                                        {% if statut_menace in ['CR','EN','VU'] %}
+                                            <img src="{{ url_for('static', filename='images/Status_iucn_' ~ statut_menace ~ '.png') }}"
+                                                alt="{{ _('threatened') }}"
+                                                style="width:30px; height:30px;"
+                                                data-bs-toggle="tooltip"
+                                                title="{{ _('threatened.' ~ statut_menace) }} - {{taxon.niveau_application_menace}}" />
+                                        {% endif %}
+                                {% endif %}
+                            </span>
+                        {% endif %}
 
                         <h5>
                             <span id="name">{{ taxon.nom_complet_html | safe }}</span>

@@ -307,7 +307,6 @@ def ficheArea(id_area):
         listTaxons=listTaxons,
         stats_area=stats_area,
         areaInfos=area,
-        DISPLAY_EYE_ON_LIST=True,
         id_area=id_area,
     )
 
@@ -326,7 +325,6 @@ def ficheRangTaxonomie(cd_ref):
         referenciel=referenciel,
         taxonomyHierarchy=taxonomyHierarchy,
         observers=observers,
-        DISPLAY_EYE_ON_LIST=False,
     )
 
 
@@ -343,7 +341,6 @@ def ficheGroupe(groupe):
         referenciel=groupe,
         groups=groups,
         observers=observers,
-        DISPLAY_EYE_ON_LIST=False,
     )
 
 

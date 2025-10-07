@@ -54,7 +54,9 @@
                 {% endfor %}
             </div>
 
-            {% include 'templates/core/listTaxons.html' %}
+            {% with dispay_picto=False %}
+                {% include 'templates/core/listTaxons.html' %}
+            {% endwith %}
         </div>
     </div>
 
