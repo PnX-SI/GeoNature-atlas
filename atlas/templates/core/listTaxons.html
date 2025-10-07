@@ -78,6 +78,13 @@
                                 {% endif %}
                             </span>
                         {% endif %}
+                    <h5 class="mt-0 mb-1 ">
+                        <strong>{% if taxon.nom_vern == None %}
+                            -
+                        {% else %}
+                            {{ taxon.nom_vern.split(',')[0].strip() }}
+                        {% endif %}</strong></h5>
+                    <h5>
 
                         <h5>
                             <span id="name">{{ taxon.nom_complet_html | safe }}</span>
