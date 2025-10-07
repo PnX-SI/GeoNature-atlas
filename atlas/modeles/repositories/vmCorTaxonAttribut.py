@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-import markdown
+# import markdown
 
 from atlas.modeles.entities.vmTaxons import VmCorTaxonAttribut
 from atlas.env import db

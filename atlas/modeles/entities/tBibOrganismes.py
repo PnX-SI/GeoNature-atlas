@@ -9,7 +9,7 @@ import uuid
 
 class TBibOrganismes(db.Model):
     __tablename__ = "bib_organismes"
-    __table_args__ = {"schema": "utilisateurs"}
+    __table_args__ = {"schema": "atlas"}
 
     id_organisme: Mapped[int] = mapped_column(primary_key=True)
     uuid_organisme: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), unique=True)

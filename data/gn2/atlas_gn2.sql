@@ -18,11 +18,11 @@ FROM SERVER geonaturedbserver INTO synthese;
 
 IMPORT FOREIGN SCHEMA utilisateurs
 LIMIT TO (utilisateurs.bib_organismes)
-FROM SERVER geonaturedbserver INTO utilisateurs;
+FROM SERVER geonaturedbserver INTO atlas;
 
 IMPORT FOREIGN SCHEMA gn_meta
 LIMIT TO (gn_meta.cor_dataset_actor)
-FROM SERVER geonaturedbserver INTO gn_meta;
+FROM SERVER geonaturedbserver INTO atlas;
 
 IMPORT FOREIGN SCHEMA taxonomie
 LIMIT TO (

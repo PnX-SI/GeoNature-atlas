@@ -69,7 +69,7 @@ FROM (
             obs.cd_ref,
             rcda.id_organism
 ) AS obs_by_dataset_and_orga
-JOIN utilisateurs.bib_organismes AS bo
+JOIN atlas.bib_organismes AS bo
 ON bo.id_organisme = obs_by_dataset_and_orga.id_organism;
 
 CREATE UNIQUE INDEX vm_cor_taxon_organism_cd_ref_id_organism_idx

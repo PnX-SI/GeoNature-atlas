@@ -19,8 +19,8 @@ select
  join atlas.vm_l_areas vla on vla.id_area = vcas.id_area 
  JOIN atlas.vm_bib_areas_types AS bat ON  bat.id_type = vla.id_type
  join atlas.vm_taxons tax on tax.cd_ref = obs.cd_ref
- LEFT JOIN gn_meta.cor_dataset_actor AS rcda ON obs.id_dataset = rcda.id_dataset
- LEFT JOIN utilisateurs.bib_organismes AS u ON rcda.id_organism = u.id_organisme
+ LEFT JOIN atlas.cor_dataset_actor AS rcda ON obs.id_dataset = rcda.id_dataset
+ LEFT JOIN atlas.bib_organismes AS u ON rcda.id_organism = u.id_organisme
  left JOIN atlas.vm_cor_taxon_statut_area_spread AS tam ON tam.cd_ref = tax.cd_ref and tam.id_area = vcas.id_area
  WHERE bat.type_code = ANY(SELECT * FROM string_to_table(:'type_code', ','))
  GROUP BY vla.id_area;
@@ -70,9 +70,9 @@ CREATE MATERIALIZED VIEW atlas.vm_area_stats_by_organism AS
     FROM atlas.vm_cor_area_synthese AS cas
         JOIN atlas.vm_observations AS obs
             ON cas.id_synthese = obs.id_observation
-        JOIN gn_meta.cor_dataset_actor AS rcda
+        JOIN atlas.cor_dataset_actor AS rcda
             ON obs.id_dataset = rcda.id_dataset
-        JOIN utilisateurs.bib_organismes AS u
+        JOIN atlas.bib_organismes AS u
             ON rcda.id_organism = u.id_organisme
     WHERE cas.type_code = ANY(SELECT * FROM string_to_table(:'type_code', ','))
     GROUP BY cas.id_area, u.nom_organisme

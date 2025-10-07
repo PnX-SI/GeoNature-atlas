@@ -5,7 +5,7 @@ from atlas.env import db
 
 class TCorDatasetActor(db.Model):
     __tablename__ = "cor_dataset_actor"
-    __table_args__ = {"schema": "gn_meta"}
+    __table_args__ = {"schema": "atlas"}
 
     id_cda: Mapped[int] = mapped_column(primary_key=True)
     id_dataset: Mapped[int] = mapped_column()
