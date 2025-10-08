@@ -139,6 +139,31 @@ def getTaxonsAreas(id_area):
     return {"taxons": taxonAreasList, "nbObsTotal": nbObsTotal}
 
 
+def getTaxonsStateAreas(id_area, state):
+    filters = [VmCorAreaSynthese.id_area == id_area]
+
+    if state == 'menace':
+        filters.append(CorTaxonStatutArea.statut_menace.is_not(None))
+    elif state == 'protege':
+        filters.append(CorTaxonStatutArea.protege.is_(True))
+
+    req = (
+        select(VmObservations.cd_ref)
+        .distinct()
+        .join(
+            VmCorAreaSynthese, 
+            VmCorAreaSynthese.id_synthese == VmObservations.id_observation
+        )
+        .outerjoin(
+            CorTaxonStatutArea, 
+            (CorTaxonStatutArea.cd_ref == VmObservations.cd_ref) &
+            (CorTaxonStatutArea.id_area == VmCorAreaSynthese.id_area)
+        )
+        .filter(*filters)
+    )
+    return db.session.execute(req).scalars().all()
+    
+
 def getTaxonsChildsList(cd_ref):
     id_photo = current_app.config["ATTR_MAIN_PHOTO"]
     childs_ids = select(func.atlas.find_all_taxons_childs(cd_ref))

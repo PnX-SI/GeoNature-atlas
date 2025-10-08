@@ -300,11 +300,15 @@ def _make_groupes_statuts(statuts):
 @main.route("/area/<int:id_area>", methods=["GET", "POST"])
 def ficheArea(id_area):
     listTaxons = vmTaxonsRepository.getTaxonsAreas(id_area)
+    threatenedTaxons = vmTaxonsRepository.getTaxonsStateAreas(id_area, 'menace')
+    protectedTaxons = vmTaxonsRepository.getTaxonsStateAreas(id_area, 'protege')
     area = vmAreasRepository.getAreaFromIdArea(id_area)
     stats_area = vmAreasRepository.getStatsByArea(id_area)
     return render_template(
         "templates/areaSheet/_main.html",
         listTaxons=listTaxons,
+        threatenedTaxons=threatenedTaxons,
+        protectedTaxons=protectedTaxons,
         stats_area=stats_area,
         areaInfos=area,
         id_area=id_area,
