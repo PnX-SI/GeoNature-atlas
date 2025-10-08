@@ -628,6 +628,34 @@ msgstr "Répartition des espèces (menacées / autres)"
 msgid "number.species.taxonomic.group"
 msgstr "Nombre d'espèces observées par groupe taxonomique"
 
+#: atlas/templates/areaSheet/_main.html:45
+msgid "all.taxa"
+msgstr "Tous les taxons"
+
+#: atlas/templates/areaSheet/_main.html:46
+msgid "clear"
+msgstr "Effacer"
+
+#: atlas/templates/areaSheet/_main.html:47
+msgid "apply"
+msgstr "Appliquer"
+
+#: atlas/templates/areaSheet/_main.html:48
+msgid "threatened.plural"
+msgstr "Menacés"
+
+#: atlas/templates/areaSheet/_main.html:49
+msgid "protected.plural"
+msgstr "Protégés"
+
+#: atlas/templates/areaSheet/_main.html:50
+msgid "all"
+msgstr "Tous"
+
+#: atlas/templates/core/listTaxons.html:15
+msgid "filter"
+msgstr "Filtre"
+
 #~ msgid "photo"
 #~ msgstr "Photo"
 
