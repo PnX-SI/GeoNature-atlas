@@ -50,8 +50,7 @@
             {% endif %}
             {% if configuration.AFFICHAGE_MENACE %}
             <div class="col-sm text-center border-start">
-                <img class="statut_icon" style="width:32px; height:32px;"
-                    src="{{ url_for('static', filename='images/picto_menace.png') }}"/>
+                <img class="statut_icon" src="{{ url_for('static', filename='images/picto_menace.png') }}"/>
                 <br><strong>{{ stats_area.nb_taxon_menace }}</strong>
                 <br>{{ _('threatened.species')|lower }}
             </div>

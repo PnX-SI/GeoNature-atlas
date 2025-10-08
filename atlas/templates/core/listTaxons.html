@@ -45,7 +45,7 @@
 
                     <div class="flex-grow-1">
                         {% if dispay_picto %}
-                            <span class="float-end">
+                            <span class="float-end d-inline-flex align-items-center">
                                 {% if configuration.PROTECTION %}
                                     {% if taxon.protection_stricte %}
                                         <a href="https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.cd_ref }}/tab/statut" target="_blank">
@@ -69,7 +69,7 @@
                                 {% if configuration.AFFICHAGE_MENACE %}
                                     {% set statut_menace = taxon.statut_menace %}
                                         {% if statut_menace in ['CR','EN','VU'] %}
-                                            <img src="{{ url_for('static', filename='images/Status_iucn_' ~ statut_menace ~ '.png') }}"
+                                            <img src="{{ url_for('static', filename='images/picto_menace.png') }}"
                                                 alt="{{ _('threatened') }}"
                                                 style="width:30px; height:30px;"
                                                 data-bs-toggle="tooltip"
