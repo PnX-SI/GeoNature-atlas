@@ -7,15 +7,22 @@
             }
         </style>
     {% endif %}
-    {% if context.with_filters %}
         <div class="bg-white border-end p-2">
 
+        <div class="row g-2">
+            <div class="col-auto dropdown">
+                <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="groupFilterDropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                    {{ _('filter') }} : <span id="currentGroupLabel">{{ _('all') }}</span>
+                </button>
+                <ul class="dropdown-menu p-2" id="groupFilterList" aria-labelledby="groupFilterDropdown" style="min-width: 260px">
+                    <!-- Groupes injectés dynamiquement -->
+                </ul>   
+            </div>
             <div class="col">
                 <input id="taxonInput" type="text" class="form-control form-control-sm" placeholder="{{ _('filter.species') }}" />
             </div>
             
         </div>
-    {% endif %}
     <div id="taxonList" class="d-flex align-content-stretch bg-white flex-grow-1" style="position: relative">
         <ul class="list-group w-100">
             {% include 'templates/core/taxon.html' %}

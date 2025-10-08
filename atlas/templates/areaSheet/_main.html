@@ -28,6 +28,9 @@
         var configuration = {{configuration|tojson}};
         var areaInfos = {{ areaInfos | tojson }};
         var url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
+        const taxonsData = {{ listTaxons.taxons | tojson | safe }};
+        const threatenedTaxons = {{ threatenedTaxons | tojson | safe }};
+        const protectedTaxons = {{ protectedTaxons | tojson | safe }};
         const translations = {
             "nb_observations": `{{ _('obs.number.s') }}`,
             "observations": `{{ _('observations') | lower }}`,
@@ -38,7 +41,15 @@
             "other_species": `{{ _('other.species') }}`,
             "threatened_species_repartition": `{{ _('threatened.species.repartition') }}`,
             "nb_species_taxonomic_group": `{{ _('number.species.taxonomic.group') }}`,
+            "all_taxa": `{{ _('all.taxa') }}`, 
+            "clear": `{{ _('clear') }}`,
+            "apply": `{{ _('apply') }}`,
+            "threatened": `{{ _('threatened.plural') }}`,
+            "protected": `{{ _('protected.plural') }}`,
+            "all": `{{ _('all') }}`
         };
+        const affichage_menace_enabled = {{ 'true' if configuration.AFFICHAGE_MENACE else 'false' }};
+        const protection_enabled = {{ 'true' if configuration.PROTECTION else 'false' }};
     </script>
     <script src="{{ url_for('static', filename='custom/maps-custom.js') }}"></script>
     <script src="{{ url_for('static', filename='mapGenerator.js') }}"></script>
@@ -62,7 +73,7 @@
         <div class="specie_list_map_block flex-wrap">
 
             <div class="col-12 col-xl-4 col-lg-5 col-md-6 d-flex flex-column m-0 p-0">
-                {% with context={"page": "area", "with_filters": True} %}
+                {% with context={"page": "area"} %}
                     {% include 'templates/core/listTaxons.html' %}
                 {% endwith %}
             </div>
