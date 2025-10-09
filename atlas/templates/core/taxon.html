@@ -1,4 +1,9 @@
 {% for taxon in listTaxons.taxons %}
+    <li id="taxonListItem"
+        class="d-flex border-bottom p-2
+                        {% if (configuration.AFFICHAGE_MENACE and taxon.statut_menace) %} border border-danger bg-danger-subtle
+                        {% endif %}"
+        area-code="{{ id_area }}"
     <li id="taxonListItem" class="d-flex border-bottom p-2" area-code="{{ id_area }}"
         cdRef="{{ taxon.cd_ref }}"
         {% if configuration.INTERACTIVE_MAP_LIST %}
@@ -25,7 +30,7 @@
 
         <span class="float-end">
             {% if configuration.PROTECTION %}
-                {% if taxon.protection_stricte == 'oui' %}
+                {% if taxon.protection_stricte %}
                     <a href="https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.cd_ref }}/tab/statut" target="_blank">
                         <img src="{{ url_for('static', filename='images/logo_protection.png') }}"
                              style="width: 30px; height: 30px"
@@ -42,6 +47,16 @@
                          data-bs-placement="left" data-bs-toggle="tooltip"
                          title="{{ configuration.PATRIMONIALITE.config[taxon.patrimonial].text }}"
                          alt=" " />
+                {% endif %}
+            {% endif %}
+            {% if configuration.AFFICHAGE_MENACE %}
+                {% set statut_menace = taxon.statut_menace %}
+                {% if statut_menace in ['CR','EN','VU'] %}
+                    <img src="{{ url_for('static', filename='images/Status_iucn_' ~ statut_menace ~ '.png') }}"
+                         alt="{{ _('threatened') }}"
+                         style="width:30px; height:30px;"
+                         data-bs-toggle="tooltip"
+                         title="{{ _('threatened.' ~ statut_menace) }} - {{taxon.niveau_application_menace}}" />
                 {% endif %}
             {% endif %}
         </span>
@@ -69,7 +84,7 @@
             {% if taxon.nb_obs == 1 %}{{ _('observation') | lower }}{% else %}{{ _('observations') | lower }}{% endif %}
             <br>
 
-{#            {{ _('last.obs.in') }} <strong>{{ taxon.last_obs | int }}</strong>#}
+            {#            {{ _('last.obs.in') }} <strong>{{ taxon.last_obs | int }}</strong>#}
 
             <span class="float-end">
             <a class="badge bg-primary text-decoration-none" href="{{ url_for('main.ficheEspece', cd_nom=taxon.cd_ref) }}"
