@@ -90,7 +90,7 @@ class VmAreaStats(db.Model):
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-    
+
 
 class VmAreaStatsOrganism(db.Model):
     __tablename__ = "vm_area_stats_by_organism"
@@ -101,6 +101,3 @@ class VmAreaStatsOrganism(db.Model):
 
     nb_species: Mapped[int] = mapped_column()
     nb_obs: Mapped[int] = mapped_column()
-
-
-

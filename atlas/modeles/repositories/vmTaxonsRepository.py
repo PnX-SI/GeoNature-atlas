@@ -22,13 +22,15 @@ def get_nb_taxons(cd_ref=None, group_name=None):
     )
     if cd_ref:
         childs_ids = select(func.atlas.find_all_taxons_childs(cd_ref))
-        query = (query
-                .join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
-                .join(TBibTaxrefRang, func.trim(VmTaxons.id_rang) == func.trim(TBibTaxrefRang.id_rang))
-                .filter(VmTaxons.cd_ref.in_(childs_ids)))
+        query = (
+            query.join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
+            .join(TBibTaxrefRang, func.trim(VmTaxons.id_rang) == func.trim(TBibTaxrefRang.id_rang))
+            .filter(VmTaxons.cd_ref.in_(childs_ids))
+        )
     if group_name:
-        query = (query.join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
-                 .filter(VmTaxons.group2_inpn == group_name))
+        query = query.join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref).filter(
+            VmTaxons.group2_inpn == group_name
+        )
     results = db.session.execute(query).all()
     return {"nb_taxons": results[0].nb_taxons, "nb_obs_total": results[0].nb_obs_total}
 
@@ -39,20 +41,25 @@ def getListTaxon(id_area=None, group_name=None, page=0, page_size=current_app.co
     if id_area:
         obs_in_area = (
             select(
-                   func.count(distinct(VmObservations.id_observation)).label("nb_obs"),
-                   func.max(func.date_part("year", VmObservations.dateobs)).label("last_obs"),
-                   VmObservations.cd_ref
-                   ).select_from(VmObservations)
-            .join(VmCorAreaSynthese, VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
+                func.count(distinct(VmObservations.id_observation)).label("nb_obs"),
+                func.max(func.date_part("year", VmObservations.dateobs)).label("last_obs"),
+                VmObservations.cd_ref,
+            )
+            .select_from(VmObservations)
+            .join(
+                VmCorAreaSynthese, VmCorAreaSynthese.id_synthese == VmObservations.id_observation
+            )
             .group_by(VmObservations.cd_ref)
             .filter(VmCorAreaSynthese.id_area == id_area)
         ).subquery()
     else:
         obs_in_area = (
-            select(func.count(distinct(VmObservations.id_observation)).label("nb_obs"),
-                   func.max(func.date_part("year", VmObservations.dateobs)).label("last_obs"),
-                   VmObservations.cd_ref
-                   ).select_from(VmObservations)
+            select(
+                func.count(distinct(VmObservations.id_observation)).label("nb_obs"),
+                func.max(func.date_part("year", VmObservations.dateobs)).label("last_obs"),
+                VmObservations.cd_ref,
+            )
+            .select_from(VmObservations)
             .group_by(VmObservations.cd_ref)
         ).subquery()
 
@@ -77,14 +84,13 @@ def getListTaxon(id_area=None, group_name=None, page=0, page_size=current_app.co
         .join(obs_in_area, obs_in_area.c.cd_ref == VmTaxons.cd_ref)
         .outerjoin(
             CorTaxonStatutArea,
-            (CorTaxonStatutArea.cd_ref == VmTaxons.cd_ref) &
-            (CorTaxonStatutArea.id_area == id_area)
+            (CorTaxonStatutArea.cd_ref == VmTaxons.cd_ref)
+            & (CorTaxonStatutArea.id_area == id_area),
         )
-        .outerjoin(
-            VmMedias, (VmMedias.cd_ref == VmTaxons.cd_ref) & (VmMedias.id_type == id_photo)
-        )
+        .outerjoin(VmMedias, (VmMedias.cd_ref == VmTaxons.cd_ref) & (VmMedias.id_type == id_photo))
         .order_by(obs_in_area.c.nb_obs.desc())
-        .limit(int(page_size)).offset(int(page) * int(page_size))
+        .limit(int(page_size))
+        .offset(int(page) * int(page_size))
     )
     if filter_taxon:
         req = req.where(VmTaxons.nom_vern.ilike(f"%{filter_taxon}%"))
@@ -133,7 +139,8 @@ def getTaxonsChildsList(cd_ref, page=0, page_size=current_app.config["ITEMS_PER_
         .outerjoin(VmMedias, (VmMedias.cd_ref == VmTaxons.cd_ref) & (VmMedias.id_type == id_photo))
         .filter(VmTaxons.cd_ref.in_(childs_ids))
         .order_by(VmTaxons.nb_obs.desc())
-        .limit(int(page_size)).offset(int(page) * int(page_size))
+        .limit(int(page_size))
+        .offset(int(page) * int(page_size))
     )
     if filter_taxon:
         req = req.where(VmTaxons.nom_vern.ilike(f"%{filter_taxon}%"))

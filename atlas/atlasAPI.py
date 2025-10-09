@@ -34,7 +34,6 @@ def searchAreaAPI():
     return jsonify(results)
 
 
-
 if not current_app.config["AFFICHAGE_MAILLE"]:
 
     @api.route("/observationsMailleAndPoint/<int(signed=True):cd_ref>", methods=["GET"])
@@ -51,7 +50,6 @@ if not current_app.config["AFFICHAGE_MAILLE"]:
             ),
         }
         return jsonify(observations)
-
 
 
 @api.route("/observationsMaille", methods=["GET"])
@@ -76,8 +74,7 @@ def getObservationsMailleAPI():
     :returns: GeoJson
     """
     observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(
-        filters=request.args,
-        with_taxons=request.args.get("with_taxons", False)
+        filters=request.args, with_taxons=request.args.get("with_taxons", False)
     )
     return jsonify(observations)
 
@@ -106,10 +103,10 @@ if not current_app.config["AFFICHAGE_MAILLE"]:
         Geosjon
         """
         observations = vmObservationsRepository.getObservationsChilds(
-            request.args,
-            with_taxons=request.args.get("with_taxons", False)
+            request.args, with_taxons=request.args.get("with_taxons", False)
         )
         return jsonify(observations)
+
 
 @api.route("/taxonList", methods=["GET"])
 @api.route("/taxonList/area/<id_area>", methods=["GET"])
@@ -135,7 +132,9 @@ def get_taxon_list(id_area=None, id_group=None, group_name=None, cd_ref=None):
         list_taxon = vmTaxonsRepository.getTaxonsChildsList(cd_ref, page, page_size, filter_taxon)
     else:
         # case of territory on home sheet, area sheet, group sheet
-        list_taxon = vmTaxonsRepository.getListTaxon(id_area, group_name, page, page_size, filter_taxon)
+        list_taxon = vmTaxonsRepository.getListTaxon(
+            id_area, group_name, page, page_size, filter_taxon
+        )
     connection.close()
     # return list_taxon
     return render_template(
@@ -144,6 +143,7 @@ def get_taxon_list(id_area=None, id_group=None, group_name=None, cd_ref=None):
         DISPLAY_EYE_ON_LIST=True,
         id_area=id_area,
     )
+
 
 @api.route("/photoGroup/<group>", methods=["GET"])
 def getPhotosGroup(group):
@@ -172,9 +172,7 @@ def main_stat():
 @api.route("/rank_stat", methods=["GET"])
 @cache.cached()
 def rank_stat():
-    return jsonify(
-        vmObservationsRepository.genericStat(current_app.config["RANG_STAT"])
-    )
+    return jsonify(vmObservationsRepository.genericStat(current_app.config["RANG_STAT"]))
 
 
 @api.route("/area_chart_values/<id_area>", methods=["GET"])
@@ -183,15 +181,11 @@ def get_area_chart_valuesAPI(id_area):
     nb_species = stats["nb_species"]
     nb_threatened_species = stats["nb_taxon_menace"]
 
-    species_by_taxonomic_group = vmAreasRepository.get_species_by_taxonomic_group(
-        id_area
-    )
+    species_by_taxonomic_group = vmAreasRepository.get_species_by_taxonomic_group(id_area)
     observations_by_taxonomic_group = vmAreasRepository.get_nb_observations_taxonomic_group(
         id_area
     )
-    nb_species_by_organism = vmOrganismsRepository.get_species_by_organism_on_area(
-        id_area
-    )
+    nb_species_by_organism = vmOrganismsRepository.get_species_by_organism_on_area(id_area)
     observations_by_organism = vmOrganismsRepository.get_nb_observations_by_organism_on_area(
         id_area
     )

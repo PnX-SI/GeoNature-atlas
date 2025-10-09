@@ -82,9 +82,7 @@ if current_app.config["ORGANISM_MODULE"]:
         update_most_obs_taxons = []
         for taxon in mostObsTaxs:
             taxon_info = vmTaxrefRepository.searchEspece(taxon["cd_ref"])
-            photo = vmMedias.getFirstPhoto(
-                taxon["cd_ref"], current_app.config["ATTR_MAIN_PHOTO"]
-            )
+            photo = vmMedias.getFirstPhoto(taxon["cd_ref"], current_app.config["ATTR_MAIN_PHOTO"])
             taxon = {**taxon, **taxon_info["taxonSearch"]}
             taxon["photo"] = photo
             update_most_obs_taxons.append(taxon)
@@ -119,7 +117,10 @@ def index():
 
     # si AFFICHAGE_TERRITOIRE_OBS on charge les données en AJAX
     # si AFFICHAGE_DERNIERES_OBS = False, on ne charge pas les obs
-    if current_app.config["AFFICHAGE_TERRITOIRE_OBS"] or not current_app.config["AFFICHAGE_DERNIERES_OBS"]:
+    if (
+        current_app.config["AFFICHAGE_TERRITOIRE_OBS"]
+        or not current_app.config["AFFICHAGE_DERNIERES_OBS"]
+    ):
         observations = []
     elif current_app.config["AFFICHAGE_DERNIERES_OBS"]:
         if current_app.config["AFFICHAGE_MAILLE"]:
@@ -185,9 +186,7 @@ def ficheEspece(cd_nom):
     areas = vmAreasRepository.getAreasObservationsChilds(cd_ref)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(cd_ref)
     firstPhoto = vmMedias.getFirstPhoto(cd_ref, current_app.config["ATTR_MAIN_PHOTO"])
-    photoCarousel = vmMedias.getPhotoCarousel(
-        cd_ref, current_app.config["ATTR_OTHER_PHOTO"]
-    )
+    photoCarousel = vmMedias.getPhotoCarousel(cd_ref, current_app.config["ATTR_OTHER_PHOTO"])
     videoAudio = vmMedias.getVideo_and_audio(
         cd_ref,
         current_app.config["ATTR_AUDIO"],
@@ -347,8 +346,6 @@ def ficheGroupe(groupe):
 def photos():
     groups = vmTaxonsRepository.getINPNgroupPhotos()
     return render_template("templates/photoGalery/_main.html", groups=groups)
-
-
 
 
 @main.route("/<lang_code>/static/<page>", methods=["GET", "POST"])
