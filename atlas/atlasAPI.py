@@ -1,10 +1,11 @@
 # -*- coding:utf-8 -*-
 import json
 
-from flask import jsonify, Blueprint, request, current_app
+from flask import jsonify, Blueprint, request, current_app, render_template
 
 from atlas import utils
 from atlas.modeles.repositories import (
+    vmTaxonsRepository,
     vmSearchTaxonRepository,
     vmObservationsRepository,
     vmObservationsMaillesRepository,
@@ -110,8 +111,39 @@ if not current_app.config["AFFICHAGE_MAILLE"]:
         )
         return jsonify(observations)
 
+@api.route("/taxonList", methods=["GET"])
+@api.route("/taxonList/area/<id_area>", methods=["GET"])
+@api.route("/taxonList/liste/<cd_ref>", methods=["GET"])
+@api.route("/taxonList/group/<group_name>", methods=["GET"])
+def get_taxon_list(id_area=None, id_group=None, group_name=None, cd_ref=None):
+    connection = db.engine.connect()
 
+    page = request.args.get("page")
+    if not page:
+        page = 0
 
+    page_size = request.args.get("page_size")
+    if not page_size:
+        page_size = current_app.config["ITEMS_PER_PAGE"]
+
+    filter_taxon = request.args.get("filter_taxons")
+    if not filter_taxon:
+        filter_taxon = ""
+
+    if cd_ref:
+        # case of liste sheet (RangTaxonomie)
+        list_taxon = vmTaxonsRepository.getTaxonsChildsList(cd_ref, page, page_size, filter_taxon)
+    else:
+        # case of territory on home sheet, area sheet, group sheet
+        list_taxon = vmTaxonsRepository.getListTaxon(id_area, group_name, page, page_size, filter_taxon)
+    connection.close()
+    # return list_taxon
+    return render_template(
+        "templates/core/taxon.html",
+        listTaxons=list_taxon,
+        DISPLAY_EYE_ON_LIST=True,
+        id_area=id_area,
+    )
 
 @api.route("/photoGroup/<group>", methods=["GET"])
 def getPhotosGroup(group):

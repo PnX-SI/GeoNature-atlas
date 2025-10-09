@@ -113,9 +113,9 @@ if current_app.config["ORGANISM_MODULE"]:
 def index():
 
     if current_app.config["AFFICHAGE_TERRITOIRE_OBS"]:
-        listTaxons = vmTaxonsRepository.getTaxonsTerritory()
+        nb_taxons = vmTaxonsRepository.get_nb_taxons()
     else:
-        listTaxons = []
+        nb_taxons = {}
 
     # si AFFICHAGE_TERRITOIRE_OBS on charge les données en AJAX
     # si AFFICHAGE_DERNIERES_OBS = False, on ne charge pas les obs
@@ -157,7 +157,7 @@ def index():
 
     return render_template(
         "templates/home/_main.html",
-        listTaxons=listTaxons,
+        nb_taxons=nb_taxons,
         observations=observations,
         mostViewTaxon=mostViewTaxon,
         customStatMedias=customStatMedias,
@@ -299,12 +299,10 @@ def _make_groupes_statuts(statuts):
 @main.route("/<lang_code>/area/<int:id_area>", methods=["GET", "POST"])
 @main.route("/area/<int:id_area>", methods=["GET", "POST"])
 def ficheArea(id_area):
-    listTaxons = vmTaxonsRepository.getTaxonsAreas(id_area)
     area = vmAreasRepository.getAreaFromIdArea(id_area)
     stats_area = vmAreasRepository.getStatsByArea(id_area)
     return render_template(
         "templates/areaSheet/_main.html",
-        listTaxons=listTaxons,
         stats_area=stats_area,
         areaInfos=area,
         id_area=id_area,
@@ -313,15 +311,15 @@ def ficheArea(id_area):
 
 @main.route("/<lang_code>/liste/<int(signed=True):cd_ref>", methods=["GET", "POST"])
 @main.route("/liste/<int(signed=True):cd_ref>", methods=["GET", "POST"])
-def ficheRangTaxonomie(cd_ref):
-    listTaxons = vmTaxonsRepository.getTaxonsChildsList(cd_ref)
+def ficheRangTaxonomie(cd_ref=None):
+    nb_taxons = vmTaxonsRepository.get_nb_taxons(cd_ref=cd_ref)
     referenciel = vmTaxrefRepository.getInfoFromCd_ref(cd_ref)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(cd_ref)
     observers = vmObservationsRepository.getObservers(cd_ref)
 
     return render_template(
         "templates/taxoRankSheet/_main.html",
-        listTaxons=listTaxons,
+        nb_taxons=nb_taxons,
         referenciel=referenciel,
         taxonomyHierarchy=taxonomyHierarchy,
         observers=observers,
@@ -332,12 +330,12 @@ def ficheRangTaxonomie(cd_ref):
 @main.route("/groupe/<groupe>", methods=["GET", "POST"])
 def ficheGroupe(groupe):
     groups = vmTaxonsRepository.getAllINPNgroup()
-    listTaxons = vmTaxonsRepository.getTaxonsGroup(groupe)
+    nb_taxons = vmTaxonsRepository.get_nb_taxons(group_name=groupe)
     observers = vmObservationsRepository.getGroupeObservers(groupe)
 
     return render_template(
         "templates/groupSheet/_main.html",
-        listTaxons=listTaxons,
+        nb_taxons=nb_taxons,
         referenciel=groupe,
         groups=groups,
         observers=observers,
