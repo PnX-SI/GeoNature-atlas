@@ -234,7 +234,7 @@ h3.title-spaced {
   }
 }
 
-.list-group {
+.top-species-taxon-list {
   max-height: fit-content;
   height: 100%;
   overflow: scroll;

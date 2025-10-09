@@ -203,6 +203,9 @@ AFFICHAGE_STAT_GLOBALES = True
 # Bloc avec carte et liste des dernières observations. Affichage True/False
 AFFICHAGE_DERNIERES_OBS = True
 
+# Nombre d'éléments récupérés par page lors de la liste de taxon.
+ITEMS_PER_PAGE = 50
+
 # Bloc avec espèces à voir en ce moment. Affichage True/False
 AFFICHAGE_EN_CE_MOMENT = True
 

@@ -47,7 +47,7 @@ def getObservationsChilds(filters, with_taxons=False):
         q_select.append(VmTaxons)
     query = select(*q_select)
     if with_taxons:
-        query = query.join(VmTaxons, VmTaxons.cd_ref==VmObservations.cd_ref)
+        query = query.join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
     if cd_ref:
         subquery = select(func.atlas.find_all_taxons_childs(cd_ref))
         query = query.filter(
@@ -57,9 +57,13 @@ def getObservationsChilds(filters, with_taxons=False):
             )
         )
     if id_area:
-        query = query.where(exists(
-                select(true()).select_from(VmCorAreaSynthese).where(
-                    (VmCorAreaSynthese.id_area == filters["id_area"]) & (VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
+        query = query.where(
+            exists(
+                select(true())
+                .select_from(VmCorAreaSynthese)
+                .where(
+                    (VmCorAreaSynthese.id_area == filters["id_area"])
+                    & (VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
                 )
             )
         )
@@ -69,7 +73,6 @@ def getObservationsChilds(filters, with_taxons=False):
         query = query.limit(100000)
 
     observations = db.session.execute(query).mappings().all()
-
 
     features = []
     for o in observations:
@@ -87,9 +90,8 @@ def getObservationsChilds(filters, with_taxons=False):
     return FeatureCollection(features)
 
 
-
 def lastObservations(mylimit, idPhoto):
-    """ TODO : factoriser avec getObservationsChilds"""
+    """TODO : factoriser avec getObservationsChilds"""
     req = (
         select(
             VmObservations,
@@ -131,7 +133,6 @@ def lastObservations(mylimit, idPhoto):
     return obsList
 
 
-
 def observersParser(req):
     setObs = set()
     tabObs = list()
@@ -157,7 +158,9 @@ def observersParser(req):
 
 
 def getObservers(cd_ref):
-    childs_ids = db.session.execute(select(func.atlas.find_all_taxons_childs(cd_ref))).scalars().all()
+    childs_ids = (
+        db.session.execute(select(func.atlas.find_all_taxons_childs(cd_ref))).scalars().all()
+    )
     taxons = [cd_ref] + childs_ids
 
     req = select(distinct(VmObservations.observateurs).label("observateurs")).filter(

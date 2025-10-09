@@ -5,7 +5,11 @@ from geojson import Feature, FeatureCollection
 from sqlalchemy.sql import text, func, any_, extract, literal, cast, select, exists, true
 from sqlalchemy import Interval
 
-from atlas.modeles.entities.vmObservations import VmObservations, VmObservationsMailles, VMCorMailleObservation
+from atlas.modeles.entities.vmObservations import (
+    VmObservations,
+    VmObservationsMailles,
+    VMCorMailleObservation,
+)
 from atlas.modeles.entities.vmAreas import VmAreas, VmCorAreaSynthese
 from atlas.modeles.entities.vmTaxons import VmTaxons
 from atlas.modeles.entities.vmMedias import VmMedias
@@ -55,51 +59,64 @@ def getObservationsMaillesChilds(filters={}, with_taxons=False):
         taxons_ids.append(int(filters["cd_ref"]))
 
     query_select = [
-            VMCorMailleObservation.id_maille,
-            VmAreas.area_geojson,
-            VMCorMailleObservation.type_code,
-            func.max(func.date_part('year', VmObservations.dateobs)).label("last_obs_year"),
-            func.count(VmObservations.id_observation).label("obs_nbr"),
+        VMCorMailleObservation.id_maille,
+        VmAreas.area_geojson,
+        VMCorMailleObservation.type_code,
+        func.max(func.date_part("year", VmObservations.dateobs)).label("last_obs_year"),
+        func.count(VmObservations.id_observation).label("obs_nbr"),
     ]
     if with_taxons:
         query_select.append(
             func.json_agg(
                 func.distinct(
                     func.jsonb_build_object(
-                        'name', (func.concat(func.coalesce(VmTaxons.nom_vern + ' | ', '') + VmTaxons.lb_nom)),
-                        'cdRef', VmTaxons.cd_ref
+                        "name",
+                        (
+                            func.concat(
+                                func.coalesce(VmTaxons.nom_vern + " | ", "") + VmTaxons.lb_nom
+                            )
+                        ),
+                        "cdRef",
+                        VmTaxons.cd_ref,
                     )
                 )
-            ).label('taxons'),
+            ).label("taxons"),
         )
-    query = select(
-        *query_select
-    ).select_from(VmObservations).join(
-        VMCorMailleObservation, VMCorMailleObservation.id_observation == VmObservations.id_observation
-    ).join(
-        VmAreas, VmAreas.id_area == VMCorMailleObservation.id_maille
-    ).group_by(
+    query = (
+        select(*query_select)
+        .select_from(VmObservations)
+        .join(
+            VMCorMailleObservation,
+            VMCorMailleObservation.id_observation == VmObservations.id_observation,
+        )
+        .join(VmAreas, VmAreas.id_area == VMCorMailleObservation.id_maille)
+        .group_by(
             VMCorMailleObservation.id_maille,
             VmAreas.area_geojson,
             VMCorMailleObservation.type_code,
+        )
     )
     if with_taxons:
-        query = query.join(
-                VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref
-            )
+        query = query.join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
     if taxons_ids:
-        query = query.where(
-             VmObservations.cd_ref == any_(taxons_ids)
-        )
-    if ("year_min" in filters and filters["year_min"]) and ("year_max" in filters and filters["year_max"] ):
+        query = query.where(VmObservations.cd_ref == any_(taxons_ids))
+    if ("year_min" in filters and filters["year_min"]) and (
+        "year_max" in filters and filters["year_max"]
+    ):
         query = query.where(
             VmObservations.dateobs.between(
-                datetime(int(filters["year_min"]), 1,1), datetime(int(filters["year_max"]), 12, 31))
+                datetime(int(filters["year_min"]), 1, 1),
+                datetime(int(filters["year_max"]), 12, 31),
             )
+        )
     if "id_area" in filters and filters["id_area"]:
-        query = query.where(exists(
-                select(true()).select_from(VmCorAreaSynthese).where(
-                    (VmCorAreaSynthese.id_area == filters["id_area"]) & (VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
+        query = query.where(
+            exists(
+                select(true())
+                .select_from(VmCorAreaSynthese)
+                .where(
+                    (VmCorAreaSynthese.id_area == filters["id_area"])
+                    & (VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
                 )
             )
         )
@@ -113,45 +130,50 @@ def getObservationsMaillesChilds(filters={}, with_taxons=False):
                     "type_code": o.type_code,
                     "nb_observations": int(o.obs_nbr),
                     "last_observation": o.last_obs_year,
-                    "taxons": o.taxons if with_taxons else None
+                    "taxons": o.taxons if with_taxons else None,
                 },
             )
             for o in db.session.execute(query).all()
         ]
     )
 
+
 # last observation for index.html
 def lastObservationsMailles(mylimit, idPhoto):
     query = (
-            select(
-                VmObservations,
-                VMCorMailleObservation,
-                VmTaxons.lb_nom, 
-                VmTaxons.nom_vern, 
-                VmTaxons.group2_inpn,
-                VmMedias.url,  
-                VmMedias.chemin, 
-                VmMedias.id_media,
-                VmAreas.area_geojson
-            )
-            .select_from(
-                VmObservations
-            ).join(
-                VMCorMailleObservation, VMCorMailleObservation.id_observation == VmObservations.id_observation
-            ).join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
-            .join(VmAreas, VmAreas.id_area == VMCorMailleObservation.id_maille)
-            .outerjoin(
-                VmMedias, (VmMedias.cd_ref == VmObservations.cd_ref) & (VmMedias.id_type == idPhoto)
-            ).where(VmObservations.dateobs >= (func.current_timestamp() - cast(literal(mylimit), Interval)))
-            .order_by(VmObservations.dateobs.desc())
+        select(
+            VmObservations,
+            VMCorMailleObservation,
+            VmTaxons.lb_nom,
+            VmTaxons.nom_vern,
+            VmTaxons.group2_inpn,
+            VmMedias.url,
+            VmMedias.chemin,
+            VmMedias.id_media,
+            VmAreas.area_geojson,
         )
+        .select_from(VmObservations)
+        .join(
+            VMCorMailleObservation,
+            VMCorMailleObservation.id_observation == VmObservations.id_observation,
+        )
+        .join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
+        .join(VmAreas, VmAreas.id_area == VMCorMailleObservation.id_maille)
+        .outerjoin(
+            VmMedias, (VmMedias.cd_ref == VmObservations.cd_ref) & (VmMedias.id_type == idPhoto)
+        )
+        .where(
+            VmObservations.dateobs >= (func.current_timestamp() - cast(literal(mylimit), Interval))
+        )
+        .order_by(VmObservations.dateobs.desc())
+    )
 
     results = db.session.execute(query).mappings().all()
-    
+
     obsList = list()
     for row in results:
         print(row)
-        vm_obj_maille_obj = row["VMCorMailleObservation"] # Objet ORM VmObservationsMailles
+        vm_obj_maille_obj = row["VMCorMailleObservation"]  # Objet ORM VmObservationsMailles
         vm_obs_obj = row["VmObservations"]
         if row.nom_vern:
             inter = row.nom_vern.split(",")

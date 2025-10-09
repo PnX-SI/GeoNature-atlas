@@ -13,7 +13,6 @@
     {# Ajoutez ici les assets complémentaires qui seront dans le bloc <head></head> #}
     <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/datatables.net-bs5/css/dataTables.bootstrap5.css') }}">
     <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-bs5/js/dataTables.bootstrap5.js') }}"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/listEspeces.css') }}"/>
 {% endblock %}
 
 {% block additionalFooterAssets %}
@@ -29,7 +28,6 @@
     </script>
 
     <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-bs5/js/dataTables.bootstrap5.js') }}"></script>
-    <script src="{{ url_for('static', filename='listeEspeces.js') }}"></script>
 {% endblock %}
 
 {% block content %}
