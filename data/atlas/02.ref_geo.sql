@@ -80,14 +80,14 @@ CREATE INDEX ON atlas.vm_cor_areas
 -- l_areas
 CREATE MATERIALIZED VIEW atlas.vm_l_areas AS
     SELECT
-        a.id_area AS id_area,
-        a.area_code AS area_code,
-        a.area_name AS area_name,
-        a.id_type AS id_type,
-        a.geom_local AS geom_local,
+        a.id_area,
+        a.area_code,
+        a.area_name,
+        a.id_type,
+        a.geom AS geom_local,
         a.geom_4326 AS the_geom,
         st_asgeojson(a.geom_4326) AS area_geojson,
-        a.description AS "description"
+        a."description"
     FROM ref_geo.l_areas AS a
         JOIN ref_geo.bib_areas_types AS bat
             ON a.id_type = bat.id_type
@@ -109,8 +109,10 @@ CREATE INDEX ON atlas.vm_l_areas
     USING gist (the_geom);
 
 CREATE INDEX ON atlas.vm_l_areas
-    USING btree (area_code);
+    USING gist (geom_local);
 
+CREATE INDEX ON atlas.vm_l_areas
+    USING btree (area_code);
 
 -- +-----------------------------------------------------------------------------------------------+
 -- Function refresh_materialized_view_ref_geo()
