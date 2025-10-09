@@ -28,7 +28,7 @@ class TOrdreListeRouge(db.Model):
     
 
 class CorTaxonStatutArea(db.Model):
-    __tablename__ = "vm_cor_taxon_statut_area_spread"
+    __tablename__ = "vm_cor_taxon_statut_area"
     __table_args__ = {"schema": "atlas"}
     cd_ref: Mapped[int] = mapped_column(primary_key=True)
     id_area: Mapped[int] = mapped_column(primary_key=True)

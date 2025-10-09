@@ -106,23 +106,6 @@ FULL OUTER JOIN protection p
  AND m.id_area = p.id_area;
    
 
-CREATE materialized view atlas.vm_cor_taxon_statut_area_spread AS
-    SELECT cor.cd_ref,
-        child.id_area,
-        cor.statut_menace,
-        cor.niveau_application_menace,
-        cor.protege
-    FROM atlas.vm_cor_taxon_statut_area cor
-    JOIN atlas.vm_l_areas parent ON parent.id_area = cor.id_area
-    JOIN atlas.vm_l_areas child on st_intersects(child.geom_local, parent.geom_local) AND 
-        st_within(child.geom_local, st_buffer(parent.geom_local, 100))    
-    JOIN atlas.vm_bib_areas_types bat ON bat.id_type = child.id_type
-    WHERE bat.type_code = ANY(SELECT * FROM string_to_table(:'type_code', ','))
-UNION 
-    SELECT *
-    FROM 
-    atlas.vm_cor_taxon_statut_area;
-
 
 
 

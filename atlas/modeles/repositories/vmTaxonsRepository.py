@@ -9,7 +9,7 @@ from atlas.modeles.entities.vmObservations import VmObservations
 from atlas.modeles.entities.vmAreas import VmCorAreaSynthese
 from atlas.modeles.entities.vmMedias import VmMedias
 from atlas.modeles.entities.vmTaxons import VmTaxons
-from atlas.modeles.entities.vmAreas import VmAreas
+from atlas.modeles.entities.vmAreas import VmCorAreas, VmBibAreasTypes, VmAreas
 
 from atlas.modeles import utils
 from atlas.env import db
@@ -87,6 +87,11 @@ def getTaxonsAreas(id_area):
         .group_by(VmObservations.cd_ref)
     ).subquery()
 
+    id_area_dep = select(VmCorAreas.id_area_group).select_from(VmCorAreas).join(
+        VmAreas, VmAreas.id_area == VmCorAreas.id_area_group
+    ).join(VmBibAreasTypes, VmAreas.id_type == VmBibAreasTypes.id_type).filter(
+        (VmBibAreasTypes.type_code == 'DEP') & (VmCorAreas.id_area == id_area)
+    ).subquery()
     req = (
         select(
             VmTaxons.cd_ref,
@@ -109,7 +114,7 @@ def getTaxonsAreas(id_area):
         .outerjoin(
             CorTaxonStatutArea,
             (CorTaxonStatutArea.cd_ref == VmTaxons.cd_ref) & 
-            (CorTaxonStatutArea.id_area == id_area)   
+            (CorTaxonStatutArea.id_area == id_area_dep)   
         )
         .outerjoin(
             VmMedias, (VmMedias.cd_ref == VmTaxons.cd_ref) & (VmMedias.id_type == id_photo)
