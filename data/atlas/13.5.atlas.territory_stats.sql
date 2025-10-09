@@ -21,7 +21,13 @@ select
  join atlas.vm_taxons tax on tax.cd_ref = obs.cd_ref
  LEFT JOIN gn_meta.cor_dataset_actor AS rcda ON obs.id_dataset = rcda.id_dataset
  LEFT JOIN utilisateurs.bib_organismes AS u ON rcda.id_organism = u.id_organisme
- left JOIN atlas.vm_cor_taxon_statut_area_spread AS tam ON tam.cd_ref = tax.cd_ref and tam.id_area = vcas.id_area
+ LEFT JOIN (
+    SELECT cor.id_area_parent, cor.id_area
+    FROM atlas.vm_cor_areas cor 
+    JOIN atlas.vm_l_areas ar ON cor.id_area = ar.id_area 
+    JOIN atlas.vm_bib_areas_types bib ON bib.id_type = ar.id_type AND bib.type_code = 'DEP'
+ ) as cor_dep ON vcas.id_area = cor_dep.id_area
+ left JOIN atlas.vm_cor_taxon_statut_area AS tam ON tam.cd_ref = tax.cd_ref and tam.id_area = cor_dep.id_area_parent
  WHERE bat.type_code = ANY(SELECT * FROM string_to_table(:'type_code', ','))
  GROUP BY vla.id_area;
 
@@ -51,9 +57,15 @@ select
  join atlas.vm_l_areas vla on vla.id_area = vcas.id_area 
  JOIN atlas.vm_bib_areas_types AS bat ON  bat.id_type = vla.id_type
  join atlas.vm_taxons tax on tax.cd_ref = obs.cd_ref
+  LEFT JOIN (
+    SELECT cor.id_area_parent, cor.id_area
+    FROM atlas.vm_cor_areas cor 
+    JOIN atlas.vm_l_areas ar ON cor.id_area = ar.id_area 
+    JOIN atlas.vm_bib_areas_types bib ON bib.id_type = ar.id_type AND bib.type_code = 'DEP'
+ ) as cor_dep ON vcas.id_area = cor_dep.id_area
  LEFT JOIN gn_meta.cor_dataset_actor AS rcda ON obs.id_dataset = rcda.id_dataset
  LEFT JOIN utilisateurs.bib_organismes AS u ON rcda.id_organism = u.id_organisme
- left JOIN atlas.vm_cor_taxon_statut_area_spread AS tam ON tam.cd_ref = tax.cd_ref and tam.id_area = vcas.id_area
+ left JOIN atlas.vm_cor_taxon_statut_area AS tam ON tam.cd_ref = tax.cd_ref and tam.id_area = cor_dep.id_area_parent
  WHERE bat.type_code = ANY(SELECT * FROM string_to_table(:'type_code', ','))
  GROUP BY vla.id_area, tax.group2_inpn;
 
