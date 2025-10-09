@@ -15,77 +15,53 @@ from atlas.modeles import utils
 from atlas.env import db
 
 
-def getTaxonsTerritory():
-    """ Renvoie la liste de taxon de tout le terrtoire de l'atlas"""
-    id_type = current_app.config["ATTR_MAIN_PHOTO"]
-    req = (
-        select(
-            VmObservations.cd_ref,
-            func.max(func.date_part("year", VmObservations.dateobs)).label("last_obs"),
-            func.count(VmObservations.id_observation).label("nb_obs"),
-            VmTaxons.nom_complet_html,
-            VmTaxons.nom_vern,
-            VmTaxons.group2_inpn,
-            VmTaxons.patrimonial,
-            VmTaxons.protection_stricte,
-            VmMedias.url,
-            VmMedias.chemin,
-            VmMedias.id_media,
-        )
-        .join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
-        .outerjoin(
-            VmMedias, (VmMedias.cd_ref == VmObservations.cd_ref) & (VmMedias.id_type == id_type)
-        )
-        .group_by(
-            VmObservations.cd_ref,
-            VmTaxons.nom_vern,
-            VmTaxons.nom_complet_html,
-            VmTaxons.group2_inpn,
-            VmTaxons.patrimonial,
-            VmTaxons.protection_stricte,
-            VmMedias.url,
-            VmMedias.chemin,
-            VmMedias.id_media,
-        )
-        .order_by(func.count(VmObservations.id_observation).desc())
-        .distinct()
+def get_nb_taxons(cd_ref=None, group_name=None):
+    query = select(
+        func.count(distinct(VmObservations.cd_ref)).label("nb_taxons"),
+        func.count(distinct(VmObservations.id_observation)).label("nb_obs_total"),
     )
-    results = db.session.execute(req).all()
-    taxon_list = list()
-    nbObsTotal = 0
-    for r in results:
-        temp = {
-            "nom_complet_html": r.nom_complet_html,
-            "nb_obs": r.nb_obs,
-            "nom_vern": r.nom_vern,
-            "cd_ref": r.cd_ref,
-            "last_obs": r.last_obs,
-            "group2_inpn": utils.deleteAccent(r.group2_inpn),
-            "patrimonial": r.patrimonial,
-            "protection_stricte": r.protection_stricte,
-            "path": utils.findPath(r),
-            "id_media": r.id_media,
-        }
-        taxon_list.append(temp)
-        nbObsTotal = nbObsTotal + r.nb_obs
-    return {"taxons": taxon_list, "nbObsTotal": nbObsTotal}
+    if cd_ref:
+        childs_ids = select(func.atlas.find_all_taxons_childs(cd_ref))
+        query = (
+            query.join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
+            .join(TBibTaxrefRang, func.trim(VmTaxons.id_rang) == func.trim(TBibTaxrefRang.id_rang))
+            .filter(VmTaxons.cd_ref.in_(childs_ids))
+        )
+    if group_name:
+        query = query.join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref).filter(
+            VmTaxons.group2_inpn == group_name
+        )
+    results = db.session.execute(query).all()
+    return {"nb_taxons": results[0].nb_taxons, "nb_obs_total": results[0].nb_obs_total}
 
 
 # With distinct the result in a array not an object, 0: lb_nom, 1: nom_vern
-def getTaxonsAreas(id_area):
+def getListTaxon(id_area=None, group_name=None, page=0, page_size=current_app.config["ITEMS_PER_PAGE"], filter_taxon=""):
     id_photo = current_app.config["ATTR_MAIN_PHOTO"]
-    
-    # sub query to get statistics by cd_ref
-    obs_in_area = (
-        select(
-            VmObservations.cd_ref, 
-            func.max(func.date_part("year", VmObservations.dateobs)).label("last_obs"),
-            func.count(distinct(VmObservations.id_observation)).label("nb_obs")
-        ).select_from(VmObservations)
-        .join(VmCorAreaSynthese, VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
-        .filter(VmCorAreaSynthese.id_area == id_area)
-        .group_by(VmObservations.cd_ref)
-    ).subquery()
+    if id_area:
+        obs_in_area = (
+            select(
+                func.count(distinct(VmObservations.id_observation)).label("nb_obs"),
+                func.max(func.date_part("year", VmObservations.dateobs)).label("last_obs"),
+                VmObservations.cd_ref,
+            )
+            .select_from(VmObservations)
+            .join(
+                VmCorAreaSynthese, VmCorAreaSynthese.id_synthese == VmObservations.id_observation
+            )
+            .group_by(VmObservations.cd_ref)
+            .filter(VmCorAreaSynthese.id_area == id_area)
+        ).subquery()
+    else:
+        obs_in_area = (
+            select(
+                func.count(distinct(VmObservations.id_observation)).label("nb_obs"),
+                func.max(func.date_part("year", VmObservations.dateobs)).label("last_obs"),
+                VmObservations.cd_ref,
+            )
+            .select_from(VmObservations)
+            .group_by(VmObservations.cd_ref)
+        ).subquery()
 
     id_area_dep = select(VmCorAreas.id_area_parent).select_from(VmCorAreas).join(
         VmAreas, VmAreas.id_area == VmCorAreas.id_area_parent
@@ -113,17 +89,20 @@ def getTaxonsAreas(id_area):
         .join(obs_in_area, obs_in_area.c.cd_ref == VmTaxons.cd_ref)
         .outerjoin(
             CorTaxonStatutArea,
-            (CorTaxonStatutArea.cd_ref == VmTaxons.cd_ref) & 
-            (CorTaxonStatutArea.id_area == id_area_dep)   
+            (CorTaxonStatutArea.cd_ref == VmTaxons.cd_ref)
+            & (CorTaxonStatutArea.id_area == id_area),
         )
-        .outerjoin(
-            VmMedias, (VmMedias.cd_ref == VmTaxons.cd_ref) & (VmMedias.id_type == id_photo)
-        )
-        .order_by(desc(obs_in_area.c.nb_obs))
+        .outerjoin(VmMedias, (VmMedias.cd_ref == VmTaxons.cd_ref) & (VmMedias.id_type == id_photo))
+        .order_by(obs_in_area.c.nb_obs.desc())
+        .limit(int(page_size))
+        .offset(int(page) * int(page_size))
     )
+    if filter_taxon:
+        req = req.where(VmTaxons.nom_vern.ilike(f"%{filter_taxon}%"))
+    if group_name:
+        req = req.filter(VmTaxons.group2_inpn == group_name)
     results = db.session.execute(req).all()
     taxonAreasList = list()
-    nbObsTotal = 0
     for r in results:
         temp = {
             "nom_complet_html": r.nom_complet_html,
@@ -140,11 +119,10 @@ def getTaxonsAreas(id_area):
             "niveau_application_menace": r.niveau_application_menace,
         }
         taxonAreasList.append(temp)
-        nbObsTotal = nbObsTotal + r.nb_obs
-    return {"taxons": taxonAreasList, "nbObsTotal": nbObsTotal}
+    return {"taxons": taxonAreasList}
 
 
-def getTaxonsChildsList(cd_ref):
+def getTaxonsChildsList(cd_ref, page=0, page_size=current_app.config["ITEMS_PER_PAGE"], filter_taxon=""):
     id_photo = current_app.config["ATTR_MAIN_PHOTO"]
     childs_ids = select(func.atlas.find_all_taxons_childs(cd_ref))
     req = (
@@ -165,10 +143,14 @@ def getTaxonsChildsList(cd_ref):
         .join(TBibTaxrefRang, func.trim(VmTaxons.id_rang) == func.trim(TBibTaxrefRang.id_rang))
         .outerjoin(VmMedias, (VmMedias.cd_ref == VmTaxons.cd_ref) & (VmMedias.id_type == id_photo))
         .filter(VmTaxons.cd_ref.in_(childs_ids))
+        .order_by(VmTaxons.nb_obs.desc())
+        .limit(int(page_size))
+        .offset(int(page) * int(page_size))
     )
+    if filter_taxon:
+        req = req.where(VmTaxons.nom_vern.ilike(f"%{filter_taxon}%"))
     results = db.session.execute(req).all()
     taxonRankList = list()
-    nbObsTotal = 0
     for r in results:
         temp = {
             "nom_complet_html": r.nom_complet_html,
@@ -183,8 +165,7 @@ def getTaxonsChildsList(cd_ref):
             "id_media": r.id_media,
         }
         taxonRankList.append(temp)
-        nbObsTotal = nbObsTotal + r.nb_obs
-    return {"taxons": taxonRankList, "nbObsTotal": nbObsTotal}
+    return {"taxons": taxonRankList}
 
 
 def getINPNgroupPhotos():
@@ -205,59 +186,6 @@ def getINPNgroupPhotos():
         temp = {"group": utils.deleteAccent(r.group2_inpn), "groupAccent": r.group2_inpn}
         groupList.append(temp)
     return groupList
-
-
-def getTaxonsGroup(groupe):
-    id_photo = current_app.config["ATTR_MAIN_PHOTO"]
-    req = (
-        select(
-            VmTaxons.cd_ref,
-            VmTaxons.nom_complet_html,
-            VmTaxons.nom_vern,
-            VmTaxons.nb_obs,
-            VmTaxons.group2_inpn,
-            VmTaxons.protection_stricte,
-            VmTaxons.patrimonial,
-            VmTaxons.yearmax,
-            VmMedias.chemin,
-            VmMedias.url,
-            VmMedias.id_media,
-        )
-        .outerjoin(VmMedias, (VmMedias.cd_ref == VmTaxons.cd_ref) & (VmMedias.id_type == id_photo))
-        .filter(VmTaxons.group2_inpn == groupe)
-        .group_by(
-            VmTaxons.cd_ref,
-            VmTaxons.nom_complet_html,
-            VmTaxons.nom_vern,
-            VmTaxons.nb_obs,
-            VmTaxons.group2_inpn,
-            VmTaxons.protection_stricte,
-            VmTaxons.patrimonial,
-            VmTaxons.yearmax,
-            VmMedias.chemin,
-            VmMedias.url,
-            VmMedias.id_media,
-        )
-    )
-    results = db.session.execute(req).all()
-    tabTaxons = list()
-    nbObsTotal = 0
-    for r in results:
-        nbObsTotal = nbObsTotal + r.nb_obs
-        temp = {
-            "nom_complet_html": r.nom_complet_html,
-            "nb_obs": r.nb_obs,
-            "nom_vern": r.nom_vern,
-            "cd_ref": r.cd_ref,
-            "last_obs": r.yearmax,
-            "group2_inpn": utils.deleteAccent(r.group2_inpn),
-            "patrimonial": r.patrimonial,
-            "protection_stricte": r.protection_stricte,
-            "id_media": r.id_media,
-            "path": utils.findPath(r),
-        }
-        tabTaxons.append(temp)
-    return {"taxons": tabTaxons, "nbObsTotal": nbObsTotal}
 
 
 # get all groupINPN

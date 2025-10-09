@@ -4,14 +4,14 @@
 
 {% block additionalHeaderAssets %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}"/>
-{% endblock %}
-
-{% block additionalFooterAssets %}
     <script type="text/javascript">
         var observations = {{observations|tojson}},
             configuration = {{configuration|tojson}},
             url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
     </script>
+{% endblock %}
+
+{% block additionalFooterAssets %}
     <script src="{{ url_for('static', filename='main.js') }}"></script>
     {% if configuration.AFFICHAGE_DERNIERES_OBS or configuration.AFFICHAGE_TERRITOIRE_OBS %}
         <script src="{{ url_for('static', filename='custom/maps-custom.js') }}"></script>

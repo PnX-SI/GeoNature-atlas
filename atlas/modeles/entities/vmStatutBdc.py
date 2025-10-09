@@ -25,7 +25,7 @@ class TOrdreListeRouge(db.Model):
     __table_args__ = {"schema": "atlas"}
     id_order: Mapped[int] = mapped_column(primary_key=True)
     code_statut: Mapped[str] = mapped_column(primary_key=True)
-    
+
 
 class CorTaxonStatutArea(db.Model):
     __tablename__ = "vm_cor_taxon_statut_area"
@@ -35,5 +35,3 @@ class CorTaxonStatutArea(db.Model):
     statut_menace: Mapped[str] = mapped_column()
     niveau_application_menace: Mapped[str] = mapped_column()
     protege: Mapped[bool] = mapped_column()
-
-

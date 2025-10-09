@@ -16,7 +16,9 @@ def getAltitudesChilds(cd_ref):
     alt_cols = [label[0] for label in altitude_labels]
 
     # 2. Récupération des cd_ref enfants (fonction PL/pgSQL)
-    childs_ids = db.session.execute(select(func.atlas.find_all_taxons_childs(cd_ref))).scalars().all()
+    childs_ids = (
+        db.session.execute(select(func.atlas.find_all_taxons_childs(cd_ref))).scalars().all()
+    )
     all_ids = childs_ids + [cd_ref]  # inclut le parent
 
     # 3. Construire les colonnes dynamiques SUM(...) en ORM

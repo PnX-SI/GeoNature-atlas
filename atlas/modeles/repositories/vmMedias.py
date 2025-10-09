@@ -9,6 +9,7 @@ from atlas.modeles.entities.vmTaxons import VmTaxons
 from atlas.modeles import utils
 from atlas.env import db
 
+
 def _format_media(r):
     """
     Return a dict from request of the t_media table
