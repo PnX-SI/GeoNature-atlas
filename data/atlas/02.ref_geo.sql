@@ -32,11 +32,11 @@ CREATE MATERIALIZED VIEW atlas.t_layer_territoire AS
     FROM territory
 WITH DATA;
 
-CREATE INDEX ON atlas.t_layer_territoire
-    USING gist (the_geom);
-
 CREATE UNIQUE INDEX ON atlas.t_layer_territoire
     USING btree (gid);
+
+CREATE INDEX ON atlas.t_layer_territoire
+    USING gist (the_geom);
 
 
 -- +-----------------------------------------------------------------------------------------------+
@@ -50,7 +50,7 @@ CREATE MATERIALIZED VIEW atlas.vm_bib_areas_types AS
     FROM ref_geo.bib_areas_types
 WITH DATA;
 
-CREATE INDEX ON atlas.vm_bib_areas_types
+CREATE UNIQUE INDEX ON atlas.vm_bib_areas_types
     USING btree (id_type);
 
 CREATE INDEX ON atlas.vm_bib_areas_types
@@ -69,8 +69,8 @@ CREATE MATERIALIZED VIEW atlas.vm_cor_areas AS
     FROM ref_geo.cor_areas
 WITH DATA;
 
-CREATE INDEX ON atlas.vm_cor_areas
-    USING btree (id_area_group);
+CREATE UNIQUE INDEX ON atlas.vm_cor_areas
+    USING btree (id_area_group, id_area);
 
 CREATE INDEX ON atlas.vm_cor_areas
     USING btree (id_area);
