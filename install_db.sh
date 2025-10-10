@@ -185,39 +185,6 @@ function checkDockerVariables() {
     printInfo ">All required Docker environment variables are set => ${Gre}OK"
 }
 
-function convertDockerVariables() {
-    printMsg "Converting Docker environment variables..."
-
-    # Convert ATLAS_DROP_SCHEMA to boolean
-    if [[ "${ATLAS_DROP_SCHEMA}" = "true" || "${ATLAS_DROP_SCHEMA}" = 1 ]]; then
-        ATLAS_DROP_SCHEMA=true
-    else
-        ATLAS_DROP_SCHEMA=false
-    fi
-
-    # Convert ATLAS_ALTITUDES to array
-    altitudes=(${ATLAS_ALTITUDES})
-
-    # Assign other variables
-    type_territoire="${ATLAS_TYPE_TERRITOIRE}"
-    type_code="${ATLAS_TYPE_CODE}"
-    type_maille="${ATLAS_TYPE_MAILLE}"
-    time="${ATLAS_MOST_OBSERVED_TIME}"
-
-    # Assign DB connection variables
-    db_name="${POSTGRES_DB}"
-    db_host="${POSTGRES_HOST}"
-    db_port="${POSTGRES_PORT}"
-    user_pg="${POSTGRES_USER}"
-    owner_atlas="${POSTGRES_USER}"
-    db_user="${POSTGRES_USER}"
-    user_pg_pass="${POSTGRES_PASSWORD}"
-    owner_atlas_pass="${POSTGRES_PASSWORD}"
-    db_password="${POSTGRES_PASSWORD}"
-
-    printInfo ">All Docker environment variables converted => ${Gre}OK"
-}
-
 function hasAtlasSchema() {
     local query="SELECT exists(SELECT schema_name FROM information_schema.schemata WHERE schema_name = 'atlas');"
     local schema_atlas_exists=$(
