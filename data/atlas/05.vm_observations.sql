@@ -11,9 +11,12 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
                 ON se.id_nomenclature = s.id_nomenclature_sensitivity
             LEFT JOIN ref_nomenclatures.t_nomenclatures AS st
                 ON s.id_nomenclature_observation_status = st.id_nomenclature
+            LEFT JOIN ref_nomenclatures.t_nomenclatures AS sv
+                ON s.id_nomenclature_valid_status = sv.id_nomenclature
         WHERE s.the_geom_point IS NOT NULL
             AND (st.cd_nomenclature = 'Pr' OR s.id_nomenclature_observation_status IS NULL)
             AND (se.cd_nomenclature = '0' OR s.id_nomenclature_sensitivity IS NULL)
+            AND (sv.cd_nomenclature IN ('0', '1', '2') OR s.id_nomenclature_valid_status IS NULL)
 
         UNION
 
@@ -25,6 +28,8 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
         FROM gn_synthese.synthese AS s
             LEFT JOIN ref_nomenclatures.t_nomenclatures AS st
                 ON s.id_nomenclature_observation_status = st.id_nomenclature
+            LEFT JOIN ref_nomenclatures.t_nomenclatures AS sv
+                ON s.id_nomenclature_valid_status = sv.id_nomenclature
             JOIN gn_synthese.cor_area_synthese AS cas
                 ON cas.id_synthese = s.id_synthese
             JOIN atlas.vm_l_areas AS a
@@ -39,8 +44,9 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
                     AND csat.id_area_type = bat.id_type
                 )
         WHERE s.the_geom_point IS NOT NULL
-            AND (st.cd_nomenclature = 'Pr' OR s.id_nomenclature_observation_status IS NULL)
             AND se.cd_nomenclature NOT IN ('0', '4', '2.8')
+            AND (st.cd_nomenclature = 'Pr' OR s.id_nomenclature_observation_status IS NULL)
+            AND (sv.cd_nomenclature IN ('0', '1', '2') OR s.id_nomenclature_valid_status IS NULL)
         GROUP BY s.id_synthese, se.cd_nomenclature
     )
     SELECT
