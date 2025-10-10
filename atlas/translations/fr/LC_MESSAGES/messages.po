@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-07 16:11+0200\n"
+"POT-Creation-Date: 2025-10-10 15:56+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -152,7 +152,7 @@ msgid "obs.number.s"
 msgstr "Nombre d'observation(s)"
 
 #: templates/areaSheet/_main.html:34 templates/areaSheet/statArea.html:8
-#: templates/core/listTaxons.html:94 templates/core/statHierarchy.html:7
+#: templates/core/listTaxons.html:99 templates/core/statHierarchy.html:7
 #: templates/home/globalStats.html:16 templates/home/taxoRank.html:49
 #: templates/organismSheet/statsInfos.html:15
 #: templates/organismSheet/topSpecies.html:44
@@ -256,7 +256,7 @@ msgstr "sur le territoire"
 msgid "by.taxonomic.group"
 msgstr "par groupe taxonomique"
 
-#: templates/areaSheet/statArea.html:8 templates/core/listTaxons.html:94
+#: templates/areaSheet/statArea.html:8 templates/core/listTaxons.html:99
 #: templates/core/statHierarchy.html:7
 #: templates/organismSheet/topSpecies.html:42
 #: templates/speciesSheet/map.html:15
@@ -338,14 +338,14 @@ msgstr "Commencez à taper le nom d'une espèce"
 msgid "asearch.remove.selection"
 msgstr "Retirer de la sélection"
 
-#: templates/core/advanced_search.html:406 templates/core/listTaxons.html:104
+#: templates/core/advanced_search.html:406 templates/core/listTaxons.html:109
 #: templates/home/lastObs.html:47 templates/home/mostViewNow.html:33
 #: templates/home/newSpecies.html:48 templates/home/taxoRank.html:61
 #: templates/organismSheet/topSpecies.html:76
 msgid "species.sheet"
 msgstr "Fiche espèce"
 
-#: templates/core/advanced_search.html:407 templates/core/listTaxons.html:102
+#: templates/core/advanced_search.html:407 templates/core/listTaxons.html:107
 #: templates/organismSheet/topSpecies.html:75
 #: templates/speciesSheet/identityCard.html:171
 msgid "check.species.sheet"
@@ -366,10 +366,22 @@ msgid "this.taxon.has.a.protected.status"
 msgstr "Ce taxon a un statut de protection"
 
 #: templates/core/listTaxons.html:73
+msgid "threatened.CR"
+msgstr "Espèce en danger critique"
+
+#: templates/core/listTaxons.html:74
+msgid "threatened.EN"
+msgstr "Espèce en danger"
+
+#: templates/core/listTaxons.html:75
+msgid "threatened.VU"
+msgstr "Espèce vulnérable"
+
+#: templates/core/listTaxons.html:78
 msgid "threatened"
 msgstr "Menacée"
 
-#: templates/core/listTaxons.html:97
+#: templates/core/listTaxons.html:102
 msgid "last.obs.in"
 msgstr "Dernière observation en "
 
@@ -621,13 +633,3 @@ msgstr "Observation pour le taxon"
 
 #~ msgid "threatened.specie"
 #~ msgstr "Espèce menacée"
-
-#~ msgid "threatened.CR"
-#~ msgstr "Espèce en danger critique"
-
-#~ msgid "threatened.EN"
-#~ msgstr "Espèce en danger"
-
-#~ msgid "threatened.VU"
-#~ msgstr "Espèce vulnérable"
-
