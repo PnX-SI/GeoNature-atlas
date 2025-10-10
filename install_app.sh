@@ -113,6 +113,9 @@ function runDefaultInstall() {
 function runDockerInstall() {
     printVerbose "Running Docker install..."
 
+    convertDockerVariables
+    updatePythonConfigFile
+
     createCustomTemplates
     createCustomImages
     createOtherCustomFiles
