@@ -98,6 +98,7 @@ if not current_app.config["AFFICHAGE_MAILLE"]:
 @api.route("/taxonList/area/<id_area>", methods=["GET"])
 @api.route("/taxonList/liste/<cd_ref>", methods=["GET"])
 @api.route("/taxonList/group/<group_name>", methods=["GET"])
+@cache.cached(query_string=True)
 def get_taxon_list(id_area=None, cd_ref=None, group_name=None):
     """
     return a list of taxon in html with various filters
@@ -125,6 +126,7 @@ def get_taxon_list(id_area=None, cd_ref=None, group_name=None):
 @api.route("/taxonListJson/area/<id_area>", methods=["GET"])
 @api.route("/taxonListJson/liste/<cd_ref>", methods=["GET"])
 @api.route("/taxonListJson/group/<group_name>", methods=["GET"])
+@cache.cached(query_string=True)
 def get_taxon_list_json(id_area=None, cd_ref=None, group_name=None):
     """
     return a list of taxon in JSON with various filters
@@ -145,6 +147,7 @@ def get_taxon_list_json(id_area=None, cd_ref=None, group_name=None):
 
 
 @api.route("/photoGroup/<group>", methods=["GET"])
+@cache.cached()
 def getPhotosGroup(group):
     photos = vmMedias.getPhotosGalleryByGroup(
         current_app.config["ATTR_MAIN_PHOTO"],
@@ -155,6 +158,7 @@ def getPhotosGroup(group):
 
 
 @api.route("/photosGallery", methods=["GET"])
+@cache.cached()
 def getPhotosGallery():
     photos = vmMedias.getPhotosGallery(
         current_app.config["ATTR_MAIN_PHOTO"], current_app.config["ATTR_OTHER_PHOTO"]
@@ -175,6 +179,7 @@ def rank_stat():
 
 
 @api.route("/area_chart_values/<id_area>", methods=["GET"])
+@cache.cached()
 def get_area_chart_valuesAPI(id_area):
     stats = vmAreasRepository.getStatsByArea(id_area)
     nb_species = stats["nb_species"]
