@@ -9,6 +9,27 @@ $('#map').click(function(){
     map.scrollWheelZoom.enable();
 })
 
+function displayObsTaxonMaille(cd_ref) {
+    $.ajax({
+        url:
+        configuration.URL_APPLICATION + "/api/observationsMaille",
+        data: {
+            "cd_ref": cd_ref
+        },
+        dataType: "json",
+        beforeSend: function () {
+            $("#loaderSpinner").show();
+        }
+    }).done(function (observations) {
+        $("#loaderSpinner").hide();
+        if (currentLayer) {
+            map.removeLayer(currentLayer);
+        }
+        clearOverlays();
+        displayMailleLayerFicheEspece(observations);
+    });
+}
+
 
 function refreshTerritoryArea(elem) {
     document.querySelector("#taxonList .current")?.classList.remove("current")
