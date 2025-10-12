@@ -90,7 +90,7 @@ NOTES :
 
 * Dans le cas où vous souhaitez connecter l'atlas à une BDD distante de GeoNature v2, il faut au préalable créer un utilisateur spécifique pour l'atlas dans cette dernière (lecture seule). Pour cela se connecter en SSH au serveur hébergeant la BDD mère de GeoNature v2 et lancez les commandes suivantes en les adaptant. Faire ensuite correspondre avec les paramètres concernés dans le fichier ``settings.ini`` (``atlas_source_user`` et ``atlas_source_pass``) :
 
-::
+  ::
 
     sudo su - postgres
     psql
@@ -117,12 +117,9 @@ Pour accelérer l'installation, vous pouvez "désactiver" certaines communes du 
     where insee_dep in ('MON_CODE_DEPARTEMENT', 'MON_CODE_DEPARTEMENT_BIS')
     )
 
-
 :note:
 
     Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci sur le même serveur que l'application (``localhost``) car la création d'une BDD requiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adaptez les commandes du fichier ``install_db.sh`` en les exécutant une par une.
-
-**3.1 Installation de l'atlas sans GeoNature**
 
 L'application se base entièrement sur des vues matérialisées. Par défaut, celles-ci sont proposées pour requêter les données dans une BDD GeoNature.
 
@@ -136,11 +133,12 @@ Plus de détails sur les différentes vues matérialisées dans le fichier `<vue
 
 Vous y trouverez aussi un exemple d'adaptation de la vue ``atlas.vm_observations``, basé sur une BDD SICEN.
 
-Par ailleurs, si vous n'utilisez pas GeoNature, il vous faut installer TaxHub (https://github.com/PnX-SI/TaxHub/)pour gérer les attributs (description, commentaire, milieu et chorologie) ainsi que les médias rattachés à chaque espèce (photos, videos, audios et articles). TaxHub dispose aussi de scripts permettant d'importer les médias des espèces depuis les photos libres de l'INPN (https://github.com/PnX-SI/TaxHub/tree/master/data/scripts/import_inpn_media) ou de Wikimedia (https://github.com/PnX-SI/TaxHub/tree/master/data/scripts/import_wikimedia_commons).
-⚠️ L'atlas devra impérativement être installé dans la même BDD que TaxHub.
+**3.1 Installation de l'atlas sans GeoNature**
 
-Une fois TaxHub installé, il est necessaire d'ajouter des migrations alembic ajouter les mailles necessaire à l'atlas.
+Si vous n'utilisez pas GeoNature, il vous faut installer TaxHub (https://github.com/PnX-SI/TaxHub/)pour gérer les attributs (description, commentaire, milieu et chorologie) ainsi que les médias rattachés à chaque espèce (photos, videos, audios et articles). TaxHub dispose aussi de scripts permettant d'importer les médias des espèces depuis les photos libres de l'INPN (https://github.com/PnX-SI/TaxHub/tree/master/data/scripts/import_inpn_media) ou de Wikimedia (https://github.com/PnX-SI/TaxHub/tree/master/data/scripts/import_wikimedia_commons).
+⚠️ L'atlas devra alors impérativement être installé dans la même BDD que TaxHub.
 
+Une fois TaxHub installé, il est nécessaire d'ajouter des migrations alembic pour ajouter les mailles nécessaires à GeoNature-atlas.
 
 ::
 
@@ -160,14 +158,14 @@ Une fois TaxHub installé, il est necessaire d'ajouter des migrations alembic aj
     flask db upgrade ref_geo_fr_municipalities@head
 
 
-Vous devrez ensuite ajouter une couche qui correspond aux limites de votre territoire dans le schéma `ref_geo` de la base qui a été créé avec TaxHub.
-Pour cela créer une ligne dans la table `ref_geo.bib_area_type` qui correspond au "type d'aire , puis une ligne dans `ref_geo.l_areas`. Le `type_name` de la ligne créé dans `ref_geo.bib_area_type` sera a mettre dans le paramètre `type_territoire` du fichier `settings.ini`
-
+Vous devrez ensuite ajouter une couche qui correspond aux limites de votre territoire dans le schéma ``ref_geo`` de la base qui a été créé avec TaxHub.
+Pour cela créer une ligne dans la table ``ref_geo.bib_area_type`` qui correspond au "type d'aire , puis une ligne dans ``ref_geo.l_areas``. Le ``type_name`` de la ligne créé dans ``ref_geo.bib_area_type`` sera a mettre dans le paramètre ``type_territoire`` du fichier ``settings.ini``.
 
 A noter aussi que si vous ne connectez pas l'atlas à une BDD GeoNature (``geonature_source=false``), une table exemple ``synthese.syntheseff`` comprenant 2 observations est créée. A vous d'adapter les vues après l'installation pour les connecter à vos données sources.
 
-Lancez le fichier fichier d'installation de la base de données :
+**3.2 Installation de la base de données de GeoNature-atlas**
 
+Lancez le fichier d'installation de la base de données :
 
 ::
 
@@ -185,13 +183,11 @@ Si vous voulez adapter le contenu des vues matérialisées, vous pouvez modifier
 
 Si vous souhaitez uniquement recréer la vue ``atlas.vm_observations`` et les 6 autres vues qui en dépendent vous pouvez utiliser le script ``data/update_vm_observations.sql``.
 
-
 :notes:
 
     Un mécanisme de dégradation des données est fourni par défaut dans GeoNature-atlas, voir la documentation à ce sujet : `<degradation_donnees.rst>`_
 
 **4. Installation de l'application**
-
 
 **Lancez l'installation automatique de l'application :**
 
