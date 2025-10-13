@@ -24,6 +24,7 @@
     {% block additionalFooterAssets %}
         <script>
             window.module = {exports: {}};
+            var configuration = {{configuration|tojson}};
         </script>
         <script src="{{ url_for('static', filename='node_modules/debounce/index.js') }}"></script>
         <script src="{{ url_for('static', filename='listeEspeces.js') }}"></script>
