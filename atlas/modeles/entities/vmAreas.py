@@ -45,7 +45,7 @@ class VmCorAreas(db.Model):
     __table_args__ = {"schema": "atlas"}
 
     id_area: Mapped[int] = mapped_column(primary_key=True)
-    id_area_group: Mapped[int] = mapped_column(primary_key=True)
+    id_area_parent: Mapped[int] = mapped_column(primary_key=True)
 
 
 class VmCorAreaSynthese(db.Model):

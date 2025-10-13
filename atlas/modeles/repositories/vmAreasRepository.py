@@ -67,12 +67,12 @@ def getAreaFromIdArea(id_area):
     }
 
     subquery = (
-        db.session.query(VmCorAreas.id_area_group).filter(VmCorAreas.id_area == id_area).subquery()
+        db.session.query(VmCorAreas.id_area_parent).filter(VmCorAreas.id_area == id_area).subquery()
     )
 
     areas_parent = (
         db.session.query(VmAreas.area_name, VmAreas.id_area, VmBibAreasTypes.type_name)
-        .join(subquery, subquery.c.id_area_group == VmAreas.id_area)
+        .join(subquery, subquery.c.id_area_parent == VmAreas.id_area)
         .join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type)
         .all()
     )

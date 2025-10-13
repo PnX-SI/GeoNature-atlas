@@ -87,8 +87,8 @@ def getTaxonsAreas(id_area):
         .group_by(VmObservations.cd_ref)
     ).subquery()
 
-    id_area_dep = select(VmCorAreas.id_area_group).select_from(VmCorAreas).join(
-        VmAreas, VmAreas.id_area == VmCorAreas.id_area_group
+    id_area_dep = select(VmCorAreas.id_area_parent).select_from(VmCorAreas).join(
+        VmAreas, VmAreas.id_area == VmCorAreas.id_area_parent
     ).join(VmBibAreasTypes, VmAreas.id_type == VmBibAreasTypes.id_type).filter(
         (VmBibAreasTypes.type_code == 'DEP') & (VmCorAreas.id_area == id_area)
     ).subquery()
