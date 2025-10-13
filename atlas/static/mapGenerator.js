@@ -328,19 +328,11 @@ function generateLegendMaille() {
 
         // loop through our density intervals and generate a label with a colored square for each interval
         grades.forEach((grade, i) => {
-            let next = grades[i + 1]
-            let grade_n1 = undefined;
-            let label = undefined;
-
+            const  next = grades[i + 1]
             // Ajout d'un plus si c'est la dernière valeur
-            grade_n1 = next ? ` &ndash; ${next} <br>` : "+"
-
+            const grade_n1 = next ? ` &ndash; ${next} <br>` : "+"
             // Si les 2 valeurs sont identiques, alors on en affiche qu'une
-            if (next === (grade+1))  {
-                label = `${next}  <br>`
-            } else {
-                label = `${grade+1}${grade_n1}`
-            }
+            const label = next === (grade+1) ? `${next}  <br>` :  `${grade+1}${grade_n1}`
             labels.push(
                 `<i style="background: ${getColor(grade + 1)}"></i>
             ${label}
