@@ -112,6 +112,7 @@
         </li>
     {% endif %}
 
+    {% if configuration.AFFICHAGE_GALERIE_PHOTO %}    
     <li class="sidebar-brand">
         <a href="{{ url_for('main.photos') }}"
            class="d-flex flex-column  align-items-center p-3 w-100 h-100"
@@ -124,5 +125,5 @@
             {% endif %}
         </a>
     </li>
-
+    {% endif %}
 </ul>

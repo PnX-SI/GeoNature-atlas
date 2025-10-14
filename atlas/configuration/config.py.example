@@ -108,6 +108,9 @@ LANGUAGES = {
 # Le fichier par défaut est présente dans static/sample/glossaire.json.
 GLOSSAIRE = False
 
+# Afficher le lien vers la galerie photo
+AFFICHAGE_GALERIE_PHOTO = True
+
 ###########################
 ###### Cartographie #######
 ###########################

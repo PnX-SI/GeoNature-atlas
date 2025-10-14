@@ -180,6 +180,7 @@ class AtlasConfig(Schema):
     AFFICHAGE_NOUVELLES_ESPECES = fields.Boolean(load_default=True)
     AFFICHAGE_LABEL_SIDEBAR = fields.Boolean(load_default=False)
     AFFICHAGE_RECHERCHE_AVANCEE = fields.Boolean(load_default=False)
+    AFFICHAGE_GALERIE_PHOTO = fields.Boolean(load_default=True)
     AFFICHAGE_GRAPH_ALTITUDES = fields.Boolean(load_default=True)
     AFFICHAGE_GRAPH_PHENOLOGIE = fields.Boolean(load_default=True)
     SEARCH_NOMINATIM = fields.Boolean(load_default=False)

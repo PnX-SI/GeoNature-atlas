@@ -361,11 +361,13 @@ def ficheGroupe(groupe):
     )
 
 
-@main.route("/<lang_code>/photos", methods=["GET", "POST"])
-@main.route("/photos", methods=["GET", "POST"])
-def photos():
-    groups = vmTaxonsRepository.getINPNgroupPhotos()
-    return render_template("templates/photoGalery/_main.html", groups=groups)
+if current_app.config["AFFICHAGE_GALERIE_PHOTO"]:
+
+    @main.route("/<lang_code>/photos", methods=["GET", "POST"])
+    @main.route("/photos", methods=["GET", "POST"])
+    def photos():
+        groups = vmTaxonsRepository.getINPNgroupPhotos()
+        return render_template("templates/photoGalery/_main.html", groups=groups)
 
 
 @main.route("/<lang_code>/static/<page>", methods=["GET", "POST"])
