@@ -5,425 +5,497 @@
 {% endblock %}
 
 {% block metaTags %}
-    {# Ajoutez ici les balises méta utilisées pour le SEO #}
+{# Ajoutez ici les balises méta utilisées pour le SEO #}
 {% endblock %}
 
 {% block additionalHeaderAssets %}
-    {# Ajoutez ici les assets complémentaires qui seront dans le bloc <head></head> #}
-    <script src="{{ url_for('static', filename='node_modules/leaflet.markercluster/dist/leaflet.markercluster.js') }}"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/leaflet.markercluster/dist/MarkerCluster.css') }}"/>
-    <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css') }}"/>
-    <!-- DataTable Bootstrap 5 -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/datatables/media/css/jquery.dataTables.min.css') }}"/>
-    <!-- Bootstrap 5 DataTables integration -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}"/>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/listEspeces.css') }}"/>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/icones.css') }}"/>
-    <!-- development version, includes helpful console warnings -->
-    <script src="//cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/underscore@1.10.2/underscore.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue-bootstrap-typeahead@0.2.6/dist/VueBootstrapTypeahead.umd.min.js"></script>
-    <script src="https://unpkg.com/vue-select@latest"></script>
-    <link rel="stylesheet" href="https://unpkg.com/vue-select@latest/dist/vue-select.css">
-    <!-- production version, optimized for size and speed -->
-    {#<script src="https://cdn.jsdelivr.net/npm/vue"></script>#}
-    <style>
-        .vbt-autcomplete-list {
-            max-height: 350px;
-            overflow-y: auto;
-            padding-top: 5px;
-            position: absolute;
-            z-index: 999;
-        }
 
-        .v-select {
-            width: 100%;
-            background-color: var(--bs-white);
-        }
+<script src="//cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/underscore@1.10.2/underscore.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-bootstrap-typeahead@0.2.6/dist/VueBootstrapTypeahead.umd.min.js"></script>
+<script src="https://unpkg.com/vue-select@latest"></script>
+<link rel="stylesheet" href="https://unpkg.com/vue-select@latest/dist/vue-select.css">
 
-        .v-select .dropdown li {
-            border-bottom: 1px solid rgba(112, 128, 144, 0.1);
-            max-width: 500px;
-        }
+<style>
+    .vbt-autcomplete-list {
+        max-height: 350px;
+        overflow-y: auto;
+        padding-top: 5px;
+        position: absolute;
+        z-index: 999;
+    }
 
-        .v-select .dropdown li:last-child {
-            border-bottom: none;
-        }
 
-        .v-select .dropdown li a {
-            padding: 10px 20px;
-            width: 100%;
-            font-size: 1.25em;
-            color: #3c3c3c;
-        }
+    .v-select {
+        width: 100%;
+        background-color: var(--white);
+    }
 
-        .v-select .dropdown-menu .active > a {
-            color: #fff;
-        }
-    </style>
+    .v-select .dropdown li {
+        border-bottom: 1px solid rgba(112, 128, 144, 0.1);
+        max-width: 500px;
+    }
+
+    .v-select .dropdown li:last-child {
+        border-bottom: none;
+    }
+
+    .v-select .dropdown li a {
+        padding: 10px 20px;
+        width: 100%;
+        font-size: 1.25em;
+        color: #3c3c3c;
+    }
+
+    .v-select .dropdown-menu .active>a {
+        color: #fff;
+    }
+</style>
 {% endblock %}
 
+
+
 {% block additionalFooterAssets %}
-    {# Ajoutez ici les assets complémentaires qui seront en bas de page #}
-    <script src="{{ url_for('static', filename='custom/maps-custom.js') }}"></script>
-    <script src="{{ url_for('static', filename='mapGenerator.js') }}"></script>
-    <script>
-        var url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
 
-        var map = generateMap();
+<script src="{{ url_for('static', filename='custom/maps-custom.js') }}"></script>
+<script src="{{ url_for('static', filename='mapGenerator.js') }}"></script>
+<script>
+    var url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
 
-        var legend = L.control({position: "bottomright"});
+    var map = generateMap();
 
-        $("#loaderSpinner").hide();
-        $(document).ready(function () {
-            // Bootstrap 5 Modal
-            var infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
-            infoModal.show();
-        });
+    var legend = L.control({ position: "bottomright" });
 
-        function getRandomColor() {
-            var letters = '0123456789ABCDEF'.split('');
-            var color = '#';
-            for (var i = 0; i < 6; i++) {
-                color += letters[Math.round(Math.random() * 15)];
-            }
-            return color;
+    $("#loaderSpinner").hide();
+    $(document).ready(function () {
+        $("#infoModal").modal('show');
+    });
+
+
+    // Début d'ajout de la couche d'occsol
+    URL = '/static/custom/occsol.geojson'
+    var areasLayer = new L.GeoJSON(false, {
+        onEachFeature: onEachFeature, style: style
+    });
+
+
+    function onEachFeature(feature, layer) {
+        console.log(feature.properties);
+        // does this feature have a property named popupContent?
+        if (feature.properties && feature.properties.area_name) {
+            layer.bindPopup('<p class="text-center"><strong>' + feature.properties.area_name + '</strong><br>' + '<a class="btn btn-info btn-block text-light" href="/area/' + feature.properties.type_code + '/' + feature.properties.area_code + '">Voir les espèces associées</a></p>');
         }
+    }
 
-        function slugify(string) {
-            const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;'
-            const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------'
-            const p = new RegExp(a.split('').join('|'), 'g')
-
-            return string.toString().toLowerCase()
-                .replace(/\s+/g, '-') // Replace spaces with -
-                .replace(p, c => b.charAt(a.indexOf(c))) // Replace special characters
-                .replace(/&/g, '-and-') // Replace & with 'and'
-                .replace(/[^\w\-]+/g, '') // Remove all non-word characters
-                .replace(/\-\-+/g, '-') // Replace multiple - with single -
-                .replace(/^-+/, '') // Trim - from start of text
-                .replace(/-+$/, '') // Trim - from end of text
-        };
-
-        function capitalizeFirstLetter(string) {
-            return string.charAt(0).toUpperCase() + string.slice(1);
-        };
-
-        function displayObsTaxonMaille(cd_ref) {
+    function style(feature) {
+        switch (feature.properties.area_code) {
+            case '1': return { color: "grey", fillOpacity: 0.8 };
+            case '2': return { color: "yellow", fillOpacity: 0.8 };
+            case '3': return { color: "green", fillOpacity: 0.8 };
+            case '5': return { color: "blue", fillOpacity: 0.8 };
         }
+    }
 
-        var initRadius = 4;
-        var radius = initRadius;
+    function handleJson(data) {
+        areasLayer.addData(data);
+        areasLayer.addTo(map);
+        areasLayer.bringToBack();
+        map.fitBounds(areasLayer.getBounds());
+    }
 
-        var geojsonMarkerOptions = {
-            weight: 2,
-            opacity: 1,
-            fillOpacity: 0
-        };
 
-        if (configuration.AFFICHAGE_MAILLE) {
-            var typeData = 'maille';
-        } else {
-            var typeData = 'point'
-        };
+    $.getJSON(URL, function (json) {
+        handleJson(json);
+    });
 
-        var polygonLayerToCentroid = function (geoJson) {
-            geoJson;
-            if (geoJson.features) {
-                var features = geoJson.features;
-                for (var i = 0; i < geoJson.features.length; i++) {
-                    var feature = geoJson.features[i];
-                    var centroid = L.polygon(feature.geometry.coordinates).getBounds().getCenter();
-                    geoJson.features[i].geometry = {type: 'Point', coordinates: [centroid.lat, centroid.lng]};
-                }
+
+    var occsolLegend = L.control({ position: 'bottomright' });
+    occsolLegend.onAdd = function (map) {
+
+        var div = L.DomUtil.create('div', 'info legend');
+        labels = ['<h5>Légende</h5>'],
+            categories = [
+                { lib: 'Territoires artificialisés', color: 'grey' },
+                { lib: 'Forêts et milieux semi-naturels', color: 'green' },
+                { lib: 'Territoires agricoles', color: 'yellow' },
+                { lib: 'Surfaces en eau', color: 'blue' }];
+
+        for (var i = 0; i < categories.length; i++) {
+            div.innerHTML += labels.push('<p><i class="circle" style="background:' + categories[i].color + '"></i> ' + categories[i].lib + '</p>')
+        }
+        div.innerHTML = labels.join('');
+        return div;
+    };
+    occsolLegend.addTo(map);
+
+    var overlayMaps = {
+        "Occupation du sol": areasLayer
+    };
+
+    L.control.layers(false, overlayMaps).addTo(map);
+    // Fin de l'ajout de la couche d'occsol
+
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF'.split('');
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.round(Math.random() * 15)];
+        }
+        return color;
+    }
+
+    function slugify(string) {
+        const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;'
+        const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------'
+        const p = new RegExp(a.split('').join('|'), 'g')
+
+        return string.toString().toLowerCase()
+            .replace(/\s+/g, '-') // Replace spaces with -
+            .replace(p, c => b.charAt(a.indexOf(c))) // Replace special characters
+            .replace(/&/g, '-and-') // Replace & with 'and'
+            .replace(/[^\w\-]+/g, '') // Remove all non-word characters
+            .replace(/\-\-+/g, '-') // Replace multiple - with single -
+            .replace(/^-+/, '') // Trim - from start of text
+            .replace(/-+$/, '') // Trim - from end of text
+    };
+
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    };
+
+    function displayObsTaxonMaille(cd_ref) {
+    }
+
+    var initRadius = 4;
+    var radius = initRadius;
+
+    var geojsonMarkerOptions = {
+        weight: 2,
+        opacity: 1,
+        fillOpacity: 0
+    };
+
+    if (configuration.AFFICHAGE_MAILLE) {
+        var typeData = 'maille';
+    } else {
+        var typeData = 'point'
+    }
+    ;
+
+    console.log('typeData', typeData);
+
+    var polygonLayerToCentroid = function (geoJson) {
+        if (geoJson.features) {
+            var features = geoJson.features;
+            for (var i = 0; i < geoJson.features.length; i++) {
+                var feature = geoJson.features[i];
+                var centroid = L.polygon(feature.geometry.coordinates).getBounds().getCenter();
+                geoJson.features[i].geometry = { type: 'Point', coordinates: [centroid.lat, centroid.lng] };
             }
-        };
-        var customStyle = [{color: '#33cc33', radius: 1}, {color: '#3399ff', radius: 3}, {color: '#ff0000', radius: 5}];
+        }
+    };
+    var customStyle = [{ color: '#33cc33', radius: 1 }, { color: '#3399ff', radius: 3 }, { color: '#ff0000', radius: 5 }];
 
-        var currentLayer;
-        var layerGroup = L.featureGroup();
-        layerGroup.addTo(map);
+    var currentLayer;
+    var layerGroup = L.featureGroup();
+    layerGroup.addTo(map);
 
-        const taxaApiUrl = '/api/searchTaxon?search=:query';
+    const taxaApiUrl = '/api/searchTaxon?search=:query';
 
-        Vue.component('v-select', VueSelect.VueSelect);
+    Vue.component('v-select', VueSelect.VueSelect);
 
-        var advancedSearch = new Vue({
-            el: '#advancedSearch',
-            components: {},
-            delimiters: ['[[', ']]'],
-            data: {
-                taxa: [],
-                taxaSearch: '',
-                selectedTaxa: null,
-                layers: [],
-                items: [],
-                options: [],
-                configuration: configuration,
-                alertLimit: false,
+    var advancedSearch = new Vue({
+        el: '#advancedSearch',
+        components: {},
+        delimiters: ['[[', ']]'],
+        data: {
+            taxa: [],
+            taxaSearch: '',
+            selectedTaxa: null,
+            layers: [],
+            items: [],
+            options: [],
+            configuration: configuration,
+            alertLimit: false,
+        },
+        methods: {
+            onSearch(search, loading) {
+                loading(true);
+                this.search(loading, search, this);
             },
-            methods: {
-                onSearch(search, loading) {
-                    loading(true);
-                    this.search(loading, search, this);
-                },
-                search: _.debounce((loading, search, vm) => {
-                    fetch(
-                        taxaApiUrl.replace(':query', search) + '&limit=20'
-                    ).then(res => {
-                        res.json().then(json => (vm.options = json));
-                        loading(false);
-                    });
-                }, 350),
-                removeElement: function (index) {
-                    this.items.splice(index, 1);
-                    layerGroup.removeLayer(layerGroup.getLayers()[index]);
-                },
-                async getTaxa(query) {
-                    const res = await fetch(taxaApiUrl.replace(':query', query) + '&limit=20');
-                    const suggestions = await res.json();
-                    this.taxa = suggestions;
-                },
-                resetItems: function () {
-                    this.items = [];
-                    layerGroup.clearLayers();
-                    radius = initRadius;
-                },
-                displayAlertLimit: function () {
-                    this.alertLimit = true;
-                    setTimeout(function () {
-                        if (this.alertLimit) {
-                            this.alertLimit = false;
-                        }
-                    }, 3000);
-                },
-                getMedias: async function (cdRef) {
-                    var mediaUrl = null;
-                    var idMedia = null;
-                    const res = await fetch(configuration.REMOTE_MEDIAS_URL + "/api/tmedias/bycdref/" + cdRef);
-                    const medias = await res.json();
-                    if (medias.length > 0) {
-                        idMedia = medias[0].id_media;
-                        mediaUrl = configuration.REMOTE_MEDIAS_URL + '/api/tmedias/thumbnail/' + idMedia + '?h=80&v=80';
-                        return mediaUrl
+            search: _.debounce((loading, search, vm) => {
+                fetch(
+                    taxaApiUrl.replace(':query', search) + '&limit=20'
+                ).then(res => {
+                    res.json().then(json => (vm.options = json));
+                    loading(false);
+                });
+            }, 350),
+            removeElement: function (index) {
+                this.items.splice(index, 1);
+                layerGroup.removeLayer(layerGroup.getLayers()[index]);
+            },
+            async getTaxa(query) {
+                const res = await fetch(taxaApiUrl.replace(':query', query) + '&limit=20');
+                const suggestions = await res.json();
+                console.log(suggestions);
+                this.taxa = suggestions;
+            },
+            resetItems: function () {
+                this.items = [];
+                layerGroup.clearLayers();
+                radius = initRadius;
+            },
+            displayAlertLimit: function () {
+                this.alertLimit = true;
+                setTimeout(function () {
+                    if (this.alertLimit) {
+                        this.alertLimit = false;
                     }
-                },
-                addDatas: function (list) {
-                    $("#loaderSpinner").show();
-                    var arrayLength = list.length;
-                    var layer = [];
-                    for (var i = 0; i < arrayLength; i++) {
-                        var layerCustomStyle = customStyle[i];
-                        $.ajax({
-                            url:
-                                configuration.URL_APPLICATION +
-                                "/api/observations/" + list[i].cd_nom,
-                            dataType: "json",
-                            beforeSend: function () {
-                                $("#loaderSpinner").show();
-                            }
-                        }).done(function (observations) {
-                            if (configuration.AFFICHAGE_MAILLE) {
-                                var geoJsonDatas = observations['maille'];
-                                polygonLayerToCentroid(geoJsonDatas);
-                            } else {
-                                var geoJsonDatas = observations['point']
-                            }
-                            var color = getRandomColor();
-
-                            layer[i] = L.geoJSON(geoJsonDatas, {
-                                pointToLayer: function (feature, latlng) {
-                                    return new L.circleMarker(latlng, geojsonMarkerOptions(layerCustomStyle));
-                                }
-                            });
-                            layer[i].addTo(map);
-                            if (geoJsonDatas.features.length > 0) {
-                                map.fitBounds(layer[i].getBounds());
-                            }
-                        });
-                        displayObsTaxonMaille(list[i]);
-                    }
-                    $("#loaderSpinner").hide();
-                },
-                addMapDatas: function (cd_nom, color) {
-                    $("#loaderSpinner").show();
+                }, 3000);
+            }
+            ,
+            getMedias: async function (cdRef) {
+                var mediaUrl = null;
+                var idMedia = null;
+                const res = await fetch(configuration.REMOTE_MEDIAS_URL + "/api/tmedias/bycdref/" + cdRef);
+                const medias = await res.json();
+                if (medias.length > 0) {
+                    idMedia = medias[0].id_media;
+                    mediaUrl = configuration.REMOTE_MEDIAS_URL + '/api/tmedias/thumbnail/' + idMedia + '?h=80&v=80';
+                    console.log('mediaUrl', mediaUrl);
+                    return mediaUrl
+                }
+            },
+            addDatas: function (list) {
+                $("#loaderSpinner").show();
+                var arrayLength = list.length;
+                var layer = [];
+                for (var i = 0; i < arrayLength; i++) {
+                    var layerCustomStyle = customStyle[i];
+                    console.log(layerCustomStyle);
                     $.ajax({
                         url:
                             configuration.URL_APPLICATION +
-                            "/api/observations/" + cd_nom,
+                            `/api/observationsMaille?cd_ref=${list[i].cd_nom}`,
                         dataType: "json",
                         beforeSend: function () {
                             $("#loaderSpinner").show();
                         }
                     }).done(function (observations) {
-                        var geoJsonDatas = observations;
-                        if ((observations['features'][0]['geometry']['type']).toLowerCase() != 'point') {
-                            polygonLayerToCentroid(geoJsonDatas);
-                        }
+                        // $("#loadingGif").hide();
+                        map.removeLayer(currentLayer);
 
-                        var layer = L.geoJSON(geoJsonDatas, {
-                            style: function (feature) {
-                                return {color: color, radius: radius};
-                            },
+                        console.log('obs', geoJsonDatas);
+                        if (configuration.AFFICHAGE_MAILLE) {
+                            console.log('observations', observations)
+                            var geoJsonDatas = observations;
+                            console.log('geoJsonDatas', geoJsonDatas)
+                            polygonLayerToCentroid(geoJsonDatas);
+                        } else {
+                            var geoJsonDatas = observations['point']
+                        }
+                        var color = getRandomColor();
+
+                        layer[i] = L.geoJSON(geoJsonDatas, {
                             pointToLayer: function (feature, latlng) {
-                                return L.circleMarker(latlng, geojsonMarkerOptions);
+                                return new L.circleMarker(latlng, geojsonMarkerOptions(layerCustomStyle));
                             }
                         });
-                        if (configuration.AFFICHAGE_MAILLE) {
-                            radius = radius + 2;
+                        layer[i].addTo(map);
+                        if (geoJsonDatas.features.length > 0) {
+                            map.fitBounds(layer[i].getBounds());
                         }
-                        layerGroup.addLayer(layer);
-                        map.fitBounds(layerGroup.getBounds());
-                    });
-                    $("#loaderSpinner").hide();
-                },
-                getTaxaImage: function (cd_nom) {
-                }
-            },
-            watch: {
-                taxaSearch: _.debounce(function (qs) {
-                    this.getTaxa(qs)
-                }, 500),
-                selectedTaxa: function (val) {
-                    if (this.items.length === 3) {
-                        this.displayAlertLimit();
-                    };
-                    if (val && this.items.length < 3) {
-                        var self = this;
-                        var color = getRandomColor();
-                        fetch(configuration.TAXHUB_URL + '/api/taxref/' + this.selectedTaxa.value)
-                            .then(function (response) {
-                                return response.json();
-                            })
-                            .then(function (jsonResp) {
-                                var media = '/static/images/picto_' + capitalizeFirstLetter(slugify(jsonResp.group2_inpn)) + '.png';
-                                var newItem = {
-                                    cd_nom: jsonResp.cd_nom,
-                                    nom_vern: jsonResp.nom_vern,
-                                    nom_sci: jsonResp.nom_complet,
-                                    group2_inpn: jsonResp.group2_inpn,
-                                    media: media,
-                                    marker_color: color
-                                };
 
-                                self.items.push(newItem);
-                                self.addMapDatas(newItem.cd_nom, color);
-                            });
-                    };
-                    this.selectedTaxa = null;
+                    });
+                    displayObsTaxonMaille(list[i]);
                 }
+                $("#loaderSpinner").hide();
             },
-            mounted() {
+            addMapDatas: function (cd_nom, color) {
+                $("#loaderSpinner").show();
+                $.ajax({
+                    url:
+                        configuration.URL_APPLICATION +
+                        `/api/observationsMaille?cd_ref=${cd_nom}`,
+                    dataType: "json",
+                    beforeSend: function () {
+                        $("#loaderSpinner").show();
+                    }
+                }).done(function (observations) {
+                    var geoJsonDatas = observations;
+                    console.log('obs', geoJsonDatas);
+                    polygonLayerToCentroid(geoJsonDatas);
+                    //var color = getRandomColor();
+
+                    var layer = L.geoJSON(geoJsonDatas, {
+                        style: function (feature) {
+                            return { color: color, radius: radius };
+                        },
+                        pointToLayer: function (feature, latlng) {
+                            return L.circleMarker(latlng, geojsonMarkerOptions);
+                        }
+                    });
+                    if (configuration.AFFICHAGE_MAILLE) {
+                        radius = radius + 2;
+                    }
+                    layerGroup.addLayer(layer);
+                    console.log('layerGroup', layerGroup.getLayers());
+                    map.fitBounds(layerGroup.getBounds());
+                });
+                $("#loaderSpinner").hide();
+            },
+            getTaxaImage: function (cd_nom) {
+
             }
-        })
-    </script>
+        },
+        watch: {
+            taxaSearch: _.debounce(function (qs) {
+                this.getTaxa(qs)
+            }, 500),
+            selectedTaxa: function (val) {
+                if (this.items.length === 3) {
+                    this.displayAlertLimit();
+                }
+                ;
+                if (val && this.items.length < 3) {
+                    var self = this;
+                    var color = getRandomColor();
+                    console.log('selectedTaxa', this.selectedTaxa);
+                    fetch(configuration.TAXHUB_URL + '/api/taxref/' + this.selectedTaxa.value)
+                        .then(function (response) {
+                            return response.json();
+                        })
+                        .then(function (jsonResp) {
+                            var media = '/static/images/picto_' + capitalizeFirstLetter(slugify(jsonResp.group2_inpn)) + '.png';
+                            var newItem = {
+                                cd_nom: jsonResp.cd_nom,
+                                nom_vern: jsonResp.nom_vern,
+                                nom_sci: jsonResp.nom_complet,
+                                group2_inpn: jsonResp.group2_inpn,
+                                media: media,
+                                marker_color: color
+                            };
+                            console.log('newItem', newItem);
+
+                            self.items.push(newItem);
+                            self.addMapDatas(newItem.cd_nom, color);
+                        });
+
+
+                }
+                ;
+                this.selectedTaxa = null;
+            }
+        },
+        mounted() {
+        }
+    })
+
+
+</script>
 {% endblock %}
 
-{% block content %}
-    {# Ajoutez ici coeur de la page #}
-    <div class="row h-100 flex-grow-1 p-0 m-0 border-bottom">
-        <div id="advancedSearch" class="col-sm-12 col-md-5 col-lg-4 col-xl-3 d-flex flex-column m-0 p-0">
-            <!-- Modal Bootstrap 5 -->
-            <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title text-info" id="infoModalLabel">
-                                <i class="fas fa-info-circle"></i> {{ _('information') }}
-                            </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ _('close') }}"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p>{{ _('asearch.information') }}</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('close') }}</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="bg-light border-bottom border-end p-2">
-                <div class="text-center">
-                    <span class="float-end">
-                        <span data-bs-toggle="modal" data-bs-target="#infoModal">
-                            <a data-bs-toggle="tooltip" data-bs-target="#infoModal" data-bs-placement="left"
-                               title="{{ _('page.information') }}">
-                                <i class="fas fa-info-circle"></i>
-                            </a>
-                        </span>
-                        <a class="text-danger" href="#" @click="resetItems" data-bs-toggle="tooltip" data-bs-placement="left"
-                           title="Purger la liste">
-                             <i class="fas fa-trash-alt"></i>
-                        </a>
-                    </span>
-                    <h4><b>{{ _('advanced_search') }}</b></h4>
-                    
-                    <!-- Alert Bootstrap 5 -->
-                    <div v-if="alertLimit" class="alert alert-danger alert-dismissible fade show sticky-top" role="alert">
-                        {{ _('asearch.max') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+{% block content %}
+
+<div class="row h-100 flex-grow-1 p-0 m-0 border-bottom">
+    <div id="advancedSearch" class="col-sm-12 col-md-5 col-lg-4 col-xl-3 d-flex flex-column m-0 p-0">
+        <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="infoModalLabel"><i class="fas fa-info-circle "></i>
+                            Information</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    
-                    <div class="input-group w-100">
-                        <v-select label="label" v-model="selectedTaxa" :filterable="false" :options="options"
-                                  placeholder="{{ _('asearch.search.species') }}"
-                                  @search="onSearch">
-                            <template slot="no-options">
-                                {{ _('asearch.search.start') }}
-                            </template>
-                            <template slot="option" slot-scope="option">
-                                <div class="d-center" v-html="option.label"></div>
-                            </template>
-                            <template slot="selected-option" slot-scope="option">
-                                <div class="selected d-center" v-html="option.label"></div>
-                            </template>
-                        </v-select>
+                    <div class="modal-body">
+                        <p>Cette page vous permet d'effectuer de superposer la répartition de plusieurs espèces
+                            simultanément.</p>
+                        <p>Pour des raisons de visibilité des répartitions sur carte, le nombre d'espèces total est
+                            limité à 3.</p>
                     </div>
-                    
-                    <div v-if="items.length > 3" class="text-danger">
-                        <i class="fa fa-info-circle fa-fw"></i> {{ _('asearch.max') }}
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
                     </div>
                 </div>
-            </div>
-            
-            <div id="list" class="bg-white flex-grow-1">
-                <ul class="list-unstyled">
-                    <li v-for="(item, key) in items" :key="key" class="d-flex border-bottom px-0 py-0">
-                        <img class="me-3" v-bind:src="item.media" alt="Generic placeholder image">
-                        <div class="flex-grow-1 p-2">
-                            <span class="float-end text-danger" data-bs-toggle="tooltip" data-bs-placement="left"
-                                  title="{{ _('asearch.remove.selection') }}" href="#"
-                                  v-on:click="removeElement(key)">
-                                <i class="fas fa-times-circle"></i>
-                            </span>
-                            <h5 class="mt-0 mb-1">
-                                <i class="far fa-circle fa-fw" v-bind:style="{ color: item.marker_color}"></i>
-                                [[item.nom_vern]]
-                            </h5>
-                            <span class="float-end">
-                                <a class="badge bg-primary" :href="url_for('main.ficheEspece', cd_nom=item.cd_nom)" 
-                                   data-bs-toggle="tooltip" title="{{ _('species.sheet') }}" data-bs-placement="left">
-                                    <i class="fas fa-list fa-fw"></i> {{ _('check.species.sheet') }}
-                                </a>
-                            </span>
-                            <p class="mt-0 mb-1 text-info"><small>[[item.nom_sci]]</small></p>
-                        </div>
-                    </li>
-                </ul>
             </div>
         </div>
-        
-        <div class="col-sm-12 col-md-7 col-lg-8 col-xl-9 d-flex flex-column m-0 p-0">
-            <div class="d-flex align-content-stretch bg-warning flex-grow-1">
-                <div class="d-flex flex-grow-1">
-                    <div id="map" style="height: unset;flex:1;"></div>
-                    {% include 'templates/core/loaderSpinner.html' %}
+        <div class="bg-light border-bottom border-right p-2">
+            <div class="text-center">
+                <span class="float-end">
+                    <span data-bs-toggle="modal" data-bs-target="#infoModal">
+                        <a data-bs-toggle="tooltip" data-bt-target="#infoModal" data-bs-placement="left"
+                            title="Voir les informations sur cette page">
+                            <i class="fas fa-info-circle"></i>
+                        </a>
+                    </span>
+                    <a class="text-danger" href="#" @click="resetItems" data-bs-toggle="tooltip" data-bs-placement="left"
+                        title="Purger la liste">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                </span>
+                <h4><b>Recherche avancée</b></h4>
+                <div v-if="alertLimit" class="alert alert-danger alert-dismissible fade show sticky-top" role="alert">
+                    Vous ne pouvez pas ajouter plus de 3 taxons.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
+                <div class="input-group w-100">
+                    <v-select label="label" v-model="selectedTaxa" :filterable="false" :options="options"
+                        placeholder="Recherchez une espèce" @search="onSearch">
+                        <template slot="no-options">
+                            Commencez à taper le nom d'une espèce
+                        </template>
+                        <template slot="option" slot-scope="option">
+                            <div class="d-center" v-html="option.label">
+                            </div>
+                        </template>
+                        <template slot="selected-option" slot-scope="option">
+                            <div class="selected d-center" v-html="option.label">
+                            </div>
+                        </template>
+                    </v-select>
+                </div>
+                <div v-if="items.length > 3" class="text-danger">
+                    <i class="fa fa-info-circle fa-fw"></i> Vous ne pouvez ajouter plus de 3 taxons
+                </div>
+
+            </div>
+        </div>
+        <div id="taxonList" id="list" class="d-flex align-content-stretch bg-white flex-grow-1">
+            <ul class="list-group w-100">
+                <li v-for="(item, key)  in items" :key="key" id="taxonListItem" class="d-flex border-bottom p-2">
+                     <img loading="lazy" class="mx-auto d-block INPNgroup"
+                                 v-bind:src="item.media" alt="Generic placeholder image">
+                    <div class="flex-grow-1">
+                         <h5 class="mt-0 mb-1 "><i class="far fa-circle fa-fw"
+                                v-bind:style="{ color: item.marker_color}"></i>[[item.nom_vern]]
+                        </h5>
+                        <p class="mt-0 mb-1 text-info"><small>[[item.nom_sci]]</small></p>
+                        <span class="float-end">
+                            <a class="badge bg-primary text-decoration-none" :href="'/espece/'+item.cd_nom" data-toggle="tooltip"
+                                title="Consulter la fiche espèce" data-placement="left">
+                                <i class="fas fa-list fa-fw"></i> Fiche espèce</i>
+                            </a>
+                        </span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="col-sm-12 col-md-7 col-lg-8 col-xl-9 d-flex flex-column m-0 p-0">
+        <div class="d-flex align-content-stretch bg-warning flex-grow-1">
+            <div class="d-flex flex-grow-1">
+
+                <div id="map" style="height: unset;flex:1;"></div>
+                {% include 'templates/core/loaderSpinner.html' %}
             </div>
         </div>
     </div>
-
-    {# Ajoutez ici coeur de la page #}
+</div>
 
 {% endblock %}

@@ -104,6 +104,9 @@ LANGUAGES = {
 # Utiliser et afficher le glossaire (static/custom/glossaire.json.sample)
 GLOSSAIRE = False
 
+# Afficher le lien vers la galerie photo
+AFFICHAGE_GALERIE_PHOTO = True
+
 ###########################
 ###### Cartographie #######
 ###########################

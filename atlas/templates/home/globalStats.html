@@ -8,7 +8,7 @@
         </h3>
 
         <div class="row">
-            <div class="col-12 col-md-6 col-lg-3 stat-object">
+            <div class="col-sm-12 col-lg stat-object">
                 <div class="stat-thumbnail border-end">
                     <i class="fas fa-search fa-3x blue"></i>
                     <input id="hiddenInputTaxonStat" type="hidden" name="cd_ref">
@@ -21,7 +21,7 @@
                 </div>
             </div>
 
-            <div class="col-12 col-md-6 col-lg-3 stat-object">
+            <div class="col-sm-12 col-lg stat-object">
                 <div class="stat-thumbnail border-end">
                     <i class="fas fa-leaf fa-3x"></i>
                     <h1 class="large text-muted" id="nbTaxons"></h1>
@@ -40,7 +40,7 @@
                 </div>
             </div>
 
-            <div class="col-12 col-md-6 col-lg-3 stat-object">
+            <div class="col-sm-12 col-lg stat-object">
                 <div class="stat-thumbnail border-end">
                     <i class="fas fa-map-signs fa-3x blue"></i>
                     <h1 class="large text-muted" id="nbTown"></h1>
@@ -59,8 +59,8 @@
                     </form>
                 </div>
             </div>
-
-            <div class="col-12 col-md-6 col-lg-3 stat-object">
+            {% if configuration.AFFICHAGE_GALERIE_PHOTO %}
+            <div class="col-sm-12 col-lg stat-object">
                 <div class="stat-thumbnail">
                     <i class="fas fa-camera fa-3x"></i>
                     <h1 class="large text-muted" id="nbPictures"></h1>
@@ -69,6 +69,7 @@
                     <p><a href="{{ url_for('main.photos') }}" class="btn btn-secondary" role="button">{{ _('gallery.title') }}</a></p>
                 </div>
             </div>
+            {% endif %}
         </div>
 
     </div>
