@@ -28,7 +28,7 @@ def format_taxon_name(observation):
     return taxon_name_formated
 
 
-def getObservationsMaillesChilds(filters={}, with_taxons=False):
+def getObservationsMaillesChilds(params={}):
     """
     Retourne un geojson sous forme de maille des observations
     Le geojson contient les propriétés suivantes :
@@ -36,7 +36,8 @@ def getObservationsMaillesChilds(filters={}, with_taxons=False):
         - type_code : le type de maille à la laquelle la géométrie a floutée
         - last_obs_year : l'année à laquel la dernière observation a été faite dans la maille
         - obs_nbr : le nombre d'observation dans la maille
-        - taxons (optionnel: si with taxon est True) : une liste des taxons dans la maille
+        - taxons (optionnel: si fields=taxons) : une liste des taxons dans la maille
+        - ids_obs (optionnel si fields=ids_obs): la liste des id_observations de la maille 
     Parameters
     ----------
     filters : dict, optional
@@ -52,20 +53,26 @@ def getObservationsMaillesChilds(filters={}, with_taxons=False):
     -------
     Geosjon
     """
+    cd_ref = params.get("cd_ref", None)
+    year_min = params.get("year_min", None)
+    year_max = params.get("year_min", None)
+    id_area = params.get("id_area", None)
+    last_obs = params.get("last_obs", None)
+    fields: list = params.get("fields", "").split(",")
     taxons_ids = []
-    if "cd_ref" in filters and filters["cd_ref"]:
-        query_child = func.atlas.find_all_taxons_childs(filters["cd_ref"])
+    if cd_ref:
+        query_child = func.atlas.find_all_taxons_childs(params["cd_ref"])
         taxons_ids = db.session.scalars(query_child).all()
-        taxons_ids.append(int(filters["cd_ref"]))
+        taxons_ids.append(int(params["cd_ref"]))
 
     query_select = [
         VMCorMailleObservation.id_maille,
         VmAreas.area_geojson,
         VMCorMailleObservation.type_code,
         func.max(func.date_part("year", VmObservations.dateobs)).label("last_obs_year"),
-        func.count(VmObservations.id_observation).label("obs_nbr"),
+        func.count(VmObservations.id_observation).label("obs_nbr")
     ]
-    if with_taxons:
+    if "taxons" in fields:
         query_select.append(
             func.json_agg(
                 func.distinct(
@@ -82,6 +89,10 @@ def getObservationsMaillesChilds(filters={}, with_taxons=False):
                 )
             ).label("taxons"),
         )
+    if "ids_obs" in fields:
+        query_select.append(
+            func.array_agg(VmObservations.id_observation).label("ids_obs")
+        )
     query = (
         select(*query_select)
         .select_from(VmObservations)
@@ -96,29 +107,31 @@ def getObservationsMaillesChilds(filters={}, with_taxons=False):
             VMCorMailleObservation.type_code,
         )
     )
-    if with_taxons:
+    if "taxons" in fields:
         query = query.join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
     if taxons_ids:
         query = query.where(VmObservations.cd_ref == any_(taxons_ids))
-    if ("year_min" in filters and filters["year_min"]) and (
-        "year_max" in filters and filters["year_max"]
-    ):
+    if year_min and year_max:
         query = query.where(
             VmObservations.dateobs.between(
-                datetime(int(filters["year_min"]), 1, 1),
-                datetime(int(filters["year_max"]), 12, 31),
+                datetime(int(year_min), 1, 1),
+                datetime(int(year_max), 12, 31),
             )
         )
-    if "id_area" in filters and filters["id_area"]:
+    if id_area:
         query = query.where(
             exists(
                 select(true())
                 .select_from(VmCorAreaSynthese)
                 .where(
-                    (VmCorAreaSynthese.id_area == filters["id_area"])
+                    (VmCorAreaSynthese.id_area == id_area)
                     & (VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
                 )
             )
+        )
+    if last_obs:
+        query = query.where(
+            VmObservations.dateobs >= func.current_timestamp() - cast(literal(last_obs), Interval)
         )
     return FeatureCollection(
         [
@@ -130,68 +143,11 @@ def getObservationsMaillesChilds(filters={}, with_taxons=False):
                     "type_code": o.type_code,
                     "nb_observations": int(o.obs_nbr),
                     "last_observation": o.last_obs_year,
-                    "taxons": o.taxons if with_taxons else None,
+                    "taxons": o.taxons if "taxons" in fields else None,
+                    "ids_obs": o.ids_obs if "ids_obs" in fields else None
                 },
             )
             for o in db.session.execute(query).all()
         ]
     )
 
-
-# last observation for index.html
-def lastObservationsMailles(mylimit, idPhoto):
-    query = (
-        select(
-            VmObservations,
-            VMCorMailleObservation,
-            VmTaxons.lb_nom,
-            VmTaxons.nom_vern,
-            VmTaxons.group2_inpn,
-            VmMedias.url,
-            VmMedias.chemin,
-            VmMedias.id_media,
-            VmAreas.area_geojson,
-        )
-        .select_from(VmObservations)
-        .join(
-            VMCorMailleObservation,
-            VMCorMailleObservation.id_observation == VmObservations.id_observation,
-        )
-        .join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
-        .join(VmAreas, VmAreas.id_area == VMCorMailleObservation.id_maille)
-        .outerjoin(
-            VmMedias, (VmMedias.cd_ref == VmObservations.cd_ref) & (VmMedias.id_type == idPhoto)
-        )
-        .where(
-            VmObservations.dateobs >= (func.current_timestamp() - cast(literal(mylimit), Interval))
-        )
-        .order_by(VmObservations.dateobs.desc())
-    )
-
-    results = db.session.execute(query).mappings().all()
-
-    obsList = list()
-    for row in results:
-        print(row)
-        vm_obj_maille_obj = row["VMCorMailleObservation"]  # Objet ORM VmObservationsMailles
-        vm_obs_obj = row["VmObservations"]
-        if row.nom_vern:
-            inter = row.nom_vern.split(",")
-            taxon = inter[0] + " | <i>" + row.lb_nom + "</i>"
-        else:
-            taxon = "<i>" + row.lb_nom + "</i>"
-        temp = {
-            "id_observation": vm_obs_obj.id_observation,
-            "id_maille": vm_obj_maille_obj.id_maille,
-            "type_code": vm_obj_maille_obj.type_code,
-            "cd_ref": vm_obs_obj.cd_ref,
-            "dateobs": vm_obs_obj.dateobs,
-            "altitude_retenue": vm_obs_obj.altitude_retenue,
-            "taxon": taxon,
-            "geojson_maille": json.loads(row.area_geojson),
-            "group2_inpn": deleteAccent(row.group2_inpn),
-            "pathImg": findPath(row),
-            "id_media": row.id_media,
-        }
-        obsList.append(temp)
-    return obsList

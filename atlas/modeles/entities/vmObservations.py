@@ -1,8 +1,10 @@
 # coding: utf-8
 from geoalchemy2.types import Geometry
-from sqlalchemy import Integer, String, Text, ARRAY
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import Integer, String, Text, ARRAY, ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from babel.dates import format_datetime
 from atlas.env import db
+from atlas.modeles.entities.vmTaxons import VmTaxons
 
 from typing import List
 import datetime
@@ -16,15 +18,16 @@ class VmObservations(db.Model):
     dateobs: Mapped[datetime.date] = mapped_column(index=True)
     observateurs: Mapped[str] = mapped_column(String(255))
     altitude_retenue: Mapped[int] = mapped_column(index=True)
-    cd_ref: Mapped[int] = mapped_column(index=True)
+    cd_ref: Mapped[int] = mapped_column(ForeignKey("atlas.vm_taxons.cd_ref"), index=True)
     the_geom_point: Mapped[object] = mapped_column(Geometry(geometry_type="POINT", srid=4326))
     geojson_point: Mapped[str] = mapped_column(Text)
     cd_sensitivity: Mapped[str] = mapped_column(String(255))
     id_dataset: Mapped[int] = mapped_column()
+    taxon: Mapped[VmTaxons] = relationship(VmTaxons)
 
     def as_dict(self):
         return {
-            "dateobs": str(self.dateobs),
+            "dateobs": self.dateobs.strftime("%d-%m-%Y"),
             "year": self.dateobs.year if self.dateobs else None,
             "id_observation": self.id_observation,
             "observateurs": self.observateurs,

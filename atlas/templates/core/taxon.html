@@ -1,29 +1,20 @@
-{% for taxon in listTaxons.taxons %}
+{% for taxon in listTaxons %}
     <li id="taxonListItem"
         class="d-flex border-bottom p-2
-                        {% if (configuration.AFFICHAGE_MENACE and taxon.statut_menace) %} border border-danger bg-danger-subtle
-                        {% endif %}"
+                {% if (configuration.AFFICHAGE_MENACE and taxon.menace) %} border border-danger bg-danger-subtle
+                {% endif %}"
+        id="taxonListItem" 
         area-code="{{ id_area }}"
-    <li id="taxonListItem" class="d-flex border-bottom p-2" area-code="{{ id_area }}"
         cdRef="{{ taxon.cd_ref }}"
         {% if configuration.INTERACTIVE_MAP_LIST %}
-        data-bs-toggle="tooltip" title="{{ _('display.municipality.obs') }}"
+        data-bs-toggle="tooltip" 
+        title="{{ _('display.municipality.obs') }}"
         {% endif %}>
 
         <span class="d-none">{{ taxon.group2_inpn }}</span>
 
         <div class="pictoImgList me-2" data-bs-toggle="tooltip" title="{{ taxon.group2_inpn }}" data-bs-placement="right">
-            {% if taxon.path == None %}
-                <img loading="lazy" class="mx-auto d-block INPNgroup"
-                     src="{{ url_for('static', filename='images/picto_'+ taxon.group2_inpn| replace(" ", "_") |urlencode+'.png') }}" alt=" " />
-            {% else %}
-                {% if configuration.REDIMENSIONNEMENT_IMAGE %}
-                    {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+taxon.id_media|string+'?h=80&w=80' %}
-                {% else %}
-                    {% set img_path = taxon.path %}
-                {% endif %}
-                <img loading="lazy" class="pictoImgList" src="{{ img_path }}" alt=" " />
-            {% endif %}
+            <img class="pictoImgList" loading="lazy" src="{{taxon.media}}" alt="">
         </div>
 
         <div class="flex-grow-1">
@@ -50,23 +41,17 @@
                 {% endif %}
             {% endif %}
             {% if configuration.AFFICHAGE_MENACE %}
-                {% set statut_menace = taxon.statut_menace %}
-                {% if statut_menace in ['CR','EN','VU'] %}
-                    <img src="{{ url_for('static', filename='images/Status_iucn_' ~ statut_menace ~ '.png') }}"
+                {% if taxon.menace %}
+                    <img src="{{ url_for('static', filename='images/picto_menace.png') }}"
                          alt="{{ _('threatened') }}"
                          style="width:30px; height:30px;"
                          data-bs-toggle="tooltip"
-                         title="{{ _('threatened.' ~ statut_menace) }} - {{taxon.niveau_application_menace}}" />
+                         title="{{ _('threatened.' ~ taxon.menace) }} - {{taxon.niveau_application_menace}}" />
                 {% endif %}
             {% endif %}
         </span>
 
             <h5 class="mt-0 mb-1">
-                {% if DISPLAY_EYE_ON_LIST %}
-                    <a data-bs-toggle="tooltip" data-bs-placement="right">
-                        <i class="fas fa-eye fa-fw"></i>
-                    </a>
-                {% endif %}
                 <strong>
                     {% if taxon.nom_vern == None %}
                         -
@@ -84,7 +69,7 @@
             {% if taxon.nb_obs == 1 %}{{ _('observation') | lower }}{% else %}{{ _('observations') | lower }}{% endif %}
             <br>
 
-            {#            {{ _('last.obs.in') }} <strong>{{ taxon.last_obs | int }}</strong>#}
+            {{ _('last.obs.in') }} <strong>{{ taxon.yearmax | int }}</strong>
 
             <span class="float-end">
             <a class="badge bg-primary text-decoration-none" href="{{ url_for('main.ficheEspece', cd_nom=taxon.cd_ref) }}"

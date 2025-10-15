@@ -18,9 +18,9 @@
                 </div>
 
                 <div class="col-12 col-xl-4 col-lg-5 col-md-6 d-flex flex-column m-0 p-0">
-                    {% with dispay_picto=False %}
-                        {% include 'templates/core/listTaxons.html' %}
-                    {% endwith %}
+                {% with context={"page": "home_territory", "with_filters": True} %}
+                    {% include 'templates/core/listTaxons.html' %}
+                {% endwith %}
                 </div>
             </div>
         </div>

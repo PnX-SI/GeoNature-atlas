@@ -58,8 +58,7 @@
 
                 {% include 'templates/core/statHierarchy.html' %}
             </div>
-
-                {% with dispay_picto=False %}
+                {% with context={"page": "taxon_rank_sheet", "with_filters": True} %}
                     {% include 'templates/core/listTaxons.html' %}
                 {% endwith %}
         </div>

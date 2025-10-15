@@ -1,3 +1,5 @@
+// const debounce = require("debounce");
+
 $(".lazy").lazy({
     effect: "fadeIn",
     effectTime: 2000,
@@ -6,43 +8,48 @@ $(".lazy").lazy({
 });
 $('[data-toggle="tooltip"]').tooltip();
 
-var inputSearchTaxons = ""
-let page = 0
+// on commence à la page 1 car le backend nous renvoie déjà la page 0
+let inputSearchTaxons = "";
+let page = 1;
 let page_size = configuration.ITEMS_PER_PAGE
 let havePossibleNextPage = true;
 
-$(document).ready(function(){
-    $("#taxonInput").on("keyup", function() {
-        inputSearchTaxons = $(this).val().toLowerCase();
+// event on scroll
+document.getElementById('taxonList').addEventListener('scroll', debounce( onScroll , 200));
+
+// event on taxon search
+document.getElementById('taxonInput').addEventListener('keyup', debounce( (el) => {
+        inputSearchTaxons = document.getElementById('taxonInput').value.toLowerCase();
         page = 0;
         havePossibleNextPage = true;
-        getTaxonElems(inputSearchTaxons).then(data => {
+        getTaxonElems().then(data => {
             document.getElementById('taxonList').querySelectorAll('ul')[0].innerHTML = data;
+            // une fois que les données sont chargées, on est à la page 1
+            page = 1;
         });
-    });
-});
+} , 200));
 
 
 async function getTaxonElems() {
     let url = ""
-    let currentList = []
+    let currentList = [];
 
     const pathNameUrl = location.pathname.split("/").filter(segment => segment);
-
-    switch (pathNameUrl[0]) {
+    
+    switch (context.page) {
         case "area":
             // Territory sheet
             url = `/api/taxonList/area/${pathNameUrl[1]}?page=${page}&page_size=${page_size}&filter_taxons=${inputSearchTaxons}`;
             break;
-        case "liste":
+        case "taxon_rank_sheet":
             // Family list sheet
             url = `/api/taxonList/liste/${pathNameUrl[1]}?page=${page}&page_size=${page_size}&filter_taxons=${inputSearchTaxons}`;
             break;
-        case "groupe":
+        case "group_sheet":
             // Group sheet
             url = `/api/taxonList/group/${pathNameUrl[1]}?page=${page}&page_size=${page_size}&filter_taxons=${inputSearchTaxons}`;
             break;
-        default:
+        case "home_territory":
             // Default sheet (all species) used for home page (with territory map)
             url = `/api/taxonList?page=${page}&page_size=${page_size}&filter_taxons=${inputSearchTaxons}`
             break;
@@ -62,15 +69,16 @@ async function getTaxonElems() {
 }
 
 async function onScroll(event) {
+    
     const element = event.target
-    const scrollTop = element.scrollTop; // Current scroll position
+    const scrollTop = element.scrollTop +100; // Current scroll position + 100 pixel to trigger event before to be at the complete end
     const scrollHeight = element.scrollHeight;
     const clientHeight = element.clientHeight; // visibility size
-
+    
     if (scrollTop + clientHeight >= scrollHeight && havePossibleNextPage) {
         element.parentElement.querySelector("#list-taxon-loader-spinner").style.display = 'block'
+        const data = await getTaxonElems();        
         page++;
-        const data = await getTaxonElems();
         if (!data || data.length === 0) {
             havePossibleNextPage = false;
             page--;
@@ -82,8 +90,10 @@ async function onScroll(event) {
     }
 }
 
-getTaxonElems().then(data => {
-    document.getElementById('taxonList').querySelectorAll('ul')[0].innerHTML = data;
-});
 
-document.getElementById('taxonList').addEventListener('scroll', debounce( onScroll , 200))
+
+
+
+
+
+
