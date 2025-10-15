@@ -7,15 +7,18 @@
             }
         </style>
     {% endif %}
-    <div class="bg-white border-end p-2">
+    {% if context.with_filters %}
+        <div class="bg-white border-end p-2">
 
-        <div class="col">
-            <input id="taxonInput" type="text" class="form-control form-control-sm" placeholder="{{ _('filter.species') }}" />
+            <div class="col">
+                <input id="taxonInput" type="text" class="form-control form-control-sm" placeholder="{{ _('filter.species') }}" />
+            </div>
+            
         </div>
-
-    </div>
+    {% endif %}
     <div id="taxonList" class="d-flex align-content-stretch bg-white flex-grow-1" style="position: relative">
         <ul class="list-group w-100">
+            {% include 'templates/core/taxon.html' %}
         </ul>
     </div>
     <div id="list-taxon-loader-spinner" class="spinner-grow text-primary" role="status">
@@ -25,6 +28,8 @@
         <script>
             window.module = {exports: {}};
             var configuration = {{configuration|tojson}};
+            // set the context for list taxon : if we are on area, taxon rank sheet, last_obs etc...
+            var context = {{context | tojson}};
         </script>
         <script src="{{ url_for('static', filename='node_modules/debounce/index.js') }}"></script>
         <script src="{{ url_for('static', filename='listeEspeces.js') }}"></script>

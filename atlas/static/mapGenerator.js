@@ -37,26 +37,19 @@ function clearOverlays(){
     });
 }
 
-function formatDate(date) {
-    const date_options = {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-    };
-    return date.toLocaleDateString(undefined, date_options);
-}
 
-function generateObservationPopup(feature, linkSpecies = false) {
+
+function generateObservationPopup(feature) {
   /*
     Génération popup des observations
-    linkSpecies :  indique s'il faut ou non rajouter un lien vers la fiche espèce
-      (cas des fiches territoire ; home page)
   */
-  date = new Date(feature.properties.dateobs);
+  
   popupContent = `
-    <b>Date: </b> ${formatDate(date)}
+    <b>Date: </b> ${feature.properties.dateobs}
     </br><b>Altitude: </b> ${feature.properties.altitude_retenue}
-    ${observersTxt(feature)}`
+    ${observersTxt(feature)} </br>
+    <a href='${configuration.URL_APPLICATION}${language}/espece/${feature.properties.cd_ref}'> Fiche espèce </a>
+    `
 
     // verifie si le champs effectif est rempli
     if (feature.properties.effectif_total != undefined) {
@@ -64,11 +57,10 @@ function generateObservationPopup(feature, linkSpecies = false) {
     }
 
     // S'il faut lier à une fiche espèce
-    if (linkSpecies == true) {
+    if (feature.properties.taxon) {
         popupContent = `<b>Espèce: </b> ${feature.properties.taxon} </br>
       ${popupContent}
       </br>
-      <a href='${configuration.URL_APPLICATION}${language}/espece/${feature.properties.cd_ref}'> Fiche espèce </a>
       `
     }
     return popupContent
@@ -352,6 +344,19 @@ function generateLegendMaille() {
     legend.addTo(map);
 }
 
+function generalLegendPoint() {
+    if (typeof divLegendeFicheEspece !== "undefined") {
+        legend.onAdd = function (map) {
+            var div = L.DomUtil.create("div", "info legend");
+            div.innerHTML = divLegendeFicheEspece;
+            return div;
+        };
+        legend.addTo(map);
+    } else {
+
+    }
+}
+
 // Geojson Maille
 function generateGeojsonMaille(observations, yearMin, yearMax) {
     var i = 0;
@@ -523,22 +528,15 @@ function displayMarkerLayerFicheEspece(
         currentLayer.addTo(map);
     }
     // map.fitBounds(currentLayer.getBounds()); ZOOM FUNCTION ON SPECIES SHEET MARKER LAYER OBSERVATIONS DISPLAY
+    generalLegendPoint();
 
-    if (typeof divLegendeFicheEspece !== "undefined") {
-        legend.onAdd = function (map) {
-            var div = L.DomUtil.create("div", "info legend");
-            div.innerHTML = divLegendeFicheEspece;
-            return div;
-        };
-        legend.addTo(map);
-    }
 }
 
 // ***************Fonction lastObservations: mapHome et mapArea*****************
 
 /* *** Point ****/
 
-function onEachFeaturePointLastObs(feature, layer) {
+function onEachFeaturePoint(feature, layer) {
     popupContent = generateObservationPopup(feature, true);
     layer.bindPopup(popupContent);
 }
@@ -548,58 +546,41 @@ function onEachFeaturePointArea(feature, layer) {
     layer.bindPopup(popupContent);
 }
 
-function generateGeojsonPointLastObs(observationsPoint) {
-    myGeoJson = { type: "FeatureCollection", features: [] };
 
-    observationsPoint.forEach(function (obs) {
-        properties = obs;
-        properties["dateobsCompare"] = new Date(obs.dateobs);
-        properties["dateobs"] = obs.dateobs;
-        properties["type_code"] = obs.type_code;
-        properties["nb_observations"] = 1;
-        myGeoJson.features.push({
-            type: "Feature",
-            properties: properties,
-            geometry: obs.geojson_point,
-        });
-    });
-    return myGeoJson;
+function getCustomizeMarkerStyle() {
+    if (typeof customizeMarkerStyle == "undefined") {
+        customizeMarkerStyle = function (feature) {
+        return {};
+        };
+    }
+    else {
+        return customizeMarkerStyle
+    } 
 }
 
 function displayGeoJsonPoint(geojson) {
-if (typeof customizeMarkerStyle == "undefined") {
-    customizeMarkerStyle = function (feature) {
-      return {};
-    };
-  }
+    const customizeMarkerStyleFunc = getCustomizeMarkerStyle()
 
   currentLayer = L.geoJson(geojson, {
-    onEachFeature: onEachFeaturePointLastObs,
+    onEachFeature: onEachFeaturePoint,
     pointToLayer: function (feature, latlng) {
       return L.circleMarker(
         latlng,
-        customizeMarkerStyle(feature)
+        customizeMarkerStyleFunc(feature)
       );
     },
   });
   map.addLayer(currentLayer);
 }
 
-function displayMarkerLayerPointLastObs(observationsPoint) {  
-      
-  myGeoJson = generateGeojsonPointLastObs(observationsPoint);
-  displayGeoJsonPoint(myGeoJson)
-
-  map.addLayer(currentLayer);
-  if (typeof divLegendeFicheAreaHome !== "undefined") {
-    legend.onAdd = function (map) {
-      var div = L.DomUtil.create("div", "info legend");
-      div.innerHTML = divLegendeFicheAreaHome;
-      return div;
-    };
-    legend.addTo(map);
-  }
+function refreshStyle(layers) {
+    // fonction to refresh style of a list of layers from the customizeMarkerStyle (set green for sensibility and blue for non sensible obs)
+    const customizeMarkerStyleFunc = getCustomizeMarkerStyle();
+    layers.forEach(layer => {
+        layer.setStyle(customizeMarkerStyleFunc(layer.feature))
+    });
 }
+
 
 
 //  ** MAILLE ***
@@ -733,57 +714,6 @@ function addInFeatureGroup(feature, layer) {
     }
 }
 
-function generateGeoJsonMailleLastObs(observations, isRefresh=false) {
-    var features = [];
-    if (isRefresh) {
-        observations = observations.features;
-    }
-    observations.forEach((obs) => {
-        current_type_code.push(obs.type_code)
-        findedFeature = features.find(
-            (feat) => feat.properties.meshId === obs.id_maille
-        );
-        if (!findedFeature) {
-            features.push({
-                type: "Feature",
-                geometry: obs.geojson_maille,
-                properties: {
-                    type_code: obs.type_code,
-                    last_observation: obs.annee,
-                    meshId: obs.id_maille,
-                    list_id_observation: [obs.id_observation],
-                    nb_observations: 1,
-                    taxons: [
-                        {
-                            cdRef: obs.cd_ref,
-                            name: obs.taxon,
-                        },
-                    ],
-                },
-            });
-        } else if (
-            !findedFeature.properties.taxons.find(
-                (taxon) => taxon.cdRef === obs.cd_ref
-            )
-        ) {
-            findedFeature.properties.taxons.push({
-                cdRef: obs.cd_ref,
-                name: obs.taxon,
-            });
-            if (findedFeature.properties.last_observation < obs.annee) {
-                findedFeature.properties.last_observation = obs.annee
-            }
-            findedFeature.properties.nb_observations += 1
-        }
-        else {
-            findedFeature.properties.nb_observations += 1
-        }
-    });
-    return {
-        type: "FeatureCollection",
-        features: features,
-    };
-}
 
 function displayGeojsonMailles(observationsMaille) {
 
@@ -800,15 +730,6 @@ function displayGeojsonMailles(observationsMaille) {
 
     // ajout de la légende
     generateLegendMaille();
-}
-
-function displayMailleLayerLastObs(observations, isRefresh=false) {
-    const geojsonMaille = generateGeoJsonMailleLastObs(observations, isRefresh);
-    createMailleSelector()
-    currentLayer = L.geoJson(geojsonMaille, {
-        onEachFeature: onEachFeatureMailleLastObs,
-    });
-    generateLegendMaille()
 }
 
 // Legend

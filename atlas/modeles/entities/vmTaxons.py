@@ -1,8 +1,12 @@
 # -*- coding:utf-8 -*-
-from sqlalchemy import String, Float, Text, ForeignKey, Boolean
+from urllib.parse import urljoin
+from flask import current_app, url_for
+from sqlalchemy import String, Float, Text, ForeignKey, Boolean, and_
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.orm import relationship
 from atlas.env import db
+from atlas.modeles.entities.vmMedias import VmMedias
+from atlas.modeles import utils
 
 from typing import List
 import datetime
@@ -38,6 +42,65 @@ class VmTaxons(db.Model):
     attributs: Mapped[List["VmCorTaxonAttribut"]] = relationship(
         "VmCorTaxonAttribut", back_populates="taxon"
     )
+    main_media: Mapped[VmMedias] = relationship(
+        VmMedias,
+        primaryjoin=and_(
+            VmMedias.cd_ref == cd_ref, 
+            VmMedias.id_type == current_app.config["ATTR_MAIN_PHOTO"]
+        ),
+    )
+    def as_dict(self, with_main_media=False):
+        d = {
+            "cd_ref": self.cd_ref,
+            "lb_nom": self.lb_nom,
+            "nom_complet_html": self.nom_complet_html,
+            "nom_vern": self.nom_vern,
+            "patrimonial": self.patrimonial,
+            "menace": self.menace,
+            "protection_stricte": self.protection_stricte,
+            "yearmin": self.yearmin,
+            "yearmax": self.yearmax,
+            "nb_obs": self.nb_obs,
+            "group2_inpn": utils.deleteAccent(self.group2_inpn)
+        }
+        if with_main_media:
+            d["media"] = self.get_main_media()
+        return d
+
+    def get_main_media(self, size=(80,80)):
+        """Get main image of default logo
+
+        Parameters
+        ----------
+        size : tuple, optional
+            (height, width), by default (80,80)
+
+        Returns
+        -------
+        str
+            The path or url of the main image if exist, the logo of the group INPN if not
+        """
+        default_media = url_for(
+            'static',
+            filename=f"images/picto_{utils.deleteAccent(self.group2_inpn).replace(' ', '_') }.png"
+        )
+        if self.main_media:
+            if current_app.config["REDIMENSIONNEMENT_IMAGE"]:
+                height, width = size
+                return urljoin(
+                    current_app.config['TAXHUB_URL'],
+                    f"api/tmedias/thumbnail/{self.main_media.id_media}?h={height}&width={width}",
+                )
+            else:
+                if self.main_media.chemin:
+                    return current_app.config["REMOTE_MEDIAS_URL"] + self.main_media.chemin
+                elif self.main_media.url:
+                    return self.main_media.url
+                else:
+                    return default_media
+        else:
+            return default_media
+
 
     def shorten_name(self):
         shorten_nom_vern = self.nom_vern.split(",")[0] if self.nom_vern else ""

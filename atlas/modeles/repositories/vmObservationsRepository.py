@@ -6,6 +6,7 @@ from geojson import Feature, FeatureCollection
 from sqlalchemy.sql import func, or_, literal, cast
 from sqlalchemy import Interval, distinct, select, exists, true
 from sqlalchemy.dialects.postgresql import array
+from sqlalchemy.orm import joinedload
 
 from atlas.modeles import utils
 from atlas.modeles.repositories.vmMedias import VmMedias
@@ -18,11 +19,11 @@ from atlas.env import db
 currentYear = datetime.now().year
 
 
-def getObservationsChilds(filters, with_taxons=False):
+def getObservationsChilds(params: {}):
     """
     Retourne un geojson des observations en points
     Le geojson contient les propriétés présentes dans VMObservation
-    + taxon (optionnel: si with taxon est True) : le taxon de l'observation sous forme 'nom_vern | lb_nom'
+    + taxon (optionnel: si with taxon est True) : le taxon de l'observation sous forme 'nom_vern | lb_nom' (utilisé sur les fiches territoire et home)
 
     Parameters
     ----------
@@ -38,16 +39,17 @@ def getObservationsChilds(filters, with_taxons=False):
     -------
     Geosjon
     """
-    cd_ref = filters.get("cd_ref", None)
-    id_area = filters.get("id_area", None)
-    limit = filters.get("limit", None)
-
-    q_select = [VmObservations]
-    if with_taxons:
-        q_select.append(VmTaxons)
-    query = select(*q_select)
-    if with_taxons:
-        query = query.join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
+    cd_ref = params.get("cd_ref", None)
+    id_area = params.get("id_area", None)
+    limit = params.get("limit", None)
+    last_obs = params.get("last_obs", None)
+    fields: list = params.get("fields", "").split(",")
+    query = select(VmObservations)
+    if "taxons" in fields:
+        _joinedload = joinedload(VmObservations.taxon)
+        if "medias" in fields:
+            _joinedload.joinedload(VmTaxons.main_media)
+        query = query.options(_joinedload)
     if cd_ref:
         subquery = select(func.atlas.find_all_taxons_childs(cd_ref))
         query = query.filter(
@@ -62,75 +64,37 @@ def getObservationsChilds(filters, with_taxons=False):
                 select(true())
                 .select_from(VmCorAreaSynthese)
                 .where(
-                    (VmCorAreaSynthese.id_area == filters["id_area"])
+                    (VmCorAreaSynthese.id_area == params["id_area"])
                     & (VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
                 )
             )
+        )
+    if last_obs:
+        query = query.where(
+            VmObservations.dateobs >= func.current_timestamp() - cast(literal(last_obs), Interval)
         )
     if limit:
         query = query.limit(limit)
     elif not cd_ref and not id_area:
         query = query.limit(100000)
 
-    observations = db.session.execute(query).mappings().all()
-
+    observations = db.session.execute(query).scalars().all()
     features = []
     for o in observations:
-        obs_row = o["VmObservations"]
-        observation_as_dict = o["VmObservations"].as_dict()
-        if with_taxons:
-            observation_as_dict["taxon"] = o["VmTaxons"].shorten_name()
+        observation_as_dict = o.as_dict()
+        if "taxons" in fields:
+            observation_as_dict["taxon"] = o.taxon.shorten_name()
+            if "medias" in fields:
+                observation_as_dict["media"] = o.taxon.get_main_media()
         feature = Feature(
             id=observation_as_dict["id_observation"],
-            geometry=json.loads(obs_row.geojson_point or "{}"),
+            geometry=json.loads(o.geojson_point or "{}"),
             properties=observation_as_dict,
         )
         features.append(feature)
 
     return FeatureCollection(features)
 
-
-def lastObservations(mylimit, idPhoto):
-    """TODO : factoriser avec getObservationsChilds"""
-    req = (
-        select(
-            VmObservations,
-            func.concat(
-                func.split_part(VmTaxons.nom_vern, ",", 1) + " | ",
-                literal("<i>"),
-                VmTaxons.lb_nom,
-                literal("</i>"),
-            ).label("taxon"),
-            VmTaxons.group2_inpn,
-            VmMedias.url,
-            VmMedias.chemin,
-            VmMedias.id_media,
-        )
-        .join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
-        .outerjoin(
-            VmMedias, (VmMedias.cd_ref == VmObservations.cd_ref) & (VmMedias.id_type == idPhoto)
-        )
-        .where(
-            VmObservations.dateobs >= func.current_timestamp() - cast(literal(mylimit), Interval)
-        )
-        .order_by(VmObservations.dateobs.desc())
-    )
-
-    results = db.session.execute(req).mappings().all()
-
-    obsList = []
-    for row in results:
-        obs = row["VmObservations"]  # Objet ORM VmObservations
-        temp = {**obs.__dict__, **row}
-        temp.pop("VmObservations")  # supression car partie isolée dans obs
-        temp.pop("_sa_instance_state", None)  # supression du champ interne de SQLAlchemy
-        temp.pop("the_geom_point", None)
-        temp["geojson_point"] = json.loads(obs.geojson_point or "{}")
-        temp["dateobs"] = obs.dateobs
-        temp["group2_inpn"] = utils.deleteAccent(row["group2_inpn"])
-        temp["pathImg"] = utils.findPath(row)
-        obsList.append(temp)
-    return obsList
 
 
 def observersParser(req):

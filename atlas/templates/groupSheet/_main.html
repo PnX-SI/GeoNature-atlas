@@ -51,10 +51,9 @@
                     </li>
                 {% endfor %}
             </div>
-
-            {% with dispay_picto=False %}
-                {% include 'templates/core/listTaxons.html' %}
-            {% endwith %}
+                {% with context={"page": "group_sheet", "with_filters": True} %}
+                    {% include 'templates/core/listTaxons.html' %}
+                {% endwith %}
         </div>
     </div>
 

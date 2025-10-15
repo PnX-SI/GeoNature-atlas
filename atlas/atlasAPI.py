@@ -68,13 +68,16 @@ def getObservationsMailleAPI():
         - year_min / year_max : filtre les observation dans des bornes d'année
         - cd_ref : renvoie que les observation de ce taxon et de ces enfants
         - id_area : renvoie uniquement les observations présente dans l'aire demandée
+        - fields: permet d'ajouter des champs au geojson:
+            -> "taxons" pour ajouter la liste de taxons de chaque maile
+            -> "ids_obs" pour ajouter la liste des id_observation de chaque maille
     with_taxons : bool, optional
         - Permet d'ajouter la liste des taxon d'une maille au Geojson
 
     :returns: GeoJson
     """
     observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(
-        filters=request.args, with_taxons=request.args.get("with_taxons", False)
+        params=request.args
     )
     return jsonify(observations)
 
@@ -103,22 +106,20 @@ if not current_app.config["AFFICHAGE_MAILLE"]:
         Geosjon
         """
         observations = vmObservationsRepository.getObservationsChilds(
-            request.args, with_taxons=request.args.get("with_taxons", False)
+            request.args,
         )
         return jsonify(observations)
 
-
+# 
 @api.route("/taxonList", methods=["GET"])
 @api.route("/taxonList/area/<id_area>", methods=["GET"])
 @api.route("/taxonList/liste/<cd_ref>", methods=["GET"])
 @api.route("/taxonList/group/<group_name>", methods=["GET"])
-def get_taxon_list(id_area=None, id_group=None, group_name=None, cd_ref=None):
-    connection = db.engine.connect()
-
+def get_taxon_list(id_area=None, cd_ref=None, group_name=None):
     page = request.args.get("page")
     if not page:
         page = 0
-
+    last_obs = request.args.get("last_obs", False)
     page_size = request.args.get("page_size")
     if not page_size:
         page_size = current_app.config["ITEMS_PER_PAGE"]
@@ -127,16 +128,15 @@ def get_taxon_list(id_area=None, id_group=None, group_name=None, cd_ref=None):
     if not filter_taxon:
         filter_taxon = ""
 
-    if cd_ref:
-        # case of liste sheet (RangTaxonomie)
-        list_taxon = vmTaxonsRepository.getTaxonsChildsList(cd_ref, page, page_size, filter_taxon)
-    else:
-        # case of territory on home sheet, area sheet, group sheet
-        list_taxon = vmTaxonsRepository.getListTaxon(
-            id_area, group_name, page, page_size, filter_taxon
-        )
-    connection.close()
-    # return list_taxon
+    list_taxon = vmTaxonsRepository.getListTaxon(
+        id_area=id_area,
+        group_name=group_name,
+        cd_ref=cd_ref,
+        last_obs=last_obs,
+        page=page,
+        page_size=page_size,
+        filter_taxon=filter_taxon
+    )
     return render_template(
         "templates/core/taxon.html",
         listTaxons=list_taxon,

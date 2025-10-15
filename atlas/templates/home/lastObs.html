@@ -3,7 +3,7 @@
     <div class="card mt-4">
         <div class="card-body pb-0">
             <h3 class="card-title"><i class="fas fa-binoculars icon-color-title"></i>
-                {{ configuration.TEXT_LAST_OBS }} {{ observations | length }}
+                {{ configuration.TEXT_LAST_OBS }} {{ observations.features | length }}
                 {{ 'observations' if observations | length > 1 else 'observation' }}
             </h3>
         </div>
@@ -14,34 +14,19 @@
             </div>
             <!-- LISTE des dernières observations -->
             <div id="listMap" class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                <ul id='lastObsList' class="list-unstyled w-100 border-top">
+              <ul id='lastObsList' class="list-unstyled w-100 border-top">
 
-                    {% for obs in observations %}
-                    <li class="lastObslistItem d-flex align-items-center border-bottom p-2" idsynthese="{{ obs.id_observation }}" area-code="{{ obs.id_maille }}">
-
-                        {% if obs.pathImg == None %}
-                        <img class="align-self-center lastObslistItemIcon" data-bs-toggle="tooltip"
-                             title="{{ obs.group2_inpn }}" data-bs-placement="left"
-                             src="{{ url_for('static', filename='images/picto_' + obs.group2_inpn | replace(" ", "_") +'.png') }}">
-                        {% else %}
-                            {% if configuration.REDIMENSIONNEMENT_IMAGE %}
-                                {% set img_path = configuration.TAXHUB_URL+'/api/tmedias/thumbnail/'+obs.id_media|string+'?h=80&w=80' %}
-                            {% else %}
-                                {% set img_path = obs.pathImg %}
-                            {% endif %}
-                        <img class="lazy align-self-center lastObslistItemImage" data-bs-toggle="tooltip"
-                             title="{{ obs.group2_inpn }}" data-bs-placement="left"
-                             data-src="{{ img_path }}">
-                        {% endif %}
-
+                    {% for obs in observations.features %}
+                    <li  class="lastObslistItem d-flex align-items-center border-bottom p-2" idObservation="{{ obs.properties.id_observation }}" area-code="{{ obs.id_maille }}">
+                        <img loading="lazy" src="{{obs.properties.media}}" class="align-self-center lastObsImg">
                         <div class="flex-grow-1 d-flex justify-content-between align-items-center ms-3">
                             <div class="d-flex flex-column justify-content-center" style="flex: 1; overflow-wrap: break-word;">
-                                <p class="singleTaxon name mb-0" cdref="{{ obs.cd_ref }}">
-                                    {{ obs.taxon|safe }}<br />
-                                    {{ obs.dateobs | dateformat("short") }}
+                                <p class="singleTaxon name mb-0" cdref="{{ obs.properties.cd_ref }}">
+                                    {{ obs.properties.taxon|safe }}<br />
+                                    {{ obs.properties.dateobs }}
                                 </p>
                             </div>
-                            <a href="{{ url_for('main.ficheEspece', cd_nom=obs.cd_ref) }}"
+                            <a href="{{ url_for('main.ficheEspece', cd_nom=obs.properties.cd_ref) }}"
                                class="btn btn-sm btn-secondary ms-2" data-bs-toggle="tooltip" data-bs-placement="left"
                                title="Consulter la fiche espèce">
                                 {{ _('species.sheet') }}
