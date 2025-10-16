@@ -136,6 +136,7 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, last_obs=False, pag
         if id_area:
             taxon_dict["yearmax"] = row.last_obs
             taxon_dict["menace"] = row.menace
+            taxon_dict["nb_obs"] = row.nb_obs
             taxon_dict["protection_stricte"] = row.protege
             taxon_dict["niveau_application_menace"] = row.niveau_application_menace
         taxons.append(taxon_dict)
