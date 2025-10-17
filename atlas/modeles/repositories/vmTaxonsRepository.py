@@ -38,7 +38,7 @@ def get_nb_taxons(cd_ref=None, group_name=None):
 
 
 # With distinct the result in a array not an object, 0: lb_nom, 1: nom_vern
-def getListTaxon(id_area=None, group_name=None, cd_ref=None, last_obs=False, page=0, page_size=current_app.config["ITEMS_PER_PAGE"], filter_taxon=""):
+def getListTaxon(id_area=None, group_name=None, cd_ref=None, params={}):
     """_summary_
 
     Parameters
@@ -49,17 +49,29 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, last_obs=False, pag
         use for group INPN sheet
     cd_ref : int, optional
         _use for taxonomy sheet -> find all child taxon of cd_ref to build the list
-    page : int, optional
-    page_size : _type_, optional
-    filter_taxon : str, optional
-        filter list whith lb_nom or nom_vern (use for dynamic search in page)
+    params : 
+        page : int, optional
+        page_size : _type_, optional
+        filter_taxon : str, optional
+            filter list whith lb_nom or nom_vern (use for dynamic search in page)
+        protected: boolean
+        threatened: boolean
+        group2_inpn: str
 
     Returns
     -------
     _type_
         _description_
     """
-    id_photo = current_app.config["ATTR_MAIN_PHOTO"]
+    page = params.get("page", 0)
+    page_size = params.get("page_size", current_app.config["ITEMS_PER_PAGE"])
+    filter_taxon = params.get("filter_taxons", "")
+    group2_inpn = params.get("group2_inpn", None)
+    if group2_inpn:
+        group2_inpn = group2_inpn.split(',')
+    threatened = params.get("threatened", None)
+    protected = params.get("protected", None)
+    patrimonial = params.get("patrimonial", None)
     obs_in_area = (
         select(
             func.count(distinct(VmObservations.id_observation)).label("nb_obs"),
@@ -69,12 +81,6 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, last_obs=False, pag
         .select_from(VmObservations)
         .group_by(VmObservations.cd_ref)
     )
-    if last_obs:
-        obs_in_area = obs_in_area.where(
-            VmObservations.dateobs >= (func.current_timestamp() - cast(literal(
-                str(current_app.config["NB_DAY_LAST_OBS"]) + " day"
-            ), Interval))
-        )
 
     if id_area:
         obs_in_area = obs_in_area.join(
@@ -103,6 +109,8 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, last_obs=False, pag
         .limit(int(page_size))
         .offset(int(page) * int(page_size))
     )
+    if group2_inpn:
+        req = req.where(VmTaxons.group2_inpn.in_(group2_inpn))
     req = req.options(
         joinedload(VmTaxons.main_media)
     )
@@ -117,6 +125,20 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, last_obs=False, pag
             (CorTaxonStatutArea.cd_ref == VmTaxons.cd_ref)
             & (CorTaxonStatutArea.id_area.in_(id_area_dep)),
         )
+        # si protegé et menacé sur une fiche territoire on va cherché dans CorTaxonStatutArea
+        # sinon direcetement dans VmTaxons
+        if protected:
+            req = req.where(CorTaxonStatutArea.protege == True)
+        if threatened:
+            req = req.where(CorTaxonStatutArea.statut_menace != None)
+    else:
+        if protected:
+            req = req.where(VmTaxons.protection_stricte == True)
+        if threatened:
+            req = req.where(VmTaxons.menace == True)
+
+    if patrimonial:
+        req = req.filter(VmTaxons.patrimonial == 'oui')
 
     if group_name:
         req = req.filter(VmTaxons.group2_inpn == group_name)
@@ -176,3 +198,9 @@ def getAllINPNgroup():
         temp = {"group": utils.deleteAccent(r.group2_inpn), "groupAccent": r.group2_inpn}
         groupList.append(temp)
     return groupList
+
+
+def get_group_inpn(group):
+    column = getattr(VmTaxons, group)
+    req = select(distinct(column)).order_by(column)
+    return [group for group in db.session.execute(req).scalars().all()]
