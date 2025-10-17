@@ -44,9 +44,9 @@ if not current_app.config["AFFICHAGE_MAILLE"]:
         :returns: dict ({'point:<GeoJson>', 'maille': 'GeoJson})
         """
         observations = {
-            "point": vmObservationsRepository.getObservationsChilds(filters={"cd_ref": cd_ref}),
+            "point": vmObservationsRepository.getObservationsChilds(params={"cd_ref": cd_ref}),
             "maille": vmObservationsMaillesRepository.getObservationsMaillesChilds(
-                filters={"cd_ref": cd_ref}
+                params={"cd_ref": cd_ref}
             ),
         }
         return jsonify(observations)
@@ -106,7 +106,7 @@ if not current_app.config["AFFICHAGE_MAILLE"]:
         Geosjon
         """
         observations = vmObservationsRepository.getObservationsChilds(
-            request.args,
+            params=request.args,
         )
         return jsonify(observations)
 
@@ -116,26 +116,11 @@ if not current_app.config["AFFICHAGE_MAILLE"]:
 @api.route("/taxonList/liste/<cd_ref>", methods=["GET"])
 @api.route("/taxonList/group/<group_name>", methods=["GET"])
 def get_taxon_list(id_area=None, cd_ref=None, group_name=None):
-    page = request.args.get("page")
-    if not page:
-        page = 0
-    last_obs = request.args.get("last_obs", False)
-    page_size = request.args.get("page_size")
-    if not page_size:
-        page_size = current_app.config["ITEMS_PER_PAGE"]
-
-    filter_taxon = request.args.get("filter_taxons")
-    if not filter_taxon:
-        filter_taxon = ""
-
     list_taxon = vmTaxonsRepository.getListTaxon(
         id_area=id_area,
         group_name=group_name,
         cd_ref=cd_ref,
-        last_obs=last_obs,
-        page=page,
-        page_size=page_size,
-        filter_taxon=filter_taxon
+        params=dict(request.args)
     )
     return render_template(
         "templates/core/taxon.html",

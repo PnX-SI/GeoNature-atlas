@@ -198,3 +198,14 @@ tbody tr.current {
         color: deeppink;
     }
 }
+
+#groupFilterList {
+    max-height: 500px;
+    overflow-y: scroll;
+}
+
+#nbFilter {
+    position: absolute;
+    top: -30%;
+    right: 0;
+}

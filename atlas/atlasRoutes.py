@@ -112,13 +112,10 @@ def index():
 
     if current_app.config["AFFICHAGE_TERRITOIRE_OBS"]:
         nb_taxons = vmTaxonsRepository.get_nb_taxons()
-        listTaxons = vmTaxonsRepository.getListTaxon(page=0)
-
-    else:
-        nb_taxons = {}
         listTaxons = vmTaxonsRepository.getListTaxon(
-            last_obs=str(current_app.config["NB_DAY_LAST_OBS"]) + " day",
-            page=0
+            params={
+                "page": 0
+            }
         )
 
 
@@ -163,7 +160,7 @@ def index():
         lastDiscoveries = vmObservationsRepository.getLastDiscoveries()
     else:
         lastDiscoveries = []
-
+    group2_inpn = vmTaxonsRepository.get_group_inpn("group2_inpn")
     personal_data = False
     args_personal_data = request.args.get("personal_data")
     if args_personal_data and args_personal_data.lower() == "true":
@@ -172,13 +169,14 @@ def index():
     return render_template(
         "templates/home/_main.html",
         nb_taxons=nb_taxons,
-        listTaxons=listTaxons,
         observations=observations,
         observations_mailles=observations_mailles,
         mostViewTaxon=mostViewTaxon,
         customStatMedias=customStatMedias,
         lastDiscoveries=lastDiscoveries,
         personal_data=personal_data,
+        listTaxons=listTaxons,
+        group2_inpn=group2_inpn
     )
 
 
@@ -315,13 +313,20 @@ def _make_groupes_statuts(statuts):
 def ficheArea(id_area):
     area = vmAreasRepository.getAreaFromIdArea(id_area)
     stats_area = vmAreasRepository.getStatsByArea(id_area)
-    listTaxons = vmTaxonsRepository.getListTaxon(id_area=id_area, page=0)
+    listTaxons = vmTaxonsRepository.getListTaxon(
+        id_area=id_area, 
+        params={
+            "page": 0
+        }
+        )
+    group2_inpn = vmTaxonsRepository.get_group_inpn("group2_inpn")
     return render_template(
         "templates/areaSheet/_main.html",
         stats_area=stats_area,
         areaInfos=area,
         id_area=id_area,
-        listTaxons=listTaxons
+        listTaxons=listTaxons,
+        group2_inpn=group2_inpn
     )
 
 
@@ -332,7 +337,12 @@ def ficheRangTaxonomie(cd_ref=None):
     referenciel = vmTaxrefRepository.getInfoFromCd_ref(cd_ref)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(cd_ref)
     observers = vmObservationsRepository.getObservers(cd_ref)
-    listTaxons = vmTaxonsRepository.getListTaxon(cd_ref=cd_ref, page=0)
+    listTaxons = vmTaxonsRepository.getListTaxon(
+        cd_ref=cd_ref,
+        params={
+            "page": 0
+        }
+    )
 
     return render_template(
         "templates/taxoRankSheet/_main.html",
@@ -350,7 +360,12 @@ def ficheGroupe(groupe):
     groups = vmTaxonsRepository.getAllINPNgroup()
     nb_taxons = vmTaxonsRepository.get_nb_taxons(group_name=groupe)
     observers = vmObservationsRepository.getGroupeObservers(groupe)
-    listTaxons = vmTaxonsRepository.getListTaxon(group_name=groupe, page=0)
+    listTaxons = vmTaxonsRepository.getListTaxon(
+        group_name=groupe, 
+        params={
+            "page": 0
+        }    
+    )
 
     return render_template(
         "templates/groupSheet/_main.html",
