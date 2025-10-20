@@ -1,10 +1,11 @@
 # -*- coding:utf-8 -*-
 import json
 
-from flask import jsonify, Blueprint, request, current_app
+from flask import jsonify, Blueprint, request, current_app, render_template
 
 from atlas import utils
 from atlas.modeles.repositories import (
+    vmTaxonsRepository,
     vmSearchTaxonRepository,
     vmObservationsRepository,
     vmObservationsMaillesRepository,
@@ -33,7 +34,6 @@ def searchAreaAPI():
     return jsonify(results)
 
 
-
 if not current_app.config["AFFICHAGE_MAILLE"]:
 
     @api.route("/observationsMailleAndPoint/<int(signed=True):cd_ref>", methods=["GET"])
@@ -44,13 +44,12 @@ if not current_app.config["AFFICHAGE_MAILLE"]:
         :returns: dict ({'point:<GeoJson>', 'maille': 'GeoJson})
         """
         observations = {
-            "point": vmObservationsRepository.getObservationsChilds(filters={"cd_ref": cd_ref}),
+            "point": vmObservationsRepository.getObservationsChilds(params={"cd_ref": cd_ref}),
             "maille": vmObservationsMaillesRepository.getObservationsMaillesChilds(
-                filters={"cd_ref": cd_ref}
+                params={"cd_ref": cd_ref}
             ),
         }
         return jsonify(observations)
-
 
 
 @api.route("/observationsMaille", methods=["GET"])
@@ -69,14 +68,16 @@ def getObservationsMailleAPI():
         - year_min / year_max : filtre les observation dans des bornes d'année
         - cd_ref : renvoie que les observation de ce taxon et de ces enfants
         - id_area : renvoie uniquement les observations présente dans l'aire demandée
+        - fields: permet d'ajouter des champs au geojson:
+            -> "taxons" pour ajouter la liste de taxons de chaque maile
+            -> "ids_obs" pour ajouter la liste des id_observation de chaque maille
     with_taxons : bool, optional
         - Permet d'ajouter la liste des taxon d'une maille au Geojson
 
     :returns: GeoJson
     """
     observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(
-        filters=request.args,
-        with_taxons=request.args.get("with_taxons", False)
+        params=request.args
     )
     return jsonify(observations)
 
@@ -105,12 +106,28 @@ if not current_app.config["AFFICHAGE_MAILLE"]:
         Geosjon
         """
         observations = vmObservationsRepository.getObservationsChilds(
-            request.args,
-            with_taxons=request.args.get("with_taxons", False)
+            params=request.args,
         )
         return jsonify(observations)
 
-
+# 
+@api.route("/taxonList", methods=["GET"])
+@api.route("/taxonList/area/<id_area>", methods=["GET"])
+@api.route("/taxonList/liste/<cd_ref>", methods=["GET"])
+@api.route("/taxonList/group/<group_name>", methods=["GET"])
+def get_taxon_list(id_area=None, cd_ref=None, group_name=None):
+    list_taxon = vmTaxonsRepository.getListTaxon(
+        id_area=id_area,
+        group_name=group_name,
+        cd_ref=cd_ref,
+        params=dict(request.args)
+    )
+    return render_template(
+        "templates/core/taxon.html",
+        listTaxons=list_taxon,
+        DISPLAY_EYE_ON_LIST=True,
+        id_area=id_area,
+    )
 
 
 @api.route("/photoGroup/<group>", methods=["GET"])
@@ -140,9 +157,7 @@ def main_stat():
 @api.route("/rank_stat", methods=["GET"])
 @cache.cached()
 def rank_stat():
-    return jsonify(
-        vmObservationsRepository.genericStat(current_app.config["RANG_STAT"])
-    )
+    return jsonify(vmObservationsRepository.genericStat(current_app.config["RANG_STAT"]))
 
 
 @api.route("/area_chart_values/<id_area>", methods=["GET"])
@@ -151,15 +166,11 @@ def get_area_chart_valuesAPI(id_area):
     nb_species = stats["nb_species"]
     nb_threatened_species = stats["nb_taxon_menace"]
 
-    species_by_taxonomic_group = vmAreasRepository.get_species_by_taxonomic_group(
-        id_area
-    )
+    species_by_taxonomic_group = vmAreasRepository.get_species_by_taxonomic_group(id_area)
     observations_by_taxonomic_group = vmAreasRepository.get_nb_observations_taxonomic_group(
         id_area
     )
-    nb_species_by_organism = vmOrganismsRepository.get_species_by_organism_on_area(
-        id_area
-    )
+    nb_species_by_organism = vmOrganismsRepository.get_species_by_organism_on_area(id_area)
     observations_by_organism = vmOrganismsRepository.get_nb_observations_by_organism_on_area(
         id_area
     )

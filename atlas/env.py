@@ -6,8 +6,10 @@ from sqlalchemy.orm import DeclarativeBase
 from flask_caching import Cache
 from flask_babel import Babel
 
+
 class Base(DeclarativeBase):
-  pass
+    pass
+
 
 babel = Babel()
 

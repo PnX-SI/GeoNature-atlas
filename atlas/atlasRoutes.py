@@ -82,9 +82,7 @@ if current_app.config["ORGANISM_MODULE"]:
         update_most_obs_taxons = []
         for taxon in mostObsTaxs:
             taxon_info = vmTaxrefRepository.searchEspece(taxon["cd_ref"])
-            photo = vmMedias.getFirstPhoto(
-                taxon["cd_ref"], current_app.config["ATTR_MAIN_PHOTO"]
-            )
+            photo = vmMedias.getFirstPhoto(taxon["cd_ref"], current_app.config["ATTR_MAIN_PHOTO"])
             taxon = {**taxon, **taxon_info["taxonSearch"]}
             taxon["photo"] = photo
             update_most_obs_taxons.append(taxon)
@@ -112,25 +110,40 @@ if current_app.config["ORGANISM_MODULE"]:
 @main.route("/", methods=["GET", "POST"])
 def index():
 
+    nb_taxons = None
+    listTaxons = []
     if current_app.config["AFFICHAGE_TERRITOIRE_OBS"]:
-        listTaxons = vmTaxonsRepository.getTaxonsTerritory()
-    else:
-        listTaxons = []
+        nb_taxons = vmTaxonsRepository.get_nb_taxons()
+        listTaxons = vmTaxonsRepository.getListTaxon(
+            params={
+                "page": 0
+            }
+        )
+
 
     # si AFFICHAGE_TERRITOIRE_OBS on charge les données en AJAX
     # si AFFICHAGE_DERNIERES_OBS = False, on ne charge pas les obs
-    if current_app.config["AFFICHAGE_TERRITOIRE_OBS"] or not current_app.config["AFFICHAGE_DERNIERES_OBS"]:
+    if (
+        current_app.config["AFFICHAGE_TERRITOIRE_OBS"]
+        or not current_app.config["AFFICHAGE_DERNIERES_OBS"]
+    ):
         observations = []
-    elif current_app.config["AFFICHAGE_DERNIERES_OBS"]:
+    observations_mailles = None
+    if current_app.config["AFFICHAGE_DERNIERES_OBS"]:
+        # on charge les observations point meme si on est en mode maille pour afficher 
+        # la liste des dernières obs
+        observations = vmObservationsRepository.getObservationsChilds(
+            params={
+                "last_obs": str(current_app.config["NB_DAY_LAST_OBS"]) + " day",
+                "fields": "taxons,medias"
+            },
+        )
         if current_app.config["AFFICHAGE_MAILLE"]:
-            observations = vmObservationsMaillesRepository.lastObservationsMailles(
-                str(current_app.config["NB_DAY_LAST_OBS"]) + " day",
-                current_app.config["ATTR_MAIN_PHOTO"],
-            )
-        else:
-            observations = vmObservationsRepository.lastObservations(
-                str(current_app.config["NB_DAY_LAST_OBS"]) + " day",
-                current_app.config["ATTR_MAIN_PHOTO"],
+            observations_mailles = vmObservationsMaillesRepository.getObservationsMaillesChilds(
+                params={
+                    "last_obs": str(current_app.config["NB_DAY_LAST_OBS"]) + " day",
+                    "fields": "taxons,ids_obs"
+                }
             )
 
     if current_app.config["AFFICHAGE_EN_CE_MOMENT"]:
@@ -149,7 +162,7 @@ def index():
         lastDiscoveries = vmObservationsRepository.getLastDiscoveries()
     else:
         lastDiscoveries = []
-
+    group2_inpn = vmTaxonsRepository.get_group_inpn("group2_inpn")
     personal_data = False
     args_personal_data = request.args.get("personal_data")
     if args_personal_data and args_personal_data.lower() == "true":
@@ -157,12 +170,15 @@ def index():
 
     return render_template(
         "templates/home/_main.html",
-        listTaxons=listTaxons,
         observations=observations,
+        observations_mailles=observations_mailles,
         mostViewTaxon=mostViewTaxon,
         customStatMedias=customStatMedias,
         lastDiscoveries=lastDiscoveries,
         personal_data=personal_data,
+        group2_inpn=group2_inpn,
+        listTaxons=listTaxons,
+        nb_taxons=nb_taxons
     )
 
 
@@ -185,9 +201,7 @@ def ficheEspece(cd_nom):
     areas = vmAreasRepository.getAreasObservationsChilds(cd_ref)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(cd_ref)
     firstPhoto = vmMedias.getFirstPhoto(cd_ref, current_app.config["ATTR_MAIN_PHOTO"])
-    photoCarousel = vmMedias.getPhotoCarousel(
-        cd_ref, current_app.config["ATTR_OTHER_PHOTO"]
-    )
+    photoCarousel = vmMedias.getPhotoCarousel(cd_ref, current_app.config["ATTR_OTHER_PHOTO"])
     videoAudio = vmMedias.getVideo_and_audio(
         cd_ref,
         current_app.config["ATTR_AUDIO"],
@@ -299,29 +313,43 @@ def _make_groupes_statuts(statuts):
 @main.route("/<lang_code>/area/<int:id_area>", methods=["GET", "POST"])
 @main.route("/area/<int:id_area>", methods=["GET", "POST"])
 def ficheArea(id_area):
-    listTaxons = vmTaxonsRepository.getTaxonsAreas(id_area)
     area = vmAreasRepository.getAreaFromIdArea(id_area)
     stats_area = vmAreasRepository.getStatsByArea(id_area)
+    listTaxons = vmTaxonsRepository.getListTaxon(
+        id_area=id_area, 
+        params={
+            "page": 0
+        }
+        )
+    group2_inpn = vmTaxonsRepository.get_group_inpn("group2_inpn")
     return render_template(
         "templates/areaSheet/_main.html",
-        listTaxons=listTaxons,
         stats_area=stats_area,
         areaInfos=area,
         id_area=id_area,
+        listTaxons=listTaxons,
+        group2_inpn=group2_inpn
     )
 
 
 @main.route("/<lang_code>/liste/<int(signed=True):cd_ref>", methods=["GET", "POST"])
 @main.route("/liste/<int(signed=True):cd_ref>", methods=["GET", "POST"])
-def ficheRangTaxonomie(cd_ref):
-    listTaxons = vmTaxonsRepository.getTaxonsChildsList(cd_ref)
+def ficheRangTaxonomie(cd_ref=None):
+    nb_taxons = vmTaxonsRepository.get_nb_taxons(cd_ref=cd_ref)
     referenciel = vmTaxrefRepository.getInfoFromCd_ref(cd_ref)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(cd_ref)
     observers = vmObservationsRepository.getObservers(cd_ref)
+    listTaxons = vmTaxonsRepository.getListTaxon(
+        cd_ref=cd_ref,
+        params={
+            "page": 0
+        }
+    )
 
     return render_template(
         "templates/taxoRankSheet/_main.html",
         listTaxons=listTaxons,
+        nb_taxons=nb_taxons,
         referenciel=referenciel,
         taxonomyHierarchy=taxonomyHierarchy,
         observers=observers,
@@ -332,12 +360,19 @@ def ficheRangTaxonomie(cd_ref):
 @main.route("/groupe/<groupe>", methods=["GET", "POST"])
 def ficheGroupe(groupe):
     groups = vmTaxonsRepository.getAllINPNgroup()
-    listTaxons = vmTaxonsRepository.getTaxonsGroup(groupe)
+    nb_taxons = vmTaxonsRepository.get_nb_taxons(group_name=groupe)
     observers = vmObservationsRepository.getGroupeObservers(groupe)
+    listTaxons = vmTaxonsRepository.getListTaxon(
+        group_name=groupe, 
+        params={
+            "page": 0
+        }    
+    )
 
     return render_template(
         "templates/groupSheet/_main.html",
         listTaxons=listTaxons,
+        nb_taxons=nb_taxons,
         referenciel=groupe,
         groups=groups,
         observers=observers,
@@ -349,8 +384,6 @@ def ficheGroupe(groupe):
 def photos():
     groups = vmTaxonsRepository.getINPNgroupPhotos()
     return render_template("templates/photoGalery/_main.html", groups=groups)
-
-
 
 
 @main.route("/<lang_code>/static/<page>", methods=["GET", "POST"])

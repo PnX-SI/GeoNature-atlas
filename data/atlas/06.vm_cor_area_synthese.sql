@@ -1,3 +1,5 @@
+-- VM de correspondance entre une observation et les zonage qu'elle intersecte
+-- seul les zonage plus grand que le niveau d'affichage de leur sensibilité sont affichés
 CREATE MATERIALIZED VIEW atlas.vm_cor_area_synthese AS
     WITH area_type_codes AS (
         SELECT string_to_table.string_to_table AS area_type_code

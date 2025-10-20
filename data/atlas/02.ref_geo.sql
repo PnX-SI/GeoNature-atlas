@@ -60,20 +60,6 @@ CREATE INDEX ON atlas.vm_bib_areas_types
     USING btree (type_name);
 
 
--- +-----------------------------------------------------------------------------------------------+
--- vm_cor_areas
-CREATE MATERIALIZED VIEW atlas.vm_cor_areas AS
-    SELECT
-        id_area_group,
-        id_area
-    FROM ref_geo.cor_areas
-WITH DATA;
-
-CREATE UNIQUE INDEX ON atlas.vm_cor_areas
-    USING btree (id_area_group, id_area);
-
-CREATE INDEX ON atlas.vm_cor_areas
-    USING btree (id_area);
 
 
 -- +-----------------------------------------------------------------------------------------------+
@@ -126,3 +112,29 @@ $function$
         REFRESH MATERIALIZED VIEW atlas.t_layer_territoire ;
     END
 $function$ ;
+
+
+
+-- +-----------------------------------------------------------------------------------------------+
+-- vm_cor_areas
+CREATE MATERIALIZED VIEW atlas.vm_cor_areas AS
+    with dep as (
+    SELECT * 
+    FROM atlas.vm_l_areas vla
+    JOIN atlas.vm_bib_areas_types b USING(id_type)
+    where b.type_code = 'DEP'
+    )
+        SELECT vla.id_area, dep.id_area as id_area_parent
+        FROM atlas.vm_l_areas vla
+        JOIN atlas.vm_bib_areas_types b USING(id_type)
+        JOIN dep on 
+        st_intersects(dep.geom_local, vla.geom_local) AND 
+                st_within(vla.geom_local, st_buffer(dep.geom_local, 100))
+        WHERE b.type_code in (SELECT * FROM string_to_table(:'type_code', ','));
+        -- On laisse volontairement l'autointersection département  - département pour les fiche territoire des départements !
+                    
+CREATE INDEX ON atlas.vm_cor_areas
+    USING btree (id_area_parent);
+
+CREATE INDEX ON atlas.vm_cor_areas
+    USING btree (id_area);

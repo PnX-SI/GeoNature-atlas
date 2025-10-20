@@ -30,9 +30,9 @@
                 <span class="visually-hidden">Loading...</span>
             </div>
 
-            {% if configuration.AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION and stats_area.description %}
+            {% if configuration.AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION and areaInfos.description %}
                 <div id="general_presentation" class="tab-pane fade show active">
-                    {{ stats_area.description | safe }}
+                    {{ areaInfos.description | safe }}
                 </div>
             {% endif %}
             {% if configuration.AFFICHAGE_TAB_AREA_OBS_ESPECES %}

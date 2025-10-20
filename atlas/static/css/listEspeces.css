@@ -13,9 +13,18 @@ footer {
 }
 
 #taxonList {
+    flex-direction: column;
     flex: 1 1 0;
     overflow-y: auto;
     min-height: 10rem;
+
+}
+
+#list-taxon-loader-spinner {
+    align-self: center;
+    width: 3rem;
+    height: 3rem;
+    display: none;
 }
 
 
@@ -160,32 +169,43 @@ tbody tr.current {
 
 
 @media (max-width: 1200px) {
-  #statHierarchy i {
-      font-size: 2rem;
-      color: red;
-  }
+    #statHierarchy i {
+        font-size: 2rem;
+        color: red;
+    }
 }
 
 
- @media (min-width: 992px and max-width: 1200px) {
-  #statHierarchy i {
+@media (min-width: 992px and max-width: 1200px) {
+#statHierarchy i {
     font-size: 1.5rem;
-      color: green;
-  }
+    color: green;
+}
 }
 
 
- @media screen and (max-width: 768px) {
-  #statHierarchy i {
-    font-size: 1rem;
-      color: blue;
-  }
+@media screen and (max-width: 768px) {
+    #statHierarchy i {
+        font-size: 1rem;
+        color: blue;
+    }
 }
 
 
- @media screen and (max-width: 576px) {
-  #statHierarchy i {
-    font-size: 0.8rem;
-      color: deeppink;
-  }
+@media screen and (max-width: 576px) {
+    #statHierarchy i {
+        font-size: 0.8rem;
+        color: deeppink;
+    }
+}
+
+#groupFilterList {
+    max-height: 500px;
+    overflow-y: scroll;
+}
+
+#nbFilter {
+    position: absolute;
+    top: -30%;
+    right: 0;
 }

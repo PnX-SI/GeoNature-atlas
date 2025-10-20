@@ -9,13 +9,32 @@ $('#map').click(function(){
     map.scrollWheelZoom.enable();
 })
 
+function displayObsTaxonMaille(cd_ref) {
+    $.ajax({
+        url:
+        configuration.URL_APPLICATION + "/api/observationsMaille",
+        data: {
+            "cd_ref": cd_ref
+        },
+        dataType: "json",
+        beforeSend: function () {
+            $("#loaderSpinner").show();
+        }
+    }).done(function (observations) {
+        $("#loaderSpinner").hide();
+        if (currentLayer) {
+            map.removeLayer(currentLayer);
+        }
+        clearOverlays();
+        displayMailleLayerFicheEspece(observations);
+    });
+}
+
 
 function refreshTerritoryArea(elem) {
     document.querySelector("#taxonList .current")?.classList.remove("current")
     elem.currentTarget.classList.add('current');
-    if (configuration.AFFICHAGE_TERRITOIRE_OBS) {
         displayObsTaxonMaille(elem.currentTarget.getAttribute("cdref"));
-    }
     const name = $(this)
         .find("#name")
         .html();
@@ -27,14 +46,6 @@ function refreshTerritoryArea(elem) {
 }
 
 
-
-$(document).ready(function () {
-    if (configuration.INTERACTIVE_MAP_LIST) {
-        $("#taxonList").on("click", "#taxonListItem", function (elem) {
-            refreshTerritoryArea(elem);
-        });
-    }
-});
 
 
 // Generate legends and check configuration to choose which to display (Maille ou Point)
@@ -48,13 +59,25 @@ htmlLegend = configuration.AFFICHAGE_MAILLE ? htmlLegendMaille : htmlLegendPoint
 
 generateLegende(htmlLegend);
 
+// LOAD OBSERVATIONS if AFFICHAGE_DERNIERES_OBS
+if(configuration.AFFICHAGE_DERNIERES_OBS) {
+    if(configuration.AFFICHAGE_MAILLE) {
+        // display maille layer
+        displayGeojsonMailles(observations_mailles);
+    } else {
+        // Display point layer
+        displayGeoJsonPoint(observations);
+        generalLegendPoint();
+    }
+}
+
 // Add territory obs on map
  if (configuration.AFFICHAGE_TERRITOIRE_OBS){
         $("#loaderSpinner").show();
 
         // display maille layer
         fetch(`/api/observationsMaille?`+ new URLSearchParams({
-            "with_taxons": true
+            "fields": "taxons"
         }))
         .then(response => response.json())
         .then(data => {
@@ -91,55 +114,69 @@ generateLegende(htmlLegend);
     }
 
 
-    if(configuration.AFFICHAGE_DERNIERES_OBS) {
-        if(configuration.AFFICHAGE_MAILLE) {
-            // display maille layer
-            displayMailleLayerLastObs(observations);
-
-            // interaction list - map
-            $('.lastObslistItem').click(function(){
-                $(this).siblings().removeClass('bg-light');
-                $(this).addClass('bg-light');
-                var id_observation = $(this).attr('idSynthese');
-                p = (currentLayer._layers);
-                var selectLayer;
-                for (var key in p) {
-                    if (find_id_observation_in_array(p[key].feature.properties.list_id_observation, id_observation) ){
-                        selectLayer = p[key];
-                    }
-                }
-
-                selectLayer.openPopup();
-                var bounds = L.latLngBounds();
-                var layerBounds = selectLayer.getBounds();
-                bounds.extend(layerBounds);
-                map.fitBounds(bounds, {
-                maxZoom : 12
-                });
+// Interraction list carte en mode "territoire obs"
+if (configuration.AFFICHAGE_TERRITOIRE_OBS) {
+    $(document).ready(function () {
+        if (configuration.INTERACTIVE_MAP_LIST) {
+            $("#taxonList").on("click", "#taxonListItem", function (elem) {
+                refreshTerritoryArea(elem);
             });
-        } else {
-            // Display point layer
-            displayMarkerLayerPointLastObs(observations);
-            // interaction list - map
-            $('.lastObslistItem').click(function(){
-                $(this).siblings().removeClass('current');
-                $(this).addClass('current');
-                var id_observation = $(this).attr('idSynthese');
-        
-                var p = (currentLayer._layers);
-                var selectLayer;
-                for (var key in p) {
-                    if (p[key].feature.properties.id_observation == id_observation){
-                        selectLayer = p[key];
-                    }
-                }
-                selectLayer.openPopup();
-                selectLayer.openPopup(selectLayer._latlng);
-                map.setView(selectLayer._latlng, 14);
-            })
-
         }
-    }
+    });
+}
 
+// Interraction list carte en mode derniere obs et point
+if(configuration.AFFICHAGE_DERNIERES_OBS & !configuration.AFFICHAGE_MAILLE & configuration.INTERACTIVE_MAP_LIST ) {
+    let selectedLayers = []
+    $(document).ready(function () {
+        $(".lastObslistItem").on("click", elem => {
+            refreshStyle(selectedLayers);
+            const idObs = Number(elem.currentTarget.getAttribute("idObservation"));
+            const layers = (currentLayer._layers);
+            let selectedLayer = null;
+            for (var key in layers) {
+                if (layers[key].feature.properties.id_observation === idObs){
+                    selectedLayer = layers[key];
+                    break;
+                }
+            }
+            if(selectedLayer) {
+                selectedLayer.openPopup();
+                map.setView(
+                    new L.LatLng(
+                        selectedLayer.feature.geometry.coordinates[1], 
+                        selectedLayer.feature.geometry.coordinates[0]
+                    ), 12
+                );
+            }
+        });
+    });
+}
 
+// Interraction list carte en mode derniere obs et maille
+if(configuration.AFFICHAGE_DERNIERES_OBS & 
+    configuration.AFFICHAGE_MAILLE & 
+    configuration.INTERACTIVE_MAP_LIST 
+) {
+    $(".lastObslistItem").on("click", elem => {
+        const idObs = Number(elem.currentTarget.getAttribute("idObservation"));
+        const layers = (currentLayer._layers);
+        let selectedLayer = null;
+        for (var key in layers) {
+            if ((layers[key].feature.properties.ids_obs).includes(idObs)){
+                selectedLayer = layers[key];
+                break;
+            }
+        }
+        if(selectedLayer) {
+            var bounds = L.latLngBounds([]);
+            var layerBounds = selectedLayer.getBounds();
+            bounds.extend(layerBounds);
+            map.fitBounds(bounds, {
+                maxZoom : 12
+            });
+            selectedLayer.openPopup();
+        }
+    });
 
+}
