@@ -31,6 +31,7 @@ class VmTaxons(db.Model):
     nom_vern_eng: Mapped[str] = mapped_column(String(500))
     group1_inpn: Mapped[str] = mapped_column(String(50))
     group2_inpn: Mapped[str] = mapped_column(String(50))
+    group3_inpn: Mapped[str] = mapped_column(String(50))
     nom_complet_html: Mapped[str] = mapped_column(String(500))
     id_rang: Mapped[str] = mapped_column(String(10))
     patrimonial: Mapped[str] = mapped_column(String(255))
@@ -61,7 +62,8 @@ class VmTaxons(db.Model):
             "yearmin": self.yearmin,
             "yearmax": self.yearmax,
             "nb_obs": self.nb_obs,
-            "group2_inpn": utils.deleteAccent(self.group2_inpn)
+            "group2_inpn": utils.deleteAccent(self.group2_inpn),
+            "group3_inpn": utils.deleteAccent(self.group3_inpn)
         }
         if with_main_media:
             d["media"] = self.get_main_media()

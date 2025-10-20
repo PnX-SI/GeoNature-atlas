@@ -2,7 +2,7 @@
 
 from flask import current_app
 from sqlalchemy import Interval
-from sqlalchemy.sql import select, distinct, func, cast, literal
+from sqlalchemy.sql import select, distinct, func, cast, literal, or_
 from sqlalchemy.orm import joinedload
 
 from atlas.modeles.entities.vmStatutBdc import CorTaxonStatutArea, TOrdreListeRouge
@@ -63,18 +63,17 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params={}):
     _type_
         _description_
     """
-    page = params.get("page", 0)
-    page_size = params.get("page_size", current_app.config["ITEMS_PER_PAGE"])
+    page = int(params.get("page", 0))
+    page_size = int(params.get("page_size", current_app.config["ITEMS_PER_PAGE"]))
     filter_taxon = params.get("filter_taxons", "")
-    group2_inpn = params.get("group2_inpn", None)
-    if group2_inpn:
-        group2_inpn = group2_inpn.split(',')
+    group2_inpn = params.get("group2_inpn", [])
     threatened = params.get("threatened", None)
     protected = params.get("protected", None)
     patrimonial = params.get("patrimonial", None)
     obs_in_area = (
         select(
             func.count(distinct(VmObservations.id_observation)).label("nb_obs"),
+            func.count(distinct(VmObservations.observateurs)).label("nb_observers"),
             func.max(func.date_part("year", VmObservations.dateobs)).label("last_obs"),
             VmObservations.cd_ref,
         )
@@ -85,7 +84,8 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params={}):
     if id_area:
         obs_in_area = obs_in_area.join(
                 VmCorAreaSynthese,
-                (VmCorAreaSynthese.id_synthese == VmObservations.id_observation) & (VmCorAreaSynthese.id_area == id_area)
+                (VmCorAreaSynthese.id_synthese == VmObservations.id_observation) & 
+                (VmCorAreaSynthese.id_area == id_area)
             )
     obs_in_area = obs_in_area.subquery()
 
@@ -93,6 +93,7 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params={}):
             VmTaxons,
             obs_in_area.c.nb_obs,
             obs_in_area.c.last_obs,
+            obs_in_area.c.nb_observers,
     ]
     # si id_area on prend les statuts dans CorTaxonStatutArea sinon directement dans VMTaxons
     if id_area:
@@ -106,39 +107,43 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params={}):
         .select_from(VmTaxons)
         .join(obs_in_area, obs_in_area.c.cd_ref == VmTaxons.cd_ref)
         .order_by(obs_in_area.c.nb_obs.desc())
-        .limit(int(page_size))
-        .offset(int(page) * int(page_size))
     )
+    if page != -1:
+        req = req.limit(page_size).offset(page * page_size)
     if group2_inpn:
         req = req.where(VmTaxons.group2_inpn.in_(group2_inpn))
     req = req.options(
         joinedload(VmTaxons.main_media)
     )
+    conditions = list()
     if id_area:
         id_area_dep = select(VmCorAreas.id_area_parent).select_from(VmCorAreas).join(
             VmAreas, VmAreas.id_area == VmCorAreas.id_area_parent
         ).join(VmBibAreasTypes, VmAreas.id_type == VmBibAreasTypes.id_type).where(
             (VmBibAreasTypes.type_code == 'DEP') & (VmCorAreas.id_area == id_area)
-        ).subquery()
+        ).scalar_subquery()
         req = req.outerjoin(
             CorTaxonStatutArea,
-            (CorTaxonStatutArea.cd_ref == VmTaxons.cd_ref)
-            & (CorTaxonStatutArea.id_area.in_(id_area_dep)),
+            (CorTaxonStatutArea.cd_ref == VmTaxons.cd_ref) & 
+            (CorTaxonStatutArea.id_area.in_(id_area_dep)),
         )
         # si protegé et menacé sur une fiche territoire on va cherché dans CorTaxonStatutArea
         # sinon direcetement dans VmTaxons
         if protected:
-            req = req.where(CorTaxonStatutArea.protege == True)
+            conditions.append(CorTaxonStatutArea.protege == True)
         if threatened:
-            req = req.where(CorTaxonStatutArea.statut_menace != None)
+            conditions.append(CorTaxonStatutArea.statut_menace != None)
     else:
         if protected:
-            req = req.where(VmTaxons.protection_stricte == True)
+            conditions.append(VmTaxons.protection_stricte == True)
         if threatened:
-            req = req.where(VmTaxons.menace == True)
+            conditions.append(VmTaxons.menace == True)
 
     if patrimonial:
-        req = req.filter(VmTaxons.patrimonial == 'oui')
+        conditions.append(VmTaxons.patrimonial == 'oui')
+
+    if conditions:
+        req = req.where(or_(*conditions))
 
     if group_name:
         req = req.filter(VmTaxons.group2_inpn == group_name)
@@ -159,10 +164,42 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params={}):
             taxon_dict["yearmax"] = row.last_obs
             taxon_dict["menace"] = row.menace
             taxon_dict["nb_obs"] = row.nb_obs
+            taxon_dict["nb_observers"] = row.nb_observers
             taxon_dict["protection_stricte"] = row.protege
             taxon_dict["niveau_application_menace"] = row.niveau_application_menace
         taxons.append(taxon_dict)
     return taxons
+
+
+def getTaxonsStateAreas(id_area, state):
+    id_area_dep = (
+        select(VmCorAreas.id_area_parent)
+        .filter(VmCorAreas.id_area == id_area)
+        .scalar_subquery()
+    )
+
+    filters = [VmCorAreaSynthese.id_area == id_area]
+
+    if state == 'menace':
+        filters.append(CorTaxonStatutArea.statut_menace.is_not(None))
+    elif state == 'protege':
+        filters.append(CorTaxonStatutArea.protege.is_(True))
+
+    req = (
+        select(VmObservations.cd_ref)
+        .distinct()
+        .join(
+            VmCorAreaSynthese, 
+            VmCorAreaSynthese.id_synthese == VmObservations.id_observation
+        )
+        .outerjoin(
+            CorTaxonStatutArea,
+            (CorTaxonStatutArea.cd_ref == VmObservations.cd_ref) &
+            (CorTaxonStatutArea.id_area == id_area_dep) 
+        )
+        .filter(*filters)
+    )
+    return db.session.execute(req).scalars().all()
 
 
 def getINPNgroupPhotos():
@@ -198,6 +235,18 @@ def getAllINPNgroup():
         temp = {"group": utils.deleteAccent(r.group2_inpn), "groupAccent": r.group2_inpn}
         groupList.append(temp)
     return groupList
+
+
+def getGroupINPNarea(id_area: int):
+    req = (
+        select(distinct(VmTaxons.group2_inpn))
+        .select_from(VmTaxons)
+        .join(VmObservations, VmObservations.cd_ref == VmTaxons.cd_ref)
+        .join(VmCorAreaSynthese, VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
+        .where(VmCorAreaSynthese.id_area == id_area)
+        .order_by(VmTaxons.group2_inpn)
+    )
+    return db.session.execute(req).scalars().all()
 
 
 def get_group_inpn(group):

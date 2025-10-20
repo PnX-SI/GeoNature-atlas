@@ -9,7 +9,7 @@ var currentLayer;
 // Current observation geoJson:  type object
 var myGeoJson;
 
-const id_area = areaInfos.areaCode
+const id_area = areaInfos.areaID
 displayObs(id_area)
 
 
@@ -93,12 +93,12 @@ function displayObs(id_area) {
         })
 }
 
-function displayObsTaxonMaille(areaCode, cd_ref) {
+function displayObsTaxonMaille(areaID, cd_ref) {
     $.ajax({
         url:
         configuration.URL_APPLICATION + "/api/observationsMaille",
         data: {
-            "id_area": areaCode,
+            "id_area": areaID,
             "cd_ref": cd_ref
         },
         dataType: "json",

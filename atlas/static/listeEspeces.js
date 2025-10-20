@@ -17,19 +17,19 @@ async function getTaxonElems() {
     switch (context.page) {
         case "area":
             // Territory sheet
-            url = `/api/taxonList/area/${pathNameUrl[1]}`;
+            url = `${configuration.URL_APPLICATION}/api/taxonList/area/${pathNameUrl[2]}`;
             break;
         case "taxon_rank_sheet":
             // Family list sheet
-            url = `/api/taxonList/liste/${pathNameUrl[1]}`;
+            url = `${configuration.URL_APPLICATION}/api/taxonList/liste/${pathNameUrl[2]}`;
             break;
         case "group_sheet":
             // Group sheet
-            url = `/api/taxonList/group/${pathNameUrl[1]}`;
+            url = `${configuration.URL_APPLICATION}/api/taxonList/group/${pathNameUrl[2]}`;
             break;
         case "home_territory":
             // Default sheet (all species) used for home page (with territory map)
-            url = `/api/taxonList`
+            url = `${configuration.URL_APPLICATION}/api/taxonList`
             break;
     }
 
@@ -37,6 +37,8 @@ async function getTaxonElems() {
         ["page", page],
         ["page_size", page_size],
     ]);
+    apiUrl = url;
+    apiUrlParams = urlParams;
     if(inputSearchTaxons) {
         urlParams.append(
             "filter_taxons", inputSearchTaxons
@@ -130,6 +132,148 @@ function clearFilters() {
     loadNewTaxons();
 }
 
+// ==================================================
+// Export csv & pdf
+// ==================================================
+
+async function exportCsv(){
+    if (!apiUrlParams) {
+        await loadNewTaxons(); // initialise apiUrlParams et apiUrl
+    }
+
+    let exportUrl = new URLSearchParams(apiUrlParams.toString());
+    exportUrl.set("page", -1); // All pages fetched
+    exportUrl.set("json", "true");
+
+    const fullList = await fetch(`${apiUrl}?${exportUrl}`)
+        .then(r => r.json()); 
+
+    // Colonnes du CSV
+    const rows = [[
+        "CdRef", translationsExport.taxonomic_group, translationsExport.common_name, 
+        translationsExport.scientific_name, translationsExport.occurrences_number, 
+        translationsExport.observers_number, translationsExport.last_observation, 
+        translationsExport.threatened_masc, translationsExport.strict_protection, 
+        translationsExport.heritage, translationsExport.inpn_group_3
+    ]];
+
+    // Filtrer les taxons visibles dans taxonsData
+    fullList.forEach(taxon => {
+        const taxonomicGroup = taxon.group2_inpn || "-";
+        const cdRef = taxon.cd_ref || "-";
+        const nomVern = (typeof taxon.nom_vern === "string" && taxon.nom_vern) 
+        ? taxon.nom_vern.split(',')[0].trim() 
+        : "-";
+        const nomSci = taxon.lb_nom || "-";
+        const nbObs = taxon.nb_obs || "0";
+        const nbObservers = taxon.nb_observers || "0";
+        const lastYear = taxon.last_obs || "-";
+        const patrimonial = taxon.patrimonial || false;
+        const strictProtection = taxon.protection_stricte || false;
+        const group3Inpn = taxon.group3_inpn || "-";
+
+        // Ajout de la colonne "Menacé" en tant que true/false
+        const isThreatened = threatenedTaxons.includes(Number(taxon.cd_ref));  
+
+        rows.push([cdRef, taxonomicGroup, nomVern, nomSci, nbObs, 
+        nbObservers, lastYear, isThreatened, strictProtection, patrimonial, group3Inpn]);
+    });
+
+    const fileName = document.getElementById("exportCsvBtn").dataset.filename;
+    const csvContent = rows.map(row => row.join(";")).join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+async function exportPdf() {
+    if (!apiUrlParams) {
+        await loadNewTaxons(); // initialise apiUrlParams et apiUrl
+    }
+
+    let exportUrl = new URLSearchParams(apiUrlParams.toString());
+    exportUrl.set("page", -1); // All pages fetched
+    exportUrl.set("json", "true");
+
+    const fullList = await fetch(`${apiUrl}?${exportUrl}`)
+        .then(r => r.json()); 
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation: "landscape" });
+
+    const fileName = document.getElementById("exportPdfBtn").dataset.filename;
+    const title = fileName.replace(/\.pdf$/i, "");
+    const pageWidth = doc.internal.pageSize.getWidth();
+
+    doc.setFontSize(14.5);
+    doc.text(title, pageWidth / 2, 15, { align: "center" });
+
+    const headers = [
+        [
+            translationsExport.taxonomic_group,
+            translationsExport.common_name,
+            translationsExport.scientific_name,
+            translationsExport.occurrences_number,
+            translationsExport.observers_number,
+            translationsExport.last_observation,
+            translationsExport.threatened_masc,
+            translationsExport.strict_protection,
+            translationsExport.heritage,
+            translationsExport.inpn_group_3,
+        ]
+    ];
+
+    const data = fullList
+        .map(taxon => {
+        const isThreatened = threatenedTaxons.includes(Number(taxon.cd_ref)) ? true : false;
+        return [
+            taxon.group2_inpn || "-",
+            (typeof taxon.nom_vern === "string" && taxon.nom_vern) 
+            ? taxon.nom_vern.split(',')[0].trim() 
+            : "-",
+            taxon.lb_nom || "-",
+            taxon.nb_obs || "0",
+            taxon.nb_observers || "0",
+            taxon.last_obs || "-",
+            isThreatened,
+            taxon.protection_stricte || false,
+            taxon.patrimonial || false,
+            taxon.group3_inpn || "-",
+        ]});
+
+    doc.autoTable({
+        startY: 25,
+        head: headers,
+        body: data,
+        styles: { fontSize: 9, cellPadding: 1 },
+        headStyles: { fillColor: [40, 60, 100], halign: 'center' },
+        margin: { top: 20 },
+        columnStyles: {
+            3: { halign: 'center' }, // Occurrences number
+            4: { halign: 'center' }, // Observers number
+            5: { halign: 'center' }  // Last observation
+        },
+        didParseCell: function (data) {
+            const threatenedColumnIndex = 6; // Threatened column index
+            const protectedColumnIndex = 7;  // Protected column index
+
+            if (data.section === 'body') {
+                if (data.row.raw[threatenedColumnIndex] === true) {
+                    data.cell.styles.fillColor = [255, 200, 200]; // light red
+                }
+                else if (data.row.raw[protectedColumnIndex] === true) {
+                    data.cell.styles.fillColor = [200, 230, 255]; // light blue
+                }
+            }
+        }
+    });
+
+    doc.save(fileName);
+}
 
 // ==================================================
 // INITIALISATION 
@@ -145,6 +289,8 @@ let groupINPNFilters = new Set();
 let threatenedFilter = null;
 let protectedFilter = null;
 let patrimonialFilter = null;
+let apiUrl = "";
+let apiUrlParams = null;
 
 // event on scroll
 document.getElementById('taxonList').addEventListener('scroll', debounce( onScroll , 200));
@@ -157,6 +303,9 @@ document.getElementById('taxonInput').addEventListener('keyup', debounce( (el) =
 
 $(document).ready(function () {
     initPlugins();
+
+    $("#exportCsvBtn").on("click", exportCsv);
+    $("#exportPdfBtn").on("click", exportPdf);
 
 });
 

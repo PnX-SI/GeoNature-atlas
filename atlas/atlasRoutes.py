@@ -319,13 +319,19 @@ def ficheArea(id_area):
             "page": 0
         }
         )
-    group2_inpn = vmTaxonsRepository.get_group_inpn("group2_inpn")
+    listTaxonsArea = vmTaxonsRepository.getListTaxon(id_area=id_area, params={"page": -1})
+    threatenedTaxons = vmTaxonsRepository.getTaxonsStateAreas(id_area, 'menace')
+    protectedTaxons = vmTaxonsRepository.getTaxonsStateAreas(id_area, 'protege')
+    group2_inpn = vmTaxonsRepository.getGroupINPNarea(id_area)
     return render_template(
         "templates/areaSheet/_main.html",
         stats_area=stats_area,
         areaInfos=area,
         id_area=id_area,
         listTaxons=listTaxons,
+        listTaxonsArea=listTaxonsArea,
+        threatenedTaxons=threatenedTaxons,
+        protectedTaxons=protectedTaxons,
         group2_inpn=group2_inpn
     )
 

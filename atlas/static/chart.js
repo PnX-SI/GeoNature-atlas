@@ -343,9 +343,9 @@ if (dataSourceChartElement) {
 }
 
 if (typeof areaInfos !== 'undefined') {
-    const areaCode = areaInfos.areaCode;
+    const areaID = areaInfos.areaID;
 
-    fetch(`${configuration.URL_APPLICATION}/api/area_chart_values/${areaCode}`)
+    fetch(`${configuration.URL_APPLICATION}/api/area_chart_values/${areaID}`)
         .then(response => response.json())
         .then(data => {
             $("#spinnerChart").hide();

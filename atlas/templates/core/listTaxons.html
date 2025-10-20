@@ -62,7 +62,7 @@
                                 class="btn btn-outline-danger" 
                                 id="btn-clear"
                                 data-bs-toggle="tooltip"
-                                title="Raffraîchir les filtres"
+                                title= "{{ _('refresh.filters') }}"
                             >
                                 <i class="fas fa-sync-alt"></i>
                             </button>
@@ -79,6 +79,16 @@
         <ul class="list-group w-100">
             {% include 'templates/core/taxon.html' %}
         </ul>
+    </div>
+    <div class="bg-white border-top border-2 px-3 py-3 text-center shadow-sm" style="border-color: #e0e0e0;">
+        <div class="d-inline-flex gap-2">
+            <button id="exportCsvBtn" class="btn btn-outline-primary btn-sm" data-filename="La biodiversité de {{areaInfos.areaName }} ({{ areaInfos.typeName }} : {{ areaInfos.areaCode }}).csv">
+                <i class="fas fa-file-csv me-1"></i> {{ _('export.csv') }}
+            </button>
+            <button id="exportPdfBtn" class="btn btn-outline-danger btn-sm" data-filename="La biodiversité de {{areaInfos.areaName }} ({{ areaInfos.typeName }} : {{ areaInfos.areaCode }}).pdf">
+                <i class="fas fa-file-pdf me-1"></i> {{ _('export.pdf') }}
+            </button>
+        </div>
     </div>
     <div id="list-taxon-loader-spinner" class="spinner-grow text-primary" role="status">
         <span class="visually-hidden">{{ _('loading') }}</span>

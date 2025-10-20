@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-17 16:01+0200\n"
+"POT-Creation-Date: 2025-10-20 14:55+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,7 +41,7 @@ msgstr ""
 msgid "search.area"
 msgstr ""
 
-#: static/custom/templates/bandeaulogoshome.html:6
+#: static/custom/templates/bandeaulogoshome.html:7
 #: static/custom/templates/bandeaulogoshome.html.sample:7
 msgid "home.partners"
 msgstr ""
@@ -51,52 +51,52 @@ msgstr ""
 msgid "home"
 msgstr ""
 
-#: static/custom/templates/footer.html:5 static/custom/templates/footer.html:30
+#: static/custom/templates/footer.html:4 static/custom/templates/footer.html:26
 #: static/custom/templates/footer.html.sample:4
 #: static/custom/templates/footer.html.sample:26
 msgid "credits"
 msgstr ""
 
-#: static/custom/templates/footer.html:7 static/custom/templates/footer.html:47
+#: static/custom/templates/footer.html:5 static/custom/templates/footer.html:41
 #: static/custom/templates/footer.html.sample:5
 #: static/custom/templates/footer.html.sample:41
 msgid "legal"
 msgstr ""
 
-#: static/custom/templates/footer.html:11
-#: static/custom/templates/footer.html:65
+#: static/custom/templates/footer.html:7 static/custom/templates/footer.html:57
 #: static/custom/templates/footer.html.sample:7
 #: static/custom/templates/footer.html.sample:57
 msgid "personal_data"
 msgstr ""
 
-#: static/custom/templates/footer.html:12
+#: static/custom/templates/footer.html:8
 #: static/custom/templates/footer.html.sample:8
 msgid "preferences_cookies"
 msgstr ""
 
-#: static/custom/templates/footer.html:18
+#: static/custom/templates/footer.html:14
 #: static/custom/templates/footer.html.sample:14
 msgid "atlas.fauna.flora"
 msgstr ""
 
-#: static/custom/templates/footer.html:18
+#: static/custom/templates/footer.html:14
 #: static/custom/templates/footer.html.sample:14
+#: static/custom/templates/introduction.html:7
 #: static/custom/templates/introduction.html.sample:7
 msgid "from1"
 msgstr ""
 
-#: static/custom/templates/footer.html:20
+#: static/custom/templates/footer.html:16
 #: static/custom/templates/footer.html.sample:16
 msgid "powered.by"
 msgstr ""
 
-#: static/custom/templates/footer.html:20
+#: static/custom/templates/footer.html:17
 #: static/custom/templates/footer.html.sample:17
 msgid "developed.by"
 msgstr ""
 
-#: static/custom/templates/footer.html:21
+#: static/custom/templates/footer.html:17
 #: static/custom/templates/footer.html.sample:17
 msgid "ecrins.national.park"
 msgstr ""
@@ -106,25 +106,29 @@ msgstr ""
 msgid "welcome.message"
 msgstr ""
 
-#: static/custom/templates/introduction.html:10
-#: static/custom/templates/introduction.html.sample:10
-msgid "home.introduction.message"
-msgstr ""
-
+#: static/custom/templates/introduction.html:7
 #: static/custom/templates/introduction.html.sample:7
 msgid "from2"
 msgstr ""
 
+#: static/custom/templates/introduction.html:7
 #: static/custom/templates/introduction.html.sample:7
 msgid "from3"
 msgstr ""
 
+#: static/custom/templates/introduction.html:7
 #: static/custom/templates/introduction.html.sample:7
 msgid "from4"
 msgstr ""
 
+#: static/custom/templates/introduction.html:7
 #: static/custom/templates/introduction.html.sample:7
 msgid "from5"
+msgstr ""
+
+#: static/custom/templates/introduction.html:10
+#: static/custom/templates/introduction.html.sample:10
+msgid "home.introduction.message"
 msgstr ""
 
 #: static/custom/templates/navbar.html:37
@@ -138,11 +142,11 @@ msgstr ""
 msgid "atlas.presentation"
 msgstr ""
 
-#: templates/areaSheet/_main.html:32 templates/speciesSheet/_main.html:53
+#: templates/areaSheet/_main.html:36 templates/speciesSheet/_main.html:53
 msgid "obs.number.s"
 msgstr ""
 
-#: templates/areaSheet/_main.html:33 templates/areaSheet/statArea.html:8
+#: templates/areaSheet/_main.html:37 templates/areaSheet/statArea.html:8
 #: templates/core/statHierarchy.html:7 templates/core/taxon.html:69
 #: templates/home/globalStats.html:16 templates/home/taxoRank.html:49
 #: templates/organismSheet/statsInfos.html:15
@@ -153,40 +157,90 @@ msgstr ""
 msgid "observations"
 msgstr ""
 
-#: templates/areaSheet/_main.html:34
+#: templates/areaSheet/_main.html:38
 msgid "number.species"
 msgstr ""
 
-#: templates/areaSheet/_main.html:35
+#: templates/areaSheet/_main.html:39
 msgid "number.species.territory"
 msgstr ""
 
-#: templates/areaSheet/_main.html:36 templates/areaSheet/statArea.html:13
+#: templates/areaSheet/_main.html:40 templates/areaSheet/statArea.html:13
 #: templates/areaSheet/statArea.html:48 templates/core/statHierarchy.html:12
 #: templates/home/globalStats.html:28 templates/home/taxoRank.html:32
 #: templates/organismSheet/statsInfos.html:29
 msgid "species"
 msgstr ""
 
-#: templates/areaSheet/_main.html:37 templates/areaSheet/moreZoneInfo.html:17
+#: templates/areaSheet/_main.html:41 templates/areaSheet/moreZoneInfo.html:17
 #: templates/areaSheet/moreZoneInfo.html:67
 #: templates/areaSheet/statArea.html:56
 msgid "threatened.species"
 msgstr ""
 
-#: templates/areaSheet/_main.html:38
+#: templates/areaSheet/_main.html:42
 msgid "other.species"
 msgstr ""
 
-#: templates/areaSheet/_main.html:39
+#: templates/areaSheet/_main.html:43
 msgid "threatened.species.repartition"
 msgstr ""
 
-#: templates/areaSheet/_main.html:40
+#: templates/areaSheet/_main.html:44
 msgid "number.species.taxonomic.group"
 msgstr ""
 
-#: templates/areaSheet/_main.html:75
+#: templates/areaSheet/_main.html:47
+msgid "taxonomic.group"
+msgstr ""
+
+#: templates/areaSheet/_main.html:48
+#: templates/speciesSheet/identityCard.html:125
+msgid "common.name"
+msgstr ""
+
+#: templates/areaSheet/_main.html:49
+#: templates/speciesSheet/identityCard.html:126
+msgid "scientific.name"
+msgstr ""
+
+#: templates/areaSheet/_main.html:50
+msgid "occurrences.number"
+msgstr ""
+
+#: templates/areaSheet/_main.html:51
+msgid "observers.number"
+msgstr ""
+
+#: templates/areaSheet/_main.html:52
+msgid "last.observation"
+msgstr ""
+
+#: templates/areaSheet/_main.html:53
+msgid "threatened.masc"
+msgstr ""
+
+#: templates/areaSheet/_main.html:54
+msgid "strict.protection"
+msgstr ""
+
+#: templates/areaSheet/_main.html:55
+msgid "heritage"
+msgstr ""
+
+#: templates/areaSheet/_main.html:56
+msgid "inpn.group.3"
+msgstr ""
+
+#: templates/areaSheet/_main.html:57 templates/core/listTaxons.html:86
+msgid "export.csv"
+msgstr ""
+
+#: templates/areaSheet/_main.html:58 templates/core/listTaxons.html:89
+msgid "export.pdf"
+msgstr ""
+
+#: templates/areaSheet/_main.html:91
 msgid "last.obs.area"
 msgstr ""
 
@@ -352,13 +406,17 @@ msgstr ""
 
 #: templates/core/listTaxons.html:40
 msgid "patrimonial.plural"
-msgstr "Patrimoniaux"
+msgstr ""
 
-#: templates/core/listTaxons.html:70
+#: templates/core/listTaxons.html:65
+msgid "refresh.filters"
+msgstr ""
+
+#: templates/core/listTaxons.html:73
 msgid "filter.species"
 msgstr ""
 
-#: templates/core/listTaxons.html:81 templates/core/loaderSpinner.html:3
+#: templates/core/listTaxons.html:94 templates/core/loaderSpinner.html:3
 msgid "loading"
 msgstr ""
 
@@ -513,14 +571,6 @@ msgstr ""
 
 #: templates/speciesSheet/identityCard.html:93
 msgid "check.species.sheet.inpn"
-msgstr ""
-
-#: templates/speciesSheet/identityCard.html:125
-msgid "common.name"
-msgstr ""
-
-#: templates/speciesSheet/identityCard.html:126
-msgid "scientific.name"
 msgstr ""
 
 #: templates/speciesSheet/identityCard.html:127

@@ -50,6 +50,7 @@ def getAreaFromIdArea(id_area):
         db.session.query(
             VmAreas.area_name,
             VmAreas.id_area,
+            VmAreas.area_code,
             VmAreas.description,
             VmAreas.area_geojson,
             VmBibAreasTypes.type_name,
@@ -63,7 +64,8 @@ def getAreaFromIdArea(id_area):
         raise NotFound()
     area_dict = {
         "areaName": area.area_name,
-        "areaCode": str(area.id_area),
+        "areaID": str(area.id_area),
+        "areaCode" : str(area.area_code),
         "areaGeoJson": ast.literal_eval(area.area_geojson),
         "typeName": area.type_name,
         "description": area.description,
@@ -75,7 +77,12 @@ def getAreaFromIdArea(id_area):
     )
 
     areas_parent = (
-        db.session.query(VmAreas.area_name, VmAreas.id_area, VmBibAreasTypes.type_name)
+        db.session.query(
+            VmAreas.area_name, 
+            VmAreas.id_area,
+            VmAreas.area_code, 
+            VmBibAreasTypes.type_name
+        )
         .join(subquery, subquery.c.id_area_parent == VmAreas.id_area)
         .join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type)
         .all()
@@ -84,7 +91,8 @@ def getAreaFromIdArea(id_area):
     areas_parent_serialized = [
         {
             "areaName": area.area_name,
-            "areaCode": str(area.id_area),
+            "areaID": str(area.id_area),
+            "areaCode": str(area.area_code),
             "typeName": area.type_name,
         }
         for area in areas_parent
