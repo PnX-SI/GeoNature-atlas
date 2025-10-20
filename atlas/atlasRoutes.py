@@ -110,6 +110,8 @@ if current_app.config["ORGANISM_MODULE"]:
 @main.route("/", methods=["GET", "POST"])
 def index():
 
+    nb_taxons = None
+    listTaxons = []
     if current_app.config["AFFICHAGE_TERRITOIRE_OBS"]:
         nb_taxons = vmTaxonsRepository.get_nb_taxons()
         listTaxons = vmTaxonsRepository.getListTaxon(
@@ -168,15 +170,15 @@ def index():
 
     return render_template(
         "templates/home/_main.html",
-        nb_taxons=nb_taxons,
         observations=observations,
         observations_mailles=observations_mailles,
         mostViewTaxon=mostViewTaxon,
         customStatMedias=customStatMedias,
         lastDiscoveries=lastDiscoveries,
         personal_data=personal_data,
+        group2_inpn=group2_inpn,
         listTaxons=listTaxons,
-        group2_inpn=group2_inpn
+        nb_taxons=nb_taxons
     )
 
 
