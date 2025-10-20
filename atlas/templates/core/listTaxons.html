@@ -1,3 +1,9 @@
+{% block additionalHeaderAssets %}
+    <script src="{{ url_for('static', filename='node_modules/jspdf/dist/jspdf.umd.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.min.js') }}"></script>
+
+{% endblock %}
+
 {% block tabTaxons %}
     {% if configuration.INTERACTIVE_MAP_LIST %}
         <style>
@@ -82,10 +88,10 @@
     </div>
     <div class="bg-white border-top border-2 px-3 py-3 text-center shadow-sm" style="border-color: #e0e0e0;">
         <div class="d-inline-flex gap-2">
-            <button id="exportCsvBtn" class="btn btn-outline-primary btn-sm" data-filename="La biodiversité de {{areaInfos.areaName }} ({{ areaInfos.typeName }} : {{ areaInfos.areaCode }}).csv">
+            <button id="exportCsvBtn" class="btn btn-outline-primary btn-sm" >
                 <i class="fas fa-file-csv me-1"></i> {{ _('export.csv') }}
             </button>
-            <button id="exportPdfBtn" class="btn btn-outline-danger btn-sm" data-filename="La biodiversité de {{areaInfos.areaName }} ({{ areaInfos.typeName }} : {{ areaInfos.areaCode }}).pdf">
+            <button id="exportPdfBtn" class="btn btn-outline-danger btn-sm">
                 <i class="fas fa-file-pdf me-1"></i> {{ _('export.pdf') }}
             </button>
         </div>
@@ -99,6 +105,23 @@
             var configuration = {{configuration|tojson}};
             // set the context for list taxon : if we are on area, taxon rank sheet, last_obs etc...
             var context = {{context | tojson}};
+            const translationsExport = {
+                "taxonomic_group": `{{ _('taxonomic.group') }}`,
+                "common_name": `{{ _('common.name') }}`,
+                "scientific_name": `{{ _('scientific.name') }}`,
+                "occurrences_number": `{{ _('occurrences.number') }}`,
+                "observers_number": `{{ _('observers.number') }}`,
+                "last_observation": `{{ _('last.observation') }}`,
+                "threatened_masc": `{{ _('threatened.masc') }}`, 
+                "strict_protection": `{{ _('strict.protection') }}`,
+                "patrimonial": `{{ _('patrimonial') }}`,
+                "inpn_group_3": `{{ _('inpn.group.3') }}`,
+                "export.csv": `{{ _('export.csv') }}`,
+                "export.pdf": `{{ _('export.pdf') }}`,
+                "yes": `{{_('yes')}}`,
+                "no": `{{_('no')}}`,
+            };
+            
         </script>
         <script src="{{ url_for('static', filename='node_modules/debounce/index.js') }}"></script>
         <script src="{{ url_for('static', filename='listeEspeces.js') }}"></script>

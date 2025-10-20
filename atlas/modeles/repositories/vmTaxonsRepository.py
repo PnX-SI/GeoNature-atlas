@@ -4,6 +4,7 @@ from flask import current_app
 from sqlalchemy import Interval
 from sqlalchemy.sql import select, distinct, func, cast, literal, or_
 from sqlalchemy.orm import joinedload
+from werkzeug.datastructures import MultiDict
 
 from atlas.modeles.entities.vmStatutBdc import CorTaxonStatutArea, TOrdreListeRouge
 from atlas.modeles.entities.tBibTaxrefRang import TBibTaxrefRang
@@ -38,7 +39,7 @@ def get_nb_taxons(cd_ref=None, group_name=None):
 
 
 # With distinct the result in a array not an object, 0: lb_nom, 1: nom_vern
-def getListTaxon(id_area=None, group_name=None, cd_ref=None, params={}):
+def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict = {}):
     """_summary_
 
     Parameters
@@ -49,7 +50,7 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params={}):
         use for group INPN sheet
     cd_ref : int, optional
         _use for taxonomy sheet -> find all child taxon of cd_ref to build the list
-    params : 
+    params :
         page : int, optional
         page_size : _type_, optional
         filter_taxon : str, optional
@@ -66,7 +67,7 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params={}):
     page = int(params.get("page", 0))
     page_size = int(params.get("page_size", current_app.config["ITEMS_PER_PAGE"]))
     filter_taxon = params.get("filter_taxons", "")
-    group2_inpn = params.get("group2_inpn", [])
+    group2_inpn = params.getlist("group2_inpn", [])
     threatened = params.get("threatened", None)
     protected = params.get("protected", None)
     patrimonial = params.get("patrimonial", None)
@@ -83,49 +84,53 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params={}):
 
     if id_area:
         obs_in_area = obs_in_area.join(
-                VmCorAreaSynthese,
-                (VmCorAreaSynthese.id_synthese == VmObservations.id_observation) & 
-                (VmCorAreaSynthese.id_area == id_area)
-            )
+            VmCorAreaSynthese,
+            (VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
+            & (VmCorAreaSynthese.id_area == id_area),
+        )
     obs_in_area = obs_in_area.subquery()
 
     _columns = [
-            VmTaxons,
-            obs_in_area.c.nb_obs,
-            obs_in_area.c.last_obs,
-            obs_in_area.c.nb_observers,
+        VmTaxons,
+        obs_in_area.c.nb_obs,
+        obs_in_area.c.last_obs,
+        obs_in_area.c.nb_observers,
     ]
     # si id_area on prend les statuts dans CorTaxonStatutArea sinon directement dans VMTaxons
     if id_area:
-        _columns.extend([
-            CorTaxonStatutArea.statut_menace.label('menace'),
-            CorTaxonStatutArea.niveau_application_menace.label('niveau_application_menace'),
-            CorTaxonStatutArea.protege.label('protege')
-        ])
+        _columns.extend(
+            [
+                CorTaxonStatutArea.statut_menace.label("menace"),
+                CorTaxonStatutArea.niveau_application_menace.label("niveau_application_menace"),
+                CorTaxonStatutArea.protege.label("protege"),
+            ]
+        )
     req = (
         select(*_columns)
         .select_from(VmTaxons)
         .join(obs_in_area, obs_in_area.c.cd_ref == VmTaxons.cd_ref)
         .order_by(obs_in_area.c.nb_obs.desc())
     )
+    # if -1 we don't paginate
     if page != -1:
         req = req.limit(page_size).offset(page * page_size)
     if group2_inpn:
         req = req.where(VmTaxons.group2_inpn.in_(group2_inpn))
-    req = req.options(
-        joinedload(VmTaxons.main_media)
-    )
+    req = req.options(joinedload(VmTaxons.main_media))
     conditions = list()
     if id_area:
-        id_area_dep = select(VmCorAreas.id_area_parent).select_from(VmCorAreas).join(
-            VmAreas, VmAreas.id_area == VmCorAreas.id_area_parent
-        ).join(VmBibAreasTypes, VmAreas.id_type == VmBibAreasTypes.id_type).where(
-            (VmBibAreasTypes.type_code == 'DEP') & (VmCorAreas.id_area == id_area)
-        ).scalar_subquery()
+        id_area_dep = (
+            select(VmCorAreas.id_area_parent)
+            .select_from(VmCorAreas)
+            .join(VmAreas, VmAreas.id_area == VmCorAreas.id_area_parent)
+            .join(VmBibAreasTypes, VmAreas.id_type == VmBibAreasTypes.id_type)
+            .where((VmBibAreasTypes.type_code == "DEP") & (VmCorAreas.id_area == id_area))
+            .scalar_subquery()
+        )
         req = req.outerjoin(
             CorTaxonStatutArea,
-            (CorTaxonStatutArea.cd_ref == VmTaxons.cd_ref) & 
-            (CorTaxonStatutArea.id_area.in_(id_area_dep)),
+            (CorTaxonStatutArea.cd_ref == VmTaxons.cd_ref)
+            & (CorTaxonStatutArea.id_area.in_(id_area_dep)),
         )
         # si protegé et menacé sur une fiche territoire on va cherché dans CorTaxonStatutArea
         # sinon direcetement dans VmTaxons
@@ -140,7 +145,7 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params={}):
             conditions.append(VmTaxons.menace == True)
 
     if patrimonial:
-        conditions.append(VmTaxons.patrimonial == 'oui')
+        conditions.append(VmTaxons.patrimonial == "oui")
 
     if conditions:
         req = req.where(or_(*conditions))
@@ -153,8 +158,8 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params={}):
 
     if filter_taxon:
         req = req.where(
-            VmTaxons.nom_vern.ilike(f"%{filter_taxon}%") |
-            VmTaxons.lb_nom.ilike(f"%{filter_taxon}%")
+            VmTaxons.nom_vern.ilike(f"%{filter_taxon}%")
+            | VmTaxons.lb_nom.ilike(f"%{filter_taxon}%")
         )
 
     taxons = []
@@ -164,42 +169,12 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params={}):
             taxon_dict["yearmax"] = row.last_obs
             taxon_dict["menace"] = row.menace
             taxon_dict["nb_obs"] = row.nb_obs
+            taxon_dict["last_obs"] = row.last_obs
             taxon_dict["nb_observers"] = row.nb_observers
             taxon_dict["protection_stricte"] = row.protege
             taxon_dict["niveau_application_menace"] = row.niveau_application_menace
         taxons.append(taxon_dict)
     return taxons
-
-
-def getTaxonsStateAreas(id_area, state):
-    id_area_dep = (
-        select(VmCorAreas.id_area_parent)
-        .filter(VmCorAreas.id_area == id_area)
-        .scalar_subquery()
-    )
-
-    filters = [VmCorAreaSynthese.id_area == id_area]
-
-    if state == 'menace':
-        filters.append(CorTaxonStatutArea.statut_menace.is_not(None))
-    elif state == 'protege':
-        filters.append(CorTaxonStatutArea.protege.is_(True))
-
-    req = (
-        select(VmObservations.cd_ref)
-        .distinct()
-        .join(
-            VmCorAreaSynthese, 
-            VmCorAreaSynthese.id_synthese == VmObservations.id_observation
-        )
-        .outerjoin(
-            CorTaxonStatutArea,
-            (CorTaxonStatutArea.cd_ref == VmObservations.cd_ref) &
-            (CorTaxonStatutArea.id_area == id_area_dep) 
-        )
-        .filter(*filters)
-    )
-    return db.session.execute(req).scalars().all()
 
 
 def getINPNgroupPhotos():
@@ -237,19 +212,18 @@ def getAllINPNgroup():
     return groupList
 
 
-def getGroupINPNarea(id_area: int):
-    req = (
-        select(distinct(VmTaxons.group2_inpn))
-        .select_from(VmTaxons)
-        .join(VmObservations, VmObservations.cd_ref == VmTaxons.cd_ref)
-        .join(VmCorAreaSynthese, VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
-        .where(VmCorAreaSynthese.id_area == id_area)
-        .order_by(VmTaxons.group2_inpn)
-    )
-    return db.session.execute(req).scalars().all()
 
-
-def get_group_inpn(group):
+def get_group_inpn(group, id_area=None):
     column = getattr(VmTaxons, group)
-    req = select(distinct(column)).order_by(column)
-    return [group for group in db.session.execute(req).scalars().all()]
+    req = select(distinct(column)).select_from(VmTaxons)
+    if id_area:
+        req = (
+            req.join(VmObservations, VmObservations.cd_ref == VmTaxons.cd_ref)
+            .join(
+                VmCorAreaSynthese, VmCorAreaSynthese.id_synthese == VmObservations.id_observation
+            )
+            .where(VmCorAreaSynthese.id_area == id_area)
+        )
+
+    req = req.order_by(column)
+    return db.session.execute(req).scalars().all()

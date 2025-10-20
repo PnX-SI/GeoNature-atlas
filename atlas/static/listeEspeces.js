@@ -8,37 +8,21 @@ function loadNewTaxons() {
     });
 }
 
-async function getTaxonElems() {
-    let url = ""
-    let currentList = [];
-
-    const pathNameUrl = location.pathname.split("/").filter(segment => segment);
-    
-    switch (context.page) {
-        case "area":
-            // Territory sheet
-            url = `${configuration.URL_APPLICATION}/api/taxonList/area/${pathNameUrl[2]}`;
-            break;
-        case "taxon_rank_sheet":
-            // Family list sheet
-            url = `${configuration.URL_APPLICATION}/api/taxonList/liste/${pathNameUrl[2]}`;
-            break;
-        case "group_sheet":
-            // Group sheet
-            url = `${configuration.URL_APPLICATION}/api/taxonList/group/${pathNameUrl[2]}`;
-            break;
-        case "home_territory":
-            // Default sheet (all species) used for home page (with territory map)
-            url = `${configuration.URL_APPLICATION}/api/taxonList`
-            break;
+function initApiUrls() {
+    url = `${configuration.URL_APPLICATION}/api/taxonList`
+    jsonUrl = `${configuration.URL_APPLICATION}/api/taxonListJson`;
+    if(context.page != 'home_territory') {
+        url = `${url}/${context.page}/${context.page_param}`;
+        jsonUrl = `${jsonUrl}/${context.page}/${context.page_param}`;
     }
+}
 
-    let urlParams = new URLSearchParams([
-        ["page", page],
-        ["page_size", page_size],
-    ]);
-    apiUrl = url;
-    apiUrlParams = urlParams;
+/**
+ * 
+ * @param {*} urlParams type : URLSearchParams
+ * Build the query string from UI parameters
+ */
+function buildQueryString(urlParams) {
     if(inputSearchTaxons) {
         urlParams.append(
             "filter_taxons", inputSearchTaxons
@@ -57,7 +41,18 @@ async function getTaxonElems() {
         urlParams.append("group2_inpn", group)
     })
 
-    currentList = await fetch(`${url}?${urlParams}`, {
+    return urlParams;
+}
+
+async function getTaxonElems() {
+    let currentList = [];
+
+    let baseQueryString = new URLSearchParams([
+        ["page", page],
+        ["page_size", page_size],
+    ]);
+    let queryString = buildQueryString(baseQueryString);
+    currentList = await fetch(`${url}?${queryString}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/html'
@@ -137,28 +132,31 @@ function clearFilters() {
 // ==================================================
 
 async function exportCsv(){
-    if (!apiUrlParams) {
-        await loadNewTaxons(); // initialise apiUrlParams et apiUrl
-    }
+    // init the query string with page = -1 -> not pagination for export
+    let baseQueryString = new URLSearchParams({"page": "-1"})
+    let queryString = buildQueryString(baseQueryString);
 
-    let exportUrl = new URLSearchParams(apiUrlParams.toString());
-    exportUrl.set("page", -1); // All pages fetched
-    exportUrl.set("json", "true");
-
-    const fullList = await fetch(`${apiUrl}?${exportUrl}`)
+    const fullList = await fetch(`${jsonUrl}?${queryString}`)
         .then(r => r.json()); 
 
     // Colonnes du CSV
-    const rows = [[
-        "CdRef", translationsExport.taxonomic_group, translationsExport.common_name, 
+    const columns = [
+        "cd_ref", translationsExport.taxonomic_group, translationsExport.common_name, 
         translationsExport.scientific_name, translationsExport.occurrences_number, 
         translationsExport.observers_number, translationsExport.last_observation, 
         translationsExport.threatened_masc, translationsExport.strict_protection, 
-        translationsExport.heritage, translationsExport.inpn_group_3
-    ]];
+         translationsExport.inpn_group_3
+    ]
+    const rows = [];
+    if(configuration.DISPLAY_PATRIMONIALITE) {
+        columns.push(translationsExport.patrimonial);
+    }
+    rows.push(columns)
+
 
     // Filtrer les taxons visibles dans taxonsData
     fullList.forEach(taxon => {
+        
         const taxonomicGroup = taxon.group2_inpn || "-";
         const cdRef = taxon.cd_ref || "-";
         const nomVern = (typeof taxon.nom_vern === "string" && taxon.nom_vern) 
@@ -168,18 +166,22 @@ async function exportCsv(){
         const nbObs = taxon.nb_obs || "0";
         const nbObservers = taxon.nb_observers || "0";
         const lastYear = taxon.last_obs || "-";
-        const patrimonial = taxon.patrimonial || false;
-        const strictProtection = taxon.protection_stricte || false;
+        const patrimonial = taxon.patrimonial ? translationsExport.yes: translationsExport.no;
+        const strictProtection = taxon.protection_stricte ? translationsExport.yes: translationsExport.no;
         const group3Inpn = taxon.group3_inpn || "-";
-
+        const isThreatened = taxon.menace ? translationsExport.yes: translationsExport.no;;
+        // TODO : is threatened
         // Ajout de la colonne "Menacé" en tant que true/false
-        const isThreatened = threatenedTaxons.includes(Number(taxon.cd_ref));  
+        row = [cdRef, taxonomicGroup, nomVern, nomSci, nbObs, 
+            nbObservers, lastYear, isThreatened, strictProtection, group3Inpn];
+        if(configuration.DISPLAY_PATRIMONIALITE) {
+            row.push(patrimonial)
+        }
 
-        rows.push([cdRef, taxonomicGroup, nomVern, nomSci, nbObs, 
-        nbObservers, lastYear, isThreatened, strictProtection, patrimonial, group3Inpn]);
+        rows.push(row);
     });
 
-    const fileName = document.getElementById("exportCsvBtn").dataset.filename;
+    const fileName = context.file_export_name ? context.file_export_name + ".csv" : "export.csv"
     const csvContent = rows.map(row => row.join(";")).join("\n");
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const link = document.createElement("a");
@@ -191,29 +193,25 @@ async function exportCsv(){
 }
 
 async function exportPdf() {
-    if (!apiUrlParams) {
-        await loadNewTaxons(); // initialise apiUrlParams et apiUrl
-    }
 
-    let exportUrl = new URLSearchParams(apiUrlParams.toString());
-    exportUrl.set("page", -1); // All pages fetched
-    exportUrl.set("json", "true");
+    let baseQueryString = new URLSearchParams({"page": "-1"})
+    let queryString = buildQueryString(baseQueryString);
 
-    const fullList = await fetch(`${apiUrl}?${exportUrl}`)
-        .then(r => r.json()); 
+
+    const fullList = await fetch(`${jsonUrl}?${queryString}`)
+        .then(r => r.json());
 
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ orientation: "landscape" });
 
-    const fileName = document.getElementById("exportPdfBtn").dataset.filename;
+    const fileName = context.file_export_name ? context.file_export_name + ".pdf" : "export.pdf"
     const title = fileName.replace(/\.pdf$/i, "");
     const pageWidth = doc.internal.pageSize.getWidth();
 
     doc.setFontSize(14.5);
     doc.text(title, pageWidth / 2, 15, { align: "center" });
 
-    const headers = [
-        [
+    const columns = [
             translationsExport.taxonomic_group,
             translationsExport.common_name,
             translationsExport.scientific_name,
@@ -222,28 +220,33 @@ async function exportPdf() {
             translationsExport.last_observation,
             translationsExport.threatened_masc,
             translationsExport.strict_protection,
-            translationsExport.heritage,
             translationsExport.inpn_group_3,
         ]
-    ];
+    if(configuration.DISPLAY_PATRIMONIALITE) {
+        columns.push(translationsExport.patrimonial);
+    }
+    const headers = [columns];
 
-    const data = fullList
-        .map(taxon => {
-        const isThreatened = threatenedTaxons.includes(Number(taxon.cd_ref)) ? true : false;
-        return [
+    const data = fullList.map(taxon => {
+        const row = [
             taxon.group2_inpn || "-",
-            (typeof taxon.nom_vern === "string" && taxon.nom_vern) 
-            ? taxon.nom_vern.split(',')[0].trim() 
-            : "-",
+            (typeof taxon.nom_vern === "string" && taxon.nom_vern) ? taxon.nom_vern.split(',')[0].trim(): "-" ,
             taxon.lb_nom || "-",
             taxon.nb_obs || "0",
             taxon.nb_observers || "0",
             taxon.last_obs || "-",
-            isThreatened,
-            taxon.protection_stricte || false,
-            taxon.patrimonial || false,
+            taxon.menace ? translationsExport.yes: translationsExport.no,
+            taxon.protection_stricte ? translationsExport.yes: translationsExport.no,
             taxon.group3_inpn || "-",
-        ]});
+        ];
+        if(configuration.DISPLAY_PATRIMONIALITE) {
+            
+            row.push(
+                taxon.patrimonial == "oui" ? translationsExport.yes: translationsExport.no
+            )
+        }
+        return row;
+    });
 
     doc.autoTable({
         startY: 25,
@@ -262,10 +265,10 @@ async function exportPdf() {
             const protectedColumnIndex = 7;  // Protected column index
 
             if (data.section === 'body') {
-                if (data.row.raw[threatenedColumnIndex] === true) {
+                if (data.row.raw[threatenedColumnIndex] === translationsExport.yes) {
                     data.cell.styles.fillColor = [255, 200, 200]; // light red
                 }
-                else if (data.row.raw[protectedColumnIndex] === true) {
+                else if (data.row.raw[protectedColumnIndex] === translationsExport.yes) {
                     data.cell.styles.fillColor = [200, 230, 255]; // light blue
                 }
             }
@@ -289,8 +292,8 @@ let groupINPNFilters = new Set();
 let threatenedFilter = null;
 let protectedFilter = null;
 let patrimonialFilter = null;
-let apiUrl = "";
-let apiUrlParams = null;
+let url = null;
+let jsonUrl = null;
 
 // event on scroll
 document.getElementById('taxonList').addEventListener('scroll', debounce( onScroll , 200));
@@ -302,6 +305,7 @@ document.getElementById('taxonInput').addEventListener('keyup', debounce( (el) =
 } , 200));
 
 $(document).ready(function () {
+    initApiUrls();
     initPlugins();
 
     $("#exportCsvBtn").on("click", exportCsv);

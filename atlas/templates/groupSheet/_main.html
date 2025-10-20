@@ -9,25 +9,12 @@
     {# Ajoutez ici les balises méta utilisées pour le SEO #}
 {% endblock %}
 
-{% block additionalHeaderAssets %}
-    {# Ajoutez ici les assets complémentaires qui seront dans le bloc <head></head> #}
-    <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/datatables.net-bs5/css/dataTables.bootstrap5.css') }}">
-    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-bs5/js/dataTables.bootstrap5.js') }}"></script>
-{% endblock %}
 
 {% block additionalFooterAssets %}
     {# Ajoutez ici les assets complémentaires qui seront en bas de page #}
     <script type="text/javascript">
         var configuration = {{ configuration | tojson }};
-        //calcul du nb de colonnes pour le fonctionnement de dataTables.js
-        var nbColumn = 6;
-        {% if configuration.DISPLAY_PATRIMONIALITE %} nbColumn = nbColumn + 1;{% endif %}
-        {% if configuration.PROTECTION %} nbColumn = nbColumn + 1;{% endif %}
-        var noSordedColumns = [nbColumn - 1]; //var for dataTables js lib
-        var defaultSortedColumn = nbColumn - 3; //var for dataTables js lib
     </script>
-    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables/media/js/jquery.dataTables.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -51,7 +38,7 @@
                     </li>
                 {% endfor %}
             </div>
-                {% with context={"page": "group_sheet"} %}
+                {% with context={"page": "group", "page_param": referenciel} %}
                     {% include 'templates/core/listTaxons.html' %}
                 {% endwith %}
         </div>

@@ -110,23 +110,18 @@ if not current_app.config["AFFICHAGE_MAILLE"]:
         )
         return jsonify(observations)
 
-# 
 @api.route("/taxonList", methods=["GET"])
 @api.route("/taxonList/area/<id_area>", methods=["GET"])
 @api.route("/taxonList/liste/<cd_ref>", methods=["GET"])
 @api.route("/taxonList/group/<group_name>", methods=["GET"])
 def get_taxon_list(id_area=None, cd_ref=None, group_name=None):
-    params = dict(request.args)
-    params["group2_inpn"] = request.args.getlist("group2_inpn") # Enable Taxonomic Group Multiselection otherwise only the first group selected is filtered
 
     list_taxon = vmTaxonsRepository.getListTaxon(
         id_area=id_area,
         group_name=group_name,
         cd_ref=cd_ref,
-        params=params,
+        params=request.args,
     )
-    if request.args.get("json", "").lower() == "true":
-        return jsonify(list_taxon)
 
     return render_template(
         "templates/core/taxon.html",
@@ -134,6 +129,22 @@ def get_taxon_list(id_area=None, cd_ref=None, group_name=None):
         DISPLAY_EYE_ON_LIST=True,
         id_area=id_area,
     )
+
+
+@api.route("/taxonListJson", methods=["GET"])
+@api.route("/taxonListJson/area/<id_area>", methods=["GET"])
+@api.route("/taxonListJson/liste/<cd_ref>", methods=["GET"])
+@api.route("/taxonListJson/group/<group_name>", methods=["GET"])
+def get_taxon_list_json(id_area=None, cd_ref=None, group_name=None):
+
+    list_taxon = vmTaxonsRepository.getListTaxon(
+        id_area=id_area,
+        group_name=group_name,
+        cd_ref=cd_ref,
+        params=request.args,
+    )
+
+    return jsonify(list_taxon)
 
 
 @api.route("/photoGroup/<group>", methods=["GET"])

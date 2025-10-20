@@ -11,7 +11,6 @@ def create_vm_altitudes_class():
     based on the altitude ranges defined in the configuration.
     """
     altitude_ranges = current_app.config["ALTITUDE_RANGES"]
-    print("LAAA", altitude_ranges)
 
     class_attributes = {
         "__tablename__": "vm_altitudes",
