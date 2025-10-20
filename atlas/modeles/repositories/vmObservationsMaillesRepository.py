@@ -55,7 +55,7 @@ def getObservationsMaillesChilds(params={}):
     """
     cd_ref = params.get("cd_ref", None)
     year_min = params.get("year_min", None)
-    year_max = params.get("year_min", None)
+    year_max = params.get("year_max", None)
     id_area = params.get("id_area", None)
     last_obs = params.get("last_obs", None)
     fields: list = params.get("fields", "").split(",")
