@@ -75,7 +75,6 @@ img.statut_icon {
 
 .specie_list_map_block {
     display: flex;
-    height: 100%;
 }
 
 .stats_block {
@@ -90,3 +89,30 @@ img.statut_icon {
     left: 50%;
     top: 50%; 
 }
+
+/* Garde le style actif quand le menu déroulant est ouvert */
+.btn-outline-secondary.dropdown-toggle[aria-expanded="true"] {
+  background-color: var(--main-color);
+  color: white;
+  border-color: var(--main-color);
+}
+
+.dropdown-menu .form-check-label {
+  width: 100%;         
+  cursor: pointer;
+}
+
+.dropdown-menu .form-check:hover {
+  background-color: #e0e0e0;
+  border-radius: 4px;
+}
+
+#currentGroupLabel {
+  display: inline-block;
+  max-width: 250px;        
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  vertical-align: middle;
+}
+

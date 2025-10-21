@@ -179,12 +179,15 @@ function createDatabase() {
     printMsg "Creating users..."
     set +e
     sudo -u postgres psql -c "CREATE USER ${owner_atlas} WITH PASSWORD '${owner_atlas_pass}' ;"
-    sudo -u postgres psql -c "CREATE USER ${user_pg} WITH PASSWORD '{$user_pg_pass}' ;"
+    sudo -u postgres psql -c "CREATE USER ${user_pg} WITH PASSWORD '${user_pg_pass}' ;"
     set -e
 
     printMsg "Creating DB..."
     sudo -u postgres -s createdb -O "${owner_atlas}" "${db_name}"
+    createDatabaseExtensions
+}
 
+function createDatabaseExtensions() {
     printMsg "Adding extensions to DB..."
     executeQuery "CREATE EXTENSION IF NOT EXISTS postgis;"
     executeQuery "CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;"
@@ -195,7 +198,7 @@ function createDatabase() {
 
 # Test si la base de donnée contient déja des schéma qui indique que la BDD atlas a déjà été installée
 function checkDatabaseInstalled() {
-    local query_schemas="SELECT count(*) FROM information_schema.schemata WHERE schema_name IN ('atlas', 'gn_meta', 'synthese');"
+    local query_schemas="SELECT count(*) FROM information_schema.schemata WHERE schema_name = 'atlas';"
     local schema_already_exists=$(executeQuery "${query_schemas}")
     if [[ $schema_already_exists -gt 0 ]]; then
         exitScript "La base de donnée semble déjà contenir une installation de l'atlas... on s'arrête là"
@@ -216,9 +219,11 @@ function createForeignDataWrapper() {
 function createDatabaseSchemas() {
     printMsg "Creating database schemas..."
     executeQuery "CREATE SCHEMA IF NOT EXISTS atlas AUTHORIZATION "$owner_atlas";"
-    executeQuery "CREATE SCHEMA IF NOT EXISTS synthese AUTHORIZATION "$owner_atlas";"
     executeQuery "CREATE SCHEMA IF NOT EXISTS gn_meta AUTHORIZATION "$owner_atlas";"
+    executeQuery "CREATE SCHEMA IF NOT EXISTS gn_synthese AUTHORIZATION "$owner_atlas";"
+    executeQuery "CREATE SCHEMA IF NOT EXISTS gn_sensitivity AUTHORIZATION "$owner_atlas";"
     executeQuery "CREATE SCHEMA IF NOT EXISTS ref_geo AUTHORIZATION "$owner_atlas";"
+    executeQuery "CREATE SCHEMA IF NOT EXISTS ref_nomenclatures AUTHORIZATION "$owner_atlas";"
     executeQuery "CREATE SCHEMA IF NOT EXISTS taxonomie AUTHORIZATION "$owner_atlas";"
 }
 
@@ -254,24 +259,24 @@ function prepareAltitudesValues() {
 function createDatabaseEntities() {
     printMsg "Creating materialized views..."
     local scripts_sql=(
-        "1.atlas.vm_taxref.sql"
-        "1-1.atlas.ref_geo.sql"
-        "1.2.atlas.vm_bdc_statut.sql"
-        "1-4.cor_sensitivity_area_type.sql"
-        "1-5.vm_cor_area_synthese.sql"
-        "2.atlas.vm_observations.sql"
-        "3.atlas.vm_taxons.sql"
-        "4.atlas.vm_altitudes.sql"
-        "5.atlas.vm_search_taxon.sql"
-        "6.atlas.vm_mois.sql"
-        "8.atlas.vm_medias.sql"
-        "9.atlas.vm_cor_taxon_attribut.sql"
-        "10.atlas.vm_taxons_plus_observes.sql"
-        "11.atlas.vm_cor_taxon_organism.sql"
-        "13.atlas.vm_observations_mailles.sql"
-        "13.5.atlas.territory_stats.sql"
-        "20.grant.sql"
-        "atlas.refresh_materialized_view_data.sql"
+        "01.vm_taxref.sql"
+        "02.ref_geo.sql"
+        "03.bdc_statut.sql"
+        "04.cor_sensitivity_area_type.sql"
+        "05.vm_observations.sql"
+        "06.vm_cor_area_synthese.sql"
+        "07.vm_taxons.sql"
+        "08.vm_altitudes.sql"
+        "09.vm_search_taxon.sql"
+        "10.vm_mois.sql"
+        "11.vm_medias.sql"
+        "12.vm_cor_taxon_attribut.sql"
+        "13.vm_taxons_plus_observes.sql"
+        "14.vm_cor_taxon_organism.sql"
+        "15.vm_cor_maille_observation.sql"
+        "16.territory_stats.sql"
+        "17.grant.sql"
+        "18.refresh_materialized_view_data.sql"
     )
     local script=""
     local msg=""

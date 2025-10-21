@@ -164,6 +164,10 @@ class AtlasConfig(Schema):
     AFFICHAGE_GRAPH_PHENOLOGIE = fields.Boolean(load_default=True)
     TYPE_TERRITOIRE_SHEET = fields.List(fields.String(), load_default=["COM"])
     AFFICHAGE_GRAPH_PHENOLOGIE = fields.Boolean(load_default=False)
+    ALTITUDE_RANGES = fields.List(
+        fields.Integer(),
+        load_default=[0, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000],
+    )
     AFFICHAGE_TOUT_TERRITOIRE_GRAPH = fields.Boolean(load_default=False)
     AFFICHAGE_GRAPH_PROVENANCE_DONNEE = fields.Boolean(load_default=False)
     COLOR_STACKED_BAR_CHARTS = fields.List(
@@ -222,6 +226,7 @@ class AtlasConfig(Schema):
     )
     LIMIT_RANG_TAXONOMIQUE_HIERARCHIE = fields.Integer(load_default=13)
     LIMIT_FICHE_LISTE_HIERARCHY = fields.Integer(load_default=28)
+    ITEMS_PER_PAGE = fields.Integer(load_default=50)
     REMOTE_MEDIAS_URL = fields.String(load_default="http://mondomaine.fr/taxhub/")
     REDIMENSIONNEMENT_IMAGE = fields.Boolean(load_default=True)
     TAXHUB_URL = fields.String(required=False, load_default=None)

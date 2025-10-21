@@ -48,7 +48,11 @@ def searchAreas(search, limit=50):
 def getAreaFromIdArea(id_area):
     area = (
         db.session.query(
-            VmAreas.area_name, VmAreas.id_area, VmAreas.description, VmAreas.area_geojson, VmBibAreasTypes.type_name
+            VmAreas.area_name,
+            VmAreas.id_area,
+            VmAreas.description,
+            VmAreas.area_geojson,
+            VmBibAreasTypes.type_name,
         )
         .join(VmBibAreasTypes, VmAreas.id_type == VmBibAreasTypes.id_type)
         .filter(VmAreas.id_area == id_area)
@@ -67,12 +71,12 @@ def getAreaFromIdArea(id_area):
     }
 
     subquery = (
-        db.session.query(VmCorAreas.id_area_group).filter(VmCorAreas.id_area == id_area).subquery()
+        db.session.query(VmCorAreas.id_area_parent).filter(VmCorAreas.id_area == id_area).subquery()
     )
 
     areas_parent = (
         db.session.query(VmAreas.area_name, VmAreas.id_area, VmBibAreasTypes.type_name)
-        .join(subquery, subquery.c.id_area_group == VmAreas.id_area)
+        .join(subquery, subquery.c.id_area_parent == VmAreas.id_area)
         .join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type)
         .all()
     )
@@ -90,7 +94,9 @@ def getAreaFromIdArea(id_area):
 
 
 def getAreasObservationsChilds(cd_ref):
-    results = (db.session.execute(select(func.atlas.find_all_taxons_childs(cd_ref)))).scalars().all()
+    results = (
+        (db.session.execute(select(func.atlas.find_all_taxons_childs(cd_ref)))).scalars().all()
+    )
     taxons = [cd_ref]
     for r in results:
         taxons.append(r)
@@ -153,7 +159,7 @@ def get_species_by_taxonomic_group(id_area):
         info_chart[r.group2_inpn] = {
             "nb_species": r.nb_species,
             "nb_patrimonial": r.nb_taxon_patrimonial,
-            "nb_threatened": r.nb_threatened, 
+            "nb_threatened": r.nb_threatened,
             "nb_species_in_teritory": r.nb_species_in_teritory,
         }
     return info_chart
@@ -178,8 +184,7 @@ def get_nb_observations_taxonomic_group(id_area):
 
 
 def getStatsByArea(id_area):
-    result = db.session.query(VmAreaStats)\
-            .filter(VmAreaStats.id_area == id_area).one_or_none()
+    result = db.session.query(VmAreaStats).filter(VmAreaStats.id_area == id_area).one_or_none()
     if not result:
         raise NotFound()
     return result.as_dict()

@@ -101,7 +101,8 @@ LANGUAGES = {
 #####################
 #####################
 
-# Utiliser et afficher le glossaire (static/custom/glossaire.json.sample)
+# Utiliser et afficher le glossaire (static/custom/glossaire.json)
+# Le fichier par défaut est présente dans static/sample/glossaire.json.
 GLOSSAIRE = False
 
 # Afficher le lien vers la galerie photo
@@ -205,6 +206,9 @@ AFFICHAGE_STAT_GLOBALES = True
 
 # Bloc avec carte et liste des dernières observations. Affichage True/False
 AFFICHAGE_DERNIERES_OBS = True
+
+# Nombre d'éléments récupérés par page lors de la liste de taxon.
+ITEMS_PER_PAGE = 50
 
 # Bloc avec espèces à voir en ce moment. Affichage True/False
 AFFICHAGE_EN_CE_MOMENT = True

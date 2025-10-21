@@ -67,9 +67,9 @@ function displayObs(id_area) {
     // si on est en maille on renvoie toutes les données aggregées par maille
     let url;
     if (!configuration.AFFICHAGE_MAILLE) {        
-        url = `${configuration.URL_APPLICATION}/api/observationsPoint?id_area=${id_area}&limit=100&&with_taxons=true`;
+        url = `${configuration.URL_APPLICATION}/api/observationsPoint?id_area=${id_area}&limit=100&fields=taxons`;
     } else{
-        url = `${configuration.URL_APPLICATION}/api/observationsMaille?id_area=${id_area}&with_taxons=true`;
+        url = `${configuration.URL_APPLICATION}/api/observationsMaille?id_area=${id_area}&fields=taxons`;
     }
     $("#loaderSpinner").show();
     fetch(url)
@@ -81,7 +81,9 @@ function displayObs(id_area) {
             if (configuration.AFFICHAGE_MAILLE) {
                 displayGeojsonMailles(observations);
             } else {                
-                displayGeoJsonPoint(observations)
+                displayGeoJsonPoint(observations);
+                generalLegendPoint();
+
             }
             $("#loaderSpinner").hide();
         })

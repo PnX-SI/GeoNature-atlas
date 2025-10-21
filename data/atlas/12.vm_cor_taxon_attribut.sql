@@ -13,7 +13,8 @@ CREATE MATERIALIZED VIEW atlas.vm_cor_taxon_attribut AS
         JOIN taxonomie.bib_attributs AS ba
             ON cta.id_attribut = ba.id_attribut
     WHERE cta.valeur_attribut IS NOT NULL
-        AND cta.valeur_attribut != '' ;
+        AND cta.valeur_attribut != ''
+WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_cor_taxon_attribut
     USING btree (cd_ref, code);

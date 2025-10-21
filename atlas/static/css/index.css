@@ -234,7 +234,7 @@ h3.title-spaced {
   }
 }
 
-.list-group {
+.top-species-taxon-list {
   max-height: fit-content;
   height: 100%;
   overflow: scroll;
@@ -246,6 +246,7 @@ h3.title-spaced {
     padding-left: 0px;
   }
 }
+
 
 
 .pictoImgSmall {
@@ -262,20 +263,12 @@ h3.title-spaced {
 }
 
 .lastObslistItem:hover {
-  background-color: var(--light);
+  background-color: #a8a2a26b;
   cursor: pointer;
 }
 
-.lastObslistItem .lastObslistItemIcon {
-  width: 80px;
-  height: 40px;
-  background-position: center;
-  align: center;
-  object-fit: contain;
-}
 
-.lastObslistItem .lastObslistItemIcon,
-.lastObslistItem .lastObslistItemImage {
+.lastObsImg {
   width: 80px;
   height: 80px;
   object-fit: cover;

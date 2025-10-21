@@ -13,8 +13,8 @@ Here are the commands that you can use to add a language, adding text to transla
 
 All the commands should be used in your atlas path in a command prompt.
 
-The ``atlas/messages.pot`` file is a translation template, automatically generated with browsing all .html and .sample files of the project. 
-It is used to generate and add keys in .po files of each language. 
+The ``atlas/messages.pot`` file is a translation template, automatically generated with browsing all .html files of the project.
+It is used to generate and add keys in .po files of each language.
 Once .po files have been manually updated, the final command will generate the compiled .mo files used by the application.
 
 ADDING A LANGUAGE
@@ -29,11 +29,11 @@ Then in your command prompt, go in your atlas path and use these commmands.
 ::
 
     # Extract your strings from html files | create or update .pot file
-    pybabel extract -F babel.cfg -o messages.pot .
-    
+    pybabel extract -F babel.cfg --project=GeoNature-Atlas --version=$(cat ../VERSION) -o messages.pot .
+
     # Create first translation, here in french (fr) | create .po file
     pybabel init -i messages.pot -d translations -l fr
-  
+
     # To compile translations | create .mo file
     pybabel compile -d translations
 
@@ -43,7 +43,7 @@ ADDING STRINGS
 ::
 
     # Extract your new strings from html files | create .pot file
-    pybabel extract -F babel.cfg -o messages.pot .
+    pybabel extract -F babel.cfg --project=GeoNature-Atlas --version=$(cat ../VERSION) -o messages.pot .
 
     # Update strings changes
     pybabel update -i messages.pot -d translations
@@ -76,7 +76,7 @@ Voici les différentes commandes que vous pouvez utiliser pour ajouter une langu
 
 Toutes les commandes doivent être utilisées dans le chemin de votre atlas dans une invite de commande.
 
-Le fichier ``atlas/messages.pot`` est un template de traduction, généré automatiquement en parcourant les fichiers .html et .sample du projet.
+Le fichier ``atlas/messages.pot`` est un template de traduction, généré automatiquement en parcourant les fichiers .html du projet.
 Il est utilisé pour générer et ajouter les clés de traduction dans les fichiers .po de chaque langue.
 Une fois que les fichiers .po ont été mis à jour manuellement, la commande finale va générer les fichier .mo compilés, utilisés par l'application.
 
@@ -92,7 +92,7 @@ Ensuite, dans votre invite de commande, allez dans le chemin de votre atlas et u
 ::
 
     # Extraire vos nouvelles chaînes de caractères des fichiers html | créer un fichier .pot
-    pybabel extract -F babel.cfg -o messages.pot .
+    pybabel extract -F babel.cfg --project=GeoNature-Atlas --version=$(cat ../VERSION) -o messages.pot .
 
     # Mise à jour des modifications des chaînes de caractères
     pybabel update -i messages.pot -d translations
@@ -106,14 +106,14 @@ AJOUTER DES CHAÎNES DE CARACTÈRES
 ::
 
     # Extraire vos nouvelles chaînes de caractères des fichiers html | créer un fichier .pot
-    pybabel extract -F babel.cfg -o messages.pot .
+    pybabel extract -F babel.cfg --project=GeoNature-Atlas --version=$(cat ../VERSION) -o messages.pot .
 
     # Mise à jour des changements de chaînes
     pybabel update -i messages.pot -d translations
 
     # Pour compiler les traductions | créer un fichier .mo
     pybabel compile -d translations
-    
+
 MODIFICATION D'UNE CHAÎNE DE CARACTÈRES DÉJÀ PRÉSENTE DANS LES FICHIERS .PO
 ===========================================================================
 

@@ -18,7 +18,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css') }}"/>
     <!-- DataTable -->
     <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/datatables.net-bs5/css/dataTables.bootstrap5.css') }}"/>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/listEspeces.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/icones.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/areaSheet.css') }}" />
 {% endblock %}
@@ -40,54 +39,52 @@
             "threatened_species_repartition": `{{ _('threatened.species.repartition') }}`,
             "nb_species_taxonomic_group": `{{ _('number.species.taxonomic.group') }}`,
         };
+        const affichage_menace_enabled = {{ 'true' if configuration.AFFICHAGE_MENACE else 'false' }};
+        const protection_enabled = {{ 'true' if configuration.PROTECTION else 'false' }};
     </script>
     <script src="{{ url_for('static', filename='custom/maps-custom.js') }}"></script>
-    <script src="{{ url_for('static', filename='listeEspeces.js') }}"></script>
     <script src="{{ url_for('static', filename='mapGenerator.js') }}"></script>
     <script src="{{ url_for('static', filename='mapAreas.js') }}"></script>
     <script src="{{ url_for('static', filename='chart.js') }}"></script>
 {% endblock %}
 
 {% block content %}
-    <div class="stats_block">
 
-        <div class="row p-0 m-0 border-bottom">
-            <div class="info_zone_card">
-                {% include 'templates/areaSheet/statArea.html' %}
-            </div>
-            {% if configuration.AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION or configuration.AFFICHAGE_TAB_AREA_OBS_ESPECES or configuration.ORGANISM_MODULE %}
-                <div class="info_zone_card">
-                    {% include 'templates/areaSheet/moreZoneInfo.html' %}
-                </div>
+<div class="row p-0 m-0 border-bottom">
+    <div class="info_zone_card">
+        {% include 'templates/areaSheet/statArea.html' %}
+    </div>
+    {% if configuration.AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION or configuration.AFFICHAGE_TAB_AREA_OBS_ESPECES or configuration.ORGANISM_MODULE %}
+        <div class="info_zone_card">
+            {% include 'templates/areaSheet/moreZoneInfo.html' %}
+        </div>
+    {% endif %}
+</div>
+<div class="specie_list_map_block flex-wrap">
+    <div class="col-12 col-xl-4 col-lg-5 col-md-6 d-flex flex-column">
+        {% with context={"page": "area"} %}
+            {% include 'templates/core/listTaxons.html' %}
+        {% endwith %}
+    </div>
+    <div class="col-12 col-xl-8 col-lg-7 col-md-6 d-flex flex-column m-0 p-0" style="min-height: 80vh;">
+        <div class="bg-light p-2">
+            {% if configuration.AFFICHAGE_MAILLE %}
+                <h5 id="titleMap"><i class="fa fa-map"></i> <i>{{ areaInfos.areaName }}</i> 
+                </h5>
+            {% else %}
+                <h5 id="titleMap"><i class="fa fa-map"></i> <i>{{ areaInfos.areaName }}</i> : {{ configuration.NB_LAST_OBS }} {{ _('last.obs.area') }}
+                </h5>
             {% endif %}
         </div>
-        <div class="specie_list_map_block flex-wrap">
-
-            <div class="col-12 col-xl-4 col-lg-5 col-md-6 d-flex flex-column m-0 p-0">
-                {% with dispay_picto=True %}
-                    {% include 'templates/core/listTaxons.html' %}
-                {% endwith %}
-            </div>
-            <div class="col-12 col-xl-8 col-lg-7 col-md-6 d-flex flex-column m-0 p-0" style="min-height: 80vh;">
-                <div class="bg-light p-2">
-                    {% if configuration.AFFICHAGE_MAILLE %}
-                        <h5 id="titleMap"><i class="fa fa-map"></i> <i>{{ areaInfos.areaName }}</i> 
-                        </h5>
-                    {% else %}
-                        <h5 id="titleMap"><i class="fa fa-map"></i> <i>{{ areaInfos.areaName }}</i> : {{ configuration.NB_LAST_OBS }} {{ _('last.obs.area') }}
-                        </h5>
-                    {% endif %}
-                </div>
-                <div class="d-flex align-content-stretch bg-warning flex-grow-1">
-                    <div class="d-flex flex-grow-1">
-                        <div id="map" style="height:unset; flex:1;">
-                            {% include 'templates/core/loaderSpinner.html' %}
-                        </div>
-                    </div>
+        <div class="d-flex align-content-stretch bg-warning flex-grow-1">
+            <div class="d-flex flex-grow-1">
+                <div id="map" style="height:unset; flex:1;">
+                    {% include 'templates/core/loaderSpinner.html' %}
                 </div>
             </div>
         </div>
     </div>
+</div>
 
     {# Ajoutez ici coeur de la page #}
 

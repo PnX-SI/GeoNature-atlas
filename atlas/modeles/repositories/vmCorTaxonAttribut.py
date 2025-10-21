@@ -7,9 +7,11 @@ from atlas.env import db
 
 
 def getAttributesTaxon(cd_ref, displayed_attr):
-    results = db.session.query(VmCorTaxonAttribut).filter(
-        VmCorTaxonAttribut.code.in_(displayed_attr), VmCorTaxonAttribut.cd_ref == cd_ref
-    ).all()
+    results = (
+        db.session.query(VmCorTaxonAttribut)
+        .filter(VmCorTaxonAttribut.code.in_(displayed_attr), VmCorTaxonAttribut.cd_ref == cd_ref)
+        .all()
+    )
 
     desc_taxon = []
     for row in results:
