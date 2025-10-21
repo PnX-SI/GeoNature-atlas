@@ -76,7 +76,7 @@ if(configuration.AFFICHAGE_DERNIERES_OBS) {
         $("#loaderSpinner").show();
 
         // display maille layer
-        fetch(`/api/observationsMaille?`+ new URLSearchParams({
+        fetch(`${configuration.URL_APPLICATION}/api/observationsMaille?`+ new URLSearchParams({
             "fields": "taxons"
         }))
         .then(response => response.json())

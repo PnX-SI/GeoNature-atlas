@@ -14,6 +14,8 @@
     <script src="{{ url_for('static', filename='node_modules/chart.js/dist/chart.umd.js') }}"></script>
     {# Ajoutez ici les assets complémentaires qui seront dans le bloc <head></head> #}
     <script src="{{ url_for('static', filename='node_modules/leaflet.markercluster/dist/leaflet.markercluster.js') }}"></script>
+    <script src="{{ url_for('static', filename='node_modules/jspdf/dist/jspdf.umd.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.min.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/leaflet.markercluster/dist/MarkerCluster.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css') }}"/>
     <!-- DataTable -->
@@ -28,6 +30,7 @@
         var configuration = {{configuration|tojson}};
         var areaInfos = {{ areaInfos | tojson }};
         var url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
+        const threatenedTaxons = {{ threatenedTaxons | tojson | safe }};
         const translations = {
             "nb_observations": `{{ _('obs.number.s') }}`,
             "observations": `{{ _('observations') | lower }}`,
@@ -38,6 +41,20 @@
             "other_species": `{{ _('other.species') }}`,
             "threatened_species_repartition": `{{ _('threatened.species.repartition') }}`,
             "nb_species_taxonomic_group": `{{ _('number.species.taxonomic.group') }}`,
+        };
+        const translationsExport = {
+            "taxonomic_group": `{{ _('taxonomic.group') }}`,
+            "common_name": `{{ _('common.name') }}`,
+            "scientific_name": `{{ _('scientific.name') }}`,
+            "occurrences_number": `{{ _('occurrences.number') }}`,
+            "observers_number": `{{ _('observers.number') }}`,
+            "last_observation": `{{ _('last.observation') }}`,
+            "threatened_masc": `{{ _('threatened.masc') }}`, 
+            "strict_protection": `{{ _('strict.protection') }}`,
+            "heritage": `{{ _('heritage') }}`,
+            "inpn_group_3": `{{ _('inpn.group.3') }}`,
+            "export.csv": `{{ _('export.csv') }}`,
+            "export.pdf": `{{ _('export.pdf') }}`,
         };
         const affichage_menace_enabled = {{ 'true' if configuration.AFFICHAGE_MENACE else 'false' }};
         const protection_enabled = {{ 'true' if configuration.PROTECTION else 'false' }};

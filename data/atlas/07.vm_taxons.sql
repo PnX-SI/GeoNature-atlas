@@ -26,6 +26,7 @@ CREATE MATERIALIZED VIEW atlas.vm_taxons AS
             nom_vern_eng,
             group1_inpn,
             group2_inpn,
+            group3_inpn,
             nom_complet_html,
             id_rang
         FROM atlas.vm_taxref
@@ -73,6 +74,7 @@ CREATE MATERIALIZED VIEW atlas.vm_taxons AS
         ti.nom_vern_eng,
         ti.group1_inpn,
         ti.group2_inpn,
+        ti.group3_inpn,
         ti.nom_complet_html,
         ti.id_rang,
         ta.patrimonial,

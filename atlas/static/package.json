@@ -26,6 +26,8 @@
     "jquery": "^3.6.0",
     "jquery-lazy": "^1.7.9",
     "jquery-ui-dist": "^1.12.1",
+    "jspdf": "^3.0.3",
+    "jspdf-autotable": "^5.0.2",
     "leaflet": "^1.9.4",
     "leaflet.fullscreen": "^4.0.0",
     "leaflet.markercluster": "^1.5.3",
