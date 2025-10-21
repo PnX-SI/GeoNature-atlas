@@ -1,21 +1,18 @@
 import os
 from pathlib import Path
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import DeclarativeBase
 
 from flask_caching import Cache
 from flask_babel import Babel
 
 
-class Base(DeclarativeBase):
-    pass
 
 
 babel = Babel()
 
 cache = Cache()
 
-db = SQLAlchemy(model_class=Base)
+db = SQLAlchemy()
 
 default_atlas_config_file_path = Path(__file__).parent / "configuration/config.py"
 default_atlas_static_folder = Path(__file__).parent / "static"

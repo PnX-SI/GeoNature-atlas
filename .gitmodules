@@ -1,0 +1,3 @@
+[submodule "dependencies/GeoNature"]
+	path = dependencies/GeoNature
+	url = git@github.com:PnX-SI/GeoNature.git

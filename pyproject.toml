@@ -28,6 +28,7 @@ Homepage = "https://github.com/PnX-SI/GeoNature-Atlas"
 version = { file = "VERSION" }
 dependencies = { file = "requirements.in" }
 
+
 [tool.setuptools.packages.find]
 where = ["."]
 exclude = ["docs*", "tests*"]
@@ -62,9 +63,8 @@ envlist = clean,py39,py311
 description = Run tests with pytest
 deps =
     -r requirements.txt
-    pytest
-    pytest-cov
-    pytest-flask
+    -r requirements-dev.in
+
 commands =
     pytest --cov=atlas
 
