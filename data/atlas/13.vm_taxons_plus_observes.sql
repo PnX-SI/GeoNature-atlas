@@ -23,7 +23,8 @@ CREATE MATERIALIZED VIEW atlas.vm_taxons_plus_observes AS
         AND date_part('month', obs.dateobs) = date_part('day', 'now'::date + :taxon_time)
     GROUP BY obs.cd_ref, tax.lb_nom, tax.group2_inpn, tax.nom_vern, m.id_media, m.url, m.chemin, m.id_type
     ORDER BY (count(*)) DESC
-    LIMIT 12;
+    LIMIT 12
+WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_taxons_plus_observes
     USING btree (cd_ref);

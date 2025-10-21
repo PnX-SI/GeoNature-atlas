@@ -32,14 +32,6 @@ class VmAreas(db.Model):
     type: Mapped["VmBibAreasTypes"] = relationship("VmBibAreasTypes", back_populates="areas")
 
 
-class VmCorAreaObservation(db.Model):
-    __tablename__ = "vm_cor_area_observation"
-    __table_args__ = {"schema": "atlas"}
-
-    id_observation: Mapped[int] = mapped_column(primary_key=True)
-    id_area: Mapped[int] = mapped_column(primary_key=True)
-
-
 class VmCorAreas(db.Model):
     __tablename__ = "vm_cor_areas"
     __table_args__ = {"schema": "atlas"}

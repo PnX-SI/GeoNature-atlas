@@ -13,7 +13,8 @@ CREATE MATERIALIZED VIEW atlas.vm_medias AS
         t_medias.id_type,
         t_medias.licence,
         t_medias.source
-    FROM taxonomie.t_medias;
+    FROM taxonomie.t_medias
+WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_medias
     USING btree (id_media);

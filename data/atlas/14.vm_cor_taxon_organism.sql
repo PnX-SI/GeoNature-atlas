@@ -25,7 +25,8 @@ CREATE MATERIALIZED VIEW atlas.vm_cor_taxon_organism AS
         url_logo
     FROM obs_by_dataset_and_organism AS obdao
         JOIN utilisateurs.bib_organismes AS bo
-            ON bo.id_organisme = obdao.id_organism;
+            ON bo.id_organisme = obdao.id_organism
+WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_cor_taxon_organism
     USING btree (cd_ref, id_organism);

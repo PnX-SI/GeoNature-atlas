@@ -41,12 +41,28 @@
                 {% endif %}
             {% endif %}
             {% if configuration.AFFICHAGE_MENACE %}
+                {% set
+                    THREAT_LABELS = {
+                        'CR*': _('threatened.CR'),
+                        'CR': _('threatened.CR'),
+                        'EN': _('threatened.EN'),
+                        'VU': _('threatened.VU'),
+                    }
+                %}
+                {% set
+                    THREAT_LEVEL = {
+                        'LRR': _('protected.LRR'),
+                        'LRN': _('protected.LRN'),
+                        'LRE': _('protected.LRE'),
+                        'LRM': _('protected.LRM'),
+                    }
+                %}
                 {% if taxon.menace %}
                     <img src="{{ url_for('static', filename='images/picto_menace.png') }}"
                          alt="{{ _('threatened') }}"
                          style="width:30px; height:30px;"
                          data-bs-toggle="tooltip"
-                         title="{{ _('threatened.' ~ taxon.menace) }} - {{taxon.niveau_application_menace}}" />
+                         title="{{ THREAT_LABELS.get(taxon.menace) }} - THREAT_LEVEL.get(taxon.niveau_application_menace)" />
                 {% endif %}
             {% endif %}
         </span>

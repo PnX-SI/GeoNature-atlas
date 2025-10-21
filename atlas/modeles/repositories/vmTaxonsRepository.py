@@ -67,7 +67,7 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
     page = int(params.get("page", 0))
     page_size = int(params.get("page_size", current_app.config["ITEMS_PER_PAGE"]))
     filter_taxon = params.get("filter_taxons", "")
-    group2_inpn = params.getlist("group2_inpn", [])
+    group2_inpn = params.getlist("group2_inpn")
     threatened = params.get("threatened", None)
     protected = params.get("protected", None)
     patrimonial = params.get("patrimonial", None)

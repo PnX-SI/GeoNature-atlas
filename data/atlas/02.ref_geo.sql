@@ -1,54 +1,56 @@
-
 -- +-----------------------------------------------------------------------------------------------+
 -- t_layer_territoire
 
 -- If t_layer_territoire is a table, drop it. If it is a view, raise a notice and continue.
 DO $$
 BEGIN
-	DROP TABLE atlas.t_layer_territoire;
+    DROP TABLE atlas.t_layer_territoire;
 EXCEPTION WHEN others THEN
-	RAISE NOTICE 'view atlas.t_layer_territoire does not exist';
+    RAISE NOTICE 'view atlas.t_layer_territoire does not exist';
 END$$;
 
 
 CREATE MATERIALIZED VIEW atlas.t_layer_territoire AS
-    WITH d AS (
+    WITH territory AS (
         SELECT
-            st_union(geom),
-            b.type_name
-        FROM ref_geo.l_areas AS l
-            JOIN ref_geo.bib_areas_types AS b
+            t.type_name,
+            st_union(a.geom) AS geom -- Don't use projected SRID like 4326
+        FROM ref_geo.l_areas AS a
+            JOIN ref_geo.bib_areas_types AS t
                 USING(id_type)
-        WHERE REPLACE(b.type_code, ' ', '_') = :'type_territoire'
-        GROUP BY b.type_name
+        WHERE REPLACE(t.type_code, ' ', '_') = :'type_territoire'
+            AND a."enable" = TRUE
+        GROUP BY t.type_name
     )
     SELECT
         1::int AS gid,
         type_name AS nom,
-        st_area(st_union)/10000 AS surf_ha,
-        st_area(st_union)/1000000 AS surf_km2,
-        ST_Perimeter(st_union)/1000 AS perim_km,
-        st_transform(st_union, 4326) AS  the_geom
-    FROM d;
-
-CREATE INDEX ON atlas.t_layer_territoire
-    USING gist (the_geom);
+        st_area(geom)/10000 AS surf_ha,
+        st_area(geom)/1000000 AS surf_km2,
+        ST_Perimeter(geom)/1000 AS perim_km,
+        st_transform(geom, 4326) AS the_geom -- Using ST_Transform to convert to 4326 is faster than using ST_Union on geom_4326.
+    FROM territory
+WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.t_layer_territoire
     USING btree (gid);
+
+CREATE INDEX ON atlas.t_layer_territoire
+    USING gist (the_geom);
 
 
 -- +-----------------------------------------------------------------------------------------------+
 -- vm_bib_areas_types
 CREATE MATERIALIZED VIEW atlas.vm_bib_areas_types AS
     SELECT
-        t.id_type,
-        t.type_code,
-        t.type_name,
-        t.type_desc
-    FROM ref_geo.bib_areas_types AS t;
+        id_type,
+        type_code,
+        type_name,
+        "type_desc"
+    FROM ref_geo.bib_areas_types
+WITH DATA;
 
-CREATE INDEX ON atlas.vm_bib_areas_types
+CREATE UNIQUE INDEX ON atlas.vm_bib_areas_types
     USING btree (id_type);
 
 CREATE INDEX ON atlas.vm_bib_areas_types
@@ -60,31 +62,29 @@ CREATE INDEX ON atlas.vm_bib_areas_types
 
 
 
-
 -- +-----------------------------------------------------------------------------------------------+
 -- l_areas
--- création de la vm l_areas à partir du ref_geo
 CREATE MATERIALIZED VIEW atlas.vm_l_areas AS
     SELECT
-        a.id_area AS id_area,
-        a.area_code AS area_code,
-        a.area_name AS area_name,
-        a.id_type AS id_type,
-        a.geom as geom_local,
-        st_transform(a.geom, 4326) AS the_geom,
-        st_asgeojson(st_transform(a.geom, 4326)) AS area_geojson,
-        a.description AS "description"
+        a.id_area,
+        a.area_code,
+        a.area_name,
+        a.id_type,
+        a.geom AS geom_local,
+        a.geom_4326 AS the_geom,
+        st_asgeojson(a.geom_4326) AS area_geojson,
+        a."description"
     FROM ref_geo.l_areas AS a
         JOIN ref_geo.bib_areas_types AS bat
             ON a.id_type = bat.id_type
-        JOIN atlas.t_layer_territoire AS layer
-            ON st_intersects(layer.the_geom, a.geom_4326)
+        JOIN atlas.t_layer_territoire AS t
+            ON st_intersects(t.the_geom, a.geom_4326)
     WHERE "enable" = TRUE
         AND (
             bat.type_code IN (SELECT * FROM string_to_table(:'type_code', ','))
             OR bat.type_code = :'type_maille'
-            OR a.id_type IN (SELECT id_area_type FROM synthese.cor_sensitivity_area_type)
-            OR bat.type_code = 'DEP' -- necessaire pour les statuts (protection, listes rouge)
+            OR a.id_type IN (SELECT id_area_type FROM gn_sensitivity.cor_sensitivity_area_type)
+            OR bat.type_code = 'DEP' -- Mandatory for status (protection, red lists)
         )
 WITH DATA;
 
@@ -95,8 +95,10 @@ CREATE INDEX ON atlas.vm_l_areas
     USING gist (the_geom);
 
 CREATE INDEX ON atlas.vm_l_areas
-    USING btree (area_code);
+    USING gist (geom_local);
 
+CREATE INDEX ON atlas.vm_l_areas
+    USING btree (area_code);
 
 -- +-----------------------------------------------------------------------------------------------+
 -- Function refresh_materialized_view_ref_geo()
@@ -110,8 +112,6 @@ $function$
         REFRESH MATERIALIZED VIEW atlas.t_layer_territoire ;
     END
 $function$ ;
-
-
 
 
 

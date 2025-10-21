@@ -315,6 +315,7 @@ function styleMaille(feature) {
     };
 }
 
+
 function generateLegendMaille() {
     // check if contour already exists
     if (L.DomUtil.get("contour-legend")) {
@@ -326,14 +327,19 @@ function generateLegendMaille() {
             labels = ["<strong> Nombre <br> d'observations </strong> <br>"];
 
         // loop through our density intervals and generate a label with a colored square for each interval
-        for (var i = 0; i < grades.length; i++) {
-            grade_n1 = grades[i + 1] ? `&ndash; ${grades[i + 1] } <br>` : "+"
+        grades.forEach((grade, i) => {
+            const  next = grades[i + 1]
+            // Ajout d'un plus si c'est la dernière valeur
+            const grade_n1 = next ? ` &ndash; ${next} <br>` : "+"
+            // Si les 2 valeurs sont identiques, alors on en affiche qu'une
+            const label = next === (grade+1) ? `${next}  <br>` :  `${grade+1}${grade_n1}`
             labels.push(
-                `<i style="background: ${getColor(grades[i] + 1)}"></i>
-            ${grades[i]}${grade_n1}
-        `
+                `<i style="background: ${getColor(grade + 1)}"></i>
+            ${label}
+            `
             );
-        }
+        })
+
         // Add id to get it above
         div.id = "contour-legend"
         div.innerHTML = labels.join("<br>");

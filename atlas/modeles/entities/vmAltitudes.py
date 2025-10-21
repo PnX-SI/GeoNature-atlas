@@ -1,6 +1,6 @@
 from itertools import pairwise
 from flask import current_app
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import mapped_column
 from sqlalchemy import Integer
 from atlas.env import db
 

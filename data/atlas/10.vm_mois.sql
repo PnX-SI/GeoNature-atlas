@@ -102,7 +102,8 @@ CREATE materialized view atlas.vm_mois AS
         LEFT JOIN _11 AS k ON k.cd_ref = o.cd_ref
         LEFT JOIN _12 AS l ON l.cd_ref = o.cd_ref
     WHERE o.cd_ref IS NOT NULL
-    ORDER BY o.cd_ref;
+    ORDER BY o.cd_ref
+WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_mois
     USING btree (cd_ref);

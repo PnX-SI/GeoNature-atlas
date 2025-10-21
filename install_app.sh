@@ -65,7 +65,7 @@ function main() {
     checkSuperuser
 
     #+-------------------------------------------------------------------------+
-    # Start install env
+    # Start install
     printInfo "${__script_name__} script started at: ${__fmt_time_start__}"
 
     createDefaultSettingsFile
@@ -190,7 +190,7 @@ function disableVenv() {
 
 function installNodePackages() {
     printMsg "Installing required Node packages..."
-    cd "${__root_dir__}/atlas/static/"
+    cd "${__static_dir__}/"
     nvm use
     npm install
     cd "${__root_dir__}/"
@@ -247,6 +247,14 @@ function updatePythonConfigFile() {
 
 function createCustomTemplates() {
     printMsg "Creating custom templates if they don't already exist..."
+
+    local tpl_dir_src="${__sample_dir__}/templates"
+    local tpl_dir_dst="${__custom_dir__}/templates"
+    if [[ ! -d "${tpl_dir_dst}/" ]]; then
+        printVerbose "Creating custom templates folder..."
+        mkdir -p "${tpl_dir_dst}/"
+    fi
+
     local custom_templates=(
         "bandeaulogoshome"
         "credits"
@@ -259,10 +267,9 @@ function createCustomTemplates() {
         "statuts"
     )
     local tpl_name
-    local tpl_dir="${__custom_dir__}/templates/"
     for tpl_name in "${custom_templates[@]}"; do
-        if [[ ! -f "${tpl_dir}/${tpl_name}.html" ]]; then
-            cp "${tpl_dir}/${tpl_name}.html.sample" "${tpl_dir}/${tpl_name}.html"
+        if [[ ! -f "${tpl_dir_dst}/${tpl_name}.html" ]]; then
+            cp "${tpl_dir_src}/${tpl_name}.html" "${tpl_dir_dst}/${tpl_name}.html"
             printVerbose ">${tpl_name}.html ${Gre}created"
         fi
     done
@@ -271,10 +278,11 @@ function createCustomTemplates() {
 function createCustomImages() {
     printMsg "Creating custom images if they don't already exists..."
 
-    local img_dir="${__custom_dir__}/images/"
-    if [[ ! -d "${img_dir}/" ]]; then
+    local img_dir_src="${__sample_dir__}/images"
+    local img_dir_dst="${__custom_dir__}/images"
+    if [[ ! -d "${img_dir_dst}/" ]]; then
         printVerbose "Creating custom images folder..."
-        mkdir -p "${img_dir}/"
+        mkdir -p "${img_dir_dst}/"
     fi
 
     local custom_images=(
@@ -287,8 +295,8 @@ function createCustomImages() {
     )
     local img_file
     for img_file in "${custom_images[@]}"; do
-        if [[ ! -f "${img_dir}/${img_file}" ]]; then
-            cp "${img_dir}/sample.${img_file}" "${img_dir}/${img_file}"
+        if [[ ! -f "${img_dir_dst}/${img_file}" ]]; then
+            cp "${img_dir_src}/${img_file}" "${img_dir_dst}/${img_file}"
             printVerbose ">${img_file} ${Gre}created"
         fi
     done
@@ -297,7 +305,7 @@ function createCustomImages() {
 function createOtherCustomFiles() {
     printMsg "Creating other custom files if they don't already exists..."
     local other_custom_files=(
-        "templates/robots.txt"
+        "robots.txt"
         "custom.css"
         "glossaire.json"
         "maps-custom.js"
@@ -306,9 +314,10 @@ function createOtherCustomFiles() {
     local file_path
     local full_path
     for file_path in "${other_custom_files[@]}"; do
-        full_path="${__custom_dir__}/${file_path}"
-        if [[ ! -f "${full_path}" ]]; then
-            cp "${full_path}.sample" "${full_path}"
+        full_path_src="${__sample_dir__}/${file_path}"
+        full_path_dst="${__custom_dir__}/${file_path}"
+        if [[ ! -f "${full_path_dst}" ]]; then
+            cp "${full_path_src}" "${full_path_dst}"
             printVerbose ">${file_path} ${Gre}created"
         fi
     done

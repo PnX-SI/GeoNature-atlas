@@ -115,6 +115,13 @@ if not current_app.config["AFFICHAGE_MAILLE"]:
 @api.route("/taxonList/liste/<cd_ref>", methods=["GET"])
 @api.route("/taxonList/group/<group_name>", methods=["GET"])
 def get_taxon_list(id_area=None, cd_ref=None, group_name=None):
+    """ 
+    return a list of taxon in html with various filters
+
+    Returns
+    -------
+    html
+    """
 
     list_taxon = vmTaxonsRepository.getListTaxon(
         id_area=id_area,
@@ -126,7 +133,6 @@ def get_taxon_list(id_area=None, cd_ref=None, group_name=None):
     return render_template(
         "templates/core/taxon.html",
         listTaxons=list_taxon,
-        DISPLAY_EYE_ON_LIST=True,
         id_area=id_area,
     )
 
@@ -136,6 +142,13 @@ def get_taxon_list(id_area=None, cd_ref=None, group_name=None):
 @api.route("/taxonListJson/liste/<cd_ref>", methods=["GET"])
 @api.route("/taxonListJson/group/<group_name>", methods=["GET"])
 def get_taxon_list_json(id_area=None, cd_ref=None, group_name=None):
+    """
+    return a list of taxon in JSON with various filters
+
+    Returns
+    -------
+    json
+    """
 
     list_taxon = vmTaxonsRepository.getListTaxon(
         id_area=id_area,

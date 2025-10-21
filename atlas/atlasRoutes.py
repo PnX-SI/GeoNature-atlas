@@ -342,9 +342,9 @@ def ficheRangTaxonomie(cd_ref=None):
     observers = vmObservationsRepository.getObservers(cd_ref)
     listTaxons = vmTaxonsRepository.getListTaxon(
         cd_ref=cd_ref,
-        params={
+        params=MultiDict({
             "page": 0
-        }
+        })
     )
 
     return render_template(
@@ -366,9 +366,9 @@ def ficheGroupe(groupe):
     observers = vmObservationsRepository.getGroupeObservers(groupe)
     listTaxons = vmTaxonsRepository.getListTaxon(
         group_name=groupe, 
-        params={
+        params=MultiDict({
             "page": 0
-        }    
+        }) 
     )
 
     return render_template(
@@ -435,7 +435,7 @@ def sitemap():
 
 @main.route("/robots.txt", methods=["GET"])
 def robots():
-    robots_template = render_template("static/custom/templates/robots.txt")
+    robots_template = render_template("static/custom/robots.txt")
     response = make_response(robots_template)
     response.headers["Content-type"] = "text/plain"
 
