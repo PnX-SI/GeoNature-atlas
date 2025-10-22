@@ -33,6 +33,7 @@ def searchEspece(cd_ref):
             func.coalesce(limit_obs.c.nb_obs, 0).label("nb_obs"),
             VmTaxons.patrimonial,
             VmTaxons.protection_stricte,
+            VmTaxons.menace,
         )
         .join(limit_obs, limit_obs.c.cd_ref == VmTaxref.cd_nom)
         .outerjoin(VmTaxons, VmTaxons.cd_ref == VmTaxref.cd_ref)
@@ -61,6 +62,7 @@ def searchEspece(cd_ref):
             "yearmax": r.yearmax,
             "nb_obs": r.nb_obs,
             "patrimonial": r.patrimonial,
+            "menace": r.menace,
             "protection_stricte": r.protection_stricte,
         }
 

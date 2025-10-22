@@ -31,11 +31,7 @@ ul.nav .nav-link.active {
     width: 100%;
 }
 
-.caractEspece {
-    width: 30px;
-    height: 30px;
-    margin-bottom: 10px;
-}
+
 
 #btn-taxons-fils {
     margin-top: 20px;
@@ -91,9 +87,6 @@ p.imgDescription.main {
     top: 4%;
 }
 
-#taxonName {
-    max-width: 85%;
-}
 
 #taxonomy {
     margin-top: 15px;
@@ -528,4 +521,9 @@ div#statut-bdc ul.statuts-list li {
 
 div#statut-bdc .img-statut-bdc {
     max-height: 1.3rem;
+}
+
+
+.logoPatri {
+    width: 50px;
 }

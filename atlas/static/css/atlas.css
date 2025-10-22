@@ -806,3 +806,7 @@ footer {
 #newSpecies .card {
   height: 100%;
 }
+
+.no-decoration {
+  text-decoration: none!important;
+}

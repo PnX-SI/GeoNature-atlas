@@ -31,60 +31,82 @@
         <div class="col-12" id="taxonIdentity">
         {% endif %}
             <div>
-                <div id="taxonName">
-                    <div>
+                <div class="d-flex flex-wrap justify-content-between">
+                    <div class="w-75">
                         {% if taxon.taxonSearch.nom_vern != None %}
-                            <h4 class="strong">{{ taxon.taxonSearch.nom_vern }}</h4>
+                            <h4 class="strong">{{ taxon.taxonSearch.nom_vern }}  </h4>
                             <h4><i>{{ taxon.taxonSearch.nom_complet_html|safe }}</i></h4>
                         {% else %}
                             <h4 class="strong"><i>{{ taxon.taxonSearch.nom_complet_html|safe }}</i></h4>
                         {% endif %}
                     </div>
-                    <a href="{{ url_for('main.ficheGroupe', groupe=taxon.taxonSearch.groupAccent ) }}">
-                        <img class="INPNgroup"
-                             src="{{ url_for('static', filename='images/picto_'+ taxon.taxonSearch.group2_inpn| replace(" ", "_")|urlencode+'.png') }}"
-                             alt="{{ taxon.taxonSearch.group2_inpn }}"
-                             data-bs-toggle="tooltip"
-                             title="{{ taxon.taxonSearch.group2_inpn }}"
-                             data-bs-placement="right">
-                    </a>
+                    <div class="d-flex flex-column align-items-end">
+                        <div class="mb-2">
+                            {% if taxon.taxonSearch.protection_stricte %}
+                                <a 
+                                    href="https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.taxonSearch.cd_ref }}/tab/statut" 
+                                    target="_blank"
+                                    class="no-decoration"
+                                    data-bs-toggle="tooltip"
+                                    title="{{ _('this.taxon.is-protected') }}"
+                                    data-bs-placement="right"
+                                >
+                                    <i class="fa-solid fa-shield fa-2xl" style="color: black;"></i>
+                
+                                </a>
+                            {% endif %}
+                            {% if taxon.taxonSearch.menace %}
+                                <a 
+                                    href="https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.taxonSearch.cd_ref }}/tab/statut" 
+                                    target="_blank"
+                                    class="no-decoration"
+                                    data-bs-toggle="tooltip"
+                                    title="{{ _('this.taxon.is.threatened') }}"
+                                    data-bs-placement="right"
+                                >
+                                    <i class="fa-solid fa-triangle-exclamation fa-2xl" style="color: black;"></i>
+                                </a>
+                                
+                            {% endif %}
+
+                            {% if configuration.DISPLAY_PATRIMONIALITE and taxon.taxonSearch.patrimonial in configuration.PATRIMONIALITE.config %}
+                                <img class="logoPatri"
+                                    src="{{ url_for('static', filename=configuration.PATRIMONIALITE.config[taxon.taxonSearch.patrimonial].icon) }}"
+                                    data-bs-toggle="tooltip"
+                                    title="{{ configuration.PATRIMONIALITE.config[taxon.taxonSearch.patrimonial].text }}"
+                                    data-bs-placement="right">
+                            {% endif %}
+                        </div>
+                        <div >
+                            <a href="{{ url_for('main.ficheGroupe', groupe=taxon.taxonSearch.groupAccent ) }}">
+                                <img class="INPNgroup"
+                                    src="{{ url_for('static', filename='images/picto_'+ taxon.taxonSearch.group2_inpn| replace(" ", "_")|urlencode+'.png') }}"
+                                    alt="{{ taxon.taxonSearch.group2_inpn }}"
+                                    data-bs-toggle="tooltip"
+                                    title="{{ taxon.taxonSearch.group2_inpn }}"
+                                    data-bs-placement="right">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="w-75">
+                        {% for taxon in taxonomyHierarchy %}
+                            {{ taxon.nom_rang }} :
+                            <i>
+                            {% if ( taxon.tri_rang >= configuration.LIMIT_FICHE_LISTE_HIERARCHY ) %}
+                                <a href="{{ url_for('main.ficheEspece', cd_nom=taxon.cd_ref) }}"><i>{{ taxon.lb_nom }}</i></a>
+                            {% else %}
+                                <a href="{{ url_for('main.ficheRangTaxonomie', cd_ref=taxon.cd_ref) }}"><i>{{ taxon.lb_nom }}</i></a>
+                            {% endif %}
+                            </i>
+                            {% if not loop.last %}
+                                <span class="fas fa-chevron-right"></span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
 
-                <div id="taxonomy">
-                    {% for taxon in taxonomyHierarchy %}
-                        {{ taxon.nom_rang }} :
-                        <i>
-                        {% if ( taxon.tri_rang >= configuration.LIMIT_FICHE_LISTE_HIERARCHY ) %}
-                            <a href="{{ url_for('main.ficheEspece', cd_nom=taxon.cd_ref) }}"><i>{{ taxon.lb_nom }}</i></a>
-                        {% else %}
-                            <a href="{{ url_for('main.ficheRangTaxonomie', cd_ref=taxon.cd_ref) }}"><i>{{ taxon.lb_nom }}</i></a>
-                        {% endif %}
-                        </i>
-                        {% if not loop.last %}
-                            <span class="fas fa-chevron-right"></span>
-                        {% endif %}
-                    {% endfor %}
-                </div>
 
                 <div id="statuts-and-links-container">
-                    {% if taxon.taxonSearch.protection_stricte %}
-                        <a href="https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.taxonSearch.cd_ref }}/tab/statut" target="_blank">
-                            <img class="caractEspece" width="100px"
-                                 src="{{ url_for('static', filename='images/logo_protection.png') }}"
-                                 data-bs-toggle="tooltip"
-                                 title="{{ _('this.taxon.has.a.protected.status') }}"
-                                 data-bs-placement="right">
-                        </a>
-                    {% endif %}
-
-                    {% if configuration.DISPLAY_PATRIMONIALITE and taxon.taxonSearch.patrimonial in configuration.PATRIMONIALITE.config %}
-                        <img class="caractEspece" width="130px"
-                             src="{{ url_for('static', filename=configuration.PATRIMONIALITE.config[taxon.taxonSearch.patrimonial].icon) }}"
-                             data-bs-toggle="tooltip"
-                             title="{{ configuration.PATRIMONIALITE.config[taxon.taxonSearch.patrimonial].text }}"
-                             data-bs-placement="right">
-                    {% endif %}
-
                     <div id="inpnLink">
                         <a href="https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.taxonSearch.cd_ref }}" target="_blank">
                             <img width="90px"
@@ -143,10 +165,10 @@
                                                         <td>
                                                             {% if child.protection != None %}
                                                                 <a href="https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.taxonSearch.cd_ref }}/tab/statut" target="_blank">
-                                                                    <img class="caractEspece" width="130px"
+                                                                    <img class="logoStatus"
                                                                          src="{{ url_for('static', filename='images/logo_protection.png') }}"
                                                                          data-bs-toggle="tooltip"
-                                                                         title="{{ _('this.taxon.has.a.protected.status') }}"
+                                                                         title="{{ _('this.taxon.is-protected') }}"
                                                                          data-bs-placement="right">
                                                                 </a>
                                                             {% endif %}
@@ -155,7 +177,7 @@
                                                     {% if configuration.DISPLAY_PATRIMONIALITE %}
                                                         <td>
                                                             {% if child.patrimonial in configuration.PATRIMONIALITE.config %}
-                                                                <img class="caractEspece" width="130px"
+                                                                <img class="logoPatri"
                                                                      src="{{ url_for('static', filename=configuration.PATRIMONIALITE.config[child.patrimonial].icon) }}"
                                                                      data-bs-toggle="tooltip"
                                                                      title="{{ configuration.PATRIMONIALITE.config[child.patrimonial].text }}"

@@ -455,7 +455,7 @@ msgstr "Municipality"
 #: templates/core/taxon.html:29 templates/organismSheet/topSpecies.html:58
 #: templates/speciesSheet/identityCard.html:75
 #: templates/speciesSheet/identityCard.html:149
-msgid "this.taxon.has.a.protected.status"
+msgid "this.taxon.is-protected"
 msgstr "This taxon has a protected status"
 
 #: templates/core/taxon.html:46 templates/core/taxon.html:47
