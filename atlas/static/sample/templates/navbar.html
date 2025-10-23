@@ -11,7 +11,7 @@
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.1.0/css/flag-icon.min.css" rel="stylesheet">
 
-<nav class="navbar navbar-expand-md navbar-light fixed-top bg-light" role="navigation">
+<nav class="navbar navbar-expand-md navbar-light fixed-top bg-light d-flex flex-row">
     <a class="navbar-brand" {% if configuration.CUSTOM_LOGO_LINK %}href="{{ configuration.CUSTOM_LOGO_LINK }}"{% else %}href="{{ url_for('main.index') }}"{% endif %}>
         <img class="logoStructure" src="{{ url_for('static', filename='custom/images/logo-structure.png') }}"/>
     </a>

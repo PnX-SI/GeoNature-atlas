@@ -19,7 +19,7 @@ CHANGELOG
 - Ajout de la notion d'espèce menacée et de graphiques associés sur les fiches territoire (@Orangetine) #669
 - Le statut d'espèce protégée n'est plus calculé à partir d'un attribut TaxHub mais à partir de la BDC statuts #135
 - Déplacement des fichiers de personnalisation ``sample`` dans le dossier ``static/sample/``. Le dossier ``static/custom/`` est à utiliser pour surcoucher les fichiers de ``static/sample/``.
-
+- Ajout d'un gestionnaire de couches cartographiques supplémentaires (WMS et geojson) dans le paramètre ``COUCHES_SIG`` (#572 @juggler31)
 
 A VERIFIER :
 

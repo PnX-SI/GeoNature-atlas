@@ -1,6 +1,7 @@
 from marshmallow import (
     Schema,
     fields,
+    validate,
     validates_schema,
     ValidationError,
     validates_schema,
@@ -125,6 +126,20 @@ class MapConfig(Schema):
     MASK_STYLE = fields.Dict(
         load_default={"fill": False, "fillColor": "#020202", "fillOpacity": 0.7}
     )
+
+class CouchesSigConfig(Schema):
+    name = fields.Str(required=True)
+    type = fields.Str(required=True, validate=validate.OneOf(["wms", "geojson"]))
+    url = fields.Str(required=True)
+    pages = fields.List(fields.Str(validate=validate.OneOf(["home", "specie", "area"])))
+    groups2_inpn = fields.List(fields.Str())
+    options = fields.Dict()
+    style = fields.Dict()
+
+    @validates_schema
+    def layer_required_for_wms_type(self, data, **kwargs):
+        if data["type"] == "wms" and not data.get("options").get("layers") and not data.get("options").get("layers") == 0:
+            raise ValidationError("'layer' is required for type 'wms'")
 
 
 class MediaTypeImportantLink(Schema):
@@ -285,6 +300,8 @@ class AtlasConfig(Schema):
         load_default="Les observations des agents ces 7 derniers jours |"
     )
     MAP = fields.Nested(MapConfig, load_default=dict())
+    DEFAULT_LEGEND_DISPLAY = fields.Boolean(load_default=True)
+    COUCHES_SIG = fields.List(fields.Nested(CouchesSigConfig), load_default=list())    
     # coupe le nom_vernaculaire à la 1ere virgule sur les fiches espèces
     SPLIT_NOM_VERN = fields.Boolean(load_default=True)
     INTERACTIVE_MAP_LIST = fields.Boolean(load_default=True)

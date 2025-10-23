@@ -200,5 +200,3 @@ htmlLegend =
     configuration.MAP.BORDERS_COLOR +
     ";'> &nbsp; &nbsp; &nbsp;</i> Limite du " +
     configuration.STRUCTURE;
-
-generateLegende(htmlLegend);

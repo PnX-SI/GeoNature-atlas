@@ -55,9 +55,7 @@ htmlLegendMaille = "<i style='border: solid 1px red;'> &nbsp; &nbsp; &nbsp;</i> 
 
 htmlLegendPoint = "<i style='border: solid "+configuration.MAP.BORDERS_WEIGHT+"px "+configuration.MAP.BORDERS_COLOR+";'> &nbsp; &nbsp; &nbsp;</i> Limite du "+configuration.STRUCTURE
 
-htmlLegend = configuration.AFFICHAGE_MAILLE ? htmlLegendMaille : htmlLegendPoint;
-
-generateLegende(htmlLegend);
+htmlLegend = configuration.AFFICHAGE_MAILLE || configuration.AFFICHAGE_TERRITOIRE_OBS ? htmlLegendMaille : htmlLegendPoint;
 
 // LOAD OBSERVATIONS if AFFICHAGE_DERNIERES_OBS
 if(configuration.AFFICHAGE_DERNIERES_OBS) {

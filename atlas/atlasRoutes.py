@@ -171,6 +171,7 @@ def index():
 
     return render_template(
         "templates/home/_main.html",
+        page_name="home",
         observations=observations,
         observations_mailles=observations_mailles,
         mostViewTaxon=mostViewTaxon,
@@ -240,6 +241,7 @@ def ficheEspece(cd_nom):
 
     return render_template(
         "templates/speciesSheet/_main.html",
+        page_name="specie",
         taxon=taxon,
         listeTaxonsSearch=[],
         observations=[],
@@ -325,6 +327,7 @@ def ficheArea(id_area):
     group2_inpn = vmTaxonsRepository.get_group_inpn("group2_inpn", id_area)
     return render_template(
         "templates/areaSheet/_main.html",
+        page_name="area",
         stats_area=stats_area,
         areaInfos=area,
         id_area=id_area,
