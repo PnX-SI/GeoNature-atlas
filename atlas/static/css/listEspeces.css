@@ -42,6 +42,12 @@ footer {
 
 #map {
     height: 600px;
+
+    section .leaflet-control-layers.leaflet-control {
+        margin-top: 0;
+        max-height: 60vh;
+        overflow-y: auto;
+    }
 }
 
 #clear {

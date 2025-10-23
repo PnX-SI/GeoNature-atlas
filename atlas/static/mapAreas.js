@@ -58,9 +58,6 @@ htmlLegend = configuration.AFFICHAGE_MAILLE
 
 // General Legend
 
-generateLegende(htmlLegend);
-
-
 
 function displayObs(id_area) {
     // si on est en mode point on rajoute une limite au nombre d'obs

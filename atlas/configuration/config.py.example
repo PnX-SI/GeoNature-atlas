@@ -170,6 +170,36 @@ AFFICHAGE_COUCHES_MAP = {
     }
 }
 
+# Ouvrir le widget par défaut de legende.
+DEFAULT_LEGEND_DISPLAY = True
+
+# Ajout des flux wms et geojson
+
+COUCHES_SIG = [
+    {
+        "name": "Nom de la couche wms",
+        "type": "wms",
+        "url": "url du serveur wms",
+        "options": {
+            "layers": 0,
+            "transparent": True,
+            "format": "image/png",
+            "attribution": ""
+        },
+        "pages": ["home", "area"],
+    },
+    {
+        "name": "test geojson name",
+        "type": "geojson",
+        "url": "Url du geojson",
+        "style": {
+            "color": "red",
+            "weight": 2,
+        },
+        "pages": ["home", "area"],
+    }
+]
+
 # Niveau de zoom à partir duquel on passe à l'affichage en point (si AFFICHAGE_MAILLE = False)
 ZOOM_LEVEL_POINT = 11
 

@@ -185,6 +185,11 @@ p.imgDescription.main {
 
 #map {
     height: 650px;
+
+    section .leaflet-control-layers.leaflet-control {
+        max-height: 650px;
+        overflow-y: auto;
+    }
 }
 
 #mapStat li {
