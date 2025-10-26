@@ -7,12 +7,12 @@ CHANGELOG
 
 🐛 **Corrections**
 
-* Gain de performance sur la vue `synthese.syntheseff` 
+* Gain de performance sur la vue `synthese.syntheseff` (#675 par @lpofredc)
+* Ajout de `st_makevalid(geom)` sur la création de la vue `atlas.t_layer_territoire` (#680 par @lpofredc)
 
 ⚠️ **Notes de version**
 
 - Exécutez le script SQL de mise à jour de la BDD : https://github.com/PnX-SI/GeoNature-atlas/blob/master/data/update/update_1.7.2to1.7.3.sql
-
 
 1.7.2 (2025-09-17)
 ------------------
