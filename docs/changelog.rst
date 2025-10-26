@@ -62,7 +62,8 @@ Vous pouvez supprimer les paramètres suivants du fichier ``settings.ini`` :
 
 🐛 **Corrections**
 
-* Gain de performance sur la vue `synthese.syntheseff` 
+* Gain de performance sur la vue `synthese.syntheseff` (#675 par @lpofredc)
+* Ajout de `st_makevalid(geom)` sur la création de la vue `atlas.t_layer_territoire` (#680 par @lpofredc)
 
 ⚠️ **Notes de version**
 
