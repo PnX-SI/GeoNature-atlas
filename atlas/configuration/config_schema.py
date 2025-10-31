@@ -131,15 +131,16 @@ class CouchesSigConfig(Schema):
     name = fields.Str(required=True)
     type = fields.Str(required=True, validate=validate.OneOf(["wms", "geojson"]))
     url = fields.Str(required=True)
-    pages = fields.List(fields.Str(validate=validate.OneOf(["home", "specie", "area"])))
+    pages = fields.List(fields.Str(validate=validate.OneOf(["index", "ficheEspece", "area"])))
     groups2_inpn = fields.List(fields.Str())
     options = fields.Dict()
     style = fields.Dict()
+    wms_version = fields.String()
 
     @validates_schema
     def layer_required_for_wms_type(self, data, **kwargs):
-        if data["type"] == "wms" and not data.get("options").get("layers") and not data.get("options").get("layers") == 0:
-            raise ValidationError("'layer' is required for type 'wms'")
+        if data["type"] == "wms" and (not data.get("options").get("layers") or not data.get("options").get("wms_version")):
+            raise ValidationError("'layers' and 'wms_version' are required for type 'wms'")
 
 
 class MediaTypeImportantLink(Schema):

@@ -100,7 +100,7 @@
                                         <div class="type_name">{{ com.type_name }} :</div>
                                     {% endif %}
                                 {% endif %}
-                                <a href="{{ url_for('main.ficheArea', id_area = com.id_area) }}">{{ com.area_name }}</a>
+                                <a href="{{ url_for('main.area', id_area = com.id_area) }}">{{ com.area_name }}</a>
                                 {% if not loop.last %} - {% endif %}
                             {% endfor %}
                         {% endfor %}
