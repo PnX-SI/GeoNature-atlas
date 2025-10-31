@@ -42,7 +42,7 @@ Le `form` devient :
 La fonction `pointDisplayOptionsFicheCommuneHome` devient `customizeMarkerStyle`
 
 ``presentation.html``
-Les paramètres de l'url de la fiche territoire était ``url_for('main.ficheCommune', insee=05090)`` et devient ``url_for('main.ficheArea', id_area=XXXXXX)``
+Les paramètres de l'url de la fiche territoire était ``url_for('main.ficheCommune', insee=05090)`` et devient ``url_for('main.area', id_area=XXXXXX)``
 
 - Ajout de statistique sur la fiche de "zoning" (#540 @juggler31)
 

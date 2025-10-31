@@ -75,7 +75,7 @@ function addExternalOverlays() {
             overlays[elem.name] = L.tileLayer.wms(elem.url, elem.options);
             overlays[elem.name].addEventListener('add', function(event) {
                 // Add legend item into good place
-                legendUrl = `${event.sourceTarget._url}?request=GetLegendGraphic&version=1.3.0&format=image/png&layer=${event.sourceTarget.wmsParams.layers}`;
+                legendUrl = `${event.sourceTarget._url}?request=GetLegendGraphic&version=${elem.wms_version}&format=image/png&layer=${event.sourceTarget.wmsParams.layers}`;
                 let div = L.DomUtil.create('div', 'legend-item');
                 div.setAttribute('data-name', elem.name);
                 div.innerHTML = `

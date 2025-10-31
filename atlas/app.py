@@ -75,6 +75,7 @@ def create_app():
                 translations=get_tranlated_labels(),
                 now=now,
                 timedelta=timedelta,
+                page_name=request.endpoint.split(".")[1]
             )
 
         @app.template_filter("pretty")

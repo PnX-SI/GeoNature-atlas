@@ -171,7 +171,6 @@ def index():
 
     return render_template(
         "templates/home/_main.html",
-        page_name="home",
         observations=observations,
         observations_mailles=observations_mailles,
         mostViewTaxon=mostViewTaxon,
@@ -241,7 +240,6 @@ def ficheEspece(cd_nom):
 
     return render_template(
         "templates/speciesSheet/_main.html",
-        page_name="specie",
         taxon=taxon,
         listeTaxonsSearch=[],
         observations=[],
@@ -315,7 +313,7 @@ def _make_groupes_statuts(statuts):
 
 @main.route("/<lang_code>/area/<int:id_area>", methods=["GET", "POST"])
 @main.route("/area/<int:id_area>", methods=["GET", "POST"])
-def ficheArea(id_area):
+def area(id_area):
     area = vmAreasRepository.getAreaFromIdArea(id_area)
     stats_area = vmAreasRepository.getStatsByArea(id_area)
     listTaxons = vmTaxonsRepository.getListTaxon(
@@ -327,7 +325,6 @@ def ficheArea(id_area):
     group2_inpn = vmTaxonsRepository.get_group_inpn("group2_inpn", id_area)
     return render_template(
         "templates/areaSheet/_main.html",
-        page_name="area",
         stats_area=stats_area,
         areaInfos=area,
         id_area=id_area,
@@ -424,7 +421,7 @@ def sitemap():
 
     municipalities = db.session.query(vmAreas.VmAreas).order_by(vmAreas.VmAreas.id_area).all()
     for municipalitie in municipalities:
-        url = url_root + url_for("main.ficheArea", id_area=municipalitie.id_area)
+        url = url_root + url_for("main.area", id_area=municipalitie.id_area)
         modified_time = ten_days_ago
         pages.append([url, modified_time])
 

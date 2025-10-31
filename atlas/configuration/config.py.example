@@ -184,9 +184,10 @@ COUCHES_SIG = [
             "layers": 0,
             "transparent": True,
             "format": "image/png",
-            "attribution": ""
+            "attribution": "",
+            "wms_version": "1.3.0"
         },
-        "pages": ["home", "area"],
+        "pages": ["index", "area"], // le nom des pages est celui du nom des fonction python des routes (voir atlasRoutes.py)
     },
     {
         "name": "test geojson name",
@@ -196,7 +197,7 @@ COUCHES_SIG = [
             "color": "red",
             "weight": 2,
         },
-        "pages": ["home", "area"],
+        "pages": ["index", "area"],
     }
 ]
 
