@@ -14,8 +14,9 @@ function generateHtmlPhoto(photos, redimentionnement, taxhub_url) {
 
     if (clearHtml) {
         htmlPhoto = "";
-        if (photos.length == 0) {
-            htmlPhoto = "<h3><span style='padding:10px;'>Aucun résultat pour cette recherche</span></h3>";
+        if (photos.length === 0) {
+            htmlPhoto =
+                "<h3><span style='padding:10px;'>Aucun résultat pour cette recherche</span></h3>";
         }
     } else {
         htmlPhoto = $("#insertPhotos").html();
@@ -38,13 +39,15 @@ function generateHtmlPhoto(photos, redimentionnement, taxhub_url) {
                     photo.id_media +
                     "?h=500";
             }
-            let subject = `${stripHtml(photo.title)}<br/>`;
-            let description = photo.description
+            const subject = `${stripHtml(photo.title)}<br/>`;
+            const description = photo.description
                 ? `${stripHtml(photo.description)}<br/>`
                 : "";
-            let author = photo.author ? `&copy; ${stripHtml(photo.author)} - ` : "";
-            let licence = `${stripHtml(photo.licence)} ${stripHtml(photo.source)}`;
-            let datatitle = `${subject} ${description} ${author} ${licence}`;
+            const author = photo.author
+                ? `&copy; ${stripHtml(photo.author)} - `
+                : "";
+            const licence = `${stripHtml(photo.licence)} ${stripHtml(photo.source)}`;
+            const datatitle = `${subject} ${description} ${author} ${licence}`;
             onePhoto = `
                 <div class="col-lg-3 col-md-4 col-sm-6 col-12" style="padding-left:0px; padding-right: 0px">
                         <a
@@ -84,7 +87,7 @@ function scrollEvent(photos) {
             generateHtmlPhoto(
                 photos,
                 configuration.REDIMENSIONNEMENT_IMAGE,
-                configuration.TAXHUB_URL
+                configuration.TAXHUB_URL,
             );
         }
     });
@@ -96,7 +99,9 @@ function orderPhotosEvent(photos) {
         $("#searchPhotos").val("");
 
         span = $("#order-sort");
-        $("#order-picto").toggleClass("fas fa-sort").toggleClass("fas fa-random");
+        $("#order-picto")
+            .toggleClass("fas fa-sort")
+            .toggleClass("fas fa-random");
         $(span).attr("id", "order-random");
         $(span).attr("title", "Trier de manière aléatoire");
         sortedPhotos = photos.slice().sort(function (a, b) {
@@ -110,7 +115,7 @@ function orderPhotosEvent(photos) {
         generateHtmlPhoto(
             sortedPhotos,
             configuration.REDIMENSIONNEMENT_IMAGE,
-            configuration.TAXHUB_URL
+            configuration.TAXHUB_URL,
         );
         $("#insertPhotos").off("scroll");
         scrollEvent(sortedPhotos);
@@ -122,18 +127,17 @@ function sufflePhotosEvent(photos) {
         $("#searchPhotos").val("");
 
         span = $("#order-random");
-        $("#order-picto").toggleClass("fas fa-sort").toggleClass("fas fa-random");
+        $("#order-picto")
+            .toggleClass("fas fa-sort")
+            .toggleClass("fas fa-random");
         $(span).attr("id", "order-sort");
-        $(span).attr(
-            "title",
-            "Trier les photos par nombre d'observations"
-        );
+        $(span).attr("title", "Trier les photos par nombre d'observations");
         clearHtml = true;
         compteurJson = 0;
         generateHtmlPhoto(
             photos,
             configuration.REDIMENSIONNEMENT_IMAGE,
-            configuration.TAXHUB_URL
+            configuration.TAXHUB_URL,
         );
         $("#insertPhotos").off("scroll");
         scrollEvent(photos);
@@ -146,12 +150,12 @@ jQuery(function () {
         wrapAround: true,
     });
     $("#lightbox .lb-next").after(
-        '<a class="lb-link" href="#"> Fiche espèce </a>'
+        '<a class="lb-link" href="#"> Fiche espèce </a>',
     );
 
     $("#lightbox .lb-link").on("click", function () {
-        let cdRef = $("#lightbox .lb-image").attr("alt");
-        let url = `${configuration.URL_APPLICATION}/espece/${cdRef}`;
+        const cdRef = $("#lightbox .lb-image").attr("alt");
+        const url = `${configuration.URL_APPLICATION}/espece/${cdRef}`;
         $(this).attr("href", url);
         location.href = url;
     });
@@ -168,7 +172,7 @@ jQuery(function () {
         generateHtmlPhoto(
             photos,
             configuration.REDIMENSIONNEMENT_IMAGE,
-            configuration.TAXHUB_URL
+            configuration.TAXHUB_URL,
         );
         $("#nbPhotos").html(photos.length + " photos");
         scrollEvent(photos);
@@ -186,7 +190,7 @@ jQuery(function () {
             generateHtmlPhoto(
                 photos,
                 configuration.REDIMENSIONNEMENT_IMAGE,
-                configuration.TAXHUB_URL
+                configuration.TAXHUB_URL,
             );
             $("#group").html("");
             $("#nbPhotos").html(photos.length + " photos");
@@ -227,7 +231,7 @@ jQuery(function () {
             generateHtmlPhoto(
                 filterJsonPhoto,
                 configuration.REDIMENSIONNEMENT_IMAGE,
-                configuration.TAXHUB_URL
+                configuration.TAXHUB_URL,
             );
             $("#nbPhotos").html(filterJsonPhoto.length + " photos");
             scrollEvent(filterJsonPhoto);
@@ -241,7 +245,7 @@ $(".INPNgroup").on("click", function () {
     $("#searchPhotos").val("");
     compteurJson = 0;
     clearHtml = true;
-    let group = $(this).attr("alt");
+    const group = $(this).attr("alt");
 
     // Débrancher scroll & events précédents
     $("#insertPhotos").off("scroll");
@@ -265,7 +269,7 @@ $(".INPNgroup").on("click", function () {
         generateHtmlPhoto(
             photos,
             configuration.REDIMENSIONNEMENT_IMAGE,
-            configuration.TAXHUB_URL
+            configuration.TAXHUB_URL,
         );
 
         $("#group").html("(" + group + ")");
@@ -282,7 +286,7 @@ $(".INPNgroup").on("click", function () {
 });
 
 function stripHtml(html) {
-    let tmp = document.createElement("DIV");
+    const tmp = document.createElement("DIV");
     tmp.innerHTML = html;
     return tmp.textContent || tmp.innerText || "";
 }

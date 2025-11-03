@@ -65,7 +65,7 @@ def getAreaFromIdArea(id_area):
     area_dict = {
         "areaName": area.area_name,
         "areaID": str(area.id_area),
-        "areaCode" : str(area.area_code),
+        "areaCode": str(area.area_code),
         "areaGeoJson": ast.literal_eval(area.area_geojson),
         "typeName": area.type_name,
         "description": area.description,
@@ -73,15 +73,14 @@ def getAreaFromIdArea(id_area):
     }
 
     subquery = (
-        db.session.query(VmCorAreas.id_area_parent).filter(VmCorAreas.id_area == id_area).subquery()
+        db.session.query(VmCorAreas.id_area_parent)
+        .filter(VmCorAreas.id_area == id_area)
+        .subquery()
     )
 
     areas_parent = (
         db.session.query(
-            VmAreas.area_name, 
-            VmAreas.id_area,
-            VmAreas.area_code, 
-            VmBibAreasTypes.type_name
+            VmAreas.area_name, VmAreas.id_area, VmAreas.area_code, VmBibAreasTypes.type_name
         )
         .join(subquery, subquery.c.id_area_parent == VmAreas.id_area)
         .join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type)

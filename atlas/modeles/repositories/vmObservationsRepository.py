@@ -96,7 +96,6 @@ def getObservationsChilds(params: {}):
     return FeatureCollection(features)
 
 
-
 def observersParser(req):
     setObs = set()
     tabObs = list()

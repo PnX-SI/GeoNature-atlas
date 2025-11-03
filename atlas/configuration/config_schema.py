@@ -127,6 +127,7 @@ class MapConfig(Schema):
         load_default={"fill": False, "fillColor": "#020202", "fillOpacity": 0.7}
     )
 
+
 class CouchesSigConfig(Schema):
     name = fields.Str(required=True)
     type = fields.Str(required=True, validate=validate.OneOf(["wms", "geojson"]))
@@ -139,7 +140,9 @@ class CouchesSigConfig(Schema):
 
     @validates_schema
     def layer_required_for_wms_type(self, data, **kwargs):
-        if data["type"] == "wms" and (not data.get("options").get("layers") or not data.get("options").get("wms_version")):
+        if data["type"] == "wms" and (
+            not data.get("options").get("layers") or not data.get("options").get("wms_version")
+        ):
             raise ValidationError("'layers' and 'wms_version' are required for type 'wms'")
 
 
@@ -302,7 +305,7 @@ class AtlasConfig(Schema):
     )
     MAP = fields.Nested(MapConfig, load_default=dict())
     DEFAULT_LEGEND_DISPLAY = fields.Boolean(load_default=True)
-    COUCHES_SIG = fields.List(fields.Nested(CouchesSigConfig), load_default=list())    
+    COUCHES_SIG = fields.List(fields.Nested(CouchesSigConfig), load_default=list())
     # coupe le nom_vernaculaire à la 1ere virgule sur les fiches espèces
     SPLIT_NOM_VERN = fields.Boolean(load_default=True)
     INTERACTIVE_MAP_LIST = fields.Boolean(load_default=True)

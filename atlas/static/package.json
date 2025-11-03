@@ -2,11 +2,14 @@
   "name": "geonature-atlas",
   "version": "2.0.0",
   "main": "main.js",
+  "type": "module",
   "directories": {
     "lib": "lib"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint",
+    "format": "eslint --fix"
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +20,7 @@
     "bootstrap-slider": "^7.1.0",
     "chart.js": "^4.4.7",
     "debounce": "^2.2.0",
+    "esbuild": "^0.25.12",
     "eve-raphael": "^0.5.0",
     "glossarizer": "^1.5.2",
     "jquery": "^3.6.0",
@@ -37,6 +41,9 @@
     "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
-    "jest": "^27.0.6"
+    "eslint": "^9.39.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "3.6.2"
   }
 }

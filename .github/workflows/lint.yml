@@ -6,7 +6,37 @@ jobs:
   backend:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
-          line-length: 99
+
+      - name: Backend code formatting check (Black)
+        uses: psf/black@stable
+        with:
+          use_pyproject: true
+
+  frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Use setup-node
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: './atlas/static/.nvmrc'
+          # cache: 'npm'
+          # cache-dependency-path: './atlas/static/package-lock.json'
+
+      - name: Install dependencies
+        run: node --version
+        # working-directory: atlas
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./atlas/static
+
+      - name: Run check with ESLint
+        run: npm run lint
+        working-directory: ./atlas/static

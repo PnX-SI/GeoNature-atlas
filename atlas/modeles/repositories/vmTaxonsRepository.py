@@ -212,7 +212,6 @@ def getAllINPNgroup():
     return groupList
 
 
-
 def get_group_inpn(group, id_area=None):
     column = getattr(VmTaxons, group)
     req = select(distinct(column)).select_from(VmTaxons)
