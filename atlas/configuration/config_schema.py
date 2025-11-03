@@ -139,7 +139,7 @@ class CouchesSigConfig(Schema):
 
     @validates_schema
     def layer_required_for_wms_type(self, data, **kwargs):
-        if data["type"] == "wms" and (not data.get("options").get("layers") or not data.get("options").get("wms_version")):
+        if data["type"] == "wms" and ((not data.get("options").get("layers") and not data.get("options").get("layers") == 0) or not data.get("options").get("wms_version")):
             raise ValidationError("'layers' and 'wms_version' are required for type 'wms'")
 
 
