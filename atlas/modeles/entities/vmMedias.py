@@ -21,4 +21,3 @@ class VmMedias(db.Model):
     id_type: Mapped[int] = mapped_column()
     licence: Mapped[str] = mapped_column(String(100))
     source: Mapped[str] = mapped_column(String(25))
-

@@ -87,7 +87,7 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
             VmCorAreaSynthese,
             (VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
             & (VmCorAreaSynthese.id_area == id_area)
-            & (VmCorAreaSynthese.is_valid_for_display.is_(True))
+            & (VmCorAreaSynthese.is_valid_for_display.is_(True)),
         )
     q_stats_taxons = q_stats_taxons.subquery()
 
@@ -211,7 +211,6 @@ def getAllINPNgroup():
         temp = {"group": utils.deleteAccent(r.group2_inpn), "groupAccent": r.group2_inpn}
         groupList.append(temp)
     return groupList
-
 
 
 def get_group_inpn(group, id_area=None):

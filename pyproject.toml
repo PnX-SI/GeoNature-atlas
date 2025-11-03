@@ -32,6 +32,11 @@ dependencies = { file = "requirements.in" }
 where = ["."]
 exclude = ["docs*", "tests*"]
 
+[project.optional-dependencies]
+dev = [
+  "black>=23.1.0"
+]
+
 [tool.black]
 line-length = 99
 exclude ='''
@@ -51,6 +56,7 @@ exclude ='''
     | venv
     | dependencies
   )/
+)
 '''
 
 [tool.tox]

@@ -141,8 +141,9 @@ class CouchesSigConfig(Schema):
     @validates_schema
     def layer_required_for_wms_type(self, data, **kwargs):
         if data["type"] == "wms" and (
-                (not data.get("options").get("layers") and not data.get("options").get("layers") == 0) or not data.get(
-            "options").get("wms_version")):
+            (not data.get("options").get("layers") and not data.get("options").get("layers") == 0)
+            or not data.get("options").get("wms_version")
+        ):
             raise ValidationError("'layers' and 'wms_version' are required for type 'wms'")
 
 
@@ -183,11 +184,7 @@ class AtlasConfig(Schema):
     AFFICHAGE_GRAPH_PHENOLOGIE = fields.Boolean(load_default=True)
     SEARCH_NOMINATIM = fields.Boolean(load_default=False)
     GEOCODING_QUERY_PARAMS = fields.Dict(
-        load_default={
-            "countrycodes": "FR",
-            "viewbox": "-180,90,180,-90",
-            "bounded": 1
-        }
+        load_default={"countrycodes": "FR", "viewbox": "-180,90,180,-90", "bounded": 1}
     )
     TYPE_TERRITOIRE_SHEET = fields.List(fields.String(), load_default=["COM"])
     AREA_PARENTS_TYPE = fields.List(fields.String(), load_default=[])

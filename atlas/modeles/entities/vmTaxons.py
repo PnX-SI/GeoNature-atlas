@@ -46,10 +46,10 @@ class VmTaxons(db.Model):
     main_media: Mapped[VmMedias] = relationship(
         VmMedias,
         primaryjoin=and_(
-            VmMedias.cd_ref == cd_ref, 
-            VmMedias.id_type == current_app.config["ATTR_MAIN_PHOTO"]
+            VmMedias.cd_ref == cd_ref, VmMedias.id_type == current_app.config["ATTR_MAIN_PHOTO"]
         ),
     )
+
     def as_dict(self, with_main_media=False):
         d = {
             "cd_ref": self.cd_ref,
@@ -63,13 +63,13 @@ class VmTaxons(db.Model):
             "yearmax": self.yearmax,
             "nb_obs": self.nb_obs,
             "group2_inpn": utils.deleteAccent(self.group2_inpn),
-            "group3_inpn": utils.deleteAccent(self.group3_inpn)
+            "group3_inpn": utils.deleteAccent(self.group3_inpn),
         }
         if with_main_media:
             d["media"] = self.get_main_media()
         return d
 
-    def get_main_media(self, size=(80,80)):
+    def get_main_media(self, size=(80, 80)):
         """Get main image of default logo
 
         Parameters
@@ -83,14 +83,14 @@ class VmTaxons(db.Model):
             The path or url of the main image if exist, the logo of the group INPN if not
         """
         default_media = url_for(
-            'static',
-            filename=f"images/picto_{utils.deleteAccent(self.group2_inpn).replace(' ', '_') }.png"
+            "static",
+            filename=f"images/picto_{utils.deleteAccent(self.group2_inpn).replace(' ', '_') }.png",
         )
         if self.main_media:
             if current_app.config["REDIMENSIONNEMENT_IMAGE"]:
                 height, width = size
                 return urljoin(
-                    current_app.config['TAXHUB_URL'],
+                    current_app.config["TAXHUB_URL"],
                     f"api/tmedias/thumbnail/{self.main_media.id_media}?h={height}&width={width}",
                 )
             else:
@@ -102,7 +102,6 @@ class VmTaxons(db.Model):
                     return default_media
         else:
             return default_media
-
 
     def shorten_name(self):
         shorten_nom_vern = self.nom_vern.split(",")[0] if self.nom_vern else ""
