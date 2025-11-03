@@ -115,12 +115,7 @@ def index():
     listTaxons = []
     if current_app.config["AFFICHAGE_TERRITOIRE_OBS"]:
         nb_taxons = vmTaxonsRepository.get_nb_taxons()
-        listTaxons = vmTaxonsRepository.getListTaxon(
-            params={
-                "page": 0
-            }
-        )
-
+        listTaxons = vmTaxonsRepository.getListTaxon(params={"page": 0})
 
     # si AFFICHAGE_TERRITOIRE_OBS on charge les données en AJAX
     # si AFFICHAGE_DERNIERES_OBS = False, on ne charge pas les obs
@@ -131,19 +126,19 @@ def index():
         observations = []
     observations_mailles = None
     if current_app.config["AFFICHAGE_DERNIERES_OBS"]:
-        # on charge les observations point meme si on est en mode maille pour afficher 
+        # on charge les observations point meme si on est en mode maille pour afficher
         # la liste des dernières obs
         observations = vmObservationsRepository.getObservationsChilds(
             params={
                 "last_obs": str(current_app.config["NB_DAY_LAST_OBS"]) + " day",
-                "fields": "taxons,medias"
+                "fields": "taxons,medias",
             },
         )
         if current_app.config["AFFICHAGE_MAILLE"]:
             observations_mailles = vmObservationsMaillesRepository.getObservationsMaillesChilds(
                 params={
                     "last_obs": str(current_app.config["NB_DAY_LAST_OBS"]) + " day",
-                    "fields": "taxons,ids_obs"
+                    "fields": "taxons,ids_obs",
                 }
             )
 
@@ -179,7 +174,7 @@ def index():
         personal_data=personal_data,
         group2_inpn=group2_inpn,
         listTaxons=listTaxons,
-        nb_taxons=nb_taxons
+        nb_taxons=nb_taxons,
     )
 
 
@@ -316,12 +311,7 @@ def _make_groupes_statuts(statuts):
 def area(id_area):
     area = vmAreasRepository.getAreaFromIdArea(id_area)
     stats_area = vmAreasRepository.getStatsByArea(id_area)
-    listTaxons = vmTaxonsRepository.getListTaxon(
-        id_area=id_area,
-        params=MultiDict({
-            "page": 0
-        })
-    )
+    listTaxons = vmTaxonsRepository.getListTaxon(id_area=id_area, params=MultiDict({"page": 0}))
     group2_inpn = vmTaxonsRepository.get_group_inpn("group2_inpn", id_area)
     return render_template(
         "templates/areaSheet/_main.html",
@@ -329,7 +319,7 @@ def area(id_area):
         areaInfos=area,
         id_area=id_area,
         listTaxons=listTaxons,
-        group2_inpn=group2_inpn
+        group2_inpn=group2_inpn,
     )
 
 
@@ -340,12 +330,7 @@ def ficheRangTaxonomie(cd_ref=None):
     referenciel = vmTaxrefRepository.getInfoFromCd_ref(cd_ref)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(cd_ref)
     observers = vmObservationsRepository.getObservers(cd_ref)
-    listTaxons = vmTaxonsRepository.getListTaxon(
-        cd_ref=cd_ref,
-        params=MultiDict({
-            "page": 0
-        })
-    )
+    listTaxons = vmTaxonsRepository.getListTaxon(cd_ref=cd_ref, params=MultiDict({"page": 0}))
 
     return render_template(
         "templates/taxoRankSheet/_main.html",
@@ -354,7 +339,7 @@ def ficheRangTaxonomie(cd_ref=None):
         referenciel=referenciel,
         taxonomyHierarchy=taxonomyHierarchy,
         observers=observers,
-        cd_ref=cd_ref
+        cd_ref=cd_ref,
     )
 
 
@@ -364,12 +349,7 @@ def ficheGroupe(groupe):
     groups = vmTaxonsRepository.getAllINPNgroup()
     nb_taxons = vmTaxonsRepository.get_nb_taxons(group_name=groupe)
     observers = vmObservationsRepository.getGroupeObservers(groupe)
-    listTaxons = vmTaxonsRepository.getListTaxon(
-        group_name=groupe, 
-        params=MultiDict({
-            "page": 0
-        }) 
-    )
+    listTaxons = vmTaxonsRepository.getListTaxon(group_name=groupe, params=MultiDict({"page": 0}))
 
     return render_template(
         "templates/groupSheet/_main.html",

@@ -37,7 +37,7 @@ def getObservationsMaillesChilds(params={}):
         - last_obs_year : l'année à laquel la dernière observation a été faite dans la maille
         - obs_nbr : le nombre d'observation dans la maille
         - taxons (optionnel: si fields=taxons) : une liste des taxons dans la maille
-        - ids_obs (optionnel si fields=ids_obs): la liste des id_observations de la maille 
+        - ids_obs (optionnel si fields=ids_obs): la liste des id_observations de la maille
     Parameters
     ----------
     filters : dict, optional
@@ -70,7 +70,7 @@ def getObservationsMaillesChilds(params={}):
         VmAreas.area_geojson,
         VMCorMailleObservation.type_code,
         func.max(func.date_part("year", VmObservations.dateobs)).label("last_obs_year"),
-        func.count(VmObservations.id_observation).label("obs_nbr")
+        func.count(VmObservations.id_observation).label("obs_nbr"),
     ]
     if "taxons" in fields:
         query_select.append(
@@ -90,9 +90,7 @@ def getObservationsMaillesChilds(params={}):
             ).label("taxons"),
         )
     if "ids_obs" in fields:
-        query_select.append(
-            func.array_agg(VmObservations.id_observation).label("ids_obs")
-        )
+        query_select.append(func.array_agg(VmObservations.id_observation).label("ids_obs"))
     query = (
         select(*query_select)
         .select_from(VmObservations)
@@ -144,10 +142,9 @@ def getObservationsMaillesChilds(params={}):
                     "nb_observations": int(o.obs_nbr),
                     "last_observation": o.last_obs_year,
                     "taxons": o.taxons if "taxons" in fields else None,
-                    "ids_obs": o.ids_obs if "ids_obs" in fields else None
+                    "ids_obs": o.ids_obs if "ids_obs" in fields else None,
                 },
             )
             for o in db.session.execute(query).all()
         ]
     )
-

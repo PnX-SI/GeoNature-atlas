@@ -4,8 +4,6 @@ var map = generateMap(zoomHomeButton);
 if (configuration.MAP.ENABLE_SLIDER) {
     generateSliderOnMap();
 }
-var legend = L.control({position: "bottomright"});
-
 // Layer display on window ready
 
 /*GLOBAL VARIABLE*/
@@ -14,9 +12,8 @@ var legend = L.control({position: "bottomright"});
 var currentLayer;
 
 // Current observation geoJson:  type object
+// eslint-disable-next-line no-unused-vars
 var myGeoJson;
-
-var compteurLegend = 0; // counter to not put the legend each time
 
 // global variable to see if the slider has been touch
 var sliderTouch = false;
@@ -26,7 +23,9 @@ var observationsMaille;
 var observationsPoint;
 $.ajax({
     url:
-        configuration.URL_APPLICATION + "/api/observationsMailleAndPoint/" + cd_ref,
+        configuration.URL_APPLICATION +
+        "/api/observationsMailleAndPoint/" +
+        cd_ref,
     dataType: "json",
 }).done(function (observations) {
     $("#loaderSpinner").hide();
@@ -40,7 +39,12 @@ $.ajax({
         mailleBoolean = true;
     } else {
         // affichage des points sans filtrer par annes pour gagner en perf
-        displayMarkerLayerFicheEspece(observationsPoint, null, null, sliderTouch);
+        displayMarkerLayerFicheEspece(
+            observationsPoint,
+            null,
+            null,
+            sliderTouch,
+        );
     }
     if (mailleBoolean) {
         // zoom event
@@ -68,7 +72,7 @@ $.ajax({
                         observationsPoint,
                         yearMin,
                         yearMax,
-                        sliderTouch
+                        sliderTouch,
                     );
                 } else {
                     // on recharge que les mailles en AJAX - filtrée par années
@@ -76,23 +80,22 @@ $.ajax({
                         url:
                             configuration.URL_APPLICATION +
                             "/api/observationsMaille",
-                            dataType: "json",
-                            type: "get",
-                            data: {
-                                cd_ref: cd_ref,
-                                year_min: yearMin,
-                                year_max: yearMax
+                        dataType: "json",
+                        type: "get",
+                        data: {
+                            cd_ref: cd_ref,
+                            year_min: yearMin,
+                            year_max: yearMax,
                         },
                         beforeSend: function () {
                             $("#loaderSpinner").show();
-                        }
+                        },
                     }).done(function (observations) {
                         $("#loaderSpinner").hide();
                         observationsMaille = observations;
 
                         // desactivation de l'event precedent
-                        map.off("zoomend", function () {
-                        });
+                        map.off("zoomend", function () {});
                         // reactivation de l'event du zoom avec les nouvelle valeurs
                         eventOnZoom(observationsMaille, observationsPoint);
 
@@ -123,13 +126,16 @@ $.ajax({
                     observationsPoint,
                     yearMin,
                     yearMax,
-                    sliderTouch
+                    sliderTouch,
                 );
 
                 nbObs = 0;
-                observationsPoint.features.forEach(function(point){
-                    if (point.properties.year >= yearMin && point.properties.year <= yearMax){
-                        nbObs +=1;
+                observationsPoint.features.forEach(function (point) {
+                    if (
+                        point.properties.year >= yearMin &&
+                        point.properties.year <= yearMax
+                    ) {
+                        nbObs += 1;
                     }
                 });
 
@@ -154,7 +160,7 @@ function eventOnZoom(observationsMaille, observationsPoint) {
     var activeMode = "Maille";
     map.on("zoomend", function () {
         if (
-            activeMode != "Point" &&
+            activeMode !== "Point" &&
             map.getZoom() >= configuration.ZOOM_LEVEL_POINT
         ) {
             map.removeLayer(currentLayer);
@@ -172,12 +178,12 @@ function eventOnZoom(observationsMaille, observationsPoint) {
                 observationsPoint,
                 yearMin,
                 yearMax,
-                sliderTouch
+                sliderTouch,
             );
             activeMode = "Point";
         }
         if (
-            activeMode != "Maille" &&
+            activeMode !== "Maille" &&
             map.getZoom() <= configuration.ZOOM_LEVEL_POINT - 1
         ) {
             // display legend

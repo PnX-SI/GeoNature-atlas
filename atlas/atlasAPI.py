@@ -110,12 +110,13 @@ if not current_app.config["AFFICHAGE_MAILLE"]:
         )
         return jsonify(observations)
 
+
 @api.route("/taxonList", methods=["GET"])
 @api.route("/taxonList/area/<id_area>", methods=["GET"])
 @api.route("/taxonList/liste/<cd_ref>", methods=["GET"])
 @api.route("/taxonList/group/<group_name>", methods=["GET"])
 def get_taxon_list(id_area=None, cd_ref=None, group_name=None):
-    """ 
+    """
     return a list of taxon in html with various filters
 
     Returns
