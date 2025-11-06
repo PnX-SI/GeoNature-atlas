@@ -51,6 +51,9 @@ NOM_APPLICATION = "Nom de l application"
 # ex "/atlas" pour une URL: http://mon-domaine/atlas OU "" si l'application est accessible à la racine du domaine
 URL_APPLICATION = "/atlas"
 
+# Afficher ou non les labels dans la barre latérale
+AFFICHAGE_LABEL_SIDEBAR = False
+
 #################################
 #################################
 ###### Modules activation #######
