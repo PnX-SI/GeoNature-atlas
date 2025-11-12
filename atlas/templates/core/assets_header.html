@@ -1,12 +1,12 @@
 {% block assets_header %}
     {% if configuration.MULTILINGUAL %}
         {% for language in configuration.AVAILABLE_LANGUAGES %}
-        <link rel="alternate" hreflang="{{ language }}" href="{{url_for(request.endpoint, lang_code=language, _external=True, **request.view_args)}}">
+            <link rel="alternate" hreflang="{{ language }}" href="{{url_for(request.endpoint, lang_code=language, _external=True, **request.view_args)}}">
         {% endfor %}
-        <link 
-            rel="alternate" 
-            href="{{url_for(request.endpoint, _external=True, lang_code=configuration.DEFAULT_LANGUAGE, **request.view_args)}}"
-            hreflang="x-default"
+        <link
+                rel="alternate"
+                href="{{url_for(request.endpoint, _external=True, lang_code=configuration.DEFAULT_LANGUAGE, **request.view_args)}}"
+                hreflang="x-default"
         >
         <link rel="canonical" href="{{url_for(request.endpoint, _external=True, lang_code=configuration.DEFAULT_LANGUAGE, **request.view_args)}}">
     {% endif %}
@@ -22,10 +22,14 @@
     <!-- Leaflet -->
     <script src="{{url_for('static', filename='node_modules/leaflet/dist/leaflet.js') }}"></script>
     <link rel="stylesheet" href="{{url_for('static', filename='node_modules/leaflet/dist/leaflet.css') }}" />
-   
+
     <script src="{{url_for('static', filename='node_modules/leaflet.zoomhome/dist/leaflet.zoomhome.js') }}"></script>
     <link rel="stylesheet" href="{{url_for('static', filename='node_modules/leaflet.zoomhome/src/css/leaflet.zoomhome.css') }}" />
 
+    {% if configuration.SEARCH_NOMINATIM %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/leaflet-control-geocoder/dist/Control.Geocoder.css') }}" />
+        <script src="{{ url_for('static', filename='node_modules/leaflet-control-geocoder/dist/Control.Geocoder.js') }}"></script>
+    {% endif %}
     <script src="{{ url_for('static', filename='node_modules/leaflet.fullscreen/Control.FullScreen.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/leaflet.fullscreen/Control.FullScreen.css') }}" />
     <!-- Slick -->
@@ -42,4 +46,4 @@
     <script src="{{url_for('static', filename='node_modules/orejime/dist/orejime.js') }}"></script>
     <link rel="stylesheet" href="{{url_for('static', filename='node_modules/orejime/dist/orejime.css') }}" />
 
-    {% endblock %}
+{% endblock %}

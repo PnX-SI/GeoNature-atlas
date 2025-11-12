@@ -59,6 +59,16 @@ MAP = {
     'ENABLE_SLIDER': True
 }
 
+# Ajout du plugin nominatim permetant une recherche d'adresse sur les cartes de la page d'acceuil et territoire 
+SEARCH_NOMINATIM = True
+# Paramètres de recherche du plugin nominatim
+GEOCODING_QUERY_PARAMS = {
+    "countrycodes": "FR",
+    # Ouest, Nord, Est, Sud
+    "viewbox": "-2.025228103,47.567932519,-1.011314484,46.903000500",
+    "bounded": 1 # 1 pour chercher uniquement dans la viewbox définit au dessus
+}
+
 ###########################
 ###########################
 ###### Liste Rouge  #######
