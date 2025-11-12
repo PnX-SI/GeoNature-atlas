@@ -177,6 +177,14 @@ class AtlasConfig(Schema):
     AFFICHAGE_RECHERCHE_AVANCEE = fields.Boolean(load_default=False)
     AFFICHAGE_GRAPH_ALTITUDES = fields.Boolean(load_default=True)
     AFFICHAGE_GRAPH_PHENOLOGIE = fields.Boolean(load_default=True)
+    SEARCH_NOMINATIM = fields.Boolean(load_default=False)
+    GEOCODING_QUERY_PARAMS = fields.Dict(
+        load_default={
+            "countrycodes": "FR",
+            "viewbox": "-180,90,180,-90",
+            "bounded": 1
+        }
+    )
     TYPE_TERRITOIRE_SHEET = fields.List(fields.String(), load_default=["COM"])
     AFFICHAGE_GRAPH_PHENOLOGIE = fields.Boolean(load_default=False)
     ALTITUDE_RANGES = fields.List(
@@ -302,7 +310,7 @@ class AtlasConfig(Schema):
     )
     MAP = fields.Nested(MapConfig, load_default=dict())
     DEFAULT_LEGEND_DISPLAY = fields.Boolean(load_default=True)
-    COUCHES_SIG = fields.List(fields.Nested(CouchesSigConfig), load_default=list())    
+    COUCHES_SIG = fields.List(fields.Nested(CouchesSigConfig), load_default=list())
     # coupe le nom_vernaculaire à la 1ere virgule sur les fiches espèces
     SPLIT_NOM_VERN = fields.Boolean(load_default=True)
     INTERACTIVE_MAP_LIST = fields.Boolean(load_default=True)

@@ -12,7 +12,6 @@ var myGeoJson;
 const id_area = areaInfos.areaID
 displayObs(id_area)
 
-
 // Display limit of the territory
 var areaLayer = L.geoJson(areaInfos.areaGeoJson, {
     style: function () {

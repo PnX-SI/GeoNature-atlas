@@ -255,6 +255,7 @@ function generateMap(zoomHomeButton) {
         zoomControl: !(zoomHomeButton),
     });
 
+
     // Keep Layers in the same order as specified by the
     // overlays variable so Departement under Commune
     // under 10km2 under 1km2
@@ -357,6 +358,10 @@ function generateMap(zoomHomeButton) {
                 position: 'bottomright'
             }
         ).addTo(map);
+    }
+
+    if (configuration.SEARCH_NOMINATIM) {
+        addGeocoderPluggin(map);
     }
 
     return map;

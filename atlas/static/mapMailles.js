@@ -1,6 +1,5 @@
 var zoomHomeButton = true;
 var map = generateMap(zoomHomeButton);
-
 if (configuration.MAP.ENABLE_SLIDER) {
     generateSliderOnMap();
 }

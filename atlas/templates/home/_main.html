@@ -29,13 +29,13 @@
             $(".lazy").lazy();
         });
     </script>
-<script src="{{ url_for('static', filename='index.js') }}"></script>
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
 
     {% if personal_data %}
         <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            $("#modalPersonalData").modal('show');
-        });
+            document.addEventListener('DOMContentLoaded', function () {
+                $("#modalPersonalData").modal('show');
+            });
         </script>
     {% endif %}
 
