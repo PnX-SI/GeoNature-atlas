@@ -370,6 +370,7 @@ function createAtlasSchemaEntities() {
         "12.vm_cor_taxon_attribut.sql"
         "13.vm_taxons_plus_observes.sql"
         "14.vm_cor_taxon_organism.sql"
+        "14.1.vm_cor_taxon_area.sql"
         "15.vm_cor_maille_observation.sql"
         "16.territory_stats.sql"
         "17.grant.sql"
