@@ -86,6 +86,10 @@ REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_taxons_plus_observes;
 REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_cor_taxon_organism;
 
 \echo '----------------------------------------------------------------'
+\echo 'Refreshing vm_cor_taxon_area:'
+REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_cor_taxon_area;
+
+\echo '----------------------------------------------------------------'
 \echo 'Refreshing vm_cor_maille_observation:'
 REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_cor_maille_observation;
 

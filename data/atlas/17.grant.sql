@@ -33,5 +33,5 @@ GRANT SELECT ON TABLE atlas.vm_cor_taxon_statut_area TO :reader_user ;
 GRANT SELECT ON TABLE atlas.bdc_statut_cor_text_area TO :reader_user ;
 GRANT SELECT ON TABLE atlas.status_areas_buffered TO :reader_user ;
 GRANT SELECT ON TABLE atlas.order_liste_rouge_niveau_ter TO :reader_user ;
-
+GRANT SELECT ON TABLE atlas.vm_cor_taxon_area TO :reader_user ;
 
