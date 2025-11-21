@@ -3,7 +3,7 @@
 import ast
 
 from sqlalchemy import distinct, select
-from sqlalchemy.sql.expression import func
+from sqlalchemy.sql.expression import func, and_
 from sqlalchemy.dialects.postgresql import array
 
 from flask import current_app
@@ -17,6 +17,7 @@ from atlas.modeles.entities.vmAreas import (
     VmAreaStats,
 )
 from atlas.modeles.entities.vmObservations import VmObservations
+from atlas.modeles.entities.vmTaxons import VmTaxonArea
 from atlas.env import db
 
 
@@ -123,20 +124,21 @@ def getAreasByTaxon(cd_ref):
     param = {"taxonsList": taxons, "list_id_type": current_app.config["TYPE_TERRITOIRE_SHEET"]}
     results = (
         db.session.query(
-            distinct(VmCorAreaSynthese.id_area).label("id_area"),
+            distinct(VmAreas.id_area).label("id_area"),
             VmAreas.area_name.label("area_name"),
             VmBibAreasTypes.type_code.label("type_code"),
             VmBibAreasTypes.type_name.label("type_name"),
         )
-        .join(VmObservations, VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
-        .join(VmAreas, VmCorAreaSynthese.id_area == VmAreas.id_area)
-        .join(VmBibAreasTypes, VmCorAreaSynthese.type_code == VmBibAreasTypes.type_code)
-        .filter(
-            VmCorAreaSynthese.type_code == func.any(array(param["list_id_type"])),
-            VmObservations.cd_ref == func.any(array(param["taxonsList"])),
+        .join(
+            VmTaxonArea,
+            and_(
+                VmAreas.id_area == VmTaxonArea.id_area,
+                VmTaxonArea.cd_ref == func.any(array(param["taxonsList"])),
+            ),
         )
-        .filter(VmCorAreaSynthese.is_valid_for_display.is_(True))
-        .order_by(VmAreas.area_name.asc())
+        .join(VmBibAreasTypes, VmAreas.id_type == VmBibAreasTypes.id_type)
+        .filter(VmBibAreasTypes.type_code == func.any(array(param["list_id_type"])))
+        .order_by(VmBibAreasTypes.type_name.asc(), VmAreas.area_name.asc())
         .all()
     )
 

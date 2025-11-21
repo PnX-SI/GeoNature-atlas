@@ -42,6 +42,7 @@ $function$
         REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_cor_taxon_attribut;
         REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_taxons_plus_observes;
         REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_cor_taxon_organism;
+        REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_cor_taxon_area;
         REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_cor_maille_observation;
         REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_area_stats;
         REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_area_stats_by_taxonomy_group;

@@ -28,5 +28,5 @@ GRANT SELECT ON TABLE atlas.vm_area_stats_by_taxonomy_group TO :reader_user ;
 GRANT SELECT ON TABLE atlas.vm_area_stats_by_organism TO :reader_user ;
 GRANT SELECT ON TABLE atlas.vm_bdc_statut TO :reader_user ;
 GRANT SELECT ON TABLE atlas.vm_cor_taxon_statut_area TO :reader_user ;
-
+GRANT SELECT ON TABLE atlas.vm_cor_taxon_area TO :reader_user ;
 
