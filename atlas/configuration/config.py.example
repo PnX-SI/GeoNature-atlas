@@ -423,6 +423,7 @@ PATRIMONIALITE = {
 
 # Liste des type de territoire pour les fiches territoires (code bib_area_type)
 # ex : TYPE_TERRITOIRE_SHEET = ['COM', 'EPCI']
+# attention, si vous ajouter des nouveaux zonages, veillez à remplir le champs `size_hierarchy` de la table `ref_geo.bib_areas_type`. Ce champs aide au calcul de l'affichage ou non des observations sensibles sur des niveau de zonage plus petit que leur géométrie de floutage
 TYPE_TERRITOIRE_SHEET = []
 
 # Affiche ou non la barre "tout le territoire" sur les graphiques
