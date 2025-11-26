@@ -5,13 +5,14 @@ GeoNature-atlas fournit un mécanisme de dégration des données basé sur les s
 
 Voir la nomenclature du "Niveaux de précision de diffusion souhaités" du SINP http://standards-sinp.mnhn.fr/nomenclature/5-niveaux-de-precision-de-diffusion-souhaites-niveauprecision-23-06-2016/.
 
-A partir des données bruts présentes dans GeoNature, l'atlas applique le floutage suivant :
-
-* 0 -	Diffusion standard : à la maille, à la ZNIEFF, à la commune, à l’espace protégé (statut par défaut).
-* 1	- Diffusion floutée de la DEE par rattachement à la commune.
-* 2	- Diffusion floutée par rattachement à la maille 10 x 10 km
-* 3	- Diffusion floutée par rattachement au département.
-* 4	- Aucune diffusion (cas exceptionnel), correspond à une donnée de sensibilité 4.
-* 5	- Diffusion telle quelle : si une donnée précise existe, elle doit être diffusée telle quelle.
+Le niveau de floutage est déterminé et paramétrable depuis GeoNature via la table `gn_sensitivity.cor_sensitivity_area_type` qui fait une correspondance entre un niveau de sensibilité et un niveau de floutage. Pour des raisons de performances ce sont les mailles 1km, 5km et 10km qui sont utilisé pour flouter plutôt que la gémétrie des communes et des départements.
 
 Une symbologie adaptée est fournie par défaut dans GeoNature-atlas (en vert les données dégradées, en bleu les données précises). Cette symbologie est customisable dans le fichier ``static/custom/maps-custom.js`` et permet plus largement de personnaliser l'affichage en fonction des informations renvoyées par la vue ``atlas.vm_observations`` (voir `<installation.rst#customisation-de-lapplication>`_).
+
+
+Cas particulier du floutage et des fiches "zonage"
+-----------------------------------------------------
+
+L'atlas permet de créer des fiches par type de zonage (fiche par commune, par département etc...). Dans certains cas l'affichage d'observations et d'espèces sur ces fiches zonages peut fournir des informations plus précise que leur niveau de flouage souhaité. L'atlas exclue donc par défaut ces observations. Par exemple : observations dont le niveau de sensiblité exige une floutage au département ne sera pas affiché sur une fiche commune.
+L'atlas permet également de créer des fiches zonages personnalisés (fiche d'un Parc Naturel régional par ex). Dans ce cas, il est nécessaire de remplir le champs `size_hierarchy` de la table `ref_geo.bib_areas_type`. Ce champs aide au calcul de l'affichage ou non des observations sensibles sur des niveau de zonage plus petit que leur géométrie de floutage.
+

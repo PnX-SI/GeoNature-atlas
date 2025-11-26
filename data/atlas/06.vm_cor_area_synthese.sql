@@ -1,66 +1,24 @@
--- VM de correspondance entre une observation et les zonage qu'elle intersecte
--- seul les zonage plus grand que le niveau d'affichage de leur sensibilité sont affichés
-CREATE MATERIALIZED VIEW atlas.vm_cor_area_synthese AS
-    WITH area_type_codes AS (
-        SELECT string_to_table.string_to_table AS area_type_code
-        FROM string_to_table(:'type_code', ',')
-        UNION
-        SELECT area_type_code
-        FROM atlas.cor_sensitivity_area_type
-    ),
-    areas_observations AS (
-        -- Areas for sensitive observations.
-        -- Only zonages with size higher than sensitivity area type used for the observation.
-        SELECT
-            csa.id_synthese,
-            csa.id_area,
-            bat.id_type,
-            bat.type_code,
-            bat.size_hierarchy
-        FROM atlas.vm_observations AS o
-            JOIN gn_synthese.cor_area_synthese AS csa
-                ON csa.id_synthese = o.id_observation
-            JOIN ref_geo.l_areas AS a
-                ON a.id_area = csa.id_area
-            JOIN ref_geo.bib_areas_types AS bat
-                ON bat.id_type = a.id_type
-            JOIN atlas.cor_sensitivity_area_type AS csat
-                ON csat.sensitivity_code = o.cd_sensitivity
-            JOIN ref_geo.bib_areas_types AS bat_se
-                ON bat_se.type_code = csat.area_type_code
-            JOIN area_type_codes AS atc
-                ON atc.area_type_code = bat.type_code
-        WHERE (o.cd_sensitivity != '0' OR o.cd_sensitivity IS NOT NULL)
-            AND bat.size_hierarchy >= bat_se.size_hierarchy
+CREATE MATERIALIZED VIEW atlas.vm_cor_area_synthese as
+SELECT 
+    cas.id_synthese,
+    cas.id_area,
+    bat.id_type,
+    bat.type_code,
+    CASE
+        -- Si l'observation n'est pas sensible, tous les zonages sont valides
+        WHEN (s.cd_sensitivity = '0' OR s.cd_sensitivity IS NULL) THEN TRUE
+        -- Si l'observation est sensible, vérifier que le zonage est assez grand
+        WHEN ((s.cd_sensitivity != '0' AND s.cd_sensitivity IS NOT NULL) 
+              AND bat.size_hierarchy >= bat_flou.size_hierarchy) THEN TRUE
+        ELSE FALSE
+    END AS is_valid_for_display
+FROM gn_synthese.cor_area_synthese cas
+JOIN ref_geo.l_areas a ON cas.id_area = a.id_area
+JOIN ref_geo.bib_areas_types bat ON a.id_type = bat.id_type
+JOIN atlas.vm_observations s ON cas.id_synthese = s.id_observation
+JOIN atlas.cor_sensitivity_area_type csat ON s2.cd_sensitivity = csat.sensitivity_code
+JOIN ref_geo.bib_areas_types bat_flou ON csat.area_type_code = bat_flou.type_code
 
-        UNION
-
-        -- Areas for NO sensitive observations.
-        SELECT
-            csa.id_synthese,
-            csa.id_area,
-            bat.id_type,
-            bat.type_code,
-            bat.size_hierarchy
-        FROM atlas.vm_observations AS o
-            JOIN gn_synthese.cor_area_synthese AS csa
-                ON csa.id_synthese = o.id_observation
-            JOIN ref_geo.l_areas AS a
-                ON a.id_area = csa.id_area
-            JOIN ref_geo.bib_areas_types AS bat
-                ON bat.id_type = a.id_type
-            JOIN area_type_codes AS atc
-                ON atc.area_type_code = bat.type_code
-        WHERE (o.cd_sensitivity = '0' AND o.cd_sensitivity IS NULL)
-    )
-    SELECT
-        id_synthese,
-        id_area,
-        id_type,
-        type_code
-    FROM areas_observations
-    ORDER BY id_synthese, size_hierarchy, type_code
-WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_cor_area_synthese
     USING btree (id_synthese, id_area);
