@@ -703,25 +703,45 @@ function refreshStyle(layers) {
 function buildSpeciesEntries(taxons) {
     rows = [];
     taxons.forEach((taxon) => {
-        href = `${configuration.URL_APPLICATION}/espece/${taxon.cdRef}`;
-        rows.push(`<li><a href="${href}">${taxon.name}</li>`);
+        rows.push(`
+    <a title="Cliquez pour aller a la fiche de '${taxon.nom_vern}'" class="tooltip-item btn" href="/espece/${taxon.cd_ref}" target="_blank">
+        <img class="me-2" src="${taxon.media}" alt="">
+        <div class="tooltip-item-text">
+            <p class="name_vern">${taxon.nom_vern}</p>
+            <p>${taxon.lb_nom}</p>
+            <p>${taxon.nb_obs} observations (dernière : ${taxon.last_obs})</p>
+        </div>
+    </a>
+    `);
     });
     return rows.join("\n");
 }
 
-function createPopUp(feature, layer) {
-    const title = `${feature.properties.taxons.length} espèces observées dans la maille &nbsp;: `;
-    const rows = buildSpeciesEntries(feature.properties.taxons);
-    const popupContent = `<b>${title}</b><ul>${rows}</ul>`;
+function createPopUp(event) {
+    const idMaille = event.target.feature.id;
+    page_tooltip = 1;
+    havePossibleNextPage_tooltip = true;
 
-    layer.bindPopup(popupContent, { maxHeight: 300 });
+    fetch(`/api/taxonListJson/area/${idMaille}?page=-1`)
+        .then((response) => response.json())
+        .then((data) => {
+            const title = `${data.length} espèces observées dans la maille &nbsp;: `;
+            const rows = buildSpeciesEntries(data);
+            const popupContent = `
+<div class="tooltip-item-wrapper">
+    <b>${title}</b>
+    <div class="d-flex flex-column tooltip-content">${rows}</div>
+</div>`;
+
+            L.popup({ maxHeight: 300 })
+                .setLatLng(event.latlng)
+                .setContent(popupContent)
+                .openOn(map);
+        });
 }
 
 function onEachFeatureMailleLastObs(feature, layer) {
-    createPopUp(feature, layer);
     addInFeatureGroup(feature, layer);
-
-    zoomMaille(layer);
 
     var selected = false;
     layer.setStyle(
@@ -730,9 +750,9 @@ function onEachFeatureMailleLastObs(feature, layer) {
             feature.properties.type_code,
         ),
     );
-    layer.on("click", function (layer) {
+    layer.on("click", function (event) {
+        createPopUp(event);
         resetStyleMailles();
-        this.setStyle(styleMailleClickedOrHover(layer.target));
         selected = true;
     });
     layer.on("mouseover", function (layer) {

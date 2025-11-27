@@ -72,23 +72,6 @@ def getObservationsMaillesChilds(params={}):
         func.max(func.date_part("year", VmObservations.dateobs)).label("last_obs_year"),
         func.count(VmObservations.id_observation).label("obs_nbr"),
     ]
-    if "taxons" in fields:
-        query_select.append(
-            func.json_agg(
-                func.distinct(
-                    func.jsonb_build_object(
-                        "name",
-                        (
-                            func.concat(
-                                func.coalesce(VmTaxons.nom_vern + " | ", "") + VmTaxons.lb_nom
-                            )
-                        ),
-                        "cdRef",
-                        VmTaxons.cd_ref,
-                    )
-                )
-            ).label("taxons"),
-        )
     if "ids_obs" in fields:
         query_select.append(func.array_agg(VmObservations.id_observation).label("ids_obs"))
     query = (
@@ -105,8 +88,6 @@ def getObservationsMaillesChilds(params={}):
             VMCorMailleObservation.type_code,
         )
     )
-    if "taxons" in fields:
-        query = query.join(VmTaxons, VmTaxons.cd_ref == VmObservations.cd_ref)
     if taxons_ids:
         query = query.where(VmObservations.cd_ref == any_(taxons_ids))
     if year_min and year_max:
@@ -141,7 +122,6 @@ def getObservationsMaillesChilds(params={}):
                     "type_code": o.type_code,
                     "nb_observations": int(o.obs_nbr),
                     "last_observation": o.last_obs_year,
-                    "taxons": o.taxons if "taxons" in fields else None,
                     "ids_obs": o.ids_obs if "ids_obs" in fields else None,
                 },
             )

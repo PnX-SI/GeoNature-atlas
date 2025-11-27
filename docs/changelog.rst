@@ -21,6 +21,7 @@ CHANGELOG
 - Déplacement des fichiers de personnalisation ``sample`` dans le dossier ``static/sample/``. Le dossier ``static/custom/`` est à utiliser pour surcoucher les fichiers de ``static/sample/``.
 - Ajout d'un gestionnaire de couches cartographiques supplémentaires (WMS et geojson) dans le paramètre ``COUCHES_SIG`` (#572 @juggler31)
 - Ajout d'un plugin permetant une recheche d'adresse sur les cartes de la page d'acceuil et territoire (#716 @juggler31)
+- Nouvel affichage des tooltips lorsqu'on clique sur une maille (#721 @juggler31)
 
 A VERIFIER :
 
