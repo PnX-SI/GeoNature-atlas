@@ -127,6 +127,7 @@ class MapConfig(Schema):
         load_default={"fill": False, "fillColor": "#020202", "fillOpacity": 0.7}
     )
 
+
 class CouchesSigConfig(Schema):
     name = fields.Str(required=True)
     type = fields.Str(required=True, validate=validate.OneOf(["wms", "geojson"]))
@@ -139,7 +140,9 @@ class CouchesSigConfig(Schema):
 
     @validates_schema
     def layer_required_for_wms_type(self, data, **kwargs):
-        if data["type"] == "wms" and (not data.get("options").get("layers") or not data.get("options").get("wms_version")):
+        if data["type"] == "wms" and (
+                (not data.get("options").get("layers") and not data.get("options").get("layers") == 0) or not data.get(
+            "options").get("wms_version")):
             raise ValidationError("'layers' and 'wms_version' are required for type 'wms'")
 
 
@@ -178,6 +181,7 @@ class AtlasConfig(Schema):
     AFFICHAGE_GRAPH_ALTITUDES = fields.Boolean(load_default=True)
     AFFICHAGE_GRAPH_PHENOLOGIE = fields.Boolean(load_default=True)
     TYPE_TERRITOIRE_SHEET = fields.List(fields.String(), load_default=["COM"])
+    PARENTS_TYPE = fields.List(fields.String(), load_default=[])
     AFFICHAGE_GRAPH_PHENOLOGIE = fields.Boolean(load_default=False)
     ALTITUDE_RANGES = fields.List(
         fields.Integer(),

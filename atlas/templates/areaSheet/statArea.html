@@ -56,6 +56,15 @@
                 <br>{{ _('threatened.species')|lower }}
             </div>
             {% endif %}
+            {% for area in areaInfos.areasParent %}
+                {% if area.typeName in configuration.AREA_PARENTS_TYPE %}
+                <div class="col-sm text-center border-start">
+                    <i class="fa fa-city"></i>
+                    <br><strong><a href="/area/{{ area.areaCode }}">{{ area.areaName }}</a></strong>
+                    <br>{{ area.typeName }}
+                </div>
+                {% endif %}
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

@@ -425,6 +425,9 @@ PATRIMONIALITE = {
 # ex : TYPE_TERRITOIRE_SHEET = ['COM', 'EPCI']
 TYPE_TERRITOIRE_SHEET = []
 
+# Types de zonage à afficher dans la liste des zonages parents dans la fiche territoire
+AREA_PARENTS_TYPE = ["EPCI"]
+
 # Affiche ou non la barre "tout le territoire" sur les graphiques
 # du nombre d'espèce des fiches zonages
 AFFICHAGE_TOUT_TERRITOIRE_GRAPH = False
