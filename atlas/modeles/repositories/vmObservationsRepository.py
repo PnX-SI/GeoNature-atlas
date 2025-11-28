@@ -66,6 +66,7 @@ def getObservationsChilds(params: {}):
                 .where(
                     (VmCorAreaSynthese.id_area == params["id_area"])
                     & (VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
+                    & (VmCorAreaSynthese.is_valid_for_display.is_(True))
                 )
             )
         )

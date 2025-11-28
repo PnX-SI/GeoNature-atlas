@@ -199,7 +199,7 @@ def ficheEspece(cd_nom):
     months = vmMoisRepository.getMonthlyObservationsChilds(cd_ref)
     organism_stats = vmCorTaxonOrganismRepository.getTaxonOrganism(cd_ref)
     synonyme = vmTaxrefRepository.getSynonymy(cd_ref)
-    areas = vmAreasRepository.getAreasObservationsChilds(cd_ref)
+    areas = vmAreasRepository.getAreasByTaxon(cd_ref)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(cd_ref)
     firstPhoto = vmMedias.getFirstPhoto(cd_ref, current_app.config["ATTR_MAIN_PHOTO"])
     photoCarousel = vmMedias.getPhotoCarousel(cd_ref, current_app.config["ATTR_OTHER_PHOTO"])

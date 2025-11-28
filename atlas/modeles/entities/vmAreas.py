@@ -48,6 +48,7 @@ class VmCorAreaSynthese(db.Model):
     id_area: Mapped[int] = mapped_column(primary_key=True)
     id_type: Mapped[int] = mapped_column(primary_key=True)
     type_code: Mapped[str] = mapped_column(String(25))
+    is_valid_for_display: Mapped[bool]
 
 
 class VmAreaStatTaxonomyGroup(db.Model):

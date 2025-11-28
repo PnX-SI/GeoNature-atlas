@@ -71,7 +71,7 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
     threatened = params.get("threatened", None)
     protected = params.get("protected", None)
     patrimonial = params.get("patrimonial", None)
-    obs_in_area = (
+    q_stats_taxons = (
         select(
             func.count(distinct(VmObservations.id_observation)).label("nb_obs"),
             func.count(distinct(VmObservations.observateurs)).label("nb_observers"),
@@ -83,18 +83,19 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
     )
 
     if id_area:
-        obs_in_area = obs_in_area.join(
+        q_stats_taxons = q_stats_taxons.join(
             VmCorAreaSynthese,
             (VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
-            & (VmCorAreaSynthese.id_area == id_area),
+            & (VmCorAreaSynthese.id_area == id_area)
+            & (VmCorAreaSynthese.is_valid_for_display.is_(True))
         )
-    obs_in_area = obs_in_area.subquery()
+    q_stats_taxons = q_stats_taxons.subquery()
 
     _columns = [
         VmTaxons,
-        obs_in_area.c.nb_obs,
-        obs_in_area.c.last_obs,
-        obs_in_area.c.nb_observers,
+        q_stats_taxons.c.nb_obs,
+        q_stats_taxons.c.last_obs,
+        q_stats_taxons.c.nb_observers,
     ]
     # si id_area on prend les statuts dans CorTaxonStatutArea sinon directement dans VMTaxons
     if id_area:
@@ -108,8 +109,8 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
     req = (
         select(*_columns)
         .select_from(VmTaxons)
-        .join(obs_in_area, obs_in_area.c.cd_ref == VmTaxons.cd_ref)
-        .order_by(obs_in_area.c.nb_obs.desc())
+        .join(q_stats_taxons, q_stats_taxons.c.cd_ref == VmTaxons.cd_ref)
+        .order_by(q_stats_taxons.c.nb_obs.desc())
     )
     # if -1 we don't paginate
     if page != -1:

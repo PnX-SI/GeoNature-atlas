@@ -101,7 +101,19 @@ def getAreaFromIdArea(id_area):
     return area_dict
 
 
-def getAreasObservationsChilds(cd_ref):
+def getAreasByTaxon(cd_ref):
+    """Return a list of areas when a taxon is present
+    ⚠ : areas smaller than the sensibilty level or diffusion are excluded
+
+    Parameters
+    ----------
+    cd_ref : int
+
+    Returns
+    -------
+    list<dict>
+        _description_
+    """
     results = (
         (db.session.execute(select(func.atlas.find_all_taxons_childs(cd_ref)))).scalars().all()
     )
@@ -124,6 +136,7 @@ def getAreasObservationsChilds(cd_ref):
             VmCorAreaSynthese.type_code == func.any(array(param["list_id_type"])),
             VmObservations.cd_ref == func.any(array(param["taxonsList"])),
         )
+        .filter(VmCorAreaSynthese.is_valid_for_display.is_(True))
         .order_by(VmAreas.area_name.asc())
         .all()
     )
