@@ -190,7 +190,7 @@ class AtlasConfig(Schema):
         }
     )
     TYPE_TERRITOIRE_SHEET = fields.List(fields.String(), load_default=["COM"])
-    PARENTS_TYPE = fields.List(fields.String(), load_default=[])
+    AREA_PARENTS_TYPE = fields.List(fields.String(), load_default=[])
     AFFICHAGE_GRAPH_PHENOLOGIE = fields.Boolean(load_default=False)
     ALTITUDE_RANGES = fields.List(
         fields.Integer(),
