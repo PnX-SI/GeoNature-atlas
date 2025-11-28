@@ -130,7 +130,9 @@ CREATE MATERIALIZED VIEW atlas.vm_cor_areas AS
         JOIN dep on 
         st_intersects(dep.geom_local, vla.geom_local) AND 
                 st_within(vla.geom_local, st_buffer(dep.geom_local, 100))
-        WHERE b.type_code in (SELECT * FROM string_to_table(:'type_code', ','));
+        WHERE b.type_code in (SELECT * FROM string_to_table(:'type_code', ','))
+    UNION
+        SELECT id_area as id_area, id_area_group as id_area_parent from ref_geo.cor_areas;
         -- On laisse volontairement l'autointersection département  - département pour les fiche territoire des départements !
                     
 CREATE INDEX ON atlas.vm_cor_areas
