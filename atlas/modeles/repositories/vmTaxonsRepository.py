@@ -54,10 +54,12 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
         page : int, optional
         page_size : _type_, optional
         filter_taxon : str, optional
-            filter list whith lb_nom or nom_vern (use for dynamic search in page)
+        filter list whith lb_nom or nom_vern (use for dynamic search in page)
         protected: boolean
         threatened: boolean
         group2_inpn: str
+        last_obs: boolean : return only last obs (range define in params)
+
 
     Returns
     -------
@@ -71,6 +73,8 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
     threatened = params.get("threatened", None)
     protected = params.get("protected", None)
     patrimonial = params.get("patrimonial", None)
+    last_obs = params.get("last_obs", None)
+
     q_stats_taxons = (
         select(
             func.count(distinct(VmObservations.id_observation)).label("nb_obs"),
@@ -81,6 +85,12 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
         .select_from(VmObservations)
         .group_by(VmObservations.cd_ref)
     )
+    if last_obs:
+        q_stats_taxons = q_stats_taxons.where(
+            VmObservations.dateobs
+            >= func.current_timestamp()
+            - cast(literal(str(current_app.config["NB_DAY_LAST_OBS"]) + " day"), Interval)
+        )
 
     if id_area:
         q_stats_taxons = q_stats_taxons.join(

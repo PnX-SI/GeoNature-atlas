@@ -61,7 +61,6 @@ def getObservationsMailleAPI():
         - type_code : le type de maille à la laquelle la géométrie a floutée
         - last_obs_year : l'année à laquel la dernière observation a été faite dans la maille
         - obs_nbr : le nombre d'observation dans la maille
-        - taxons (optionnel: si with taxon est True) : une liste des taxons dans la maille
     Parameters
     ----------
     query string:

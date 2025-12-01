@@ -46,4 +46,12 @@
     <script src="{{url_for('static', filename='node_modules/orejime/dist/orejime.js') }}"></script>
     <link rel="stylesheet" href="{{url_for('static', filename='node_modules/orejime/dist/orejime.css') }}" />
 
+    <!-- customize leaflet popup in maille display -->
+    {% if configuration.AFFICHAGE_MAILLE %}
+        <style>
+            .leaflet-popup-content.leaflet-popup-scrolled {
+                margin: 0.5rem 0.5rem 0.5rem 0.5rem!important;
+            }
+        </style>
+    {%endif %}
 {% endblock %}

@@ -36,7 +36,6 @@ def getObservationsMaillesChilds(params={}):
         - type_code : le type de maille à la laquelle la géométrie a floutée
         - last_obs_year : l'année à laquel la dernière observation a été faite dans la maille
         - obs_nbr : le nombre d'observation dans la maille
-        - taxons (optionnel: si fields=taxons) : une liste des taxons dans la maille
         - ids_obs (optionnel si fields=ids_obs): la liste des id_observations de la maille
     Parameters
     ----------
@@ -46,6 +45,7 @@ def getObservationsMaillesChilds(params={}):
             - year_min / year_max : filtre les observation dans des bornes d'année
             - cd_ref : renvoie que les observation de ce taxon et de ces enfants
             - id_area : renvoie uniquement les observations présente dans l'aire demandée
+            - last_obs : renvoie uniquement les observation de X derniers jours (définit en conf)
     with_taxons : bool, optional
         - Permet d'ajouter la liste des taxon d'une maille au Geojson
 
