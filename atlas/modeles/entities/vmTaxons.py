@@ -66,11 +66,11 @@ class VmTaxons(db.Model):
             "group3_inpn": utils.deleteAccent(self.group3_inpn),
         }
         if with_main_media:
-            d["media"] = self.get_main_media()
+            d["media"], d["has_media"] = self.get_main_media()
         return d
 
-    def get_main_media(self, size=(80, 80)):
-        """Get main image of default logo
+    def get_main_media(self, size=(80, 80)) -> tuple:
+        """Get main image of default logo.
 
         Parameters
         ----------
@@ -79,8 +79,9 @@ class VmTaxons(db.Model):
 
         Returns
         -------
-        str
-            The path or url of the main image if exist, the logo of the group INPN if not
+        Tuple
+            index 0 : The path or url of the main image if exist, the logo of the group INPN if not
+            index 1 : boolean : true if ithe taxon have a media, false if its the default placeholder
         """
         default_media = url_for(
             "static",
@@ -89,9 +90,12 @@ class VmTaxons(db.Model):
         if self.main_media:
             if current_app.config["REDIMENSIONNEMENT_IMAGE"]:
                 height, width = size
-                return urljoin(
-                    current_app.config["TAXHUB_URL"],
-                    f"api/tmedias/thumbnail/{self.main_media.id_media}?h={height}&width={width}",
+                return (
+                    urljoin(
+                        current_app.config["TAXHUB_URL"],
+                        f"api/tmedias/thumbnail/{self.main_media.id_media}?h={height}&width={width}",
+                    ),
+                    True,
                 )
             else:
                 if self.main_media.chemin:
@@ -99,9 +103,9 @@ class VmTaxons(db.Model):
                 elif self.main_media.url:
                     return self.main_media.url
                 else:
-                    return default_media
+                    return default_media, False
         else:
-            return default_media
+            return default_media, False
 
     def shorten_name(self):
         shorten_nom_vern = self.nom_vern.split(",")[0] if self.nom_vern else ""

@@ -857,19 +857,23 @@ footer {
     border-radius: 2px;
     border-left: 5px solid var(--main-color);
 
+    a {
+        color: black;
+    }
+
     .tooltip-item-wrapper {
         .tooltip-item {
             display: flex;
             align-items: center;
             margin-bottom: 5px;
-            border: 1px solid black;
-            border-radius: 4px;
-            padding: 0.2rem;
+            border: 1px solid #efefef;
+            border-radius: 5px;
+            padding: 0.5rem;
             font-size: small;
             background-color: var(--bs-light-rgb);
 
             &:hover {
-                background-color: #cccccc;
+                background-color: #efefef;
             }
 
             .tooltip-item-text {
@@ -884,12 +888,20 @@ footer {
 
                     &.name_vern {
                         font-weight: bold;
-                    }
+                    };
+                    &.lb_nom {
+                       font-style: italic;
+                    };
                 }
 
             }
-            img {
-                width: 40px;
+            img.has-media-true {
+                width: 60px;
+                height: 60px;
+                object-fit: cover;
+            }
+            img.has-media-false {
+                width: 60px;
             }
         }
     }

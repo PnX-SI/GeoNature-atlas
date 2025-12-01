@@ -704,12 +704,12 @@ function buildSpeciesEntries(taxons) {
     rows = [];
     taxons.forEach((taxon) => {
         rows.push(`
-    <a title="Cliquez pour aller a la fiche de '${taxon.nom_vern}'" class="tooltip-item btn" href="/espece/${taxon.cd_ref}" target="_blank">
-        <img class="me-2" src="${taxon.media}" alt="">
+    <a title="Cliquez pour aller à la fiche de '${taxon.nom_vern}'" class="tooltip-item btn" href="/espece/${taxon.cd_ref}" target="_blank">
+        <img class="me-2 has-media-${taxon.has_media}" src="${taxon.media}" alt="">
         <div class="tooltip-item-text">
-            <p class="name_vern">${taxon.nom_vern}</p>
-            <p>${taxon.lb_nom}</p>
-            <p>${taxon.nb_obs} observations (dernière : ${taxon.last_obs})</p>
+            <p class="name_vern">${taxon.nom_vern ? taxon.nom_vern : ""}</p>
+            <p class="lb_nom">${taxon.lb_nom}</p>
+            <p>${taxon.nb_obs} observations (dernière  ${taxon.last_obs})
         </div>
     </a>
     `);
@@ -718,20 +718,24 @@ function buildSpeciesEntries(taxons) {
 }
 
 function createPopUp(event) {
+    const sheetName = document.querySelector("body").getAttribute("page-name");
     const idMaille = event.target.feature.id;
     page_tooltip = 1;
     havePossibleNextPage_tooltip = true;
-
-    fetch(`/api/taxonListJson/area/${idMaille}?page=-1`)
+    let url = `/api/taxonListJson/area/${idMaille}?page=-1`;
+    if (sheetName === "index" && configuration.AFFICHAGE_DERNIERES_OBS) {
+        url = url + "&last_obs=true";
+    }
+    fetch(url)
         .then((response) => response.json())
         .then((data) => {
             const title = `${data.length} espèces observées dans la maille &nbsp;: `;
             const rows = buildSpeciesEntries(data);
             const popupContent = `
-<div class="tooltip-item-wrapper">
-    <b>${title}</b>
-    <div class="d-flex flex-column tooltip-content">${rows}</div>
-</div>`;
+                <div class="tooltip-item-wrapper">
+                    <b>${title}</b>
+                    <div class="d-flex flex-column tooltip-content">${rows}</div>
+                </div>`;
 
             L.popup({ maxHeight: 300 })
                 .setLatLng(event.latlng)
@@ -895,7 +899,7 @@ function addInFeatureGroup(feature, layer) {
 }
 
 // eslint-disable-next-line no-unused-vars
-function displayGeojsonMailles(observationsMaille) {
+function displayGeojsonMailles(observationsMaille, lastObs = false) {
     // Get all different type code
     observationsMaille.features.forEach((elem) => {
         if (!current_type_code.includes(elem.properties.type_code)) {
