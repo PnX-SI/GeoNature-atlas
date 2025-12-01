@@ -1,7 +1,9 @@
 -- +-----------------------------------------------------------------------------------------------+
 -- Copie du contenu de taxref (à partir du schéma taxonomie de TaxHub)
 CREATE MATERIALIZED VIEW atlas.vm_taxref AS
-    SELECT * FROM taxonomie.taxref
+    SELECT *
+    FROM taxonomie.taxref
+    WHERE group2_inpn IS NOT NULL
 WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_taxref
