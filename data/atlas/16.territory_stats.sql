@@ -1,6 +1,5 @@
 -- +-----------------------------------------------------------------------------------------------+
--- Classic stats
-
+-- vm_area_stats : classic stats
 CREATE MATERIALIZED VIEW atlas.vm_area_stats AS
     SELECT
         vla.id_area,
