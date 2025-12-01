@@ -1,3 +1,5 @@
+-- +-----------------------------------------------------------------------------------------------+
+-- bdc_statut_cor_text_area
 CREATE MATERIALIZED VIEW IF NOT EXISTS atlas.bdc_statut_cor_text_area AS
     SELECT *
     FROM taxonomie.bdc_statut_cor_text_area
@@ -6,7 +8,8 @@ WITH DATA;
 CREATE UNIQUE INDEX ON atlas.bdc_statut_cor_text_area
     USING btree (id_text, id_area);
 
-
+-- +-----------------------------------------------------------------------------------------------+
+-- vm_bdc_statut
 CREATE MATERIALIZED VIEW IF NOT EXISTS atlas.vm_bdc_statut AS
 SELECT
     ROW_NUMBER() OVER () AS id,
@@ -52,6 +55,8 @@ CREATE INDEX ON atlas.vm_bdc_statut
      USING btree (cd_type_statut);
 
 
+-- +-----------------------------------------------------------------------------------------------+
+-- order_liste_rouge_niveau_ter
 CREATE TABLE atlas.order_liste_rouge_niveau_ter (
     id_order int primary key,
     level_statut character varying(10)
@@ -61,6 +66,8 @@ INSERT INTO atlas.order_liste_rouge_niveau_ter
 VALUES (4, 'LRR'), (3, 'LRN'), (2, 'LRE'), (1, 'LRM');
 
 
+-- +-----------------------------------------------------------------------------------------------+
+-- vm_cor_taxon_statut_area
 -- Flattens the most local threat level (and the highest if there are several
 -- for the same level - e.g. Regional, National Red List) and a 'protected' boolean,
 -- for each couple cd_ref and id_area.
@@ -125,6 +132,8 @@ CREATE UNIQUE INDEX ON atlas.vm_cor_taxon_statut_area
     USING btree (cd_ref, id_area);
 
 
+-- +-----------------------------------------------------------------------------------------------+
+-- status_areas_buffered
 CREATE MATERIALIZED VIEW atlas.status_areas_buffered AS
     SELECT
         a.id_area,
@@ -141,6 +150,8 @@ CREATE UNIQUE INDEX ON atlas.status_areas_buffered
     USING btree(id_area);
 
 
+-- +-----------------------------------------------------------------------------------------------+
+-- vm_cor_taxon_statut_area_spread
 CREATE MATERIALIZED VIEW atlas.vm_cor_taxon_statut_area_spread AS
     WITH area_types AS (
         SELECT id_type
