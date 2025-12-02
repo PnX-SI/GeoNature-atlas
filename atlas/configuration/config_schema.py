@@ -94,6 +94,21 @@ orijime_default_translations = {
     },
 }
 
+AFFICHAGE_COUCHES_MAP_DEFAULT = {
+    "M1": {
+        "label": "Mailles 1 km",
+        "selected": True,
+    },
+    "M5": {
+        "label": "Mailles communes",
+        "selected": False,
+    },
+    "M10": {
+        "label": "Mailles 10 km",
+        "selected": False,
+    },
+}
+
 
 class SecretSchemaConf(Schema):
     class Meta:
@@ -303,7 +318,7 @@ class AtlasConfig(Schema):
     )
 
     AFFICHAGE_MAILLE = fields.Boolean(load_default=False)
-    AFFICHAGE_COUCHES_MAP = fields.Dict(load_default={})
+    AFFICHAGE_COUCHES_MAP = fields.Dict(load_default=AFFICHAGE_COUCHES_MAP_DEFAULT)
     ZOOM_LEVEL_POINT = fields.Integer(load_default=11)
     LIMIT_CLUSTER_POINT = fields.Integer(load_default=1000)
     NB_DAY_LAST_OBS = fields.String(load_default="7")

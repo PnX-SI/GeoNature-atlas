@@ -9,7 +9,7 @@ Introduction
 
 Par défaut, la BDD a été conçue pour s'appuyer sur les données présentes dans GeoNature (https://github.com/PnEcrins/GeoNature).
 
-Pour cela une BDD fille de GeoNature est créée avec les schémas utiles à l'atlas (``synthese``, ``taxonomie``, ``layers``), alimentée grace à un Foreign Data Wrapper (http://docs.postgresqlfr.org/9.2/sql-createforeigndatawrapper.html).
+Pour cela une BDD fille de GeoNature est créée avec les schémas utiles à l'atlas (`atlas`, `synthese``, ``taxonomie`), alimentée grace à un Foreign Data Wrapper (http://docs.postgresqlfr.org/9.2/sql-createforeigndatawrapper.html).
 
 Cela permet de créer un lien dynamique entre les 2 bases de données. A chaque fois qu'une requête est éxecutée dans une table de l'atlas (BDD fille), le FDW permet d'interroger directement dans le BDD mère (celle de GeoNature) et ainsi d'avoir les données à jour en temps réel.
 
