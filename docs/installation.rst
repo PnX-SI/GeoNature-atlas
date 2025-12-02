@@ -74,7 +74,7 @@ Lancer le script :
 
 **3. Installation de la base de données**
 
-Faites une copie du modèle de fichier de configuration de la BDD et de son installation automatique ``atlas/configuration/settings.ini.sample`` puis modifiez-le.
+Faites une copie du fichier de configuration``atlas/configuration/settings.ini.sample`` puis modifiez-le.
 
 ::
 
@@ -101,7 +101,6 @@ NOTES :
     \q
     exit
 
-* GeoNature-atlas fonctionne avec des données géographiques qui doivent être fournies en amont (mailles, limite de territoire, limite de communes ou zone geographique). Vous avez la possibilité de récupérer ces données directement depuis le référentiel géographique de GeoNature si les données y sont présentes (``use_ref_geo_gn2=true``); ou de fournir des fichiers shapefiles (à mettre dans le répertoire ``data/ref``)
 
 **Attention** . Par défaut le ``ref_geo`` contient l'ensemble des communes de France, ce qui ralentit fortement l'installation lorsqu'on construit la table ``zoning`` (qui intersecte les communes avec les limites du territoire).
 
@@ -135,14 +134,14 @@ Vous y trouverez aussi un exemple d'adaptation de la vue ``atlas.vm_observations
 
 **3.1 Installation de l'atlas sans GeoNature**
 
-Si vous n'utilisez pas GeoNature, il vous faut installer TaxHub (https://github.com/PnX-SI/TaxHub/)pour gérer les attributs (description, commentaire, milieu et chorologie) ainsi que les médias rattachés à chaque espèce (photos, videos, audios et articles). TaxHub dispose aussi de scripts permettant d'importer les médias des espèces depuis les photos libres de l'INPN (https://github.com/PnX-SI/TaxHub/tree/master/data/scripts/import_inpn_media) ou de Wikimedia (https://github.com/PnX-SI/TaxHub/tree/master/data/scripts/import_wikimedia_commons).
+Si vous n'utilisez pas GeoNature, il vous faut installer TaxHub (https://github.com/PnX-SI/TaxHub/) pour gérer les attributs (description, commentaire, milieu et chorologie) ainsi que les médias rattachés à chaque espèce (photos, videos, audios et articles). TaxHub est également  fourni avec un réferentiel géographique (schema `ref_geo`) qui est nécessaire au bon fonctionnement de l'atlas.
+
 ⚠️ L'atlas devra alors impérativement être installé dans la même BDD que TaxHub.
 
 Une fois TaxHub installé, il est nécessaire d'ajouter des migrations alembic pour ajouter les mailles nécessaires à GeoNature-atlas.
 
 ::
 
-    
     # se mettre dans le venv de TaxHub
 
     # mettre à jour le schéma ref_geo
@@ -156,6 +155,9 @@ Une fois TaxHub installé, il est nécessaire d'ajouter des migrations alembic p
     flask db upgrade ref_geo_inpn_grids_10@head
     # ajout des communes
     flask db upgrade ref_geo_fr_municipalities@head
+    # ajout des départements
+    flask db upgrade ref_geo_fr_departments@head
+
 
 
 Vous devrez ensuite ajouter une couche qui correspond aux limites de votre territoire dans le schéma ``ref_geo`` de la base qui a été créé avec TaxHub.
@@ -206,21 +208,6 @@ Le fichier de configuration central de l'application est ``atlas/configuration/c
 
 Après chaque modification de la configuration, relancer la commande ``sudo systemctl restart geonature-atlas`` pour qu'elles soient appliquées.
 
-Pour améliorer les performances, le calcul des statistiques de la page d'accueil (statistiquess globale et statistique par rangs taxonomiques) sont mis en cache après leur premier chargement. Par defaut le cache dure 1h, il est possible de modifier ce paramètre via la variable `CACHE_TIMEOUT` (en seconde). Si on souhaite vider le cache, il est aussi possible de redémarrer l'application.
-
-Customisation de l'application
-==============================
-
-En plus de la configuration, vous pouvez customiser l'application en modifiant et ajoutant des fichiers dans le répertoire ``static/custom/`` (css, templates, images).
-
-L'atlas est fourni avec des variables CSS qui permettent de personnaliser facilement l'interface (changement des couleurs principales). Pour cela éditer les variables présentes dans le fichier ``static/custom/custom.css``. Les variables ``--main-color`` et ``second-color`` permettent de customiser l'atlas selon les couleurs de votre organism.
-
-Vous pouvez aussi modifier ou ajouter des pages statiques de présentation, en plus de la page Présentation fournie par défaut. Pour cela, voir le paramètre ``STATIC_PAGES`` du fichier ``main/configuration/config.py``.
-
-En mode point, il est possible de customiser l'affichage cartographique (modification de la couleur des points, modification de la légende) en éditant le fichier ``static/custom/maps-custom.js``. Par défaut l'affichage dissocie les données dégradées des données précises : voir `<degradation_donnees.rst>`_.
-
-Tous les fichiers du dossier ``static`` peuvent être surcouchés en placant un fichier de même chemin dans le dossier ``static/custom``
-- Par exemple pour remplacer le picto des mammifères il suffit d'ajouter un fichier ``static/custom/images/picto_Mammiferes.png``.
 
 Configuration d'Apache
 ======================
@@ -323,14 +310,6 @@ Attention à bien lire les notes de chaque version, qui peuvent indiquer des op�
 - Executer le script de migration associé à la monté de version `update_X.Y.Z_to_X.Y.Z.sql`
 
 
-Mise à jour des couches de référence
-====================================
-
-Limite du territoire ou communes.
-
-Voir les parties concernées dans `install_db.sh <../install_db.sh#L65-L88>`_.
-
-
 Accéder à votre BDD
 ===================
 
@@ -341,6 +320,8 @@ Voir https://github.com/PnX-SI/Ressources-techniques/blob/master/PostgreSQL/acce
 
 Développement
 =============
+
+Lire le fichier `CONTRIBUTING.md`.
 
 **Installer les dépendances de dev**
 
