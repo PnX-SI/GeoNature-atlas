@@ -19,15 +19,40 @@ L'outil a été développé de manière générique pour pouvoir être déployé
 
 .. image :: docs/images/geonature-atlas-schema-02.jpg
 
-Documentation d'installation : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/installation.rst
+Documentation
+-------------
 
-Présentation générale : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/2016-09-GeoNature-atlas-PRESENTATION.pdf
+* `Installation <docs/installation.rst>`_
+* `Présentation des vues materialisées et installation dans un contexte sans GeoNature <docs/vues_materialisees_maj.rst>`_
+* `Configuration de l'application <docs/configuration.rst>`_
+* `Multilingue <docs/multilingual.rst>`_
+* `Gestion et affichage des données sensibles <docs/sensibilite_donnees.md>`_
+* `Cookies et RGPD <docs/cookies_rgpd.rst>`_
+* `Contribution <docs/CONTRIBUTING.md>`_
+* `Changelog <docs/changelog.rst>`_
 
-Rapport de stage (Théo Lechemia) : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/2016-09-30-rapport_stage_Theo-Lechemia.pdf
+Rapports et présentations
+--------------------------
 
-Soutenance de stage (Théo Lechemia) : https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/2016-09-soutenance-Theo-Lechemia.pdf
+* `Rapport de stage - Théo Lechemia (2016) <docs/2016-09-30-rapport_stage_Theo-Lechemia.pdf>`_
+* `Soutenance - Théo Lechemia (2016) <docs/2016-09-soutenance-Theo-Lechemia.pdf>`_
+* `Présentation GeoNature Atlas (2016) <docs/2016-09-GeoNature-atlas-PRESENTATION.pdf>`_
+
+
+Technologies
+------------
+
+- Langages : Python, HTML, JS, CSS
+- BDD : PostgreSQL, PostGIS
+- Serveur : Debian
+- Framework Python : Flask
+- Framework JS : jQuery
+- Framework carto : Leaflet
+- Serveur carto : Aucun
+- Fonds rasters : Geoportail, OpenStreetMap, Google Maps, WMS...
 
 Exemples d'atlas en ligne utilisant GeoNature-atlas :
+-----------------------------------------------------
 
 - `PN du Mercantour <http://biodiversite.mercantour-parcnational.fr>`_
 - `PN de la Vanoise <http://biodiversite.vanoise-parcnational.fr>`_
@@ -49,24 +74,6 @@ Exemples d'atlas en ligne utilisant GeoNature-atlas :
 - `Silene Nature <https://nature.silene.eu>`_
 - `Biodiv'Rennes <https://abc-biodivrennes.fr/atlas>`_
 
-Technologies
-------------
-
-- Langages : Python, HTML, JS, CSS
-- BDD : PostgreSQL, PostGIS
-- Serveur : Debian
-- Framework Python : Flask
-- Framework JS : jQuery
-- Framework carto : Leaflet
-- Serveur carto : Aucun
-- Fonds rasters : Geoportail, OpenStreetMap, Google Maps, WMS...
-
-Généricité
-----------
-
-L'API de GeoNature-atlas se sert directement dans des vues. Ainsi chacun peut personnaliser ses vues en fonction des besoins et des différences dans les tables. 
-
-L'ensemble des vues sont regroupées dans un schéma spécifique « atlas », ce qui laisse la possibilité de les remplir avec autre chose que GeoNature.
 
 Auteurs
 -------
