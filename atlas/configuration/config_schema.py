@@ -95,16 +95,16 @@ orijime_default_translations = {
 }
 
 AFFICHAGE_COUCHES_MAP_DEFAULT = {
-    "M1": {
-        "label": "Mailles 1 km",
+    "COM": {
+        "label": "Communes",
         "selected": True,
-    },
-    "M5": {
-        "label": "Mailles communes",
-        "selected": False,
     },
     "M10": {
         "label": "Mailles 10 km",
+        "selected": False,
+    },
+    "DEP": {
+        "label": "Département",
         "selected": False,
     },
 }
