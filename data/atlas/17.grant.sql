@@ -6,7 +6,6 @@ GRANT USAGE ON SCHEMA atlas TO :reader_user ;
 
 GRANT SELECT ON TABLE atlas.vm_taxref TO :reader_user ;
 GRANT SELECT ON TABLE atlas.bib_taxref_rangs TO :reader_user ;
-GRANT SELECT ON TABLE atlas.t_layer_territoire TO :reader_user ;
 GRANT SELECT ON TABLE atlas.vm_bib_areas_types TO :reader_user ;
 GRANT SELECT ON TABLE atlas.vm_cor_areas TO :reader_user ;
 GRANT SELECT ON TABLE atlas.vm_l_areas TO :reader_user ;

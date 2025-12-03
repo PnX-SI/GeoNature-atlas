@@ -1,7 +1,7 @@
  -- Vue Nombre d'oservation par taxons et par organisme
 
 CREATE MATERIALIZED VIEW atlas.vm_cor_taxon_organism AS
-    WITH obs_by_dataset_and_organism AS (
+    WITH obs_by_cd_ref_and_organism AS (
         SELECT
             obs.cd_ref,
             rcda.id_organism,
@@ -23,7 +23,7 @@ CREATE MATERIALIZED VIEW atlas.vm_cor_taxon_organism AS
         email_organisme AS email_organism,
         url_organisme AS url_organism,
         url_logo
-    FROM obs_by_dataset_and_organism AS obdao
+    FROM obs_by_cd_ref_and_organism AS obdao
         JOIN utilisateurs.bib_organismes AS bo
             ON bo.id_organisme = obdao.id_organism
 WITH DATA;

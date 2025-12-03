@@ -72,10 +72,6 @@ atlas_source_pass=monpassachanger
 # 🗒 Voir la colonne "type_code" de la table "ref_geo.bib_areas_type" pour
 # tous les codes de type de zone geographique renseignés ci-dessous
 
-# Indiquer le code du type d'entité géographique correspondant aux limites de votre territoire.
-# Une seule entrée correspondant à ce type doit être présent dans la table "ref_geo.l_areas".
-# 🗒 Voir la colonne "type_code" de la table "ref_geo.bib_areas_type".
-type_territoire="PEC"
 
 # Type de zonage à utiliser dans l'application pour générer les fiches territoires.
 # (Pour optimiser et ne pas utiliser toutes les géométries présentes dans ref_geo).

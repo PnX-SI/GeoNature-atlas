@@ -899,7 +899,7 @@ function addInFeatureGroup(feature, layer) {
 }
 
 // eslint-disable-next-line no-unused-vars
-function displayGeojsonMailles(observationsMaille, lastObs = false) {
+function displayGeojsonMailles(observationsMaille) {
     // Get all different type code
     observationsMaille.features.forEach((elem) => {
         if (!current_type_code.includes(elem.properties.type_code)) {

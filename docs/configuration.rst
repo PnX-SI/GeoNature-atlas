@@ -22,6 +22,11 @@ En mode point, il est possible de customiser l'affichage cartographique (modific
 Tous les fichiers du dossier ``static`` peuvent être surcouchés en placant un fichier de même chemin dans le dossier ``static/custom``
 - Par exemple pour remplacer le picto des mammifères il suffit d'ajouter un fichier ``static/custom/images/picto_Mammiferes.png``.
 
+Customiser la couche des limites du territoire
+""""""""""""""""""""""""""""""""""""""""""""""
+
+Le fichier `static/custom/territoire/json` peut être remplacer par le geojson des limites de votre territoire
+
 TaxHub : le backoffice de GeoNature-Atlas
 -----------------------------------------
 

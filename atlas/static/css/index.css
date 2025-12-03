@@ -270,10 +270,13 @@ h3.title-spaced {
 
 .lastObsImg {
   width: 80px;
-  height: 80px;
-  object-fit: cover;
   background-color: var(--light);
   flex-shrink: 0; /* IMPORTANT → évite que le flex les écrase */
+}
+
+.lastObsImg.has-media-True {
+  height: 80px;
+  object-fit: cover;
 }
 
 .lastObslistItem.current {

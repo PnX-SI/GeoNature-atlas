@@ -174,7 +174,7 @@ function checkDockerVariables() {
     local vars=(
         'POSTGRES_USER' 'POSTGRES_PASSWORD' 'POSTGRES_HOST' 'POSTGRES_DB' 'POSTGRES_PORT' \
         'ATLAS_DROP_SCHEMA' \
-        'ATLAS_TYPE_TERRITOIRE' 'ATLAS_TYPE_CODE' 'ATLAS_TYPE_MAILLE' 'ATLAS_ALTITUDES' \
+        'ATLAS_TYPE_CODE' 'ATLAS_ALTITUDES', 'ATLAS_TYPE_MAILLE' \
         'ATLAS_MOST_OBSERVED_TIME'
     )
     for i in "${!vars[@]}"; do
@@ -325,7 +325,7 @@ function createFdwTables() {
 
 function createDatabaseWithoutGeonature() {
     printMsg "Creating DB structure without GeoNature database..."
-    executeFile "data/atlas/without_geonature.sql"
+    executeFile "data/without_gn2/without_geonature.sql"
 }
 
 function prepareAltitudesValues() {
@@ -386,7 +386,6 @@ function createAtlasSchemaEntities() {
         time_start="${SECONDS}"
         executeFile data/atlas/${script} \
                 -v "ON_ERROR_STOP=1" \
-                -v type_territoire="${type_territoire}" \
                 -v type_code="${type_code}" \
                 -v type_maille="${type_maille}" \
                 -v insert_altitudes_values="${insert_altitudes_values}" \

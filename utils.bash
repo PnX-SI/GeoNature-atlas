@@ -339,7 +339,6 @@ function convertDockerVariables() {
     altitudes=(${ATLAS_ALTITUDES})
 
     # Assign other variables
-    type_territoire="${ATLAS_TYPE_TERRITOIRE}"
     type_code="${ATLAS_TYPE_CODE}"
     type_maille="${ATLAS_TYPE_MAILLE}"
     time="${ATLAS_MOST_OBSERVED_TIME}"
