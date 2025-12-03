@@ -23,7 +23,9 @@ CHANGELOG
 - Ajout d'un plugin permetant une recheche d'adresse sur les cartes de la page d'acceuil et territoire (#716 @juggler31)
 - Nouvel affichage des tooltips lorsqu'on clique sur une maille (#721 @juggler31)
 - Possibilité de masquer la page de la gallerie photo (#703 @lpofredc) via le paramètre `AFFICHAGE_GALERIE_PHOTO`
-
+- Suppression de la table t_layer_territoire qui permettait de filtrer les données hors territoire. Ceci est desormais à faire par chaque utilisateurs directement dans `atlas.vm_observations`
+- Le paramètre `type_territoire` du ficher `settings.ini` n'est plus utilisé
+- 
 A VERIFIER :
 
 ``navbar.html``

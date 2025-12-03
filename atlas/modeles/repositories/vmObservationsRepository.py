@@ -86,7 +86,9 @@ def getObservationsChilds(params: {}):
         if "taxons" in fields:
             observation_as_dict["taxon"] = o.taxon.shorten_name()
             if "medias" in fields:
-                observation_as_dict["media"] = o.taxon.get_main_media()
+                observation_as_dict["media"], observation_as_dict["has_media"] = (
+                    o.taxon.get_main_media()
+                )
         feature = Feature(
             id=observation_as_dict["id_observation"],
             geometry=json.loads(o.geojson_point or "{}"),

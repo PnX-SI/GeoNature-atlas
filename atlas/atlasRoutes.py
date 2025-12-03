@@ -192,7 +192,9 @@ def ficheEspece(cd_nom):
     taxon = vmTaxrefRepository.searchEspece(cd_ref)
     altitudes = vmAltitudesRepository.getAltitudesChilds(cd_ref)
     months = vmMoisRepository.getMonthlyObservationsChilds(cd_ref)
-    organism_stats = vmCorTaxonOrganismRepository.getTaxonOrganism(cd_ref)
+    organism_stats = None
+    if current_app.config["ORGANISM_MODULE"]:
+        organism_stats = vmCorTaxonOrganismRepository.getTaxonOrganism(cd_ref)
     synonyme = vmTaxrefRepository.getSynonymy(cd_ref)
     areas = vmAreasRepository.getAreasByTaxon(cd_ref)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(cd_ref)
