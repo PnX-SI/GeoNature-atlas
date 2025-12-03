@@ -238,7 +238,14 @@ function reorderLayerControl() {
     // Vide le conteneur
     overlayDiv.innerHTML = "";
 
-    // Ajoute d'abord les defaultOverlay
+    if (defaultLabels.length > 0) {
+        const defaultLabelTitle = document.createElement("p");
+        defaultLabelTitle.style.fontWeight = "bold";
+        defaultLabelTitle.style.margin = "5px 0";
+        defaultLabelTitle.textContent =
+            "Niveau de diffusion des données en fonction leur sensibilité";
+        overlayDiv.appendChild(defaultLabelTitle);
+    }
     defaultLabels.forEach((label) => overlayDiv.appendChild(label));
 
     // Ajoute le séparateur si les deux groupes existent
@@ -246,6 +253,13 @@ function reorderLayerControl() {
         const separator = document.createElement("div");
         separator.className = "leaflet-control-layers-separator";
         overlayDiv.appendChild(separator);
+    }
+    if (otherLabels.length > 0) {
+        const aditionnalLbelTitle = document.createElement("p");
+        aditionnalLbelTitle.style.fontWeight = "bold";
+        aditionnalLbelTitle.style.margin = "5px 0";
+        aditionnalLbelTitle.textContent = "Couche(s) additionnelle(s)";
+        overlayDiv.appendChild(aditionnalLbelTitle);
     }
 
     // Ajoute les autres couches
@@ -753,7 +767,7 @@ function createPopUp(event) {
     const idMaille = event.target.feature.id;
     page_tooltip = 1;
     havePossibleNextPage_tooltip = true;
-    let url = `/api/taxonListJson/area/${idMaille}?page=-1`;
+    let url = `/api/taxonListJson/area/${idMaille}?page=-1&only_related_sensitivity_level=true`;
     if (sheetName === "index" && configuration.AFFICHAGE_DERNIERES_OBS) {
         url = url + "&last_obs=true";
     }

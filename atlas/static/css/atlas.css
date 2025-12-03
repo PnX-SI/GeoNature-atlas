@@ -922,3 +922,7 @@ footer {
 #newSpecies .card {
     height: 100%;
 }
+
+.leaflet-control-layers {
+    max-width: 300px;
+}
