@@ -60,8 +60,6 @@ CREATE INDEX ON atlas.vm_bib_areas_types
     USING btree (type_name);
 
 
-
-
 -- +-----------------------------------------------------------------------------------------------+
 -- l_areas
 CREATE MATERIALIZED VIEW atlas.vm_l_areas AS
@@ -114,27 +112,46 @@ $function$
 $function$ ;
 
 
-
 -- +-----------------------------------------------------------------------------------------------+
 -- vm_cor_areas
 CREATE MATERIALIZED VIEW atlas.vm_cor_areas AS
-    with dep as (
-    SELECT * 
-    FROM atlas.vm_l_areas vla
-    JOIN atlas.vm_bib_areas_types b USING(id_type)
-    where b.type_code = 'DEP'
+    WITH dep AS (
+        SELECT
+            vla.id_area,
+            ST_SimplifyPreserveTopology(vla.geom_local, 100) AS geom_local_simplified,
+            st_buffer(
+                ST_SimplifyPreserveTopology(vla.geom_local, 100),
+                200
+            ) AS geom_local_simplified_buffered
+        FROM atlas.vm_l_areas AS vla
+            JOIN atlas.vm_bib_areas_types AS b USING(id_type)
+        WHERE b.type_code = 'DEP'
+    ),
+    areas AS (
+        SELECT
+            vla.id_area,
+            ST_SimplifyPreserveTopology(vla.geom_local, 100) AS geom_local_simplified
+        FROM atlas.vm_l_areas AS vla
+            JOIN atlas.vm_bib_areas_types AS b USING(id_type)
+        WHERE b.type_code IN (SELECT * FROM string_to_table(:'type_code', ','))
     )
-        SELECT vla.id_area, dep.id_area as id_area_parent
-        FROM atlas.vm_l_areas vla
-        JOIN atlas.vm_bib_areas_types b USING(id_type)
-        JOIN dep on 
-        st_intersects(dep.geom_local, vla.geom_local) AND 
-                st_within(vla.geom_local, st_buffer(dep.geom_local, 100))
-        WHERE b.type_code in (SELECT * FROM string_to_table(:'type_code', ','))
+    SELECT
+        a.id_area,
+        d.id_area AS id_area_parent
+    FROM areas AS a
+        JOIN dep AS d
+            ON (
+                st_intersects(d.geom_local_simplified, a.geom_local_simplified)
+                AND st_within(a.geom_local_simplified, d.geom_local_simplified_buffered)
+            )
     UNION
-        SELECT id_area as id_area, id_area_group as id_area_parent from ref_geo.cor_areas;
-        -- On laisse volontairement l'autointersection département  - département pour les fiche territoire des départements !
-                    
+        SELECT
+            id_area,
+            id_area_group AS id_area_parent
+        FROM ref_geo.cor_areas
+    ;
+    -- We are intentionally leaving the department-department intersection for the departmental territory sheets!
+
 CREATE INDEX ON atlas.vm_cor_areas
     USING btree (id_area_parent);
 
