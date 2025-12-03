@@ -325,7 +325,7 @@ function createFdwTables() {
 
 function createDatabaseWithoutGeonature() {
     printMsg "Creating DB structure without GeoNature database..."
-    executeFile "data/atlas/without_geonature.sql"
+    executeFile "data/without_gn2/without_geonature.sql"
 }
 
 function prepareAltitudesValues() {

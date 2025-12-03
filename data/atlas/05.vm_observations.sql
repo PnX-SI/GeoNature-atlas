@@ -33,10 +33,10 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
                 ON bat.id_type = a.id_type
             JOIN ref_nomenclatures.t_nomenclatures AS se
                 ON se.id_nomenclature = s.id_nomenclature_sensitivity
-            JOIN gn_sensitivity.cor_sensitivity_area_type AS csat
+            JOIN atlas.cor_sensitivity_area_type AS csat
                 ON (
-                    csat.id_nomenclature_sensitivity = se.id_nomenclature
-                    AND csat.id_area_type = bat.id_type
+                    csat.sensitivity_code = se.cd_nomenclature
+                    AND csat.area_type_code = bat.type_code
                 )
         WHERE s.the_geom_point IS NOT NULL
             AND (st.cd_nomenclature = 'Pr' OR s.id_nomenclature_observation_status IS NULL)
