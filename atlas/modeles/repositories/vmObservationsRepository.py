@@ -79,7 +79,7 @@ def getObservationsChilds(params: {}):
     elif not cd_ref and not id_area:
         query = query.limit(100000)
 
-    observations = db.session.execute(query).scalars().all()
+    observations = db.session.execute(query.order_by(VmObservations.dateobs.desc())).scalars().all()
     features = []
     for o in observations:
         observation_as_dict = o.as_dict()
