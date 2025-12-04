@@ -1,8 +1,9 @@
 # -*- coding:utf-8 -*-
 from urllib.parse import urljoin
 from flask import current_app, url_for
-from sqlalchemy import String, Float, Text, ForeignKey, Boolean, and_
+from sqlalchemy import String, Float, Text, ForeignKey, Boolean, and_, Integer
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.orm import relationship
 from atlas.env import db
 from atlas.modeles.entities.vmMedias import VmMedias
@@ -136,3 +137,11 @@ class VmTaxonsMostView(db.Model):
     url: Mapped[str] = mapped_column(String(255))
     chemin: Mapped[str] = mapped_column(String(255))
     id_type: Mapped[int] = mapped_column()
+
+
+class VmTaxonArea(db.Model):
+    __tablename__ = "vm_cor_taxon_area"
+    __table_args__ = {"schema": "atlas"}
+
+    cd_ref: Mapped[int] = mapped_column(primary_key=True)
+    id_area: Mapped[int] = mapped_column(primary_key=True)
