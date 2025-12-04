@@ -16,7 +16,7 @@ from flask import (
 )
 from werkzeug.datastructures import MultiDict
 
-from atlas.env import db
+from atlas.env import cache, db
 from atlas.modeles.entities import vmTaxons, vmAreas
 from atlas.modeles.repositories import (
     vmOrganismsRepository,
@@ -73,6 +73,7 @@ if current_app.config["ORGANISM_MODULE"]:
 
     @main.route("/<lang_code>/organism/<int:id_organism>", methods=["GET", "POST"])
     @main.route("/organism/<int:id_organism>", methods=["GET", "POST"])
+    @cache.cached()
     def ficheOrganism(id_organism):
 
         infos_organism = vmOrganismsRepository.statOrganism(id_organism)
@@ -180,6 +181,7 @@ def index():
 
 @main.route("/<lang_code>/espece/<int(signed=True):cd_nom>", methods=["GET", "POST"])
 @main.route("/espece/<int(signed=True):cd_nom>", methods=["GET", "POST"])
+@cache.cached()
 def ficheEspece(cd_nom):
     # Get cd_ref from cd_nom
     cd_ref = vmTaxrefRepository.get_cd_ref(cd_nom)
@@ -308,6 +310,7 @@ def _make_groupes_statuts(statuts):
 
 @main.route("/<lang_code>/area/<int:id_area>", methods=["GET", "POST"])
 @main.route("/area/<int:id_area>", methods=["GET", "POST"])
+@cache.cached()
 def area(id_area):
     area = vmAreasRepository.getAreaFromIdArea(id_area)
     stats_area = vmAreasRepository.getStatsByArea(id_area)
