@@ -333,7 +333,6 @@ class AtlasConfig(Schema):
     SPLIT_NOM_VERN = fields.Boolean(load_default=True)
     INTERACTIVE_MAP_LIST = fields.Boolean(load_default=True)
     AVAILABLE_LANGUAGES = fields.Dict(load_default=LANGUAGES)
-    AFFICHAGE_STATUTS = fields.Boolean(load_default=True)
     # Flask parameter enabling auto reload of templates
     # (no need to restart the atlas service when updating templates)
     # Defaults to False to have the best performance in production
