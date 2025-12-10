@@ -347,6 +347,14 @@ class AtlasConfig(Schema):
         fields.Nested(MediaTypeImportantLink), load_default=None
     )
 
+    ZONING_PAGE_SENSIBILITY_MESSAGE = fields.String(
+        load_default="""
+        La liste des espèces affichées sur cette page peut être incomplète.
+        Conformément au référentiel national de sensibilité, certaines données ne sont pas affichées : il s'agit des espèces sensibles dont la diffusion de la localisation précise pourrait entrainer leur dégradation.
+        L'ensemble des observations sont elles bien disponibles avec le bon niveau de floutage sur les fiches espèces.
+        """
+    )
+
     @validates_schema
     def validate_config(self, data, **kwargs):
         """
