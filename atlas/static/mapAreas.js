@@ -32,26 +32,10 @@ bounds.extend(layerBounds);
 map.fitBounds(bounds);
 map.zoom = map.getZoom();
 
-// Generate legends and check configuration to choose which to display (Maille ou Point)
-
-htmlLegendMaille =
-    "<i style='border: solid 1px var(--map-maille-lastobs-border-color);'> &nbsp; &nbsp; &nbsp;</i> Maille comportant au moins une observation <br> <br>" +
-    "<i style='border: dashed 2px var(--map-area-border-color); background-color:var(--map-area-border-color); opacity:0.3'> &nbsp; &nbsp; &nbsp;</i> Limite de la zone <br> <br>" +
-    "<i style='border: solid var(--map-area-border-width) var(--map-territory-border-color);'> &nbsp; &nbsp; &nbsp;</i> Limite du " +
-    configuration.STRUCTURE;
-
-htmlLegendPoint =
-    "<i style='border-style: dotted;'> &nbsp; &nbsp; &nbsp;</i> Limite de la zone <br> <br>" +
-    "<i style='border: solid " +
-    configuration.MAP.BORDERS_WEIGHT +
-    "px " +
-    configuration.MAP.BORDERS_COLOR +
-    ";'> &nbsp; &nbsp; &nbsp;</i> Limite du " +
-    configuration.STRUCTURE;
-
-htmlLegend = configuration.AFFICHAGE_MAILLE
-    ? htmlLegendMaille
-    : htmlLegendPoint;
+const div = L.DomUtil.create("div", "legend-item");
+div.innerHTML =
+    "<i style='border: dashed 2px var(--map-area-border-color); background-color:var(--map-area-border-color); opacity:0.3'> &nbsp; &nbsp; &nbsp;</i> Limite de la zone <br>";
+document.getElementById("legend-area").appendChild(div);
 
 // General Legend
 

@@ -133,16 +133,6 @@ MAP = {
     'MAX_BOUNDS' : [[41.463,-1.876],[51.62,8.6]],
     # Pas du slider sur les annees d'observations: 1 = pas de 1 an sur le slider
     'STEP': 1,
-    # Couleur et épaisseur des limites du territoire
-    'BORDERS_COLOR': '#000000',
-    'BORDERS_WEIGHT': 3,
-    # Permet de générer un masque autour du territoire
-    # Pour activer mettre fill à True
-    'MASK_STYLE': {
-                    "fill": False,
-                    "fillColor": '#020202',
-                    "fillOpacity": 0.3
-                   },
     'ENABLE_SLIDER': True,
     'ENABLE_SCALE': True
 }
@@ -193,17 +183,18 @@ COUCHES_SIG = [
             "attribution": "",
             "wms_version": "1.3.0"
         },
+        # sans le paramètre "pages", la couche est présente sur toutes les pages
         "pages": ["index", "area"], // le nom des pages est celui du nom des fonction python des routes (voir atlasRoutes.py)
     },
     {
-        "name": "test geojson name",
+        "name": "Limite de mon territoire depuis une couche locale (static/custom)",
         "type": "geojson",
-        "url": "Url du geojson",
+        "url": "<URL_ATLAS>/static/custom/territoire.json",
         "style": {
-            "color": "red",
+            "color": "blue",
             "weight": 2,
-        },
-        "pages": ["index", "area"],
+            "fillOpacity": 0
+        }
     }
 ]
 

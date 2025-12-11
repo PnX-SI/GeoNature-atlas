@@ -44,7 +44,6 @@
         var observationsPoint = [];
         var observationsMaille = [];
         var configuration = {{ configuration | tojson }};
-        var url_limit_territory = "{{ url_for('static', filename='custom/territoire.json') }}";
         var taxonYearMin = {{ taxon.taxonSearch.yearmin }};
         var cd_ref = {{ taxon.taxonSearch.cd_ref }};
         var nb_obs = {{ taxon.taxonSearch.nb_obs }};
