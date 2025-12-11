@@ -32,7 +32,7 @@ genericChart = function (element, labels, values) {
             labels: labels,
             datasets: [
                 {
-                    label: translations.observations,
+                    label: window.i18n.observations,
                     data: values,
                     backgroundColor: chartMainColor,
                     hoverBackgroundColor: chartHoverMainColor,
@@ -99,7 +99,7 @@ function formatPieData(data) {
         labels: labels,
         datasets: [
             {
-                label: translations.nb_observations,
+                label: window.i18n["obs.number.s"],
                 data: data_count,
                 backgroundColor: configuration.COLOR_PIE_CHARTS,
                 hoverOffset: 25,
@@ -161,7 +161,7 @@ function formatStackedBarChart(values) {
 
     if (configuration.DISPLAY_PATRIMONIALITE) {
         datasets.push({
-            label: `${translations.nb_species} ${configuration.PATRIMONIALITE.label_pluriel.toLowerCase()}`,
+            label: `${window.i18n["number.species"]} ${window.i18n["patrimonial.plural"] ? ${window.i18n["patrimonial.plural"].toLowerCase(): "patrimoniales"}`,
             data: nb_patrimonial,
             backgroundColor: [configuration.COLOR_STACKED_BAR_CHARTS[1]],
             stack: "2",
@@ -169,14 +169,14 @@ function formatStackedBarChart(values) {
     }
 
     datasets.push({
-        label: `${translations.nb_species} (${areaInfos.areaName})`,
+        label: `${window.i18n["number.species"]} (${areaInfos.areaName})`,
         data: nb_species,
         backgroundColor: [configuration.COLOR_STACKED_BAR_CHARTS[0]],
         stack: "0",
     });
     if (configuration.AFFICHAGE_TOUT_TERRITOIRE_GRAPH) {
         datasets.push({
-            label: translations.nb_species_territory,
+            label: window.i18n["number.species.territory"],
             data: nb_species_in_teritory,
             backgroundColor: [configuration.COLOR_STACKED_BAR_CHARTS[2]],
             stack: "1",
@@ -237,10 +237,10 @@ function threatenedBarChartConfig(element, total, threatened) {
     const others = total - threatened;
 
     const data = {
-        labels: [translations.species],
+        labels: [window.i18n["species"]],
         datasets: [
             {
-                label: translations.threatened_species,
+                label: window.i18n["threatened.species"],
                 data: [threatened],
                 backgroundColor: hexToRgba(chartMainColorThreatened, 0.2),
                 borderColor: hexToRgba(chartMainColorThreatened),
@@ -248,7 +248,7 @@ function threatenedBarChartConfig(element, total, threatened) {
                 stack: "0",
             },
             {
-                label: translations.other_species,
+                label: window.i18n["other.species"],
                 data: [others],
                 backgroundColor: hexToRgba(chartMainColorNoThreatened, 0.2),
                 borderColor: hexToRgba(chartMainColorNoThreatened),
@@ -268,7 +268,7 @@ function threatenedBarChartConfig(element, total, threatened) {
                 legend: { position: "top" },
                 title: {
                     display: true,
-                    text: translations.threatened_species_repartition,
+                    text: window.i18n["threatened.species.repartition"],
                 },
             },
             scales: {
@@ -294,14 +294,14 @@ function threatenedByTaxoGroupChartConfig(element, values) {
         labels: labels,
         datasets: [
             {
-                label: translations.threatened_species,
+                label: window.i18n["threatened.species"],
                 data: threatened,
                 backgroundColor: hexToRgba(chartMainColorThreatened, 0.2),
                 borderColor: hexToRgba(chartMainColorThreatened),
                 borderWidth: 3,
             },
             {
-                label: translations.other_species,
+                label: window.i18n["other.species"],
                 data: notThreatened,
                 backgroundColor: hexToRgba(chartMainColorNoThreatened, 0.2),
                 borderColor: hexToRgba(chartMainColorNoThreatened),
@@ -320,7 +320,7 @@ function threatenedByTaxoGroupChartConfig(element, values) {
                 legend: { position: "top" },
                 title: {
                     display: true,
-                    text: translations.nb_species_taxonomic_group,
+                    text: window.i18n["number.species.taxonomic.group"],
                 },
             },
             scales: {

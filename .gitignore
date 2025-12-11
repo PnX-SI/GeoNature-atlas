@@ -6,10 +6,10 @@ atlas/configuration/settings.ini
 
 # Atlas static files
 atlas/static/node_modules/
-atlas/static/custom/*
-!atlas/static/custom/images/
-!atlas/static/custom/templates/
-!atlas/static/custom/**/.gitignore
+atlas/static/custom/images/*
+atlas/static/custom/templates/*
+atlas/static/custom/translations_override/**/*.po
+atlas/static/custom/translations_override/**/*.mo
 
 # Directories to ignore
 .idea/

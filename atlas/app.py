@@ -4,7 +4,6 @@ from datetime import datetime, timedelta
 from flask import Flask, request, session, redirect, url_for, g
 from flask_compress import Compress
 from flask_sqlalchemy import SQLAlchemy
-from flask_babel import Babel, format_date, gettext, ngettext, get_locale
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.middleware.shared_data import SharedDataMiddleware
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
@@ -12,7 +11,14 @@ from werkzeug.wrappers import Response
 
 from atlas.configuration.config_parser import valid_config_from_dict
 from atlas.configuration.config_schema import AtlasConfig, SecretSchemaConf
-from atlas.env import atlas_static_folder, atlas_template_folder, atlas_config_file_path, db, cache
+from atlas.env import (
+    atlas_static_folder,
+    atlas_template_folder,
+    atlas_config_file_path,
+    db,
+    cache,
+    babel,
+)
 from atlas.utils import get_locale, get_tranlated_labels
 
 compress = Compress()
@@ -42,7 +48,13 @@ def create_app():
             "CACHE_DEFAULT_TIMEOUT": app.config["CACHE_TIMEOUT"],
         },
     )
-    babel = Babel(app, locale_selector=get_locale)
+
+    app.config["BABEL_TRANSLATION_DIRECTORIES"] = (
+        "translations;static/custom/translations_override"
+    )
+    # app.config["BABEL_TRANSLATION_DIRECTORIES"] = "trucquexistepas"
+
+    babel.init_app(app, locale_selector=get_locale)
     compress.init_app(app)
 
     app.config["SECRET_KEY"] = app.config["SECRET_KEY"]

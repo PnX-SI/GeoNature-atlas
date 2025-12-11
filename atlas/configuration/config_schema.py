@@ -294,18 +294,7 @@ class AtlasConfig(Schema):
     DISPLAY_PATRIMONIALITE = fields.Boolean(load_default=False)
     AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION = fields.Boolean(load_default=True)
     AFFICHAGE_TAB_AREA_OBS_ESPECES = fields.Boolean(load_default=True)
-    PATRIMONIALITE = fields.Dict(
-        load_default={
-            "label": "Patrimoniale",
-            "label_pluriel": "Patrimoniales",
-            "config": {
-                "oui": {
-                    "icon": "custom/images/logo_patrimonial.png",
-                    "text": "Ce taxon est patrimonial",
-                }
-            },
-        }
-    )
+    PATRIMONIALITE_ICON = fields.Str(load_default="custom/images/logo_patrimonial.png")
     STATIC_PAGES = fields.Dict(
         load_default={
             "presentation": {
@@ -343,13 +332,7 @@ class AtlasConfig(Schema):
         fields.Nested(MediaTypeImportantLink), load_default=None
     )
 
-    ZONING_PAGE_SENSIBILITY_MESSAGE = fields.String(
-        load_default="""
-        La liste des espèces affichées sur cette page peut être incomplète.
-        Conformément au référentiel national de sensibilité, certaines données ne sont pas affichées : il s'agit des espèces sensibles dont la diffusion de la localisation précise pourrait entrainer leur dégradation.
-        L'ensemble des observations sont elles bien disponibles avec le bon niveau de floutage sur les fiches espèces.
-        """
-    )
+    DISPLAY_ZONING_PAGE_SENSIBILITY_MESSAGE = fields.Boolean(load_default=True)
 
     @validates_schema
     def validate_config(self, data, **kwargs):
