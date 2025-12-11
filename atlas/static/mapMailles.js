@@ -3,15 +3,6 @@ var map = generateMap(zoomHomeButton);
 if (configuration.MAP.ENABLE_SLIDER) {
     generateSliderOnMap();
 }
-// Legende
-
-htmlLegend =
-    "<i style='border: solid " +
-    configuration.MAP.BORDERS_WEIGHT +
-    "px " +
-    configuration.MAP.BORDERS_COLOR +
-    ";'> &nbsp; &nbsp; &nbsp;</i> Limite du " +
-    configuration.STRUCTURE;
 
 // Current observation Layer: leaflet layer type
 var currentLayer;

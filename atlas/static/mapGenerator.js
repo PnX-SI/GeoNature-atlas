@@ -1,9 +1,3 @@
-const territoryBorderColor = String(
-    getComputedStyle(document.documentElement).getPropertyValue(
-        "--map-territory-border-color",
-    ),
-);
-
 // eslint-disable-next-line no-unused-vars
 const areaBorderColor = String(
     getComputedStyle(document.documentElement).getPropertyValue(
@@ -14,6 +8,7 @@ const areaBorderColor = String(
 // Feature group de chaque élément de floutage (M1, M5 etc...)
 const overlays = {};
 let current_type_code = [];
+
 const control = L.control.layers(null, null, {
     collapsed: false,
 });
@@ -65,6 +60,7 @@ function addExternalOverlays() {
             (elem?.pages?.includes(sheetName) || !elem?.pages)
         ) {
             overlays[elem.name] = L.tileLayer.wms(elem.url, elem.options);
+
             overlays[elem.name].addEventListener("add", function (event) {
                 // Add legend item into good place
                 legendUrl = `${event.sourceTarget._url}?request=GetLegendGraphic&version=${elem.wms_version}&format=image/png&layer=${event.sourceTarget.wmsParams.layers}`;
@@ -87,6 +83,10 @@ function addExternalOverlays() {
                 document.getElementById("legend-other-info").appendChild(div);
             });
 
+            if (elem.selected) {
+                map.addLayer(overlays[elem.name]);
+            }
+
             overlays[elem.name].addEventListener("remove", () => {
                 // Remove legend item
                 const item = document.querySelector(
@@ -107,11 +107,44 @@ function addExternalOverlays() {
                 .then((response) => response.json())
                 .then((data) => {
                     overlays[elem.name] = L.geoJSON(data, {
+                        pane: "backgroundLayers",
                         style: function () {
                             return elem.style || {};
                         },
                     });
+                    overlays[elem.name].addEventListener("add", function () {
+                        let color = "#3388ff";
+                        const style = elem.style;
+                        if (style && style.color) {
+                            color = style.color;
+                        }
+                        const div = L.DomUtil.create("div", "legend-item");
+                        div.setAttribute("data-name", elem.name);
+                        div.innerHTML = `
+                            <i style='border: solid 1px ${color};'> &nbsp; &nbsp; &nbsp;</i>
+                             ${elem.name}
+                        `;
+                        document
+                            .getElementById("legend-other-info")
+                            .appendChild(div);
+                    });
+
+                    overlays[elem.name].addEventListener("remove", () => {
+                        // Remove legend item
+                        const item = document.querySelector(
+                            `.legend-item[data-name='${elem.name}']`,
+                        );
+                        if (item) {
+                            document
+                                .getElementById("legend-other-info")
+                                .removeChild(item);
+                        }
+                    });
+
                     createOverlayNameHtml(elem.name);
+                    if (elem.selected) {
+                        map.addLayer(overlays[elem.name]);
+                    }
                 });
         }
     }
@@ -148,9 +181,6 @@ function createTabControl() {
             <div id="legend-wrapper" class="d-grid gap-3">
                 <div id="legend-color-obs" class="p-2 bg-light border"></div>
                 <div id="legend-other-info" class="p-2 bg-light border"></div>
-                <div id="legend-area" class="p-2 bg-light border">
-                    ${htmlLegend}
-                </div>
             </div>
         </div>
         <div class="tab-pane fade" id="control-tab-content" role="tabpanel" aria-labelledby="control-tab">      
@@ -181,7 +211,7 @@ function createTabControl() {
     // Initialization of legend
     document
         .querySelector("#legend-color-obs")
-        .appendChild(generateLegend(isMaille));
+        .appendChild(generateObservationsLegend(isMaille));
 }
 
 function createOverlayNameHtml(
@@ -242,11 +272,6 @@ function createLayersSelector(selectedAllLayer = false) {
     });
     addExternalOverlays();
 
-    control.addTo(map);
-    if (!configuration.DEFAULT_LEGEND_DISPLAY && control?.getContainer()) {
-        control.collapse();
-    }
-    createTabControl();
     // Activate layers
     Object.entries(overlays).forEach((elem) => {
         if (defaultActiveLayer.includes(elem[0])) {
@@ -279,6 +304,15 @@ function generateMap(zoomHomeButton) {
         fullscreenControl: true,
         zoomControl: !zoomHomeButton,
     });
+    // use for geojson external layers. Avoid them to overlap observations layer when they are added/removed
+    map.createPane("backgroundLayers");
+    map.getPane("backgroundLayers").style.zIndex = 250;
+
+    control.addTo(map);
+    if (!configuration.DEFAULT_LEGEND_DISPLAY && control?.getContainer()) {
+        control.collapse();
+    }
+    createTabControl();
 
     // Keep Layers in the same order as specified by the
     // overlays variable so Departement under Commune
@@ -291,24 +325,6 @@ function generateMap(zoomHomeButton) {
         var zoomHome = L.Control.zoomHome();
         zoomHome.addTo(map);
     }
-
-    // Style of territory on map
-    // Uses snogylop to generate a mask
-    territoryStyle = {
-        fill: false,
-        color: territoryBorderColor,
-        weight: configuration.MAP.BORDERS_WEIGHT,
-    };
-
-    // Add limits of the territory to the map
-    $(document).ready(function () {
-        $.getJSON(url_limit_territory, function (json) {
-            const territoryGeoJson = L.geoJson(json, {
-                style: territoryStyle,
-            });
-            territoryGeoJson.addTo(map);
-        });
-    });
 
     // 'Google-like' baseLayer controler
 
@@ -474,7 +490,7 @@ function getColor(d) {
                     : "#FFEDA0";
 }
 
-function generateLegend(isMaille = false) {
+function generateObservationsLegend(isMaille = false) {
     if (!configuration.AFFICHAGE_MAILLE && !isMaille) {
         return generalLegendPoint();
     }
@@ -548,7 +564,7 @@ function displayMailleLayerFicheEspece(observationsMaille) {
     // legend update
     const legendColorObs = document.querySelector("#legend-color-obs");
     legendColorObs.querySelectorAll("div").forEach((elem) => elem.remove());
-    legendColorObs.appendChild(generateLegend(true));
+    legendColorObs.appendChild(generateObservationsLegend(true));
 
     // Display labels of maille overlays
     document.querySelectorAll(".defaultOverlay").forEach((elem) => {
@@ -615,7 +631,7 @@ function displayMarkerLayerFicheEspece(
     const legendColorObs = document.querySelector("#legend-color-obs");
     if (myGeoJson.features.length > configuration.LIMIT_CLUSTER_POINT) {
         legendColorObs.querySelectorAll("div").forEach((elem) => elem.remove());
-        legendColorObs.appendChild(generateLegend(false));
+        legendColorObs.appendChild(generateObservationsLegend(false));
 
         if (configuration.COUCHES_SIG.length === 0) {
             // In point only map, hide control tab if no COUCHES_SIG configured
@@ -687,7 +703,6 @@ function displayGeoJsonPoint(geojson) {
     addExternalOverlays();
 
     control.addTo(map);
-    createTabControl(control);
 }
 
 // eslint-disable-next-line no-unused-vars

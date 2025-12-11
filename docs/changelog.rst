@@ -57,6 +57,11 @@ Les paramètres de l'url de la fiche territoire était ``url_for('main.ficheComm
 
 ⚠️ **Notes de version**
 
+BREAKING CHANGE : 
+
+- La couche des limites du territoire n'est plus fournie par défaut. Pour ajouter cette couche (ainsi que d'autres couches personnalisées), utilisez le paramètre `COUCHES_SIG`
+- les paramètres `BORDERS_COLOR`, `BORDERS_WEIGHT` pour styliser le coutour du territoire sont dépréciés. Utilisez le paramètre `COUCHES_SIG` et l'attribut `style` de ce paramètre pour configurer le style de la couche (voir l'exemple dans `config.py.example`)
+
 Vous pouvez supprimer les paramètres suivants du fichier ``settings.ini`` :
 
 - ``taxhub_displayed_attr``

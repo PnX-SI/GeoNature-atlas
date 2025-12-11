@@ -138,13 +138,8 @@ class MapConfig(Schema):
     SECOND_MAP = fields.Dict(load_default=MAP_2)
     ZOOM = fields.Integer(load_default=10)
     STEP = fields.Integer(load_default=1)
-    BORDERS_COLOR = fields.String(load_default="#000000")
-    BORDERS_WEIGHT = fields.Integer(load_default=3)
     ENABLE_SLIDER = fields.Boolean(load_default=True)
     ENABLE_SCALE = fields.Boolean(load_default=True)
-    MASK_STYLE = fields.Dict(
-        load_default={"fill": False, "fillColor": "#020202", "fillOpacity": 0.7}
-    )
 
 
 class CouchesSigConfig(Schema):
@@ -156,6 +151,7 @@ class CouchesSigConfig(Schema):
     options = fields.Dict()
     style = fields.Dict()
     wms_version = fields.String()
+    selected = fields.Bool(load_default=False)
 
     @validates_schema
     def layer_required_for_wms_type(self, data, **kwargs):
