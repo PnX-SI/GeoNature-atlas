@@ -105,22 +105,7 @@
             var configuration = {{configuration|tojson}};
             // set the context for list taxon : if we are on area, taxon rank sheet, last_obs etc...
             var context = {{context | tojson}};
-            const translationsExport = {
-                "taxonomic_group": `{{ _('taxonomic.group') }}`,
-                "common_name": `{{ _('common.name') }}`,
-                "scientific_name": `{{ _('scientific.name') }}`,
-                "occurrences_number": `{{ _('occurrences.number') }}`,
-                "observers_number": `{{ _('observers.number') }}`,
-                "last_observation": `{{ _('last.observation') }}`,
-                "threatened_masc": `{{ _('threatened.masc') }}`, 
-                "strict_protection": `{{ _('strict.protection') }}`,
-                "patrimonial": `{{ _('patrimonial') }}`,
-                "inpn_group_3": `{{ _('inpn.group.3') }}`,
-                "export.csv": `{{ _('export.csv') }}`,
-                "export.pdf": `{{ _('export.pdf') }}`,
-                "yes": `{{_('yes')}}`,
-                "no": `{{_('no')}}`,
-            };
+
             
         </script>
         <script src="{{ url_for('static', filename='node_modules/debounce/index.js') }}"></script>

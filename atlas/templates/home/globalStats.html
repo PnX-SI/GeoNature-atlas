@@ -44,7 +44,7 @@
                 <div class="stat-thumbnail border-end">
                     <i class="fas fa-map-signs fa-3x blue"></i>
                     <h1 class="large text-muted" id="nbTown"></h1>
-                    <h4 class="text-muted text-uppercase font-weight-bold">{{ translations.territories }}</h4>
+                    <h4 class="text-muted text-uppercase font-weight-bold">{{ _("areas") }}</h4>
 
                     <form method="POST" onsubmit="completeAction('#searchFormAreasStat', hiddenInputAreasStat)"
                           id='searchFormAreasStat' action="" class="navbar-form center-input" role="search">
@@ -53,7 +53,7 @@
                                 <i class="fas fa-search" aria-hidden="true"></i>
                             </span>
                             <input id="searchAreasStat" type="text" class="form-control"
-                                   placeholder="{{ translations.search_area }}&nbsp;&nbsp;&nbsp;">
+                                   placeholder="{{ _('search.area') }}&nbsp;&nbsp;&nbsp;">
                         </div>
                         <input id="hiddenInputAreasStat" type="hidden" name="id_area">
                     </form>

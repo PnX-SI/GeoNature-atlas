@@ -148,19 +148,19 @@ async function exportCsv() {
     // Colonnes du CSV
     const columns = [
         "cd_ref",
-        translationsExport.taxonomic_group,
-        translationsExport.common_name,
-        translationsExport.scientific_name,
-        translationsExport.occurrences_number,
-        translationsExport.observers_number,
-        translationsExport.last_observation,
-        translationsExport.threatened_masc,
-        translationsExport.strict_protection,
-        translationsExport.inpn_group_3,
+        window.i18n["taxonomic.group"],
+        window.i18n["common.name"],
+        window.i18n["scientific.name"],
+        window.i18n["occurrences.number"],
+        window.i18n["observers.number"],
+        window.i18n["last.observation"],
+        window.i18n["threatened.masc"],
+        window.i18n["strict.protection"],
+        window.i18n["inpn.group.3"],
     ];
     const rows = [];
     if (configuration.DISPLAY_PATRIMONIALITE) {
-        columns.push(translationsExport.patrimonial);
+        columns.push(window.i18n["patrimonial"]);
     }
     rows.push(columns);
 
@@ -177,15 +177,15 @@ async function exportCsv() {
         const nbObservers = taxon.nb_observers || "0";
         const lastYear = taxon.last_obs || "-";
         const patrimonial = taxon.patrimonial
-            ? translationsExport.yes
-            : translationsExport.no;
+            ? window.i18n["yes"]
+            : window.i18n["no"];
         const strictProtection = taxon.protection_stricte
-            ? translationsExport.yes
-            : translationsExport.no;
+            ? window.i18n["yes"]
+            : window.i18n["no"];
         const group3Inpn = taxon.group3_inpn || "-";
         const isThreatened = taxon.menace
-            ? translationsExport.yes
-            : translationsExport.no;
+            ? window.i18n["yes"]
+            : window.i18n["no"];
         // TODO : is threatened
         // Ajout de la colonne "Menacé" en tant que true/false
         row = [
@@ -241,18 +241,18 @@ async function exportPdf() {
     doc.text(title, pageWidth / 2, 15, { align: "center" });
 
     const columns = [
-        translationsExport.taxonomic_group,
-        translationsExport.common_name,
-        translationsExport.scientific_name,
-        translationsExport.occurrences_number,
-        translationsExport.observers_number,
-        translationsExport.last_observation,
-        translationsExport.threatened_masc,
-        translationsExport.strict_protection,
-        translationsExport.inpn_group_3,
+        window.i18n["taxonomic.group"],
+        window.i18n["common.name"],
+        window.i18n["scientific.name"],
+        window.i18n["occurrences.number"],
+        window.i18n["observers.number"],
+        window.i18n["last.observation"],
+        window.i18n["threatened.masc"],
+        window.i18n["strict.protection"],
+        window.i18n["inpn.group.3"],
     ];
     if (configuration.DISPLAY_PATRIMONIALITE) {
-        columns.push(translationsExport.patrimonial);
+        columns.push(window.i18n["patrimonial"]);
     }
     const headers = [columns];
 
@@ -266,17 +266,17 @@ async function exportPdf() {
             taxon.nb_obs || "0",
             taxon.nb_observers || "0",
             taxon.last_obs || "-",
-            taxon.menace ? translationsExport.yes : translationsExport.no,
+            taxon.menace ? window.i18n["yes"] : window.i18n["no"],
             taxon.protection_stricte
-                ? translationsExport.yes
-                : translationsExport.no,
+                ? window.i18n["yes"]
+                : window.i18n["no"],
             taxon.group3_inpn || "-",
         ];
         if (configuration.DISPLAY_PATRIMONIALITE) {
             row.push(
                 taxon.patrimonial === "oui"
-                    ? translationsExport.yes
-                    : translationsExport.no,
+                    ? window.i18n["yes"]
+                    : window.i18n["no"],
             );
         }
         return row;
@@ -301,12 +301,12 @@ async function exportPdf() {
             if (data.section === "body") {
                 if (
                     data.row.raw[threatenedColumnIndex] ===
-                    translationsExport.yes
+                    window.i18n["yes"]
                 ) {
                     data.cell.styles.fillColor = [255, 200, 200]; // light red
                 } else if (
                     data.row.raw[protectedColumnIndex] ===
-                    translationsExport.yes
+                    window.i18n["yes"]
                 ) {
                     data.cell.styles.fillColor = [200, 230, 255]; // light blue
                 }

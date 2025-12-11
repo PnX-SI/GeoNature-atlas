@@ -24,18 +24,6 @@
     <script type="text/javascript">
         var configuration = {{configuration|tojson}};
         var areaInfos = {{ areaInfos | tojson }};
-        const translations = {
-            "nb_observations": `{{ _('obs.number.s') }}`,
-            "observations": `{{ _('observations') | lower }}`,
-            "nb_species": `{{ _('number.species') }}`,
-            "nb_species_territory": `{{ _('number.species.territory') }}`,
-            "species": `{{ _('species') }}`,
-            "threatened_species": `{{ _('threatened.species') }}`,
-            "other_species": `{{ _('other.species') }}`,
-            "threatened_species_repartition": `{{ _('threatened.species.repartition') }}`,
-            "nb_species_taxonomic_group": `{{ _('number.species.taxonomic.group') }}`,
-        };
-
     </script>
     <script src="{{ url_for('static', filename='custom/maps-custom.js') }}"></script>
     <script src="{{ url_for('static', filename='mapGenerator.js') }}"></script>

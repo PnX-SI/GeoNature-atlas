@@ -47,10 +47,7 @@
         var taxonYearMin = {{ taxon.taxonSearch.yearmin }};
         var cd_ref = {{ taxon.taxonSearch.cd_ref }};
         var nb_obs = {{ taxon.taxonSearch.nb_obs }};
-        // Create translation to use in chart.js file
-        const translations = {
-            "nb_observations": `{{ _('obs.number.s') }}`
-        };
+
     </script>
 
     <script src="{{ url_for('static', filename='custom/maps-custom.js') }}"></script>

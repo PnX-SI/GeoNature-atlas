@@ -17,6 +17,32 @@ L'atlas est fourni avec des variables CSS qui permettent de personnaliser facile
 
 Vous pouvez aussi modifier ou ajouter des pages statiques de présentation, en plus de la page Présentation fournie par défaut. Pour cela, voir le paramètre ``STATIC_PAGES`` du fichier ``main/configuration/config.py``.
 
+Customisation des textes et labels via la surcouche du multiligue
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Une grande partie des textes peuvent être personnalisés en changeant leur label via le mécanisme du multilingue (voir la documentation sur le multilingue).
+Pour cela, identifiez dans les templates HTML la "clé" qui correspond au texte que vous voulez modifier.  Le fichier `atlas/messages.pot` contient l'ensemble des clés disponibles. Par exemple pour modifier le texte qui correspond à "Informations espèces" sur les fiches espèce : https://github.com/PnX-SI/GeoNature-atlas/blob/master/atlas/templates/speciesSheet/blocInfos.html#L11 , il faudra éditer la clé `species.info`.
+Rendez-vous dans `static/custom/translations_override/<LA LANGUE QUE VOUS SOUHAITEZ>` et créer un fichier `messages.po`
+
+Exemple : 
+
+::
+    # Fichier static/custom/translations_override/messages.po`
+    msgid "species.infos"
+    msgstr "Informations espèce"
+
+Rendez vous dans le dossier `static/custom` et lancez : 
+
+::
+    pybabel compile -f -d translations_override
+
+Relancez l'application :
+
+::
+    sudo systemctl restart geonature-atlas
+
+
+
 Ajout de fiche "zonage"
 ^^^^^^^^^^^^^^^^^^^^^^
 

@@ -32,13 +32,11 @@
             {% endif %}
 
             {% if configuration.DISPLAY_PATRIMONIALITE %}
-                {% if taxon.patrimonial in configuration.PATRIMONIALITE.config %}
-                    <img src="{{ url_for('static', filename=configuration.PATRIMONIALITE.config[taxon.patrimonial].icon) }}"
+                    <img src="{{ url_for('static', filename=configuration.PATRIMONIALITE_ICON) }}"
                          style="width: 30px; height: 30px"
                          data-bs-placement="left" data-bs-toggle="tooltip"
-                         title="{{ configuration.PATRIMONIALITE.config[taxon.patrimonial].text }}"
+                         title="{{ _('this.taxa.is.patrimonial') }}"
                          alt=" " />
-                {% endif %}
             {% endif %}
             {% if configuration.AFFICHAGE_MENACE %}
                 {% set

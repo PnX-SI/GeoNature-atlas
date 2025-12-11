@@ -42,10 +42,9 @@
             {% endif %}
             {% if configuration.DISPLAY_PATRIMONIALITE %}
             <div class="col-sm text-center border-start">
-                <img class="statut_icon" src="{{ url_for('static', filename=configuration.PATRIMONIALITE.config['oui'].icon) }}"/>
+                <img class="statut_icon" src="{{ url_for('static', filename=configuration.PATRIMONIALITE_ICON) }}"/>
                 <br><strong>{{ stats_area.nb_taxon_patrimonial }}</strong>
-                <!-- TODO : ce terme n'est pas traduit -->
-                <br>{{ _('species')|lower }} {{ config.PATRIMONIALITE.label_pluriel|lower }}
+                <br>{{ _('species')|lower }} {{ _('patrimonial.plural')|lower }}
             </div>
             {% endif %}
             {% if configuration.AFFICHAGE_MENACE %}
@@ -66,10 +65,12 @@
                 {% endif %}
             {% endfor %}
         </div>
-        <div class="alert alert-warning">
-            <p>
-                {{configuration.ZONING_PAGE_SENSIBILITY_MESSAGE}}
-            </p>
-        </div>
+        {% if configuration.DISPLAY_ZONING_PAGE_SENSIBILITY_MESSAGE %}
+            <div class="alert alert-warning">
+                <p>
+                    {{_('sensibility_warning_message')}}
+                </p>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

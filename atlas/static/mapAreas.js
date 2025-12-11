@@ -35,7 +35,7 @@ map.zoom = map.getZoom();
 const div = L.DomUtil.create("div", "legend-item");
 div.innerHTML =
     "<i style='border: dashed 2px var(--map-area-border-color); background-color:var(--map-area-border-color); opacity:0.3'> &nbsp; &nbsp; &nbsp;</i> Limite de la zone <br>";
-document.getElementById("legend-area").appendChild(div);
+document.getElementById("legend-other-info").appendChild(div);
 
 // General Legend
 
