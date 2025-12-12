@@ -19,11 +19,8 @@ function displayObsTaxonMaille(cd_ref) {
         },
     }).done(function (observations) {
         $("#loaderSpinner").hide();
-        if (currentLayer) {
-            map.removeLayer(currentLayer);
-        }
-        clearOverlays();
-        displayMailleLayerFicheEspece(observations);
+        clearObservationsFeatureGroup();
+        displayGeojsonMailles(observations, onEachFeatureMaille);
     });
 }
 
@@ -65,7 +62,7 @@ if (configuration.AFFICHAGE_TERRITOIRE_OBS) {
         .then((response) => response.json())
         .then((data) => {
             observations = data;
-            displayGeojsonMailles(observations);
+            displayGeojsonMailles(observations, onEachFeatureMailleLastObs);
             $("#loaderSpinner").hide();
         });
 

@@ -267,9 +267,7 @@ async function exportPdf() {
             taxon.nb_observers || "0",
             taxon.last_obs || "-",
             taxon.menace ? window.i18n["yes"] : window.i18n["no"],
-            taxon.protection_stricte
-                ? window.i18n["yes"]
-                : window.i18n["no"],
+            taxon.protection_stricte ? window.i18n["yes"] : window.i18n["no"],
             taxon.group3_inpn || "-",
         ];
         if (configuration.DISPLAY_PATRIMONIALITE) {
@@ -300,13 +298,11 @@ async function exportPdf() {
 
             if (data.section === "body") {
                 if (
-                    data.row.raw[threatenedColumnIndex] ===
-                    window.i18n["yes"]
+                    data.row.raw[threatenedColumnIndex] === window.i18n["yes"]
                 ) {
                     data.cell.styles.fillColor = [255, 200, 200]; // light red
                 } else if (
-                    data.row.raw[protectedColumnIndex] ===
-                    window.i18n["yes"]
+                    data.row.raw[protectedColumnIndex] === window.i18n["yes"]
                 ) {
                     data.cell.styles.fillColor = [200, 230, 255]; // light blue
                 }

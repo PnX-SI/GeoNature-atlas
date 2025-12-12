@@ -55,7 +55,7 @@ function displayObs(id_area) {
         })
         .then((observations) => {
             if (configuration.AFFICHAGE_MAILLE) {
-                displayGeojsonMailles(observations);
+                displayGeojsonMailles(observations, onEachFeatureMailleLastObs);
             } else {
                 displayGeoJsonPoint(observations);
                 generalLegendPoint();
@@ -84,8 +84,8 @@ function displayObsTaxonMaille(areaID, cd_ref) {
         if (currentLayer) {
             map.removeLayer(currentLayer);
         }
-        clearOverlays();
-        displayMailleLayerFicheEspece(observations);
+        clearObservationsFeatureGroup();
+        displayGeojsonMailles(observations, onEachFeatureMaille);
     });
 }
 

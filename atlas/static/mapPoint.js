@@ -1,6 +1,7 @@
 var zoomHomeButton = true;
 
 var map = generateMap(zoomHomeButton);
+
 if (configuration.MAP.ENABLE_SLIDER) {
     generateSliderOnMap();
 }
@@ -35,7 +36,7 @@ $.ajax({
     // mailleBoolean: dipslay maille mode because a lot of obs
     var mailleBoolean = false;
     if (observations.point.features.length > 500) {
-        displayMailleLayerFicheEspece(observations.maille);
+        displayGeojsonMailles(observations.maille, onEachFeatureMaille);
         mailleBoolean = true;
     } else {
         // affichage des points sans filtrer par annes pour gagner en perf
@@ -99,7 +100,10 @@ $.ajax({
                         // reactivation de l'event du zoom avec les nouvelle valeurs
                         eventOnZoom(observationsMaille, observationsPoint);
 
-                        displayMailleLayerFicheEspece(observationsMaille);
+                        displayGeojsonMailles(
+                            observationsMaille,
+                            onEachFeatureMaille,
+                        );
                         nbObs = 0;
                         observationsMaille.features.forEach(function (l) {
                             nbObs += l.properties.nb_observations;
@@ -160,10 +164,10 @@ function eventOnZoom(observationsMaille, observationsPoint) {
     var activeMode = "Maille";
     map.on("zoomend", function () {
         if (
-            activeMode !== "Point" &&
+            activeMode === "Maille" &&
             map.getZoom() >= configuration.ZOOM_LEVEL_POINT
         ) {
-            map.removeLayer(currentLayer);
+            clearObservationsFeatureGroup();
             legendblock.attr("hidden", "true");
 
             var yearMin = null;
@@ -183,14 +187,14 @@ function eventOnZoom(observationsMaille, observationsPoint) {
             activeMode = "Point";
         }
         if (
-            activeMode !== "Maille" &&
+            activeMode === "Point" &&
             map.getZoom() <= configuration.ZOOM_LEVEL_POINT - 1
         ) {
             // display legend
             map.removeLayer(currentLayer);
 
             legendblock.removeAttr("hidden");
-            displayMailleLayerFicheEspece(observationsMaille);
+            displayGeojsonMailles(observationsMaille, onEachFeatureMaille);
             activeMode = "Maille";
         }
     });
