@@ -6,20 +6,17 @@ const areaBorderColor = String(
 );
 
 // Feature group de chaque élément de floutage (M1, M5 etc...)
-const overlays = {};
-let current_type_code = [];
+const observationsFeatureGroup = {};
 
 const control = L.control.layers(null, null, {
     collapsed: false,
 });
 
-function clearOverlays(removeAllOverlays = false) {
-    // remove all Layer from leaflet overlays (featureGroup)
+function clearObservationsFeatureGroup() {
     control._layers.forEach((elem) => {
-        if (elem.name.includes("defaultOverlay") || removeAllOverlays) {
+        if (elem.name.includes("defaultOverlay")) {
             map.removeLayer(elem.layer);
             control.removeLayer(elem.layer);
-            clearOverlays(removeAllOverlays);
         }
     });
 }
@@ -51,7 +48,7 @@ function generateObservationPopup(feature) {
     return popupContent;
 }
 
-function addExternalOverlays() {
+function addExternalOverlays(map) {
     const sheetName = document.querySelector("body").getAttribute("page-name");
 
     for (const elem of configuration.COUCHES_SIG) {
@@ -59,9 +56,10 @@ function addExternalOverlays() {
             elem?.type === "wms" &&
             (elem?.pages?.includes(sheetName) || !elem?.pages)
         ) {
-            overlays[elem.name] = L.tileLayer.wms(elem.url, elem.options);
+            elem["options"][""];
+            const layer = L.tileLayer.wms(elem.url, elem.options);
 
-            overlays[elem.name].addEventListener("add", function (event) {
+            layer.addEventListener("add", function (event) {
                 // Add legend item into good place
                 legendUrl = `${event.sourceTarget._url}?request=GetLegendGraphic&version=${elem.wms_version}&format=image/png&layer=${event.sourceTarget.wmsParams.layers}`;
                 const div = L.DomUtil.create("div", "legend-item");
@@ -84,10 +82,10 @@ function addExternalOverlays() {
             });
 
             if (elem.selected) {
-                map.addLayer(overlays[elem.name]);
+                map.addLayer(layer);
             }
 
-            overlays[elem.name].addEventListener("remove", () => {
+            layer.addEventListener("remove", () => {
                 // Remove legend item
                 const item = document.querySelector(
                     `.legend-item[data-name='${elem.name}']`,
@@ -98,7 +96,7 @@ function addExternalOverlays() {
                         .removeChild(item);
                 }
             });
-            createOverlayNameHtml(elem.name);
+            addOverlayInControl(layer, elem.name);
         } else if (
             elem?.type === "geojson" &&
             (elem?.pages?.includes(sheetName) || !elem?.pages)
@@ -106,13 +104,14 @@ function addExternalOverlays() {
             fetch(elem.url)
                 .then((response) => response.json())
                 .then((data) => {
-                    overlays[elem.name] = L.geoJSON(data, {
+                    const layer = L.geoJSON(data, {
                         pane: "backgroundLayers",
                         style: function () {
                             return elem.style || {};
                         },
                     });
-                    overlays[elem.name].addEventListener("add", function () {
+
+                    layer.addEventListener("add", function () {
                         let color = "#3388ff";
                         const style = elem.style;
                         if (style && style.color) {
@@ -129,7 +128,7 @@ function addExternalOverlays() {
                             .appendChild(div);
                     });
 
-                    overlays[elem.name].addEventListener("remove", () => {
+                    layer.addEventListener("remove", () => {
                         // Remove legend item
                         const item = document.querySelector(
                             `.legend-item[data-name='${elem.name}']`,
@@ -141,14 +140,14 @@ function addExternalOverlays() {
                         }
                     });
 
-                    createOverlayNameHtml(elem.name);
+                    addOverlayInControl(layer, elem.name);
                     if (elem.selected) {
-                        map.addLayer(overlays[elem.name]);
+                        map.addLayer(layer);
                     }
                 });
         }
     }
-    return overlays;
+    return observationsFeatureGroup;
 }
 
 function createTabControl() {
@@ -214,21 +213,53 @@ function createTabControl() {
         .appendChild(generateObservationsLegend(isMaille));
 }
 
-function createOverlayNameHtml(
-    label,
-    isDefaultOverlay = false,
-    lastElement = false,
-) {
+/**
+ *Réordonne les control en mettant en premier les layer d'obseration et en second les couches additionnelles (COUCHES_SIG)
+ **/
+function reorderLayerControl() {
+    const container = control.getContainer();
+    const overlayDiv = container.querySelector(
+        ".leaflet-control-layers-overlays",
+    );
+
+    if (!overlayDiv) return;
+
+    // Récupère tous les labels
+    const allLabels = Array.from(overlayDiv.querySelectorAll("label"));
+
+    // Sépare en deux groupes
+    const defaultLabels = allLabels.filter(
+        (label) => label.querySelector(".defaultOverlay") !== null,
+    );
+    const otherLabels = allLabels.filter(
+        (label) => label.querySelector(".defaultOverlay") === null,
+    );
+
+    // Vide le conteneur
+    overlayDiv.innerHTML = "";
+
+    // Ajoute d'abord les defaultOverlay
+    defaultLabels.forEach((label) => overlayDiv.appendChild(label));
+
+    // Ajoute le séparateur si les deux groupes existent
+    if (defaultLabels.length > 0 && otherLabels.length > 0) {
+        const separator = document.createElement("div");
+        separator.className = "leaflet-control-layers-separator";
+        overlayDiv.appendChild(separator);
+    }
+
+    // Ajoute les autres couches
+    otherLabels.forEach((label) => overlayDiv.appendChild(label));
+}
+
+function addOverlayInControl(layer, label, isDefaultOverlay = false) {
     let className = "";
-    let separator = "";
+    const separator = "";
     if (isDefaultOverlay) {
         className = "defaultOverlay";
-        if (lastElement) {
-            separator = `<div class="leaflet-control-layers-separator"></div>`;
-        }
     }
     control.addOverlay(
-        overlays[label],
+        layer,
         `
     <div>
         <div class="${className}">${label}</div>
@@ -236,47 +267,40 @@ function createOverlayNameHtml(
     </div>
     `,
     );
-    if (!configuration.DEFAULT_LEGEND_DISPLAY && control?.getContainer()) {
-        control.collapse();
+}
+
+// get the different type code (COM, M1, M10) and store them in current_type_code arrray
+// use to create different feature group and layer control
+function getAreasTypeCode(geojson) {
+    current_type_code = [];
+    if (current_type_code.length === 0) {
+        Object.values(geojson.features).forEach((elem) => {
+            if (!current_type_code.includes(elem.properties.type_code)) {
+                current_type_code.push(elem.properties.type_code);
+            }
+        });
     }
+    return current_type_code;
 }
 
 /**
  * Create a layer control for each type of zoning (M1, M5 etc..) and associate it a feature group
+ * Add the features group to map
  */
-function createLayersSelector(selectedAllLayer = false) {
-    const defaultActiveLayer = [];
-    current_type_code.forEach((elem, index) => {
-        const isLastElement = index === current_type_code.length - 1;
-        if (configuration.AFFICHAGE_COUCHES_MAP[elem]) {
-            if (
-                configuration.AFFICHAGE_COUCHES_MAP[elem].selected ||
-                selectedAllLayer
-            ) {
-                defaultActiveLayer.push(
-                    configuration.AFFICHAGE_COUCHES_MAP[elem].label,
-                );
-            }
-            overlays[configuration.AFFICHAGE_COUCHES_MAP[elem].label] =
-                L.featureGroup();
-            createOverlayNameHtml(
-                configuration.AFFICHAGE_COUCHES_MAP[elem].label,
-                true,
-                isLastElement,
-            );
-        } else {
-            defaultActiveLayer.push(elem);
-            overlays[elem] = L.featureGroup();
-            createOverlayNameHtml(elem.name, true, isLastElement);
-        }
-    });
-    addExternalOverlays();
+function createLayersSelector(geojson) {
+    const current_type_code = getAreasTypeCode(geojson);
 
-    // Activate layers
-    Object.entries(overlays).forEach((elem) => {
-        if (defaultActiveLayer.includes(elem[0])) {
-            map.addLayer(elem[1]);
+    current_type_code.forEach((elem) => {
+        const featureGroup = L.featureGroup();
+        observationsFeatureGroup[elem] = featureGroup;
+        if (configuration.AFFICHAGE_COUCHES_MAP[elem].selected) {
+            map.addLayer(featureGroup);
         }
+        addOverlayInControl(
+            featureGroup,
+            configuration.AFFICHAGE_COUCHES_MAP[elem].label,
+            true,
+        );
     });
 }
 
@@ -304,6 +328,7 @@ function generateMap(zoomHomeButton) {
         fullscreenControl: true,
         zoomControl: !zoomHomeButton,
     });
+
     // use for geojson external layers. Avoid them to overlap observations layer when they are added/removed
     map.createPane("backgroundLayers");
     map.getPane("backgroundLayers").style.zIndex = 250;
@@ -312,13 +337,21 @@ function generateMap(zoomHomeButton) {
     if (!configuration.DEFAULT_LEGEND_DISPLAY && control?.getContainer()) {
         control.collapse();
     }
+
+    // control.addOverlay()
+
+    // create the html control panel
     createTabControl();
+    // add `COUCHE_SIG`
+    addExternalOverlays(map);
 
     // Keep Layers in the same order as specified by the
-    // overlays variable so Departement under Commune
+    // observationsFeatureGroup variable so Departement under Commune
     // under 10km2 under 1km2
     map.on("overlayadd", function () {
-        Object.values(overlays).forEach((e) => e.bringToFront());
+        Object.values(observationsFeatureGroup).forEach((e) =>
+            e.bringToFront(),
+        );
     });
 
     if (zoomHomeButton) {
@@ -420,6 +453,7 @@ function onEachFeaturePointSpecies(feature, layer) {
 }
 
 // popup Maille
+// eslint-disable-next-line no-unused-vars
 function onEachFeatureMaille(feature, layer) {
     popupContent =
         "<b>Nombre d'observation(s): </b>" +
@@ -430,7 +464,7 @@ function onEachFeatureMaille(feature, layer) {
     layer.bindPopup(popupContent);
 
     // associate a feature to the correct feature group
-    addInFeatureGroup(feature, layer);
+    observationsFeatureGroup[feature.properties.type_code].addLayer(layer);
 
     if (configuration.AFFICHAGE_MAILLE) {
         zoomMaille(layer);
@@ -539,37 +573,20 @@ function generalLegendPoint() {
 // Display Maille layer
 
 // eslint-disable-next-line no-unused-vars
-function displayMailleLayerFicheEspece(observationsMaille) {
+function displayGeojsonMailles(observationsMaille, onEachFeature) {
     myGeoJson = observationsMaille;
-    // Get all different type code
 
-    current_type_code = [];
-    if (current_type_code.length === 0) {
-        Object.values(myGeoJson.features).forEach((elem) => {
-            if (!current_type_code.includes(elem.properties.type_code)) {
-                current_type_code.push(elem.properties.type_code);
-            }
-        });
-    }
+    clearObservationsFeatureGroup();
 
-    clearOverlays(true);
-    createLayersSelector(true);
-
+    // create features group and layer control for each area type in geojson
+    createLayersSelector(observationsMaille, true);
+    // NB : the geosjon is not directly added to the map, it's done with the FeatureGroup
+    // which are added by default is the config tell so or can be added with le control layer later
     currentLayer = L.geoJson(myGeoJson, {
-        onEachFeature: onEachFeatureMaille,
+        onEachFeature: onEachFeature,
     });
-    currentLayer.addTo(map);
-    // map.fitBounds(currentLayer.getBounds()); ZOOM FUNCTION ON SPECIES SHEET MAILLE OBSERVATIONS DISPLAY
 
-    // legend update
-    const legendColorObs = document.querySelector("#legend-color-obs");
-    legendColorObs.querySelectorAll("div").forEach((elem) => elem.remove());
-    legendColorObs.appendChild(generateObservationsLegend(true));
-
-    // Display labels of maille overlays
-    document.querySelectorAll(".defaultOverlay").forEach((elem) => {
-        elem.closest("label").style.display = "block";
-    });
+    reorderLayerControl();
 }
 
 // GeoJson Point
@@ -655,7 +672,7 @@ function displayMarkerLayerFicheEspece(
             controltabContent.classList.remove("active");
             controltabContent.classList.remove("show");
         }
-        // Not display labels of maille overlays
+        // Not display labels of maille observationsFeatureGroup
         document.querySelectorAll(".defaultOverlay").forEach((elem) => {
             elem.closest("label").style.display = "none";
         });
@@ -699,8 +716,7 @@ function displayGeoJsonPoint(geojson) {
     });
     map.addLayer(currentLayer);
 
-    clearOverlays(true);
-    addExternalOverlays();
+    clearObservationsFeatureGroup(true);
 
     control.addTo(map);
 }
@@ -759,8 +775,9 @@ function createPopUp(event) {
         });
 }
 
+// eslint-disable-next-line no-unused-vars
 function onEachFeatureMailleLastObs(feature, layer) {
-    addInFeatureGroup(feature, layer);
+    observationsFeatureGroup[feature.properties.type_code].addLayer(layer);
 
     var selected = false;
     layer.setStyle(
@@ -890,40 +907,6 @@ function resetStyleMailles() {
                 ),
             );
         }
-    });
-}
-
-/**
- * Associate a feature to the correct feature group (M1, M5 ...)
- */
-function addInFeatureGroup(feature, layer) {
-    mailleTypeCode = feature.properties.type_code;
-
-    if (Object.keys(overlays).length !== 0) {
-        if (
-            configuration.AFFICHAGE_COUCHES_MAP[mailleTypeCode] &&
-            configuration.AFFICHAGE_COUCHES_MAP[mailleTypeCode].label
-        ) {
-            overlays[
-                configuration.AFFICHAGE_COUCHES_MAP[mailleTypeCode].label
-            ].addLayer(layer);
-        } else {
-            overlays[mailleTypeCode].addLayer(layer);
-        }
-    }
-}
-
-// eslint-disable-next-line no-unused-vars
-function displayGeojsonMailles(observationsMaille) {
-    // Get all different type code
-    observationsMaille.features.forEach((elem) => {
-        if (!current_type_code.includes(elem.properties.type_code)) {
-            current_type_code.push(elem.properties.type_code);
-        }
-    });
-    createLayersSelector();
-    currentLayer = L.geoJson(observationsMaille, {
-        onEachFeature: onEachFeatureMailleLastObs,
     });
 }
 

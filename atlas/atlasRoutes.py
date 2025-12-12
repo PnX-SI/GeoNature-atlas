@@ -115,7 +115,7 @@ def index():
     listTaxons = []
     if current_app.config["AFFICHAGE_TERRITOIRE_OBS"]:
         nb_taxons = vmTaxonsRepository.get_nb_taxons()
-        listTaxons = vmTaxonsRepository.getListTaxon(MultiDict(params={"page": 0}))
+        listTaxons = vmTaxonsRepository.getListTaxon(params=MultiDict({"page": 0}))
 
     # si AFFICHAGE_TERRITOIRE_OBS on charge les données en AJAX
     # si AFFICHAGE_DERNIERES_OBS = False, on ne charge pas les obs

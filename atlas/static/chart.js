@@ -161,7 +161,7 @@ function formatStackedBarChart(values) {
 
     if (configuration.DISPLAY_PATRIMONIALITE) {
         datasets.push({
-            label: `${window.i18n["number.species"]} ${window.i18n["patrimonial.plural"] ? ${window.i18n["patrimonial.plural"].toLowerCase(): "patrimoniales"}`,
+            label: `${window.i18n["number.species"]} ${window.i18n["patrimonial.plural"] ? window.i18n["patrimonial.plural"].toLowerCase() : "patrimoniales"}`,
             data: nb_patrimonial,
             backgroundColor: [configuration.COLOR_STACKED_BAR_CHARTS[1]],
             stack: "2",
