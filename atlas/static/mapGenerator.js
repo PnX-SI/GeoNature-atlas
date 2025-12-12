@@ -753,7 +753,7 @@ function createPopUp(event) {
     const idMaille = event.target.feature.id;
     page_tooltip = 1;
     havePossibleNextPage_tooltip = true;
-    let url = `/api/taxonListJson/area/${idMaille}?page=-1`;
+    let url = `/api/taxonListJson/area/${idMaille}?page=-1&sensitivity=true`;
     if (sheetName === "index" && configuration.AFFICHAGE_DERNIERES_OBS) {
         url = url + "&last_obs=true";
     }

@@ -8,6 +8,7 @@ from werkzeug.datastructures import MultiDict
 
 from atlas.modeles.entities.vmStatutBdc import CorTaxonStatutArea, TOrdreListeRouge
 from atlas.modeles.entities.tBibTaxrefRang import TBibTaxrefRang
+from atlas.modeles.entities.CorSensitivity import CorSensitivityAreaType
 from atlas.modeles.entities.vmObservations import VmObservations
 from atlas.modeles.entities.vmAreas import VmCorAreaSynthese
 from atlas.modeles.entities.vmMedias import VmMedias
@@ -59,7 +60,7 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
         threatened: boolean
         group2_inpn: str
         last_obs: boolean : return only last obs (range define in params)
-
+        sensitivity: boolean : optional filter taxon with sensitivity
 
     Returns
     -------
@@ -74,6 +75,7 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
     protected = params.get("protected", None)
     patrimonial = params.get("patrimonial", None)
     last_obs = params.get("last_obs", None)
+    sensitivity = params.get("sensitivity", None)
 
     q_stats_taxons = (
         select(
@@ -99,6 +101,12 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
             & (VmCorAreaSynthese.id_area == id_area)
             & (VmCorAreaSynthese.is_valid_for_display.is_(True)),
         )
+        if sensitivity:
+            q_stats_taxons = q_stats_taxons.join(
+                CorSensitivityAreaType,
+                (CorSensitivityAreaType.area_type_code == VmCorAreaSynthese.type_code)
+                & (VmObservations.cd_sensitivity == CorSensitivityAreaType.sensitivity_code),
+            )
     q_stats_taxons = q_stats_taxons.subquery()
 
     _columns = [
