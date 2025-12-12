@@ -2,7 +2,7 @@
 
 from flask import current_app
 from sqlalchemy import Interval
-from sqlalchemy.sql import select, distinct, func, cast, literal, or_
+from sqlalchemy.sql import select, distinct, func, cast, literal, and_
 from sqlalchemy.orm import joinedload
 from werkzeug.datastructures import MultiDict
 
@@ -159,7 +159,7 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
         conditions.append(VmTaxons.patrimonial == "oui")
 
     if conditions:
-        req = req.where(or_(*conditions))
+        req = req.where(and_(*conditions))
 
     if group_name:
         req = req.filter(VmTaxons.group2_inpn == group_name)
