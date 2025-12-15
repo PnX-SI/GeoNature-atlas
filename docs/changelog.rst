@@ -66,8 +66,9 @@ BREAKING CHANGE :
 - Les attributs `label`, `text` et `label_pluriel` du paramètre `PATRIMONIALITE` sont dépréciés. Utilisez la surchouche de langue si vous souhaitez modifier ce terme (id : `patrimonial`, `patrimonial.plural` et `this.taxa.is.patrimonial`)
 - Pour configurer les données qui remontent dans l'atlas il est conseillé de ne plus surcoucher `atlas.vm_observations` mais de s'appuyer sur le paramètre `observation_data_source` du fichier `settings.ini` (voir doc à ce sujet dans `configuration.rst`)
 Vous pouvez supprimer les paramètres suivants du fichier ``settings.ini`` :
-
+- la paramètre `venv_dir` de `setting.ini` n'est plus utilisé. L'environnement virtuel est créer dans un répértoire `venv`
 - ``taxhub_displayed_attr``
+
 
 
 1.7.3 (2025-09-20)

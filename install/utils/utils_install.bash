@@ -28,6 +28,11 @@
 #       caveat applies to both the $__script_dir__ and $__script_name__ variables.
 # shellcheck disable=SC2034
 # SOURCE: https://github.com/ralish/bash-script-template/blob/stable/source.sh
+
+# global vars
+
+insert_altitudes_values=""
+
 function initScript() {
     # Script time
     SECONDS=0
@@ -37,13 +42,13 @@ function initScript() {
     # Useful paths
     readonly __orig_cwd__="$PWD"
     readonly __script_path__=$(realpath "${BASH_SOURCE[1]}")
-    readonly __script_dir__="$(cd "$(dirname "${__script_path__}")" && pwd -P)"
+    readonly __script_dir__="$(dirname "$__script_path__")"
     readonly __script_name__="$(basename "$__script_path__")"
     readonly __script_params__="$*"
 
     #+------------------------------------------------------------------      +
     # Directories pathes
-    readonly __root_dir__="$(realpath ${__script_dir__})"
+    readonly __root_dir__="$(dirname "$__script_dir__")"
     readonly __src_dir__="${__root_dir__}/atlas"
     readonly __conf_dir__="${__src_dir__}/configuration"
     readonly __data_dir__="${__root_dir__}/data"
@@ -51,6 +56,7 @@ function initScript() {
     readonly __static_dir__="${__src_dir__}/static"
     readonly __custom_dir__="${__static_dir__}/custom"
     readonly __sample_dir__="${__static_dir__}/sample"
+    readonly __venv_dir__="${__root_dir__}/venv"
 
     #+------------------------------------------------------------------------+
     # Shell colors
@@ -355,4 +361,138 @@ function convertDockerVariables() {
     db_password="${POSTGRES_PASSWORD}"
 
     printInfo ">All Docker environment variables converted => ${Gre}OK"
+}
+
+
+function checkSettings() {
+    fields=('owner_atlas' 'user_pg' 'altitudes' 'time')
+    printMsg "Checking the validity of settings.ini..."
+    for i in "${!fields[@]}"; do
+        if [[ -z "${!fields[$i]}" ]]; then
+            exitScript "Attribut ${fields[$i]} manquant dans settings.ini" 2
+        fi
+    done
+    printInfo ">All required settings are present => ${Gre}OK"
+}
+
+function exportPostgresPassword() {
+    export PGPASSWORD="${owner_atlas_pass}"
+}
+
+function executeFile() {
+    if [[ $# -lt 1 ]]; then
+        exitScript "Missing required argument to ${FUNCNAME[0]}()!" 2
+    fi
+    local file_path="${1}"
+    shift # Remove first argument so that $@ contains only other arguments
+    local other_arguments=("$@")
+
+    export PGPASSWORD="${owner_atlas_pass}"; \
+        psql -d "${db_name}" -U "${owner_atlas}" -h "${db_host}" -p "${db_port}" \
+            "${other_arguments[@]}" \
+            -f "${file_path}"
+}
+
+
+
+# FR: Execution des scripts sql de création des entités (vues materialisés, tables) de l'Atlas
+# EN: Run sql scripts : build Atlas materialized views, tables...
+function createAtlasSchemaEntities() {
+    printMsg "Creating materialized views..."
+    local scripts_sql=(
+        "01.vm_taxref.sql"
+        "02.ref_geo.sql"
+        "03.bdc_statut.sql"
+        "04.cor_sensitivity_area_type.sql"
+        "05.vm_observations.sql"
+        "06.vm_cor_area_synthese.sql"
+        "07.vm_taxons.sql"
+        "08.vm_altitudes.sql"
+        "09.vm_search_taxon.sql"
+        "10.vm_mois.sql"
+        "11.vm_medias.sql"
+        "12.vm_cor_taxon_attribut.sql"
+        "13.vm_taxons_plus_observes.sql"
+        "14.vm_cor_taxon_organism.sql"
+        "14.1.vm_cor_taxon_area.sql"
+        "15.vm_cor_maille_observation.sql"
+        "16.territory_stats.sql"
+        "17.grant.sql"
+        "18.refresh_materialized_view_data.sql"
+    )
+    local script=""
+    local msg=""
+    local time_start=0
+    local time_diff=0
+    # 'set +e' : prevents the script from stopping if Psql returns a non-zero code
+    set +e
+    for script in "${scripts_sql[@]}"; do
+        printInfo ">[$(date +'%H:%M:%S')] Creating ${script}..."
+        time_start="${SECONDS}"
+        executeFile ${__data_dir__}/atlas/${script} \
+                -v "ON_ERROR_STOP=1" \
+                -v type_code="${type_code}" \
+                -v type_maille="${type_maille}" \
+                -v insert_altitudes_values="${insert_altitudes_values}" \
+                -v taxon_time="${time}" \
+                -v reader_user="${user_pg}" \
+                -v observation_data_source="${observation_data_source}"
+
+        script_result=$?
+        time_diff="$((${SECONDS} - ${time_start}))"
+        if [[ ${script_result} -ne 0 ]]; then
+            exitScript "ERROR: failed to execute ${script} !" 1
+        else
+            msg="${script} => ${Gre}Passed${RCol} - Duration : $(displayTime ${time_diff})"
+            printInfo ">[$(date +'%H:%M:%S')] ${msg}\n"
+        fi
+    done
+    set -e
+}
+
+
+function executeQuery() {
+    if [[ $# -lt 1 ]]; then
+        exitScript "Missing required argument to ${FUNCNAME[0]}()!" 2
+    fi
+    local query="${1}"
+    shift # Remove first argument so that $@ contains only other arguments
+    local other_arguments=("$@")
+
+    export PGPASSWORD="${owner_atlas_pass}"; \
+        psql -d "${db_name}" -U "${owner_atlas}" -h "${db_host}" -p "${db_port}" \
+            "${other_arguments[@]}" \
+            -c "${query}"
+}
+
+function executeQueryAsSU() {
+    if [[ $# -lt 1 ]]; then
+        exitScript "Missing required argument to ${FUNCNAME[0]}()!" 2
+    fi
+
+    sudo -u postgres -s psql -d "${db_name}" -c "${1}"
+}
+
+
+
+function prepareAltitudesValues() {
+    printMsg "Preparing altitudes values..."
+    local i=0
+    local sql=""
+    for i in "${!altitudes[@]}"; do
+        if [[ $i -gt 0 ]]; then
+            let max=${altitudes[$i]}-1
+            sql="(${altitudes[$i-1]}, $max)"
+            if [[ $i -eq 1 ]]; then
+                insert_altitudes_values=" ${sql}"
+            else
+                insert_altitudes_values="${insert_altitudes_values}, ${sql}"
+            fi
+        fi
+    done
+    if [[ "${insert_altitudes_values}" != "" ]]; then
+        printInfo ">${i} altitudes ranges defined => ${Gre}OK"
+    else
+        printInfo ">No altitude range defined => ${Red}KO"
+    fi
 }

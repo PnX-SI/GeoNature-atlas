@@ -56,8 +56,7 @@ function main() {
     #+-------------------------------------------------------------------------+
     # Load utils
     current_dir=$(dirname "${BASH_SOURCE[0]}")
-    source "${current_dir}/utils.bash"
-
+    source "${current_dir}/utils/utils_install.bash"
     #+-------------------------------------------------------------------------+
     # Init script
     initScript "${@}"
@@ -162,19 +161,19 @@ function stopAtlasService() {
 
 function createVenv() {
     printMsg "Creating Virtual env..."
-    if [[ -d "${venv_dir}/" ]];  then
+    if [[ -d "${__venv_dir__}/" ]];  then
         printVerbose "Removing existing virtual env..."
-        sudo rm -rf "${venv_dir}"
+        sudo rm -rf "${__venv_dir__}"
     fi
-    python3 -m venv "${venv_dir}"
+    python3 -m venv "${__venv_dir__}"
 }
 
 function enableVenv() {
     printMsg "Activating Virtual env..."
-    if [[ ! -d "${venv_dir}/" ]];  then
-        exitScript "ERROR: virtual env '${venv_dir}' not found !" 1
+    if [[ ! -d "${__venv_dir__}/" ]];  then
+        exitScript "ERROR: virtual env '${__venv_dir__}' not found !" 1
     fi
-    source "${venv_dir}/bin/activate"
+    source "${__venv_dir__}/bin/activate"
 
     local in_venv=$(isInVenv)
     if [[ "${in_venv}" == "1" ]]; then
@@ -188,7 +187,7 @@ function isInVenv() {
     local in_venv=$(python3 -c 'import sys; print ("1" if (hasattr(sys, "real_prefix") or
         (hasattr(sys, "base_prefix") and sys.base_prefix != sys.prefix)) else "0")')
 
-    if [[ "${in_venv}" == "0" ]] && [[ "${VIRTUAL_ENV:-}" == "${venv_dir}" ]]; then
+    if [[ "${in_venv}" == "0" ]] && [[ "${VIRTUAL_ENV:-}" == "${__venv_dir__}" ]]; then
         printVerbose ">Python return false but env variable true ! Force true."
         in_venv="1"
     fi
@@ -198,8 +197,8 @@ function isInVenv() {
 
 function installPythonPackages() {
     printMsg "Installing required Python packages..."
-    pip install -r requirements.txt
-    pip install -e .
+    pip install -r "${__root_dir__}/requirements.txt"
+    pip install -e "${__root_dir__}"
 }
 
 function disableVenv() {
