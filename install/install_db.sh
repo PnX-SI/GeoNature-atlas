@@ -56,7 +56,7 @@ function main() {
     #+-------------------------------------------------------------------------+
     # Load utils
     current_dir=$(dirname "${BASH_SOURCE[0]}")
-    source "${current_dir}/utils.bash"
+    source "${current_dir}/utils/utils_install.bash"
 
     #+-------------------------------------------------------------------------+
     # Init script
@@ -211,20 +211,7 @@ function createAtlasSchemaOnly() {
     createAtlasSchemaEntities
 }
 
-function checkSettings() {
-    fields=('owner_atlas' 'user_pg' 'altitudes' 'time')
-    printMsg "Checking the validity of settings.ini..."
-    for i in "${!fields[@]}"; do
-        if [[ -z "${!fields[$i]}" ]]; then
-            exitScript "Attribut ${fields[$i]} manquant dans settings.ini" 2
-        fi
-    done
-    printInfo ">All required settings are present => ${Gre}OK"
-}
 
-function exportPostgresPassword() {
-    export PGPASSWORD="${owner_atlas_pass}"
-}
 
 function checkDatabaseExists() {
     # /!\ Will return false if psql can't list database. Edit your pg_hba.conf as appropriate.
@@ -320,126 +307,14 @@ function createDatabaseSchemas() {
 
 function createFdwTables() {
     printMsg "Creating FDW tables from GN2..."
-    executeFile "data/gn2/atlas_gn2.sql"
+    executeFile "${__data_dir__}/gn2/atlas_gn2.sql"
 }
 
 function createDatabaseWithoutGeonature() {
     printMsg "Creating DB structure without GeoNature database..."
-    executeFile "data/without_gn2/without_geonature.sql"
+    executeFile "${__data_dir__}/without_gn2/without_geonature.sql"
 }
 
-function prepareAltitudesValues() {
-    printMsg "Preparing altitudes values..."
-    insert_altitudes_values=""
-    local i=0
-    local sql=""
-    for i in "${!altitudes[@]}"; do
-        if [[ $i -gt 0 ]]; then
-            let max=${altitudes[$i]}-1
-            sql="(${altitudes[$i-1]}, $max)"
-            if [[ $i -eq 1 ]]; then
-                insert_altitudes_values=" ${sql}"
-            else
-                insert_altitudes_values="${insert_altitudes_values}, ${sql}"
-            fi
-        fi
-    done
-    if [[ "${insert_altitudes_values}" != "" ]]; then
-        printInfo ">${i} altitudes ranges defined => ${Gre}OK"
-    else
-        printInfo ">No altitude range defined => ${Red}KO"
-    fi
-}
 
-# FR: Execution des scripts sql de création des entités (vues materialisés, tables) de l'Atlas
-# EN: Run sql scripts : build Atlas materialized views, tables...
-function createAtlasSchemaEntities() {
-    printMsg "Creating materialized views..."
-    local scripts_sql=(
-        "01.vm_taxref.sql"
-        "02.ref_geo.sql"
-        "03.bdc_statut.sql"
-        "04.cor_sensitivity_area_type.sql"
-        "05.vm_observations.sql"
-        "06.vm_cor_area_synthese.sql"
-        "07.vm_taxons.sql"
-        "08.vm_altitudes.sql"
-        "09.vm_search_taxon.sql"
-        "10.vm_mois.sql"
-        "11.vm_medias.sql"
-        "12.vm_cor_taxon_attribut.sql"
-        "13.vm_taxons_plus_observes.sql"
-        "14.vm_cor_taxon_organism.sql"
-        "14.1.vm_cor_taxon_area.sql"
-        "15.vm_cor_maille_observation.sql"
-        "16.territory_stats.sql"
-        "17.grant.sql"
-        "18.refresh_materialized_view_data.sql"
-    )
-    local script=""
-    local msg=""
-    local time_start=0
-    local time_diff=0
-    # 'set +e' : prevents the script from stopping if Psql returns a non-zero code
-    set +e
-    for script in "${scripts_sql[@]}"; do
-        printInfo ">[$(date +'%H:%M:%S')] Creating ${script}..."
-        time_start="${SECONDS}"
-        executeFile data/atlas/${script} \
-                -v "ON_ERROR_STOP=1" \
-                -v type_code="${type_code}" \
-                -v type_maille="${type_maille}" \
-                -v insert_altitudes_values="${insert_altitudes_values}" \
-                -v taxon_time="${time}" \
-                -v reader_user="${user_pg}" \
-                -v observation_data_source="${observation_data_source}"
-
-        script_result=$?
-        time_diff="$((${SECONDS} - ${time_start}))"
-        if [[ ${script_result} -ne 0 ]]; then
-            exitScript "ERROR: failed to execute ${script} !" 1
-        else
-            msg="${script} => ${Gre}Passed${RCol} - Duration : $(displayTime ${time_diff})"
-            printInfo ">[$(date +'%H:%M:%S')] ${msg}\n"
-        fi
-    done
-    set -e
-}
-
-function executeQueryAsSU() {
-    if [[ $# -lt 1 ]]; then
-        exitScript "Missing required argument to ${FUNCNAME[0]}()!" 2
-    fi
-
-    sudo -u postgres -s psql -d "${db_name}" -c "${1}"
-}
-
-function executeQuery() {
-    if [[ $# -lt 1 ]]; then
-        exitScript "Missing required argument to ${FUNCNAME[0]}()!" 2
-    fi
-    local query="${1}"
-    shift # Remove first argument so that $@ contains only other arguments
-    local other_arguments=("$@")
-
-    export PGPASSWORD="${owner_atlas_pass}"; \
-        psql -d "${db_name}" -U "${owner_atlas}" -h "${db_host}" -p "${db_port}" \
-            "${other_arguments[@]}" \
-            -c "${query}"
-}
-
-function executeFile() {
-    if [[ $# -lt 1 ]]; then
-        exitScript "Missing required argument to ${FUNCNAME[0]}()!" 2
-    fi
-    local file_path="${1}"
-    shift # Remove first argument so that $@ contains only other arguments
-    local other_arguments=("$@")
-
-    export PGPASSWORD="${owner_atlas_pass}"; \
-        psql -d "${db_name}" -U "${owner_atlas}" -h "${db_host}" -p "${db_port}" \
-            "${other_arguments[@]}" \
-            -f "${file_path}"
-}
 
 main "${@}"
