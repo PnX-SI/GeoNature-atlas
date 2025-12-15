@@ -6,7 +6,7 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
             s.id_synthese,
             se.cd_nomenclature AS cd_sensitivity,
             s.the_geom_point AS geom_point
-        FROM gn_synthese.synthese AS s
+        FROM :observation_data_source AS s
             LEFT JOIN ref_nomenclatures.t_nomenclatures AS se
                 ON se.id_nomenclature = s.id_nomenclature_sensitivity
             LEFT JOIN ref_nomenclatures.t_nomenclatures AS st
@@ -22,7 +22,7 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
             s.id_synthese,
             se.cd_nomenclature AS cd_sensitivity,
             st_centroid(st_union(a.the_geom)) AS geom_point
-        FROM gn_synthese.synthese AS s
+        FROM :observation_data_source AS s
             LEFT JOIN ref_nomenclatures.t_nomenclatures AS st
                 ON s.id_nomenclature_observation_status = st.id_nomenclature
             JOIN gn_synthese.cor_area_synthese AS cas
@@ -53,7 +53,7 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
         s.observers AS observateurs,
         s.id_dataset,
         tx.cd_ref
-    FROM gn_synthese.synthese AS s
+    FROM :observation_data_source AS s
         JOIN centroids AS c
             ON c.id_synthese = s.id_synthese
         JOIN atlas.vm_taxref AS tx
