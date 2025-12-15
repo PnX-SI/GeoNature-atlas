@@ -95,6 +95,7 @@ Par défault il vaut :
         },
     }
 
+
 Chaque clé de ce dictionnaire (`M1`, `M10`) doit correspondre à une entrée dans la table `atlas.cor_sensitivity_area_type`, si vous changez le contenu de cette table, vous devrez mettre ce paramètre en cohérence.
 L'attribut `selected` permet de masquer par défaut un type de zonage (pour éviter les superposition et améliorer la lisibiliter de la carte).
 
