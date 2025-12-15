@@ -1,7 +1,6 @@
 -- +-----------------------------------------------------------------------------------------------+
 -- Classic stats
-
-CREATE MATERIALIZED VIEW atlas.vm_area_stats AS
+CREATE  MATERIALIZED VIEW atlas.vm_area_stats AS
     SELECT
         vla.id_area,
         count(DISTINCT obs.id_observation) AS nb_obs,
@@ -11,8 +10,8 @@ CREATE MATERIALIZED VIEW atlas.vm_area_stats AS
         min(extract(YEAR FROM obs.dateobs)) AS yearmin,
         max(extract(YEAR FROM obs.dateobs)) AS yearmax,
         count(DISTINCT u.id_organisme) AS nb_organism,
-        count(distinct tam.cd_ref) FILTER (WHERE tam.statut_menace is not null) as nb_taxon_menace,
-        count(distinct tam.cd_ref) FILTER (WHERE tam.protege is true) as nb_taxon_protege
+        count(distinct cor_statut.cd_ref) FILTER (WHERE cor_statut.statut_menace is not null) as nb_taxon_menace,
+        count(distinct cor_statut.cd_ref) FILTER (WHERE cor_statut.protege is true) as nb_taxon_protege
     FROM atlas.vm_observations AS obs
         JOIN atlas.vm_cor_area_synthese AS vcas
             ON obs.id_observation = vcas.id_synthese
@@ -26,11 +25,8 @@ CREATE MATERIALIZED VIEW atlas.vm_area_stats AS
             ON obs.id_dataset = rcda.id_dataset
         LEFT JOIN utilisateurs.bib_organismes AS u
             ON rcda.id_organism = u.id_organisme
-        LEFT JOIN atlas.vm_cor_taxon_statut_area_spread AS tam
-            ON (
-                tam.cd_ref = tax.cd_ref AND
-                tam.id_area = vcas.id_area
-            )
+        left JOIN atlas.vm_cor_areas AS cor_areas ON cor_areas.id_area = vcas.id_area
+        left JOIN atlas.vm_cor_taxon_statut_area AS cor_statut on cor_statut.id_area = cor_areas.id_area_parent AND cor_statut.cd_ref = tax.cd_ref
     WHERE bat.type_code = ANY(SELECT * FROM string_to_table(:'type_code', ','))
     GROUP BY vla.id_area
 WITH DATA ;
@@ -52,8 +48,8 @@ CREATE MATERIALIZED VIEW atlas.vm_area_stats_by_taxonomy_group as
         min(extract(YEAR FROM obs.dateobs)) AS yearmin,
         max(extract(YEAR FROM obs.dateobs)) AS yearmax,
         count(DISTINCT u.id_organisme) AS nb_organism,
-        count(distinct tam.cd_ref) FILTER (WHERE tam.statut_menace IS NOT NULL) AS nb_taxon_menace,
-        count(distinct tam.cd_ref) FILTER (WHERE tam.protege IS true) AS nb_taxon_protege,
+        count(distinct cor_statut.cd_ref) FILTER (WHERE cor_statut.statut_menace IS NOT NULL) AS nb_taxon_menace,
+        count(distinct cor_statut.cd_ref) FILTER (WHERE cor_statut.protege IS true) AS nb_taxon_protege,
         (
             SELECT count(*)
             FROM atlas.vm_taxons AS taxon
@@ -72,11 +68,8 @@ CREATE MATERIALIZED VIEW atlas.vm_area_stats_by_taxonomy_group as
             ON obs.id_dataset = rcda.id_dataset
         LEFT JOIN utilisateurs.bib_organismes AS u
             ON rcda.id_organism = u.id_organisme
-        LEFT JOIN atlas.vm_cor_taxon_statut_area_spread AS tam
-            ON (
-                tam.cd_ref = tax.cd_ref AND
-                tam.id_area = vcas.id_area
-            )
+        left JOIN atlas.vm_cor_areas AS cor_areas ON cor_areas.id_area = vcas.id_area
+        left JOIN atlas.vm_cor_taxon_statut_area AS cor_statut on cor_statut.id_area = cor_areas.id_area_parent AND cor_statut.cd_ref = tax.cd_ref
     WHERE bat.type_code = ANY(SELECT * FROM string_to_table(:'type_code', ','))
     GROUP BY vla.id_area, tax.group2_inpn
 WITH DATA ;

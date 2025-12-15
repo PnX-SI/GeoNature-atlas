@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 from flask import current_app, g
-from flask_babel import gettext
+from flask_babel import gettext, get_translations
 
 
 def get_locale():
@@ -12,15 +12,8 @@ def get_locale():
 
 def get_tranlated_labels():
     """
-    Return a dict of translated labels regarding the context of the app (multiple areas or not)
+    Return a dict of all translated labels
     """
-    isOnlyMunicipalities = False
-    if current_app.config["TYPE_TERRITOIRE_SHEET"] == ["COM"]:
-        isOnlyMunicipalities = True
-    return {
-        "territories": (
-            gettext("municipalities") if isOnlyMunicipalities else gettext("territories")
-        ),
-        "territory": gettext("municipality") if isOnlyMunicipalities else gettext("territory"),
-        "search_area": gettext("search.city") if isOnlyMunicipalities else gettext("search.area"),
-    }
+
+    translations = get_translations()
+    return {msg: trans for msg, trans in translations._catalog.items() if msg}

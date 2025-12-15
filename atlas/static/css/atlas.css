@@ -145,10 +145,6 @@ main {
     .tab-content {
         padding: 10px;
 
-        #legend-other-info:empty {
-            display: none;
-        }
-
         .leaflet-control-layers-overlays {
             line-height: 1.5rem;
 
@@ -157,6 +153,10 @@ main {
             }
         }
     }
+}
+
+#legend-other-info:empty, #legend-area:empty {
+    display: none;
 }
 
 .leaflet-control-layers-overlays {

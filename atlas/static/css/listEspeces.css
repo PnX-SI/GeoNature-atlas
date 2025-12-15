@@ -160,11 +160,18 @@ tbody tr.current {
 }
 
 .pictoImgList {
-    width: 80px;
-    background-position: center center;
-    background-size: cover;
-    height: 80px;
     border-radius: 6px;
+}
+
+.pictoImgList.has-media-True {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+
+.pictoImgList.has-media-False {
+    width: 80px;
+    
 }
 
 

@@ -106,14 +106,17 @@ NOTES :
 
 La table `zoning` doit être remplie en indicant l'identifiant de son type de 'zone' (table `bib_areas_types``).
 
-Pour accelérer l'installation, vous pouvez "désactiver" certaines communes du ``ref_geo``, dont vous ne vous servez pas. Voir l'exemple de requête ci-dessous :
+Pour accelérer l'installation, vous pouvez "désactiver" certains zonage du ``ref_geo``, dont vous ne vous servez pas. Voir l'exemple de requête ci-dessous :
 
 ::
 
-    UPDATE ref_geo.l_areas set enable = false where id_type = 25 AND id_area NOT in (
-    select a.id_area from ref_geo.l_areas a
-    join ref_geo.li_municipalities m ON a.id_area = m.id_area
-    where insee_dep in ('MON_CODE_DEPARTEMENT', 'MON_CODE_DEPARTEMENT_BIS')
+    update ref_geo.l_areas 
+    set enable = false where not st_intersects(geom,  
+        (
+        select st_union(geom)
+        from ref_geo.l_areas la 
+        where la.id_type = 26 and area_code in ('38', '05', '74')
+        )
     )
 
 :note:

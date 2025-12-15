@@ -7,7 +7,6 @@ from sqlalchemy import Interval
 
 from atlas.modeles.entities.vmObservations import (
     VmObservations,
-    VmObservationsMailles,
     VMCorMailleObservation,
 )
 from atlas.modeles.entities.vmAreas import VmAreas, VmCorAreaSynthese
@@ -112,6 +111,7 @@ def getObservationsMaillesChilds(params={}):
         query = query.where(
             VmObservations.dateobs >= func.current_timestamp() - cast(literal(last_obs), Interval)
         )
+
     return FeatureCollection(
         [
             Feature(

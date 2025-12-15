@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-21 11:50+0200\n"
+"POT-Creation-Date: 2025-12-11 15:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,27 +18,29 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: utils.py:22
+#: utils.py:36
 msgid "municipalities"
 msgstr "Communes"
 
-#: utils.py:22
+#: utils.py:36
+#, fuzzy
 msgid "territories"
-msgstr "territoires"
+msgstr "territoire"
 
-#: utils.py:24
+#: utils.py:38
 msgid "municipality"
 msgstr "Commune"
 
-#: utils.py:24
+#: utils.py:38
 msgid "territory"
 msgstr "territoire"
 
-#: utils.py:25
+#: utils.py:39
 msgid "search.city"
 msgstr "Recherche par commune"
 
-#: utils.py:25
+#: static/sample/templates/navbar.html:46 templates/home/globalStats.html:56
+#: utils.py:39
 msgid "search.area"
 msgstr "Recherche par territoire"
 
@@ -48,7 +50,7 @@ msgid "home.partners"
 msgstr "Partenaires"
 
 #: static/custom/templates/footer.html:2 static/sample/templates/footer.html:2
-#: templates/home/_main.html:3
+#: templates/core/sideBar.html:54 templates/home/_main.html:3
 msgid "home"
 msgstr "Accueil"
 
@@ -127,12 +129,6 @@ msgstr "Recherche par espèce"
 msgid "atlas.presentation"
 msgstr "Présentation de l'atlas"
 
-#: templates/areaSheet/_main.html:29 templates/speciesSheet/_main.html:53
-msgid "obs.number.s"
-msgstr "Nombre d'observation(s)"
-
-#: templates/areaSheet/_main.html:30 templates/areaSheet/statArea.html:8
-#: templates/core/statHierarchy.html:7 templates/core/taxon.html:69
 #: static/sample/templates/introduction.html:7
 msgid "from2"
 msgstr "de"
@@ -149,11 +145,11 @@ msgstr "de l'"
 msgid "from5"
 msgstr "de la"
 
-#: templates/areaSheet/_main.html:32 templates/speciesSheet/_main.html:53
+#: templates/areaSheet/_main.html:28 templates/speciesSheet/_main.html:52
 msgid "obs.number.s"
 msgstr "Nombre d'observation(s)"
 
-#: templates/areaSheet/_main.html:33 templates/areaSheet/statArea.html:8
+#: templates/areaSheet/_main.html:29 templates/areaSheet/statArea.html:8
 #: templates/core/statHierarchy.html:7 templates/core/taxon.html:85
 #: templates/home/globalStats.html:16 templates/home/taxoRank.html:49
 #: templates/organismSheet/statsInfos.html:15
@@ -164,40 +160,40 @@ msgstr "Nombre d'observation(s)"
 msgid "observations"
 msgstr "Observations"
 
-#: templates/areaSheet/_main.html:31
+#: templates/areaSheet/_main.html:30
 msgid "number.species"
 msgstr "Nombre d'espèces"
 
-#: templates/areaSheet/_main.html:32
+#: templates/areaSheet/_main.html:31
 msgid "number.species.territory"
 msgstr "Nombre d'espèces sur tout le territoire"
 
-#: templates/areaSheet/_main.html:33 templates/areaSheet/statArea.html:13
+#: templates/areaSheet/_main.html:32 templates/areaSheet/statArea.html:13
 #: templates/areaSheet/statArea.html:48 templates/core/statHierarchy.html:12
 #: templates/home/globalStats.html:28 templates/home/taxoRank.html:32
 #: templates/organismSheet/statsInfos.html:29
 msgid "species"
 msgstr "Espèces"
 
-#: templates/areaSheet/_main.html:34 templates/areaSheet/moreZoneInfo.html:17
+#: templates/areaSheet/_main.html:33 templates/areaSheet/moreZoneInfo.html:17
 #: templates/areaSheet/moreZoneInfo.html:67
 #: templates/areaSheet/statArea.html:56
 msgid "threatened.species"
 msgstr "Espèces menacées"
 
-#: templates/areaSheet/_main.html:35
+#: templates/areaSheet/_main.html:34
 msgid "other.species"
 msgstr "Autres espèces"
 
-#: templates/areaSheet/_main.html:36
+#: templates/areaSheet/_main.html:35
 msgid "threatened.species.repartition"
 msgstr "Répartition des espèces (menacées / autres)"
 
-#: templates/areaSheet/_main.html:37
+#: templates/areaSheet/_main.html:36
 msgid "number.species.taxonomic.group"
 msgstr "Nombre d'espèces observées par groupe taxonomique"
 
-#: templates/areaSheet/_main.html:76
+#: templates/areaSheet/_main.html:75
 msgid "last.obs.area"
 msgstr "dernières observations"
 
@@ -297,76 +293,36 @@ msgstr "dernière observation"
 msgid "protected_species"
 msgstr "espèces protégées"
 
-#: templates/core/advanced_search.html:4
-#: templates/core/advanced_search.html:360 templates/core/sideBar.html:53
+#: templates/areaSheet/statArea.html:72
+msgid "sensibility_warning_message"
+msgstr ""
+"La liste des espèces affichées sur cette page peut être incomplète. "
+"Conformément au référentiel national de sensibilité, certaines données ne"
+" sont pas affichées : il s'agit des espèces sensibles dont la diffusion "
+"de la localisation précise pourrait entrainer leur dégradation. "
+"L'ensemble des observations sont elles bien disponibles avec le bon "
+"niveau de floutage sur les fiches espèces."
+
+#: templates/core/advanced_search.html:4 templates/core/sideBar.html:105
+#: templates/core/sideBar.html:109
 msgid "advanced_search"
 msgstr "Recherche avancée"
-
-#: templates/core/advanced_search.html:332
-msgid "information"
-msgstr "Information"
-
-#: templates/core/advanced_search.html:334
-#: templates/core/advanced_search.html:340
-msgid "close"
-msgstr "Fermer"
-
-#: templates/core/advanced_search.html:337
-msgid "asearch.information"
-msgstr ""
-"Cette page vous permet de superposer la répartition de plusieurs espèces "
-"simultanément.<br/><br/>Pour des raisons de visibilité des répartitions "
-"sur carte, le nombre d'espèces total est limité à 3."
-
-#: templates/core/advanced_search.html:351
-msgid "page.information"
-msgstr "Voir les informations sur cette page"
-
-#: templates/core/advanced_search.html:364
-#: templates/core/advanced_search.html:385
-msgid "asearch.max"
-msgstr "Vous ne pouvez pas ajouter plus de 3 espèces"
-
-#: templates/core/advanced_search.html:370
-msgid "asearch.search.species"
-msgstr "Rechercher une espèce"
-
-#: templates/core/advanced_search.html:373
-msgid "asearch.search.start"
-msgstr "Commencez à taper le nom d'une espèce"
-
-#: templates/core/advanced_search.html:396
-msgid "asearch.remove.selection"
-msgstr "Retirer de la sélection"
-
-#: templates/core/advanced_search.html:406 templates/core/taxon.html:95
-#: templates/home/lastObs.html:32 templates/home/mostViewNow.html:33
-#: templates/home/newSpecies.html:48 templates/home/taxoRank.html:61
-#: templates/organismSheet/topSpecies.html:76
-msgid "species.sheet"
-msgstr "Fiche espèce"
-
-#: templates/core/advanced_search.html:407 templates/core/taxon.html:93
-#: templates/organismSheet/topSpecies.html:75
-#: templates/speciesSheet/identityCard.html:171
-msgid "check.species.sheet"
-msgstr "Voir la fiche espèce"
 
 #: templates/core/listTaxons.html:20
 msgid "filter"
 msgstr "Filtrer"
 
-#: templates/core/listTaxons.html:22
+#: templates/core/listTaxons.html:28
 msgid "threatened.plural"
 msgstr "Espèces vulnérables"
 
-#: templates/core/listTaxons.html:31
+#: templates/core/listTaxons.html:37
 msgid "protected.plural"
 msgstr "espèces protégées"
 
 #: templates/core/listTaxons.html:46
 msgid "patrimonial.plural"
-msgstr ""
+msgstr "Patrimoniales"
 
 #: templates/core/listTaxons.html:71
 msgid "refresh.filters"
@@ -425,7 +381,7 @@ msgstr "Protection stricte"
 #: templates/core/listTaxons.html:117
 #, fuzzy
 msgid "patrimonial"
-msgstr "Patrimoniaux"
+msgstr "Patrimonial"
 
 #: templates/core/listTaxons.html:118
 msgid "inpn.group.3"
@@ -439,14 +395,18 @@ msgstr "oui"
 msgid "no"
 msgstr "non"
 
-#: templates/core/sideBar.html:7
+#: templates/core/sideBar.html:50
 msgid "back.to.home"
 msgstr "Retour à l'accueil"
 
-#: templates/core/sideBar.html:64 templates/home/globalStats.html:69
+#: templates/core/sideBar.html:120 templates/home/globalStats.html:69
 #: templates/photoGalery/_main.html:5 templates/photoGalery/_main.html:36
 msgid "gallery.title"
 msgstr "Galerie photos"
+
+#: templates/core/sideBar.html:124 templates/home/globalStats.html:67
+msgid "photos"
+msgstr "Photos"
 
 #: templates/core/taxon.html:11
 #, fuzzy
@@ -504,6 +464,17 @@ msgstr "Espèce vulnérable"
 msgid "last.obs.in"
 msgstr "Dernière observation"
 
+#: templates/core/taxon.html:93 templates/organismSheet/topSpecies.html:75
+#: templates/speciesSheet/identityCard.html:171
+msgid "check.species.sheet"
+msgstr "Voir la fiche espèce"
+
+#: templates/core/taxon.html:95 templates/home/lastObs.html:32
+#: templates/home/mostViewNow.html:33 templates/home/newSpecies.html:48
+#: templates/home/taxoRank.html:61 templates/organismSheet/topSpecies.html:76
+msgid "species.sheet"
+msgstr "Fiche espèce"
+
 #: templates/home/globalStats.html:4
 msgid "home.insomefigures"
 msgstr "En quelques chiffres"
@@ -512,9 +483,11 @@ msgstr "En quelques chiffres"
 msgid "home.seelatestobs"
 msgstr "Voir les dernières observations"
 
-#: templates/home/globalStats.html:67
-msgid "photos"
-msgstr "Photos"
+#: templates/home/globalStats.html:47 templates/speciesSheet/map.html:23
+#: templates/speciesSheet/otherInformations.html:13
+#: templates/speciesSheet/otherInformations.html:19
+msgid "areas"
+msgstr "Zonages"
 
 #: templates/home/mostViewNow.html:5
 msgid "see.at.the.moment"
@@ -640,6 +613,12 @@ msgstr "Statut de protection"
 msgid "sheet"
 msgstr "Fiche"
 
+#: templates/speciesSheet/map.html:23
+#: templates/speciesSheet/otherInformations.html:13
+#: templates/speciesSheet/otherInformations.html:19
+msgid "area"
+msgstr "Zonage"
+
 #: templates/speciesSheet/map.html:37
 #: templates/speciesSheet/otherInformations.html:27
 msgid "organisms"
@@ -748,4 +727,34 @@ msgstr "Observation pour le taxon"
 
 #~ msgid "heritage"
 #~ msgstr "Patrimonial"
+
+#~ msgid "information"
+#~ msgstr "Information"
+
+#~ msgid "close"
+#~ msgstr "Fermer"
+
+#~ msgid "asearch.information"
+#~ msgstr ""
+#~ "Cette page vous permet de superposer "
+#~ "la répartition de plusieurs espèces "
+#~ "simultanément.<br/><br/>Pour des raisons de "
+#~ "visibilité des répartitions sur carte, "
+#~ "le nombre d'espèces total est limité "
+#~ "à 3."
+
+#~ msgid "page.information"
+#~ msgstr "Voir les informations sur cette page"
+
+#~ msgid "asearch.max"
+#~ msgstr "Vous ne pouvez pas ajouter plus de 3 espèces"
+
+#~ msgid "asearch.search.species"
+#~ msgstr "Rechercher une espèce"
+
+#~ msgid "asearch.search.start"
+#~ msgstr "Commencez à taper le nom d'une espèce"
+
+#~ msgid "asearch.remove.selection"
+#~ msgstr "Retirer de la sélection"
 

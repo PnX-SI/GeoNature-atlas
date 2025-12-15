@@ -36,6 +36,12 @@ owner_atlas_pass=monpassachanger
 # Cela créera des tables en Foreign Data Wrapper (FDW) dans la BDD atlas.
 geonature_source=true
 
+# Table ou vue ou sont stockées les données dans GeoNature
+# par défaut c'est la table gn_synthese.synthese qui est prise pour construire les VM.
+# Il est possible de fournir une vue filtrées des données qu'on souhaite afficher dans l'atlas
+# La vue doit être dans le schéma `gn_synthese`. Par ex : `gn_synthese.v_synthese_atlas_custom`
+observation_data_source=gn_synthese.synthese
+
 
 #+-------------------------------------------------------------------------------------------------+
 # Connexion à la BDD GeoNature source
@@ -72,10 +78,6 @@ atlas_source_pass=monpassachanger
 # 🗒 Voir la colonne "type_code" de la table "ref_geo.bib_areas_type" pour
 # tous les codes de type de zone geographique renseignés ci-dessous
 
-# Indiquer le code du type d'entité géographique correspondant aux limites de votre territoire.
-# Une seule entrée correspondant à ce type doit être présent dans la table "ref_geo.l_areas".
-# 🗒 Voir la colonne "type_code" de la table "ref_geo.bib_areas_type".
-type_territoire="PEC"
 
 # Type de zonage à utiliser dans l'application pour générer les fiches territoires.
 # (Pour optimiser et ne pas utiliser toutes les géométries présentes dans ref_geo).

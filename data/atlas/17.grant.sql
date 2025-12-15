@@ -6,11 +6,10 @@ GRANT USAGE ON SCHEMA atlas TO :reader_user ;
 
 GRANT SELECT ON TABLE atlas.vm_taxref TO :reader_user ;
 GRANT SELECT ON TABLE atlas.bib_taxref_rangs TO :reader_user ;
-GRANT SELECT ON TABLE atlas.t_layer_territoire TO :reader_user ;
 GRANT SELECT ON TABLE atlas.vm_bib_areas_types TO :reader_user ;
 GRANT SELECT ON TABLE atlas.vm_cor_areas TO :reader_user ;
 GRANT SELECT ON TABLE atlas.vm_l_areas TO :reader_user ;
-GRANT SELECT ON TABLE atlas.cor_sensitivity_area_type TO :reader_user ;
+GRANT SELECT ON TABLE atlas.vm_cor_sensitivity_area_type TO :reader_user ;
 GRANT SELECT ON TABLE atlas.vm_cor_area_synthese TO :reader_user ;
 GRANT SELECT ON TABLE atlas.vm_observations TO :reader_user ;
 GRANT SELECT ON TABLE atlas.vm_taxons TO :reader_user ;
@@ -29,5 +28,5 @@ GRANT SELECT ON TABLE atlas.vm_area_stats_by_taxonomy_group TO :reader_user ;
 GRANT SELECT ON TABLE atlas.vm_area_stats_by_organism TO :reader_user ;
 GRANT SELECT ON TABLE atlas.vm_bdc_statut TO :reader_user ;
 GRANT SELECT ON TABLE atlas.vm_cor_taxon_statut_area TO :reader_user ;
-
+GRANT SELECT ON TABLE atlas.vm_cor_taxon_area TO :reader_user ;
 

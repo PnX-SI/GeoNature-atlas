@@ -174,7 +174,7 @@ function checkDockerVariables() {
     local vars=(
         'POSTGRES_USER' 'POSTGRES_PASSWORD' 'POSTGRES_HOST' 'POSTGRES_DB' 'POSTGRES_PORT' \
         'ATLAS_DROP_SCHEMA' \
-        'ATLAS_TYPE_TERRITOIRE' 'ATLAS_TYPE_CODE' 'ATLAS_TYPE_MAILLE' 'ATLAS_ALTITUDES' \
+        'ATLAS_TYPE_CODE' 'ATLAS_ALTITUDES', 'ATLAS_TYPE_MAILLE' \
         'ATLAS_MOST_OBSERVED_TIME'
     )
     for i in "${!vars[@]}"; do
@@ -325,7 +325,7 @@ function createFdwTables() {
 
 function createDatabaseWithoutGeonature() {
     printMsg "Creating DB structure without GeoNature database..."
-    executeFile "data/atlas/without_geonature.sql"
+    executeFile "data/without_gn2/without_geonature.sql"
 }
 
 function prepareAltitudesValues() {
@@ -370,6 +370,7 @@ function createAtlasSchemaEntities() {
         "12.vm_cor_taxon_attribut.sql"
         "13.vm_taxons_plus_observes.sql"
         "14.vm_cor_taxon_organism.sql"
+        "14.1.vm_cor_taxon_area.sql"
         "15.vm_cor_maille_observation.sql"
         "16.territory_stats.sql"
         "17.grant.sql"
@@ -386,12 +387,12 @@ function createAtlasSchemaEntities() {
         time_start="${SECONDS}"
         executeFile data/atlas/${script} \
                 -v "ON_ERROR_STOP=1" \
-                -v type_territoire="${type_territoire}" \
                 -v type_code="${type_code}" \
                 -v type_maille="${type_maille}" \
                 -v insert_altitudes_values="${insert_altitudes_values}" \
                 -v taxon_time="${time}" \
-                -v reader_user="${user_pg}"
+                -v reader_user="${user_pg}" \
+                -v observation_data_source="${observation_data_source}"
 
         script_result=$?
         time_diff="$((${SECONDS} - ${time_start}))"

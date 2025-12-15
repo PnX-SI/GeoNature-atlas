@@ -3,7 +3,7 @@
     <div class="card mt-4">
         <div class="card-body pb-0">
             <h3 class="card-title"><i class="fas fa-binoculars icon-color-title"></i>
-                {{ configuration.TEXT_LAST_OBS }} {{ observations.features | length }}
+                {{ configuration.TEXT_LAST_OBS }} : {{ observations.features | length }}
                 {{ 'observations' if observations | length > 1 else 'observation' }}
             </h3>
         </div>
@@ -18,7 +18,7 @@
 
                     {% for obs in observations.features %}
                     <li  class="lastObslistItem d-flex align-items-center border-bottom p-2" idObservation="{{ obs.properties.id_observation }}" area-code="{{ obs.id_maille }}">
-                        <img loading="lazy" src="{{obs.properties.media}}" class="align-self-center lastObsImg">
+                        <img loading="lazy" src="{{obs.properties.media}}" class="align-self-center lastObsImg has-media-{{obs.properties.has_media}}">
                         <div class="flex-grow-1 d-flex justify-content-between align-items-center ms-3">
                             <div class="d-flex flex-column justify-content-center" style="flex: 1; overflow-wrap: break-word;">
                                 <p class="singleTaxon name mb-0" cdref="{{ obs.properties.cd_ref }}">

@@ -19,11 +19,8 @@ function displayObsTaxonMaille(cd_ref) {
         },
     }).done(function (observations) {
         $("#loaderSpinner").hide();
-        if (currentLayer) {
-            map.removeLayer(currentLayer);
-        }
-        clearOverlays();
-        displayMailleLayerFicheEspece(observations);
+        clearObservationsFeatureGroup();
+        displayGeojsonMailles(observations, onEachFeatureMaille);
     });
 }
 
@@ -38,30 +35,6 @@ function refreshTerritoryArea(elem) {
             .fadeIn(500);
     });
 }
-
-// Generate legends and check configuration to choose which to display (Maille ou Point)
-
-htmlLegendMaille =
-    "<i style='border: solid 1px red;'> &nbsp; &nbsp; &nbsp;</i> Maille comportant au moins une observation <br> <br>" +
-    "<i style='border: solid " +
-    configuration.MAP.BORDERS_WEIGHT +
-    "px " +
-    configuration.MAP.BORDERS_COLOR +
-    ";'> &nbsp; &nbsp; &nbsp;</i> Limite du " +
-    configuration.STRUCTURE;
-
-htmlLegendPoint =
-    "<i style='border: solid " +
-    configuration.MAP.BORDERS_WEIGHT +
-    "px " +
-    configuration.MAP.BORDERS_COLOR +
-    ";'> &nbsp; &nbsp; &nbsp;</i> Limite du " +
-    configuration.STRUCTURE;
-
-htmlLegend =
-    configuration.AFFICHAGE_MAILLE || configuration.AFFICHAGE_TERRITOIRE_OBS
-        ? htmlLegendMaille
-        : htmlLegendPoint;
 
 // LOAD OBSERVATIONS if AFFICHAGE_DERNIERES_OBS
 if (configuration.AFFICHAGE_DERNIERES_OBS) {
@@ -89,7 +62,7 @@ if (configuration.AFFICHAGE_TERRITOIRE_OBS) {
         .then((response) => response.json())
         .then((data) => {
             observations = data;
-            displayGeojsonMailles(observations);
+            displayGeojsonMailles(observations, onEachFeatureMailleLastObs);
             $("#loaderSpinner").hide();
         });
 

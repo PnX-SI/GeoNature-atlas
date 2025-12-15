@@ -23,6 +23,10 @@ CHANGELOG
 - Ajout d'un plugin permetant une recheche d'adresse sur les cartes de la page d'acceuil et territoire (#716 @juggler31)
 - Nouvel affichage des tooltips lorsqu'on clique sur une maille (#721 @juggler31)
 - Possibilité de masquer la page de la gallerie photo (#703 @lpofredc) via le paramètre `AFFICHAGE_GALERIE_PHOTO`
+- Suppression de la table t_layer_territoire qui permettait de filtrer les données hors territoire. Ceci est desormais à faire par chaque utilisateurs directement dans `atlas.vm_observations`
+- Le paramètre `type_territoire` du ficher `settings.ini` n'est plus utilisé
+- Les fichiers de langues sont dorénavant surcouchables
+- Ajout de la possibilité de configurer la table / vue source des données en entrée de l'atlas (#749)
 
 A VERIFIER :
 
@@ -57,6 +61,12 @@ Les paramètres de l'url de la fiche territoire était ``url_for('main.ficheComm
 
 ⚠️ **Notes de version**
 
+BREAKING CHANGE : 
+
+- La couche des limites du territoire n'est plus fournie par défaut. Pour ajouter cette couche (ainsi que d'autres couches personnalisées), utilisez le paramètre `COUCHES_SIG`
+- les paramètres `BORDERS_COLOR`, `BORDERS_WEIGHT` pour styliser le coutour du territoire sont dépréciés. Utilisez le paramètre `COUCHES_SIG` et l'attribut `style` de ce paramètre pour configurer le style de la couche (voir l'exemple dans `config.py.example`)
+- Les attributs `label`, `text` et `label_pluriel` du paramètre `PATRIMONIALITE` sont dépréciés. Utilisez la surchouche de langue si vous souhaitez modifier ce terme (id : `patrimonial`, `patrimonial.plural` et `this.taxa.is.patrimonial`)
+- Pour configurer les données qui remontent dans l'atlas il est conseillé de ne plus surcoucher `atlas.vm_observations` mais de s'appuyer sur le paramètre `observation_data_source` du fichier `settings.ini` (voir doc à ce sujet dans `configuration.rst`)
 Vous pouvez supprimer les paramètres suivants du fichier ``settings.ini`` :
 
 - ``taxhub_displayed_attr``

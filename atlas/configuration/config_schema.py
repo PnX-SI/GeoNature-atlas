@@ -95,17 +95,21 @@ orijime_default_translations = {
 }
 
 AFFICHAGE_COUCHES_MAP_DEFAULT = {
+    "M1": {
+        "label": "Maille 1km",
+        "selected": True,
+    },
     "COM": {
         "label": "Communes",
         "selected": True,
     },
     "M10": {
         "label": "Mailles 10 km",
-        "selected": False,
+        "selected": True,
     },
     "DEP": {
         "label": "Département",
-        "selected": False,
+        "selected": True,
     },
 }
 
@@ -134,13 +138,8 @@ class MapConfig(Schema):
     SECOND_MAP = fields.Dict(load_default=MAP_2)
     ZOOM = fields.Integer(load_default=10)
     STEP = fields.Integer(load_default=1)
-    BORDERS_COLOR = fields.String(load_default="#000000")
-    BORDERS_WEIGHT = fields.Integer(load_default=3)
     ENABLE_SLIDER = fields.Boolean(load_default=True)
     ENABLE_SCALE = fields.Boolean(load_default=True)
-    MASK_STYLE = fields.Dict(
-        load_default={"fill": False, "fillColor": "#020202", "fillOpacity": 0.7}
-    )
 
 
 class CouchesSigConfig(Schema):
@@ -152,6 +151,7 @@ class CouchesSigConfig(Schema):
     options = fields.Dict()
     style = fields.Dict()
     wms_version = fields.String()
+    selected = fields.Bool(load_default=False)
 
     @validates_schema
     def layer_required_for_wms_type(self, data, **kwargs):
@@ -294,18 +294,7 @@ class AtlasConfig(Schema):
     DISPLAY_PATRIMONIALITE = fields.Boolean(load_default=False)
     AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION = fields.Boolean(load_default=True)
     AFFICHAGE_TAB_AREA_OBS_ESPECES = fields.Boolean(load_default=True)
-    PATRIMONIALITE = fields.Dict(
-        load_default={
-            "label": "Patrimoniale",
-            "label_pluriel": "Patrimoniales",
-            "config": {
-                "oui": {
-                    "icon": "custom/images/logo_patrimonial.png",
-                    "text": "Ce taxon est patrimonial",
-                }
-            },
-        }
-    )
+    PATRIMONIALITE_ICON = fields.Str(load_default="custom/images/logo_patrimonial.png")
     STATIC_PAGES = fields.Dict(
         load_default={
             "presentation": {
@@ -341,6 +330,8 @@ class AtlasConfig(Schema):
     TYPES_MEDIAS_LIENS_IMPORTANTS = fields.List(
         fields.Nested(MediaTypeImportantLink), load_default=None
     )
+
+    DISPLAY_ZONING_PAGE_SENSIBILITY_MESSAGE = fields.Boolean(load_default=True)
 
     @validates_schema
     def validate_config(self, data, **kwargs):

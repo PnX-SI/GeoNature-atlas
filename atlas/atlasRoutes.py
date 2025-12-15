@@ -115,7 +115,7 @@ def index():
     listTaxons = []
     if current_app.config["AFFICHAGE_TERRITOIRE_OBS"]:
         nb_taxons = vmTaxonsRepository.get_nb_taxons()
-        listTaxons = vmTaxonsRepository.getListTaxon(params={"page": 0})
+        listTaxons = vmTaxonsRepository.getListTaxon(params=MultiDict({"page": 0}))
 
     # si AFFICHAGE_TERRITOIRE_OBS on charge les données en AJAX
     # si AFFICHAGE_DERNIERES_OBS = False, on ne charge pas les obs
@@ -192,7 +192,9 @@ def ficheEspece(cd_nom):
     taxon = vmTaxrefRepository.searchEspece(cd_ref)
     altitudes = vmAltitudesRepository.getAltitudesChilds(cd_ref)
     months = vmMoisRepository.getMonthlyObservationsChilds(cd_ref)
-    organism_stats = vmCorTaxonOrganismRepository.getTaxonOrganism(cd_ref)
+    organism_stats = None
+    if current_app.config["ORGANISM_MODULE"]:
+        organism_stats = vmCorTaxonOrganismRepository.getTaxonOrganism(cd_ref)
     synonyme = vmTaxrefRepository.getSynonymy(cd_ref)
     areas = vmAreasRepository.getAreasByTaxon(cd_ref)
     taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(cd_ref)

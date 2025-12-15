@@ -77,11 +77,11 @@
                         </a>
                     {% endif %}
 
-                    {% if configuration.DISPLAY_PATRIMONIALITE and taxon.taxonSearch.patrimonial in configuration.PATRIMONIALITE.config %}
+                    {% if configuration.DISPLAY_PATRIMONIALITE and taxon.taxonSearch.patrimonial == "oui" %}
                         <img class="caractEspece" width="130px"
-                             src="{{ url_for('static', filename=configuration.PATRIMONIALITE.config[taxon.taxonSearch.patrimonial].icon) }}"
+                             src="{{ url_for('static', filename=configuration.PATRIMONIALITE_ICON) }}"
                              data-bs-toggle="tooltip"
-                             title="{{ configuration.PATRIMONIALITE.config[taxon.taxonSearch.patrimonial].text }}"
+                             title="{{ _('this.taxa.is.patrimonial') }}"
                              data-bs-placement="right">
                     {% endif %}
 
@@ -125,7 +125,7 @@
                                                 <th>{{ _('common.name') }}</th>
                                                 <th>{{ _('scientific.name') }}</th>
                                                 {% if configuration.PROTECTION %}<th>{{ _('protection') }}</th>{% endif %}
-                                                {% if configuration.DISPLAY_PATRIMONIALITE %}<th>{{ configuration.PATRIMONIALITE.label }}</th>{% endif %}
+                                                {% if configuration.DISPLAY_PATRIMONIALITE %}<th>{{ _("patrimonial") }}</th>{% endif %}
                                                 <th>{{ _('observations') }}</th>
                                                 <th>{{ _('sheet') }}</th>
                                             </tr>
@@ -156,9 +156,9 @@
                                                         <td>
                                                             {% if child.patrimonial in configuration.PATRIMONIALITE.config %}
                                                                 <img class="caractEspece" width="130px"
-                                                                     src="{{ url_for('static', filename=configuration.PATRIMONIALITE.config[child.patrimonial].icon) }}"
+                                                                     src="{{ url_for('static', filename=configuration.PATRIMONIALITE_ICON) }}"
                                                                      data-bs-toggle="tooltip"
-                                                                     title="{{ configuration.PATRIMONIALITE.config[child.patrimonial].text }}"
+                                                                     title="{{ _('this.taxa.is.patrimonial') }}"
                                                                      data-bs-placement="right">
                                                             {% endif %}
                                                         </td>

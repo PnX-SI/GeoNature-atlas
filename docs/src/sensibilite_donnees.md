@@ -5,13 +5,13 @@
 
 
 GeoNature-atlas fournit un mécanisme de dégration des données sensibles basé sur les standards du SINP. Connecté à GeoNature version 2, l'atlas utilise le champs `id_nomenclature_sensitivity` de la table `gn_synthese.synthese` pour construire la vue `atlas.vm_observations` et afficher la géometrie adaptée en se basant sur référentiel géographique de GeoNature.
-En mode "point", GeoNature-atlas affiche le centroïde de la géometrie à laquelle l'observation est dégradée (le centroïde de communes si le niveau de diffusion est = 1 par exemple). En mode maille, l'observation sera affiché tel que le niveau de d'affichage est défini dans la table `atlas.cor_sensitivity_area_type` (voir plus bas).
+En mode "point", GeoNature-atlas affiche le centroïde de la géometrie à laquelle l'observation est dégradée (le centroïde de communes si le niveau de diffusion est = 1 par exemple). En mode maille, l'observation sera affichée tel que le niveau de d'affichage est défini dans la table de GeoNature `gn_sensitivity.cor_sensitivity_area_type` (voir plus bas).
 Les données dont le niveau de diffusion est égal à 4 (aucune diffusion) ne sont pas affichées dans GeoNature-atlas.
-Non connecté à GeoNature2, la charge de la dégradation géographique est à la charge de l'administrateur des données.
+Non connecté à GeoNature2, la charge de la dégradation géographique veillé à bien remplir le champs `id_nomenclature_sentivity`.
 
 ## Paramétrage de l'affichage des données sensibles
 
-Il est possible de paramétrer le niveau d'affichage des données en fonction de leur niveau de sensibilité. Ce paramétrage se fait à partir de la table `atlas.cor_sensitivity_area_type`, elle même construit à partir de la table GeoNature `gn_sensitivity.cor_sensitivity_area_type`.
+Il est possible de paramétrer le niveau d'affichage des données en fonction de leur niveau de sensibilité. Ce paramétrage se fait dans GeoNature dans la table `gn_sensitivity.cor_sensitivity_area_type`.
 Par défault la table contient les données suivantes :
 
 | Niveau de sensibilité | Niveau d'affichage |
@@ -23,11 +23,11 @@ Par défault la table contient les données suivantes :
 
 > [!TIP]
 >
-> - La colonne niveau de sensibilité est rempli avec le code (cd_nomenclature) du >niveau de sensibilité (http://standards-sinp.mnhn.fr/nomenclature/>5-niveaux-de-precision-de-diffusion-souhaites-niveauprecision-23-06-2016/)
-> - La colonne "niveau d'affichage" corespond code de type de zonage du ref_geo (`ref_geo.bib_areas_type.type_code`)
+> - La colonne niveau de sensibilité est rempli avec l'id_nomenclature du niveau de sensibilité (http://standards-sinp.mnhn.fr/nomenclature/>5-niveaux-de-precision-de-diffusion-souhaites-niveauprecision-23-06-2016/)
+> - La colonne "niveau d'affichage" corespond id de type de zonage du ref_geo (`ref_geo.bib_areas_type.id_type`)
 > - La première ligne (0 = non sensible) correspond au niveau d'affichage d'une donnée non sensible dans un atlas en mode maille.
 
-Si vous souhaitez changer le niveau d'affichage en fonction du niveau de sensibilité, vous pouvez donc éditer cette table.
+Si vous souhaitez changer le niveau d'affichage en fonction du niveau de sensibilité, vous pouvez donc éditer cette table. Ceci nécessite ensuite de raffraichir les vues matéralisées (`refresh_materialized_view_data()`).
 
 ### Paramétrage du style des couches d'affichage des données sensibles
 

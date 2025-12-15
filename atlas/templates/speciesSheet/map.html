@@ -20,7 +20,7 @@
                     <i class="fas fa-map-signs fa-2x"></i> <br/>
                     <b>{{ areas['length']|pretty }}</b><br/>
                     <span style="font-size: 0.90rem">
-                        {{ translations.territories|lower if areas['length'] > 1 else translations.territory|lower }}
+                        {{ _("areas") |lower if areas['length'] > 1 else _("area")|lower }}
                     </span>
                 </li>
 

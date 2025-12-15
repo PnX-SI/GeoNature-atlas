@@ -60,8 +60,6 @@
 <script src="{{ url_for('static', filename='custom/maps-custom.js') }}"></script>
 <script src="{{ url_for('static', filename='mapGenerator.js') }}"></script>
 <script>
-    var url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
-
     var map = generateMap();
 
     var legend = L.control({ position: "bottomright" });

@@ -15,7 +15,11 @@
     {% block additionalHeaderAssets %}{% endblock %}
 
     <link rel="stylesheet" href="{{ url_for('static', filename='custom/custom.css') }}"/>
-
+    
+    <!-- Add all translations in windows.i18n -->
+    <script>
+        window.i18n = {{ translations|tojson|safe }};
+    </script>
     {% block metaTags %}{% endblock %}
 </head>
 

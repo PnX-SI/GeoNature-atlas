@@ -8,18 +8,12 @@
                         <b>{{ articles|length }}</b> {{ 'articles' if articles|length > 1 else 'article' }}
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#area">
-                        <b>{{ areas['length'] }}</b> {{ translations.territories|lower if areas['length'] > 1 else translations.territory|lower }}
-                    </a>
-                </li>
-            {% else %}
-                <li class="nav-item">
-                    <a data-bs-toggle="tab" class="nav-link active" href="#area">
-                        <b>{{ areas['length'] }}</b> {{ translations.territories|lower if areas['length'] > 1 else translations.territory|lower }}
-                    </a>
-                </li>
             {% endif %}
+                <li class="nav-item">
+                    <a data-bs-toggle="tab" class="nav-link {% if articles | length == 0 %}  active {% endif %}" href="#area">
+                        <b>{{ areas['length'] }}</b> {{ _("areas")|lower if areas['length'] > 1 else _("area")|lower }}
+                    </a>
+                </li>
 
             {% if configuration.ORGANISM_MODULE %}
                 <li class="nav-item">

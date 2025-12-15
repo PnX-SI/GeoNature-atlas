@@ -3,15 +3,6 @@ var map = generateMap(zoomHomeButton);
 if (configuration.MAP.ENABLE_SLIDER) {
     generateSliderOnMap();
 }
-// Legende
-
-htmlLegend =
-    "<i style='border: solid " +
-    configuration.MAP.BORDERS_WEIGHT +
-    "px " +
-    configuration.MAP.BORDERS_COLOR +
-    ";'> &nbsp; &nbsp; &nbsp;</i> Limite du " +
-    configuration.STRUCTURE;
 
 // Current observation Layer: leaflet layer type
 var currentLayer;
@@ -33,7 +24,7 @@ $.ajax({
     $("#loaderSpinner").hide();
 
     // affichage des mailles
-    displayMailleLayerFicheEspece(observations, taxonYearMin, YEARMAX);
+    displayGeojsonMailles(observations, onEachFeatureMaille);
 
     // pointer on first and last obs
     $(".pointer").css("cursor", "pointer");
@@ -51,7 +42,7 @@ $.ajax({
         yearMin = years[0];
         yearMax = years[1];
         map.removeLayer(currentLayer);
-        clearOverlays();
+        clearObservationsFeatureGroup();
         $.ajax({
             url: configuration.URL_APPLICATION + "/api/observationsMaille",
             dataType: "json",
@@ -71,7 +62,7 @@ $.ajax({
             // desactivation de l'event precedent
             map.off("zoomend", function () {});
 
-            displayMailleLayerFicheEspece(observationsMaille);
+            displayGeojsonMailles(observationsMaille, onEachFeatureMaille);
             nbObs = 0;
             observationsMaille.features.forEach(function (l) {
                 nbObs += l.properties.nb_observations;

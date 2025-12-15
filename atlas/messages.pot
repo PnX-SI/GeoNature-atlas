@@ -1,14 +1,15 @@
-# Translations template for PROJECT.
+# Translations template for GeoNature-Atlas.
 # Copyright (C) 2025 ORGANIZATION
-# This file is distributed under the same license as the PROJECT project.
+# This file is distributed under the same license as the GeoNature-Atlas
+# project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PROJECT VERSION\n"
+"Project-Id-Version: GeoNature-Atlas 2.0.0.dev0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-20 15:27+0200\n"
+"POT-Creation-Date: 2025-12-11 15:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,27 +18,28 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: utils.py:22
+#: utils.py:36
 msgid "municipalities"
 msgstr ""
 
-#: utils.py:22
+#: utils.py:36
 msgid "territories"
 msgstr ""
 
-#: utils.py:24
+#: utils.py:38
 msgid "municipality"
 msgstr ""
 
-#: utils.py:24
+#: utils.py:38
 msgid "territory"
 msgstr ""
 
-#: utils.py:25
+#: utils.py:39
 msgid "search.city"
 msgstr ""
 
-#: utils.py:25
+#: static/sample/templates/navbar.html:46 templates/home/globalStats.html:56
+#: utils.py:39
 msgid "search.area"
 msgstr ""
 
@@ -47,7 +49,7 @@ msgid "home.partners"
 msgstr ""
 
 #: static/custom/templates/footer.html:2 static/sample/templates/footer.html:2
-#: templates/home/_main.html:3
+#: templates/core/sideBar.html:54 templates/home/_main.html:3
 msgid "home"
 msgstr ""
 
@@ -118,12 +120,6 @@ msgstr ""
 msgid "atlas.presentation"
 msgstr ""
 
-#: templates/areaSheet/_main.html:29 templates/speciesSheet/_main.html:53
-msgid "obs.number.s"
-msgstr ""
-
-#: templates/areaSheet/_main.html:30 templates/areaSheet/statArea.html:8
-#: templates/core/statHierarchy.html:7 templates/core/taxon.html:69
 #: static/sample/templates/introduction.html:7
 msgid "from2"
 msgstr ""
@@ -140,11 +136,11 @@ msgstr ""
 msgid "from5"
 msgstr ""
 
-#: templates/areaSheet/_main.html:32 templates/speciesSheet/_main.html:53
+#: templates/areaSheet/_main.html:28 templates/speciesSheet/_main.html:52
 msgid "obs.number.s"
 msgstr ""
 
-#: templates/areaSheet/_main.html:33 templates/areaSheet/statArea.html:8
+#: templates/areaSheet/_main.html:29 templates/areaSheet/statArea.html:8
 #: templates/core/statHierarchy.html:7 templates/core/taxon.html:85
 #: templates/home/globalStats.html:16 templates/home/taxoRank.html:49
 #: templates/organismSheet/statsInfos.html:15
@@ -155,40 +151,40 @@ msgstr ""
 msgid "observations"
 msgstr ""
 
-#: templates/areaSheet/_main.html:31
+#: templates/areaSheet/_main.html:30
 msgid "number.species"
 msgstr ""
 
-#: templates/areaSheet/_main.html:32
+#: templates/areaSheet/_main.html:31
 msgid "number.species.territory"
 msgstr ""
 
-#: templates/areaSheet/_main.html:33 templates/areaSheet/statArea.html:13
+#: templates/areaSheet/_main.html:32 templates/areaSheet/statArea.html:13
 #: templates/areaSheet/statArea.html:48 templates/core/statHierarchy.html:12
 #: templates/home/globalStats.html:28 templates/home/taxoRank.html:32
 #: templates/organismSheet/statsInfos.html:29
 msgid "species"
-msgstr "Espèces"
+msgstr ""
 
-#: templates/areaSheet/_main.html:34 templates/areaSheet/moreZoneInfo.html:17
+#: templates/areaSheet/_main.html:33 templates/areaSheet/moreZoneInfo.html:17
 #: templates/areaSheet/moreZoneInfo.html:67
 #: templates/areaSheet/statArea.html:56
 msgid "threatened.species"
-msgstr "Menacés"
+msgstr ""
 
-#: templates/areaSheet/_main.html:35
+#: templates/areaSheet/_main.html:34
 msgid "other.species"
 msgstr ""
 
-#: templates/areaSheet/_main.html:36
+#: templates/areaSheet/_main.html:35
 msgid "threatened.species.repartition"
 msgstr ""
 
-#: templates/areaSheet/_main.html:37
+#: templates/areaSheet/_main.html:36
 msgid "number.species.taxonomic.group"
 msgstr ""
 
-#: templates/areaSheet/_main.html:76
+#: templates/areaSheet/_main.html:75
 msgid "last.obs.area"
 msgstr ""
 
@@ -288,56 +284,13 @@ msgstr ""
 msgid "protected_species"
 msgstr ""
 
-#: templates/core/advanced_search.html:4
-#: templates/core/advanced_search.html:360 templates/core/sideBar.html:53
+#: templates/areaSheet/statArea.html:72
+msgid "sensibility_warning_message"
+msgstr ""
+
+#: templates/core/advanced_search.html:4 templates/core/sideBar.html:105
+#: templates/core/sideBar.html:109
 msgid "advanced_search"
-msgstr ""
-
-#: templates/core/advanced_search.html:332
-msgid "information"
-msgstr ""
-
-#: templates/core/advanced_search.html:334
-#: templates/core/advanced_search.html:340
-msgid "close"
-msgstr ""
-
-#: templates/core/advanced_search.html:337
-msgid "asearch.information"
-msgstr ""
-
-#: templates/core/advanced_search.html:351
-msgid "page.information"
-msgstr ""
-
-#: templates/core/advanced_search.html:364
-#: templates/core/advanced_search.html:385
-msgid "asearch.max"
-msgstr ""
-
-#: templates/core/advanced_search.html:370
-msgid "asearch.search.species"
-msgstr ""
-
-#: templates/core/advanced_search.html:373
-msgid "asearch.search.start"
-msgstr ""
-
-#: templates/core/advanced_search.html:396
-msgid "asearch.remove.selection"
-msgstr ""
-
-#: templates/core/advanced_search.html:406 templates/core/taxon.html:95
-#: templates/home/lastObs.html:32 templates/home/mostViewNow.html:33
-#: templates/home/newSpecies.html:48 templates/home/taxoRank.html:61
-#: templates/organismSheet/topSpecies.html:76
-msgid "species.sheet"
-msgstr ""
-
-#: templates/core/advanced_search.html:407 templates/core/taxon.html:93
-#: templates/organismSheet/topSpecies.html:75
-#: templates/speciesSheet/identityCard.html:171
-msgid "check.species.sheet"
 msgstr ""
 
 #: templates/core/listTaxons.html:20
@@ -420,19 +373,23 @@ msgstr ""
 
 #: templates/core/listTaxons.html:121
 msgid "yes"
-msgstr "oui"
+msgstr ""
 
 #: templates/core/listTaxons.html:122
 msgid "no"
-msgstr "non"
+msgstr ""
 
-#: templates/core/sideBar.html:7
+#: templates/core/sideBar.html:50
 msgid "back.to.home"
 msgstr ""
 
-#: templates/core/sideBar.html:64 templates/home/globalStats.html:69
+#: templates/core/sideBar.html:120 templates/home/globalStats.html:69
 #: templates/photoGalery/_main.html:5 templates/photoGalery/_main.html:36
 msgid "gallery.title"
+msgstr ""
+
+#: templates/core/sideBar.html:124 templates/home/globalStats.html:67
+msgid "photos"
 msgstr ""
 
 #: templates/core/taxon.html:11
@@ -447,31 +404,31 @@ msgstr ""
 
 #: templates/core/taxon.html:46 templates/core/taxon.html:47
 msgid "threatened.CR"
-msgstr "Critique"
+msgstr ""
 
 #: templates/core/taxon.html:48
 msgid "threatened.EN"
-msgstr "En danger"
+msgstr ""
 
 #: templates/core/taxon.html:49
 msgid "threatened.VU"
-msgstr "Vulnérable"
+msgstr ""
 
 #: templates/core/taxon.html:54
 msgid "protected.LRR"
-msgstr "Liste rouge régionale"
+msgstr ""
 
 #: templates/core/taxon.html:55
 msgid "protected.LRN"
-msgstr "Liste rouge nationale"
+msgstr ""
 
 #: templates/core/taxon.html:56
 msgid "protected.LRE"
-msgstr "Liste rouge européenne"
+msgstr ""
 
 #: templates/core/taxon.html:57
 msgid "protected.LRM"
-msgstr "Liste rouge mondilae"
+msgstr ""
 
 #: templates/core/taxon.html:62
 msgid "threatened"
@@ -479,6 +436,17 @@ msgstr ""
 
 #: templates/core/taxon.html:88
 msgid "last.obs.in"
+msgstr ""
+
+#: templates/core/taxon.html:93 templates/organismSheet/topSpecies.html:75
+#: templates/speciesSheet/identityCard.html:171
+msgid "check.species.sheet"
+msgstr ""
+
+#: templates/core/taxon.html:95 templates/home/lastObs.html:32
+#: templates/home/mostViewNow.html:33 templates/home/newSpecies.html:48
+#: templates/home/taxoRank.html:61 templates/organismSheet/topSpecies.html:76
+msgid "species.sheet"
 msgstr ""
 
 #: templates/home/globalStats.html:4
@@ -489,8 +457,10 @@ msgstr ""
 msgid "home.seelatestobs"
 msgstr ""
 
-#: templates/home/globalStats.html:67
-msgid "photos"
+#: templates/home/globalStats.html:47 templates/speciesSheet/map.html:23
+#: templates/speciesSheet/otherInformations.html:13
+#: templates/speciesSheet/otherInformations.html:19
+msgid "areas"
 msgstr ""
 
 #: templates/home/mostViewNow.html:5
@@ -613,6 +583,12 @@ msgstr ""
 
 #: templates/speciesSheet/identityCard.html:130
 msgid "sheet"
+msgstr ""
+
+#: templates/speciesSheet/map.html:23
+#: templates/speciesSheet/otherInformations.html:13
+#: templates/speciesSheet/otherInformations.html:19
+msgid "area"
 msgstr ""
 
 #: templates/speciesSheet/map.html:37
