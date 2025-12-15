@@ -3,8 +3,6 @@
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-import os
-import sys
 from pathlib import Path
 
 # -- Project information -----------------------------------------------------
@@ -18,8 +16,6 @@ project = "GeoNature-atlas"
 copyright = "2025, GeoNature Community"
 author = "GeoNature Community"
 release = version
-
-
 
 
 # -- General configuration ---------------------------------------------------
