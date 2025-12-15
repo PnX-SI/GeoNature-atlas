@@ -24,6 +24,7 @@ dynamic = ["version", "dependencies"]
 [project.urls]
 Homepage = "https://github.com/PnX-SI/GeoNature-Atlas"
 
+
 [tool.setuptools.dynamic]
 version = { file = "VERSION" }
 dependencies = { file = "requirements.in" }
@@ -35,6 +36,12 @@ exclude = ["docs*", "tests*"]
 [project.optional-dependencies]
 dev = [
   "black>=23.1.0"
+]
+docs = [
+    "Sphinx",
+    "sphinx-autobuild", # live preview
+    "furo", # theme
+    "myst-parser" # To use markdown
 ]
 
 [tool.black]

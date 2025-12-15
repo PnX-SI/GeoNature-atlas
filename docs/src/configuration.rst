@@ -1,6 +1,9 @@
 Configuration et customisation
 ==============================
 
+.. image:: http://geonature.fr/img/logo-pne.jpg
+    :target: http://www.ecrins-parcnational.fr
+
 
 Le fichier `atlas/configuration/config.py` contient l'ensemble des variables de configuration de l'atlas.
 

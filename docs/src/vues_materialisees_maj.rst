@@ -1,15 +1,17 @@
 ============================================
-VUES MATERIALISEES et MISE A JOUR DU CONTENU
+Vues materialisees et mise a jour du contenu
 ============================================
+
 .. image:: http://geonature.fr/img/logo-pne.jpg
     :target: http://www.ecrins-parcnational.fr
+
 
 Introduction
 ============
 
 Par défaut, la BDD a été conçue pour s'appuyer sur les données présentes dans GeoNature (https://github.com/PnEcrins/GeoNature).
 
-Pour cela une BDD fille de GeoNature est créée avec les schémas utiles à l'atlas (`atlas`, `synthese``, ``taxonomie`), alimentée grace à un Foreign Data Wrapper (http://docs.postgresqlfr.org/9.2/sql-createforeigndatawrapper.html).
+Pour cela une BDD fille de GeoNature est créée avec les schémas utiles à l'atlas (``atlas``, ``synthese``, ``taxonomie``), alimentée grace à un Foreign Data Wrapper (http://docs.postgresqlfr.org/9.2/sql-createforeigndatawrapper.html).
 
 Cela permet de créer un lien dynamique entre les 2 bases de données. A chaque fois qu'une requête est éxecutée dans une table de l'atlas (BDD fille), le FDW permet d'interroger directement dans le BDD mère (celle de GeoNature) et ainsi d'avoir les données à jour en temps réel.
 
@@ -35,8 +37,7 @@ Seule ``atlas.vm_observations`` doit éventuellement être adaptée, les autres 
 
 Voir les fichiers dans le répertoire ``data`` pour plus de précisions.
 
-- ``atlas.vm_taxref`` qui renvoie toutes les données de ``taxonomie.taxref``.
-Les champs de cette table sont ``cd_nom``, ``id_statut``, ``id_habitat``, ``id_rang``, ``regne``, ``phylum``, ``classe``, ``ordre``, ``famille``, ``cd_taxsup``, ``cd_ref``, ``lb_nom``, ``lb_auteur``, ``nom_complet``, ``nom_valide``, ``nom_vern``, ``nom_vern_eng``, ``group1_inpn``, ``group2_inpn``, ``nom_complet_html`` et ``cd_sup``.
+- ``atlas.vm_taxref`` qui renvoie toutes les données de ``taxonomie.taxref``. Les champs de cette table sont ``cd_nom``, ``id_statut``, ``id_habitat``, ``id_rang``, ``regne``, ``phylum``, ``classe``, ``ordre``, ``famille``, ``cd_taxsup``, ``cd_ref``, ``lb_nom``, ``lb_auteur``, ``nom_complet``, ``nom_valide``, ``nom_vern``, ``nom_vern_eng``, ``group1_inpn``, ``group2_inpn``, ``nom_complet_html`` et ``cd_sup``.
 
 - ``atlas.vm_observations`` qui renvoie la liste de toutes les observations.
 

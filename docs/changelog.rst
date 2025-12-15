@@ -28,18 +28,20 @@ A VERIFIER :
 
 ``navbar.html``
 Le `form` devient :
+
 ::
-        <form class="form-inline my-2 my-lg-0" method="POST"
-              onsubmit="completeAction('#searchFormAreas', hiddenInputAreas)" id='searchFormAreas'
-              action=""
-              role="search">
-            <div class="form-group has-feedback">
-                <input id="searchAreas" type="text" style="width: 175px;"
-                       class="form-control mr-sm-2 ajax-search small-placeholder"
-                       placeholder="{{ translations.search_area }}&nbsp;&nbsp;&nbsp;">
-            </div>
-            <input id="hiddenInputAreas" type="hidden" name="id_area">
-        </form>
+    <form class="form-inline my-2 my-lg-0" method="POST"
+        onsubmit="completeAction('#searchFormAreas', hiddenInputAreas)" id='searchFormAreas'
+        action=""
+        role="search">
+        <div class="form-group has-feedback">
+            <input id="searchAreas" type="text" style="width: 175px;"
+                class="form-control mr-sm-2 ajax-search small-placeholder"
+                placeholder="{{ translations.search_area }}&nbsp;&nbsp;&nbsp;">
+        </div>
+        <input id="hiddenInputAreas" type="hidden" name="id_area">
+    </form>
+
 
 `maps-custom`
 La fonction `pointDisplayOptionsFicheCommuneHome` devient `customizeMarkerStyle`
@@ -177,7 +179,6 @@ Vous pouvez supprimer les paramètres suivants du fichier ``settings.ini`` :
 🚀 **Nouveautés**
 
 - Possibilité de surcoucher les fichiers du dossier ``static`` en les plaçant avec le même nom dans le dossier ``custom`` (#496)
-
   - Par exemple pour surcoucher le pictogrammes des mammifères, mettre le votre dans ``custom/images/picto_Mammiferes.png``
 - Possibilité de customiser le fichier ``navbar.html`` (déplacé dans le dossier ``static/custom/templates``) (#496)
 - Ajout d'un linter pour le code python (``black``)
@@ -185,15 +186,19 @@ Vous pouvez supprimer les paramètres suivants du fichier ``settings.ini`` :
 ⚠️ **Notes de version**
 
 - Si l'application n'est pas à la racine du serveur (par exemple avec ``/atlas``), la configuration Apache est à modifier et devient :
-  ::
+
+::
     <Location /atlas>
         ProxyPass  http://127.0.0.1:8080/atlas
         ProxyPassReverse  http://127.0.0.1:8080/atlas
     </Location>
 
 - Copier le fichier ``navbar.html`` dans le dossier ``atlas/static/custom/templates/`` :
-  ::
+
+
+::
     cp atlas/static/custom/templates/navbar.html.sample atlas/static/custom/templates/navbar.html
+
 
 
 1.6.0 (2023-09-15)
@@ -276,6 +281,7 @@ Si vous mettez à jour GeoNature-atlas :
 
     export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
 - Suivez la procédure classique de mise à jour de l'application.
 
 1.5.0 (2021-12-02)
@@ -566,6 +572,7 @@ Suivez ensuite les instructions suivantes :
 * Pour que les modifications du fichier de configuration soient prises en compte, il faut désormais lancer ``sudo supervisorctl reload``.
 * Exécutez le script de mise à jour de la BDD ``data/update_1.2.6to1.3.0.sql`` après l'avoir analysé et lu ses commentaires
 * Passage de WSGI à Gunicorn....
+
 Compléter le fichier ``main/configuration/settings.ini`` avec les parties ``Gunicorn settings`` et ``Python settings``, en se basant sur le fichier d'exemple ``main/configuration/settings.ini.sample``
 
 ::
@@ -634,11 +641,14 @@ Mettre à jour la configuration Apache de votre GeoNature-atlas (``/etc/apache2/
 * Compatibilité avec GeoNature 1.9.0 (multiprojection)
 * Ajout du script SQL ``data/update_vm_observations.sql``, permettant de faciliter la mise à jour de la vue ``atlas.vm_observations``
 
+
 **Notes de version**
 
 * Exécutez le script ``data/update1.2.3to1.2.4.sql``
+
 ATTENTION : vous ne devez exécuter ce script que si vous avez mis à jour la base de GeoNature en version 1.9.0.
 Si vous utilisez l'atlas sans GeoNature, cette mise à jour n'est pas nécessaire.
+
 * Si vous souhaitez adapter la vue matérialisée ``atlas.vm_observations`` contenant toutes les observations, vous pouvez l'adapter dans le script ``data/update_vm_observations.sql`` puis exécuter celui-ci.
 
 
@@ -650,11 +660,15 @@ Si vous utilisez l'atlas sans GeoNature, cette mise à jour n'est pas nécessair
 * Améliorations de la documentation
 * Ajout d'un champs ``diffusable`` (oui/non) dans la synthese de GeoNature, utilisable pour ne pas afficher les données sensibles dans l'atlas au moment de la création de la VM des observations.
 
+
 **Notes de version**
 
 * Exécutez le script ``data/update1.2.2to1.2.3.sql`` pour ajouter la colonne ``diffusable`` à la table ``synthese.syntheseff``.
+
 Si vous utilisez l'atlas sans GeoNature, cette mise à jour n'est pas nécessaire.
+
 * Supprimez puis relancez la création de la vue ``atlas.vm_observations`` et les vues qui en dépendent en utilisant le script ``data/update_vm_observations.sql``.
+
 
 1.2.2 (2016-12-14)
 ------------------

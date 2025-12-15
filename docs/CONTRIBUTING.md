@@ -1,14 +1,14 @@
-# Guide de contribution à GeoNature-atlas
+# Contribuer
 
 Merci de votre intérêt pour contribuer à GeoNature-atlas ! Ce document vous guidera à travers les bonnes pratiques et les conventions de développement du projet.
 
 ## Table des matières
 
-- [Qualité du code](#qualité-du-code)
-- [Processus de contribution](#processus-de-contribution)
-- [Conventions de code](#conventions-de-code)
-- [Tests](#tests)
+
+- [Qualité du code](#code-quality)
+- [Processus de contribution](#contribution-process)
 - [Documentation](#documentation)
+- [Questions et support](#support)
 
 ## Prérequis
 
@@ -19,9 +19,10 @@ Avant de commencer à contribuer, assurez-vous d'avoir :
 - Git installé et configuré
 - Une bonne compréhension de Flask (backend) et JavaScript (frontend)
 
-Le [fichier](./installation.rst) détail l'installation d'un environnement de développement de GeoNature-Atlas
+Le [fichier](./src/installation.rst) détail l'installation d'un environnement de développement de GeoNature-Atlas
 
-## Qualité et convention du code 
+(code-quality)=
+## Qualité et convention du code
 
 Le projet utilise des outils de formatage et de linting pour maintenir une qualité de code cohérente.
 
@@ -81,7 +82,7 @@ npm run lint
 npm run format
 ```
 
-
+(contribution-process)=
 ## Processus de contribution
 
 ### 1. Créer une issue
@@ -141,12 +142,25 @@ git push <mon_remote> feature/ma-nouvelle-fonctionnalite
 - Répondez aux commentaires et effectuez les modifications demandées
 - Une fois approuvée, votre PR sera mergée dans `develop`
 
-
+(documentation)=
 ## Documentation
 
 - Mettez à jour la documentation si vos changements affectent l'utilisation de l'application
 - Les fichiers de documentation se trouvent dans le dossier `docs/`
+- Vous pouvez ajouter votre documentation aux formats:
+   - ``reStructuredText`` syntax. See the [reStructuredText documentation](https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>)
+   - ``Markdown`` syntax. See the [myst-parser documentation](https://myst-parser.readthedocs.io/en/latest/index.html)
+- Vous pouvez vérifier la bonne mise en forme de la documentation avec les commandes suivantes:
 
+
+```bash
+cd docs
+make livehtml
+```
+
+
+
+(support)=
 ## Questions et support
 
 - Pour des questions générales, utilisez les [Discussions GitHub](https://github.com/PnX-SI/GeoNature-atlas/discussions)

@@ -11,6 +11,9 @@ atlas/static/custom/*
 !atlas/static/custom/templates/
 !atlas/static/custom/**/.gitignore
 
+# Docs
+docs/_build
+
 # Directories to ignore
 .idea/
 geonature_atlas.egg-info/

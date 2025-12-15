@@ -1,5 +1,9 @@
 # Guide de la gestion des données sensibles
 
+[![logo PNE](http://geonature.fr/img/logo-pne.jpg)](http://www.ecrins-parcnational.fr)
+
+
+
 GeoNature-atlas fournit un mécanisme de dégration des données sensibles basé sur les standards du SINP. Connecté à GeoNature version 2, l'atlas utilise le champs `id_nomenclature_sensitivity` de la table `gn_synthese.synthese` pour construire la vue `atlas.vm_observations` et afficher la géometrie adaptée en se basant sur référentiel géographique de GeoNature.
 En mode "point", GeoNature-atlas affiche le centroïde de la géometrie à laquelle l'observation est dégradée (le centroïde de communes si le niveau de diffusion est = 1 par exemple). En mode maille, l'observation sera affiché tel que le niveau de d'affichage est défini dans la table `atlas.cor_sensitivity_area_type` (voir plus bas).
 Les données dont le niveau de diffusion est égal à 4 (aucune diffusion) ne sont pas affichées dans GeoNature-atlas.
@@ -70,7 +74,7 @@ Toutes ces couches sont ensuites affichable / masquable via le contrôleur de co
 
 ### Customisation du style en mode point
 
-Pour le mode point une symbologie adaptée est fournie par défaut dans GeoNature-atlas (en vert les données dégradées, en bleu les données précises). Cette symbologie est customisable dans le fichier `static/custom/maps-custom.js` et permet plus largement de personnaliser l'affichage en fonction des informations renvoyées par la vue `atlas.vm_observations` ([voir](./installation.rst#customisation-de-lapplication>) ).
+Pour le mode point une symbologie adaptée est fournie par défaut dans GeoNature-atlas (en vert les données dégradées, en bleu les données précises). Cette symbologie est customisable dans le fichier `static/custom/maps-custom.js` et permet plus largement de personnaliser l'affichage en fonction des informations renvoyées par la vue `atlas.vm_observations`.
 
 ## Cas particulier du floutage et des fiches "zonage"
 

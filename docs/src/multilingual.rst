@@ -1,7 +1,12 @@
 
-==========================
-MULTILINGUAL MODULE : (EN)
-==========================
+========================
+Multilingual module (EN)
+========================
+
+.. image:: http://geonature.fr/img/logo-pne.jpg
+    :target: http://www.ecrins-parcnational.fr
+
+
 
 The module used for multilingual is Flask-Babel (https://flask-babel.tkte.ch).
 
@@ -17,7 +22,7 @@ The ``atlas/messages.pot`` file is a translation template, automatically generat
 It is used to generate and add keys in .po files of each language.
 Once .po files have been manually updated, the final command will generate the compiled .mo files used by the application.
 
-ADDING A LANGUAGE
+Adding a language
 =================
 
 First, go to the ``config.py`` file and add your language in the same way as the other languages already available.
@@ -37,7 +42,7 @@ Then in your command prompt, go in your atlas path and use these commmands.
     # To compile translations | create .mo file
     pybabel compile -d translations
 
-ADDING STRINGS
+Adding strings
 ==============
 
 ::
@@ -51,7 +56,7 @@ ADDING STRINGS
     # To compile translations | create .mo file
     pybabel compile -d translations
 
-MODIFYING A STRING ALREADY IN .PO FILES
+Modifying a string already in .po files
 =======================================
 
 Edit the ``.po`` file to change, then compile the translation files to generate to ``.mo`` files.
@@ -62,9 +67,9 @@ Edit the ``.po`` file to change, then compile the translation files to generate 
     pybabel compile -d translations
 
 
-==========================
-MULTILINGUAL MODULE : (FR)
-==========================
+========================
+Multilingual module (FR)
+========================
 
 Le module utilisé pour le multilingue est Flask-Babel (https://flask-babel.tkte.ch).
 
@@ -80,7 +85,7 @@ Le fichier ``atlas/messages.pot`` est un template de traduction, généré autom
 Il est utilisé pour générer et ajouter les clés de traduction dans les fichiers .po de chaque langue.
 Une fois que les fichiers .po ont été mis à jour manuellement, la commande finale va générer les fichier .mo compilés, utilisés par l'application.
 
-AJOUTER UNE LANGUE
+Ajouter une langue
 ==================
 
 Tout d'abord, allez dans le fichier ``config.py`` et ajoutez votre langue de la même manière que les autres langues déjà disponibles.
@@ -100,7 +105,7 @@ Ensuite, dans votre invite de commande, allez dans le chemin de votre atlas et u
     # Pour compiler les traductions | créer un fichier .mo
     pybabel compile -d translations
 
-AJOUTER DES CHAÎNES DE CARACTÈRES
+Ajouter des chaînes de caractères
 =================================
 
 ::
@@ -114,7 +119,7 @@ AJOUTER DES CHAÎNES DE CARACTÈRES
     # Pour compiler les traductions | créer un fichier .mo
     pybabel compile -d translations
 
-MODIFICATION D'UNE CHAÎNE DE CARACTÈRES DÉJÀ PRÉSENTE DANS LES FICHIERS .PO
+Modification d'une chaîne de caractères déjà présente dans les fichiers .po
 ===========================================================================
 
 Modifier les fichiers ``.po`` souhaités dans le dossier ``atlas/translations/``, ensuite compilez les fichiers de traductions pour générer les fichiers ``.mo``.

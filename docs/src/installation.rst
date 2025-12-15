@@ -1,5 +1,5 @@
 ============
-INSTALLATION
+Installation
 ============
 
 .. image:: http://geonature.fr/img/logo-pne.jpg
@@ -355,6 +355,6 @@ Pour changer le port de l'application, désampler le fichier `atlas/.flaskenv.sa
 
 Des données sont renvoyées aux templates par l'ORM, d'autres le sont sous forme d'API (fichiers JSON chargés en AJAX) pour charger certaines pages plus rapidement (observations sur les fiches espèces et auto-complétion de la recherche) :
 
-Pour en savoir plus, consultez le document `<vues_materialisees_maj.rst>`_ ainsi que le rapport de stage de Théo Lechemia (https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/2016-09-30-rapport_stage_Theo-Lechemia.pdf) ou sa présentation (https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/2016-09-soutenance-Theo-Lechemia.pdf)
+Pour en savoir plus, consultez le document `<./vues_materialisees_maj.rst>`_ ainsi que le rapport de stage de Théo Lechemia (https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/src/files/2016-09-30-rapport_stage_Theo-Lechemia.pdf) ou sa présentation (https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/src/files/2016-09-soutenance-Theo-Lechemia.pdf)
 
 
