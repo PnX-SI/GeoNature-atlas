@@ -33,7 +33,7 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
                 ON bat.id_type = a.id_type
             JOIN ref_nomenclatures.t_nomenclatures AS se
                 ON se.id_nomenclature = s.id_nomenclature_sensitivity
-            JOIN atlas.cor_sensitivity_area_type AS csat
+            JOIN atlas.vm_cor_sensitivity_area_type AS csat
                 ON (
                     csat.sensitivity_code = se.cd_nomenclature
                     AND csat.area_type_code = bat.type_code

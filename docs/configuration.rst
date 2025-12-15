@@ -67,7 +67,7 @@ En mode point, il est possible de customiser l'affichage cartographique (modific
 Paramétrage de l'affichage des données floutées en mode maille
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-La table `atlas.cor_sensitivity_area_type`, elle même construit à partir de la table GeoNature `gn_sensitivity.cor_sensitivity_area_type` permet de controler qu'elle type de zonage on affiche en fonction du niveau de sensibilité : voir `la documentation sur la sensibilité à ce sujet <./sensibilite_donnees.md>`_
+La table de GeoNature `gn_sensitivity.cor_sensitivity_area_type` permet de controler quelle type de zonage on affiche en fonction du niveau de sensibilité : voir `la documentation sur la sensibilité à ce sujet <./sensibilite_donnees.md>`_
 
 Le paramètre `AFFICHAGE_COUCHES_MAP` permet de controler le style, le nom et l'affichage de chaque type de géométrie de floutage.
 Par défault il vaut : 

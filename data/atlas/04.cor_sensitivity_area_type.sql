@@ -1,4 +1,4 @@
-CREATE TABLE atlas.cor_sensitivity_area_type AS
+CREATE TABLE atlas.vm_cor_sensitivity_area_type AS
     WITH sensitivity_has_area_type AS (
         SELECT
             '0' AS sensitivity_code,
@@ -20,8 +20,8 @@ CREATE TABLE atlas.cor_sensitivity_area_type AS
     ORDER BY sensitivity_code
 WITH DATA;
 
-CREATE UNIQUE INDEX ON atlas.cor_sensitivity_area_type
+CREATE UNIQUE INDEX ON atlas.vm_cor_sensitivity_area_type
     USING btree (sensitivity_code);
 
-CREATE INDEX ON atlas.cor_sensitivity_area_type
+CREATE INDEX ON atlas.vm_cor_sensitivity_area_type
     USING btree (sensitivity_code, area_type_code);
