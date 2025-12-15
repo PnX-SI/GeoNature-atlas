@@ -8,6 +8,13 @@ Celui-ci est par défaut assez minimaliste. Il peut être completé par toute un
 
 Après chaque modification de la configuration, relancer la commande ``sudo systemctl restart geonature-atlas`` pour qu'elles soient appliquées.
 
+
+Configuration des données d'observations présente dans l'atlas
+==============================================================
+
+Dans un contexte ou l'atlas est branché à un GeoNature, l'application prend par défaut toutes les données présente dans la table `gn_synthese.synthese` (qui contient toutes les données d'observation présente dans GeoNature). Il est possible de filtrer les données que l'on souhaite voir dans l'atlas en fournissant une vue que l'on aura préalablement réalisé dans GeoNature. Cette vue doit être dans le schéma `gn_synthese` de GeoNature. 
+Remplissez alors le paramètre `observation_data_source` du fichier `settings.ini` et relancer le script d'installation `install_db.sh`
+
 Customisation de l'application
 ==============================
 

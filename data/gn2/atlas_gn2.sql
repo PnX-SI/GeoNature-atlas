@@ -9,7 +9,6 @@ LIMIT TO (ref_geo.l_areas, ref_geo.li_municipalities, ref_geo.bib_areas_types, r
 FROM SERVER geonaturedbserver INTO ref_geo;
 
 IMPORT FOREIGN SCHEMA gn_synthese
-LIMIT TO (gn_synthese.synthese, gn_synthese.cor_area_synthese)
 FROM SERVER geonaturedbserver INTO gn_synthese;
 
 IMPORT FOREIGN SCHEMA gn_sensitivity
