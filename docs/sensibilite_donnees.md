@@ -49,7 +49,7 @@ Toutes ces couches sont ensuites affichable / masquable via le contrôleur de co
 
 > [!CAUTION]
 >
-> Si vous modifiez la table `atlas.cor_sensitivity_area_type`, il faut impérativement changerce paramètre pour y faire figurer les mêmes clé de type de zonage.
+> Si vous modifiez la table `gn_sensitivity.cor_sensitivity_area_type`, il faut impérativement changerce paramètre pour y faire figurer les mêmes clé de type de zonage.
 > Par exemple, si je dit que je veux le code `M1` pour le niveau de sensibilité `1`, la variable `AFFICHAGE_COUCHES_MAP_DEFAULT` devra contenir une clé `M1` :
 
     AFFICHAGE_COUCHES_MAP_DEFAULT = {
