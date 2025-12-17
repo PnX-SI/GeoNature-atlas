@@ -294,7 +294,7 @@ class AtlasConfig(Schema):
     DISPLAY_PATRIMONIALITE = fields.Boolean(load_default=False)
     AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION = fields.Boolean(load_default=True)
     AFFICHAGE_TAB_AREA_OBS_ESPECES = fields.Boolean(load_default=True)
-    PATRIMONIALITE_ICON = fields.Str(load_default="custom/images/logo_patrimonial.png")
+
     STATIC_PAGES = fields.Dict(
         load_default={
             "presentation": {

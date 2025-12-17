@@ -75,5 +75,10 @@
 </script>
 
 {% block additionalFooterAssets %}{% endblock %}
+<!-- # hack : traduction seulement présente dans le JS donc pas scanné par babel ! -->
+    <div style="display: none;">
+        {{_('number.species')}}
+        {{_('number.species.territory')}}
 
+    </div>
 </html>

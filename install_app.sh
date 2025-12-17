@@ -316,8 +316,8 @@ function createCustomImages() {
         "external-website.png"
         "favicon.ico"
         "logo_patrimonial.png"
-        "logo_protection.png"
-        "logo-structure.png"
+        "protected.png"
+        "threatened.png"
     )
     local img_file
     for img_file in "${custom_images[@]}"; do

@@ -13,6 +13,7 @@ def searchEspece(cd_ref):
     """
     recherche l espece corespondant au cd_nom et tout ces fils
     """
+    # TODO : simplifier cette requete et utiliser as_dict de VmTaxons
     childs_ids = select(func.atlas.find_all_taxons_childs(cd_ref))
     limit_obs = (
         select(
@@ -33,6 +34,7 @@ def searchEspece(cd_ref):
             func.coalesce(limit_obs.c.nb_obs, 0).label("nb_obs"),
             VmTaxons.patrimonial,
             VmTaxons.protection_stricte,
+            VmTaxons.menace,
         )
         .join(limit_obs, limit_obs.c.cd_ref == VmTaxref.cd_nom)
         .outerjoin(VmTaxons, VmTaxons.cd_ref == VmTaxref.cd_ref)
@@ -62,6 +64,7 @@ def searchEspece(cd_ref):
             "nb_obs": r.nb_obs,
             "patrimonial": r.patrimonial,
             "protection_stricte": r.protection_stricte,
+            "menace": r.menace,
         }
 
     childs_ids = select(func.atlas.find_all_taxons_childs(cd_ref))
