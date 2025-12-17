@@ -406,9 +406,6 @@ PROTECTION = True
 # Pour masquer cette colonne, passer uniquement le paramètre à "False"
 DISPLAY_PATRIMONIALITE = False
 
-# Pour customiser le logo du statut "patrimonial"
-PATRIMONIALITE_ICON = "custom/images/logo_patrimonial.png"
-
 
 # Liste des type de territoire pour les fiches territoires (code bib_area_type)
 # ex : TYPE_TERRITOIRE_SHEET = ['COM', 'EPCI']

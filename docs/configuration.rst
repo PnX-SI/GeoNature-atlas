@@ -19,6 +19,7 @@ Customisation de l'application
 ==============================
 
 En plus de la configuration, vous pouvez customiser l'application en modifiant et ajoutant des fichiers dans le répertoire ``static/custom/`` (css, templates, images).
+Les logos de espèces patrimoniales, protégées et menacées sont modifiables en changeant les images présents dans le répertoire `custom/images`.
 
 L'atlas est fourni avec des variables CSS qui permettent de personnaliser facilement l'interface (changement des couleurs principales). Pour cela éditer les variables présentes dans le fichier ``static/custom/custom.css``. Les variables ``--main-color`` et ``second-color`` permettent de customiser l'atlas selon les couleurs de votre organism.
 

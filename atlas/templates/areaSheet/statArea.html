@@ -35,22 +35,22 @@
             </div>
             {% if configuration.PROTECTION %}
             <div class="col-sm text-center border-start">
-                <img class="statut_icon" src="{{ url_for('static', filename='images/logo_protection.png') }}"/>
+                <img class="statut_icon" src="{{ url_for('static', filename='custom/images/protected.png') }}"/>
                 <br><strong>{{ stats_area.nb_taxon_protege }}</strong>
                 <br>{{ _('protected_species')|lower }}
             </div>
             {% endif %}
             {% if configuration.DISPLAY_PATRIMONIALITE %}
             <div class="col-sm text-center border-start">
-                <img class="statut_icon" src="{{ url_for('static', filename=configuration.PATRIMONIALITE_ICON) }}"/>
+                <img class="statut_icon" src="{{ url_for('static', filename='custom/images/logo_patrimonial.png') }}"/>
                 <br><strong>{{ stats_area.nb_taxon_patrimonial }}</strong>
                 <br>{{ _('species')|lower }} {{ _('patrimonial.plural')|lower }}
             </div>
             {% endif %}
             {% if configuration.AFFICHAGE_MENACE %}
             <div class="col-sm text-center border-start">
-                <img class="statut_icon" style="width:32px; height:32px;"
-                    src="{{ url_for('static', filename='images/picto_menace.png') }}"/>
+                <img class="statut_icon"
+                    src="{{ url_for('static', filename='custom/images/threatened.png') }}"/>
                 <br><strong>{{ stats_area.nb_taxon_menace }}</strong>
                 <br>{{ _('threatened.species')|lower }}
             </div>

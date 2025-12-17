@@ -52,7 +52,7 @@
                         <div class="d-flex flex-column align-items-end">
                             {% if configuration.PROTECTION and taxon.protection == 'oui' %}
                             <a href="https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.cd_ref }}/tab/statut" target="_blank">
-                                <img src="{{ url_for('static', filename='images/logo_protection.png') }}"
+                                <img src="{{ url_for('static', filename='custom/images/protected.png') }}"
                                      style="width: 30px; height: 30px;"
                                      data-bs-toggle="tooltip"
                                      title="{{ _('this.taxon.has.a.protected.status') }}">
@@ -60,8 +60,8 @@
                             {% endif %}
 
                             {% if configuration.DISPLAY_PATRIMONIALITE %}
-                                {% if taxon.patrimonial in configuration.PATRIMONIALITE.config %}
-                                <img src="{{ url_for('static', filename=configuration.PATRIMONIALITE_ICON) }}"
+                                {% if taxon.patrimonial == 'oui' %}
+                                <img src="{{ url_for('static', filename='custom/images/logo_patrimonial.png') }}"
                                      style="width: 30px; height: 30px;"
                                      data-bs-toggle="tooltip"
                                      title="{{ _('this.taxa.is.patrimonial')}}">

@@ -16,4 +16,5 @@ def get_tranlated_labels():
     """
 
     translations = get_translations()
+    print({msg: trans for msg, trans in translations._catalog.items() if msg})
     return {msg: trans for msg, trans in translations._catalog.items() if msg}

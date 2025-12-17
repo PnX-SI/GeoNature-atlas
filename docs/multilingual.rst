@@ -49,7 +49,7 @@ ADDING STRINGS
     pybabel update -i messages.pot -d translations
 
     # To compile translations | create .mo file
-    pybabel compile -d translations
+    pybabel compile -f -d translations
 
 MODIFYING A STRING ALREADY IN .PO FILES
 =======================================
@@ -110,9 +110,12 @@ AJOUTER DES CHAÎNES DE CARACTÈRES
 
     # Mise à jour des changements de chaînes
     pybabel update -i messages.pot -d translations
+    # An automatic translation is offered. If the translation is not certain it is mark as "fuzzy"
 
     # Pour compiler les traductions | créer un fichier .mo
     pybabel compile -d translations
+    # to force the compilation of fuzzy translations
+    pybabel compile -f -d translations
 
 MODIFICATION D'UNE CHAÎNE DE CARACTÈRES DÉJÀ PRÉSENTE DANS LES FICHIERS .PO
 ===========================================================================
