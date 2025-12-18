@@ -68,6 +68,7 @@ def getObservationsMaillesChilds(params={}):
         VMCorMailleObservation.id_maille,
         VmAreas.area_geojson,
         VMCorMailleObservation.type_code,
+        VmObservations.cd_sensitivity,
         func.max(func.date_part("year", VmObservations.dateobs)).label("last_obs_year"),
         func.count(VmObservations.id_observation).label("obs_nbr"),
     ]
@@ -85,6 +86,7 @@ def getObservationsMaillesChilds(params={}):
             VMCorMailleObservation.id_maille,
             VmAreas.area_geojson,
             VMCorMailleObservation.type_code,
+            VmObservations.cd_sensitivity,
         )
     )
     if taxons_ids:
@@ -120,6 +122,7 @@ def getObservationsMaillesChilds(params={}):
                 properties={
                     "id_maille": o.id_maille,
                     "type_code": o.type_code,
+                    "cd_sensitivity": o.cd_sensitivity,
                     "nb_observations": int(o.obs_nbr),
                     "last_observation": o.last_obs_year,
                     "ids_obs": o.ids_obs if "ids_obs" in fields else None,
