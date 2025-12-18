@@ -28,3 +28,6 @@ default_atlas_template_folder = Path(__file__).parent
 atlas_config_file_path = os.environ.get("ATLAS_SETTINGS", default_atlas_config_file_path)
 atlas_static_folder = os.environ.get("ATLAS_STATIC_FOLDER", default_atlas_static_folder)
 atlas_template_folder = os.environ.get("ATLAS_TEMPLATE_FOLDER", default_atlas_template_folder)
+atlas_translations_folder = os.environ.get(
+    "ATLAS_BABEL_TRANSLATION_DIRECTORIES", default_atlas_template_folder
+)

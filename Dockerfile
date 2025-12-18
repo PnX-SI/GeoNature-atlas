@@ -61,6 +61,13 @@ RUN chmod +x install/install_app.sh
 RUN ./install/install_app.sh --docker
 
 
+ENV ATLAS_SETTINGS=/dist/atlas/configuration/config.py
+ENV ATLAS_STATIC_FOLDER=/dist/atlas/static
+# WARNING: ATLAS_TEMPLATE_FOLDER must indicate the parent folder of the templates/ folder !
+ENV ATLAS_TEMPLATE_FOLDER=/dist/atlas/
+ENV ATLAS_BABEL_TRANSLATION_DIRECTORIES=/dist/atlas/translations;/dist/atlas/static/custom;
+
+
 
 ###############################################
 # 4) PREPROD : code source + gunicorn

@@ -15,6 +15,7 @@ from atlas.env import (
     atlas_static_folder,
     atlas_template_folder,
     atlas_config_file_path,
+    atlas_translations_folder,
     db,
     cache,
     babel,
@@ -44,7 +45,7 @@ def create_app(config_overrides=None):
     )
 
     app.config["BABEL_TRANSLATION_DIRECTORIES"] = (
-        "translations;static/custom/translations_override"
+        f"{atlas_translations_folder};translations;static/custom/translations_override"
     )
     # app.config["BABEL_TRANSLATION_DIRECTORIES"] = "trucquexistepas"
 
