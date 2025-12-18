@@ -1,4 +1,4 @@
-CREATE TABLE atlas.vm_cor_sensitivity_area_type AS
+CREATE MATERIALIZED VIEW atlas.vm_cor_sensitivity_area_type AS
     WITH sensitivity_has_area_type AS (
         SELECT
             '0' AS sensitivity_code,

@@ -25,48 +25,8 @@ Par défault la table contient les données suivantes :
 
 Si vous souhaitez changer le niveau d'affichage en fonction du niveau de sensibilité, vous pouvez donc éditer cette table. Ceci nécessite ensuite de raffraichir les vues matéralisées (`refresh_materialized_view_data()`).
 
-### Paramétrage du style des couches d'affichage des données sensibles
-
-Il est possible de paramétrer le style des différentes couches d'affichage des données sensibles via le paramètres `AFFICHAGE_COUCHES_MAP`. Par défaut il est fourni comme suit :
-
-    AFFICHAGE_COUCHES_MAP_DEFAULT = {
-        "COM": {
-            "label": "Communes",
-            "selected": True,
-        },
-        "M10": {
-            "label": "Mailles 10 km",
-            "selected": False,
-        },
-        "DEP": {
-            "label": "Département",
-            "selected": False,
-        },
-    }
-
-Les clés `COM, M10, DEP` correspondent diffénts niveau d'affichage présent dans la table `atlas.cor_sensitivity_area_type`. Pour la lisibilité, seul le niveau d'affichage le plus fin est sélectionné par défault `selected : True`
-Toutes ces couches sont ensuites affichable / masquable via le contrôleur de couche leaflet sur toutes les carte de l'atlas.
-
-> [!CAUTION]
->
-> Si vous modifiez la table `gn_sensitivity.cor_sensitivity_area_type`, il faut impérativement changerce paramètre pour y faire figurer les mêmes clé de type de zonage.
-> Par exemple, si je dit que je veux le code `M1` pour le niveau de sensibilité `1`, la variable `AFFICHAGE_COUCHES_MAP_DEFAULT` devra contenir une clé `M1` :
-
-    AFFICHAGE_COUCHES_MAP_DEFAULT = {
-
-        "M1": {
-            "label": "Communes",
-            "selected": True,
-        },
-        "M10": {
-            "label": "Mailles 10 km",
-            "selected": False,
-        },
-        "DEP": {
-            "label": "Département",
-            "selected": False,
-        },
-    }
+Sur la carte les observations sont classées dans différentes "couches" correspondant à chaque niveau de sensibilité.
+Toutes ces couches sont ensuites affichables / masquables via le contrôleur de couche leaflet sur toutes les carte de l'atlas.
 
 ### Customisation du style en mode point
 

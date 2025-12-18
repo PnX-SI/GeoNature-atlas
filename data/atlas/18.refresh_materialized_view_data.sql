@@ -47,5 +47,6 @@ $function$
         REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_area_stats;
         REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_area_stats_by_taxonomy_group;
         REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_area_stats_by_organism;
+        REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_cor_sensitivity_area_type;
     END
 $function$ ;

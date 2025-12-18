@@ -69,32 +69,7 @@ Paramétrage de l'affichage des données floutées en mode maille
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 La table de GeoNature `gn_sensitivity.cor_sensitivity_area_type` permet de controler quelle type de zonage on affiche en fonction du niveau de sensibilité : voir `la documentation sur la sensibilité à ce sujet <./sensibilite_donnees.md>`_
-
-Le paramètre `AFFICHAGE_COUCHES_MAP` permet de controler le style, le nom et l'affichage de chaque type de géométrie de floutage.
-Par défault il vaut : 
-
-::
-    AFFICHAGE_COUCHES_MAP_DEFAULT = {
-        "M1": {
-            "label": "Maille 1km",
-            "selected": True,
-        },
-        "COM": {
-            "label": "Communes",
-            "selected": True,
-        },
-        "M10": {
-            "label": "Mailles 10 km",
-            "selected": True,
-        },
-        "DEP": {
-            "label": "Département",
-            "selected": True,
-        },
-    }
-
-Chaque clé de ce dictionnaire (`M1`, `M10`) doit correspondre à une entrée dans la table `atlas.cor_sensitivity_area_type`, si vous changez le contenu de cette table, vous devrez mettre ce paramètre en cohérence.
-L'attribut `selected` permet de masquer par défaut un type de zonage (pour éviter les superposition et améliorer la lisibiliter de la carte).
+Par défault une seule couche d'observations est cochée dans le selecteur de couche : c'est la couche des observations les moins sensible (le plus petit niveau d'affichage)
 
 
 Paramétrage des couches additionelles
