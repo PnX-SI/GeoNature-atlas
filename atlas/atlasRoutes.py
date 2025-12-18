@@ -258,6 +258,7 @@ def ficheEspece(cd_nom):
         organisms=organisms,
         groupesStatuts=groupes_statuts,
         groupesStatutsHaveLabels=groupes_statuts_have_labels,
+        areas_sensitivity_level=corSensitivityAreaRepository.get_sensitivity_areas_level(),
     )
 
 
