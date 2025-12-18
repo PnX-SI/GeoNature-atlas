@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-17 11:03+0100\n"
+"POT-Creation-Date: 2025-12-18 16:31+0100\n"
 "PO-Revision-Date: 2021-07-19 09:53+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
@@ -271,6 +271,42 @@ msgstr "Numero di specie"
 #: templates/core/layout.html:81
 msgid "number.species.territory"
 msgstr "Numero di specie del territorio"
+
+#: templates/core/layout.html:82
+#, fuzzy
+msgid "protected"
+msgstr "Stato di protezione"
+
+#: templates/core/layout.html:83
+#, fuzzy
+msgid "taxonomic.group"
+msgstr "per gruppo tassonomico"
+
+#: templates/core/layout.html:84
+msgid "occurrences.number"
+msgstr ""
+
+#: templates/core/layout.html:85
+#, fuzzy
+msgid "observers.number"
+msgstr "Osservatori"
+
+#: templates/core/layout.html:86
+#, fuzzy
+msgid "last.observation"
+msgstr "ultima osservazione"
+
+#: templates/core/layout.html:87
+msgid "inpn.group.3"
+msgstr "Group 3 INPN"
+
+#: templates/core/layout.html:88
+msgid "yes"
+msgstr "si"
+
+#: templates/core/layout.html:89
+msgid "no"
+msgstr "no"
 
 #: templates/core/listTaxons.html:20
 msgid "filter"
@@ -585,4 +621,10 @@ msgstr "Scheda organismo"
 #: templates/taxoRankSheet/_main.html:27
 msgid "species.obs.for.tax"
 msgstr "Scheda delle species per taxon"
+
+#~ msgid "last.inpn.group.3\""
+#~ msgstr ""
+
+#~ msgid "inpn.group.3\""
+#~ msgstr ""
 

@@ -136,16 +136,7 @@ function clearFilters() {
 // Export csv & pdf
 // ==================================================
 
-async function exportCsv() {
-    // init the query string with page = -1 -> not pagination for export
-    const baseQueryString = new URLSearchParams({ page: "-1" });
-    const queryString = buildQueryString(baseQueryString);
-
-    const fullList = await fetch(`${jsonUrl}?${queryString}`).then((r) =>
-        r.json(),
-    );
-
-    // Colonnes du CSV
+function getColumns() {
     const columns = [
         "cd_ref",
         window.i18n["taxonomic.group"],
@@ -154,57 +145,82 @@ async function exportCsv() {
         window.i18n["occurrences.number"],
         window.i18n["observers.number"],
         window.i18n["last.observation"],
-        window.i18n["threatened.masc"],
-        window.i18n["strict.protection"],
         window.i18n["inpn.group.3"],
     ];
-    const rows = [];
     if (configuration.DISPLAY_PATRIMONIALITE) {
         columns.push(window.i18n["patrimonial"]);
     }
+    if (configuration.PROTECTION) {
+        columns.push(window.i18n["protected"]);
+    }
+    if (configuration.AFFICHAGE_MENACE) {
+        columns.push(window.i18n["threatened"]);
+    }
+    return columns;
+}
+
+function buildRow(taxon) {
+    const taxonomicGroup = taxon.group2_inpn || "-";
+    const cdRef = taxon.cd_ref || "-";
+    const nomVern =
+        typeof taxon.nom_vern === "string" && taxon.nom_vern
+            ? taxon.nom_vern.split(",")[0].trim()
+            : "-";
+    const nomSci = taxon.lb_nom || "-";
+    const nbObs = taxon.nb_obs || "0";
+    const nbObservers = taxon.nb_observers || "0";
+    const lastYear = taxon.last_obs || "-";
+    const patrimonial = taxon.patrimonial
+        ? window.i18n["yes"]
+        : window.i18n["no"];
+    const strictProtection = taxon.protection_stricte
+        ? window.i18n["yes"]
+        : window.i18n["no"];
+    const group3Inpn = taxon.group3_inpn || "-";
+    const isThreatened = taxon.menace ? window.i18n["yes"] : window.i18n["no"];
+    // TODO : is threatened
+    // Ajout de la colonne "Menacé" en tant que true/false
+    const row = [
+        cdRef,
+        taxonomicGroup,
+        nomVern,
+        nomSci,
+        nbObs,
+        nbObservers,
+        lastYear,
+        group3Inpn,
+    ];
+    if (configuration.DISPLAY_PATRIMONIALITE) {
+        row.push(patrimonial);
+    }
+    if (configuration.PROTECTION) {
+        row.push(strictProtection);
+    }
+    if (configuration.AFFICHAGE_MENACE) {
+        row.push(isThreatened);
+    }
+    return row;
+}
+
+// eslint-disable-next-line no-unused-vars
+async function exportCsv() {
+    // init the query string with page = -1 -> not pagination for export
+    const baseQueryString = new URLSearchParams({ page: "-1" });
+    const queryString = buildQueryString(baseQueryString);
+
+    const fullList = await fetch(`${jsonUrl}?${queryString}`).then((r) =>
+        r.json(),
+    );
+    const rows = [];
+    // Colonnes du CSV
+    columns = getColumns();
+    console.log("???", columns);
+
     rows.push(columns);
 
     // Filtrer les taxons visibles dans taxonsData
     fullList.forEach((taxon) => {
-        const taxonomicGroup = taxon.group2_inpn || "-";
-        const cdRef = taxon.cd_ref || "-";
-        const nomVern =
-            typeof taxon.nom_vern === "string" && taxon.nom_vern
-                ? taxon.nom_vern.split(",")[0].trim()
-                : "-";
-        const nomSci = taxon.lb_nom || "-";
-        const nbObs = taxon.nb_obs || "0";
-        const nbObservers = taxon.nb_observers || "0";
-        const lastYear = taxon.last_obs || "-";
-        const patrimonial = taxon.patrimonial
-            ? window.i18n["yes"]
-            : window.i18n["no"];
-        const strictProtection = taxon.protection_stricte
-            ? window.i18n["yes"]
-            : window.i18n["no"];
-        const group3Inpn = taxon.group3_inpn || "-";
-        const isThreatened = taxon.menace
-            ? window.i18n["yes"]
-            : window.i18n["no"];
-        // TODO : is threatened
-        // Ajout de la colonne "Menacé" en tant que true/false
-        row = [
-            cdRef,
-            taxonomicGroup,
-            nomVern,
-            nomSci,
-            nbObs,
-            nbObservers,
-            lastYear,
-            isThreatened,
-            strictProtection,
-            group3Inpn,
-        ];
-        if (configuration.DISPLAY_PATRIMONIALITE) {
-            row.push(patrimonial);
-        }
-
-        rows.push(row);
+        rows.push(buildRow(taxon));
     });
 
     const fileName = context.file_export_name
@@ -220,6 +236,7 @@ async function exportCsv() {
     document.body.removeChild(link);
 }
 
+// eslint-disable-next-line no-unused-vars
 async function exportPdf() {
     const baseQueryString = new URLSearchParams({ page: "-1" });
     const queryString = buildQueryString(baseQueryString);
@@ -240,45 +257,15 @@ async function exportPdf() {
     doc.setFontSize(14.5);
     doc.text(title, pageWidth / 2, 15, { align: "center" });
 
-    const columns = [
-        window.i18n["taxonomic.group"],
-        window.i18n["common.name"],
-        window.i18n["scientific.name"],
-        window.i18n["occurrences.number"],
-        window.i18n["observers.number"],
-        window.i18n["last.observation"],
-        window.i18n["threatened.masc"],
-        window.i18n["strict.protection"],
-        window.i18n["inpn.group.3"],
-    ];
-    if (configuration.DISPLAY_PATRIMONIALITE) {
-        columns.push(window.i18n["patrimonial"]);
-    }
+    const columns = getColumns();
     const headers = [columns];
 
     const data = fullList.map((taxon) => {
-        const row = [
-            taxon.group2_inpn || "-",
-            typeof taxon.nom_vern === "string" && taxon.nom_vern
-                ? taxon.nom_vern.split(",")[0].trim()
-                : "-",
-            taxon.lb_nom || "-",
-            taxon.nb_obs || "0",
-            taxon.nb_observers || "0",
-            taxon.last_obs || "-",
-            taxon.menace ? window.i18n["yes"] : window.i18n["no"],
-            taxon.protection_stricte ? window.i18n["yes"] : window.i18n["no"],
-            taxon.group3_inpn || "-",
-        ];
-        if (configuration.DISPLAY_PATRIMONIALITE) {
-            row.push(
-                taxon.patrimonial === "oui"
-                    ? window.i18n["yes"]
-                    : window.i18n["no"],
-            );
-        }
-        return row;
+        return buildRow(taxon);
     });
+
+    const threatenedColumnIndex = columns.indexOf(window.i18n["threatened"]);
+    const protectedColumnIndex = columns.indexOf(window.i18n["protected"]);
 
     doc.autoTable({
         startY: 25,
@@ -293,9 +280,6 @@ async function exportPdf() {
             5: { halign: "center" }, // Last observation
         },
         didParseCell: function (data) {
-            const threatenedColumnIndex = 6; // Threatened column index
-            const protectedColumnIndex = 7; // Protected column index
-
             if (data.section === "body") {
                 if (
                     data.row.raw[threatenedColumnIndex] === window.i18n["yes"]
@@ -349,9 +333,6 @@ document.getElementById("taxonInput").addEventListener(
 $(document).ready(function () {
     initApiUrls();
     initPlugins();
-
-    $("#exportCsvBtn").on("click", exportCsv);
-    $("#exportPdfBtn").on("click", exportPdf);
 });
 
 $(".groupINPN").on("change", 'input[type="checkbox"]', function (event) {
