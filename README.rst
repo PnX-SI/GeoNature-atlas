@@ -22,14 +22,7 @@ L'outil a été développé de manière générique pour pouvoir être déployé
 Documentation
 -------------
 
-* `Installation <docs/installation.rst>`_
-* `Présentation des vues materialisées et installation dans un contexte sans GeoNature <docs/vues_materialisees_maj.rst>`_
-* `Configuration et customisation de l'application <docs/configuration.rst>`_
-* `Multilingue <docs/multilingual.rst>`_
-* `Gestion et affichage des données sensibles <docs/sensibilite_donnees.md>`_
-* `Cookies et RGPD <docs/cookies_rgpd.rst>`_
-* `Contribution <docs/CONTRIBUTING.md>`_
-* `Changelog <docs/changelog.rst>`_
+La documentation est disponible ici : https://pnx-si.github.io/GeoNature-atlas/
 
 Rapports et présentations
 --------------------------
