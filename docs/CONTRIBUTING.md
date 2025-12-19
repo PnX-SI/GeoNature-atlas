@@ -4,7 +4,6 @@ Merci de votre intérêt pour contribuer à GeoNature-atlas ! Ce document vous g
 
 ## Table des matières
 
-
 - [Qualité du code](#code-quality)
 - [Processus de contribution](#contribution-process)
 - [Documentation](#documentation)
@@ -18,10 +17,14 @@ Avant de commencer à contribuer, assurez-vous d'avoir :
 - Node.js et npm installés
 - Git installé et configuré
 - Une bonne compréhension de Flask (backend) et JavaScript (frontend)
+- Installer l'application !
+- Installer les dépendances python de développement : `pip install ".[dev]` (depuis la racine du répertoire)
+- Installer les dépendances javascript de développement `npm install --only=dev`
 
 Le [fichier](./src/installation.rst) détail l'installation d'un environnement de développement de GeoNature-Atlas
 
 (code-quality)=
+
 ## Qualité et convention du code
 
 Le projet utilise des outils de formatage et de linting pour maintenir une qualité de code cohérente.
@@ -56,6 +59,7 @@ La configuration Black utilisée dans le projet (définie dans `pyproject.toml`)
 - Longueur de ligne : 100 caractères
 
 Ces deux règles ne sont pas dans black mais sont à respecter :
+
 - CamelCase pour les noms de classe
 - snake_case pour les noms de fonction et de variable
 
@@ -101,18 +105,25 @@ git checkout -b feature/ma-nouvelle-fonctionnalite
 git checkout -b fix/correction-bug
 ```
 
+- Ne mergez pas la branche `develop` dans votre branche de feature, utilisez la commande `rebase`
+- Ne faites pas de commit de lint, privilegiez un `git commit --amend` pour ajouter le lint au commit comprenant les modification du code.
+- Squachez vos pull requests lorsqu'elle sont prêtes à être relues
+
 Conventions de nommage des branches :
+
 - `feature/` pour les nouvelles fonctionnalités
 - `fix/` pour les corrections de bugs
 - `docs/` pour la documentation
 - `refactor/` pour les refactorisations
 
+
+
 ### 3. Développer et commiter
 
 Effectuez vos modifications en respectant les conventions de code. Faites des commits atomiques avec des messages clairs et descriptifs. Pensze à réferencer l'issue dans votre commit
 
-
 Types de commit courants :
+
 - `feat:` nouvelle fonctionnalité
 - `fix:` correction de bug
 - `docs:` documentation
@@ -148,22 +159,18 @@ git push <mon_remote> feature/ma-nouvelle-fonctionnalite
 - Mettez à jour la documentation si vos changements affectent l'utilisation de l'application
 - Les fichiers de documentation se trouvent dans le dossier `docs/`
 - Vous pouvez ajouter votre documentation aux formats:
-   - ``reStructuredText`` syntax. See the [reStructuredText documentation](https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>)
-   - ``Markdown`` syntax. See the [myst-parser documentation](https://myst-parser.readthedocs.io/en/latest/index.html)
+  - `reStructuredText` syntax. See the [reStructuredText documentation](https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>)
+  - `Markdown` syntax. See the [myst-parser documentation](https://myst-parser.readthedocs.io/en/latest/index.html)
 - Vous pouvez vérifier la bonne mise en forme de la documentation avec les commandes suivantes:
-
 
 ```bash
 cd docs
 make livehtml
 ```
 
-
-
 (support)=
 ## Questions et support
 
-- Pour des questions générales, utilisez les [Discussions GitHub](https://github.com/PnX-SI/GeoNature-atlas/discussions)
 - Pour signaler un bug, créez une [issue](https://github.com/PnX-SI/GeoNature-atlas/issues)
 - Pour contacter l'équipe : voir le fichier README
 

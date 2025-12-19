@@ -2,10 +2,6 @@
 Vues materialisees et mise a jour du contenu
 ============================================
 
-.. image:: http://geonature.fr/img/logo-pne.jpg
-    :target: http://www.ecrins-parcnational.fr
-
-
 Introduction
 ============
 

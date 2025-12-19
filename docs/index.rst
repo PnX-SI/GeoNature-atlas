@@ -12,9 +12,10 @@ GeoNature-atlas documentation
 
    src/installation.rst
    src/configuration.rst
-   src/multilingual.rst
    src/sensibilite_donnees.rst
    src/vues_materialisees_maj.rst
    src/cookies_rgpd.rst
+   src/FAQ.md
    CONTRIBUTING.md
+   src/multilingual.rst
    changelog.rst

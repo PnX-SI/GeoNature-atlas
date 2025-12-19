@@ -3,10 +3,6 @@
 Multilingual module (EN)
 ========================
 
-.. image:: http://geonature.fr/img/logo-pne.jpg
-    :target: http://www.ecrins-parcnational.fr
-
-
 
 The module used for multilingual is Flask-Babel (https://flask-babel.tkte.ch).
 
@@ -40,21 +36,24 @@ Then in your command prompt, go in your atlas path and use these commmands.
     pybabel init -i messages.pot -d translations -l fr
 
     # To compile translations | create .mo file
-    pybabel compile -d translations
+    pybabel compile -f -d translations
 
 Adding strings
 ==============
 
 ::
 
-    # Extract your new strings from html files | create .pot file
+    # Extraire vos nouvelles chaînes de caractères des fichiers html | créer un fichier .pot
     pybabel extract -F babel.cfg --project=GeoNature-Atlas --version=$(cat ../VERSION) -o messages.pot .
 
-    # Update strings changes
+    # Mise à jour des changements de chaînes
     pybabel update -i messages.pot -d translations
+    # An automatic translation is offered. If the translation is not certain it is mark as "fuzzy"
 
-    # To compile translations | create .mo file
+    # Pour compiler les traductions | créer un fichier .mo
     pybabel compile -d translations
+    # to force the compilation of fuzzy translations
+    pybabel compile -f -d translations
 
 Modifying a string already in .po files
 =======================================
@@ -64,67 +63,4 @@ Edit the ``.po`` file to change, then compile the translation files to generate 
 ::
 
     # To compile translations | create .mo file
-    pybabel compile -d translations
-
-
-========================
-Multilingual module (FR)
-========================
-
-Le module utilisé pour le multilingue est Flask-Babel (https://flask-babel.tkte.ch).
-
-Vous pouvez activer ou désactiver ce module en changeant la valeur du paramètre ``MULTILINGUAL`` (``true`` ou ``false``) dans votre fichier ``config.py``.
-
-Si vous le faites, vous devez renseigner ``DEFAULT_LANGUAGE`` avec votre clé de langue. Exemple ``'fr'`` pour le français. Assurez-vous que votre langue se trouve dans ``LANGUAGES`` dans votre fichier ``config.py``.
-
-Voici les différentes commandes que vous pouvez utiliser pour ajouter une langue, ajouter du texte à traduire, ou mettre à jour les traductions.
-
-Toutes les commandes doivent être utilisées dans le chemin de votre atlas dans une invite de commande.
-
-Le fichier ``atlas/messages.pot`` est un template de traduction, généré automatiquement en parcourant les fichiers .html du projet.
-Il est utilisé pour générer et ajouter les clés de traduction dans les fichiers .po de chaque langue.
-Une fois que les fichiers .po ont été mis à jour manuellement, la commande finale va générer les fichier .mo compilés, utilisés par l'application.
-
-Ajouter une langue
-==================
-
-Tout d'abord, allez dans le fichier ``config.py`` et ajoutez votre langue de la même manière que les autres langues déjà disponibles.
-
-Activez le venv : source venv/bin/activate
-
-Ensuite, dans votre invite de commande, allez dans le chemin de votre atlas et utilisez les commandes suivantes.
-
-::
-
-    # Extraire vos nouvelles chaînes de caractères des fichiers html | créer un fichier .pot
-    pybabel extract -F babel.cfg --project=GeoNature-Atlas --version=$(cat ../VERSION) -o messages.pot .
-
-    # Mise à jour des modifications des chaînes de caractères
-    pybabel update -i messages.pot -d translations
-
-    # Pour compiler les traductions | créer un fichier .mo
-    pybabel compile -d translations
-
-Ajouter des chaînes de caractères
-=================================
-
-::
-
-    # Extraire vos nouvelles chaînes de caractères des fichiers html | créer un fichier .pot
-    pybabel extract -F babel.cfg --project=GeoNature-Atlas --version=$(cat ../VERSION) -o messages.pot .
-
-    # Mise à jour des changements de chaînes
-    pybabel update -i messages.pot -d translations
-
-    # Pour compiler les traductions | créer un fichier .mo
-    pybabel compile -d translations
-
-Modification d'une chaîne de caractères déjà présente dans les fichiers .po
-===========================================================================
-
-Modifier les fichiers ``.po`` souhaités dans le dossier ``atlas/translations/``, ensuite compilez les fichiers de traductions pour générer les fichiers ``.mo``.
-
-::
-
-    # Pour compiler les traductions | créer un fichier .mo
     pybabel compile -d translations

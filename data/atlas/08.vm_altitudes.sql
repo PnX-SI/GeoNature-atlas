@@ -17,7 +17,7 @@ UPDATE atlas.bib_altitudes SET label_altitude = '_' || altitude_min || '_' || al
 -- Fonction qui permet de créer la VM contenant le nombre d'observations
 -- par classes d'altitude.
 CREATE OR REPLACE FUNCTION atlas.create_vm_altitudes()
-    RETURNS text
+    RETURNS void
     LANGUAGE plpgsql
 AS
 $function$
@@ -71,8 +71,9 @@ $function$
 
     CREATE UNIQUE INDEX ON atlas.vm_altitudes (cd_ref);
 
-    RETURN monsql;
+    --RETURN monsql;
   END;
 $function$ ;
+
 
 SELECT atlas.create_vm_altitudes();

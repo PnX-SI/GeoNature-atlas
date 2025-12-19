@@ -32,6 +32,7 @@ from atlas.modeles.repositories import (
     vmTaxonsMostView,
     vmCorTaxonOrganismRepository,
     vmStatutBdcRepository,
+    corSensitivityAreaRepository,
 )
 
 
@@ -257,6 +258,7 @@ def ficheEspece(cd_nom):
         organisms=organisms,
         groupesStatuts=groupes_statuts,
         groupesStatutsHaveLabels=groupes_statuts_have_labels,
+        areas_sensitivity_level=corSensitivityAreaRepository.get_sensitivity_areas_level(),
     )
 
 
@@ -391,6 +393,9 @@ def sitemap():
     url_root = request.url_root
     if url_root[-1] == "/":
         url_root = url_root[:-1]
+    for static_page in current_app.config["STATIC_PAGES"]:
+        url = url_root + url_for("main.get_staticpages", page=static_page)
+        pages.append([url, ten_days_ago])
     for rule in current_app.url_map.iter_rules():
         # check for a 'GET' request and that the length of arguments is = 0 and if you have an admin area that the rule does not start with '/admin'
         if "GET" in rule.methods and len(rule.arguments) == 0 and not rule.rule.startswith("/api"):

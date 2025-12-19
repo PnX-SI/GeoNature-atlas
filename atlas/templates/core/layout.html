@@ -75,5 +75,18 @@
 </script>
 
 {% block additionalFooterAssets %}{% endblock %}
+<!-- # hack : traduction seulement présente dans le JS donc pas scanné par babel ! -->
+    <div style="display: none;">
+        {{_('number.species')}}
+        {{_('number.species.territory')}}
+        {{_('protected')}}
+        {{_('taxonomic.group')}}
+        {{_('occurrences.number')}}
+        {{_('observers.number')}}
+        {{_('last.observation')}}
+        {{_('inpn.group.3')}}
+        {{_('yes')}}
+        {{_('no')}}
 
+    </div>
 </html>

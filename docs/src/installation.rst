@@ -2,10 +2,6 @@
 Installation
 ============
 
-.. image:: http://geonature.fr/img/logo-pne.jpg
-    :target: http://www.ecrins-parcnational.fr
-
------
 
 Prérequis
 =========
@@ -18,12 +14,7 @@ Ce serveur doit aussi disposer de :
 - sudo (apt-get install sudo)
 - un utilisateur (``whoami`` dans cette documentation - ``whoami`` est une variable d'environnement Linux qui désigne l'utilisateur courant) appartenant au groupe ``sudo`` (pour pouvoir bénéficier des droits d'administrateur)
 
-:notes:
-
-    Si sudo n'est pas installé par défaut, voir https://www.privateinternetaccess.com/forum/discussion/18063/debian-8-1-0-jessie-sudo-fix-not-installed-by-default
-
-:notes:
-
+.. note::
     GeoNature-atlas est susceptible de fonctionner sur d'autres OS (comme Ubuntu par exemple) mais cela n'a pas été testé.
 
 

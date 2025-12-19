@@ -9,25 +9,28 @@ CHANGELOG
 🚀 **Nouveautés**
 
 - Ajout du floutage des données sensibles (#571 par @juggler31)
-- Ajout d'une carte territoire dans la page d'acceuil ainsi que la liste de toutes les espèces sur celui-ci. Au dela de 4000 espèces sur votre atlas, il est déconseillé d'activer cette fonctionnalité
-- Changement de la notion de "commune" en notion de "territoire" (#545 @juggler31)
-- Ajout d'un graphique de provenance des données (#538)
+- Ajout d'une carte territoire dans la page d'acceuil ainsi que la liste de toutes les espèces sur celui-ci.
+- Changement de la notion de "commune" en notion de "territoire". Possibilité de faire des fiches "territoire" sur les tous zonages du ref_geo (fiche résèrve, ZNIEFF etc...)(#545 @juggler31)
+- Ajout d'un graphique de provenance des données par organisme sur la fiche espèce (si `ORGANISM_MODULE=True`) (#538)
 - Ajout de graphiques sur la fiche territoire (le paramètre ``AFFICHAGE_TOUT_TERRITOIRE_GRAPH`` permet d'afficher ou non la barre du nombre d'espèce sur tout le territoire de l'atlas sur chaque graphique)
-  Les changements effectués afin de pouvoir changer la notion de "commune" en "territoire" necessitent un changement dans les fichiers: TODO
 - Ajout de "liens importants" sur les fiches taxons. Cette fonctionnalité permet par exemple de mettre en avant des démarches ou des ressources additionelles sur un taxon: un lien vers une plateforme de contribution collaborative, un lien vers une fiche détaillé sur l'espèce etc... Voir le paramètre ``TYPES_MEDIAS_LIENS_IMPORTANTS``
-- Ajout des statuts sur la fiche espèces. Le paramètre de configuration ``GROUPES_STATUTS`` permet de grouper et de filtrer les statuts que l'on souhaite afficher. Le template ``custom/templates/statuts.html`` permet de customiser l'affichage des statuts (customisation avancé, à modifier avec précaution)
-- Ajout de la notion d'espèce menacée et de graphiques associés sur les fiches territoire (@Orangetine) #669
+- Ajout des statuts de conservation sur la fiche espèces. Le paramètre de configuration ``GROUPES_STATUTS`` permet de grouper et de filtrer les statuts que l'on souhaite afficher. Le template ``custom/templates/statuts.html`` permet de customiser l'affichage des statuts (customisation avancé, à modifier avec précaution)
+- Ajout de la notion d'espèce menacée et de graphiques associés sur les fiches territoire. La notion de menace est basé sur les listes rouges. Un taxon est considéré comme menacé s'il est sur une des liste suivantes : VU, EN, CR, CR* (@Orangetine) #669
+- Ajout de filtre par group2_inpn et par statut (protégé, menacé, patrimonial) sur toute les listes de taxons (@Orangetine @TheoLechemia)
+- Possibilité d'exporter les listes de taxons en csv et PDF (@Orangetine @TheoLechemia)
 - Le statut d'espèce protégée n'est plus calculé à partir d'un attribut TaxHub mais à partir de la BDC statuts #135
 - Déplacement des fichiers de personnalisation ``sample`` dans le dossier ``static/sample/``. Le dossier ``static/custom/`` est à utiliser pour surcoucher les fichiers de ``static/sample/``.
 - Ajout d'un gestionnaire de couches cartographiques supplémentaires (WMS et geojson) dans le paramètre ``COUCHES_SIG`` (#572 @juggler31)
 - Ajout d'un plugin permetant une recheche d'adresse sur les cartes de la page d'acceuil et territoire (#716 @juggler31)
 - Nouvel affichage des tooltips lorsqu'on clique sur une maille (#721 @juggler31)
-- Possibilité de masquer la page de la gallerie photo (#703 @lpofredc) via le paramètre `AFFICHAGE_GALERIE_PHOTO`
-- Suppression de la table t_layer_territoire qui permettait de filtrer les données hors territoire. Ceci est desormais à faire par chaque utilisateurs directement dans `atlas.vm_observations`
-- Le paramètre `type_territoire` du ficher `settings.ini` n'est plus utilisé
-- Les fichiers de langues sont dorénavant surcouchables
-- Ajout de la possibilité de configurer la table / vue source des données en entrée de l'atlas (#749)
-
+- Possibilité de masquer la page de la gallerie photo  via le paramètre `AFFICHAGE_GALERIE_PHOTO` (#703 @lpofredc)
+- Ajout de la possibilité de configurer la table / vue source des données en entrée de l'atlas (#749) (voir la rubrique "Configuration des données d'observations présente dans l'atlas" dans la documentation sur la confiuguration )
+    - Suppression de la table `t_layer_territoire` qui permettait de filtrer les données hors territoire. Ceci est desormais à faire en amont par chaque utilisateurs 
+    - Le paramètre `type_territoire` du ficher `settings.ini` n'est plus utilisé
+- Les fichiers de langues sont dorénavant surcouchables (voir documentation sur le multilingue)
+- Refonte du style icones de patrimonialité, protection et menace. Les 3 icones sont maintenant surcouchables
+- Possibilité d'ajouter des labels sur la sidebar (#729 @juggler31)
+- 
 A VERIFIER :
 
 ``navbar.html``
@@ -68,8 +71,9 @@ BREAKING CHANGE :
 - Les attributs `label`, `text` et `label_pluriel` du paramètre `PATRIMONIALITE` sont dépréciés. Utilisez la surchouche de langue si vous souhaitez modifier ce terme (id : `patrimonial`, `patrimonial.plural` et `this.taxa.is.patrimonial`)
 - Pour configurer les données qui remontent dans l'atlas il est conseillé de ne plus surcoucher `atlas.vm_observations` mais de s'appuyer sur le paramètre `observation_data_source` du fichier `settings.ini` (voir doc à ce sujet dans `configuration.rst`)
 Vous pouvez supprimer les paramètres suivants du fichier ``settings.ini`` :
-
+- la paramètre `venv_dir` de `setting.ini` n'est plus utilisé. L'environnement virtuel est créer dans un répértoire `venv`
 - ``taxhub_displayed_attr``
+
 
 
 1.7.3 (2025-09-20)

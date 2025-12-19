@@ -1,3 +1,6 @@
+// global :
+let current_sensitivity_codes = []; // list of distinct cd_sensibility in geojson
+
 // eslint-disable-next-line no-unused-vars
 const areaBorderColor = String(
     getComputedStyle(document.documentElement).getPropertyValue(
@@ -238,7 +241,14 @@ function reorderLayerControl() {
     // Vide le conteneur
     overlayDiv.innerHTML = "";
 
-    // Ajoute d'abord les defaultOverlay
+    if (defaultLabels.length > 0) {
+        const defaultLabelTitle = document.createElement("p");
+        defaultLabelTitle.style.fontWeight = "bold";
+        defaultLabelTitle.style.margin = "5px 0";
+        defaultLabelTitle.textContent =
+            "Niveau de diffusion des données en fonction leur sensibilité";
+        overlayDiv.appendChild(defaultLabelTitle);
+    }
     defaultLabels.forEach((label) => overlayDiv.appendChild(label));
 
     // Ajoute le séparateur si les deux groupes existent
@@ -246,6 +256,13 @@ function reorderLayerControl() {
         const separator = document.createElement("div");
         separator.className = "leaflet-control-layers-separator";
         overlayDiv.appendChild(separator);
+    }
+    if (otherLabels.length > 0) {
+        const aditionnalLbelTitle = document.createElement("p");
+        aditionnalLbelTitle.style.fontWeight = "bold";
+        aditionnalLbelTitle.style.margin = "5px 0";
+        aditionnalLbelTitle.textContent = "Couche(s) additionnelle(s)";
+        overlayDiv.appendChild(aditionnalLbelTitle);
     }
 
     // Ajoute les autres couches
@@ -269,18 +286,18 @@ function addOverlayInControl(layer, label, isDefaultOverlay = false) {
     );
 }
 
-// get the different type code (COM, M1, M10) and store them in current_type_code arrray
+// get the different cd_sensitivity and store them in current_type_code arrray
 // use to create different feature group and layer control
-function getAreasTypeCode(geojson) {
-    current_type_code = [];
-    if (current_type_code.length === 0) {
-        Object.values(geojson.features).forEach((elem) => {
-            if (!current_type_code.includes(elem.properties.type_code)) {
-                current_type_code.push(elem.properties.type_code);
-            }
-        });
-    }
-    return current_type_code;
+function getSensitivityLevelInGeojson(geojson) {
+    current_sensitivity_codes = [];
+    Object.values(geojson.features).forEach((elem) => {
+        if (
+            !current_sensitivity_codes.includes(elem.properties.cd_sensitivity)
+        ) {
+            current_sensitivity_codes.push(elem.properties.cd_sensitivity);
+        }
+    });
+    current_sensitivity_codes.sort();
 }
 
 /**
@@ -288,19 +305,23 @@ function getAreasTypeCode(geojson) {
  * Add the features group to map
  */
 function createLayersSelector(geojson) {
-    const current_type_code = getAreasTypeCode(geojson);
+    getSensitivityLevelInGeojson(geojson);
 
-    current_type_code.forEach((elem) => {
+    current_sensitivity_codes.forEach((cd_sensitivity, index) => {
         const featureGroup = L.featureGroup();
-        observationsFeatureGroup[elem] = featureGroup;
-        if (configuration.AFFICHAGE_COUCHES_MAP[elem].selected) {
+        observationsFeatureGroup[cd_sensitivity] = featureGroup;
+        // les cd_sensitivity présent dans le geojson sont triés par ordre de sensibilité croissant
+        // par défaut on affiche que la couche du niveau le moins sensible !
+        if (index === 0) {
             map.addLayer(featureGroup);
         }
-        addOverlayInControl(
-            featureGroup,
-            configuration.AFFICHAGE_COUCHES_MAP[elem].label,
-            true,
-        );
+        let layerName = "";
+        if (cd_sensitivity === "0") {
+            layerName = "Observations non sensibles";
+        } else {
+            layerName = `Observations sensibles - niveau ${cd_sensitivity}`;
+        }
+        addOverlayInControl(featureGroup, layerName, true);
     });
 }
 
@@ -464,19 +485,14 @@ function onEachFeatureMaille(feature, layer) {
     layer.bindPopup(popupContent);
 
     // associate a feature to the correct feature group
-    observationsFeatureGroup[feature.properties.type_code].addLayer(layer);
+    observationsFeatureGroup[feature.properties.cd_sensitivity].addLayer(layer);
 
     if (configuration.AFFICHAGE_MAILLE) {
         zoomMaille(layer);
     }
 
     var selected = false;
-    layer.setStyle(
-        styleMailleAtlas(
-            feature.properties.nb_observations,
-            feature.properties.type_code,
-        ),
-    );
+    layer.setStyle(styleMailleAtlas(feature.properties.nb_observations));
     layer.on("click", function (layer) {
         resetStyleMailles();
         this.setStyle(styleMailleClickedOrHover(layer.target));
@@ -489,12 +505,7 @@ function onEachFeatureMaille(feature, layer) {
 
     layer.on("mouseout", function () {
         if (!selected) {
-            this.setStyle(
-                styleMailleAtlas(
-                    feature.properties.nb_observations,
-                    feature.properties.type_code,
-                ),
-            );
+            this.setStyle(styleMailleAtlas(feature.properties.nb_observations));
         }
     });
 }
@@ -753,7 +764,7 @@ function createPopUp(event) {
     const idMaille = event.target.feature.id;
     page_tooltip = 1;
     havePossibleNextPage_tooltip = true;
-    let url = `/api/taxonListJson/area/${idMaille}?page=-1`;
+    let url = `/api/taxonListJson/area/${idMaille}?page=-1&only_related_sensitivity_level=true`;
     if (sheetName === "index" && configuration.AFFICHAGE_DERNIERES_OBS) {
         url = url + "&last_obs=true";
     }
@@ -777,15 +788,10 @@ function createPopUp(event) {
 
 // eslint-disable-next-line no-unused-vars
 function onEachFeatureMailleLastObs(feature, layer) {
-    observationsFeatureGroup[feature.properties.type_code].addLayer(layer);
+    observationsFeatureGroup[feature.properties.cd_sensitivity].addLayer(layer);
 
     var selected = false;
-    layer.setStyle(
-        styleMailleAtlas(
-            feature.properties.nb_observations,
-            feature.properties.type_code,
-        ),
-    );
+    layer.setStyle(styleMailleAtlas(feature.properties.nb_observations));
     layer.on("click", function (event) {
         createPopUp(event);
         resetStyleMailles();
@@ -798,101 +804,31 @@ function onEachFeatureMailleLastObs(feature, layer) {
 
     layer.on("mouseout", function () {
         if (!selected) {
-            this.setStyle(
-                styleMailleAtlas(
-                    feature.properties.nb_observations,
-                    feature.properties.type_code,
-                ),
-            );
+            this.setStyle(styleMailleAtlas(feature.properties.nb_observations));
         }
     });
 }
 
-function styleMailleAtlas(nb, type_code) {
-    const chartMainColor = getComputedStyle(
-        document.documentElement,
-    ).getPropertyValue("--main-color");
-
-    let fillOpacity = 0.5;
-    if (
-        configuration.AFFICHAGE_COUCHES_MAP[type_code] &&
-        configuration.AFFICHAGE_COUCHES_MAP[type_code].fillOpacity
-    ) {
-        fillOpacity =
-            configuration.AFFICHAGE_COUCHES_MAP[type_code].fillOpacity;
-    }
-    let strokeOpacity = 0;
-    if (
-        configuration.AFFICHAGE_COUCHES_MAP[type_code] &&
-        configuration.AFFICHAGE_COUCHES_MAP[type_code].strokeOpacity
-    ) {
-        strokeOpacity =
-            configuration.AFFICHAGE_COUCHES_MAP[type_code].strokeOpacity;
-    }
-    let weight = 1;
-    if (
-        configuration.AFFICHAGE_COUCHES_MAP[type_code] &&
-        configuration.AFFICHAGE_COUCHES_MAP[type_code].weight
-    ) {
-        weight = configuration.AFFICHAGE_COUCHES_MAP[type_code].weight;
-    }
-
-    let strokeColor = chartMainColor;
-    if (
-        configuration.AFFICHAGE_COUCHES_MAP[type_code] &&
-        configuration.AFFICHAGE_COUCHES_MAP[type_code].strokeColor
-    ) {
-        strokeColor =
-            configuration.AFFICHAGE_COUCHES_MAP[type_code].strokeColor;
-    }
-
+function styleMailleAtlas(nb) {
     return {
-        opacity: strokeOpacity,
-        weight: weight,
+        opacity: 0, // opacité de la bordure
         fillColor: getColor(nb),
-        color: strokeColor,
-        fillOpacity: fillOpacity,
+        fillOpacity: 0.7,
     };
 }
 
 function styleMailleClickedOrHover(layer) {
-    var mailleCode = layer.feature.properties.type_code;
     const chartMainColor = getComputedStyle(
         document.documentElement,
     ).getPropertyValue("--main-color");
-
-    let fillOpacityHover = 0.85;
-    if (
-        configuration.AFFICHAGE_COUCHES_MAP[mailleCode] &&
-        configuration.AFFICHAGE_COUCHES_MAP[mailleCode].fillOpacityHover
-    ) {
-        fillOpacityHover =
-            configuration.AFFICHAGE_COUCHES_MAP[mailleCode].fillOpacityHover;
-    }
-    let weightHover = 2;
-    if (
-        configuration.AFFICHAGE_COUCHES_MAP[mailleCode] &&
-        configuration.AFFICHAGE_COUCHES_MAP[mailleCode].weightHover
-    ) {
-        weightHover =
-            configuration.AFFICHAGE_COUCHES_MAP[mailleCode].weightHover;
-    }
-    let strokeColorHover = chartMainColor;
-    if (
-        configuration.AFFICHAGE_COUCHES_MAP[mailleCode] &&
-        configuration.AFFICHAGE_COUCHES_MAP[mailleCode].strokeColorHover
-    ) {
-        strokeColorHover =
-            configuration.AFFICHAGE_COUCHES_MAP[mailleCode].strokeColorHover;
-    }
 
     var options = layer.options;
     return {
         ...options,
         opacity: 1,
-        weight: weightHover,
-        fillOpacity: fillOpacityHover,
-        color: strokeColorHover,
+        weight: 2,
+        fillOpacity: 0.85,
+        color: chartMainColor,
     };
 }
 
@@ -901,10 +837,7 @@ function resetStyleMailles() {
     map.eachLayer(function (layer) {
         if (layer.feature && layer.feature.properties.id_type) {
             layer.setStyle(
-                styleMailleAtlas(
-                    layer.feature.properties.taxons.length,
-                    feature.properties.type_code,
-                ),
+                styleMailleAtlas(layer.feature.properties.taxons.length),
             );
         }
     });

@@ -160,6 +160,8 @@ function formatStackedBarChart(values) {
     const datasets = [];
 
     if (configuration.DISPLAY_PATRIMONIALITE) {
+        console.log(window.i18n["number.species"]);
+
         datasets.push({
             label: `${window.i18n["number.species"]} ${window.i18n["patrimonial.plural"] ? window.i18n["patrimonial.plural"].toLowerCase() : "patrimoniales"}`,
             data: nb_patrimonial,

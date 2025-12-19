@@ -88,10 +88,10 @@
     </div>
     <div class="bg-white border-top border-2 px-3 py-3 text-center shadow-sm" style="border-color: #e0e0e0;">
         <div class="d-inline-flex gap-2">
-            <button id="exportCsvBtn" class="btn btn-outline-primary btn-sm" >
+            <button onclick="exportCsv()" id="exportCsvBtn" class="btn btn-outline-primary btn-sm" >
                 <i class="fas fa-file-csv me-1"></i> {{ _('export.csv') }}
             </button>
-            <button id="exportPdfBtn" class="btn btn-outline-danger btn-sm">
+            <button onclick="exportPdf()"  class="btn btn-outline-danger btn-sm">
                 <i class="fas fa-file-pdf me-1"></i> {{ _('export.pdf') }}
             </button>
         </div>

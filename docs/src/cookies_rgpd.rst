@@ -1,9 +1,6 @@
 Gestion des cookies et RGPD
 ===========================
 
-.. image:: http://geonature.fr/img/logo-pne.jpg
-    :target: http://www.ecrins-parcnational.fr
-
 
 Cette section explique comment ajouter des outils de collecte de cookies (Google Analytics par exemple) tout en respectant le RGPD. GeoNature-atlas utilise pour cela une librairie permettant de recueillir le consentement des utilisateurs : Orejime.
 

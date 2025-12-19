@@ -1,8 +1,6 @@
 {% for taxon in listTaxons %}
     <li id="taxonListItem"
-        class="d-flex border-bottom p-2
-                {% if (configuration.AFFICHAGE_MENACE and taxon.menace) %} border border-danger bg-danger-subtle
-                {% endif %}"
+        class="d-flex border-bottom p-2"
         id="taxonListItem" 
         area-code="{{ id_area }}"
         cdRef="{{ taxon.cd_ref }}"
@@ -20,19 +18,17 @@
         <div class="flex-grow-1">
 
         <span class="float-end">
-            {% if configuration.PROTECTION %}
-                {% if taxon.protection_stricte %}
-                    <a href="https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.cd_ref }}/tab/statut" target="_blank">
-                        <img src="{{ url_for('static', filename='images/logo_protection.png') }}"
+            {% if configuration.PROTECTION and taxon.protection_stricte %}
+                    <a href="https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.cd_ref }}/tab/statut" target="_blank" class="no-decoration">
+                        <img src="{{ url_for('static', filename='custom/images/protected.png') }}"
                              style="width: 30px; height: 30px"
                              data-bs-placement="left" data-bs-toggle="tooltip"
                              title="{{ _('this.taxon.has.a.protected.status') }}" alt=" " />
                     </a>
-                {% endif %}
             {% endif %}
 
-            {% if configuration.DISPLAY_PATRIMONIALITE %}
-                    <img src="{{ url_for('static', filename=configuration.PATRIMONIALITE_ICON) }}"
+            {% if configuration.DISPLAY_PATRIMONIALITE and taxon.patrimonial == 'oui' %}
+                    <img src="{{ url_for('static', filename='custom/images/logo_patrimonial.png') }}"
                          style="width: 30px; height: 30px"
                          data-bs-placement="left" data-bs-toggle="tooltip"
                          title="{{ _('this.taxa.is.patrimonial') }}"
@@ -49,18 +45,19 @@
                 %}
                 {% set
                     THREAT_LEVEL = {
-                        'LRR': _('protected.LRR'),
-                        'LRN': _('protected.LRN'),
-                        'LRE': _('protected.LRE'),
-                        'LRM': _('protected.LRM'),
+                        'LRR': _('threatened.LRR'),
+                        'LRN': _('threatened.LRN'),
+                        'LRE': _('threatened.LRE'),
+                        'LRM': _('threatened.LRM'),
                     }
                 %}
                 {% if taxon.menace %}
-                    <img src="{{ url_for('static', filename='images/picto_menace.png') }}"
+
+                    <img src="{{ url_for('static', filename='custom/images/threatened.png') }}"
                          alt="{{ _('threatened') }}"
                          style="width:30px; height:30px;"
                          data-bs-toggle="tooltip"
-                         title="{{ THREAT_LABELS.get(taxon.menace) }} - THREAT_LEVEL.get(taxon.niveau_application_menace)" />
+                         title=" {{ _('this.taxa.is.threatened') }} ( {{ THREAT_LABELS.get(taxon.menace) }} - {{THREAT_LEVEL.get(taxon.niveau_application_menace)}} )" />
                 {% endif %}
             {% endif %}
         </span>
