@@ -301,28 +301,33 @@ Attention à bien lire les notes de chaque version, qui peuvent indiquer des op�
 
     ./install_app.sh
 
-- Executer le script de migration associé à la monté de version `update_X.Y.Z_to_X.Y.Z.sql`
+Mise à jour de la base de données
+""""""""""""""""""""""""""""""""""
+
+Lancer le script `./install/update_db.sh` pour mettre à jour la base de données de l'atlas.
 
 
-Accéder à votre BDD
-===================
+.. danger::
+    Le script `update_db.sh` supprime et recrée le schéma atlas. Ne mettez aucune table ou vue dans ce schéma
 
-Par défaut un serveur PostgreSQL n'écoute et n'autorise des connexions que du serveur lui-même (localhost).
-Il est possible mais déconseillé d'ouvrir l'accès à la BDD depuis une IP externe. Ou d'y accéder avec une connexion SSH (conseillé car plus sécurisé).
 
-Voir https://github.com/PnX-SI/Ressources-techniques/blob/master/PostgreSQL/acces-bdd.rst
+.. note::
+    Il est aussi possible de réinstaller la base en lançant le script `install_db.sh` avec le paramètre `drop_apps_db=true`
+    
+    Cela va completement supprimer la base de données pour la réinstaller !
+
+    **A ne surtout pas faire si l'atlas est dans la même base de données que GeoNature ou si vous aviez créer des tables ou des vues customisés dans la base**
+
+
+
+  
+
 
 Développement
 =============
 
 Lire le fichier `CONTRIBUTING.md`.
 
-**Installer les dépendances de dev**
-
-::
-
-    source venv/bin/activate
-    pip install -r requirements-dev.txt
 
 **Lancement de l'application**
 
