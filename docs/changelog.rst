@@ -14,8 +14,10 @@ CHANGELOG
 - Ajout d'un graphique de provenance des données par organisme sur la fiche espèce (si `ORGANISM_MODULE=True`) (#538)
 - Ajout de graphiques sur la fiche territoire (le paramètre ``AFFICHAGE_TOUT_TERRITOIRE_GRAPH`` permet d'afficher ou non la barre du nombre d'espèce sur tout le territoire de l'atlas sur chaque graphique)
 - Ajout de "liens importants" sur les fiches taxons. Cette fonctionnalité permet par exemple de mettre en avant des démarches ou des ressources additionelles sur un taxon: un lien vers une plateforme de contribution collaborative, un lien vers une fiche détaillé sur l'espèce etc... Voir le paramètre ``TYPES_MEDIAS_LIENS_IMPORTANTS``
-- Ajout des statuts de conseervation sur la fiche espèces. Le paramètre de configuration ``GROUPES_STATUTS`` permet de grouper et de filtrer les statuts que l'on souhaite afficher. Le template ``custom/templates/statuts.html`` permet de customiser l'affichage des statuts (customisation avancé, à modifier avec précaution)
+- Ajout des statuts de conservation sur la fiche espèces. Le paramètre de configuration ``GROUPES_STATUTS`` permet de grouper et de filtrer les statuts que l'on souhaite afficher. Le template ``custom/templates/statuts.html`` permet de customiser l'affichage des statuts (customisation avancé, à modifier avec précaution)
 - Ajout de la notion d'espèce menacée et de graphiques associés sur les fiches territoire. La notion de menace est basé sur les listes rouges. Un taxon est considéré comme menacé s'il est sur une des liste suivantes : VU, EN, CR, CR* (@Orangetine) #669
+- Ajout de filtre par group2_inpn et par statut (protégé, menacé, patrimonial) sur toute les listes de taxons (@Orangetine @TheoLechemia)
+- Possibilité d'exporter les listes de taxons en csv et PDF (@Orangetine @TheoLechemia)
 - Le statut d'espèce protégée n'est plus calculé à partir d'un attribut TaxHub mais à partir de la BDC statuts #135
 - Déplacement des fichiers de personnalisation ``sample`` dans le dossier ``static/sample/``. Le dossier ``static/custom/`` est à utiliser pour surcoucher les fichiers de ``static/sample/``.
 - Ajout d'un gestionnaire de couches cartographiques supplémentaires (WMS et geojson) dans le paramètre ``COUCHES_SIG`` (#572 @juggler31)
@@ -23,11 +25,12 @@ CHANGELOG
 - Nouvel affichage des tooltips lorsqu'on clique sur une maille (#721 @juggler31)
 - Possibilité de masquer la page de la gallerie photo  via le paramètre `AFFICHAGE_GALERIE_PHOTO` (#703 @lpofredc)
 - Ajout de la possibilité de configurer la table / vue source des données en entrée de l'atlas (#749) (voir la rubrique "Configuration des données d'observations présente dans l'atlas" dans la documentation sur la confiuguration )
-    
     - Suppression de la table `t_layer_territoire` qui permettait de filtrer les données hors territoire. Ceci est desormais à faire en amont par chaque utilisateurs 
     - Le paramètre `type_territoire` du ficher `settings.ini` n'est plus utilisé
-- Les fichiers de langues sont dorénavant surcouchables (voir documentation)
-
+- Les fichiers de langues sont dorénavant surcouchables (voir documentation sur le multilingue)
+- Refonte du style icones de patrimonialité, protection et menace. Les 3 icones sont maintenant surcouchables
+- Possibilité d'ajouter des labels sur la sidebar (#729 @juggler31)
+- 
 A VERIFIER :
 
 ``navbar.html``
