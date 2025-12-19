@@ -11,6 +11,7 @@ atlas/static/custom/templates/*
 atlas/static/custom/translations_override/**/*.po
 atlas/static/custom/translations_override/**/*.mo
 
+build/*
 # Directories to ignore
 .idea/
 geonature_atlas.egg-info/

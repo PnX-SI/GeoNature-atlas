@@ -18,10 +18,13 @@ Avant de commencer à contribuer, assurez-vous d'avoir :
 - Node.js et npm installés
 - Git installé et configuré
 - Une bonne compréhension de Flask (backend) et JavaScript (frontend)
+- Installer l'application !
+- Installer les dépendances python de développement : `pip install ".[dev]` (depuis la racine du répertoire)
+- Installer les dépendances javascript de développement `npm install --only=dev`
 
 Le [fichier](./installation.rst) détail l'installation d'un environnement de développement de GeoNature-Atlas
 
-## Qualité et convention du code 
+## Qualité et convention du code
 
 Le projet utilise des outils de formatage et de linting pour maintenir une qualité de code cohérente.
 
@@ -55,6 +58,7 @@ La configuration Black utilisée dans le projet (définie dans `pyproject.toml`)
 - Longueur de ligne : 100 caractères
 
 Ces deux règles ne sont pas dans black mais sont à respecter :
+
 - CamelCase pour les noms de classe
 - snake_case pour les noms de fonction et de variable
 
@@ -81,7 +85,6 @@ npm run lint
 npm run format
 ```
 
-
 ## Processus de contribution
 
 ### 1. Créer une issue
@@ -101,6 +104,7 @@ git checkout -b fix/correction-bug
 ```
 
 Conventions de nommage des branches :
+
 - `feature/` pour les nouvelles fonctionnalités
 - `fix/` pour les corrections de bugs
 - `docs/` pour la documentation
@@ -110,8 +114,8 @@ Conventions de nommage des branches :
 
 Effectuez vos modifications en respectant les conventions de code. Faites des commits atomiques avec des messages clairs et descriptifs. Pensze à réferencer l'issue dans votre commit
 
-
 Types de commit courants :
+
 - `feat:` nouvelle fonctionnalité
 - `fix:` correction de bug
 - `docs:` documentation
@@ -141,7 +145,6 @@ git push <mon_remote> feature/ma-nouvelle-fonctionnalite
 - Répondez aux commentaires et effectuez les modifications demandées
 - Une fois approuvée, votre PR sera mergée dans `develop`
 
-
 ## Documentation
 
 - Mettez à jour la documentation si vos changements affectent l'utilisation de l'application
@@ -152,6 +155,5 @@ git push <mon_remote> feature/ma-nouvelle-fonctionnalite
 - Pour des questions générales, utilisez les [Discussions GitHub](https://github.com/PnX-SI/GeoNature-atlas/discussions)
 - Pour signaler un bug, créez une [issue](https://github.com/PnX-SI/GeoNature-atlas/issues)
 - Pour contacter l'équipe : voir le fichier README
-
 
 Merci de contribuer à GeoNature-atlas ! 🦋🌿
