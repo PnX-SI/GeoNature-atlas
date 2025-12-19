@@ -811,9 +811,9 @@ function onEachFeatureMailleLastObs(feature, layer) {
 
 function styleMailleAtlas(nb) {
     return {
-        opacity: 0,
+        opacity: 0, // opacité de la bordure
         fillColor: getColor(nb),
-        fillOpacity: 1,
+        fillOpacity: 0.7,
     };
 }
 
