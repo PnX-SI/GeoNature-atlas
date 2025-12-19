@@ -48,7 +48,7 @@
                                  title="{{ _('this.taxa.is.patrimonial') }}"
                                  data-bs-placement="right">
                         {% endif %}
-                        {% if taxon.taxonSearch.protection_stricte %}
+                        {% if configuration.PROTECTION and taxon.taxonSearch.protection_stricte %}
                             <a href="https://inpn.mnhn.fr/espece/cd_nom//tab/statut" target="_blank" style="text-decoration: none;">
                                 <img class="caractEspece"
                                         src="{{ url_for('static', filename='custom/images/protected.png') }}"
@@ -57,7 +57,7 @@
                                         data-bs-placement="right">
                             </a>
                         {% endif %}
-                        {% if taxon.taxonSearch.menace %}
+                        {% if configuration.AFFICHAGE_MENACE and taxon.taxonSearch.menace %}
                             <img class="caractEspece"
                                 src="{{ url_for('static', filename='custom/images/threatened.png') }}"
                                 data-bs-toggle="tooltip"

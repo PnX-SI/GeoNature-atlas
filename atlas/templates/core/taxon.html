@@ -18,18 +18,16 @@
         <div class="flex-grow-1">
 
         <span class="float-end">
-            {% if configuration.PROTECTION %}
-                {% if taxon.protection_stricte %}
+            {% if configuration.PROTECTION and taxon.protection_stricte %}
                     <a href="https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.cd_ref }}/tab/statut" target="_blank" class="no-decoration">
                         <img src="{{ url_for('static', filename='custom/images/protected.png') }}"
                              style="width: 30px; height: 30px"
                              data-bs-placement="left" data-bs-toggle="tooltip"
                              title="{{ _('this.taxon.has.a.protected.status') }}" alt=" " />
                     </a>
-                {% endif %}
             {% endif %}
 
-            {% if configuration.DISPLAY_PATRIMONIALITE %}
+            {% if configuration.DISPLAY_PATRIMONIALITE and taxon.patrimonial == 'oui' %}
                     <img src="{{ url_for('static', filename='custom/images/logo_patrimonial.png') }}"
                          style="width: 30px; height: 30px"
                          data-bs-placement="left" data-bs-toggle="tooltip"
