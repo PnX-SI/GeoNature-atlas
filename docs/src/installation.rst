@@ -87,15 +87,14 @@ NOTES :
     psql
     CREATE USER geonatatlas WITH ENCRYPTED PASSWORD 'monpassachanger';
     \c geonature2db
-    GRANT USAGE ON SCHEMA gn_synthese, ref_geo, ref_nomenclatures, taxonomie, utilisateurs, gn_meta TO geonatatlas;
+    GRANT USAGE ON SCHEMA gn_synthese, ref_geo, ref_nomenclatures, taxonomie, utilisateurs, gn_meta, gn_sensitivity TO geonatatlas;
     GRANT SELECT ON ALL TABLES IN SCHEMA gn_synthese, ref_geo, ref_nomenclatures, taxonomie, utilisateurs, gn_meta, gn_sensitivity TO geonatatlas;
     \q
     exit
 
 
-**Attention** . Par défaut le ``ref_geo`` contient l'ensemble des communes de France, ce qui ralentit fortement l'installation lorsqu'on construit la table ``zoning`` (qui intersecte les communes avec les limites du territoire).
+**Attention** . Par défaut le ``ref_geo`` contient l'ensemble des communes de France, ce qui ralentit fortement l'installation.
 
-La table `zoning` doit être remplie en indicant l'identifiant de son type de 'zone' (table `bib_areas_types``).
 
 Pour accelérer l'installation, vous pouvez "désactiver" certains zonage du ``ref_geo``, dont vous ne vous servez pas. Voir l'exemple de requête ci-dessous :
 
@@ -110,8 +109,7 @@ Pour accelérer l'installation, vous pouvez "désactiver" certains zonage du ``r
         )
     )
 
-:note:
-
+.. note::
     Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci sur le même serveur que l'application (``localhost``) car la création d'une BDD requiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adaptez les commandes du fichier ``install_db.sh`` en les exécutant une par une.
 
 L'application se base entièrement sur des vues matérialisées. Par défaut, celles-ci sont proposées pour requêter les données dans une BDD GeoNature.

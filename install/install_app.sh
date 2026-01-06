@@ -216,6 +216,7 @@ function disableVenv() {
 function installNodePackages() {
     printMsg "Installing required Node packages..."
     cd "${__static_dir__}/"
+    nvm install
     nvm use
     npm install
     cd "${__root_dir__}/"
