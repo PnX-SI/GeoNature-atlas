@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-18 16:31+0100\n"
+"POT-Creation-Date: 2026-01-14 13:34+0100\n"
 "PO-Revision-Date: 2021-07-12 12:12+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,7 +18,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: static/custom/templates/bandeaulogoshome.html:6
+#: atlasRoutes.py:438
+msgid "static pages"
+msgstr "static pages"
+
+#: atlasRoutes.py:441
+msgid "home page"
+msgstr "home page"
+
+#: atlasRoutes.py:443 templates/core/sideBar.html:124
+#: templates/home/globalStats.html:67
+msgid "photos"
+msgstr "photos"
+
+#: atlasRoutes.py:448
+msgid "territories pages"
+msgstr "territories pages"
+
+#: atlasRoutes.py:452
+msgid "species sheet by groups"
+msgstr "species sheet by groups"
+
 #: static/sample/templates/bandeaulogoshome.html:7
 msgid "home.partners"
 msgstr "Partners"
@@ -38,9 +58,10 @@ msgstr "Conception and credits"
 msgid "legal"
 msgstr "Legal mentions"
 
-#: static/custom/templates/footer.html:11
-#: static/custom/templates/footer.html:65 static/sample/templates/footer.html:7
-#: static/sample/templates/footer.html:57
+#: static/sample/templates/footer.html:6
+msgid "sitemap"
+msgstr "Sitemap"
+
 msgid "personal_data"
 msgstr "Personal data"
 
