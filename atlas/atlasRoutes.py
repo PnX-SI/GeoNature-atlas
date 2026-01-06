@@ -14,6 +14,8 @@ from flask import (
     request,
     url_for,
 )
+from flask_babel import gettext
+
 from werkzeug.datastructures import MultiDict
 
 from atlas.env import db
@@ -423,6 +425,64 @@ def sitemap():
     response = make_response(sitemap_template)
     response.headers["Content-Type"] = "application/xml"
     return response
+
+
+@main.route("/sitemap", methods=["GET"])
+@main.route("/sitemap.html", methods=["GET"])
+def sitemap_ui():
+    """Generate sitemap iterating over static and dynamic routes to make a list of urls"""
+    pages = {
+        "static": {
+            "title": gettext("static pages"),
+            "values": [
+                {"url": "/", "label": gettext("home page")},
+                {"url": "/photos", "label": gettext("photos")},
+            ],
+        },
+        "areas": {
+            "title": gettext("territories pages"),
+            "values": [],
+        },
+        "groups": {"title": gettext("species sheet by groups"), "values": {}},
+    }
+
+    url_root = request.url_root
+    if url_root[-1] == "/":
+        url_root = url_root[:-1]
+
+    for static_page in current_app.config["STATIC_PAGES"]:
+        url_static_page = url_root + url_for("main.get_staticpages", page=static_page)
+        data_page = current_app.config["STATIC_PAGES"][static_page]
+        pages["static"]["values"].append({"url": url_static_page, "label": data_page["title"]})
+
+    # get dynamic routes for blog
+    species = db.session.query(vmTaxons.VmTaxons).order_by(vmTaxons.VmTaxons.nom_complet).all()
+    for species in species:
+        if species.group2_inpn not in pages["groups"]["values"]:
+            group_url = url_root + url_for("main.ficheGroupe", groupe=species.group2_inpn)
+            pages["groups"]["values"][species.group2_inpn] = {
+                "url": group_url,
+                "label": species.group2_inpn,
+                "species": [],
+            }
+
+        url_species = url_root + url_for("main.ficheEspece", cd_nom=species.cd_ref)
+        pages["groups"]["values"][species.group2_inpn]["species"].append(
+            {"url": url_species, "label": species.lb_nom}
+        )
+
+    municipalities = (
+        db.session.query(vmAreas.VmAreas)
+        .join(vmAreas.VmBibAreasTypes, vmAreas.VmAreas.id_type == vmAreas.VmBibAreasTypes.id_type)
+        .filter(vmAreas.VmBibAreasTypes.type_code.in_(current_app.config["TYPE_TERRITOIRE_SHEET"]))
+        .order_by(vmAreas.VmAreas.area_name)
+        .all()
+    )
+    for municipalitie in municipalities:
+        url = url_root + url_for("main.area", id_area=municipalitie.id_area)
+        pages["areas"]["values"].append({"url": url, "label": municipalitie.area_name})
+
+    return render_template("templates/sitemap.html", pages=pages)
 
 
 @main.route("/robots.txt", methods=["GET"])
