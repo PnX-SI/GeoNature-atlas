@@ -3,6 +3,7 @@ Utils pour lire le fichier de conf et le valider selon le schéma Marshmallow
 """
 
 from importlib.machinery import SourceFileLoader
+from marshmallow import EXCLUDE
 
 
 def get_config_module(atlas_config_file_path):
@@ -20,4 +21,4 @@ def remove_reserved_word(config_module):
 
 
 def valid_config_from_dict(config_dict, config_schema):
-    return config_schema().load(config_dict)
+    return config_schema(unknown=EXCLUDE).load(config_dict)
