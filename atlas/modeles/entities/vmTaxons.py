@@ -92,7 +92,8 @@ class VmTaxons(db.Model):
                 height, width = size
                 return (
                     urljoin(
-                        current_app.config["TAXHUB_URL"],
+                        current_app.config["TAXHUB_URL"]
+                        + "/",  # force the last / because urljoin remove the /taxhub ...
                         f"api/tmedias/thumbnail/{self.main_media.id_media}?h={height}&width={width}",
                     ),
                     True,
