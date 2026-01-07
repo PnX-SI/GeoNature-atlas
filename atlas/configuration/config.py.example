@@ -111,6 +111,18 @@ GLOSSAIRE = False
 # Afficher le lien vers la galerie photo
 AFFICHAGE_GALERIE_PHOTO = True
 
+# URL d'accès aux photos et autres médias (URL racine). Dans la vm_medias, il est uniquement stocké le nom du fichier. Il est donc necessaire de préciser l'URL de stockage des médias, pour construire le chemin complet d'accès à l'image. Par exemple l'url d'accès à Taxhub.
+# Si vous utilisez GeoNature: REMOTE_MEDIAS_URL = "https://<URL_GEONATURE>/api/media/taxhub/"
+REMOTE_MEDIAS_URL = "https://<URL_GEONATURE>/api/media/taxhub/"
+
+# URL de TaxHub (pour génération à la volée des vignettes des images).
+# Si le service Taxhub n'est pas utilisé, commenter la variable
+REDIMENSIONNEMENT_IMAGE = True
+
+# URL de Taxhub : necessaire pour le redimensionnement des images
+# Si vous utilisez GeoNature: TAXHUB_URL "https://<URL_GEONATURE>/api/taxhub"
+TAXHUB_URL = "https://<URL_GEONATURE>/api/taxhub"
+
 ###########################
 ###### Cartographie #######
 ###########################
@@ -173,11 +185,6 @@ COUCHES_SIG = [
     }
 ]
 
-# Niveau de zoom à partir duquel on passe à l'affichage en point (si AFFICHAGE_MAILLE = False)
-ZOOM_LEVEL_POINT = 11
-
-# Limite du  nombre d'observations à partir duquel on passe à l'affichage en cluster
-LIMIT_CLUSTER_POINT = 1000
 
 # Carte de la page d'accueil: observations des 'x' derniers jours. Bien mettre en anglais et non accordé
 NB_DAY_LAST_OBS = '7'
@@ -303,6 +310,16 @@ GROUPES_STATUTS = [
     }
 ]
 
+# Niveau de zoom à partir duquel on passe à l'affichage en point (si AFFICHAGE_MAILLE = False)
+ZOOM_LEVEL_POINT = 11
+
+# Limite du  nombre d'observations à partir duquel on passe à l'affichage en cluster
+LIMIT_CLUSTER_POINT = 1000
+
+# Limite du nombre d'observation à partir duquel on passe en affichage maille sur une fiche espèce
+# paramètre uniquement appliqué sur les atlas en mode point
+LIMIT_POINT_MAILLE = 500
+
 # Rang taxonomique qui fixe jusqu'à quel taxon remonte la filiation taxonomique (hierarchie dans la fiche d'identite : Famille, Ordre etc... )
 LIMIT_RANG_TAXONOMIQUE_HIERARCHIE = 13
 
@@ -311,17 +328,6 @@ LIMIT_RANG_TAXONOMIQUE_HIERARCHIE = 13
 # On prend alors tout ce qui est inferieur ou egal a l'espèce pour faire des fiches et ce qui est superieur pour les listes
 LIMIT_FICHE_LISTE_HIERARCHY = 28
 
-# URL d'accès aux photos et autres médias (URL racine). Dans la vm_medias, il est uniquement stocké le nom du fichier. Il est donc necessaire de préciser l'URL de stockage des médias, pour construire le chemin complet d'accès à l'image. Par exemple l'url d'accès à Taxhub.
-# Si vous utilisez GeoNature: REMOTE_MEDIAS_URL = "https://<URL_GEONATURE>/api/media/taxhub/"
-REMOTE_MEDIAS_URL = "https://<URL_GEONATURE>/api/media/taxhub/"
-
-# URL de TaxHub (pour génération à la volée des vignettes des images).
-# Si le service Taxhub n'est pas utilisé, commenter la variable
-REDIMENSIONNEMENT_IMAGE = True
-
-# URL de Taxhub : necessaire pour le redimensionnement des images
-# Si vous utilisez GeoNature: TAXHUB_URL "https://<URL_GEONATURE>/api/taxhub"
-TAXHUB_URL = "https://<URL_GEONATURE>/api/taxhub"
 
 #### LISTE DES CODES DES ATTRIBUTS DESCRIPTIFS DES TAXONS DE LA TABLE "taxonomie.bib_attributs"
 # Un onglet sera affiché dans le bloc "Informations espèces" de la fiche espèce

@@ -35,7 +35,7 @@ $.ajax({
 
     // mailleBoolean: dipslay maille mode because a lot of obs
     var mailleBoolean = false;
-    if (observations.point.features.length > 500) {
+    if (observations.point.features.length > configuration.LIMIT_POINT_MAILLE) {
         displayGeojsonMailles(observations.maille, onEachFeatureMaille);
         mailleBoolean = true;
     } else {
@@ -192,6 +192,11 @@ function eventOnZoom(observationsMaille, observationsPoint) {
         ) {
             // display legend
             map.removeLayer(currentLayer);
+            const legendColorObs = document.querySelector("#legend-color-obs");
+            legendColorObs
+                .querySelectorAll("div")
+                .forEach((elem) => elem.remove());
+            legendColorObs.appendChild(generateObservationsLegend(true));
 
             legendblock.removeAttr("hidden");
             displayGeojsonMailles(observationsMaille, onEachFeatureMaille);
