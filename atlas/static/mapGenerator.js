@@ -205,7 +205,9 @@ function createTabControl() {
 
     let isMaille = false;
     if (
-        (sheetName === "home" && configuration.AFFICHAGE_TERRITOIRE_OBS) ||
+        (sheetName === "index" && configuration.AFFICHAGE_TERRITOIRE_OBS) ||
+        (sheetName === "ficheEspece" &&
+            nb_obs > configuration.LIMIT_POINT_MAILLE) ||
         configuration.AFFICHAGE_MAILLE
     ) {
         isMaille = true;

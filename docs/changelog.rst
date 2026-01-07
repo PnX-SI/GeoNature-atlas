@@ -30,7 +30,7 @@ CHANGELOG
 - Les fichiers de langues sont dorénavant surcouchables (voir documentation sur le multilingue)
 - Refonte du style icones de patrimonialité, protection et menace. Les 3 icones sont maintenant surcouchables
 - Possibilité d'ajouter des labels sur la sidebar (#729 @juggler31)
-- 
+- Ajout du paramètre `LIMIT_POINT_MAILLE` qui permet de définir le seuil à partir duquel on affiche les données en mode maille sur un atlas en mode point (défaut 500 observations)
 A VERIFIER :
 
 ``navbar.html``
