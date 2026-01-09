@@ -112,7 +112,9 @@ function runDefaultInstall() {
 function runDockerInstall() {
     printVerbose "Running Docker install..."
 
-    convertDockerVariables
+    echo ${__conf_dir__}
+    source "${__conf_dir__}/settings.ini"
+
     updatePythonConfigFile
 
     createCustomTemplates

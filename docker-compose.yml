@@ -1,0 +1,42 @@
+services:
+  atlas-app:
+    image: ${GEONATURE_ATLAS_DOCKER_IMAGE:-ghcr.io/pnx-si/geonature-atlas:latest}
+    volumes:
+      - ./atlas/configuration/config.py:/dist/atlas/configuration/config.py
+      - ./atlas/configuration/settings.ini:/dist/atlas/configuration/settings.ini
+      - ./atlas/static/custom:/dist/atlas/static/custom
+    environment:
+      FLASK_APP: atlas.app:create_app
+      FLASK_ENV: production
+    ports:
+      - "${gun_port}:8080"
+    networks:
+      - atlas-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: ${POSTGRES_IMAGE:-postgis/postgis:15-3.4}
+    environment:
+      POSTGRES_DB: ${db_name}
+      POSTGRES_USER: ${owner_atlas}
+      POSTGRES_PASSWORD: ${owner_atlas_pass}
+      PGPORT: ${db_port:-5432}
+
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${owner_atlas} -d ${db_name}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - atlas-network
+
+volumes:
+  postgres:
+
+networks:
+  atlas-network:
+    driver: bridge
