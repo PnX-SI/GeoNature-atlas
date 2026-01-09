@@ -70,11 +70,8 @@ function main() {
     # Start install database
     printInfo "${__script_name__} script started at: ${__fmt_time_start__}"
 
-    if [[ "${docker:-false}" == true ]]; then
-        runDockerInstall
-    else
-        runDefaultInstall
-    fi
+
+    runDBInstall
 
     #+--------------------------------------------------------------------------------------------+
     # Display script execution infos
@@ -84,64 +81,19 @@ function main() {
 # +-----------------------------------------------------------------------------------------------+
 # Functions
 
-function runDefaultInstall() {
+function runDBInstall() {
     printVerbose "Running default install..."
-
-    checkNoUserRoot
-    checkSuperuser
-
     source "${__conf_dir__}/settings.ini"
     checkSettings
-    exportPostgresPassword
 
-    if checkDatabaseExists "${db_name}"; then
-        dropDatabase
+    if [[ "${docker:-false}" == false ]]; then
+        checkNoUserRoot
+        checkSuperuser
+        if ! checkDatabaseExists "${db_name}"; then
+            createDatabase
+        fi
     fi
 
-    if ! checkDatabaseExists "${db_name}"; then
-        createDatabase
-    fi
-
-    # Test if the Atlas Schema is already installed
-    # Disabled until we find a better way to check if the Atlas is already installed
-    #exitOnAtlasSchemaExists
-
-    # FR: Si j'utilise GeoNature ($geonature_source = True), alors je créé les connexions en FWD à la BDD GeoNature
-    # EN: If I use GeoNature ($geonature_source = True), then I create the connections in FWD to the GeoNature DB
-    if ${geonature_source}; then
-        createForeignDataWrapper
-    fi
-
-    createDatabaseSchemas
-
-    if ${geonature_source}; then
-        # FR: Si j'utilise GeoNature ($geonature_source = True),
-        #     alors je créé les tables filles en FDW connectées à la BDD de GeoNature
-        # EN: If I use GeoNature ($geonature_source = True),
-        #     then I create the child tables in FDW connected to the GeoNature DB
-        createFdwTables
-    else
-        # FR: Si je n'utilise pas GeoNature ($geonature_source = False),
-        #     alors je créé une structure de BDD Atlas vide.
-        # EN: If I don't use GeoNature ($geonature_source = False),
-        #     then I create an empty Atlas DB structure.
-        createDatabaseWithoutGeonature
-    fi
-
-    # FR: customisation de l'altitude
-    # EN: customisation of altitude
-    prepareAltitudesValues
-
-    # FR: Creation des Vues Matérialisées
-    # EN: Creation of Materialized Views
-    createAtlasSchemaEntities
-}
-
-function runDockerInstall() {
-    printVerbose "Running Docker install..."
-
-    checkDockerVariables
-    convertDockerVariables
     exportPostgresPassword
 
     # Test if Atlas schema exists
@@ -151,39 +103,64 @@ function runDockerInstall() {
     if [[ "${schema_atlas_exists}" = "t" ]]; then
         printVerbose "Atlas schema already exists (${schema_atlas_exists})"
 
-        if [[ "${ATLAS_DROP_SCHEMA}" = true ]]; then
-            dropAtlasSchema
-
-            # Recreate the schema
-            createAtlasSchemaOnly
-        else
-            printVerbose "Nothing to do."
+        if [[ "${ATLAS_DROP_SCHEMA}" = false ]]; then
+            printVerbose "The schema atlas exists and the config file tell to not drop it...Nothing to do."
             printVerbose "To reinstall Atlas at startup set ATLAS_DROP_SCHEMA to 'true'."
+            exit 0
+        else
+            dropAtlasSchema
         fi
-    else
-        printVerbose "Atlas schema does not exist (${schema_atlas_exists})."
-
-        # Recreate the schema
-        createAtlasSchemaOnly
     fi
+
+    printVerbose "Installing atlas db..."
+    createDatabaseExtensions
+    if ${geonature_source}; then
+        createForeignDataWrapper
+        createFdwTables
+    fi
+    createDatabaseSchemas
+    prepareAltitudesValues
+    createAtlasSchemaEntities
+    printVerbose "${Gre}The database was successfully installed${RCol} !"
+
 }
 
-function checkDockerVariables() {
-    printMsg "Checking the existence of Docker environment variables..."
+# function runDockerInstall() {
+#     printVerbose "Running Docker install..."
+#     source "${__conf_dir__}/settings.ini"
+#     # checkDockerVariables
+#     # convertDockerVariables
+#     exportPostgresPassword
 
-    local vars=(
-        'POSTGRES_USER' 'POSTGRES_PASSWORD' 'POSTGRES_HOST' 'POSTGRES_DB' 'POSTGRES_PORT' \
-        'ATLAS_DROP_SCHEMA' \
-        'ATLAS_TYPE_CODE' 'ATLAS_ALTITUDES', 'ATLAS_TYPE_MAILLE' \
-        'ATLAS_MOST_OBSERVED_TIME'
-    )
-    for i in "${!vars[@]}"; do
-        if [[ -z "${!vars[$i]}" ]]; then
-            exitScript "Variable ${vars[$i]} not set in Docker environment !" 2
-        fi
-    done
-    printInfo ">All required Docker environment variables are set => ${Gre}OK"
-}
+#     # Test if Atlas schema exists
+#     local schema_atlas_exists=$(hasAtlasSchema)
+
+#     # If Atlas schema already exists
+#     if [[ "${schema_atlas_exists}" = "t" ]]; then
+#         printVerbose "Atlas schema already exists (${schema_atlas_exists})"
+
+#         if [[ "${ATLAS_DROP_SCHEMA}" = false ]]; then
+#             printVerbose "The schema atlas exists and the config file tell to not drop it...Nothing to do."
+#             printVerbose "To reinstall Atlas at startup set ATLAS_DROP_SCHEMA to 'true'."
+#             exit 0
+#         else
+#             dropAtlasSchema
+#         fi
+#     fi
+
+#     printVerbose "Installing atlas db..."
+#     createDatabaseExtensions
+#     if ${geonature_source}; then
+#         createForeignDataWrapper
+#         createFdwTables
+#     fi
+#     createDatabaseSchemas
+#     prepareAltitudesValues
+#     createAtlasSchemaEntities
+#     printVerbose "${Gre}The database was successfully installed${RCol} !"
+
+# }
+
 
 function hasAtlasSchema() {
     local query="SELECT exists(SELECT schema_name FROM information_schema.schemata WHERE schema_name = 'atlas');"
@@ -203,15 +180,6 @@ function dropAtlasSchema() {
         -c "DROP SCHEMA IF EXISTS atlas CASCADE;"
 }
 
-function createAtlasSchemaOnly() {
-    printVerbose "Start creating only the Atlas schema..."
-
-    createDatabaseSchemas
-    prepareAltitudesValues
-    createAtlasSchemaEntities
-}
-
-
 
 function checkDatabaseExists() {
     # /!\ Will return false if psql can't list database. Edit your pg_hba.conf as appropriate.
@@ -225,32 +193,6 @@ function checkDatabaseExists() {
     fi
 }
 
-# FR: Si la BDD existe, je verifie le parametre qui indique si je dois la supprimer ou non
-# EN: If the DB exists, I check the parameter that indicates whether I should delete it or not
-function dropDatabase() {
-    if ${drop_apps_db}; then
-        printMsg "Deleting DB..."
-        set +e
-        sudo -u postgres -s dropdb "${db_name}"
-        drop_db_result=$?
-
-        if [[ ${drop_db_result} -ne 0 ]]; then
-            printInfo ">If necessary, close all Postgresql conections on Atlas DB with:"
-            help="sudo -u postgres psql -c "
-            help+="\"SELECT pg_terminate_backend(pg_stat_activity.pid) "
-            help+="FROM pg_stat_activity "
-            help+="WHERE pg_stat_activity.datname = '${db_name}' "
-            help+="AND pid <> pg_backend_pid() ;\""
-            printInfo ">>${help}"
-            exitScript "ERROR: can't drop database !" 1
-        else
-            printVerbose ">Database exists and settings file says to delete it => ${Gre}deleted"
-        fi
-        set -e
-    else
-        printVerbose ">Database exists and settings file says not to delete it => continue"
-    fi
-}
 
 # FR: Sinon je créé la BDD
 # EN: Else I create the DB
@@ -263,7 +205,6 @@ function createDatabase() {
 
     printMsg "Creating DB..."
     sudo -u postgres -s createdb -O "${owner_atlas}" "${db_name}"
-    createDatabaseExtensions
 }
 
 function createDatabaseExtensions() {
@@ -286,6 +227,7 @@ function exitOnAtlasSchemaExists() {
 function createForeignDataWrapper() {
     printMsg "Adding FDW and connection to the GeoNature parent DB..."
     executeQueryAsSU "CREATE EXTENSION IF NOT EXISTS postgres_fdw ;"
+    executeQueryAsSU "DROP SERVER IF EXISTS geonaturedbserver CASCADE;"
     executeQueryAsSU "CREATE SERVER geonaturedbserver FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '${db_source_host}', dbname '${db_source_name}', port '${db_source_port}', fetch_size '${db_source_fetch_size}') ;"
     executeQueryAsSU "ALTER SERVER geonaturedbserver OWNER TO ${owner_atlas} ;"
     executeQueryAsSU "CREATE USER MAPPING FOR ${owner_atlas} SERVER geonaturedbserver OPTIONS (user '${atlas_source_user}', password '$atlas_source_pass') ;"
@@ -314,7 +256,6 @@ function createDatabaseWithoutGeonature() {
     printMsg "Creating DB structure without GeoNature database..."
     executeFile "${__data_dir__}/without_gn2/without_geonature.sql"
 }
-
 
 
 main "${@}"

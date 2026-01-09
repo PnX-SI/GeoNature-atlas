@@ -1,8 +1,9 @@
-# Atlas configuration files
-atlas/configuration/config.py
-atlas/configuration/settings.ini
 
 # Atlas custom files
 atlas/static/custom/*.*
 atlas/static/custom/images/*.*
 atlas/static/custom/templates/*.*
+
+# python packages
+venv/
+atlas/static/node_modules/

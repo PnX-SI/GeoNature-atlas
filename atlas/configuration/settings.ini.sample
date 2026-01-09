@@ -7,8 +7,8 @@
 # Base de données PostgreSQL/PostGIS
 #+-------------------------------------------------------------------------------------------------+
 
-# Effacer la base de données existante lors de l'installation
-drop_apps_db=false
+# supprimer le schéma atlas lors d'une réinstallation (ou du lancement de docker compose up)
+ATLAS_DROP_SCHEMA=true
 
 # Host de la base de données de l'application
 db_host=localhost
@@ -52,6 +52,7 @@ observation_data_source=gn_synthese.synthese
 # du fichier data/atlas_geonature.sql pour vous connecter à une autre BDD mère.
 
 # Host de la BDD GeoNature source
+# Dans un contexte docker, si la bdd est sur le meme serveur que l'hôte et hors docker, rechercher son ip via `docker network inspect bridge | grep Gateway`
 db_source_host=localhost
 
 # Port de la BDD GeoNature source
@@ -106,10 +107,27 @@ altitudes=(0 500 1000 1500 2000 2500 3000 3500 4000)
 # Par défaut : 15 jours.
 time=15
 
+#+-------------------------------------------------------------------------------------------------+
+# CONFIGURATION DOCKER
+#+-------------------------------------------------------------------------------------------------+
+
+GEONATURE_ATLAS_DOCKER_IMAGE="ghcr.io/pnx-si/geonature-atlas:latest"
+
+# chemin vers le fichier de config (config.py)
+# ATLAS_SETTINGS
+# répertoire des fichiers static
+# ATLAS_STATIC_FOLDER
+# répertoire des templates
+# ATLAS_TEMPLATE_FOLDER
+
+COMPOSE_FILE=docker-compose.yml
+# for dev : 
+#COMPOSE_FILE=docker-compose.yml:docker-compose.override-dev.yml
 
 #+-------------------------------------------------------------------------------------------------+
 # Paramètres administrateur avancés ( ⚠ ne modifier que si vous savez ce que vous faites !)
 #+-------------------------------------------------------------------------------------------------+
+
 
 # Parmètres Gunicorn
 gun_num_workers=4

@@ -116,7 +116,7 @@ L'application se base entièrement sur des vues matérialisées. Par défaut, ce
 
 .. image :: images/geonature-atlas-schema-02.jpg
 
-Cela laisse donc la possibilité de la connecter à une autre BDD en adaptant la vue ``atlas.vm_observations`` dans ``data/atlas/atlas.vm_observations.sql`` (en respectant impérativement les noms de champs).
+Cela laisse donc la possibilité de la connecter à une autre BDD en adaptant. Vous pouvez fournir en entrée une vue ou une table (à renseigner dans le paramètre `observation_data_source` ) qui doit avec la structure pour construire la vue ``atlas.vm_observations`` dans ``data/atlas/atlas.vm_observations.sql`` (en respectant impérativement les noms de champs). Le script d'installation fourni toutes les tables necessaire lorsque l'on souhaite installer l'application sans GeoNature (voir `data/without_gn2/without_geonature.sql` ) 
 
 .. image :: images/geonature-atlas-schema-01.jpg
 
@@ -152,10 +152,7 @@ Une fois TaxHub installé, il est nécessaire d'ajouter des migrations alembic p
 
 
 
-Vous devrez ensuite ajouter une couche qui correspond aux limites de votre territoire dans le schéma ``ref_geo`` de la base qui a été créé avec TaxHub.
-Pour cela créer une ligne dans la table ``ref_geo.bib_area_type`` qui correspond au "type d'aire , puis une ligne dans ``ref_geo.l_areas``. Le ``type_name`` de la ligne créé dans ``ref_geo.bib_area_type`` sera a mettre dans le paramètre ``type_territoire`` du fichier ``settings.ini``.
-
-A noter aussi que si vous ne connectez pas l'atlas à une BDD GeoNature (``geonature_source=false``), une table exemple ``synthese.syntheseff`` comprenant 2 observations est créée. A vous d'adapter les vues après l'installation pour les connecter à vos données sources.
+A noter aussi que si vous ne connectez pas l'atlas à une BDD GeoNature (``geonature_source=false``), une table exemple ``gn_synthese.synthese`` comprenant 2 observations est créée. A vous d'adapter les vues après l'installation pour les connecter à vos données sources.
 
 **3.2 Installation de la base de données de GeoNature-atlas**
 
@@ -188,6 +185,53 @@ Si vous souhaitez uniquement recréer la vue ``atlas.vm_observations`` et les 6 
 ::
 
     ./install_app.sh
+
+
+
+Installation Docker
+===================
+
+L'installation Docker permet d'installer l'atlas dans un environnement completement isolé et dans un autre OS que ceux supporté dans l'installation classique. Il permet également d'installer plusieurs atlas sur la même machine.
+Comme pour l'installation standard, téléchargez le code source et assurez vous d'avoir Docker installé sur la machine.
+
+Désampler le fichier `atlas/configuration/setting.ini.sample` et remplissez le.
+Le fichier docker-compose.yml fourni une installation qui crée container docker PostgreSQL pour la base de données (le paramètre `db_host` doit valoir `postgres`).
+Le container docker de la base de donnée peut lire en FDW des bases de données située sur l'host, dans un autre container docker ou même sur une autre machine.
+
+
+Lancer l'installation de la BDD : 
+
+::
+
+    ./docker-compose.sh run --rm atlas-app install/install_db.sh --docker
+
+Lancer l'application : 
+
+::
+    ./docker-compose.sh up
+
+Par défaut le container `atlas-app` expose le port 8080 sur laquelle tourne l'application.
+Il faudra ensuite mettre le proxy que vous souhaitez sur l'hôte : Apache, NGINX. Une configuration Apache est fournie dans la rubrique "Configuration d’Apache"
+
+
+.. note::
+    Le docker compose et le script `install_db.sh` fourni ne permettent pas d'installer la base de l'atlas dans la même que celle GeoNature. Nous recommandons d'installer l'atlas dans une base de données séparée
+
+Images docker
+-------------
+
+3 images docker sont fournies, un pour la production, une pour la préproduction et une pour le développement.
+Si vous souhaitez regénérer ces images : 
+
+::
+    # image de production
+    docker build -t atlas:prod --target prod .
+    # image de préproduction
+    docker build -t atlas:preprod --target preprod .
+    # image de dev 
+    docker build -t atlas:dev --target dev .
+
+
 
 Configuration de l'application
 ==============================

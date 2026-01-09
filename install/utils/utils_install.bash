@@ -406,8 +406,8 @@ function createAtlasSchemaEntities() {
         "04.cor_sensitivity_area_type.sql"
         "05.vm_observations.sql"
         "06.vm_cor_area_synthese.sql"
-        "07.vm_taxons.sql",
-        "7.1.psql_functions.sql",
+        "07.vm_taxons.sql"
+        "7.1.psql_functions.sql"
         "08.vm_altitudes.sql"
         "09.vm_search_taxon.sql"
         "10.vm_mois.sql"
@@ -470,8 +470,12 @@ function executeQueryAsSU() {
     if [[ $# -lt 1 ]]; then
         exitScript "Missing required argument to ${FUNCNAME[0]}()!" 2
     fi
+    if [[ "${docker:-false}" == true ]]; then
+        psql -h "${db_host}" -U "${owner_atlas}" -d "${db_name}" -c "${1}"
+    else
+        sudo -u postgres -s psql -d "${db_name}" -c "${1}"
+    fi
 
-    sudo -u postgres -s psql -d "${db_name}" -c "${1}"
 }
 
 
