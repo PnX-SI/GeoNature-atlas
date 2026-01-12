@@ -11,6 +11,9 @@ class Base(DeclarativeBase):
     pass
 
 
+BASE_DIR = Path(__file__).absolute().parent.parent
+print("BASE DIR", BASE_DIR)
+
 babel = Babel()
 
 cache = Cache()

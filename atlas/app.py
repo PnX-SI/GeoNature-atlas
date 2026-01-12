@@ -9,7 +9,7 @@ from werkzeug.middleware.shared_data import SharedDataMiddleware
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from werkzeug.wrappers import Response
 
-from atlas.configuration.config_parser import valid_config_from_dict
+from atlas.configuration.config_parser import config, public_config
 from atlas.configuration.config_schema import AtlasConfig, SecretSchemaConf
 from atlas.env import (
     atlas_static_folder,
@@ -24,21 +24,15 @@ from atlas.utils import get_locale, get_tranlated_labels
 compress = Compress()
 
 
-def create_app():
+def create_app(config_overrides=None):
     """
     renvoie une instance de l'app Flask
     """
-
     app = Flask(__name__, template_folder=atlas_template_folder, static_folder=atlas_static_folder)
-    # push the config in app config at 'PUBLIC' key
-    app.config.from_pyfile(str(atlas_config_file_path))
-
-    app.config.from_prefixed_env(prefix="ATLAS")
-    config_valid = valid_config_from_dict(copy.copy(app.config), AtlasConfig)
-    config_secret_valid = valid_config_from_dict(copy.copy(app.config), SecretSchemaConf)
-
-    app.config.update(config_valid)
-    app.config.update(config_secret_valid)
+    app.config.update(config)
+    # config overrides are used in tests
+    if config_overrides:
+        app.config.update(config_overrides)
 
     db.init_app(app)
     cache.init_app(
@@ -80,7 +74,10 @@ def create_app():
 
         @app.context_processor
         def inject_context():
-            configuration = copy.copy(config_valid)
+            configuration = copy.copy(public_config)
+            # config overrides are used in tests
+            if config_overrides:
+                configuration.update(config_overrides)
             now = datetime.now()
             return dict(
                 configuration=configuration,

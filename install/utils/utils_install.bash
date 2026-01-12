@@ -406,7 +406,8 @@ function createAtlasSchemaEntities() {
         "04.cor_sensitivity_area_type.sql"
         "05.vm_observations.sql"
         "06.vm_cor_area_synthese.sql"
-        "07.vm_taxons.sql"
+        "07.vm_taxons.sql",
+        "7.1.psql_functions.sql",
         "08.vm_altitudes.sql"
         "09.vm_search_taxon.sql"
         "10.vm_mois.sql"

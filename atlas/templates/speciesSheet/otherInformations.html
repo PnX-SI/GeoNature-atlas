@@ -16,7 +16,7 @@
                 </li>
 
             {% if configuration.ORGANISM_MODULE %}
-                <li class="nav-item">
+                <li class="nav-item" data-qa="organism-module-tab">
                     <a class="nav-link" data-bs-toggle="tab" href="#organisms">
                         <b>{{ organisms|length }}</b> {{ _('organisms')|lower if organisms|length > 1 else _('organism')|lower }}
                     </a>
