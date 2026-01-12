@@ -163,7 +163,7 @@
                                                     {% endif %}
                                                     {% if configuration.DISPLAY_PATRIMONIALITE %}
                                                         <td>
-                                                            {% if child.patrimonial in configuration.PATRIMONIALITE.config %}
+                                                            {% if child.patrimonial == "oui" %}
                                                                 <img class="caractEspece" width="130px"
                                                                      src="{{ url_for('static', filename='custom/images/logo_patrimonial.png') }}"
                                                                      data-bs-toggle="tooltip"
