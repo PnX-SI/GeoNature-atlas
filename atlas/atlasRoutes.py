@@ -50,7 +50,9 @@ if current_app.config["MULTILINGUAL"]:
             return
         # If endpoint expects lang_code, send it forward
         if current_app.url_map.is_endpoint_expecting(endpoint, "lang_code"):
-            values["lang_code"] = g.lang_code
+            values["lang_code"] = getattr(
+                g, "lang_code", current_app.config.get("DEFAULT_LANGUAGE", "fr")
+            )
 
 
 @main.url_value_preprocessor
@@ -63,6 +65,7 @@ def pull_lang_code(endpoint, values):
     if language_from_url and language_from_url in current_app.config["AVAILABLE_LANGUAGES"]:
         g.lang_code = language_from_url
     else:
+        print(request.accept_languages.best_match(current_app.config["AVAILABLE_LANGUAGES"]))
         # If no language code has been set, get the best language from the browser settings
         g.lang_code = request.accept_languages.best_match(
             current_app.config["AVAILABLE_LANGUAGES"]

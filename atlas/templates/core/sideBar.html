@@ -58,7 +58,7 @@
 
     {% for page_key, page_values in configuration.STATIC_PAGES.items()|sort(attribute='1.order') %}
         {% if 'url' in page_values %}
-            <li class="sidebar-brand">
+            <li class="sidebar-brand" data-qa="static-pages">
                 <a href="{{ page_values.url }}" target="_blank"
                    class="d-flex align-items-center flex-column p-3 w-100 h-100"
                    data-bs-toggle="tooltip"
@@ -77,7 +77,7 @@
                 </a>
             </li>
         {% else %}
-            <li class="sidebar-brand">
+            <li class="sidebar-brand" data-qa="static-pages">
                 <a href="{{ url_for('main.get_staticpages', page=page_key) }}"
                    class="d-flex flex-column  align-items-center p-3 w-100 h-100"
                    data-bs-toggle="tooltip"

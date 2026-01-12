@@ -7,6 +7,7 @@ from sqlalchemy.orm import relationship
 from atlas.env import db
 from atlas.modeles.entities.vmMedias import VmMedias
 from atlas.modeles import utils
+from atlas.configuration.config_parser import config
 
 from typing import List
 import datetime
@@ -28,7 +29,7 @@ class VmTaxons(db.Model):
     nom_complet: Mapped[str] = mapped_column(String(255))
     nom_valide: Mapped[str] = mapped_column(String(255))
     nom_vern: Mapped[str] = mapped_column(String(1000))
-    nom_vern_eng: Mapped[str] = mapped_column(String(500))
+    nom_vern_eng: Mapped[str] = mapped_column(String(500), nullable=True)
     group1_inpn: Mapped[str] = mapped_column(String(50))
     group2_inpn: Mapped[str] = mapped_column(String(50))
     group3_inpn: Mapped[str] = mapped_column(String(50))
@@ -45,9 +46,7 @@ class VmTaxons(db.Model):
     )
     main_media: Mapped[VmMedias] = relationship(
         VmMedias,
-        primaryjoin=and_(
-            VmMedias.cd_ref == cd_ref, VmMedias.id_type == current_app.config["ATTR_MAIN_PHOTO"]
-        ),
+        primaryjoin=and_(VmMedias.cd_ref == cd_ref, VmMedias.id_type == config["ATTR_MAIN_PHOTO"]),
     )
 
     def as_dict(self, with_main_media=False):
