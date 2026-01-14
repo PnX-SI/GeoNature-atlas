@@ -6,6 +6,7 @@ Merci de votre intérêt pour contribuer à GeoNature-atlas ! Ce document vous g
 
 - [Qualité du code](#code-quality)
 - [Processus de contribution](#contribution-process)
+- [Tests automatisés](#test)
 - [Documentation](#documentation)
 - [Questions et support](#support)
 
@@ -108,6 +109,7 @@ git checkout -b fix/correction-bug
 - Ne mergez pas la branche `develop` dans votre branche de feature, utilisez la commande `rebase`
 - Ne faites pas de commit de lint, privilegiez un `git commit --amend` pour ajouter le lint au commit comprenant les modification du code.
 - Squachez vos pull requests lorsqu'elle sont prêtes à être relues
+- Assurez vous que les tests passent et que le codecov ne baisse pas
 
 Conventions de nommage des branches :
 
@@ -120,7 +122,8 @@ Conventions de nommage des branches :
 
 ### 3. Développer et commiter
 
-Effectuez vos modifications en respectant les conventions de code. Faites des commits atomiques avec des messages clairs et descriptifs. Pensze à réferencer l'issue dans votre commit
+Effectuez vos modifications en respectant les conventions de code. Faites des commits atomiques avec des messages clairs et descriptifs. Pensez à réferencer l'issue dans votre commit.
+Ecrivez des tests sur les fonctionnalités que vous développez.
 
 Types de commit courants :
 
@@ -152,6 +155,28 @@ git push <mon_remote> feature/ma-nouvelle-fonctionnalite
 - Les mainteneurs examineront votre PR
 - Répondez aux commentaires et effectuez les modifications demandées
 - Une fois approuvée, votre PR sera mergée dans `develop`
+
+(test)=
+## Tests automatisés
+
+Les tests sont écrit avec la librairie pytest.
+Avant de lancer les tests, assurez vous d'avoir créer une base de données pour les tests.
+
+    create database <geonatureatlas_test> with owner <geonatadmin>
+    \d <ma_base>
+    CREATE EXTENSION IF NOT EXISTS postgis;
+
+Exporter la variable suivante : 
+
+    export ATLAS_SETTINGS=/home/theo/workspace/GeoNature-atlas/atlas/tests/test_config.py
+
+Cela définit le fichier de configuration de l'application avec celui qui est fourni pour les tests. Vous pouvez tout à fait utilisez un autre fichier de configuration
+
+⚠️⚠️ Chaque run de test va supprimer le contenu de la base et la recréer !
+
+Lancer les tests :
+
+    pytest
 
 (documentation)=
 ## Documentation
