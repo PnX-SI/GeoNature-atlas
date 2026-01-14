@@ -57,6 +57,7 @@ COPY --from=node /build/node_modules atlas/static/node_modules
 
 # Copie des scripts d’installation
 COPY install install
+RUN cp atlas/configuration/settings.ini.sample atlas/configuration/settings.ini
 RUN chmod +x install/install_app.sh
 RUN ./install/install_app.sh --docker
 
