@@ -1,28 +1,36 @@
 -- FDW creation of GeoNature tables
 
+
+SELECT atlas.drop_foreign_tables('ref_nomenclatures');
 IMPORT FOREIGN SCHEMA ref_nomenclatures
 LIMIT TO (ref_nomenclatures.t_nomenclatures, ref_nomenclatures.bib_nomenclatures_types)
 FROM SERVER geonaturedbserver INTO ref_nomenclatures;
 
+SELECT atlas.drop_foreign_tables('ref_geo');
 IMPORT FOREIGN SCHEMA ref_geo
 LIMIT TO (ref_geo.l_areas, ref_geo.li_municipalities, ref_geo.bib_areas_types, ref_geo.cor_areas)
 FROM SERVER geonaturedbserver INTO ref_geo;
 
+SELECT atlas.drop_foreign_tables('gn_synthese');
 IMPORT FOREIGN SCHEMA gn_synthese
 FROM SERVER geonaturedbserver INTO gn_synthese;
 
+SELECT atlas.drop_foreign_tables('gn_sensitivity');
 IMPORT FOREIGN SCHEMA gn_sensitivity
 LIMIT TO (gn_sensitivity.cor_sensitivity_area_type)
 FROM SERVER geonaturedbserver INTO gn_sensitivity;
 
+SELECT atlas.drop_foreign_tables('utilisateurs');
 IMPORT FOREIGN SCHEMA utilisateurs
 LIMIT TO (utilisateurs.bib_organismes)
 FROM SERVER geonaturedbserver INTO utilisateurs;
 
+SELECT atlas.drop_foreign_tables('gn_meta');
 IMPORT FOREIGN SCHEMA gn_meta
 LIMIT TO (gn_meta.cor_dataset_actor)
 FROM SERVER geonaturedbserver INTO gn_meta;
 
+SELECT atlas.drop_foreign_tables('taxonomie');
 IMPORT FOREIGN SCHEMA taxonomie
 LIMIT TO (
     taxonomie.taxref,

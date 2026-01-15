@@ -125,42 +125,6 @@ function runDBInstall() {
 
 }
 
-# function runDockerInstall() {
-#     printVerbose "Running Docker install..."
-#     source "${__conf_dir__}/settings.ini"
-#     # checkDockerVariables
-#     # convertDockerVariables
-#     exportPostgresPassword
-
-#     # Test if Atlas schema exists
-#     local schema_atlas_exists=$(hasAtlasSchema)
-
-#     # If Atlas schema already exists
-#     if [[ "${schema_atlas_exists}" = "t" ]]; then
-#         printVerbose "Atlas schema already exists (${schema_atlas_exists})"
-
-#         if [[ "${ATLAS_DROP_SCHEMA}" = false ]]; then
-#             printVerbose "The schema atlas exists and the config file tell to not drop it...Nothing to do."
-#             printVerbose "To reinstall Atlas at startup set ATLAS_DROP_SCHEMA to 'true'."
-#             exit 0
-#         else
-#             dropAtlasSchema
-#         fi
-#     fi
-
-#     printVerbose "Installing atlas db..."
-#     createDatabaseExtensions
-#     if ${geonature_source}; then
-#         createForeignDataWrapper
-#         createFdwTables
-#     fi
-#     createDatabaseSchemas
-#     prepareAltitudesValues
-#     createAtlasSchemaEntities
-#     printVerbose "${Gre}The database was successfully installed${RCol} !"
-
-# }
-
 
 function hasAtlasSchema() {
     local query="SELECT exists(SELECT schema_name FROM information_schema.schemata WHERE schema_name = 'atlas');"
@@ -233,24 +197,7 @@ function createForeignDataWrapper() {
     executeQueryAsSU "CREATE USER MAPPING FOR ${owner_atlas} SERVER geonaturedbserver OPTIONS (user '${atlas_source_user}', password '$atlas_source_pass') ;"
 }
 
-# FR: Création des schémas de la BDD
-# EN: Creating DB schemes
-function createDatabaseSchemas() {
-    printMsg "Creating database schemas..."
-    executeQuery "CREATE SCHEMA IF NOT EXISTS atlas AUTHORIZATION "$owner_atlas";"
-    executeQuery "CREATE SCHEMA IF NOT EXISTS gn_meta AUTHORIZATION "$owner_atlas";"
-    executeQuery "CREATE SCHEMA IF NOT EXISTS gn_synthese AUTHORIZATION "$owner_atlas";"
-    executeQuery "CREATE SCHEMA IF NOT EXISTS gn_sensitivity AUTHORIZATION "$owner_atlas";"
-    executeQuery "CREATE SCHEMA IF NOT EXISTS ref_geo AUTHORIZATION "$owner_atlas";"
-    executeQuery "CREATE SCHEMA IF NOT EXISTS ref_nomenclatures AUTHORIZATION "$owner_atlas";"
-    executeQuery "CREATE SCHEMA IF NOT EXISTS taxonomie AUTHORIZATION "$owner_atlas";"
-    executeQuery "CREATE SCHEMA IF NOT EXISTS utilisateurs AUTHORIZATION "$owner_atlas" ;"
-}
 
-function createFdwTables() {
-    printMsg "Creating FDW tables from GN2..."
-    executeFile "${__data_dir__}/gn2/atlas_gn2.sql"
-}
 
 function createDatabaseWithoutGeonature() {
     printMsg "Creating DB structure without GeoNature database..."

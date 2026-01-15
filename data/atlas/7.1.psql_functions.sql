@@ -37,3 +37,21 @@ $function$
         END IF;
     END;
 $function$;
+
+
+CREATE OR REPLACE FUNCTION atlas.drop_foreign_tables(schema_name text)
+RETURNS void AS $$
+DECLARE
+    r record;
+BEGIN
+    FOR r IN
+        SELECT c.relname
+        FROM pg_foreign_table ft
+        JOIN pg_class c ON c.oid = ft.ftrelid
+        JOIN pg_namespace n ON n.oid = c.relnamespace
+        WHERE n.nspname = schema_name
+    LOOP
+        EXECUTE format('DROP FOREIGN TABLE %I.%I CASCADE', schema_name, r.relname);
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;

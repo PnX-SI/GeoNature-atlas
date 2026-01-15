@@ -84,7 +84,8 @@ atlas_source_pass=monpassachanger
 # (Pour optimiser et ne pas utiliser toutes les géométries présentes dans ref_geo).
 # 🗒 Voir la colonne "type_code" de la table "ref_geo.bib_areas_type".
 # ATTENTION : ne pas mettre d'espace entre les valeurs
-type_code="COM,EPCI"
+type_code="COM"
+#type_code="COM,EPCI"
 
 # Type de zonage à utiliser pour les observations non sensibles.
 # Utiliser pour agrégger les observations dans les mailles pour un affichage
