@@ -11,7 +11,7 @@ CHANGELOG
 - Ajout du floutage des données sensibles (#571 par @juggler31)
 - Ajout d'une carte territoire dans la page d'acceuil ainsi que la liste de toutes les espèces sur celui-ci.
 - Changement de la notion de "commune" en notion de "territoire". Possibilité de faire des fiches "territoire" sur les tous zonages du ref_geo (fiche résèrve, ZNIEFF etc...)(#545 @juggler31)
-- Ajout d'un graphique de provenance des données par organisme sur la fiche espèce (si `ORGANISM_MODULE=True`) (#538)
+- Ajout d'un graphique de provenance des données par organisme sur la fiche espèce (si ``ORGANISM_MODULE=True``) (#538)
 - Ajout de graphiques sur la fiche territoire (le paramètre ``AFFICHAGE_TOUT_TERRITOIRE_GRAPH`` permet d'afficher ou non la barre du nombre d'espèce sur tout le territoire de l'atlas sur chaque graphique)
 - Ajout de "liens importants" sur les fiches taxons. Cette fonctionnalité permet par exemple de mettre en avant des démarches ou des ressources additionelles sur un taxon: un lien vers une plateforme de contribution collaborative, un lien vers une fiche détaillé sur l'espèce etc... Voir le paramètre ``TYPES_MEDIAS_LIENS_IMPORTANTS``
 - Ajout des statuts de conservation sur la fiche espèces. Le paramètre de configuration ``GROUPES_STATUTS`` permet de grouper et de filtrer les statuts que l'on souhaite afficher. Le template ``custom/templates/statuts.html`` permet de customiser l'affichage des statuts (customisation avancé, à modifier avec précaution)
@@ -23,33 +23,20 @@ CHANGELOG
 - Ajout d'un gestionnaire de couches cartographiques supplémentaires (WMS et geojson) dans le paramètre ``COUCHES_SIG`` (#572 @juggler31)
 - Ajout d'un plugin permetant une recheche d'adresse sur les cartes de la page d'acceuil et territoire (#716 @juggler31)
 - Nouvel affichage des tooltips lorsqu'on clique sur une maille (#721 @juggler31)
-- Possibilité de masquer la page de la gallerie photo  via le paramètre `AFFICHAGE_GALERIE_PHOTO` (#703 @lpofredc)
+- Possibilité de masquer la page de la gallerie photo  via le paramètre ``AFFICHAGE_GALERIE_PHOTO`` (#703 @lpofredc)
 - Ajout de la possibilité de configurer la table / vue source des données en entrée de l'atlas (#749) (voir la rubrique "Configuration des données d'observations présente dans l'atlas" dans la documentation sur la confiuguration )
-    - Suppression de la table `t_layer_territoire` qui permettait de filtrer les données hors territoire. Ceci est desormais à faire en amont par chaque utilisateurs 
-    - Le paramètre `type_territoire` du ficher `settings.ini` n'est plus utilisé
+    - Suppression de la table ``t_layer_territoire`` qui permettait de filtrer les données hors territoire. Ceci est desormais à faire en amont par chaque utilisateurs 
+    - Le paramètre ``type_territoire`` du ficher ``settings.ini`` n'est plus utilisé
 - Les fichiers de langues sont dorénavant surcouchables (voir documentation sur le multilingue)
 - Refonte du style icones de patrimonialité, protection et menace. Les 3 icones sont maintenant surcouchables
 - Possibilité d'ajouter des labels sur la sidebar (#729 @juggler31)
-- Ajout du paramètre `LIMIT_POINT_MAILLE` qui permet de définir le seuil à partir duquel on affiche les données en mode maille sur un atlas en mode point (défaut 500 observations)
-- Le paramètre `drop_apps_db` du fichier settings.ini est déprécié. Il est remplacer par `ATLAS_DROP_SCHEMA` qui ne supprime que le schéma atlas
-A VERIFIER :
+- Ajout du paramètre ``LIMIT_POINT_MAILLE`` qui permet de définir le seuil à partir duquel on affiche les données en mode maille sur un atlas en mode point (défaut 500 observations)
+- Le paramètre ``drop_apps_db`` du fichier settings.ini est déprécié. Il est remplacer par ``ATLAS_DROP_SCHEMA`` qui ne supprime que le schéma atlas
 
-``navbar.html``
-Le `form` devient :
+- Le fichier ``navbar.html.sample`` et le css associé à été modifié. Repartez du fichier ``navbar.html.sample``, puis ajoutez les modifications que vous aviez fait 
 
 ::
-    <form class="form-inline my-2 my-lg-0" method="POST"
-        onsubmit="completeAction('#searchFormAreas', hiddenInputAreas)" id='searchFormAreas'
-        action=""
-        role="search">
-        <div class="form-group has-feedback">
-            <input id="searchAreas" type="text" style="width: 175px;"
-                class="form-control mr-sm-2 ajax-search small-placeholder"
-                placeholder="{{ translations.search_area }}&nbsp;&nbsp;&nbsp;">
-        </div>
-        <input id="hiddenInputAreas" type="hidden" name="id_area">
-    </form>
-
+    cp atlas/static/sample/templates/navbar.html atlas/static/custom/templates/navbar.html
 
 `maps-custom`
 La fonction `pointDisplayOptionsFicheCommuneHome` devient `customizeMarkerStyle`
@@ -59,21 +46,8 @@ Les paramètres de l'url de la fiche territoire était ``url_for('main.ficheComm
 
 - Ajout de statistique sur la fiche de "zoning" (#540 @juggler31)
 
-🐛 **Corrections**
-
--
 
 ⚠️ **Notes de version**
-
-
-Suivez la procédure de mise à jour habituelle. Concernant la base de données, pour cette monté de version, il est necessaire de supprimer la base de données pour la recréer (ou créer un autre base de données avec un autre nom).
-Lancez ensuite le script `install_db.sh`.
-
-::
-    cd install
-    ./install_db.sh
-
- Nous ne recommandons plus d'installer la base de données de l'atlas dans la même que celle de GeoNature. Pour ceux qui l'avait fait, nous conseillons désormais que l'atlas ait sa propre base de données. L'installation docker supporte aujourd'hui de se connecter à une base de données distante.
 
 
 BREAKING CHANGE : 
@@ -92,7 +66,15 @@ Vous pouvez supprimer les paramètres suivants du fichier ``settings.ini`` :
 - `taxhub_displayed_attr` : tous les paramètres de de Taxhub sont copiés dans la BDD dans l'atlas. Le paramètre `TAXHUB_DISPLAYED_ATTR` du fichier `config.py` permet de configurer les attributs que l'on veut voir affficher sur la fiche espèce.
 
 
-Mise à jour : 
+
+Suivez la procédure de mise à jour habituelle. Concernant la base de données, pour cette monté de version, il est necessaire de supprimer la base de données pour la recréer (ou créer un autre base de données avec un autre nom).
+Lancez ensuite le script `install_db.sh`.
+
+::
+    cd install
+    ./install_db.sh
+
+ Nous ne recommandons plus d'installer la base de données de l'atlas dans la même que celle de GeoNature. Pour ceux qui l'avait fait, nous conseillons désormais que l'atlas ait sa propre base de données. L'installation docker supporte aujourd'hui de se connecter à une base de données distante.
 
 
 

@@ -13,7 +13,7 @@
             </div>
             <div class="row">
                 {% for species in lastDiscoveries %}
-                <div class="col-12 col-sm-6 col-md-4 col-lg-2 padding-sm">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-2">
                     <div class="card mb-2">
                         <a class="zoom-effect-wrapper" href="{{ url_for('main.ficheEspece', cd_nom=species.cd_ref) }}">
                             {% if species.media_path != None %}
