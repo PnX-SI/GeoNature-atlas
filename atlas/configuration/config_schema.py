@@ -112,6 +112,9 @@ class SecretSchemaConf(Schema):
 
 
 class MapConfig(Schema):
+    class Meta:
+        unknown = EXCLUDE
+
     LAT_LONG = fields.List(fields.Float(), load_default=[44.7952, 6.2287])
     MIN_ZOOM = fields.Integer(load_default=1)
     MAX_BOUNDS = fields.List(fields.List(fields.Float()), load_default=[[-180, -90], [180, 90]])

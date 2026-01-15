@@ -340,7 +340,7 @@ Attention à bien lire les notes de chaque version, qui peuvent indiquer des op�
 - Relancez l'installation automatique de l'application :
 
 ::
-
+    cd install
     ./install_app.sh
 
 Mise à jour de la base de données
@@ -352,17 +352,6 @@ Lancer le script `./install/update_db.sh` pour mettre à jour la base de donnée
 .. danger::
     Le script `update_db.sh` supprime et recrée le schéma atlas. Ne mettez aucune table ou vue dans ce schéma
 
-
-.. note::
-    Il est aussi possible de réinstaller la base en lançant le script `install_db.sh` avec le paramètre `drop_apps_db=true`
-    
-    Cela va completement supprimer la base de données pour la réinstaller !
-
-    **A ne surtout pas faire si l'atlas est dans la même base de données que GeoNature ou si vous aviez créer des tables ou des vues customisés dans la base**
-
-
-
-  
 
 
 Développement
