@@ -15,11 +15,13 @@ jobs:
 
     env:
       REGISTRY: ghcr.io
-      IMAGE_NAME: pnx-si/geonature-atlas
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set IMAGE_NAME
+        run: echo "IMAGE_NAME=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
