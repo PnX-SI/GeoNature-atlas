@@ -10,10 +10,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Backend code formatting check (Black)
-        uses: psf/black@stable
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          use_pyproject: true
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install 'black==25.12.0'
+
+      - name: Backend code formatting check (Black)
+        run: black --check .
 
   frontend:
     runs-on: ubuntu-latest
@@ -25,7 +31,7 @@ jobs:
       - name: Use setup-node
         uses: actions/setup-node@v5
         with:
-          node-version-file: './atlas/static/.nvmrc'
+          node-version-file: "./atlas/static/.nvmrc"
           # cache: 'npm'
           # cache-dependency-path: './atlas/static/package-lock.json'
 
