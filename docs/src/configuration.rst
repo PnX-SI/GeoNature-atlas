@@ -44,7 +44,7 @@ Rendez vous dans le dossier `static/custom` et lancez :
 
 ::
 
-    pybabel compile -f -d translations_override
+    make compile_messages
 
 Relancez l'application :
 

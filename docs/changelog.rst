@@ -27,7 +27,7 @@ CHANGELOG
 - Ajout de la possibilité de configurer la table / vue source des données en entrée de l'atlas (#749) (voir la rubrique "Configuration des données d'observations présente dans l'atlas" dans la documentation sur la confiuguration )
     - Suppression de la table ``t_layer_territoire`` qui permettait de filtrer les données hors territoire. Ceci est desormais à faire en amont par chaque utilisateurs 
     - Le paramètre ``type_territoire`` du ficher ``settings.ini`` n'est plus utilisé
-- Les fichiers de langues sont dorénavant surcouchables (voir documentation sur le multilingue)
+- Les fichiers de langues sont dorénavant surcouchables (voir section "Customisation des textes et labels via la surcouche du multiligue" dans la documentation sur la configuration)
 - Refonte du style icones de patrimonialité, protection et menace. Les 3 icones sont maintenant surcouchables
 - Possibilité d'ajouter des labels sur la sidebar (#729 @juggler31)
 - Ajout du paramètre ``LIMIT_POINT_MAILLE`` qui permet de définir le seuil à partir duquel on affiche les données en mode maille sur un atlas en mode point (défaut 500 observations)

@@ -36,24 +36,18 @@ Then in your command prompt, go in your atlas path and use these commmands.
     pybabel init -i messages.pot -d translations -l fr
 
     # To compile translations | create .mo file
-    pybabel compile -f -d translations
+    make compile_messages
 
 Adding strings
 ==============
 
 ::
 
-    # Extraire vos nouvelles chaînes de caractères des fichiers html | créer un fichier .pot
-    pybabel extract -F babel.cfg --project=GeoNature-Atlas --version=$(cat ../VERSION) -o messages.pot .
-
-    # Mise à jour des changements de chaînes
-    pybabel update -i messages.pot -d translations
-    # An automatic translation is offered. If the translation is not certain it is mark as "fuzzy"
+    # Extraire vos nouvelles chaînes de caractères des fichiers html | créer un fichier .pot et mettre à jour les fichiers .po
+    make messages
 
     # Pour compiler les traductions | créer un fichier .mo
-    pybabel compile -d translations
-    # to force the compilation of fuzzy translations
-    pybabel compile -f -d translations
+    make compile_messages
 
 Modifying a string already in .po files
 =======================================
@@ -63,4 +57,4 @@ Edit the ``.po`` file to change, then compile the translation files to generate 
 ::
 
     # To compile translations | create .mo file
-    pybabel compile -d translations
+    make compile_messages
