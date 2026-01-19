@@ -2,12 +2,15 @@
 const chartMainColor = getComputedStyle(
     document.documentElement,
 ).getPropertyValue("--main-color");
+
+const chartSecondColor = getComputedStyle(
+    document.documentElement,
+).getPropertyValue("--second-color");
+
 const chartHoverMainColor = getComputedStyle(
     document.documentElement,
 ).getPropertyValue("--second-color");
-const colors = configuration.COLOR_PIE_CHARTS;
-const chartMainColorThreatened = colors[5];
-const chartMainColorNoThreatened = colors.at(-1);
+const chartMainColorThreatened = "#ff0000";
 
 const getChartDatas = function (data, key) {
     const values = [];
@@ -165,7 +168,7 @@ function formatStackedBarChart(values) {
         datasets.push({
             label: `${window.i18n["number.species"]} ${window.i18n["patrimonial.plural"] ? window.i18n["patrimonial.plural"].toLowerCase() : "patrimoniales"}`,
             data: nb_patrimonial,
-            backgroundColor: [configuration.COLOR_STACKED_BAR_CHARTS[1]],
+            backgroundColor: [chartSecondColor],
             stack: "2",
         });
     }
@@ -173,7 +176,7 @@ function formatStackedBarChart(values) {
     datasets.push({
         label: `${window.i18n["number.species"]} (${areaInfos.areaName})`,
         data: nb_species,
-        backgroundColor: [configuration.COLOR_STACKED_BAR_CHARTS[0]],
+        backgroundColor: [chartMainColor],
         stack: "0",
     });
     if (configuration.AFFICHAGE_TOUT_TERRITOIRE_GRAPH) {
@@ -226,7 +229,9 @@ function formatBarChart(values, element, dataName) {
             {
                 label: dataName,
                 data: nb_elem,
-                backgroundColor: chartMainColor,
+                backgroundColor: hexToRgba("#000000", 0),
+                borderColor: "black",
+                borderWidth: 2,
                 stack: "0",
             },
         ],
@@ -244,7 +249,7 @@ function threatenedBarChartConfig(element, total, threatened) {
             {
                 label: window.i18n["threatened.species"],
                 data: [threatened],
-                backgroundColor: hexToRgba(chartMainColorThreatened, 0.2),
+                backgroundColor: hexToRgba(chartMainColorThreatened, 0),
                 borderColor: hexToRgba(chartMainColorThreatened),
                 borderWidth: 3,
                 stack: "0",
@@ -252,8 +257,8 @@ function threatenedBarChartConfig(element, total, threatened) {
             {
                 label: window.i18n["other.species"],
                 data: [others],
-                backgroundColor: hexToRgba(chartMainColorNoThreatened, 0.2),
-                borderColor: hexToRgba(chartMainColorNoThreatened),
+                backgroundColor: hexToRgba("#000000", 0),
+                borderColor: hexToRgba("#000000"),
                 borderWidth: 1,
                 stack: "0",
             },
@@ -277,6 +282,9 @@ function threatenedBarChartConfig(element, total, threatened) {
                 x: { stacked: true },
                 y: { stacked: true, beginAtZero: true },
             },
+            borderRadius: "5",
+            barThickness: "50",
+
         },
     });
 }
@@ -298,15 +306,15 @@ function threatenedByTaxoGroupChartConfig(element, values) {
             {
                 label: window.i18n["threatened.species"],
                 data: threatened,
-                backgroundColor: hexToRgba(chartMainColorThreatened, 0.2),
+                backgroundColor: hexToRgba(chartMainColorThreatened, 0),
                 borderColor: hexToRgba(chartMainColorThreatened),
                 borderWidth: 3,
             },
             {
                 label: window.i18n["other.species"],
                 data: notThreatened,
-                backgroundColor: hexToRgba(chartMainColorNoThreatened, 0.2),
-                borderColor: hexToRgba(chartMainColorNoThreatened),
+                backgroundColor: hexToRgba("#000000", 0),
+                borderColor: hexToRgba("#000000"),
                 borderWidth: 1,
             },
         ],
@@ -329,6 +337,7 @@ function threatenedByTaxoGroupChartConfig(element, values) {
                 x: { stacked: true },
                 y: { stacked: true, beginAtZero: true },
             },
+            borderRadius: "5",
         },
     });
 }
