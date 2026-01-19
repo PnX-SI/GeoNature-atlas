@@ -284,7 +284,6 @@ function threatenedBarChartConfig(element, total, threatened) {
             },
             borderRadius: "5",
             barThickness: "50",
-
         },
     });
 }

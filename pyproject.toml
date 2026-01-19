@@ -34,8 +34,11 @@ where = ["."]
 exclude = ["docs*", "tests*"]
 
 [project.optional-dependencies]
+lint = [
+  "black>=25.12.0",
+]
 dev = [
-  "black>=23.1.0",
+  "black>=25.12.0",
   "beautifulsoup4",
   "pytest",
   "pytest-cov",
