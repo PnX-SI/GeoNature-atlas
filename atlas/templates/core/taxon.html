@@ -83,7 +83,7 @@
             {{ _('last.obs.in') }} <strong>{{ taxon.yearmax | int }}</strong>
 
             <span class="float-end">
-            <a class="badge bg-primary text-decoration-none" href="{{ url_for('main.ficheEspece', cd_nom=taxon.cd_ref) }}"
+            <a class="badge btn btn-primary text-decoration-none" href="{{ url_for('main.ficheEspece', cd_nom=taxon.cd_ref) }}"
                data-bs-toggle="tooltip"
                title="{{ _('check.species.sheet') }}"
                data-bs-placement="left">

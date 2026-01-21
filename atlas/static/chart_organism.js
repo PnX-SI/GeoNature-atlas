@@ -1,7 +1,3 @@
-// ChartJS Graphs
-getComputedStyle(document.documentElement).getPropertyValue("--main-color");
-getComputedStyle(document.documentElement).getPropertyValue("--second-color");
-
 const getChartDatas = function (data, key) {
     const values = [];
     for (var i = 0; i < data.length; i++) {

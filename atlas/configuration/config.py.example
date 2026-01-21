@@ -372,6 +372,21 @@ TYPES_MEDIAS_LIENS_IMPORTANTS = [
   }
 ]
 
+###########################
+###########################
+####### Style   ##########
+###########################
+###########################
+
+# couleur principale de l'atlas
+TEMPLATE_MAIN_COLOR = "#53c412"
+TEMPLATE_SECOND_COLOR = "#1e7e12"
+
+# 3 couleurs des pricnipale des graphiques de type "barre" 
+# par défaut vaut [TEMPLATE_MAIN_COLOR,TEMPLATE_SECOND_COLOR, "grey" ]
+# sur la fiche espèce c'est la première couleur de ce tableau qui est prise
+# COLOR_STACKED_BAR_CHARTS = [#53c412, "#1e7e12", "grey"]
+
 
 ############################################
 #### FICHE "AREA" ET RANG TAXONOMIQUE  #####

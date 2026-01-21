@@ -16,7 +16,7 @@
                     <h4 class="text-muted text-uppercase font-weight-bold">{{ _('observations') }}</h4>
 
                     {% if configuration.AFFICHAGE_DERNIERES_OBS %}
-                        <p><a id="localScroll" href="#DernieresObservations" class="btn btn-secondary" role="button">{{ _('home.seelatestobs') }}</a></p>
+                        <p><a id="localScroll" href="#DernieresObservations" class="btn btn-primary" role="button">{{ _('home.seelatestobs') }}</a></p>
                     {% endif %}
                 </div>
             </div>
@@ -66,7 +66,7 @@
                     <h1 class="large text-muted" id="nbPictures"></h1>
                     <h4 class="text-muted text-uppercase font-weight-bold">{{ _('photos') }}</h4>
 
-                    <p><a href="{{ url_for('main.photos') }}" class="btn btn-secondary" role="button">{{ _('gallery.title') }}</a></p>
+                    <p><a href="{{ url_for('main.photos') }}" class="btn btn-primary" role="button">{{ _('gallery.title') }}</a></p>
                 </div>
             </div>
             {% endif %}

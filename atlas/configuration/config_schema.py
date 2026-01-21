@@ -195,9 +195,7 @@ class AtlasConfig(Schema):
     )
     AFFICHAGE_TOUT_TERRITOIRE_GRAPH = fields.Boolean(load_default=False)
     AFFICHAGE_GRAPH_PROVENANCE_DONNEE = fields.Boolean(load_default=False)
-    COLOR_STACKED_BAR_CHARTS = fields.List(
-        fields.String(), load_default=["#E1CE7A", "#FBFFB9", "#FDD692"]
-    )
+
     AFFICHAGE_STATUTS = fields.Boolean(load_default=True)
     GROUPES_STATUTS = fields.List(
         fields.Dict,
@@ -211,6 +209,9 @@ class AtlasConfig(Schema):
         ],
     )
 
+    TEMPLATE_MAIN_COLOR = fields.String(load_default="#82c91e")
+    TEMPLATE_SECOND_COLOR = fields.String(load_default="#649b18")
+    COLOR_STACKED_BAR_CHARTS = fields.List(fields.String())
     COLOR_PIE_CHARTS = fields.List(
         fields.String(),
         load_default=[
@@ -338,4 +339,11 @@ class AtlasConfig(Schema):
             raise ValidationError(
                 "Les paramètre AFFICHAGE_DERNIERES_OBS et AFFICHAGE_TERRITOIRE_OBS ne peuvent pas être tous les deux à True"
             )
+        # If COLOR_STACKED_BAR_CHARTS is not set, use a main and second color
+        if "COLOR_STACKED_BAR_CHARTS" not in data:
+            data["COLOR_STACKED_BAR_CHARTS"] = [
+                data["TEMPLATE_MAIN_COLOR"],
+                data["TEMPLATE_SECOND_COLOR"],
+                "#313131",
+            ]
         return data
