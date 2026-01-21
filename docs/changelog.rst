@@ -58,6 +58,7 @@ BREAKING CHANGE :
 
 - La couche des limites du territoire n'est plus fournie par défaut. Pour ajouter cette couche (ainsi que d'autres couches personnalisées), utilisez le paramètre `COUCHES_SIG`
 - les paramètres `BORDERS_COLOR`, `BORDERS_WEIGHT` pour styliser le coutour du territoire sont dépréciés. Utilisez le paramètre `COUCHES_SIG` et l'attribut `style` de ce paramètre pour configurer le style de la couche (voir l'exemple dans `config.py.example`)
+- les variables css ``--main-color`` et ``--second-color`` utilisées dans la surcouche css sont déprecié. Utilisez les variables de configuration (config.py) ``TEMPLATE_MAIN_COLOR`` et ``TEMPLATE_SECOND_COLOR```
 - Les attributs `label`, `text` et `label_pluriel` du paramètre `PATRIMONIALITE` sont dépréciés. Utilisez la surchouche de langue si vous souhaitez modifier ce terme (id : `patrimonial`, `patrimonial.plural` et `this.taxa.is.patrimonial`)
 - Pour configurer les données qui remontent dans l'atlas il est conseillé de ne plus surcoucher `atlas.vm_observations` mais de s'appuyer sur le paramètre `observation_data_source` du fichier `settings.ini` (voir doc à ce sujet dans `configuration.rst`)
 Vous pouvez supprimer les paramètres suivants du fichier ``settings.ini`` :

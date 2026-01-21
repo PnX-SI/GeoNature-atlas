@@ -1,6 +1,4 @@
 :root {
-    --main-color: #c3b528;
-    --second-color: #5a7526;
     --third-color: #2c410a;
     --map-maille-border-color: #ddd;
     --map-maille-lastobs-border-color: #c218d0;
@@ -175,21 +173,25 @@ a {
 }
 
 /* # btn.btn-default n'existe plus en bs5 */
-.btn.btn-secondary {
+.btn.btn-primary {
     color: white;
     border-color: var(--main-color);
     background-color: var(--main-color) !important;
 }
 
-.btn.btn-secondary:focus,
-.btn.btn-secondary:hover {
+.bg-primary{
+    background-color: var(--main-color) !important;
+}
+
+.btn.btn-primary:focus,
+.btn.btn-primary:hover {
     background-color: white !important;
     color: black;
     border-color: var(--main-color);
 }
 
 .btn-outline-secondary {
-    color: black;
+    color: var(--main-color);
     background-color: white;
     border-color: var(--main-color);
 }

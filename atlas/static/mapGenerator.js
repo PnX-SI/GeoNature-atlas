@@ -820,17 +820,13 @@ function styleMailleAtlas(nb) {
 }
 
 function styleMailleClickedOrHover(layer) {
-    const chartMainColor = getComputedStyle(
-        document.documentElement,
-    ).getPropertyValue("--main-color");
-
     var options = layer.options;
     return {
         ...options,
         opacity: 1,
         weight: 2,
         fillOpacity: 0.85,
-        color: chartMainColor,
+        color: configuration.TEMPLATE_MAIN_COLOR,
     };
 }
 

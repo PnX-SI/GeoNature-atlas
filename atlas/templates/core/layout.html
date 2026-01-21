@@ -13,7 +13,13 @@
 
     <!-- Additional assets -->
     {% block additionalHeaderAssets %}{% endblock %}
-
+    <style>
+        :root {
+            --main-color: {{ configuration.TEMPLATE_MAIN_COLOR }};
+            --second-color: {{ configuration.TEMPLATE_SECOND_COLOR }};
+            --map-maille-border-color: "black";
+        }
+    </style>
     <link rel="stylesheet" href="{{ url_for('static', filename='custom/custom.css') }}"/>
     
     <!-- Add all translations in windows.i18n -->

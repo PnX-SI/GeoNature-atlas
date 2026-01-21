@@ -56,7 +56,7 @@
                     <div class="carousel-caption">
                       <h1>Atlas de la faune vertébrée et invertébrée</h1>
                       <p>Découvrez plus de 300 000 observations de 2 000 espèces</p>
-                      <p><a class="btn btn-lg btn-secondary" href="#faune" role="button">En savoir plus</a></p>
+                      <p><a class="btn btn-lg btn-primary" href="#faune" role="button">En savoir plus</a></p>
                     </div>
                   </div>
                 </div>
@@ -68,7 +68,7 @@
                     <div class="carousel-caption">
                       <h1>Atlas de la flore</h1>
                       <p>Parcourez les fiches espèces des 2 000 espèces</p>
-                      <p><a class="btn btn-lg btn-secondary" href="#flore" role="button">En savoir plus</a></p>
+                      <p><a class="btn btn-lg btn-primary" href="#flore" role="button">En savoir plus</a></p>
                     </div>
                   </div>
                 </div>
@@ -80,7 +80,7 @@
                     <div class="carousel-caption">
                       <h1>40 ans d’observations scientifiques</h1>
                       <p>Connaissance, suivi, gestion et protection de la biodiversité</p>
-                      <p><a class="btn btn-lg btn-secondary" href="#scientifique" role="button">En savoir plus</a></p>
+                      <p><a class="btn btn-lg btn-primary" href="#scientifique" role="button">En savoir plus</a></p>
                     </div>
                   </div>
                 </div>
@@ -92,7 +92,7 @@
                     <div class="carousel-caption">
                       <h1>Des centaines de photos</h1>
                         <p>Prises par les agents du parc national au quotidien</p>
-                        <p><a class="btn btn-lg btn-secondary" href="{{ url_for('main.photos') }}" role="button">Visitez la galerie</a></p>
+                        <p><a class="btn btn-lg btn-primary" href="{{ url_for('main.photos') }}" role="button">Visitez la galerie</a></p>
                     </div>
                   </div>
                 </div>
@@ -180,19 +180,19 @@
                   <img class="rounded-circle mb-3" src="{{url_for('static', filename='custom/images/03-determination.jpg') }}" alt="Fiches espèces" width="140" height="140">
                     <h2>Fiches espèces</h2>
                     <p>Retrouvez la fiche de chaque espèce avec leur carte des observations, leur répartition altitudinale et mensuelle, ainsi que des descriptions, photos, vidéos, audios et liens complémentaires</p>
-                    <p><a class="btn btn-secondary" href="url_for('main.ficheEspece', cd_nom=61098)" role="button">Exemple &raquo;</a></p>
+                    <p><a class="btn btn-primary" href="url_for('main.ficheEspece', cd_nom=61098)" role="button">Exemple &raquo;</a></p>
                 </div>
                 <div class="col-lg-4">
                   <img class="rounded-circle mb-3" src="{{url_for('static', filename='custom/images/04-loupe.jpg') }}" alt="Fiches territoires" width="140" height="140">
                     <h2>Fiches territoires</h2>
                     <p>Découvrez les espèces observées sur chaque territoire du parc national et affichez leurs observations sur la carte de la zone.</p>
-                    <p><a class="btn btn-secondary" href="url_for('main.area', id_area=XXXXXX)" role="button">Exemple &raquo;</a></p>
+                    <p><a class="btn btn-primary" href="url_for('main.area', id_area=XXXXXX)" role="button">Exemple &raquo;</a></p>
                 </div>
                 <div class="col-lg-4">
                   <img class="rounded-circle mb-3" src="{{url_for('static', filename='custom/images/06-photographe.jpg') }}" alt="Galerie photos" width="140" height="140">
                     <h2>Galerie photos</h2>
                     <p>Découvrez les photographies des différentes espèces, réalisées principalement par les agents du Parc national lors de leurs missions sur le terrain.</p>
-                    <p><a class="btn btn-secondary" href="{{url_for('main.photos')}}" role="button">Parcourir &raquo;</a></p>
+                    <p><a class="btn btn-primary" href="{{url_for('main.photos')}}" role="button">Parcourir &raquo;</a></p>
                 </div>
               </div>
             </div>
