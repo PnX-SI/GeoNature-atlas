@@ -1,6 +1,10 @@
-# pylint: disable=redefined-outer-name
-from copy import deepcopy
+import os
 from pathlib import Path
+
+# IMPORTANT: Set ATLAS_SETTINGS before any atlas.* import!
+# Set ATLAS_SETTINGS to test config by default if not already set
+if "ATLAS_SETTINGS" not in os.environ:
+    os.environ["ATLAS_SETTINGS"] = str(Path(__file__).parent / "test_config.py")
 
 import pytest
 from sqlalchemy import text
