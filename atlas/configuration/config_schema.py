@@ -333,7 +333,10 @@ class AtlasConfig(Schema):
         # Set APPLICATION_ROOT Flask parameter (use for url_for etc...) https://flask.palletsprojects.com/en/stable/config/#APPLICATION_ROOT
         # the parameter is infered from URL_APPLICATION which is widely use in all the application
         url_application = data["URL_APPLICATION"]
-        data["APPLICATION_ROOT"] = url_application if url_application != "/" else "/"
+        if url_application == "":
+            data["APPLICATION_ROOT"] = "/"
+        else:
+            data["APPLICATION_ROOT"] = url_application
         # AFFICHAGE_DERNIERES_OBS et AFFICHAGE_TERRITOIRE_OBS ne peuvent pas être True en meme temps
         if data["AFFICHAGE_DERNIERES_OBS"] and data["AFFICHAGE_TERRITOIRE_OBS"]:
             raise ValidationError(

@@ -1,12 +1,16 @@
 # -*- coding:utf-8 -*-
-from flask import current_app, g
+from flask import current_app, g, session, request
 from flask_babel import gettext, get_translations
 
 
 def get_locale():
-    # if MULTILINGUAL, valid language is in g via before_request_hook
     if current_app.config["MULTILINGUAL"]:
-        return g.lang_code
+        lang = session.get("language")
+        if lang and lang in current_app.config["AVAILABLE_LANGUAGES"]:
+            return lang
+        return request.accept_languages.best_match(
+            current_app.config["AVAILABLE_LANGUAGES"]
+        ) or current_app.config.get("DEFAULT_LANGUAGE", "fr")
     return current_app.config["DEFAULT_LANGUAGE"]
 
 

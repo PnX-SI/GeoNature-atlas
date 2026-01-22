@@ -73,7 +73,7 @@ autocompleteSearch = function (inputID, urlDestination, nbProposal) {
             var url = ui.item.value;
             if (urlDestination === "espece") {
                 location.href =
-                    configuration.URL_APPLICATION + language + "/espece/" + url;
+                    configuration.URL_APPLICATION + "/espece/" + url;
                 const splited_label = ui.item.label.split(" = ");
                 const label_for_input =
                     splited_label[0] !== ""
@@ -82,11 +82,7 @@ autocompleteSearch = function (inputID, urlDestination, nbProposal) {
                 $(inputID).val(label_for_input.replace(/<[^>]*>?/gm, ""));
             } else {
                 location.href =
-                    configuration.URL_APPLICATION +
-                    language +
-                    "/area/" +
-                    "/" +
-                    url;
+                    configuration.URL_APPLICATION + "/area/" + "/" + url;
             }
 
             return false;

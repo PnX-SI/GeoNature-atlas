@@ -1,6 +1,6 @@
 <!doctype html>
 {% if configuration.MULTILINGUAL %}
-<html lang='{{ g.lang_code }}'>
+<html lang='{{ current_language }}'>
 {% else %}
 <html lang='{{ configuration.DEFAULT_LANGUAGE }}'>
 {% endif %}
