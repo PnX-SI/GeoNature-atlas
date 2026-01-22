@@ -51,8 +51,6 @@ def create_app(config_overrides=None):
 
     babel.init_app(app, locale_selector=get_locale)
     compress.init_app(app)
-
-    app.config["SECRET_KEY"] = app.config["SECRET_KEY"]
     with app.app_context() as context:
         from atlas.atlasRoutes import main as main_blueprint
 
@@ -86,6 +84,7 @@ def create_app(config_overrides=None):
                 now=now,
                 timedelta=timedelta,
                 page_name=request.endpoint.split(".")[1],
+                current_language=get_locale(),
             )
 
         @app.template_filter("pretty")

@@ -33,7 +33,7 @@ function generateObservationPopup(feature) {
             <b>Date: </b> ${feature.properties.dateobs}
             </br><b>Altitude: </b> ${feature.properties.altitude_retenue}
             ${observersTxt(feature)} </br>
-            <a href='${configuration.URL_APPLICATION}${language}/espece/${feature.properties.cd_ref}'> Fiche espèce </a>
+            <a href='${configuration.URL_APPLICATION}/espece/${feature.properties.cd_ref}'> Fiche espèce </a>
             `;
 
     // verifie si le champs effectif est rempli

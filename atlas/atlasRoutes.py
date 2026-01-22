@@ -13,6 +13,7 @@ from flask import (
     make_response,
     request,
     url_for,
+    session,
 )
 from flask_babel import gettext
 
@@ -36,48 +37,24 @@ from atlas.modeles.repositories import (
     vmStatutBdcRepository,
     corSensitivityAreaRepository,
 )
+from atlas.configuration.config_parser import config
 
 
 main = Blueprint("main", __name__)
 
+# change language route
+if config["MULTILINGUAL"]:
 
-if current_app.config["MULTILINGUAL"]:
-
-    @main.url_defaults
-    def add_language_code(endpoint, values):
-        """
-        Auto add lang_code to all url_for
-        """
-        if "lang_code" in values:
-            return
-        # If endpoint expects lang_code, send it forward
-        if current_app.url_map.is_endpoint_expecting(endpoint, "lang_code"):
-            values["lang_code"] = getattr(
-                g, "lang_code", current_app.config.get("DEFAULT_LANGUAGE", "fr")
-            )
-
-
-@main.url_value_preprocessor
-def pull_lang_code(endpoint, values):
-    """
-    Catch the lang_code in URL to set it globally
-    """
-    # language can be set in url param (values) or in query string
-    language_from_url = values.pop("lang_code", request.args.get("lang_code"))
-    if language_from_url and language_from_url in current_app.config["AVAILABLE_LANGUAGES"]:
-        g.lang_code = language_from_url
-    else:
-        print(request.accept_languages.best_match(current_app.config["AVAILABLE_LANGUAGES"]))
-        # If no language code has been set, get the best language from the browser settings
-        g.lang_code = request.accept_languages.best_match(
-            current_app.config["AVAILABLE_LANGUAGES"]
-        )
+    @main.route("/language/<lang_code>")
+    def change_language(lang_code):
+        if lang_code in config["AVAILABLE_LANGUAGES"]:
+            session["language"] = lang_code
+        return redirect(request.referrer or url_for("main.index"))
 
 
 # Activating organisms sheets routes
-if current_app.config["ORGANISM_MODULE"]:
+if config["ORGANISM_MODULE"]:
 
-    @main.route("/<lang_code>/organism/<int:id_organism>", methods=["GET", "POST"])
     @main.route("/organism/<int:id_organism>", methods=["GET", "POST"])
     def ficheOrganism(id_organism):
 
@@ -113,7 +90,6 @@ if current_app.config["ORGANISM_MODULE"]:
         )
 
 
-@main.route("/<lang_code>/", methods=["GET", "POST"])
 @main.route("/", methods=["GET", "POST"])
 def index():
 
@@ -184,7 +160,6 @@ def index():
     )
 
 
-@main.route("/<lang_code>/espece/<int(signed=True):cd_nom>", methods=["GET", "POST"])
 @main.route("/espece/<int(signed=True):cd_nom>", methods=["GET", "POST"])
 def ficheEspece(cd_nom):
     # Get cd_ref from cd_nom
@@ -315,7 +290,6 @@ def _make_groupes_statuts(statuts):
     return groupes_statuts
 
 
-@main.route("/<lang_code>/area/<int:id_area>", methods=["GET", "POST"])
 @main.route("/area/<int:id_area>", methods=["GET", "POST"])
 def area(id_area):
     area = vmAreasRepository.getAreaFromIdArea(id_area)
@@ -332,7 +306,6 @@ def area(id_area):
     )
 
 
-@main.route("/<lang_code>/liste/<int(signed=True):cd_ref>", methods=["GET", "POST"])
 @main.route("/liste/<int(signed=True):cd_ref>", methods=["GET", "POST"])
 def ficheRangTaxonomie(cd_ref=None):
     nb_taxons = vmTaxonsRepository.get_nb_taxons(cd_ref=cd_ref)
@@ -352,7 +325,6 @@ def ficheRangTaxonomie(cd_ref=None):
     )
 
 
-@main.route("/<lang_code>/groupe/<groupe>", methods=["GET", "POST"])
 @main.route("/groupe/<groupe>", methods=["GET", "POST"])
 def ficheGroupe(groupe):
     groups = vmTaxonsRepository.getAllINPNgroup()
@@ -372,14 +344,12 @@ def ficheGroupe(groupe):
 
 if current_app.config["AFFICHAGE_GALERIE_PHOTO"]:
 
-    @main.route("/<lang_code>/photos", methods=["GET", "POST"])
     @main.route("/photos", methods=["GET", "POST"])
     def photos():
         groups = vmTaxonsRepository.getINPNgroupPhotos()
         return render_template("templates/photoGalery/_main.html", groups=groups)
 
 
-@main.route("/<lang_code>/static/<page>", methods=["GET", "POST"])
 @main.route("/static_pages/<page>", methods=["GET", "POST"])
 def get_staticpages(page):
     if page not in current_app.config["STATIC_PAGES"]:

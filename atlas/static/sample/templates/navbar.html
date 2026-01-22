@@ -1,13 +1,5 @@
 {% block navbar %}
-{% if configuration.MULTILINGUAL %}
-<script type="text/javascript">
-    var language = '{{ '/' + g.lang_code }}';
-</script>
-{% else %}
-<script type="text/javascript">
-    var language = '' ;
-</script>
-{% endif %}
+
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.1.0/css/flag-icon.min.css" rel="stylesheet">
 
@@ -53,13 +45,13 @@
             <div class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle d-flex align-items-center" id="dropdown09" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <!-- Display languages flags and name, en flag is flag-icon flag-icon-gb -->
-                    <span class="flag-icon {{ configuration.AVAILABLE_LANGUAGES[g.lang_code]['flag_icon'] }}"></span>
-                    <div class="d-none d-lg-block ms-2">{{ configuration.AVAILABLE_LANGUAGES[g.lang_code]['name'] }}</div>
+                    <span class="flag-icon {{ configuration.AVAILABLE_LANGUAGES[current_language]['flag_icon'] }}"></span>
+                    <div class="d-none d-lg-block ms-2">{{ configuration.AVAILABLE_LANGUAGES[current_language]['name'] }}</div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown09">
                     {% for language in configuration.AVAILABLE_LANGUAGES %}
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="{{ url_for(request.endpoint, lang_code=language, **request.view_args) }}">
+                        <a class="dropdown-item d-flex align-items-center" href="{{ url_for(request.change_language, lang_code=language) }}">
                             <span class="flag-icon {{ configuration.AVAILABLE_LANGUAGES[language]['flag_icon'] }}"></span>
                             <div class="d-none d-lg-block ms-2">{{ configuration.AVAILABLE_LANGUAGES[language]['name'] }}</div>
                         </a>
