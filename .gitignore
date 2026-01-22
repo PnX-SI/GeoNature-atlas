@@ -36,3 +36,5 @@ atlas/debug.py
 Makefile.perso.mk
 robots.txt
 !atlas/static/sample/robots.txt
+
+.github/*instructions.md
