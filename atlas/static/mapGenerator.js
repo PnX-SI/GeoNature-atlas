@@ -1,3 +1,12 @@
+// Affiche ou masque l'onglet "choix des couches" (tab control)
+function toggleLayerTab(show) {
+    const controltab = document.querySelector("#control-tab");
+    const controltabContent = document.querySelector("#control-tab-content");
+    if (controltab && controltabContent) {
+        controltab.style.display = show ? "" : "none";
+        controltabContent.style.display = show ? "" : "none";
+    }
+}
 // global :
 let current_sensitivity_codes = []; // list of distinct cd_sensibility in geojson
 
@@ -16,11 +25,12 @@ const control = L.control.layers(null, null, {
 });
 
 function clearObservationsFeatureGroup() {
-    control._layers.forEach((elem) => {
-        if (elem.name.includes("defaultOverlay")) {
-            map.removeLayer(elem.layer);
-            control.removeLayer(elem.layer);
+    // Supprime toutes les couches d'observations (FeatureGroup créés dans createLayersSelector)
+    Object.values(observationsFeatureGroup).forEach((featureGroup) => {
+        if (map.hasLayer(featureGroup)) {
+            map.removeLayer(featureGroup);
         }
+        control.removeLayer(featureGroup);
     });
 }
 
@@ -192,14 +202,6 @@ function createTabControl() {
 `;
     content.parentNode.insertBefore(div, content);
     div.querySelector("#control-tab-content").appendChild(content);
-
-    if (
-        !configuration.AFFICHAGE_MAILLE &&
-        configuration.COUCHES_SIG.length === 0
-    ) {
-        document.querySelector("#control-tab").style.display = "none";
-        document.querySelector("#control-tab-content").style.display = "none";
-    }
 
     const sheetName = document.querySelector("body").getAttribute("page-name");
 
@@ -665,18 +667,15 @@ function displayMarkerLayerFicheEspece(
 
         if (configuration.COUCHES_SIG.length === 0) {
             // In point only map, hide control tab if no COUCHES_SIG configured
-            const controltab = document.querySelector("#control-tab");
-            const controltabContent = document.querySelector(
-                "#control-tab-content",
-            );
+            toggleLayerTab(false);
             const legendtab = document.querySelector("#legend-tab");
             const legendtabContent = document.querySelector(
                 "#legend-tab-content",
             );
-            controltab.style.display = "none";
-            document.querySelector("#control-tab-content").style.display =
-                "none";
-
+            const controltab = document.querySelector("#control-tab");
+            const controltabContent = document.querySelector(
+                "#control-tab-content",
+            );
             // switch to legend tab
             legendtab.classList.add("active");
             legendtabContent.classList.add("active");
