@@ -39,7 +39,7 @@ $function$
 $function$;
 
 
-CREATE OR REPLACE FUNCTION atlas.drop_foreign_tables(schema_name text)
+CREATE OR REPLACE FUNCTION drop_foreign_tables(schema_name text)
 RETURNS void AS $$
 DECLARE
     r record;
