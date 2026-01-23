@@ -50,3 +50,15 @@ $function$
         REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_cor_sensitivity_area_type;
     END
 $function$ ;
+
+-- Rafraîchit uniquement les vues matérialisées vm_cor_taxon_attribut et vm_medias
+CREATE OR REPLACE FUNCTION atlas.refresh_materialized_view_taxon_attr_and_media()
+    RETURNS VOID
+    LANGUAGE plpgsql
+AS
+$function$
+    BEGIN
+        REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_cor_taxon_attribut;
+        REFRESH MATERIALIZED VIEW CONCURRENTLY atlas.vm_medias;
+    END
+$function$ ;
