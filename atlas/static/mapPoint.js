@@ -198,6 +198,7 @@ function eventOnZoom(observationsMaille, observationsPoint) {
                 .forEach((elem) => elem.remove());
             legendColorObs.appendChild(generateObservationsLegend(true));
 
+            toggleLayerTab(true);
             legendblock.removeAttr("hidden");
             displayGeojsonMailles(observationsMaille, onEachFeatureMaille);
             activeMode = "Maille";
