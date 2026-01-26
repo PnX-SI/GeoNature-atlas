@@ -38,8 +38,8 @@ CHANGELOG
 ::
     cp atlas/static/sample/templates/navbar.html atlas/static/custom/templates/navbar.html
 
-`maps-custom`
-La fonction `pointDisplayOptionsFicheCommuneHome` devient `customizeMarkerStyle`
+``maps-custom``
+La fonction ``pointDisplayOptionsFicheCommuneHome`` devient ``customizeMarkerStyle``
 
 ``presentation.html``
 Les paramètres de l'url de la fiche territoire était ``url_for('main.ficheCommune', insee=05090)`` et devient ``url_for('main.area', id_area=XXXXXX)``
@@ -49,27 +49,31 @@ Les paramètres de l'url de la fiche territoire était ``url_for('main.ficheComm
 
 ⚠️ **Notes de version**
 
+Suivez la procédure de mise à jour habituelle en lisant au préalable les notes ci-dessous. Concernant la base de données, pour cette monté de version, il est necessaire de supprimer la base de données pour la recréer (ou créer un autre base de données avec un autre nom).
+Lancez ensuite le script ``install_db.sh``.
 
-BREAKING CHANGE : 
+❗BREAKING CHANGE : 
 
-- Si vous faites une mise à jour, certains paramètres sont à rajouter dans le fichier `settings.ini` pour que la mise à jour de la base de données fonctionne (voir le fichier `settings.ini.sample` pour trouver des examples): 
-     - `type_code` : : Type d'aire a utiliser dans l'application pour les fiche territoire 
-     - `observation_data_source` : vue ou table de la source des données des observations dans la BDD mère (si on utilise GeoNature). Si vous n'utilisez pas GeoNature, renseignez le paramètre avec une chaine vide
+Des modifications sont à faire dans le fichier ``settings.ini`` pour que l'installation de la base de données fonctionne :
 
-- La couche des limites du territoire n'est plus fournie par défaut. Pour ajouter cette couche (ainsi que d'autres couches personnalisées), utilisez le paramètre `COUCHES_SIG`
-- les paramètres `BORDERS_COLOR`, `BORDERS_WEIGHT` pour styliser le coutour du territoire sont dépréciés. Utilisez le paramètre `COUCHES_SIG` et l'attribut `style` de ce paramètre pour configurer le style de la couche (voir l'exemple dans `config.py.example`)
-- les variables css ``--main-color`` et ``--second-color`` utilisées dans la surcouche css sont déprecié. Utilisez les variables de configuration (config.py) ``TEMPLATE_MAIN_COLOR`` et ``TEMPLATE_SECOND_COLOR```
-- Les attributs `label`, `text` et `label_pluriel` du paramètre `PATRIMONIALITE` sont dépréciés. Utilisez la surchouche de langue si vous souhaitez modifier ce terme (id : `patrimonial`, `patrimonial.plural` et `this.taxa.is.patrimonial`)
-- Pour configurer les données qui remontent dans l'atlas il est conseillé de ne plus surcoucher `atlas.vm_observations` mais de s'appuyer sur le paramètre `observation_data_source` du fichier `settings.ini` (voir doc à ce sujet dans `configuration.rst`)
+- Modifier le paramètre ``type_maille`` en enlevant les doubles "quotes" : ``type_maille="'M1'" -> type_maille="M1"``
+- Ajouter les paramètre suivants : (voir le fichier ``settings.ini.sample`` pour trouver des examples): 
+     - ``type_code`` : : Type de zonages a utiliser dans l'application pour les fiche territoire (il est maintenant possible de faire des fichies zonage sur n'importequel type du ref_geo et non plus simplement sur les communes)
+     - ``observation_data_source`` : vue ou table de la source des données des observations dans la BDD mère (si on utilise GeoNature : la valeur proposée dans ``settings.ini.sample`` est ``gn_synthese.synthese``). Si vous n'utilisez pas GeoNature, renseignez le paramètre avec une chaine vide
+
+- La couche des limites du territoire n'est plus fournie par défaut. Pour ajouter cette couche (ainsi que d'autres couches personnalisées), utilisez le paramètre ``COUCHES_SIG``
+- les paramètres ``BORDERS_COLOR``, ``BORDERS_WEIGHT`` pour styliser le coutour du territoire sont dépréciés. Utilisez le paramètre ``COUCHES_SIG`` et l'attribut ``style`` de ce paramètre pour configurer le style de la couche (voir l'exemple dans ``config.py.example``)
+- les variables css ``--main-color`` et ``--second-color`` utilisées dans la surcouche css sont dépreciées. Utilisez les variables de configuration (config.py) ``TEMPLATE_MAIN_COLOR`` et ``TEMPLATE_SECOND_COLOR``.
+- Les attributs ``label``, ``text`` et ``label_pluriel`` du paramètre ``PATRIMONIALITE`` sont dépréciés. Utilisez la surchouche de langue si vous souhaitez modifier ce terme (id : ``patrimonial``, ``patrimonial.plural`` et ``this.taxa.is.patrimonial``)
+- Pour configurer les données qui remontent dans l'atlas il est conseillé de ne plus surcoucher ``atlas.vm_observations`` mais de s'appuyer sur le paramètre ``observation_data_source`` du fichier ``settings.ini`` (voir doc à ce sujet dans ``configuration.rst``)
 Vous pouvez supprimer les paramètres suivants du fichier ``settings.ini`` :
-- `drop_apps_db`. Le script `install_db.sh` ne supprime plus la base de données. Si vous voulez rejouer la création des vues materialisées, utiliez le paramètre `ATLAS_DROP_SCHEMA` qui supprime uniquement le schéma `atlas`
--  `venv_dir` L'environnement virtuel est créer dans un répértoire `venv`
-- `taxhub_displayed_attr` : tous les paramètres de de Taxhub sont copiés dans la BDD dans l'atlas. Le paramètre `TAXHUB_DISPLAYED_ATTR` du fichier `config.py` permet de configurer les attributs que l'on veut voir affficher sur la fiche espèce.
+  - ``drop_apps_db``. Le script ``install_db.sh`` ne supprime plus la base de données. Si vous voulez rejouer la création des vues materialisées, utiliez le paramètre ``ATLAS_DROP_SCHEMA`` qui supprime uniquement le schéma ``atlas``
+  -  ``venv_dir`` L'environnement virtuel est créer dans un répértoire ``venv``
+  - ``taxhub_displayed_attr`` : tous les paramètres de de Taxhub sont copiés dans la BDD dans l'atlas. Le paramètre ``TAXHUB_DISPLAYED_ATTR`` du fichier ``config.py`` permet de configurer les attributs que l'on veut voir affficher sur la fiche espèce.
 
 
 
-Suivez la procédure de mise à jour habituelle. Concernant la base de données, pour cette monté de version, il est necessaire de supprimer la base de données pour la recréer (ou créer un autre base de données avec un autre nom).
-Lancez ensuite le script `install_db.sh`.
+
 
 ::
     cd install
