@@ -20,8 +20,12 @@ const areaBorderColor = String(
 // Feature group de chaque élément de floutage (M1, M5 etc...)
 const observationsFeatureGroup = {};
 
+function isMobile() {
+    return window.innerWidth <= 768; // Détecte si l'utilisateur est en mode mobile
+}
+
 const control = L.control.layers(null, null, {
-    collapsed: false,
+    collapsed: isMobile(),
 });
 
 function clearObservationsFeatureGroup() {
@@ -359,11 +363,6 @@ function generateMap(zoomHomeButton) {
     map.getPane("backgroundLayers").style.zIndex = 250;
 
     control.addTo(map);
-    if (!configuration.DEFAULT_LEGEND_DISPLAY && control?.getContainer()) {
-        control.collapse();
-    }
-
-    // control.addOverlay()
 
     // create the html control panel
     createTabControl();

@@ -9,14 +9,14 @@ CHANGELOG
 🚀 **Nouveautés**
 
 - Ajout du floutage des données sensibles (#571 par @juggler31)
-- Ajout d'une carte territoire dans la page d'acceuil ainsi que la liste de toutes les espèces sur celui-ci.
+- Possibilité de remplacer la carte des dernières observations de la page d'accueil par une carte du territoire et de toutes les observations de l'atlas (paramètre ``AFFICHAGE_TERRITOIRE_OBS``)
 - Changement de la notion de "commune" en notion de "territoire". Possibilité de faire des fiches "territoire" sur les tous zonages du ref_geo (fiche résèrve, ZNIEFF etc...)(#545 @juggler31)
 - Ajout d'un graphique de provenance des données par organisme sur la fiche espèce (si ``ORGANISM_MODULE=True``) (#538)
-- Ajout de graphiques sur la fiche territoire (le paramètre ``AFFICHAGE_TOUT_TERRITOIRE_GRAPH`` permet d'afficher ou non la barre du nombre d'espèce sur tout le territoire de l'atlas sur chaque graphique)
+- Ajout de graphiques sur la fiche territoire
 - Ajout de "liens importants" sur les fiches taxons. Cette fonctionnalité permet par exemple de mettre en avant des démarches ou des ressources additionelles sur un taxon: un lien vers une plateforme de contribution collaborative, un lien vers une fiche détaillé sur l'espèce etc... Voir le paramètre ``TYPES_MEDIAS_LIENS_IMPORTANTS``
 - Ajout des statuts de conservation sur la fiche espèces. Le paramètre de configuration ``GROUPES_STATUTS`` permet de grouper et de filtrer les statuts que l'on souhaite afficher. Le template ``custom/templates/statuts.html`` permet de customiser l'affichage des statuts (customisation avancé, à modifier avec précaution)
 - Ajout de la notion d'espèce menacée et de graphiques associés sur les fiches territoire. La notion de menace est basé sur les listes rouges. Un taxon est considéré comme menacé s'il est sur une des liste suivantes : VU, EN, CR, CR* (@Orangetine) #669
-- Ajout de filtre par group2_inpn et par statut (protégé, menacé, patrimonial) sur toute les listes de taxons (@Orangetine @TheoLechemia)
+- Ajout de filtre par group2_inpn et par statuts (protégé, menacé, patrimonial) sur toutes les listes de taxons (@Orangetine @TheoLechemia)
 - Possibilité d'exporter les listes de taxons en csv et PDF (@Orangetine @TheoLechemia)
 - Le statut d'espèce protégée n'est plus calculé à partir d'un attribut TaxHub mais à partir de la BDC statuts #135
 - Déplacement des fichiers de personnalisation ``sample`` dans le dossier ``static/sample/``. Le dossier ``static/custom/`` est à utiliser pour surcoucher les fichiers de ``static/sample/``.
@@ -25,27 +25,21 @@ CHANGELOG
 - Nouvel affichage des tooltips lorsqu'on clique sur une maille (#721 @juggler31)
 - Possibilité de masquer la page de la gallerie photo  via le paramètre ``AFFICHAGE_GALERIE_PHOTO`` (#703 @lpofredc)
 - Ajout de la possibilité de configurer la table / vue source des données en entrée de l'atlas (#749) (voir la rubrique "Configuration des données d'observations présente dans l'atlas" dans la documentation sur la confiuguration )
-    - Suppression de la table ``t_layer_territoire`` qui permettait de filtrer les données hors territoire. Ceci est desormais à faire en amont par chaque utilisateurs 
-    - Le paramètre ``type_territoire`` du ficher ``settings.ini`` n'est plus utilisé
 - Les fichiers de langues sont dorénavant surcouchables (voir section "Customisation des textes et labels via la surcouche du multiligue" dans la documentation sur la configuration)
 - Refonte du style icones de patrimonialité, protection et menace. Les 3 icones sont maintenant surcouchables
 - Possibilité d'ajouter des labels sur la sidebar (#729 @juggler31)
 - Ajout du paramètre ``LIMIT_POINT_MAILLE`` qui permet de définir le seuil à partir duquel on affiche les données en mode maille sur un atlas en mode point (défaut 500 observations)
 - Le paramètre ``drop_apps_db`` du fichier settings.ini est déprécié. Il est remplacer par ``ATLAS_DROP_SCHEMA`` qui ne supprime que le schéma atlas
-- Ajout d'une fonction pour raffraichir uniquement les attributs et les médias associés aux taxons
-- Le fichier ``navbar.html.sample`` et le css associé à été modifié. Repartez du fichier ``navbar.html.sample``, puis ajoutez les modifications que vous aviez fait 
+- Ajout d'une fonction pour raffraichir uniquement les attributs et les médias associés aux taxons (``atlas.refresh_materialized_view_taxon_attr_and_media``)
 
-::
-    cp atlas/static/sample/templates/navbar.html atlas/static/custom/templates/navbar.html
-
-``maps-custom``
-La fonction ``pointDisplayOptionsFicheCommuneHome`` devient ``customizeMarkerStyle``
-
-``presentation.html``
 Les paramètres de l'url de la fiche territoire était ``url_for('main.ficheCommune', insee=05090)`` et devient ``url_for('main.area', id_area=XXXXXX)``
 
-- Ajout de statistique sur la fiche de "zoning" (#540 @juggler31)
+- Ajout de statistique sur la fiche de "zonage" (#540 @juggler31)
 
+👨‍💻 **Développement**
+
+- Passage à Bootstrap 5 (@Orangetine)
+- Passage à SQLAlchemy 2 (@Orangetine)
 
 ⚠️ **Notes de version**
 
@@ -60,12 +54,16 @@ Des modifications sont à faire dans le fichier ``settings.ini`` pour que l'inst
 - Ajouter les paramètre suivants : (voir le fichier ``settings.ini.sample`` pour trouver des examples): 
      - ``type_code`` : : Type de zonages a utiliser dans l'application pour les fiche territoire (il est maintenant possible de faire des fichies zonage sur n'importequel type du ref_geo et non plus simplement sur les communes)
      - ``observation_data_source`` : vue ou table de la source des données des observations dans la BDD mère (si on utilise GeoNature : la valeur proposée dans ``settings.ini.sample`` est ``gn_synthese.synthese``). Si vous n'utilisez pas GeoNature, renseignez le paramètre avec une chaine vide
-
+- Pour configurer les données qui remontent dans l'atlas il est conseillé de ne plus surcoucher ``atlas.vm_observations`` mais de s'appuyer sur le paramètre ``observation_data_source`` du fichier ``settings.ini`` (voir doc à ce sujet dans ``configuration.rst``)
+- Le passage à Bootstrap 5 nécessite de revoir le contenu des templates personnalisé (``custom/templates``). Il est necessaire de repartir des templates fournis dans ``atlas/static/sample/templates`` et d'adapter leur contenu.
+- La fonction ``pointDisplayOptionsFicheCommuneHome`` qui permet de configurer le style cartographique en mode point devient ``customizeMarkerStyle``
 - La couche des limites du territoire n'est plus fournie par défaut. Pour ajouter cette couche (ainsi que d'autres couches personnalisées), utilisez le paramètre ``COUCHES_SIG``
 - les paramètres ``BORDERS_COLOR``, ``BORDERS_WEIGHT`` pour styliser le coutour du territoire sont dépréciés. Utilisez le paramètre ``COUCHES_SIG`` et l'attribut ``style`` de ce paramètre pour configurer le style de la couche (voir l'exemple dans ``config.py.example``)
 - les variables css ``--main-color`` et ``--second-color`` utilisées dans la surcouche css sont dépreciées. Utilisez les variables de configuration (config.py) ``TEMPLATE_MAIN_COLOR`` et ``TEMPLATE_SECOND_COLOR``.
 - Les attributs ``label``, ``text`` et ``label_pluriel`` du paramètre ``PATRIMONIALITE`` sont dépréciés. Utilisez la surchouche de langue si vous souhaitez modifier ce terme (id : ``patrimonial``, ``patrimonial.plural`` et ``this.taxa.is.patrimonial``)
-- Pour configurer les données qui remontent dans l'atlas il est conseillé de ne plus surcoucher ``atlas.vm_observations`` mais de s'appuyer sur le paramètre ``observation_data_source`` du fichier ``settings.ini`` (voir doc à ce sujet dans ``configuration.rst``)
+
+
+
 Vous pouvez supprimer les paramètres suivants du fichier ``settings.ini`` :
   - ``drop_apps_db``. Le script ``install_db.sh`` ne supprime plus la base de données. Si vous voulez rejouer la création des vues materialisées, utiliez le paramètre ``ATLAS_DROP_SCHEMA`` qui supprime uniquement le schéma ``atlas``
   -  ``venv_dir`` L'environnement virtuel est créer dans un répértoire ``venv``

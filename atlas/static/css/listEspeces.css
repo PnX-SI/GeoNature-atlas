@@ -16,7 +16,7 @@ footer {
     flex-direction: column;
     flex: 1 1 0;
     overflow-y: auto;
-    min-height: 10rem;
+    min-height: 25rem;
 
 }
 

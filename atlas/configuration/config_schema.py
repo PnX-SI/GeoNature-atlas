@@ -301,7 +301,6 @@ class AtlasConfig(Schema):
         load_default="Les observations des agents ces 7 derniers jours |"
     )
     MAP = fields.Nested(MapConfig, load_default=dict())
-    DEFAULT_LEGEND_DISPLAY = fields.Boolean(load_default=True)
     COUCHES_SIG = fields.List(fields.Nested(CouchesSigConfig), load_default=list())
     # coupe le nom_vernaculaire à la 1ere virgule sur les fiches espèces
     SPLIT_NOM_VERN = fields.Boolean(load_default=True)

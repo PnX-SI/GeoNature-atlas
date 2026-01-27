@@ -153,9 +153,6 @@ MAP = {
 # True = maille / False = point
 AFFICHAGE_MAILLE = False
 
-# Ouvrir le widget par défaut de legende.
-DEFAULT_LEGEND_DISPLAY = True
-
 # Ajout des flux wms et geojson
 
 COUCHES_SIG = [
@@ -213,6 +210,10 @@ AFFICHAGE_STAT_GLOBALES = True
 
 # Bloc avec carte et liste des dernières observations. Affichage True/False
 AFFICHAGE_DERNIERES_OBS = True
+
+# Bloc avec carte de toutes les observations du territoire 
+# on ne peut pas afficher la carte des dernières obs et cette carte : les deu paramètre ne peuvent pas être à True
+AFFICHAGE_TERRITOIRE_OBS= False
 
 # Nombre d'éléments récupérés par page lors de la liste de taxon.
 ITEMS_PER_PAGE = 50
