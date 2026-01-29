@@ -12,7 +12,7 @@ CHANGELOG
 - Possibilité de remplacer la carte des dernières observations de la page d'accueil par une carte du territoire et de toutes les observations de l'atlas (paramètre ``AFFICHAGE_TERRITOIRE_OBS``)
 - Changement de la notion de "commune" en notion de "territoire". Possibilité de faire des fiches "territoire" sur les tous zonages du ref_geo (fiche résèrve, ZNIEFF etc...)(#545 @juggler31)
 - Ajout d'un graphique de provenance des données par organisme sur la fiche espèce (si ``ORGANISM_MODULE=True``) (#538)
-- Ajout de graphiques sur la fiche territoire
+- Ajout de graphiques sur la fiche territoire (possibilité d'afficher/masquer les statistiques sur tout le territoire : ``AFFICHAGE_TOUT_TERRITOIRE_GRAPH`` et sur la patrimonialité : ``DISPLAY_PATRIMONIALITE`` )
 - Ajout de "liens importants" sur les fiches taxons. Cette fonctionnalité permet par exemple de mettre en avant des démarches ou des ressources additionelles sur un taxon: un lien vers une plateforme de contribution collaborative, un lien vers une fiche détaillé sur l'espèce etc... Voir le paramètre ``TYPES_MEDIAS_LIENS_IMPORTANTS``
 - Ajout des statuts de conservation sur la fiche espèces. Le paramètre de configuration ``GROUPES_STATUTS`` permet de grouper et de filtrer les statuts que l'on souhaite afficher. Le template ``custom/templates/statuts.html`` permet de customiser l'affichage des statuts (customisation avancé, à modifier avec précaution)
 - Ajout de la notion d'espèce menacée et de graphiques associés sur les fiches territoire. La notion de menace est basé sur les listes rouges. Un taxon est considéré comme menacé s'il est sur une des liste suivantes : VU, EN, CR, CR* (@Orangetine) #669

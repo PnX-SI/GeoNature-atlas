@@ -10,14 +10,14 @@ Le statut de menace affiché est contextualisé en fonction du département sur 
 Une espèce est considérée comme menacée si elle possède un statut VU, EN, CR ou CR*.
 
 - **Sur une fiche espèce** :  
-Le statut de menace est global : si l’espèce est considérée comme menacée quelque part sur le territoire de l'atlas, elle sera affichée comme menacée sur sa fiche, quel que soit le territoire consulté.  
+Le statut de menace est global : si l’espèce est considérée comme menacée quelque part sur le territoire de l'atlas, elle sera affichée comme menacée sur sa fiche..  
 Seuls les statuts "actifs" de la BDC statuts (table `taxonomie.bdc_statut_text`) sont pris en compte.
 
 
 ### Comment est calculé le statut d'espèce protégée ?
 
 - **Sur une fiche territoire** :  
-On indique si l’espèce bénéficie d’une protection réglementaire dans la zone affichée (par exemple, protégée au niveau du département).
+On indique si l’espèce bénéficie d’une protection réglementaire dans le département sur lequel la fiche territoire se situe.
 
 - **Sur une fiche espèce** :  
 Si l’espèce est protégée quelquepart sur le territoire de l'atlas, elle sera indiquée comme protégée sur sa fiche, même si ce n’est pas le cas partout.  

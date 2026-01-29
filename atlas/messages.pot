@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-19 10:21+0100\n"
+"POT-Creation-Date: 2026-01-29 15:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,24 +17,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: atlas/atlasRoutes.py:436
+#: atlas/atlasRoutes.py:406
 msgid "static pages"
 msgstr ""
 
-#: atlas/atlasRoutes.py:438
+#: atlas/atlasRoutes.py:408
 msgid "home page"
 msgstr ""
 
-#: atlas/atlasRoutes.py:439 atlas/templates/core/sideBar.html:124
+#: atlas/atlasRoutes.py:409 atlas/templates/core/sideBar.html:124
 #: atlas/templates/home/globalStats.html:67
 msgid "photos"
 msgstr ""
 
-#: atlas/atlasRoutes.py:443
+#: atlas/atlasRoutes.py:413
 msgid "territories pages"
 msgstr ""
 
-#: atlas/atlasRoutes.py:446
+#: atlas/atlasRoutes.py:416
 msgid "species sheet by groups"
 msgstr ""
 
@@ -132,15 +132,15 @@ msgstr ""
 msgid "home.introduction.message"
 msgstr ""
 
-#: atlas/static/custom/templates/navbar.html:37
-#: atlas/static/sample/templates/navbar.html:37
+#: atlas/static/custom/templates/navbar.html:29
+#: atlas/static/sample/templates/navbar.html:29
 #: atlas/templates/home/globalStats.html:36
 #: atlas/templates/photoGalery/_main.html:73
 msgid "search.species"
 msgstr ""
 
-#: atlas/static/custom/templates/navbar.html:46
-#: atlas/static/sample/templates/navbar.html:46
+#: atlas/static/custom/templates/navbar.html:38
+#: atlas/static/sample/templates/navbar.html:38
 #: atlas/templates/home/globalStats.html:56
 msgid "search.area"
 msgstr ""
@@ -155,7 +155,7 @@ msgstr ""
 msgid "sitemap"
 msgstr ""
 
-#: atlas/templates/areaSheet/_main.html:63
+#: atlas/templates/areaSheet/_main.html:64
 msgid "last.obs.area"
 msgstr ""
 
@@ -175,6 +175,19 @@ msgstr ""
 
 #: atlas/templates/areaSheet/moreZoneInfo.html:22
 msgid "data_sources"
+msgstr ""
+
+#: atlas/templates/areaSheet/moreZoneInfo.html:41
+msgid "nb_species_observed"
+msgstr ""
+
+#: atlas/templates/areaSheet/moreZoneInfo.html:41
+#: atlas/templates/areaSheet/moreZoneInfo.html:47
+msgid "by_taxonomic_group"
+msgstr ""
+
+#: atlas/templates/areaSheet/moreZoneInfo.html:47
+msgid "nb_observervations"
 msgstr ""
 
 #: atlas/templates/areaSheet/moreZoneInfo.html:60
@@ -223,7 +236,7 @@ msgid "by.taxonomic.group"
 msgstr ""
 
 #: atlas/templates/areaSheet/statArea.html:8
-#: atlas/templates/core/statHierarchy.html:7 atlas/templates/core/taxon.html:80
+#: atlas/templates/core/statHierarchy.html:7 atlas/templates/core/taxon.html:77
 #: atlas/templates/home/globalStats.html:16
 #: atlas/templates/home/taxoRank.html:48
 #: atlas/templates/organismSheet/statsInfos.html:15
@@ -235,7 +248,7 @@ msgid "observations"
 msgstr ""
 
 #: atlas/templates/areaSheet/statArea.html:8
-#: atlas/templates/core/statHierarchy.html:7 atlas/templates/core/taxon.html:80
+#: atlas/templates/core/statHierarchy.html:7 atlas/templates/core/taxon.html:77
 #: atlas/templates/organismSheet/topSpecies.html:42
 #: atlas/templates/speciesSheet/map.html:15
 #: atlas/templates/speciesSheet/otherInformations.html:139
@@ -299,47 +312,47 @@ msgstr ""
 msgid "advanced_search"
 msgstr ""
 
-#: atlas/templates/core/layout.html:80
+#: atlas/templates/core/layout.html:86
 msgid "number.species"
 msgstr ""
 
-#: atlas/templates/core/layout.html:81
+#: atlas/templates/core/layout.html:87
 msgid "number.species.territory"
 msgstr ""
 
-#: atlas/templates/core/layout.html:82
+#: atlas/templates/core/layout.html:88
 msgid "protected"
 msgstr ""
 
-#: atlas/templates/core/layout.html:83
+#: atlas/templates/core/layout.html:89
 msgid "taxonomic.group"
 msgstr ""
 
-#: atlas/templates/core/layout.html:84
+#: atlas/templates/core/layout.html:90
 msgid "occurrences.number"
 msgstr ""
 
-#: atlas/templates/core/layout.html:85
+#: atlas/templates/core/layout.html:91
 msgid "observers.number"
 msgstr ""
 
-#: atlas/templates/core/layout.html:86
+#: atlas/templates/core/layout.html:92
 msgid "last.observation"
 msgstr ""
 
-#: atlas/templates/core/layout.html:87
+#: atlas/templates/core/layout.html:93
 msgid "inpn.group.3"
 msgstr ""
 
-#: atlas/templates/core/layout.html:88
+#: atlas/templates/core/layout.html:94
 msgid "yes"
 msgstr ""
 
-#: atlas/templates/core/layout.html:89
+#: atlas/templates/core/layout.html:95
 msgid "no"
 msgstr ""
 
-#: atlas/templates/core/layout.html:90
+#: atlas/templates/core/layout.html:96
 msgid "other.species"
 msgstr ""
 
@@ -387,72 +400,68 @@ msgstr ""
 msgid "gallery.title"
 msgstr ""
 
-#: atlas/templates/core/taxon.html:9
-msgid "display.municipality.obs"
-msgstr ""
-
-#: atlas/templates/core/taxon.html:26
+#: atlas/templates/core/taxon.html:23
 #: atlas/templates/organismSheet/topSpecies.html:58
 #: atlas/templates/speciesSheet/identityCard.html:56
 #: atlas/templates/speciesSheet/identityCard.html:158
 msgid "this.taxon.has.a.protected.status"
 msgstr ""
 
-#: atlas/templates/core/taxon.html:34
+#: atlas/templates/core/taxon.html:31
 #: atlas/templates/organismSheet/topSpecies.html:67
 #: atlas/templates/speciesSheet/identityCard.html:48
 #: atlas/templates/speciesSheet/identityCard.html:170
 msgid "this.taxa.is.patrimonial"
 msgstr ""
 
-#: atlas/templates/core/taxon.html:40 atlas/templates/core/taxon.html:41
+#: atlas/templates/core/taxon.html:37 atlas/templates/core/taxon.html:38
 msgid "threatened.CR"
 msgstr ""
 
-#: atlas/templates/core/taxon.html:42
+#: atlas/templates/core/taxon.html:39
 msgid "threatened.EN"
 msgstr ""
 
-#: atlas/templates/core/taxon.html:43
+#: atlas/templates/core/taxon.html:40
 msgid "threatened.VU"
 msgstr ""
 
-#: atlas/templates/core/taxon.html:48
+#: atlas/templates/core/taxon.html:45
 msgid "threatened.LRR"
 msgstr ""
 
-#: atlas/templates/core/taxon.html:49
+#: atlas/templates/core/taxon.html:46
 msgid "threatened.LRN"
 msgstr ""
 
-#: atlas/templates/core/taxon.html:50
+#: atlas/templates/core/taxon.html:47
 msgid "threatened.LRE"
 msgstr ""
 
-#: atlas/templates/core/taxon.html:51
+#: atlas/templates/core/taxon.html:48
 msgid "threatened.LRM"
 msgstr ""
 
-#: atlas/templates/core/taxon.html:57
+#: atlas/templates/core/taxon.html:54
 msgid "threatened"
 msgstr ""
 
-#: atlas/templates/core/taxon.html:60
+#: atlas/templates/core/taxon.html:57
 #: atlas/templates/speciesSheet/identityCard.html:64
 msgid "this.taxa.is.threatened"
 msgstr ""
 
-#: atlas/templates/core/taxon.html:83
+#: atlas/templates/core/taxon.html:80
 msgid "last.obs.in"
 msgstr ""
 
-#: atlas/templates/core/taxon.html:88
+#: atlas/templates/core/taxon.html:85
 #: atlas/templates/organismSheet/topSpecies.html:75
 #: atlas/templates/speciesSheet/identityCard.html:180
 msgid "check.species.sheet"
 msgstr ""
 
-#: atlas/templates/core/taxon.html:90 atlas/templates/home/lastObs.html:32
+#: atlas/templates/core/taxon.html:87 atlas/templates/home/lastObs.html:32
 #: atlas/templates/home/mostViewNow.html:33
 #: atlas/templates/home/newSpecies.html:48
 #: atlas/templates/home/taxoRank.html:60

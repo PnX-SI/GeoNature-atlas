@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-19 10:21+0100\n"
+"POT-Creation-Date: 2026-01-29 15:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,24 +18,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: atlas/atlasRoutes.py:436
+#: atlas/atlasRoutes.py:406
 msgid "static pages"
 msgstr "Pages statiques"
 
-#: atlas/atlasRoutes.py:438
+#: atlas/atlasRoutes.py:408
 msgid "home page"
 msgstr "Page d'accueil"
 
-#: atlas/atlasRoutes.py:439 atlas/templates/core/sideBar.html:124
+#: atlas/atlasRoutes.py:409 atlas/templates/core/sideBar.html:124
 #: atlas/templates/home/globalStats.html:67
 msgid "photos"
 msgstr "Photos"
 
-#: atlas/atlasRoutes.py:443
+#: atlas/atlasRoutes.py:413
 msgid "territories pages"
 msgstr "Pages des territoires"
 
-#: atlas/atlasRoutes.py:446
+#: atlas/atlasRoutes.py:416
 msgid "species sheet by groups"
 msgstr "Fiches espèces par groupe"
 
@@ -141,15 +141,15 @@ msgstr ""
 "d'un inventaire exhaustif ni d'une répartition complète des espèces sur "
 "le territoire."
 
-#: atlas/static/custom/templates/navbar.html:37
-#: atlas/static/sample/templates/navbar.html:37
+#: atlas/static/custom/templates/navbar.html:29
+#: atlas/static/sample/templates/navbar.html:29
 #: atlas/templates/home/globalStats.html:36
 #: atlas/templates/photoGalery/_main.html:73
 msgid "search.species"
 msgstr "Recherche par espèce"
 
-#: atlas/static/custom/templates/navbar.html:46
-#: atlas/static/sample/templates/navbar.html:46
+#: atlas/static/custom/templates/navbar.html:38
+#: atlas/static/sample/templates/navbar.html:38
 #: atlas/templates/home/globalStats.html:56
 msgid "search.area"
 msgstr "Recherche par territoire"
@@ -164,7 +164,7 @@ msgstr "Présentation de l'atlas"
 msgid "sitemap"
 msgstr "Plan du site"
 
-#: atlas/templates/areaSheet/_main.html:63
+#: atlas/templates/areaSheet/_main.html:64
 msgid "last.obs.area"
 msgstr "dernières observations"
 
@@ -186,6 +186,21 @@ msgstr "Espèces menacées"
 msgid "data_sources"
 msgstr "Provenance des données"
 
+#: atlas/templates/areaSheet/moreZoneInfo.html:41
+msgid "nb_species_observed"
+msgstr "Nombre d'espèces observées"
+
+#: atlas/templates/areaSheet/moreZoneInfo.html:41
+#: atlas/templates/areaSheet/moreZoneInfo.html:47
+#, fuzzy
+msgid "by_taxonomic_group"
+msgstr "par groupe taxonomique"
+
+#: atlas/templates/areaSheet/moreZoneInfo.html:47
+#, fuzzy
+msgid "nb_observervations"
+msgstr "Observations"
+
 #: atlas/templates/areaSheet/moreZoneInfo.html:60
 msgid "threatened.chart.intro"
 msgstr "Les graphiques suivants font l'état des"
@@ -200,7 +215,7 @@ msgstr "du territoire"
 
 #: atlas/templates/areaSheet/moreZoneInfo.html:69
 msgid "species.red.list"
-msgstr "Espèces disposant d'un statut liste rouge national et régional"
+msgstr "Espèces disposant d'un statut liste rouge"
 
 #: atlas/templates/areaSheet/moreZoneInfo.html:70
 msgid "status.CR"
@@ -221,7 +236,7 @@ msgstr "Vulnérable"
 #: atlas/templates/areaSheet/moreZoneInfo.html:77
 #: atlas/templates/areaSheet/moreZoneInfo.html:83
 msgid "number.threatened.species"
-msgstr "Nombre d'espèces observées menacées"
+msgstr "Nombre d'espèces menacées observées "
 
 #: atlas/templates/areaSheet/moreZoneInfo.html:77
 msgid "in.the.territory"
@@ -232,7 +247,7 @@ msgid "by.taxonomic.group"
 msgstr "par groupe taxonomique"
 
 #: atlas/templates/areaSheet/statArea.html:8
-#: atlas/templates/core/statHierarchy.html:7 atlas/templates/core/taxon.html:80
+#: atlas/templates/core/statHierarchy.html:7 atlas/templates/core/taxon.html:77
 #: atlas/templates/home/globalStats.html:16
 #: atlas/templates/home/taxoRank.html:48
 #: atlas/templates/organismSheet/statsInfos.html:15
@@ -244,7 +259,7 @@ msgid "observations"
 msgstr "Observations"
 
 #: atlas/templates/areaSheet/statArea.html:8
-#: atlas/templates/core/statHierarchy.html:7 atlas/templates/core/taxon.html:80
+#: atlas/templates/core/statHierarchy.html:7 atlas/templates/core/taxon.html:77
 #: atlas/templates/organismSheet/topSpecies.html:42
 #: atlas/templates/speciesSheet/map.html:15
 #: atlas/templates/speciesSheet/otherInformations.html:139
@@ -314,47 +329,47 @@ msgstr ""
 msgid "advanced_search"
 msgstr "Recherche avancée"
 
-#: atlas/templates/core/layout.html:80
+#: atlas/templates/core/layout.html:86
 msgid "number.species"
 msgstr "Nombre d'espèces"
 
-#: atlas/templates/core/layout.html:81
+#: atlas/templates/core/layout.html:87
 msgid "number.species.territory"
 msgstr "Nombre d'espèces sur tout le territoire"
 
-#: atlas/templates/core/layout.html:82
+#: atlas/templates/core/layout.html:88
 msgid "protected"
 msgstr "Protégé"
 
-#: atlas/templates/core/layout.html:83
+#: atlas/templates/core/layout.html:89
 msgid "taxonomic.group"
 msgstr "Groupe 2 INPN"
 
-#: atlas/templates/core/layout.html:84
+#: atlas/templates/core/layout.html:90
 msgid "occurrences.number"
 msgstr "Nombre d'observation"
 
-#: atlas/templates/core/layout.html:85
+#: atlas/templates/core/layout.html:91
 msgid "observers.number"
 msgstr "Nombre d'observateur"
 
-#: atlas/templates/core/layout.html:86
+#: atlas/templates/core/layout.html:92
 msgid "last.observation"
 msgstr "Dernière observation"
 
-#: atlas/templates/core/layout.html:87
+#: atlas/templates/core/layout.html:93
 msgid "inpn.group.3"
 msgstr "Group 3 INPN"
 
-#: atlas/templates/core/layout.html:88
+#: atlas/templates/core/layout.html:94
 msgid "yes"
 msgstr "oui"
 
-#: atlas/templates/core/layout.html:89
+#: atlas/templates/core/layout.html:95
 msgid "no"
 msgstr "non"
 
-#: atlas/templates/core/layout.html:90
+#: atlas/templates/core/layout.html:96
 msgid "other.species"
 msgstr "Autres espèces"
 
@@ -402,19 +417,14 @@ msgstr "Retour à l'accueil"
 msgid "gallery.title"
 msgstr "Galerie photos"
 
-#: atlas/templates/core/taxon.html:9
-#, fuzzy
-msgid "display.municipality.obs"
-msgstr "Commune"
-
-#: atlas/templates/core/taxon.html:26
+#: atlas/templates/core/taxon.html:23
 #: atlas/templates/organismSheet/topSpecies.html:58
 #: atlas/templates/speciesSheet/identityCard.html:56
 #: atlas/templates/speciesSheet/identityCard.html:158
 msgid "this.taxon.has.a.protected.status"
 msgstr "Ce taxon a un statut de protection"
 
-#: atlas/templates/core/taxon.html:34
+#: atlas/templates/core/taxon.html:31
 #: atlas/templates/organismSheet/topSpecies.html:67
 #: atlas/templates/speciesSheet/identityCard.html:48
 #: atlas/templates/speciesSheet/identityCard.html:170
@@ -422,58 +432,58 @@ msgstr "Ce taxon a un statut de protection"
 msgid "this.taxa.is.patrimonial"
 msgstr "Ce taxon est patrimonial"
 
-#: atlas/templates/core/taxon.html:40 atlas/templates/core/taxon.html:41
+#: atlas/templates/core/taxon.html:37 atlas/templates/core/taxon.html:38
 msgid "threatened.CR"
 msgstr "Critique"
 
-#: atlas/templates/core/taxon.html:42
+#: atlas/templates/core/taxon.html:39
 msgid "threatened.EN"
 msgstr "En danger"
 
-#: atlas/templates/core/taxon.html:43
+#: atlas/templates/core/taxon.html:40
 msgid "threatened.VU"
 msgstr "Vulnérable"
 
-#: atlas/templates/core/taxon.html:48
+#: atlas/templates/core/taxon.html:45
 #, fuzzy
 msgid "threatened.LRR"
 msgstr "Liste rouge régionale"
 
-#: atlas/templates/core/taxon.html:49
+#: atlas/templates/core/taxon.html:46
 #, fuzzy
 msgid "threatened.LRN"
 msgstr "Liste rouge nationale"
 
-#: atlas/templates/core/taxon.html:50
+#: atlas/templates/core/taxon.html:47
 #, fuzzy
 msgid "threatened.LRE"
 msgstr "Liste rouge européenne"
 
-#: atlas/templates/core/taxon.html:51
+#: atlas/templates/core/taxon.html:48
 #, fuzzy
 msgid "threatened.LRM"
 msgstr "Liste rouge mondiale"
 
-#: atlas/templates/core/taxon.html:57
+#: atlas/templates/core/taxon.html:54
 msgid "threatened"
 msgstr "Menacé"
 
-#: atlas/templates/core/taxon.html:60
+#: atlas/templates/core/taxon.html:57
 #: atlas/templates/speciesSheet/identityCard.html:64
 msgid "this.taxa.is.threatened"
 msgstr "Ce taxon est menacé"
 
-#: atlas/templates/core/taxon.html:83
+#: atlas/templates/core/taxon.html:80
 msgid "last.obs.in"
 msgstr "Dernière observation"
 
-#: atlas/templates/core/taxon.html:88
+#: atlas/templates/core/taxon.html:85
 #: atlas/templates/organismSheet/topSpecies.html:75
 #: atlas/templates/speciesSheet/identityCard.html:180
 msgid "check.species.sheet"
 msgstr "Voir la fiche espèce"
 
-#: atlas/templates/core/taxon.html:90 atlas/templates/home/lastObs.html:32
+#: atlas/templates/core/taxon.html:87 atlas/templates/home/lastObs.html:32
 #: atlas/templates/home/mostViewNow.html:33
 #: atlas/templates/home/newSpecies.html:48
 #: atlas/templates/home/taxoRank.html:60
@@ -689,4 +699,7 @@ msgstr "Observation pour le taxon"
 
 #~ msgid "inpn.group.3\""
 #~ msgstr ""
+
+#~ msgid "display.municipality.obs"
+#~ msgstr "Commune"
 

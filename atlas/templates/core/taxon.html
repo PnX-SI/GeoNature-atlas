@@ -77,7 +77,7 @@
             {% if taxon.nb_obs == 1 %}{{ _('observation') | lower }}{% else %}{{ _('observations') | lower }}{% endif %}
             <br>
 
-            {{ _('last.obs.in') }} <strong>{{ taxon.yearmax | int }}</strong>
+            {{ _('last.obs.in') }} : <strong>{{ taxon.yearmax | int }}</strong>
 
             <span class="float-end">
             <a class="badge btn btn-primary text-decoration-none" href="{{ url_for('main.ficheEspece', cd_nom=taxon.cd_ref) }}"
