@@ -1,3 +1,7 @@
+#taxonomy a {
+    color: var(--main-color)!important ;
+}
+
 ul.nav .nav-link {
     color: var(--main-color);
 }

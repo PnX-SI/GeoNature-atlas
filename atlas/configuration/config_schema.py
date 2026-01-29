@@ -206,6 +206,10 @@ class AtlasConfig(Schema):
                 "label": "France métropolitaine",
                 "filters": [{"cd_type_statut": "LRN", "cd_sig": "TERFXFR"}],
             },
+            {
+                "label": "Région",
+                "filters": [{"cd_type_statut": "LRR"}],
+            },
         ],
     )
 

@@ -167,10 +167,7 @@ main {
 }
 
 
-a {
-    -webkit-transition: all 0.5s ease;
-    transition: all 0.5s ease;
-}
+
 
 /* # btn.btn-default n'existe plus en bs5 */
 .btn.btn-primary {
