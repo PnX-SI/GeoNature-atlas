@@ -1,6 +1,6 @@
 .card.container {
     align-items: center;
-    padding: 1rem;
+    padding-top: 1rem;
     max-width: 100%;
     &.stat_card {
         align-items: center;
@@ -9,12 +9,11 @@
         align-items: self-start;
     }
     .tab-content {
-        padding: 1rem;
+        padding-top: 1rem;
         width: 100%;
 
         .infos_biodiversity, .infos_observations {
             text-align: center;
-            padding: 2rem;
 
             .chart-container {
                 height: 500px;
@@ -30,6 +29,9 @@
         }
     }
 }
+
+
+
 @media (min-width: 900px) {
     #observations_and_species.active,
     #threatened_species.active  {

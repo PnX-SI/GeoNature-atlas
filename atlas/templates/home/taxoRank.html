@@ -25,10 +25,10 @@
                     <div class="statMedias">
                         <div class="">
                             <h4 class="title-spaced title-bar">{{ configuration.RANG_STAT_FR[i] }} </h4>
-                            <span class="higlight" id="rankNbObs{{i}}">
-                            </span> observations
-                            <span class="higlight" id="rankNbTax{{i}}">
-                            </span> {{ _('species') }}
+                            <span class="fs-4 fw-bold" id="rankNbObs{{i}}">
+                            </span> <span class="fs-5"> observations -</span> 
+                            <span class="fs-4 fw-bold" id="rankNbTax{{i}}">
+                            </span> <span class="fs-5"> {{ _('species') |lower }}</span> 
                         </div>
                         <div class="row">
                             {% for j in range(2) %}

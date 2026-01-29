@@ -315,7 +315,7 @@ class AtlasConfig(Schema):
         fields.Nested(MediaTypeImportantLink), load_default=None
     )
 
-    DISPLAY_ZONING_PAGE_SENSIBILITY_MESSAGE = fields.Boolean(load_default=True)
+    DISPLAY_ZONING_PAGE_SENSIBILITY_MESSAGE = fields.Boolean(load_default=False)
 
     @validates_schema
     def validate_config(self, data, **kwargs):

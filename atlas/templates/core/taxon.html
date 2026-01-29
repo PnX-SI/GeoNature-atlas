@@ -4,10 +4,7 @@
         id="taxonListItem" 
         area-code="{{ id_area }}"
         cdRef="{{ taxon.cd_ref }}"
-        {% if configuration.INTERACTIVE_MAP_LIST %}
-        data-bs-toggle="tooltip" 
-        title="{{ _('display.municipality.obs') }}"
-        {% endif %}>
+    >
 
         <span class="d-none">{{ taxon.group2_inpn }}</span>
 
