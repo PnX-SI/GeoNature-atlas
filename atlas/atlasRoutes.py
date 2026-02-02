@@ -383,9 +383,17 @@ def sitemap():
         modified_time = ten_days_ago
         pages.append([url, modified_time])
 
-    municipalities = db.session.query(vmAreas.VmAreas).order_by(vmAreas.VmAreas.id_area).all()
-    for municipalitie in municipalities:
-        url = url_root + url_for("main.area", id_area=municipalitie.id_area)
+    # Pour ne remonter que les areas ayant des observations :
+    areas = (
+        db.session.query(vmAreas.VmAreas)
+        .join(vmAreas.VmBibAreasTypes, vmAreas.VmAreas.id_type == vmAreas.VmBibAreasTypes.id_type)
+        .filter(vmAreas.VmBibAreasTypes.type_code.in_(current_app.config["TYPE_TERRITOIRE_SHEET"]))
+        .order_by(vmAreas.VmAreas.area_name)
+        .all()
+    )
+
+    for area in areas:
+        url = url_root + url_for("main.area", id_area=area.id_area)
         modified_time = ten_days_ago
         pages.append([url, modified_time])
 
@@ -441,16 +449,17 @@ def sitemap_ui():
             {"url": url_species, "label": species.lb_nom}
         )
 
-    municipalities = (
+    # Pour ne remonter que les areas ayant des observations :
+    areas = (
         db.session.query(vmAreas.VmAreas)
         .join(vmAreas.VmBibAreasTypes, vmAreas.VmAreas.id_type == vmAreas.VmBibAreasTypes.id_type)
         .filter(vmAreas.VmBibAreasTypes.type_code.in_(current_app.config["TYPE_TERRITOIRE_SHEET"]))
         .order_by(vmAreas.VmAreas.area_name)
         .all()
     )
-    for municipalitie in municipalities:
-        url = url_root + url_for("main.area", id_area=municipalitie.id_area)
-        pages["areas"]["values"].append({"url": url, "label": municipalitie.area_name})
+    for area in areas:
+        url = url_root + url_for("main.area", id_area=area.id_area)
+        pages["areas"]["values"].append({"url": url, "label": area.area_name})
 
     return render_template("templates/sitemap.html", pages=pages)
 

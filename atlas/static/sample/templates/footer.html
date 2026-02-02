@@ -3,7 +3,7 @@
     <a href="http://www.ecrins-parcnational.fr" target="_blank">{{ configuration.STRUCTURE }}</a> |
     <a href="javascript:void(0)" role="button"  data-bs-toggle="modal" data-bs-target="#modalCredits">{{ _('credits') }}</a> |
     <a href="javascript:void(0)" role="button"  data-bs-toggle="modal" data-bs-target="#modalMentions">{{ _('legal') }}</a>
-    <a title="{{ _('sitemap') }}" href="/sitemap.html">{{ _('sitemap') }}</a>
+    <a title="{{ _('sitemap') }}" href=" {{url_for('main.sitemap_ui')}} ">{{ _('sitemap') }}</a>
     {% if configuration.AFFICHAGE_RGPD and configuration.OREJIME_APPS | length > 0 %}
         | <a href="#" data-bs-toggle="modal" data-bs-target="#modalPersonalData">{{ _('personal_data') }}</a>
         | <a id="preferences-cookies" href="#" onclick="orejime.show()">{{ _('preferences_cookies') }}</a>
