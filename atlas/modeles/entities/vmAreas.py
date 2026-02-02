@@ -51,6 +51,17 @@ class VmCorAreaSynthese(db.Model):
     is_valid_for_display: Mapped[bool]
 
 
+class VmAreasWithObs(db.Model):
+    __tablename__ = "vm_areas_with_obs"
+    __table_args__ = {"schema": "atlas"}
+
+    id_area: Mapped[int] = mapped_column(primary_key=True)
+    area_name: Mapped[str] = mapped_column(String(50))
+    id_type: Mapped[int] = mapped_column()
+    type_name: Mapped[str] = mapped_column(String(255))
+    type_code: Mapped[str] = mapped_column(String(50))
+
+
 class VmAreaStatTaxonomyGroup(db.Model):
     __tablename__ = "vm_area_stats_by_taxonomy_group"
     __table_args__ = {"schema": "atlas"}

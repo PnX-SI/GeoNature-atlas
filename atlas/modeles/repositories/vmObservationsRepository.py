@@ -13,7 +13,7 @@ from atlas.modeles.repositories.vmMedias import VmMedias
 from atlas.modeles.entities.vmObservations import VmObservations
 from atlas.modeles.entities.vmTaxons import VmTaxons
 from atlas.modeles.entities.vmTaxref import VmTaxref
-from atlas.modeles.entities.vmAreas import VmCorAreaSynthese, VmAreas, VmBibAreasTypes
+from atlas.modeles.entities.vmAreas import VmCorAreaSynthese, VmAreasWithObs
 from atlas.env import db
 
 currentYear = datetime.now().year
@@ -165,10 +165,8 @@ def statIndex():
         result["nbTotalObs"] = r.count
 
     type_code = current_app.config["TYPE_TERRITOIRE_SHEET"]
-    req = (
-        select(func.count(VmAreas.id_area).label("count"))
-        .join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type)
-        .filter(VmBibAreasTypes.type_code.in_(type_code))
+    req = select(func.count(VmAreasWithObs.id_area).label("count")).filter(
+        VmAreasWithObs.type_code.in_(type_code)
     )
     results = db.session.execute(req).all()
     for r in results:

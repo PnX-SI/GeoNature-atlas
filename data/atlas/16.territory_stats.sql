@@ -1,4 +1,24 @@
 -- +-----------------------------------------------------------------------------------------------+
+-- Zonages ayant au moins une observation, filtrés par type_code
+CREATE MATERIALIZED VIEW atlas.vm_areas_with_obs AS
+    SELECT DISTINCT
+        vla.id_area,
+        vla.area_name,
+        vla.id_type,
+        bat.type_name
+    FROM atlas.vm_l_areas AS vla
+        JOIN atlas.vm_bib_areas_types AS bat
+            ON bat.id_type = vla.id_type
+        JOIN atlas.vm_cor_area_synthese AS vcas
+            ON vla.id_area = vcas.id_area
+        JOIN atlas.vm_observations AS obs
+            ON obs.id_observation = vcas.id_synthese
+    WHERE bat.type_code = ANY(SELECT * FROM string_to_table(:'type_code', ','))
+WITH DATA;
+
+CREATE UNIQUE INDEX ON atlas.vm_areas_with_obs
+    USING btree (id_area);
+-- +-----------------------------------------------------------------------------------------------+
 -- Classic stats
 CREATE  MATERIALIZED VIEW atlas.vm_area_stats AS
     SELECT

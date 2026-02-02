@@ -12,9 +12,9 @@ from atlas.modeles.entities.vmAreas import (
     VmAreas,
     VmBibAreasTypes,
     VmCorAreas,
-    VmCorAreaSynthese,
     VmAreaStatTaxonomyGroup,
     VmAreaStats,
+    VmAreasWithObs,
 )
 from atlas.modeles.entities.vmObservations import VmObservations
 from atlas.modeles.entities.vmTaxons import VmTaxonArea
@@ -34,16 +34,15 @@ def searchAreas(search, limit=50):
     like_search = "%" + search.replace(" ", "%") + "%"
 
     query = (
-        db.session.query(distinct(VmAreas.area_name), VmAreas.id_area, VmBibAreasTypes.type_name)
-        .join(VmBibAreasTypes)
-        .filter(func.unaccent(VmAreas.area_name).ilike(func.unaccent(like_search)))
-        .filter(VmBibAreasTypes.type_code.in_(current_app.config["TYPE_TERRITOIRE_SHEET"]))
-        .order_by(VmAreas.area_name)
+        db.session.query(VmAreasWithObs)
+        .filter(func.unaccent(VmAreasWithObs.area_name).ilike(func.unaccent(like_search)))
+        .filter(VmAreasWithObs.type_code.in_(current_app.config["TYPE_TERRITOIRE_SHEET"]))
+        .order_by(VmAreasWithObs.area_name)
         .limit(limit)
     )
 
     results = query.all()
-    return [{"label": r[0], "value": r[1], "type_name": r[2]} for r in results]
+    return [{"label": r.area_name, "value": r.id_area, "type_name": r.type_name} for r in results]
 
 
 def getAreaFromIdArea(id_area):

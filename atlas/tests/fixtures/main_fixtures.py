@@ -8,6 +8,7 @@ from flask import template_rendered
 
 from atlas.modeles.entities.vmTaxons import VmTaxons
 from atlas.modeles.entities.vmTaxref import VmTaxref
+from atlas.modeles.entities.vmAreas import VmAreasWithObs
 from atlas.env import db
 
 
@@ -94,3 +95,16 @@ def taxon(db_session):
     db_session.flush()
 
     return vm_taxons
+
+
+@pytest.fixture(scope="function")
+def vm_areas_with_obs_data():
+    # Ajoute des données de test, ne supprime ni ne nettoie la table
+    area1 = VmAreasWithObs(id_area=101, area_name="Test Area", id_type=10, type_code="COMMUNE")
+    area2 = VmAreasWithObs(
+        id_area=102, area_name="Autre Territoire", id_type=11, type_code="DEPARTEMENT"
+    )
+    db.session.add_all([area1, area2])
+    db.session.commit()
+    return [area1, area2]
+    # Pas de suppression ici (conformément aux instructions)

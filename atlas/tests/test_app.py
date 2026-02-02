@@ -1,3 +1,4 @@
+import pytest
 from flask import url_for
 from fixtures.main_fixtures import captured_templates
 
