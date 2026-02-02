@@ -17,14 +17,16 @@ body {
 }
 
 main {
-    margin-top: 60px;
-    margin-left: 60px;
+    margin-top: 3.5rem;
+    margin-left: 65px;
     flex: 1;
 }
 
 #dropdown09 {
     cursor: pointer;
 }
+
+
 
 .small-placeholder::placeholder {
     font-size: 13px;
