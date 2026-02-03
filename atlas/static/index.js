@@ -1,6 +1,6 @@
 if (configuration.AFFICHAGE_STAT_GLOBALES) {
     $.ajax({
-        url: configuration.URL_APPLICATION + "/api/main_stat",
+        url: window.LANGUAGE_PREFIXED_URL_APPLICATION + "/api/main_stat",
         dataType: "json",
     }).done(function (stat) {
         $("#nbObs").html(stat.nbTotalObs.toLocaleString());
@@ -14,7 +14,7 @@ if (configuration.AFFICHAGE_STAT_GLOBALES) {
 
 if (configuration.AFFICHAGE_RANG_STAT) {
     $.ajax({
-        url: configuration.URL_APPLICATION + "/api/rank_stat",
+        url: window.LANGUAGE_PREFIXED_URL_APPLICATION + "/api/rank_stat",
         dataType: "json",
     }).done(function (stat) {
         stat.forEach(function (element, index) {

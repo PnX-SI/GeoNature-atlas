@@ -1,15 +1,4 @@
 {% block assets_header %}
-    {% if configuration.MULTILINGUAL %}
-        {% for language in configuration.AVAILABLE_LANGUAGES %}
-            <link rel="alternate" hreflang="{{ language }}" href="{{url_for(request.endpoint, lang_code=language, _external=True, **request.view_args)}}">
-        {% endfor %}
-        <link
-                rel="alternate"
-                href="{{url_for(request.endpoint, _external=True, lang_code=configuration.DEFAULT_LANGUAGE, **request.view_args)}}"
-                hreflang="x-default"
-        >
-        <link rel="canonical" href="{{url_for(request.endpoint, _external=True, lang_code=configuration.DEFAULT_LANGUAGE, **request.view_args)}}">
-    {% endif %}
 
     <!-- Jquery -->
     <script type=text/javascript src="{{url_for('static', filename='node_modules/jquery/dist/jquery.min.js') }}"></script>
@@ -39,7 +28,6 @@
     <!-- fontawesome -->
     <script src="{{url_for('static', filename='node_modules/@fortawesome/fontawesome-free/js/all.min.js') }}"></script>
     <!-- CSS Application -->
-    <link rel="SHORTCUT ICON" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
     <link rel="stylesheet" href="{{url_for('static', filename='css/atlas.css') }}" />
 
     <!-- GDPR -->

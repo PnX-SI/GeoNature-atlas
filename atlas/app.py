@@ -20,7 +20,12 @@ from atlas.env import (
     cache,
     babel,
 )
-from atlas.utils import get_locale, get_tranlated_labels
+from atlas.utils import (
+    get_locale,
+    get_tranlated_labels,
+    multilingual_utils,
+    get_current_url_prefix,
+)
 
 compress = Compress()
 
@@ -51,14 +56,28 @@ def create_app(config_overrides=None):
 
     babel.init_app(app, locale_selector=get_locale)
     compress.init_app(app)
+
     with app.app_context() as context:
         from atlas.atlasRoutes import main as main_blueprint
-
-        app.register_blueprint(main_blueprint)
-
         from atlas.atlasAPI import api
 
-        app.register_blueprint(api, url_prefix="/api")
+        if app.config["MULTILINGUAL"]:
+            # AVEC lang_code
+            app.register_blueprint(main_blueprint, url_prefix="/<lang_code>")
+            app.register_blueprint(api, url_prefix="/<lang_code>/api")
+            # SANS lang_code (langue par défaut)
+            app.register_blueprint(
+                main_blueprint,
+                name="main_no_lang",
+            )
+            app.register_blueprint(api, name="api_no_lang", url_prefix="/api")
+        else:
+            # Mode monolingue simple
+            app.register_blueprint(main_blueprint)
+            app.register_blueprint(api, url_prefix="/api")
+
+        multilingual_utils(app)
+
         app.wsgi_app = ProxyFix(app.wsgi_app, x_host=1)
 
         app.wsgi_app = SharedDataMiddleware(
@@ -85,6 +104,7 @@ def create_app(config_overrides=None):
                 timedelta=timedelta,
                 page_name=request.endpoint.split(".")[1],
                 current_language=get_locale(),
+                current_url_prefix=get_current_url_prefix(),
             )
 
         @app.template_filter("pretty")

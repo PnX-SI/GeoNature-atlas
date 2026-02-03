@@ -44,9 +44,9 @@ function displayObs(id_area) {
     // si on est en maille on renvoie toutes les données aggregées par maille
     let url;
     if (!configuration.AFFICHAGE_MAILLE) {
-        url = `${configuration.URL_APPLICATION}/api/observationsPoint?id_area=${id_area}&limit=100&fields=taxons`;
+        url = `${window.LANGUAGE_PREFIXED_URL_APPLICATION}/api/observationsPoint?id_area=${id_area}&limit=100&fields=taxons`;
     } else {
-        url = `${configuration.URL_APPLICATION}/api/observationsMaille?id_area=${id_area}&fields=taxons`;
+        url = `${window.LANGUAGE_PREFIXED_URL_APPLICATION}/api/observationsMaille?id_area=${id_area}&fields=taxons`;
     }
     $("#loaderSpinner").show();
     fetch(url)
@@ -70,7 +70,9 @@ function displayObs(id_area) {
 
 function displayObsTaxonMaille(areaID, cd_ref) {
     $.ajax({
-        url: configuration.URL_APPLICATION + "/api/observationsMaille",
+        url:
+            window.LANGUAGE_PREFIXED_URL_APPLICATION +
+            "/api/observationsMaille",
         data: {
             id_area: areaID,
             cd_ref: cd_ref,

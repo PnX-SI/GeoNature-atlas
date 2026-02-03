@@ -25,6 +25,7 @@ autocompleteSearch = function (inputID, urlDestination, nbProposal) {
             } else {
                 searchUrl = "/api/searchArea/" + urlDestination;
             }
+
             $(inputID)
                 .attr("loading", "true")
                 .css(
@@ -34,7 +35,7 @@ autocompleteSearch = function (inputID, urlDestination, nbProposal) {
                         "/static/images/loading3.gif')",
                 );
             $.get(
-                configuration.URL_APPLICATION + searchUrl,
+                window.LANGUAGE_PREFIXED_URL_APPLICATION + searchUrl,
                 { search: request.term, limit: nbProposal },
                 function (results) {
                     const unique_type_name = [
@@ -73,7 +74,7 @@ autocompleteSearch = function (inputID, urlDestination, nbProposal) {
             var url = ui.item.value;
             if (urlDestination === "espece") {
                 location.href =
-                    configuration.URL_APPLICATION + "/espece/" + url;
+                    window.LANGUAGE_PREFIXED_URL_APPLICATION + "/espece/" + url;
                 const splited_label = ui.item.label.split(" = ");
                 const label_for_input =
                     splited_label[0] !== ""
@@ -82,7 +83,10 @@ autocompleteSearch = function (inputID, urlDestination, nbProposal) {
                 $(inputID).val(label_for_input.replace(/<[^>]*>?/gm, ""));
             } else {
                 location.href =
-                    configuration.URL_APPLICATION + "/area/" + "/" + url;
+                    window.LANGUAGE_PREFIXED_URL_APPLICATION +
+                    "/area/" +
+                    "/" +
+                    url;
             }
 
             return false;

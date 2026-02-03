@@ -11,8 +11,8 @@ function loadNewTaxons() {
 }
 
 function initApiUrls() {
-    url = `${configuration.URL_APPLICATION}/api/taxonList`;
-    jsonUrl = `${configuration.URL_APPLICATION}/api/taxonListJson`;
+    url = `${window.LANGUAGE_PREFIXED_URL_APPLICATION}/api/taxonList`;
+    jsonUrl = `${window.LANGUAGE_PREFIXED_URL_APPLICATION}/api/taxonListJson`;
     if (context.page !== "home_territory") {
         url = `${url}/${context.page}/${context.page_param}`;
         jsonUrl = `${jsonUrl}/${context.page}/${context.page_param}`;

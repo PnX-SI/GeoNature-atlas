@@ -14,6 +14,7 @@ from flask import (
     request,
     url_for,
     session,
+    request,
 )
 from flask_babel import gettext
 
@@ -42,14 +43,16 @@ from atlas.configuration.config_parser import config
 
 main = Blueprint("main", __name__)
 
-# change language route
-if config["MULTILINGUAL"]:
 
-    @main.route("/language/<lang_code>")
-    def change_language(lang_code):
-        if lang_code in config["AVAILABLE_LANGUAGES"]:
-            session["language"] = lang_code
-        return redirect(request.referrer or url_for("main.index"))
+@main.before_request
+def redirect_default_language():
+    if current_app.config["MULTILINGUAL"]:
+        endpoint_with_lang = f"main.{request.endpoint.split('.')[1]}"
+        args = request.view_args.copy() if request.view_args else {}
+        args["lang_code"] = g.lang_code
+        target_url = url_for(endpoint_with_lang, **args)
+        if request.path != urlparse(target_url).path:
+            return redirect(target_url)
 
 
 # Activating organisms sheets routes
