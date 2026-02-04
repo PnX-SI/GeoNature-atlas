@@ -4,7 +4,7 @@
   {% for groupe in groupesStatuts %}
     <li>
       {% if groupe.label %}
-        <span class="groupe-label"><strong>{{ groupe.label }}</strong></span>
+        <span class="groupe-label"><strong>{{ groupe.label }} : </strong></span>
       {% endif %}
 
       <ul class="statuts-list">
@@ -35,8 +35,6 @@
 
           {% if population %}
             {% set cd_type_statut = statut.cd_type_statut + population|first|lower %}
-          {% else %}
-            {% set cd_type_statut = statut.cd_type_statut %}
           {% endif %}
 
           <li>
@@ -45,7 +43,7 @@
               data-bs-placement="right"
               title="{{ statut.lb_type_statut }} ({{ statut.lb_adm_tr }}{% if population %} - {{ population }}{% endif %}) : {{ statut.label_statut }}"
             >
-              {{ cd_type_statut }} :
+             {% if population %} {{ cd_type_statut }} : {% endif %}
               <span class="{{ statut.code_statut }} bloc-statut-bdc">{{ statut.code_statut }}</span>
             </span>
           </li>

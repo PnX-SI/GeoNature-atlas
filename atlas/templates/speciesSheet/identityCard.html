@@ -49,7 +49,7 @@
                                  data-bs-placement="right">
                         {% endif %}
                         {% if configuration.PROTECTION and taxon.taxonSearch.protection_stricte %}
-                            <a href="https://inpn.mnhn.fr/espece/cd_nom//tab/statut" target="_blank" style="text-decoration: none;">
+                            <a href="https://inpn.mnhn.fr/espece/cd_nom/{{taxon.taxonSearch.cd_ref}}/tab/statut" target="_blank" style="text-decoration: none;">
                                 <img class="caractEspece"
                                         src="{{ url_for('static', filename='custom/images/protected.png') }}"
                                         data-bs-toggle="tooltip"
@@ -58,11 +58,13 @@
                             </a>
                         {% endif %}
                         {% if configuration.AFFICHAGE_MENACE and taxon.taxonSearch.menace %}
-                            <img class="caractEspece"
-                                src="{{ url_for('static', filename='custom/images/threatened.png') }}"
-                                data-bs-toggle="tooltip"
-                                title="{{ _('this.taxa.is.threatened') }}"
-                                data-bs-placement="right">
+                            <a href="https://inpn.mnhn.fr/espece/cd_nom/{{taxon.taxonSearch.cd_ref}}/tab/statut" target="_blank" style="text-decoration: none;">
+                                <img class="caractEspece"
+                                    src="{{ url_for('static', filename='custom/images/threatened.png') }}"
+                                    data-bs-toggle="tooltip"
+                                    title="{{ _('this.taxa.is.threatened') }}"
+                                    data-bs-placement="right">
+                            </a>
                         {% endif %}
 
 
@@ -91,18 +93,6 @@
                             <span class="fas fa-chevron-right"></span>
                         {% endif %}
                     {% endfor %}
-                </div>
-
-                <div id="statuts-and-links-container">
-                    <div id="inpnLink">
-                        <a href="https://inpn.mnhn.fr/espece/cd_nom/{{ taxon.taxonSearch.cd_ref }}" target="_blank">
-                            <img width="90px"
-                                 src="{{ url_for('static', filename='images/logo_inpn.png') }}"
-                                 data-bs-toggle="tooltip"
-                                 title="{{ _('check.species.sheet.inpn') }}"
-                                 data-bs-placement="right">
-                        </a>
-                    </div>
                 </div>
 
                 {% if configuration.AFFICHAGE_STATUTS and groupesStatuts|length != 0 %}
