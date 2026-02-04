@@ -27,7 +27,7 @@
     <div id="sideBar">
         {% include 'templates/core/sideBar.html' %}
     </div>
-    <div id="page" class="container-fluid" data-bs-spy="scroll" data-bs-target="#sommaire" data-bs-offset="80" tabindex="0">
+    <div class="container-fluid" data-bs-spy="scroll" data-bs-target="#sommaire" data-bs-offset="80" tabindex="0">
 
 
             <!-- Carousel

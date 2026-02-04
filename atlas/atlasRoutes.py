@@ -46,8 +46,16 @@ main = Blueprint("main", __name__)
 
 @main.before_request
 def redirect_default_language():
-    if current_app.config["MULTILINGUAL"]:
-        endpoint_with_lang = f"main.{request.endpoint.split('.')[1]}"
+    if not current_app.config["MULTILINGUAL"]:
+        return
+
+    # if lang_code already in args, do not redirect
+    if "lang_code" in (request.view_args or {}):
+        return
+
+    endpoint = request.endpoint
+    if endpoint and "." in endpoint:
+        endpoint_with_lang = f"main.{endpoint.split('.')[1]}"
         args = request.view_args.copy() if request.view_args else {}
         args["lang_code"] = g.lang_code
         target_url = url_for(endpoint_with_lang, **args)

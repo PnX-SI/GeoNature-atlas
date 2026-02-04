@@ -9,6 +9,10 @@
     --thumbBG: var(--main-color);
 }
 
+/* * {
+  outline: 1px solid red;
+} */
+
 body {
     display: flex;
     flex-direction: column;
@@ -80,13 +84,6 @@ main {
     font-weight: bold;
 }
 
-#page {
-    padding-left: 10px;
-    padding-right: 10px;
-    flex: 1;
-    /*padding-top: 60px;*/
-    /*margin-top: 25px;*/
-}
 
 .form-control:focus {
     border-color: var(--main-color);
