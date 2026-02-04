@@ -1,5 +1,5 @@
 <div id="statut-bdc">
-  <h5>Statuts de conservation </h5>
+  <h5> {{_('status')}} : </h5>
   <ul class="groupes-list {% if groupesStatutsHaveLabels %}with-labels{% else %}without-labels{% endif %}">
   {% for groupe in groupesStatuts %}
     <li>

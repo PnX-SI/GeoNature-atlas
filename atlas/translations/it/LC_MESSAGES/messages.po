@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-29 15:45+0100\n"
+"POT-Creation-Date: 2026-02-04 15:44+0100\n"
 "PO-Revision-Date: 2021-07-19 09:53+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
@@ -18,24 +18,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: atlas/atlasRoutes.py:406
+#: atlas/atlasRoutes.py:425
 msgid "static pages"
 msgstr "Pagine statiche"
 
-#: atlas/atlasRoutes.py:408
+#: atlas/atlasRoutes.py:427
 msgid "home page"
 msgstr "Partner"
 
-#: atlas/atlasRoutes.py:409 atlas/templates/core/sideBar.html:124
+#: atlas/atlasRoutes.py:428 atlas/templates/core/sideBar.html:124
 #: atlas/templates/home/globalStats.html:67
 msgid "photos"
 msgstr "foto"
 
-#: atlas/atlasRoutes.py:413
+#: atlas/atlasRoutes.py:432
 msgid "territories pages"
 msgstr "Pagine dei territori"
 
-#: atlas/atlasRoutes.py:416
+#: atlas/atlasRoutes.py:435
 msgid "species sheet by groups"
 msgstr "Foglio delle specie per gruppi"
 
@@ -51,54 +51,60 @@ msgid "home"
 msgstr "Home"
 
 #: atlas/static/custom/templates/footer.html:4
-#: atlas/static/custom/templates/footer.html:26
+#: atlas/static/custom/templates/footer.html:27
 #: atlas/static/sample/templates/footer.html:4
 #: atlas/static/sample/templates/footer.html:27
 msgid "credits"
 msgstr "Concezione e crediti"
 
 #: atlas/static/custom/templates/footer.html:5
-#: atlas/static/custom/templates/footer.html:41
+#: atlas/static/custom/templates/footer.html:42
 #: atlas/static/sample/templates/footer.html:5
 #: atlas/static/sample/templates/footer.html:42
 msgid "legal"
 msgstr "Nota legale"
 
-#: atlas/static/custom/templates/footer.html:7
-#: atlas/static/custom/templates/footer.html:57
+#: atlas/static/custom/templates/footer.html:6
+#: atlas/static/sample/templates/footer.html:6 atlas/templates/sitemap.html:4
+#: atlas/templates/sitemap.html:19
+msgid "sitemap"
+msgstr "Mappa del sito"
+
+#: atlas/static/custom/templates/footer.html:8
+#: atlas/static/custom/templates/footer.html:58
 #: atlas/static/sample/templates/footer.html:8
 #: atlas/static/sample/templates/footer.html:58
 msgid "personal_data"
 msgstr "Dati personali"
 
-#: atlas/static/custom/templates/footer.html:8
+#: atlas/static/custom/templates/footer.html:9
 #: atlas/static/sample/templates/footer.html:9
 msgid "preferences_cookies"
 msgstr ""
 
-#: atlas/static/custom/templates/footer.html:14
+#: atlas/static/custom/templates/footer.html:15
 #: atlas/static/sample/templates/footer.html:15
 msgid "atlas.fauna.flora"
 msgstr "Atlante della flora e della fauna"
 
-#: atlas/static/custom/templates/footer.html:14
+#: atlas/static/custom/templates/footer.html:15
 #: atlas/static/custom/templates/introduction.html:7
 #: atlas/static/sample/templates/footer.html:15
 #: atlas/static/sample/templates/introduction.html:7
 msgid "from1"
 msgstr "di"
 
-#: atlas/static/custom/templates/footer.html:16
+#: atlas/static/custom/templates/footer.html:17
 #: atlas/static/sample/templates/footer.html:17
 msgid "powered.by"
 msgstr "Realizzato da"
 
-#: atlas/static/custom/templates/footer.html:17
+#: atlas/static/custom/templates/footer.html:18
 #: atlas/static/sample/templates/footer.html:18
 msgid "developed.by"
 msgstr "sviluppato da il"
 
-#: atlas/static/custom/templates/footer.html:17
+#: atlas/static/custom/templates/footer.html:18
 #: atlas/static/sample/templates/footer.html:18
 msgid "ecrins.national.park"
 msgstr "Parco Nazionale degli Ecrins"
@@ -158,10 +164,9 @@ msgstr "Ricerca per territorio"
 msgid "atlas.presentation"
 msgstr "Presentazione dell'atlante"
 
-#: atlas/static/sample/templates/footer.html:6 atlas/templates/sitemap.html:4
-#: atlas/templates/sitemap.html:19
-msgid "sitemap"
-msgstr "Mappa del sito"
+#: atlas/static/sample/templates/statuts.html:2
+msgid "status"
+msgstr ""
 
 #: atlas/templates/areaSheet/_main.html:64
 msgid "last.obs.area"
@@ -249,7 +254,7 @@ msgstr "per gruppo tassonomico"
 #: atlas/templates/areaSheet/statArea.html:8
 #: atlas/templates/core/statHierarchy.html:7 atlas/templates/core/taxon.html:77
 #: atlas/templates/home/globalStats.html:16
-#: atlas/templates/home/taxoRank.html:48
+#: atlas/templates/home/taxoRank.html:37
 #: atlas/templates/organismSheet/statsInfos.html:15
 #: atlas/templates/organismSheet/topSpecies.html:44
 #: atlas/templates/speciesSheet/identityCard.html:138
@@ -270,7 +275,7 @@ msgstr "Osservazione"
 #: atlas/templates/areaSheet/statArea.html:47
 #: atlas/templates/core/statHierarchy.html:12
 #: atlas/templates/home/globalStats.html:28
-#: atlas/templates/home/taxoRank.html:31
+#: atlas/templates/home/taxoRank.html:21
 #: atlas/templates/organismSheet/statsInfos.html:29
 msgid "species"
 msgstr "Contanti"
@@ -329,51 +334,51 @@ msgstr ""
 msgid "advanced_search"
 msgstr "Ricerca Avanzata"
 
-#: atlas/templates/core/layout.html:86
+#: atlas/templates/core/layout.html:109
 msgid "number.species"
 msgstr "Numero di specie"
 
-#: atlas/templates/core/layout.html:87
+#: atlas/templates/core/layout.html:110
 msgid "number.species.territory"
 msgstr "Numero di specie del territorio"
 
-#: atlas/templates/core/layout.html:88
+#: atlas/templates/core/layout.html:111
 #, fuzzy
 msgid "protected"
 msgstr "Stato di protezione"
 
-#: atlas/templates/core/layout.html:89
+#: atlas/templates/core/layout.html:112
 #, fuzzy
 msgid "taxonomic.group"
 msgstr "per gruppo tassonomico"
 
-#: atlas/templates/core/layout.html:90
+#: atlas/templates/core/layout.html:113
 msgid "occurrences.number"
 msgstr ""
 
-#: atlas/templates/core/layout.html:91
+#: atlas/templates/core/layout.html:114
 #, fuzzy
 msgid "observers.number"
 msgstr "Osservatori"
 
-#: atlas/templates/core/layout.html:92
+#: atlas/templates/core/layout.html:115
 #, fuzzy
 msgid "last.observation"
 msgstr "ultima osservazione"
 
-#: atlas/templates/core/layout.html:93
+#: atlas/templates/core/layout.html:116
 msgid "inpn.group.3"
 msgstr "Group 3 INPN"
 
-#: atlas/templates/core/layout.html:94
+#: atlas/templates/core/layout.html:117
 msgid "yes"
 msgstr "si"
 
-#: atlas/templates/core/layout.html:95
+#: atlas/templates/core/layout.html:118
 msgid "no"
 msgstr "no"
 
-#: atlas/templates/core/layout.html:96
+#: atlas/templates/core/layout.html:119
 #, fuzzy
 msgid "other.species"
 msgstr "Altre species"
@@ -486,7 +491,7 @@ msgstr "Vedere la scheda delle specie"
 #: atlas/templates/core/taxon.html:87 atlas/templates/home/lastObs.html:32
 #: atlas/templates/home/mostViewNow.html:33
 #: atlas/templates/home/newSpecies.html:48
-#: atlas/templates/home/taxoRank.html:60
+#: atlas/templates/home/taxoRank.html:49
 #: atlas/templates/organismSheet/topSpecies.html:76
 msgid "species.sheet"
 msgstr "Scheda specie"
