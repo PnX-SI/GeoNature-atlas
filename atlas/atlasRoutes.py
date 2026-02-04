@@ -58,8 +58,9 @@ def redirect_default_language():
         endpoint_with_lang = f"main.{endpoint.split('.')[1]}"
         args = request.view_args.copy() if request.view_args else {}
         args["lang_code"] = g.lang_code
-        target_url = url_for(endpoint_with_lang, **args)
-        if request.path != urlparse(target_url).path:
+        target_url = url_for(endpoint_with_lang, **args, _external=True)
+
+        if request.url != target_url:
             return redirect(target_url)
 
 

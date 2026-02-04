@@ -161,3 +161,24 @@ def test_canonical_and_alternate_links_in_layout(app, client):
     assert canonical is not None
     expected_canonical = f"{base_url}/en/"
     assert canonical["href"].startswith(expected_canonical)
+
+
+@with_config(**MULTILINGUAL_CONFIG, URL_APPLICATION="")
+def test_redirect_default_language_no_prefix(app, client):
+    # Test accès sans préfixe de langue
+    resp = client.get("/", follow_redirects=False)
+    assert resp.status_code in (302, 308)
+    location = resp.headers["Location"]
+    assert location.startswith("http://test.atlas.local/fr/")
+    # Teste accès déjà préfixé
+    resp = client.get("/fr/")
+    assert resp.status_code == 200
+
+
+@with_config(**MULTILINGUAL_CONFIG, URL_APPLICATION="/atlas")
+def test_redirect_default_language_prefix(app, client):
+    # Test accès sans préfixe de langue
+    resp = client.get("/atlas/", follow_redirects=False)
+    assert resp.status_code in (302, 308)
+    location = resp.headers["Location"]
+    assert "/fr" in location
