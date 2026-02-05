@@ -27,7 +27,7 @@ Là aussi, seuls les statuts "actifs" de la BDC statuts sont pris en compte.
 ### Changer l'affichage des labels des "zonages"
 
 La notion de commune a été remplacé par la notion de "zonage". Ce terme s'affiche dans la barre de recherche présente dans la "navbar" et sur les fiche espèces.
-Si vous souhaiitez surcoucher ce terme par "commune" ou tout autre terme, referez vous à la documentation sur la [customisation des textes via la surchouche du multilingues](configuration.rst)
+Si vous souhaitez surcoucher ce terme par "commune" ou tout autre terme, referez vous à la documentation sur la [customisation des textes via la surchouche du multilingues](cSonfiguration.rst)
 Les "clés" à surcoucher sont : `search.area` , `areas` et `area`
 
 

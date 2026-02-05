@@ -10,12 +10,12 @@ GeoNature-atlas documentation
    :maxdepth: 2
    :caption: Contents:
 
-   src/installation.rst
-   src/configuration.rst
-   src/sensibilite_donnees.rst
-   src/vues_materialisees_maj.rst
-   src/cookies_rgpd.rst
-   src/FAQ.md
+   installation.rst
+   configuration.rst
+   sensibilite_donnees.rst
+   vues_materialisees_maj.rst
+   cookies_rgpd.rst
+   FAQ.md
    CONTRIBUTING.md
-   src/multilingual.rst
+   multilingual.rst
    changelog.rst
