@@ -207,6 +207,13 @@ main {
     top: 40px;
 }
 
+#modalCredits, #modalMentions {
+    margin-left: 60px;
+    max-width: 85%;
+    padding-bottom: 40px;
+    padding-top: 30px;
+}
+
 /* Navbar */
 
 .navbar {
