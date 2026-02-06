@@ -354,7 +354,7 @@ msgstr "per gruppo tassonomico"
 
 #: atlas/templates/core/layout.html:113
 msgid "occurrences.number"
-msgstr ""
+msgstr "Numero di osservazioni"
 
 #: atlas/templates/core/layout.html:114
 #, fuzzy
@@ -379,9 +379,12 @@ msgid "no"
 msgstr "no"
 
 #: atlas/templates/core/layout.html:119
-#, fuzzy
 msgid "other.species"
 msgstr "Altre species"
+
+#: atlas/templates/core/layout.html:120
+msgid "taxons_export_name"
+msgstr "La biodiversità di "
 
 #: atlas/templates/core/listTaxons.html:20
 msgid "filter"

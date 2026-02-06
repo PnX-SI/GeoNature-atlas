@@ -377,6 +377,10 @@ msgstr "no"
 msgid "other.species"
 msgstr "Other species"
 
+#: atlas/templates/core/layout.html:120
+msgid "taxons_export_name"
+msgstr "Biodiversity of "
+
 #: atlas/templates/core/listTaxons.html:20
 msgid "filter"
 msgstr "Filter"

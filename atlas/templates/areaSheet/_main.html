@@ -49,7 +49,7 @@
         {% with context={
             "page": "area", 
             "page_param": areaInfos.areaID, 
-            "file_export_name": "La biodiversité de "+areaInfos.areaName+"("+areaInfos.typeName+")",
+            "area_name": areaInfos.areaName+" ("+areaInfos.typeName+")",
         } 
         %}
             {% include 'templates/core/listTaxons.html' %}

@@ -9,6 +9,14 @@ window.onresize = function () {
     }
 };
 
+/**
+ * Get translation for a key with fallback to the key itself
+ */
+// eslint-disable-next-line no-unused-vars
+function getTranslation(key) {
+    return window.i18n[key] ? window.i18n[key] : key;
+}
+
 var presentationText = document.getElementById("presentation-text");
 if (window.innerWidth <= 800 && presentationText) {
     presentationText.hidden = true;
