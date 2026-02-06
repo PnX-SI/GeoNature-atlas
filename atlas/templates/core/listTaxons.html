@@ -102,7 +102,6 @@
     {% block additionalFooterAssets %}
         <script>
             window.module = {exports: {}};
-            var configuration = {{configuration|tojson}};
             // set the context for list taxon : if we are on area, taxon rank sheet, last_obs etc...
             var context = {{context | tojson}};
 

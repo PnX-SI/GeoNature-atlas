@@ -5,6 +5,9 @@
 <html lang='{{ configuration.DEFAULT_LANGUAGE }}'>
 {% endif %}
 <head>
+    <script type="text/javascript">
+        const configuration = {{configuration|tojson}};
+    </script>
 
     <!-- get endpoint from blueprint with lang_code (main) otherwise when we access the app from / (without lang_code), 
     the url_for put the lang_code in query string

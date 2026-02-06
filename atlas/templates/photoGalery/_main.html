@@ -18,10 +18,6 @@
 
 {% block additionalFooterAssets %}
     {# Ajoutez ici les assets complémentaires qui seront en bas de page #}
-    <script type="text/javascript">
-        var configuration = {{ configuration|tojson }};
-    </script>
-
     <script src="{{ url_for('static', filename='node_modules/lightbox2/dist/js/lightbox.js') }}"></script>
     <script src="{{ url_for('static', filename='galleryPhoto.js') }}"></script>
     <script src="{{ url_for('static', filename='main.js') }}"></script>

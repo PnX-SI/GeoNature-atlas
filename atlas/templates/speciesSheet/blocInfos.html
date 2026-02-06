@@ -1,11 +1,12 @@
-{% block blocInfos %}
-    {% if configuration.GLOSSAIRE %}
-        <!-- Jquery Glossarizer -->
-        <script src="{{ url_for('static', filename='node_modules/glossarizer/tooltip/tooltip.js') }}"></script>
-        <script src="{{ url_for('static', filename='node_modules/glossarizer/jquery.glossarize.js') }}"></script>
-        <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/glossarizer/tooltip/tooltip.css') }}" />
-    {% endif %}
+{% if configuration.GLOSSAIRE %}
+    <script>
+        const urlGlossaire = '{{ url_for("static", filename="custom/glossaire.json") }}';
+    </script>
+    <!-- Glossaire highlighting for Bootstrap 5 tooltips -->
+    <script src="{{ url_for('static', filename='glossaire.js') }}"></script>
+{% endif %}
 
+{% block blocInfos %}
     <div class="card mt-4" id="blocInfos">
         <h4 class="title-bar text-center">
             <strong>{{ _('species.infos') }}</strong>
@@ -46,11 +47,11 @@
         </ul>
 
         <!-- Contenu des onglets -->
-        <div class="tab-content">
+        <div id="tab-taxhub-attr" class="tab-content">
             {% for desc in taxonAttrs %}
                 <div
                     id="{{desc.code}}"
-                    class="tab-pane fade {% if loop.index == 1 %}show active{% endif %}"
+                    class="tab-pane fade {% if loop.index == 1 %}show active{% endif %} taxhub-attr"
                     role="tabpanel"
                     aria-labelledby="tab-{{desc.code}}"
                 >
