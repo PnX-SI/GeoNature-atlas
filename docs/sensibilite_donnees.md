@@ -38,6 +38,8 @@ Pour le mode point une symbologie adaptée est fournie par défaut dans GeoNatur
 
 L'atlas permet de créer des fiches par type de zonage (fiche par commune, par département etc...).
 
-Dans certains cas l'affichage d'observations et d'espèces sur ces fiches zonages peut fournir des informations plus précises que leur niveau de floutage souhaité. L'atlas exclue donc par défaut ces observations. Par exemple : les observations dont le niveau de sensiblité exige une floutage au département ne sera pas affiché sur une fiche commune. Cette information est déduit du champs :`is_valid_for_display` de la vm `atlas.vm_cor_area_synthese`
+Dans certains cas l'affichage d'observations et d'espèces sur ces fiches zonages peut fournir des informations plus précises que leur niveau de floutage souhaité. L'atlas exclue donc par défaut ces observations. Par exemple : les observations dont le niveau de sensiblité exige une floutage au département ne sera pas affiché sur une fiche commune. Cette information est déduit du champs :`is_valid_for_display` de la vm `atlas.vm_cor_area_synthese`.
+Les statistiques en haut des fiches zonages sont elles en revanche bien exactes (pas de données "masquées")
+Il est possible d'afficher un message pour avertir que la liste des taxons sur une fiche territoire peut être incomplète via le paramètre `DISPLAY_ZONING_PAGE_SENSIBILITY_MESSAGE`. Le contenu du message peut être modifier via la surcouche de langue (clé `sensibility_warning_message`).
 
 L'atlas permet également de créer des fiches zonages personnalisés (fiche d'un Parc Naturel régional par ex). Dans ce cas, il est nécessaire de remplir le champs `size_hierarchy` de la table `ref_geo.bib_areas_type`. Ce champs aide au calcul de l'affichage ou non des observations sensibles sur des niveau de zonage plus petit que leur géométrie de floutage.
