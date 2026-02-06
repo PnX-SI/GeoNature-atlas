@@ -38,3 +38,4 @@ robots.txt
 !atlas/static/sample/robots.txt
 
 .github/*instructions.md
+!.github/copilot-instructions.md
