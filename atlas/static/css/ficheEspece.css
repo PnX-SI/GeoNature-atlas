@@ -1,11 +1,3 @@
-ul.nav .nav-link {
-    color: var(--main-color);
-}
-
-ul.nav .nav-link.active {
-    color: var(--main-color);
-    font-weight: bold;
-}
 
 #taxonIdentity {
     padding-top: 10px;

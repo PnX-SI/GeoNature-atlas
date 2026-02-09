@@ -21,7 +21,7 @@ body {
 }
 
 main {
-    margin-top: 3.5rem;
+    margin-top: 75px;
     margin-left: 65px;
     flex: 1;
 }
@@ -33,6 +33,16 @@ main {
 .main-color-link a,  a.main-color-link {
     color: var(--main-color) !important;
 }
+
+ul.nav .nav-link {
+    color: var(--main-color);
+}
+
+ul.nav .nav-link.active {
+    color: var(--main-color);
+    font-weight: bold;
+}
+
 
 
 

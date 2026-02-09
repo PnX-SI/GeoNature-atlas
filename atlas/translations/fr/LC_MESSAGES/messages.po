@@ -396,11 +396,11 @@ msgstr "espèces protégées"
 
 #: atlas/templates/core/listTaxons.html:71
 msgid "refresh.filters"
-msgstr "Raffaîchir les filtres"
+msgstr "Rafaîchir les filtres"
 
 #: atlas/templates/core/listTaxons.html:79
 msgid "filter.species"
-msgstr "Filtrer les espèces"
+msgstr "Rechercher une espèce"
 
 #: atlas/templates/core/listTaxons.html:92
 msgid "export.csv"

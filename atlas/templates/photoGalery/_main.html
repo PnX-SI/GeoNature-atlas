@@ -29,12 +29,12 @@
     <div class="row h-100 flex-grow-1 p-0 m-0 border-bottom">
         <div class="col d-flex flex-column m-0 p-0">
             <div class="bg-light text-center border-bottom border-end p-2">
-                <h1 class="title">{{ _('gallery.title') }}<span id="group"></span></h1>
+                <h1 class="title">{{ _('gallery.title') }}&nbsp<span id="group"></span></h1>
                 <div id="filtresPhotos" class="text-center">
                     <ul id="pictoAndSort" class="d-flex flex-wrap list-unstyled justify-content-center gap-2">
                             {% for group in groups %}
                                 <li>
-                                    <img class="INPNgroup"
+                                    <img class="INPNgroup clickable"
                                          src="{{ url_for('static', filename='images/picto_' + group.group | replace(" ", "_") + '.png') }}"
                                          alt="{{ group.groupAccent }}"
                                          data-bs-toggle="tooltip"

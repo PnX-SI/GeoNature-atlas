@@ -63,46 +63,44 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Left row -->
-            <div class="col-lg-7 col-md-8 col-sm-12">
-                {% include 'templates/speciesSheet/identityCard.html' %}
-                {% if liensImportants %}
-                <div class="card mt-4">
-                    <div class="card-body liens-importants-container">
-                        {% for lien in liensImportants %}
-                        <a
-                                class="lien-important lien-important-type-{{ lien.id_type }}"
-                                href="{{ lien.path }}"
-                                target="_blank">
-                            {% if lien.icon %}
-                            <img src="{{ lien.icon }}" alt="" />
-                            {% endif %}
-                            <span>{{ lien.title }}</span>
-                        </a>
-                        {% endfor %}
-                    </div>
+    <div class="row">
+        <!-- Left row -->
+        <div class="col-lg-7 col-md-8 col-sm-12">
+            {% include 'templates/speciesSheet/identityCard.html' %}
+            {% if liensImportants %}
+            <div class="card mt-4">
+                <div class="card-body liens-importants-container">
+                    {% for lien in liensImportants %}
+                    <a
+                            class="lien-important lien-important-type-{{ lien.id_type }}"
+                            href="{{ lien.path }}"
+                            target="_blank">
+                        {% if lien.icon %}
+                        <img src="{{ lien.icon }}" alt="" />
+                        {% endif %}
+                        <span>{{ lien.title }}</span>
+                    </a>
+                    {% endfor %}
                 </div>
-                {% endif %}
-                {% include 'templates/speciesSheet/map.html' %}
-                {% include 'templates/speciesSheet/otherInformations.html' %}
             </div>
+            {% endif %}
+            {% include 'templates/speciesSheet/map.html' %}
+            {% include 'templates/speciesSheet/otherInformations.html' %}
+        </div>
 
-            <!-- Right row -->
-            <div class="col-lg-5 col-md-5 col-sm-12">
-                {% if photoCarousel | length >= 1 %}
-                    {% include 'templates/speciesSheet/photoCarousel.html' %}
-                {% endif %}
+        <!-- Right row -->
+        <div class="col-lg-5 col-md-5 col-sm-12">
+            {% if photoCarousel | length >= 1 %}
+                {% include 'templates/speciesSheet/photoCarousel.html' %}
+            {% endif %}
 
-                {% include 'templates/speciesSheet/blocInfos.html' %}
+            {% include 'templates/speciesSheet/blocInfos.html' %}
 
-                {% if (videoAudio.video | length > 0) or (videoAudio.audio | length > 0) %}
-                    {% include 'templates/speciesSheet/audioVideo.html' %}
-                {% endif %}
+            {% if (videoAudio.video | length > 0) or (videoAudio.audio | length > 0) %}
+                {% include 'templates/speciesSheet/audioVideo.html' %}
+            {% endif %}
 
-                {% include 'templates/speciesSheet/charts.html' %}
-            </div>
+            {% include 'templates/speciesSheet/charts.html' %}
         </div>
     </div>
 {% endblock %}

@@ -397,10 +397,9 @@ def sitemap():
 
     # Pour ne remonter que les areas ayant des observations :
     areas = (
-        db.session.query(vmAreas.VmAreas)
-        .join(vmAreas.VmBibAreasTypes, vmAreas.VmAreas.id_type == vmAreas.VmBibAreasTypes.id_type)
-        .filter(vmAreas.VmBibAreasTypes.type_code.in_(current_app.config["TYPE_TERRITOIRE_SHEET"]))
-        .order_by(vmAreas.VmAreas.area_name)
+        db.session.query(vmAreas.VmAreasWithObs)
+        .filter(vmAreas.VmAreasWithObs.type_code.in_(current_app.config["TYPE_TERRITOIRE_SHEET"]))
+        .order_by(vmAreas.VmAreasWithObs.area_name)
         .all()
     )
 
@@ -463,10 +462,9 @@ def sitemap_ui():
 
     # Pour ne remonter que les areas ayant des observations :
     areas = (
-        db.session.query(vmAreas.VmAreas)
-        .join(vmAreas.VmBibAreasTypes, vmAreas.VmAreas.id_type == vmAreas.VmBibAreasTypes.id_type)
-        .filter(vmAreas.VmBibAreasTypes.type_code.in_(current_app.config["TYPE_TERRITOIRE_SHEET"]))
-        .order_by(vmAreas.VmAreas.area_name)
+        db.session.query(vmAreas.VmAreasWithObs)
+        .filter(vmAreas.VmAreasWithObs.type_code.in_(current_app.config["TYPE_TERRITOIRE_SHEET"]))
+        .order_by(vmAreas.VmAreasWithObs.area_name)
         .all()
     )
     for area in areas:
