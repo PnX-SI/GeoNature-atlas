@@ -343,9 +343,8 @@ msgid "protected"
 msgstr "Protetto"
 
 #: atlas/templates/core/layout.html:112
-#, fuzzy
 msgid "taxonomic.group"
-msgstr "by taxonomic group"
+msgstr "Taxonomic group"
 
 #: atlas/templates/core/layout.html:113
 msgid "occurrences.number"
@@ -354,12 +353,12 @@ msgstr ""
 #: atlas/templates/core/layout.html:114
 #, fuzzy
 msgid "observers.number"
-msgstr "Observers"
+msgstr "Number of observers"
 
 #: atlas/templates/core/layout.html:115
 #, fuzzy
 msgid "last.observation"
-msgstr "lastest observation"
+msgstr "Lastest observation"
 
 #: atlas/templates/core/layout.html:116
 msgid "inpn.group.3"

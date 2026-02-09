@@ -1,10 +1,10 @@
 {% block otherInformations %}
 <div class="card mt-4" id="otherInformationsPanel">
     <div class="col" id="otherInformations">
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs ">
             {% if articles | length != 0 %}
                 <li class="nav-item">
-                    <a data-bs-toggle="tab" class="nav-link active" href="#articles">
+                    <a data-bs-toggle="tab" class="nav-link active " href="#articles">
                         <b>{{ articles|length }}</b> {{ 'articles' if articles|length > 1 else 'article' }}
                     </a>
                 </li>
@@ -36,7 +36,7 @@
             <!-- municipality tab -->
             {% if articles | length != 0 %}
                 <div id="articles" class="tab-pane fade show active">
-                    <table class="table table-striped">
+                    <table class="table table-striped main-color-link">
                         <thead>
                             <th></th>
                             <th>{{ _('title') }}</th>

@@ -352,11 +352,11 @@ msgstr "Groupe 2 INPN"
 
 #: atlas/templates/core/layout.html:113
 msgid "occurrences.number"
-msgstr "Nombre d'observation"
+msgstr "Nombre d'observations"
 
 #: atlas/templates/core/layout.html:114
 msgid "observers.number"
-msgstr "Nombre d'observateur"
+msgstr "Nombre d'observateurs"
 
 #: atlas/templates/core/layout.html:115
 msgid "last.observation"

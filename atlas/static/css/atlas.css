@@ -30,6 +30,10 @@ main {
     cursor: pointer;
 }
 
+.main-color-link a,  a.main-color-link {
+    color: var(--main-color) !important;
+}
+
 
 
 .small-placeholder::placeholder {

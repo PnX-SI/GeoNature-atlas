@@ -245,7 +245,7 @@ async function exportPdf() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ orientation: "landscape" });
 
-    const fileName = `${getTranslation("taxons_export_name")} ${context.area_name}".csv`;
+    const fileName = `${getTranslation("taxons_export_name")} ${context.area_name}".pdf`;
     const title = fileName.replace(/\.pdf$/i, "");
     const pageWidth = doc.internal.pageSize.getWidth();
 

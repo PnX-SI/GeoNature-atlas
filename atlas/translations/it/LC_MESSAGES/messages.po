@@ -348,9 +348,8 @@ msgid "protected"
 msgstr "Stato di protezione"
 
 #: atlas/templates/core/layout.html:112
-#, fuzzy
 msgid "taxonomic.group"
-msgstr "per gruppo tassonomico"
+msgstr "Gruppo tassonomico"
 
 #: atlas/templates/core/layout.html:113
 msgid "occurrences.number"
@@ -359,12 +358,12 @@ msgstr "Numero di osservazioni"
 #: atlas/templates/core/layout.html:114
 #, fuzzy
 msgid "observers.number"
-msgstr "Osservatori"
+msgstr "Numero di osservatori"
 
 #: atlas/templates/core/layout.html:115
 #, fuzzy
 msgid "last.observation"
-msgstr "ultima osservazione"
+msgstr "Ultima osservazione"
 
 #: atlas/templates/core/layout.html:116
 msgid "inpn.group.3"

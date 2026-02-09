@@ -1,8 +1,8 @@
-<small>
+<small class="main-color-link">
     <a href="{{ url_for('main.index') }}">{{ _('home') }}</a> |
     <a href="http://www.ecrins-parcnational.fr" target="_blank">{{ configuration.STRUCTURE }}</a> |
     <a href="javascript:void(0)" role="button"  data-bs-toggle="modal" data-bs-target="#modalCredits">{{ _('credits') }}</a> |
-    <a href="javascript:void(0)" role="button"  data-bs-toggle="modal" data-bs-target="#modalMentions">{{ _('legal') }}</a>
+    <a href="javascript:void(0)" role="button"  data-bs-toggle="modal" data-bs-target="#modalMentions">{{ _('legal') }}</a> |
     <a title="{{ _('sitemap') }}" href=" {{url_for('main.sitemap_ui')}} ">{{ _('sitemap') }}</a>
     {% if configuration.AFFICHAGE_RGPD and configuration.OREJIME_APPS | length > 0 %}
         | <a href="#" data-bs-toggle="modal" data-bs-target="#modalPersonalData">{{ _('personal_data') }}</a>
@@ -11,7 +11,7 @@
 </small>
 
 <div>
-    <small class="text-muted">
+    <small class="text-muted main-color-link">
         {{ configuration.NOM_APPLICATION }} - {{ _('atlas.fauna.flora') }} {{ _('from1') }} {{ configuration.STRUCTURE }}, {{ now.year }}
         <br/>
         {{ _('powered.by') }} <a href="https://github.com/PnX-SI/GeoNature-atlas" target="_blank" rel="noopener noreferrer">GeoNature-atlas</a>,
