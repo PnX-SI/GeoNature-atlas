@@ -377,21 +377,22 @@ def sitemap():
     """Generate sitemap.xml iterating over static and dynamic routes to make a list of urls and date modified"""
     pages = []
     ten_days_ago = datetime.now() - timedelta(days=10)
-    url_root = request.url_root
-    if url_root[-1] == "/":
-        url_root = url_root[:-1]
     for static_page in current_app.config["STATIC_PAGES"]:
-        url = url_root + url_for("main.get_staticpages", page=static_page)
+        url = url_for("main.get_staticpages", page=static_page, _external=True)
         pages.append([url, ten_days_ago])
-    for rule in current_app.url_map.iter_rules():
-        # check for a 'GET' request and that the length of arguments is = 0 and if you have an admin area that the rule does not start with '/admin'
-        if "GET" in rule.methods and len(rule.arguments) == 0 and not rule.rule.startswith("/api"):
-            pages.append([url_root + rule.rule, ten_days_ago])
+    pages.extend(
+        [
+            [url_for("main.photos", _external=True), ten_days_ago],
+            [url_for("main.sitemap", _external=True), ten_days_ago],
+            [url_for("main.sitemap_ui", _external=True), ten_days_ago],
+            [url_for("main.robots", _external=True), ten_days_ago],
+        ]
+    )
 
     # get dynamic routes for blog
     species = db.session.query(vmTaxons.VmTaxons).order_by(vmTaxons.VmTaxons.cd_ref).all()
     for species in species:
-        url = url_root + url_for("main.ficheEspece", cd_nom=species.cd_ref)
+        url = url_for("main.ficheEspece", cd_nom=species.cd_ref, _external=True)
         modified_time = ten_days_ago
         pages.append([url, modified_time])
 
@@ -404,12 +405,12 @@ def sitemap():
     )
 
     for area in areas:
-        url = url_root + url_for("main.area", id_area=area.id_area)
+        url = url_for("main.area", id_area=area.id_area, _external=True)
         modified_time = ten_days_ago
         pages.append([url, modified_time])
 
     sitemap_template = render_template(
-        "templates/sitemap.xml", pages=pages, url_root=url_root, last_modified=ten_days_ago
+        "templates/sitemap.xml", pages=pages, last_modified=ten_days_ago
     )
     response = make_response(sitemap_template)
     response.headers["Content-Type"] = "application/xml"
@@ -424,8 +425,8 @@ def sitemap_ui():
         "static": {
             "title": gettext("static pages"),
             "values": [
-                {"url": "/", "label": gettext("home page")},
-                {"url": "/photos", "label": gettext("photos")},
+                {"url": url_for("main.index"), "label": gettext("home page")},
+                {"url": url_for("main.photos"), "label": gettext("photos")},
             ],
         },
         "areas": {
@@ -435,12 +436,8 @@ def sitemap_ui():
         "groups": {"title": gettext("species sheet by groups"), "values": {}},
     }
 
-    url_root = request.url_root
-    if url_root[-1] == "/":
-        url_root = url_root[:-1]
-
     for static_page in current_app.config["STATIC_PAGES"]:
-        url_static_page = url_root + url_for("main.get_staticpages", page=static_page)
+        url_static_page = url_for("main.get_staticpages", page=static_page)
         data_page = current_app.config["STATIC_PAGES"][static_page]
         pages["static"]["values"].append({"url": url_static_page, "label": data_page["title"]})
 
@@ -448,14 +445,14 @@ def sitemap_ui():
     species = db.session.query(vmTaxons.VmTaxons).order_by(vmTaxons.VmTaxons.nom_complet).all()
     for species in species:
         if species.group2_inpn not in pages["groups"]["values"]:
-            group_url = url_root + url_for("main.ficheGroupe", groupe=species.group2_inpn)
+            group_url = url_for("main.ficheGroupe", groupe=species.group2_inpn)
             pages["groups"]["values"][species.group2_inpn] = {
                 "url": group_url,
                 "label": species.group2_inpn,
                 "species": [],
             }
 
-        url_species = url_root + url_for("main.ficheEspece", cd_nom=species.cd_ref)
+        url_species = url_for("main.ficheEspece", cd_nom=species.cd_ref)
         pages["groups"]["values"][species.group2_inpn]["species"].append(
             {"url": url_species, "label": species.lb_nom}
         )
@@ -468,7 +465,7 @@ def sitemap_ui():
         .all()
     )
     for area in areas:
-        url = url_root + url_for("main.area", id_area=area.id_area)
+        url = url_for("main.area", id_area=area.id_area)
         pages["areas"]["values"].append({"url": url, "label": area.area_name})
 
     return render_template("templates/sitemap.html", pages=pages)

@@ -54,5 +54,6 @@ def app(request, _db_setup):
     app = create_app(config_overrides=overrides)
     app.testing = True
     app.config["SERVER_NAME"] = "test.atlas.local"  # required by url_for
+    print("APPLICATION_ROOT:", app.config.get("APPLICATION_ROOT"))
 
     return app
