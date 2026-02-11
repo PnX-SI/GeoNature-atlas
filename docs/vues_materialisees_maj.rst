@@ -2,6 +2,8 @@
 Vues materialisees et mise a jour du contenu
 ============================================
 
+Documentation partiellement caduque, à reprendre ou supprimer. On ne modifie désormais aucune VM ou tables de la BDD de GeoNature-atlas.
+
 Introduction
 ============
 
@@ -23,19 +25,14 @@ Dans un soucis de performance et pour ne pas requêter en permanence sur la base
 
 Vous pouvez alimenter l'atlas avec une autre source de données que GeoNature à condition de respecter le nom et le typage des champs retournés par la vue.
 
-Ou vous pouvez simplement décider de l'adapter à votre GeoNature, par exemple en changeant l'``id_organism`` dont vous souhaitez afficher les données dans la condition WHERE de la vue ``atlas.vm_observations``.
-
-
 Liste des vues matérialisées
 ============================
-
-Seule ``atlas.vm_observations`` doit éventuellement être adaptée, les autres vues sont calculées à partir du contenu de cette vue et de la vue qui renvoie tout TAXREF.
 
 Voir les fichiers dans le répertoire ``data`` pour plus de précisions.
 
 - ``atlas.vm_taxref`` qui renvoie toutes les données de ``taxonomie.taxref``. Les champs de cette table sont ``cd_nom``, ``id_statut``, ``id_habitat``, ``id_rang``, ``regne``, ``phylum``, ``classe``, ``ordre``, ``famille``, ``cd_taxsup``, ``cd_ref``, ``lb_nom``, ``lb_auteur``, ``nom_complet``, ``nom_valide``, ``nom_vern``, ``nom_vern_eng``, ``group1_inpn``, ``group2_inpn``, ``nom_complet_html`` et ``cd_sup``.
 
-- ``atlas.vm_observations`` qui renvoie la liste de toutes les observations.
+- ``atlas.vm_observations`` qui renvoie la liste des observations.
 
 - ``atlas.vm_taxons`` qui renvoie la liste des taxons observés au moins une fois sur le territoire (présents dans vm_observations).
 
