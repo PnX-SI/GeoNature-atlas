@@ -1,3 +1,8 @@
+-- Vue contenant les zonages de chaque observations, 
+-- en y ajoutant une colonne "is_valid_for_display" indiquant, pour les données sensibles,
+-- si leur niveau de floutage est supérieur à la taille du type de zonage 
+-- (dans ce cas on ne l'affiche pas sur les fiches de ce type de zonage)
+
 CREATE MATERIALIZED VIEW atlas.vm_cor_area_synthese as
 SELECT 
     cas.id_synthese,
