@@ -20,17 +20,17 @@ STRUCTURE = "Nom de la structure"
 NOM_APPLICATION = "Nom de l application"
 
 # URL de l'application depuis la racine du domaine
-# ex "/atlas" pour une URL: http://mon-domaine/atlas OU "" si l'application est accessible à la racine du domaine
+# ex "/atlas" pour une URL de type http://mon-domaine/atlas OU "" si l'application est accessible à la racine du domaine
 URL_APPLICATION = "/atlas"
 
-# URL d'accès aux photos et autres médias (URL racine). Dans la vm_medias, il est uniquement stocké le nom du fichier. Il est donc necessaire de préciser l'URL de stockage des médias, pour construire le chemin complet d'accès à l'image. Par exemple l'url d'accès à Taxhub.
-# Si vous utilisez GeoNature: REMOTE_MEDIAS_URL = "https://<URL_GEONATURE>/api/media/taxhub/"
+# URL d'accès aux photos et autres médias (URL racine). Dans vm_medias est uniquement stocké le nom du fichier. Il est donc necessaire de préciser l'URL d'accès aux médias, pour construire le chemin complet de chaque image. 
+# Par exemple l'URL d'accès à TaxHub.
+# Si vous utilisez GeoNature : REMOTE_MEDIAS_URL = "https://<URL_GEONATURE>/api/media/taxhub/"
 REMOTE_MEDIAS_URL = "https://<URL_GEONATURE>/api/media/taxhub/"
 
-# URL de Taxhub : necessaire pour le redimensionnement des images
-# Si vous utilisez GeoNature: TAXHUB_URL "https://<URL_GEONATURE>/api/taxhub"
+# URL de TaxHub : nécessaire pour le redimensionnement des images
+# Si vous utilisez GeoNature : TAXHUB_URL "https://<URL_GEONATURE>/api/taxhub"
 TAXHUB_URL = "https://<URL_GEONATURE>/api/taxhub"
-
 
 ###########################
 ###########################
@@ -51,29 +51,11 @@ MAP = {
             'tileName' : 'OTM'
     },
     'ZOOM' : 10,
-    # Pas du slider sur les annees d'observations: 1 = pas de 1 an sur le slider
+    # Pas du slider d'années d'observations
+    # 1 = pas de 1 an sur le slider
     'STEP': 1,
     'ENABLE_SLIDER': True
 }
-
-# Ajout du plugin nominatim permetant une recherche d'adresse sur les cartes de la page d'acceuil et territoire 
-SEARCH_NOMINATIM = True
-# Paramètres de recherche du plugin nominatim
-GEOCODING_QUERY_PARAMS = {
-    "countrycodes": "FR",
-    # Ouest, Nord, Est, Sud
-    "viewbox": "-2.025228103,47.567932519,-1.011314484,46.903000500",
-    "bounded": 1 # 1 pour chercher uniquement dans la viewbox définit au dessus
-}
-
-###########################
-###########################
-###### Liste Rouge  #######
-###########################
-###########################
-
-# Afficher les statistiques des espèces menacées.
-AFFICHAGE_MENACE = False
 
 ###########################
 ###########################
