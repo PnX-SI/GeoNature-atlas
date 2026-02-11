@@ -1,3 +1,7 @@
+-- Si vous n'utilisez pas GeoNature, ce script permet de recréer les tables nécessaires au fonctionnement de GeoNature-atlas,
+-- qu'il interroge normalement dans GeoNature
+-- A vous de remplir ensuite ces tables comme vous le souhaitez
+
 -------------------------------------
 --------------TABLES-----------------
 -------------------------------------
