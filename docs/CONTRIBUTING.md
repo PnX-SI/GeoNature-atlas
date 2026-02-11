@@ -1,6 +1,7 @@
 # Contribuer
 
-Merci de votre intérêt pour contribuer à GeoNature-atlas ! Ce document vous guidera à travers les bonnes pratiques et les conventions de développement du projet.
+Merci de votre intérêt pour contribuer à GeoNature-atlas ! 
+Ce document vous guidera à travers les bonnes pratiques et les conventions de développement du projet.
 
 ## Table des matières
 
@@ -22,13 +23,13 @@ Avant de commencer à contribuer, assurez-vous d'avoir :
 - Installer les dépendances python de développement : `pip install ".[dev]` (depuis la racine du répertoire)
 - Installer les dépendances javascript de développement `npm install --only=dev`
 
-Le [fichier](./src/installation.rst) détail l'installation d'un environnement de développement de GeoNature-Atlas
+La [documentation d'installation](./src/installation.rst) détaille l'installation d'un environnement de développement de GeoNature-atlas
 
 (code-quality)=
 
 ## Qualité et convention du code
 
-Le projet utilise des outils de formatage et de linting pour maintenir une qualité de code cohérente.
+Le projet utilise des outils de formatage et de linting pour maintenir une structure de code cohérente.
 
 ### Python
 
@@ -107,8 +108,8 @@ git checkout -b fix/correction-bug
 ```
 
 - Ne mergez pas la branche `develop` dans votre branche de feature, utilisez la commande `rebase`
-- Ne faites pas de commit de lint, privilegiez un `git commit --amend` pour ajouter le lint au commit comprenant les modification du code.
-- Squachez vos pull requests lorsqu'elle sont prêtes à être relues
+- Ne faites pas de commit de lint, privilegiez un `git commit --amend` pour ajouter le lint au commit comprenant les modifications du code
+- Squashez vos pull requests lorsqu'elles sont prêtes à être relues
 - Assurez vous que les tests passent et que le codecov ne baisse pas
 
 Conventions de nommage des branches :
@@ -118,11 +119,10 @@ Conventions de nommage des branches :
 - `docs/` pour la documentation
 - `refactor/` pour les refactorisations
 
-
-
 ### 3. Développer et commiter
 
-Effectuez vos modifications en respectant les conventions de code. Faites des commits atomiques avec des messages clairs et descriptifs. Pensez à réferencer l'issue dans votre commit.
+Effectuez vos modifications en respectant les conventions de code. Faites des commits atomiques avec des messages clairs et descriptifs. Pensez à référencer l'issue dans votre commit.
+
 Ecrivez des tests sur les fonctionnalités que vous développez.
 
 Types de commit courants :
@@ -159,8 +159,8 @@ git push <mon_remote> feature/ma-nouvelle-fonctionnalite
 (test)=
 ## Tests automatisés
 
-Les tests sont écrit avec la librairie pytest.
-Avant de lancer les tests, assurez vous d'avoir créer une base de données pour les tests.
+Les tests sont écrits avec la librairie pytest.
+Avant de lancer les tests, assurez vous d'avoir créé une base de données pour les tests.
 
     create database <geonatureatlas_test> with owner <geonatadmin>
     \d <ma_base>
@@ -170,7 +170,7 @@ Exporter la variable suivante :
 
     export ATLAS_SETTINGS=/home/theo/workspace/GeoNature-atlas/atlas/tests/test_config.py
 
-Cela définit le fichier de configuration de l'application avec celui qui est fourni pour les tests. Vous pouvez tout à fait utilisez un autre fichier de configuration
+Cela définit le fichier de configuration de l'application avec celui qui est fourni pour les tests. Vous pouvez tout à fait utiliser un autre fichier de configuration.
 
 ⚠️⚠️ Chaque run de test va supprimer le contenu de la base et la recréer !
 
@@ -183,10 +183,10 @@ Lancer les tests :
 
 - Mettez à jour la documentation si vos changements affectent l'utilisation de l'application
 - Les fichiers de documentation se trouvent dans le dossier `docs/`
-- Vous pouvez ajouter votre documentation aux formats:
+- Vous pouvez ajouter votre documentation aux formats :
   - `reStructuredText` syntax. See the [reStructuredText documentation](https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>)
   - `Markdown` syntax. See the [myst-parser documentation](https://myst-parser.readthedocs.io/en/latest/index.html)
-- Vous pouvez vérifier la bonne mise en forme de la documentation avec les commandes suivantes:
+- Vous pouvez vérifier la bonne mise en forme de la documentation avec les commandes suivantes :
 
 ```bash
 cd docs
@@ -198,6 +198,5 @@ make livehtml
 
 - Pour signaler un bug, créez une [issue](https://github.com/PnX-SI/GeoNature-atlas/issues)
 - Pour contacter l'équipe : voir le fichier README
-
 
 Merci de contribuer à GeoNature-atlas ! 🦋🌿
