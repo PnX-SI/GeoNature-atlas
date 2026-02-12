@@ -327,11 +327,12 @@ Attention à bien lire les notes de chaque version, qui peuvent indiquer des op�
 - Relancez l'installation automatique de l'application :
 
 ::
+    
     cd install
     ./install_app.sh
 
 Mise à jour de la base de données
-""""""""""""""""""""""""""""""""""
+=================================
 
 Lancer le script `./install/update_db.sh` pour mettre à jour la base de données de l'atlas.
 
