@@ -635,7 +635,6 @@ function displayMarkerLayerFicheEspece(
     yearMax,
     sliderTouch,
 ) {
-    console.log("LA??????");
 
     // on vérifie si le slider a été touché
     // sinon on met null a yearmin et yearmax pour ne pas filtrer par année a la génération du GeoJson
