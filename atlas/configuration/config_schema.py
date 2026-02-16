@@ -188,7 +188,6 @@ class AtlasConfig(Schema):
     )
     TYPE_TERRITOIRE_SHEET = fields.List(fields.String(), load_default=["COM"])
     AREA_PARENTS_TYPE = fields.List(fields.String(), load_default=[])
-    AFFICHAGE_GRAPH_PHENOLOGIE = fields.Boolean(load_default=False)
     ALTITUDE_RANGES = fields.List(
         fields.Integer(),
         load_default=[0, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000],

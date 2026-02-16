@@ -22,7 +22,6 @@ if (window.innerWidth <= 800 && presentationText) {
     presentationText.hidden = true;
 }
 
-console.log(window.LANGUAGE_PREFIXED_URL_APPLICATION);
 autocompleteSearch = function (inputID, urlDestination, nbProposal) {
     $(inputID).autocomplete({
         source: function (request, response) {
