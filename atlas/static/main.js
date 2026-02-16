@@ -22,6 +22,7 @@ if (window.innerWidth <= 800 && presentationText) {
     presentationText.hidden = true;
 }
 
+console.log(window.LANGUAGE_PREFIXED_URL_APPLICATION);
 autocompleteSearch = function (inputID, urlDestination, nbProposal) {
     $(inputID).autocomplete({
         source: function (request, response) {
@@ -91,10 +92,7 @@ autocompleteSearch = function (inputID, urlDestination, nbProposal) {
                 $(inputID).val(label_for_input.replace(/<[^>]*>?/gm, ""));
             } else {
                 location.href =
-                    window.LANGUAGE_PREFIXED_URL_APPLICATION +
-                    "/area/" +
-                    "/" +
-                    url;
+                    window.LANGUAGE_PREFIXED_URL_APPLICATION + "/area/" + url;
             }
 
             return false;

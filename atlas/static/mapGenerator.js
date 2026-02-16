@@ -635,6 +635,8 @@ function displayMarkerLayerFicheEspece(
     yearMax,
     sliderTouch,
 ) {
+    console.log("LA??????");
+
     // on vérifie si le slider a été touché
     // sinon on met null a yearmin et yearmax pour ne pas filtrer par année a la génération du GeoJson
 
@@ -660,29 +662,27 @@ function displayMarkerLayerFicheEspece(
         },
     });
     const legendColorObs = document.querySelector("#legend-color-obs");
+    if (configuration.COUCHES_SIG.length === 0) {
+        // In point only map, hide control tab if no COUCHES_SIG configured
+        toggleLayerTab(false);
+        const legendtab = document.querySelector("#legend-tab");
+        const legendtabContent = document.querySelector("#legend-tab-content");
+        const controltab = document.querySelector("#control-tab");
+        const controltabContent = document.querySelector(
+            "#control-tab-content",
+        );
+        // switch to legend tab
+        legendtab.classList.add("active");
+        legendtabContent.classList.add("active");
+        legendtabContent.classList.add("show");
+        controltab.classList.remove("active");
+        controltabContent.classList.remove("active");
+        controltabContent.classList.remove("show");
+    }
     if (myGeoJson.features.length > configuration.LIMIT_CLUSTER_POINT) {
         legendColorObs.querySelectorAll("div").forEach((elem) => elem.remove());
         legendColorObs.appendChild(generateObservationsLegend(false));
 
-        if (configuration.COUCHES_SIG.length === 0) {
-            // In point only map, hide control tab if no COUCHES_SIG configured
-            toggleLayerTab(false);
-            const legendtab = document.querySelector("#legend-tab");
-            const legendtabContent = document.querySelector(
-                "#legend-tab-content",
-            );
-            const controltab = document.querySelector("#control-tab");
-            const controltabContent = document.querySelector(
-                "#control-tab-content",
-            );
-            // switch to legend tab
-            legendtab.classList.add("active");
-            legendtabContent.classList.add("active");
-            legendtabContent.classList.add("show");
-            controltab.classList.remove("active");
-            controltabContent.classList.remove("active");
-            controltabContent.classList.remove("show");
-        }
         // Not display labels of maille observationsFeatureGroup
         document.querySelectorAll(".defaultOverlay").forEach((elem) => {
             elem.closest("label").style.display = "none";
