@@ -7,9 +7,6 @@
 # Base de données PostgreSQL/PostGIS
 #+-------------------------------------------------------------------------------------------------+
 
-# Supprimer le schéma "atlas" lors d'une réinstallation (ou du lancement de "docker compose up")
-ATLAS_DROP_SCHEMA=true
-
 # Host de la base de données de l'application
 db_host=localhost
 

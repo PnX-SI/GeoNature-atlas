@@ -334,13 +334,6 @@ function checkNoUserRoot() {
 function convertDockerVariables() {
     printMsg "Converting Docker environment variables..."
 
-    # Convert ATLAS_DROP_SCHEMA to boolean
-    if [[ "${ATLAS_DROP_SCHEMA}" = "true" || "${ATLAS_DROP_SCHEMA}" = 1 ]]; then
-        ATLAS_DROP_SCHEMA=true
-    else
-        ATLAS_DROP_SCHEMA=false
-    fi
-
     # Convert ATLAS_ALTITUDES to array
     altitudes=(${ATLAS_ALTITUDES})
 

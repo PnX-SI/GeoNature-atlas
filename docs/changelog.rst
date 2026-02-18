@@ -21,7 +21,6 @@ Notes :
 - Comment on utilise https://github.com/PnX-SI/GeoNature-atlas/blob/fix/2.0.0/data/atlas/05.vm_observations.sql#L24 en mode maille ? Jamais ? Pour les obs dans les fiches territoire, on passe tout par cor_area_synthese ?
 - Ou on l'utilise ici ? https://github.com/PnX-SI/GeoNature-atlas/blob/fix/2.0.0/data/atlas/15.vm_cor_maille_observation.sql ?
 - La BDD Atlas ne fait plus aucune intersection géographique ?
-- Il faut absolument ajouter le paramètre ATLAS_DROP_SCHEMA à settings.ini sinon la MAJ ne fonctionne pas, non ???
 - Le statut de protection des espèces ne se base plus sur un attribut renseigné manuellement dans TaxHub mais sur la BDC statuts (voir activation et régionalisation des statuts dans GN)
 - Suppression de MASK_STYLE, BORDERS_COLOR, BORDERS_WIDTH
 - Suppression de PATRIMONIALITE (voir avec Amandine)
@@ -50,7 +49,7 @@ Notes :
 - Refonte du style des pictos de patrimonialité, protection et menace. Les 3 icones sont maintenant surcouchables
 - Possibilité d'ajouter des textes sur les éléments du menu latéral sidebar (#729 @juggler31)
 - Ajout du paramètre ``LIMIT_POINT_MAILLE`` qui permet de définir le seuil à partir duquel on affiche les données en mode maille sur un atlas en mode point (défaut 500 observations)
-- Le paramètre ``drop_apps_db`` du fichier settings.ini est déprécié. Il est remplacé par ``ATLAS_DROP_SCHEMA`` qui ne supprime que le schéma "atlas"
+- Le paramètre ``drop_apps_db`` du fichier settings.ini est déprécié. Le script ``install_db.sh`` supprime uniquement le schéma ``atlas`` si le script ``install_db.sh`` est lancé sur une base déja existante.
 - Ajout d'une fonction pour rafraichir uniquement les attributs et les médias associés aux taxons (``atlas.refresh_materialized_view_taxon_attr_and_media``)
 - Ajout de la traduction de l'interface en tchèque (#731 par @trendspotter)
 - Les paramètres de l'URL de la fiche territoire était ``url_for('main.ficheCommune', insee=05090)`` et devient ``url_for('main.area', id_area=XXXXXX)``

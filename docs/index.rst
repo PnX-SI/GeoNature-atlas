@@ -12,9 +12,9 @@ GeoNature-atlas documentation
 
    installation.rst
    configuration.rst
+   cookies_rgpd.rst
    sensibilite_donnees.rst
    vues_materialisees_maj.rst
-   cookies_rgpd.rst
    FAQ.md
    CONTRIBUTING.md
    multilingual.rst
