@@ -146,7 +146,7 @@ Une fois TaxHub installé, il est nécessaire d'ajouter des migrations alembic p
     flask db upgrade ref_geo_fr_departments@head
 
 
-A noter aussi que si vous ne connectez pas GeoNature-atlas à une BDD GeoNature (``geonature_source=false``), une table exemple ``gn_synthese.synthese`` comprenant 2 observations est créée. A vous d'alimenter ces tables après l'installation ou les remplacer par des vues pour les connecter à votre source de données.
+A noter aussi que si vous ne connectez pas GeoNature-atlas à une BDD GeoNature (``geonature_source=false``), série de tables et des données d'exemples sont créées (voir script ``without_geonature.sql`` pour simuler la structure d'un base GeoNature. A vous d'alimenter ces tables après l'installation ou les remplacer par des vues pour les connecter à votre source de données.
 
 **3.2 Installation de la base de données de GeoNature-atlas**
 
@@ -334,11 +334,12 @@ Attention à bien lire les notes de chaque version, qui peuvent indiquer des op�
 Mise à jour de la base de données
 =================================
 
-Lancer le script `./install/update_db.sh` pour mettre à jour la base de données de l'atlas.
+Lancer le script ``./install/install_db.sh`` pour mettre à jour la base de données de l'atlas.
 
 
 .. danger::
-    Le script `update_db.sh` supprime et recrée le schéma ``atlas``. Ne mettez aucune table ou vue spécifique dans ce schéma.
+    Le paramètre ``ATLAS_DROP_SCHEMA`` doit être à ``true`` pour réinstaller la base de données.
+    Ce script va supprimer puis recréer le schéma ``atlas``. Ne mettez aucune table ou vue spécifique dans ce schéma.
 
 
 
