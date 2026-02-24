@@ -7,7 +7,7 @@
             </div>
         </h3>
 
-        <div class="row">
+        <div class="row justify-content-center" id="stat-row">
             <div class="col-6 col-lg-3 stat-object">
                 <div class="stat-thumbnail border-end">
                     <i class="fas fa-search fa-3x blue"></i>
@@ -41,7 +41,7 @@
             </div>
 
             <div class="col-6 col-lg-3 stat-object">
-                <div class="stat-thumbnail border-end">
+                <div class="stat-thumbnail  {% if configuration.AFFICHAGE_GALERIE_PHOTO %}border-end{% endif %}">
                     <i class="fas fa-map-signs fa-3x blue"></i>
                     <h1 class="large text-muted" id="nbTown"></h1>
                     <h4 class="text-muted text-uppercase font-weight-bold">{{ _("areas") }}</h4>
