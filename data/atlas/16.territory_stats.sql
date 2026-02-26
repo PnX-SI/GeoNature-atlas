@@ -11,8 +11,7 @@ AS SELECT DISTINCT vla.id_area,
      JOIN atlas.vm_bib_areas_types bat ON bat.id_type = vla.id_type
      JOIN atlas.vm_cor_area_synthese vcas ON vla.id_area = vcas.id_area
      JOIN atlas.vm_observations obs ON obs.id_observation = vcas.id_synthese
-  WHERE (bat.type_code::text IN ( SELECT string_to_table.string_to_table
-           FROM string_to_table('COM'::text, ','::text) string_to_table(string_to_table)))
+  WHERE bat.type_code = ANY(SELECT * FROM string_to_table(:'type_code', ','))
 WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_areas_with_obs
