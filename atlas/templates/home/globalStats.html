@@ -8,7 +8,7 @@
         </h3>
 
         <div class="row justify-content-center" id="stat-row">
-            <div class="col-6 col-lg-3 stat-object">
+            <div class="col-sm-12 col-lg stat-object">
                 <div class="stat-thumbnail border-end">
                     <i class="fas fa-search fa-3x blue"></i>
                     <input id="hiddenInputTaxonStat" type="hidden" name="cd_ref">
@@ -21,7 +21,7 @@
                 </div>
             </div>
 
-            <div class="col-6 col-lg-3 stat-object">
+            <div class="col-sm-12 col-lg stat-object">
                 <div class="stat-thumbnail border-end">
                     <i class="fas fa-leaf fa-3x"></i>
                     <h1 class="large text-muted" id="nbTaxons"></h1>
@@ -40,7 +40,7 @@
                 </div>
             </div>
 
-            <div class="col-6 col-lg-3 stat-object">
+            <div class="col-sm-12 col-lg stat-object">
                 <div class="stat-thumbnail  {% if configuration.AFFICHAGE_GALERIE_PHOTO %}border-end{% endif %}">
                     <i class="fas fa-map-signs fa-3x blue"></i>
                     <h1 class="large text-muted" id="nbTown"></h1>
@@ -53,14 +53,14 @@
                                 <i class="fas fa-search" aria-hidden="true"></i>
                             </span>
                             <input id="searchAreasStat" type="text" class="form-control"
-                                   placeholder="{{ _('search.area') }}&nbsp;&nbsp;&nbsp;">
+                                   placeholder="{{ _('search.area') }}">
                         </div>
                         <input id="hiddenInputAreasStat" type="hidden" name="id_area">
                     </form>
                 </div>
             </div>
             {% if configuration.AFFICHAGE_GALERIE_PHOTO %}
-            <div class="col-6 col-lg-3 stat-object">
+            <div class="col-sm-12 col-lg stat-object">
                 <div class="stat-thumbnail">
                     <i class="fas fa-camera fa-3x"></i>
                     <h1 class="large text-muted" id="nbPictures"></h1>
