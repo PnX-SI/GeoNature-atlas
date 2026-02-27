@@ -1,7 +1,6 @@
 -- +-----------------------------------------------------------------------------------------------+
 -- Zonages ayant au moins une observation, filtrés par type_code
 CREATE MATERIALIZED VIEW atlas.vm_areas_with_obs
-TABLESPACE pg_default
 AS SELECT DISTINCT vla.id_area,
     vla.area_name,
     vla.id_type,
