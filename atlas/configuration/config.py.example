@@ -183,7 +183,7 @@ COUCHES_SIG = [
     {
         "name": "Limite de mon territoire depuis une couche locale (static/custom)",
         "type": "geojson",
-        "url": "<URL_ATLAS>/static/custom/territoire.json",
+        "url": "<URL_ATLAS>/static/custom/territoire_sample.geojson",
         "style": {
             "color": "blue",
             "weight": 2,

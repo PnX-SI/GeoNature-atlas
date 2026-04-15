@@ -337,6 +337,7 @@ function createOtherCustomFiles() {
         "custom.css"
         "glossaire.json"
         "maps-custom.js"
+        "territoire_sample.geojson"
     )
     local file_path
     local full_path

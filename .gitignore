@@ -6,10 +6,8 @@ atlas/configuration/settings.ini
 
 # Atlas static files
 atlas/static/node_modules/
-atlas/static/custom/images/*
-atlas/static/custom/templates/*
-atlas/static/custom/translations_override/**/*.po
-atlas/static/custom/translations_override/**/*.mo
+
+atlas/static/custom/*
 
 # Docs
 docs/_build
