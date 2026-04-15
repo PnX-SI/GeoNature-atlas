@@ -44,19 +44,21 @@
                     <div class="accordion pb-2" id="accordionArticle">
                         {% for i in range(articles | length) %}
                         <div class="accordion-item">
-                            <div class="accordion-header row align-items-center ps-4 pe-4 border-bottom gx-0">
+                            <div class="accordion-header row align-items-center justify-content-center ps-4 pe-4 border-bottom gx-0" style="min-height:48px;">
                                 <div class="col d-flex align-items-center gap-2">
                                     {% if articles[i].id_type == 3 %}
                                         <span class="fas fa-link"></span>
                                     {% else %}
                                         <span class="fas fa-paperclip"></span>
                                     {% endif %}
-                                    <a href="{{ articles[i].path }}" target="_blank" class="main-color-link text-decoration-underline" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                                    <a href="{{ articles[i].path }}" target="_blank" class="main-color-link text-decoration-underline" ">
                                         {{ articles[i].title }}
                                     </a>
                                 </div>
-                                <div class="col-auto text-muted" style="width:140px; text-align:right;">{{ articles[i].author }}</div>
-                                <div class="col-auto" style="width:40px;">
+                                <div class="col-auto text-muted d-flex align-items-center justify-content-center" style="width:140px; text-align:center; white-space:nowrap;">
+                                    {{ articles[i].author }}
+                                </div>
+                                <div class="col-auto d-flex align-items-center justify-content-center" style="width:40px;">
                                     <button class="accordion-button collapsed bg-transparent shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{i}}" aria-expanded="false" aria-controls="collapse{{i}}" style="width:40px;min-width:40px;padding:0 8px;"></button>
                                 </div>
                             </div>
