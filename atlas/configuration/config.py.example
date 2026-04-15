@@ -403,7 +403,7 @@ ITEMS_PER_PAGE = 50
 
 ## Permet d'afficher ou non les colonnes Protection et/ou Patrimonialité/Enjeux dans les listes de taxons
 
-# Afficher ou non la colonne "Protection" dans les listes de taxons (basé sur la BDC statuts)
+# Afficher le picto "protégé" sur les fiches espèces et les listes de taxons. Afficher les graphiques d'espèces protégées
 PROTECTION = True
 
 # Afficher les statistiques des espèces menacées
