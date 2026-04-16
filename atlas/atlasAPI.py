@@ -1,7 +1,9 @@
 # -*- coding:utf-8 -*-
 import json
+import time
 
 from flask import jsonify, Blueprint, request, current_app, render_template
+from sqlalchemy import text
 
 from atlas import utils
 from atlas.modeles.repositories import (
@@ -32,24 +34,6 @@ def searchAreaAPI():
     limit = request.args.get("limit", 50)
     results = vmAreasRepository.searchAreas(search, limit)
     return jsonify(results)
-
-
-if not current_app.config["AFFICHAGE_MAILLE"]:
-
-    @api.route("/observationsMailleAndPoint/<int(signed=True):cd_ref>", methods=["GET"])
-    def getObservationsMailleAndPointAPI(cd_ref):
-        """
-        Retourne les observations d'un taxon en point et en maille
-
-        :returns: dict ({'point:<GeoJson>', 'maille': 'GeoJson})
-        """
-        observations = {
-            "point": vmObservationsRepository.getObservationsChilds(params={"cd_ref": cd_ref}),
-            "maille": vmObservationsMaillesRepository.getObservationsMaillesChilds(
-                params={"cd_ref": cd_ref}
-            ),
-        }
-        return jsonify(observations)
 
 
 @api.route("/observationsMaille", methods=["GET"])

@@ -20,13 +20,16 @@ var myGeoJson;
 var sliderTouch = false;
 
 // variable globale: observations récupérer en AJAX
-
 var observationsMaille;
 var observationsPoint;
 
-// Toujours charger les points d'abord
+// variable globale: year filters
+var yearMin = null;
+var yearMax = null;
+
+// Toujours charger les mailles en premier (plus rapide)
 $.ajax({
-    url: configuration.URL_APPLICATION + "/api/observationsPoint",
+    url: configuration.URL_APPLICATION + "/api/observationsMaille",
     dataType: "json",
     type: "get",
     data: {
@@ -36,102 +39,102 @@ $.ajax({
         $("#loaderSpinner").show();
     },
 }).done(function (observations) {
+    observationsMaille = observations;
+    displayGeojsonMailles(observationsMaille, onEachFeatureMaille);
+    
+    // Masquer le spinner dès que les mailles sont affichées
     $("#loaderSpinner").hide();
-    observationsPoint = observations;
-    displayMarkerLayerFicheEspece(observationsPoint, null, null, sliderTouch);
-    if (configuration.MAP.ENABLE_SLIDER) {
-        mySlider.on("slideStop", function () {
-            sliderTouch = true;
-            years = mySlider.getValue();
-            yearMin = years[0];
-            yearMax = years[1];
-            map.removeLayer(currentLayer);
-            displayMarkerLayerFicheEspece(
-                observationsPoint,
-                yearMin,
-                yearMax,
-                sliderTouch,
-            );
-            nbObs = 0;
-            observationsPoint.features.forEach(function (point) {
-                if (
-                    point.properties.year >= yearMin &&
-                    point.properties.year <= yearMax
-                ) {
-                    nbObs += 1;
-                }
-            });
-            $("#nbObs").html("Nombre d'observation(s): " + nbObs);
-        });
-        mySlider.on("change", function () {
-            years = mySlider.getValue();
-            yearMin = years[0];
-            yearMax = years[1];
-            $("#yearMin").html(yearMin + "&nbsp;&nbsp;&nbsp;&nbsp;");
-            $("#yearMax").html("&nbsp;&nbsp;&nbsp;&nbsp;" + yearMax);
-        });
-    }
+    
+    // Bloquer le zoom jusqu'au chargement des points
+    map.doubleClickZoom.disable();
+    map.scrollWheelZoom.disable();
 
-    // Ensuite, si besoin, charger les mailles
-    if (nb_obs > configuration.LIMIT_POINT_MAILLE) {
-        $.ajax({
-            url: configuration.URL_APPLICATION + "/api/observationsMaille",
-            dataType: "json",
-            type: "get",
-            data: {
-                cd_ref: cd_ref
-            },
-            beforeSend: function () {
-                $("#loaderSpinner").show();
-            },
-        }).done(function (observations) {
-            $("#loaderSpinner").hide();
-            observationsMaille = observations;
-            displayGeojsonMailles(observationsMaille, onEachFeatureMaille);
-            eventOnZoom(observationsMaille, observationsPoint);
-            if (configuration.MAP.ENABLE_SLIDER) {
-                mySlider.on("change", function () {
-                    sliderTouch = true;
-                    years = mySlider.getValue();
-                    yearMin = years[0];
-                    yearMax = years[1];
-                    $("#yearMin").html(yearMin + "&nbsp;&nbsp;&nbsp;&nbsp;");
-                    $("#yearMax").html("&nbsp;&nbsp;&nbsp;&nbsp;" + yearMax);
-                });
-                mySlider.on("slideStop", function () {
-                    sliderTouch = true;
-                    map.removeLayer(currentLayer);
-                    $.ajax({
-                        url: configuration.URL_APPLICATION + "/api/observationsMaille",
-                        dataType: "json",
-                        type: "get",
-                        data: {
-                            cd_ref: cd_ref,
-                            year_min: yearMin,
-                            year_max: yearMax,
-                        },
-                        beforeSend: function () {
-                            $("#loaderSpinner").show();
-                        },
-                    }).done(function (observations) {
-                        $("#loaderSpinner").hide();
-                        observationsMaille = observations;
-                        map.off("zoomend", function () {});
-                        eventOnZoom(observationsMaille, observationsPoint);
+
+    // Charger les points dans le callback des mailles
+    $.ajax({
+        url: configuration.URL_APPLICATION + "/api/observationsPoint",
+        dataType: "json",
+        type: "get",
+        data: {
+            cd_ref: cd_ref
+        },
+
+    }).done(function (observations) {
+        $("#loaderSpinner").hide();
+        observationsPoint = observations;
+        pointsLoaded = true;
+        
+        // Réactiver le zoom après chargement des points
+        map.doubleClickZoom.enable();
+        map.scrollWheelZoom.enable();
+
+        // Afficher points si limite respectée, sinon garder les mailles
+        if (nb_obs <= configuration.LIMIT_POINT_MAILLE) {
+            displayMarkerLayerFicheEspece(observationsPoint, null, null, sliderTouch);
+        }
+
+        eventOnZoom();
+
+        // Configuration du slider
+        if (configuration.MAP.ENABLE_SLIDER) {
+            mySlider.on("change", function () {
+                sliderTouch = true;
+                years = mySlider.getValue();
+                yearMin = years[0];
+                yearMax = years[1];
+
+                $("#yearMin").html(yearMin + "&nbsp;&nbsp;&nbsp;&nbsp;");
+                $("#yearMax").html("&nbsp;&nbsp;&nbsp;&nbsp;" + yearMax);
+            });
+
+           mySlider.on("slideStop", function () {
+                sliderTouch = true;
+
+                map.removeLayer(currentLayer);
+                
+                // TOUJOURS recharger les mailles avec le filtre d'année
+                $.ajax({
+                    url: configuration.URL_APPLICATION + "/api/observationsMaille",
+                    dataType: "json",
+                    type: "get",
+                    data: {
+                        cd_ref: cd_ref,
+                        year_min: yearMin,
+                        year_max: yearMax,
+                    },
+                    beforeSend: function () {
+                        $("#loaderSpinner").show();
+                    },
+                }).done(function (observations) {
+                    $("#loaderSpinner").hide();
+                    observationsMaille = observations;
+                    
+                    // Puis afficher selon le zoom level
+                    if (map.getZoom() >= configuration.ZOOM_LEVEL_POINT) {
+                        displayMarkerLayerFicheEspece(
+                            observationsPoint,
+                            yearMin,
+                            yearMax,
+                            sliderTouch,
+                        );
+                    } else {
                         displayGeojsonMailles(observationsMaille, onEachFeatureMaille);
-                        nbObs = 0;
+                        // Mettre à jour le compteur
+                        let nbObs = 0;
                         observationsMaille.features.forEach(function (l) {
                             nbObs += l.properties.nb_observations;
                         });
                         $("#nbObs").html("Nombre d'observation(s): " + nbObs);
-                    });
+                    }
                 });
-            }
-        });
-    }
+            });
+        
+        }
+    });
 });
 
-function eventOnZoom(observationsMaille, observationsPoint) {
+
+function eventOnZoom() {
     // ZoomEvent: change maille to point
     var legendblock = $("div.info");
     var activeMode = "Maille";
@@ -140,16 +143,10 @@ function eventOnZoom(observationsMaille, observationsPoint) {
             activeMode === "Maille" &&
             map.getZoom() >= configuration.ZOOM_LEVEL_POINT
         ) {
+            console.log("dispmay point");
+            
             clearObservationsFeatureGroup();
             legendblock.attr("hidden", "true");
-
-            var yearMin = null;
-            var yearMax = null;
-            if (configuration.MAP.ENABLE_SLIDER) {
-                years = mySlider.getValue();
-                yearMin = years[0];
-                yearMax = years[1];
-            }
 
             displayMarkerLayerFicheEspece(
                 observationsPoint,
@@ -161,9 +158,11 @@ function eventOnZoom(observationsMaille, observationsPoint) {
         }
         if (
             activeMode === "Point" &&
-            map.getZoom() <= configuration.ZOOM_LEVEL_POINT - 1
+            map.getZoom() < configuration.ZOOM_LEVEL_POINT
         ) {
             // display legend
+            console.log("passe la", currentLayer);
+            
             map.removeLayer(currentLayer);
             const legendColorObs = document.querySelector("#legend-color-obs");
             legendColorObs

@@ -4,7 +4,7 @@ CREATE MATERIALIZED VIEW atlas.vm_observations AS
         -- Unsensitive data or id_nomenclature_sensitivity = NULL
         SELECT
             s.id_synthese,
-            se.cd_nomenclature AS cd_sensitivity,
+            coalesce(se.cd_nomenclature, '0') AS cd_sensitivity, -- si le niveau de sensi est null on le met à 0 (non sensible) - obligatoire pour ne pas créé une layer "NULL" en front
             s.the_geom_point AS geom_point
         FROM :observation_data_source AS s
             LEFT JOIN ref_nomenclatures.t_nomenclatures AS se

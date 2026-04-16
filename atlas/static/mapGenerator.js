@@ -635,11 +635,6 @@ function displayMarkerLayerFicheEspece(
     yearMax,
     sliderTouch,
 ) {
-    // on vérifie si le slider a été touché
-    // sinon on met null a yearmin et yearmax pour ne pas filtrer par année a la génération du GeoJson
-
-    // yearMin = years[0] === taxonYearMin ? null : years[0];
-    // yearMax = years[1] === YEARMAX ? null : years[1];
     myGeoJson = generateGeojsonPointFicheEspece(
         observationsPoint,
         yearMin,
@@ -678,7 +673,7 @@ function displayMarkerLayerFicheEspece(
         controltabContent.classList.remove("show");
     }
     if (myGeoJson.features.length > configuration.LIMIT_CLUSTER_POINT) {
-        legendColorObs.querySelectorAll("div").forEach((elem) => elem.remove());
+        legendColorObs.querySelectorAll("div").forEach((elem) => elem.remove());        
         legendColorObs.appendChild(generateObservationsLegend(false));
 
         // Not display labels of maille observationsFeatureGroup

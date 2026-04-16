@@ -113,6 +113,7 @@ def getObservationsMaillesChilds(params={}):
         query = query.where(
             VmObservations.dateobs >= func.current_timestamp() - cast(literal(last_obs), Interval)
         )
+    print(query)
 
     return FeatureCollection(
         [

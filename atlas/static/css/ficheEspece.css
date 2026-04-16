@@ -142,7 +142,7 @@ p.imgDescription.main {
 
 #mapContainer .leaflet-bottom.leaflet-left {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: row-reverse;
   margin-bottom: 20px;
 }
 
