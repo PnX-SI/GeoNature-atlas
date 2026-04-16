@@ -20,67 +20,89 @@ var myGeoJson;
 var sliderTouch = false;
 
 // variable globale: observations récupérer en AJAX
+
 var observationsMaille;
 var observationsPoint;
+
+// Toujours charger les points d'abord
 $.ajax({
-    url:
-        configuration.URL_APPLICATION +
-        "/api/observationsMailleAndPoint/" +
-        cd_ref,
+    url: configuration.URL_APPLICATION + "/api/observationsPoint",
     dataType: "json",
+    type: "get",
+    data: {
+        cd_ref: cd_ref
+    },
+    beforeSend: function () {
+        $("#loaderSpinner").show();
+    },
 }).done(function (observations) {
     $("#loaderSpinner").hide();
-    observationsMaille = observations.maille;
-    observationsPoint = observations.point;
-
-    // mailleBoolean: dipslay maille mode because a lot of obs
-    var mailleBoolean = false;
-    if (observations.point.features.length > configuration.LIMIT_POINT_MAILLE) {
-        displayGeojsonMailles(observations.maille, onEachFeatureMaille);
-        mailleBoolean = true;
-    } else {
-        // affichage des points sans filtrer par annes pour gagner en perf
-        displayMarkerLayerFicheEspece(
-            observationsPoint,
-            null,
-            null,
-            sliderTouch,
-        );
-    }
-    if (mailleBoolean) {
-        // zoom event
-        eventOnZoom(observationsMaille, observationsPoint);
-
-        if (configuration.MAP.ENABLE_SLIDER) {
-            // Slider event
-            mySlider.on("change", function () {
-                sliderTouch = true;
-                years = mySlider.getValue();
-                yearMin = years[0];
-                yearMax = years[1];
-
-                $("#yearMin").html(yearMin + "&nbsp;&nbsp;&nbsp;&nbsp;");
-                $("#yearMax").html("&nbsp;&nbsp;&nbsp;&nbsp;" + yearMax);
+    observationsPoint = observations;
+    displayMarkerLayerFicheEspece(observationsPoint, null, null, sliderTouch);
+    if (configuration.MAP.ENABLE_SLIDER) {
+        mySlider.on("slideStop", function () {
+            sliderTouch = true;
+            years = mySlider.getValue();
+            yearMin = years[0];
+            yearMax = years[1];
+            map.removeLayer(currentLayer);
+            displayMarkerLayerFicheEspece(
+                observationsPoint,
+                yearMin,
+                yearMax,
+                sliderTouch,
+            );
+            nbObs = 0;
+            observationsPoint.features.forEach(function (point) {
+                if (
+                    point.properties.year >= yearMin &&
+                    point.properties.year <= yearMax
+                ) {
+                    nbObs += 1;
+                }
             });
+            $("#nbObs").html("Nombre d'observation(s): " + nbObs);
+        });
+        mySlider.on("change", function () {
+            years = mySlider.getValue();
+            yearMin = years[0];
+            yearMax = years[1];
+            $("#yearMin").html(yearMin + "&nbsp;&nbsp;&nbsp;&nbsp;");
+            $("#yearMax").html("&nbsp;&nbsp;&nbsp;&nbsp;" + yearMax);
+        });
+    }
 
-            mySlider.on("slideStop", function () {
-                sliderTouch = true;
-
-                map.removeLayer(currentLayer);
-                if (map.getZoom() >= configuration.ZOOM_LEVEL_POINT) {
-                    // on filtre en local
-                    displayMarkerLayerFicheEspece(
-                        observationsPoint,
-                        yearMin,
-                        yearMax,
-                        sliderTouch,
-                    );
-                } else {
-                    // on recharge que les mailles en AJAX - filtrée par années
+    // Ensuite, si besoin, charger les mailles
+    if (nb_obs > configuration.LIMIT_POINT_MAILLE) {
+        $.ajax({
+            url: configuration.URL_APPLICATION + "/api/observationsMaille",
+            dataType: "json",
+            type: "get",
+            data: {
+                cd_ref: cd_ref
+            },
+            beforeSend: function () {
+                $("#loaderSpinner").show();
+            },
+        }).done(function (observations) {
+            $("#loaderSpinner").hide();
+            observationsMaille = observations;
+            displayGeojsonMailles(observationsMaille, onEachFeatureMaille);
+            eventOnZoom(observationsMaille, observationsPoint);
+            if (configuration.MAP.ENABLE_SLIDER) {
+                mySlider.on("change", function () {
+                    sliderTouch = true;
+                    years = mySlider.getValue();
+                    yearMin = years[0];
+                    yearMax = years[1];
+                    $("#yearMin").html(yearMin + "&nbsp;&nbsp;&nbsp;&nbsp;");
+                    $("#yearMax").html("&nbsp;&nbsp;&nbsp;&nbsp;" + yearMax);
+                });
+                mySlider.on("slideStop", function () {
+                    sliderTouch = true;
+                    map.removeLayer(currentLayer);
                     $.ajax({
-                        url:
-                            configuration.URL_APPLICATION +
-                            "/api/observationsMaille",
+                        url: configuration.URL_APPLICATION + "/api/observationsMaille",
                         dataType: "json",
                         type: "get",
                         data: {
@@ -94,67 +116,18 @@ $.ajax({
                     }).done(function (observations) {
                         $("#loaderSpinner").hide();
                         observationsMaille = observations;
-
-                        // desactivation de l'event precedent
                         map.off("zoomend", function () {});
-                        // reactivation de l'event du zoom avec les nouvelle valeurs
                         eventOnZoom(observationsMaille, observationsPoint);
-
-                        displayGeojsonMailles(
-                            observationsMaille,
-                            onEachFeatureMaille,
-                        );
+                        displayGeojsonMailles(observationsMaille, onEachFeatureMaille);
                         nbObs = 0;
                         observationsMaille.features.forEach(function (l) {
                             nbObs += l.properties.nb_observations;
                         });
-
                         $("#nbObs").html("Nombre d'observation(s): " + nbObs);
                     });
-                }
-            });
-        }
-
-        // if not display Maille
-    } else {
-        if (configuration.MAP.ENABLE_SLIDER) {
-            // Slider event
-            mySlider.on("slideStop", function () {
-                sliderTouch = true;
-                years = mySlider.getValue();
-                yearMin = years[0];
-                yearMax = years[1];
-
-                map.removeLayer(currentLayer);
-                displayMarkerLayerFicheEspece(
-                    observationsPoint,
-                    yearMin,
-                    yearMax,
-                    sliderTouch,
-                );
-
-                nbObs = 0;
-                observationsPoint.features.forEach(function (point) {
-                    if (
-                        point.properties.year >= yearMin &&
-                        point.properties.year <= yearMax
-                    ) {
-                        nbObs += 1;
-                    }
                 });
-
-                $("#nbObs").html("Nombre d'observation(s): " + nbObs);
-            });
-
-            mySlider.on("change", function () {
-                years = mySlider.getValue();
-                yearMin = years[0];
-                yearMax = years[1];
-
-                $("#yearMin").html(yearMin + "&nbsp;&nbsp;&nbsp;&nbsp;");
-                $("#yearMax").html("&nbsp;&nbsp;&nbsp;&nbsp;" + yearMax);
-            });
-        }
+            }
+        });
     }
 });
 
