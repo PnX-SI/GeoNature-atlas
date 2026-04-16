@@ -1,4 +1,3 @@
-
 #taxonIdentity {
     padding-top: 10px;
     padding-bottom: 10px;
@@ -529,4 +528,55 @@ div#statut-bdc ul.statuts-list li {
 
 div#statut-bdc .img-statut-bdc {
     max-height: 1.3rem;
+}
+
+/* Slider centré en bas de la carte, hors Leaflet */
+.slider-bottom-center {
+    position: absolute;
+    left: 50%;
+    bottom: 20px;
+    transform: translateX(-50%);
+    z-index: 1001;
+    width: 350px;
+    max-width: 95vw;
+    pointer-events: auto;
+    box-sizing: border-box;
+    padding: 8px 10px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+
+.slider-bottom-center p {
+  margin: 0 0 4px 0;
+  word-break: break-word;
+  text-align: center;
+}
+
+#sliderControl {
+  min-width: 120px;
+  max-width: 160px;
+  display: inline-block;
+}
+
+#yearMin, #yearMax {
+  display: inline-block;
+  min-width: 40px;
+  max-width: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+
+#nbObs {
+  font-size: 1em;
+  font-weight: 500;
+  white-space: normal;
+  word-break: break-word;
+}
+
+#mapContainer {
+  position: relative;
 }
