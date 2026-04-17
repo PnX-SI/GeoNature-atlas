@@ -1,0 +1,22 @@
+#: utils.py:25
+msgid "search.area"
+msgstr "Recherche par commune la la la "
+
+msgid "home.introduction.message"
+msgstr ""
+"Cet atlas met à votre disposition l'ensemble des espèces sauvages "
+"observées sur le territoire. Chaque nouvelle observation alimente en "
+"temps réel les fiches de chaque espèce que vous consultez, dans une "
+"volonté de partage et d'enrichissement des connaissances sur la "
+"biodiversité.<br/><br/>Cet atlas vous présente des observations réalisées"
+" dans le cadre de différents protocoles scientifiques. Il ne s'agit pas "
+"d'un inventaire exhaustif ni d'une répartition complète des espèces sur "
+"le territoire."
+
+
+msgid "species.infos"
+msgstr "Informations détaillé sur l'espèce"
+
+
+msgid "sensibility_warning_message"
+msgstr "Non rien"

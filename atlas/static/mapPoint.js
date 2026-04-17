@@ -35,7 +35,6 @@ var yearMax = null;
 function displayDataByZoomLevel() {
     
     const isZoomedToPoints = map.getZoom() >= configuration.ZOOM_LEVEL_POINT;    
-    console.log(isZoomedToPoints)
     if (onlyPointLoaded || isZoomedToPoints) {
         clearObservationsFeatureGroup();
         
@@ -46,11 +45,10 @@ function displayDataByZoomLevel() {
             yearMax,
             sliderTouch,
         );
-        const legendblock = $("div.info");
-        legendblock.attr("hidden", "true");
+        // Laisser displayMarkerLayerFicheEspece gérer la légende des points
     } else if (shouldDisplayMailles) {
-        map.removeLayer(currentLayer);
         // Afficher les mailles
+        map.removeLayer(currentLayer);
         displayGeojsonMailles(observationsMaille, onEachFeatureMaille);
         const legendColorObs = document.querySelector("#legend-color-obs");
         legendColorObs.querySelectorAll("div").forEach((elem) => elem.remove());
@@ -135,7 +133,6 @@ function loadPoints() {
         observationsPoint = observations;
         
         // Réactiver le zoom après chargement des points
-        map.doubleClickZoom.enable();
         map.scrollWheelZoom.enable();
         
         // Afficher les points
@@ -191,7 +188,6 @@ if (nb_obs <= configuration.LIMIT_POINT_MAILLE) {
         $("#loaderSpinner").hide();
         
         // Bloquer le zoom pendant le chargement des points
-        map.doubleClickZoom.disable();
         map.scrollWheelZoom.disable();
         
         // Charger les points en arrière-plan
