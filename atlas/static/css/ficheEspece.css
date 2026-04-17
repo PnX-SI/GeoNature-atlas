@@ -547,6 +547,12 @@ div#statut-bdc .img-statut-bdc {
     align-items: center;
 }
 
+@media (max-width: 768px) {
+    .slider-bottom-center {
+        width: 280px!important;
+    }
+}
+
 
 
 .slider-bottom-center p {
