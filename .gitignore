@@ -8,6 +8,7 @@ atlas/configuration/settings.ini
 atlas/static/node_modules/
 
 atlas/static/custom/*
+!atlas/static/custom/.gitkeep
 
 # Docs
 docs/_build
