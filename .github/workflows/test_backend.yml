@@ -18,10 +18,8 @@ jobs:
           POSTGRES_PASSWORD: monpassachanger
           POSTGRES_DB: geonatureatlas_test
         options: >-
-          --health-cmd="pg_isready -U atlas -d atlas_test"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
+          --health-cmd="pg_isready -U atlas -d atlas_test" --health-interval=10s
+          --health-timeout=5s --health-retries=5
 
     env:
       # Variable d'environnement pour ton app Flask
@@ -44,7 +42,7 @@ jobs:
 
       - name: Create app structure
         run: |
-          cp -r atlas/static/sample/* atlas/static/custom
+          cp -r atlas/static/custom_sample/* atlas/static/custom
 
       - name: Wait for PostgreSQL to be ready
         run: |

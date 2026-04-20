@@ -673,7 +673,7 @@ function displayMarkerLayerFicheEspece(
         controltabContent.classList.remove("show");
     }
     if (myGeoJson.features.length > configuration.LIMIT_CLUSTER_POINT) {
-        legendColorObs.querySelectorAll("div").forEach((elem) => elem.remove());        
+        legendColorObs.querySelectorAll("div").forEach((elem) => elem.remove());
         legendColorObs.appendChild(generateObservationsLegend(false));
 
         // Not display labels of maille observationsFeatureGroup
@@ -852,10 +852,14 @@ function generateSliderOnMap() {
     sliderContainer.style.textAlign = "center";
     sliderContainer.innerHTML =
         "<p> <span id='yearMin'> </span> <input id='sliderControl' type='text'/> <span id='yearMax'>  </span>  </p>" +
-        "<p id='nbObs'> Nombre d'observation(s): " + nb_obs + " </p>";
+        "<p id='nbObs'> Nombre d'observation(s): " +
+        nb_obs +
+        " </p>";
 
     // Ajoute le slider dans le conteneur principal de la carte
-    var mapContainer = document.getElementById("mapContainer") || document.getElementById("map").parentNode;
+    var mapContainer =
+        document.getElementById("mapContainer") ||
+        document.getElementById("map").parentNode;
     mapContainer.appendChild(sliderContainer);
 
     mySlider = new Slider("#sliderControl", {
@@ -865,6 +869,8 @@ function generateSliderOnMap() {
         step: configuration.MAP.STEP,
     });
 
-    document.getElementById("yearMax").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;" + YEARMAX;
-    document.getElementById("yearMin").innerHTML = taxonYearMin + "&nbsp;&nbsp;&nbsp;&nbsp";
+    document.getElementById("yearMax").innerHTML =
+        "&nbsp;&nbsp;&nbsp;&nbsp;" + YEARMAX;
+    document.getElementById("yearMin").innerHTML =
+        taxonYearMin + "&nbsp;&nbsp;&nbsp;&nbsp";
 }

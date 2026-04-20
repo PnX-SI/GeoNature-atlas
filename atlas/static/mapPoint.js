@@ -33,11 +33,10 @@ var yearMax = null;
  * Affiche les données selon le contexte
  */
 function displayDataByZoomLevel() {
-    
-    const isZoomedToPoints = map.getZoom() >= configuration.ZOOM_LEVEL_POINT;    
+    const isZoomedToPoints = map.getZoom() >= configuration.ZOOM_LEVEL_POINT;
     if (onlyPointLoaded || isZoomedToPoints) {
         clearObservationsFeatureGroup();
-        
+
         // Afficher les points
         displayMarkerLayerFicheEspece(
             observationsPoint,
@@ -53,10 +52,10 @@ function displayDataByZoomLevel() {
         const legendColorObs = document.querySelector("#legend-color-obs");
         legendColorObs.querySelectorAll("div").forEach((elem) => elem.remove());
         legendColorObs.appendChild(generateObservationsLegend(true));
-        
+
         const legendblock = $("div.info");
         legendblock.removeAttr("hidden");
-        
+
         // Mettre à jour le compteur
         $("#nbObs").html("Nombre d'observation(s): " + nb_obs);
     }
@@ -67,7 +66,7 @@ function displayDataByZoomLevel() {
  */
 function reloadMaillesWithYearFilter() {
     map.removeLayer(currentLayer);
-    
+
     $("#loaderSpinner").show();
     $.ajax({
         url: configuration.URL_APPLICATION + "/api/observationsMaille",
@@ -92,7 +91,7 @@ function setupSlider() {
     if (!configuration.MAP.ENABLE_SLIDER) {
         return;
     }
-    
+
     mySlider.on("change", function () {
         sliderTouch = true;
         years = mySlider.getValue();
@@ -105,7 +104,7 @@ function setupSlider() {
 
     mySlider.on("slideStop", function () {
         sliderTouch = true;
-        
+
         if (shouldDisplayMailles) {
             // Si on a les mailles, les recharger avec le filtre
             reloadMaillesWithYearFilter();
@@ -126,15 +125,15 @@ function loadPoints() {
         dataType: "json",
         type: "get",
         data: {
-            cd_ref: cd_ref
+            cd_ref: cd_ref,
         },
     }).done(function (observations) {
         $("#loaderSpinner").hide();
         observationsPoint = observations;
-        
+
         // Réactiver le zoom après chargement des points
         map.scrollWheelZoom.enable();
-        
+
         // Afficher les points
         displayDataByZoomLevel();
         eventOnZoom();
@@ -147,13 +146,13 @@ if (nb_obs <= configuration.LIMIT_POINT_MAILLE) {
     // nb_obs faible: charger UNIQUEMENT les points
     onlyPointLoaded = true;
     shouldDisplayMailles = false;
-    
+
     $.ajax({
         url: configuration.URL_APPLICATION + "/api/observationsPoint",
         dataType: "json",
         type: "get",
         data: {
-            cd_ref: cd_ref
+            cd_ref: cd_ref,
         },
         beforeSend: function () {
             $("#loaderSpinner").show();
@@ -168,46 +167,46 @@ if (nb_obs <= configuration.LIMIT_POINT_MAILLE) {
 } else {
     // nb_obs élevé: charger d'abord les mailles, puis les points
     shouldDisplayMailles = true;
-    
+
     $.ajax({
         url: configuration.URL_APPLICATION + "/api/observationsMaille",
         dataType: "json",
         type: "get",
         data: {
-            cd_ref: cd_ref
+            cd_ref: cd_ref,
         },
         beforeSend: function () {
             $("#loaderSpinner").show();
         },
     }).done(function (observations) {
         observationsMaille = observations;
-        
+
         // Afficher les mailles
         displayGeojsonMailles(observationsMaille, onEachFeatureMaille);
-        
+
         $("#loaderSpinner").hide();
-        
+
         // Bloquer le zoom pendant le chargement des points
         map.scrollWheelZoom.disable();
-        
+
         // Charger les points en arrière-plan
         loadPoints();
     });
 }
 
-
 function eventOnZoom() {
     // ZoomEvent: change maille to point (seulement si on a les deux types de données)
     var activeMode = shouldDisplayMailles ? "Maille" : "Point";
-    
+
     map.on("zoomend", function () {
-        const isZoomedToPoints = map.getZoom() >= configuration.ZOOM_LEVEL_POINT;
-        
+        const isZoomedToPoints =
+            map.getZoom() >= configuration.ZOOM_LEVEL_POINT;
+
         // Si on n'a que les points, ne rien faire
         if (!shouldDisplayMailles) {
             return;
         }
-        
+
         // Si on a les mailles et points, basculer selon le zoom
         if (activeMode === "Maille" && isZoomedToPoints) {
             displayDataByZoomLevel();
