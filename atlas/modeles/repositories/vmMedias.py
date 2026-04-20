@@ -143,7 +143,7 @@ def getLinks_and_articles(cd_ref, id3, id4):
     return [_format_media(r) for r in req]
 
 
-def get_liens_importants(cd_ref, media_ids):
+def get_liens_focus(cd_ref, media_ids):
     req = (
         db.session.query(VmMedias)
         .filter(VmMedias.id_type == func.any(media_ids), VmMedias.cd_ref == cd_ref)

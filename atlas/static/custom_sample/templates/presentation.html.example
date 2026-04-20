@@ -183,9 +183,9 @@
                     <p><a class="btn btn-primary" href="url_for('main.ficheEspece', cd_nom=61098)" role="button">Exemple &raquo;</a></p>
                 </div>
                 <div class="col-lg-4">
-                  <img class="rounded-circle mb-3" src="{{url_for('static', filename='custom/images/04-loupe.jpg') }}" alt="Fiches territoires" width="140" height="140">
-                    <h2>Fiches territoires</h2>
-                    <p>Découvrez les espèces observées sur chaque territoire du parc national et affichez leurs observations sur la carte de la zone.</p>
+                  <img class="rounded-circle mb-3" src="{{url_for('static', filename='custom/images/04-loupe.jpg') }}" alt="Fiches zonages" width="140" height="140">
+                    <h2>Fiches zonages</h2>
+                    <p>Découvrez les espèces observées sur chaque zonage du parc national et affichez leurs observations sur la carte de la zone.</p>
                     <p><a class="btn btn-primary" href="url_for('main.area', id_area=XXXXXX)" role="button">Exemple &raquo;</a></p>
                 </div>
                 <div class="col-lg-4">

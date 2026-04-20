@@ -156,7 +156,7 @@ msgstr "Search by species"
 #: atlas/static/sample/templates/navbar.html:38
 #: atlas/templates/home/globalStats.html:56
 msgid "search.area"
-msgstr "Search by territory"
+msgstr "Search by zoning"
 
 #: atlas/static/custom/templates/presentation.html:4
 #: atlas/static/sample/templates/presentation.html:4
@@ -212,8 +212,8 @@ msgid "threatened.species.tooltip"
 msgstr "Species with unfavorable conservation status"
 
 #: atlas/templates/areaSheet/moreZoneInfo.html:69
-msgid "of.the.territory"
-msgstr "of the territory"
+msgid "of.the.zoning"
+msgstr "of the zoning"
 
 #: atlas/templates/areaSheet/moreZoneInfo.html:69
 msgid "species.red.list"

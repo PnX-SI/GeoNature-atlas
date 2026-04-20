@@ -67,12 +67,12 @@
         <!-- Left row -->
         <div class="col-lg-7 col-md-8 col-sm-12">
             {% include 'templates/speciesSheet/identityCard.html' %}
-            {% if liensImportants %}
+            {% if liens_focus %}
             <div class="card mt-4">
-                <div class="card-body liens-importants-container">
-                    {% for lien in liensImportants %}
+                <div class="card-body liens-focus-container">
+                    {% for lien in liens_focus %}
                     <a
-                            class="lien-important lien-important-type-{{ lien.id_type }}"
+                            class="lien-focus lien-focus-type-{{ lien.id_type }}"
                             href="{{ lien.path }}"
                             target="_blank">
                         {% if lien.icon %}

@@ -314,9 +314,7 @@ class AtlasConfig(Schema):
     # Defaults to False to have the best performance in production
     TEMPLATES_AUTO_RELOAD = fields.Boolean(allow_none=True)
 
-    TYPES_MEDIAS_LIENS_IMPORTANTS = fields.List(
-        fields.Nested(MediaTypeImportantLink), load_default=None
-    )
+    TYPES_MEDIAS_LENS_FOCUS = fields.List(fields.Nested(MediaTypeImportantLink), load_default=None)
 
     DISPLAY_ZONING_PAGE_SENSIBILITY_MESSAGE = fields.Boolean(load_default=False)
 

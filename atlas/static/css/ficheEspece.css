@@ -201,7 +201,7 @@ p.imgDescription.main {
 
 /* Liens importants */
 
-.liens-importants-container {
+.liens-focus-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -210,7 +210,11 @@ p.imgDescription.main {
   gap: 0.7rem 0.7rem;
 }
 
-.lien-important {
+.liens-focus-container img {
+    width: 50px;
+}
+
+.lien-focus {
   display: flex;
   background-color: var(--main-color);
   color: white;
@@ -221,7 +225,7 @@ p.imgDescription.main {
   align-items: center;
 }
 
-.lien-important:hover {
+.lien-focus:hover {
   background-color: var(--second-color);
   color: white;
   text-decoration: none;

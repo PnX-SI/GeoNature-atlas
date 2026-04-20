@@ -209,15 +209,15 @@ def ficheEspece(cd_nom):
         current_app.config["TAXHUB_DISPLAYED_ATTR"],
     )
 
-    liens_importants = []
-    if current_app.config.get("TYPES_MEDIAS_LIENS_IMPORTANTS"):
-        liens_config = current_app.config["TYPES_MEDIAS_LIENS_IMPORTANTS"]
+    liens_focus = []
+    if current_app.config.get("TYPES_MEDIAS_LENS_FOCUS"):
+        liens_config = current_app.config["TYPES_MEDIAS_LENS_FOCUS"]
         media_type_ids = list({t["type_media_id"] for t in liens_config})
-        liens_importants = vmMedias.get_liens_importants(cd_ref, media_type_ids)
+        liens_focus = vmMedias.get_liens_focus(cd_ref, media_type_ids)
         icones_by_media_type = {
             i["type_media_id"]: i["icon"] for i in liens_config if i.get("icon")
         }
-        for lien in liens_importants:
+        for lien in liens_focus:
             lien["icon"] = icones_by_media_type.get(lien["id_type"], "")
 
     observers = vmObservationsRepository.getObservers(cd_ref)
@@ -245,7 +245,7 @@ def ficheEspece(cd_nom):
         videoAudio=videoAudio,
         articles=articles,
         taxonAttrs=taxonAttrs,
-        liensImportants=liens_importants,
+        liens_focus=liens_focus,
         observers=observers,
         organisms=organisms,
         groupesStatuts=groupes_statuts,
@@ -430,7 +430,7 @@ def sitemap_ui():
             ],
         },
         "areas": {
-            "title": gettext("territories pages"),
+            "title": gettext("zoning pages"),
             "values": [],
         },
         "groups": {"title": gettext("species sheet by groups"), "values": {}},
