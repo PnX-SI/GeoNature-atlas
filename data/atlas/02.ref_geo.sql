@@ -8,8 +8,14 @@ CREATE MATERIALIZED VIEW atlas.vm_bib_areas_types AS
         id_type,
         type_code,
         type_name,
-        "type_desc"
-    FROM ref_geo.bib_areas_types
+        "type_desc",
+        size_hierarchy
+    FROM ref_geo.bib_areas_types bat
+    WHERE bat.type_code IN (SELECT * FROM string_to_table(:'type_code', ','))
+        OR bat.type_code = :'type_maille'
+        OR bat.id_type IN (SELECT id_area_type FROM gn_sensitivity.cor_sensitivity_area_type)
+        OR bat.type_code = 'DEP' -- Mandatory for status (protection, red lists) 
+    
 WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_bib_areas_types
@@ -37,15 +43,8 @@ CREATE MATERIALIZED VIEW atlas.vm_l_areas AS
         st_asgeojson(a.geom_4326) AS area_geojson,
         a."description"
     FROM ref_geo.l_areas AS a
-        JOIN ref_geo.bib_areas_types AS bat
-            ON a.id_type = bat.id_type
+        JOIN atlas.vm_bib_areas_types AS bat ON a.id_type = bat.id_type
     WHERE "enable" = TRUE
-        AND (
-            bat.type_code IN (SELECT * FROM string_to_table(:'type_code', ','))
-            OR bat.type_code = :'type_maille'
-            OR a.id_type IN (SELECT id_area_type FROM gn_sensitivity.cor_sensitivity_area_type)
-            OR bat.type_code = 'DEP' -- Mandatory for status (protection, red lists)
-        )
 WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_l_areas

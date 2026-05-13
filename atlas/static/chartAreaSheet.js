@@ -220,7 +220,9 @@ const dataFormatters = {
 if (typeof areaInfos !== "undefined") {
     const areaID = areaInfos.areaID;
 
-    fetch(`${configuration.URL_APPLICATION}/api/area_chart_values/${areaID}`)
+    fetch(
+        `${window.LANGUAGE_PREFIXED_URL_APPLICATION}/api/area_chart_values/${areaID}`,
+    )
         .then((response) => response.json())
         .then((data) => {
             $("#spinnerChart").hide();

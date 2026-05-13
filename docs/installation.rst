@@ -95,8 +95,7 @@ NOTES :
 
 **Attention** . Par défaut le ``ref_geo`` contient l'ensemble des communes de France, ce qui ralentit fortement l'installation.
 
-
-Pour accelérer l'installation, vous pouvez "désactiver" certains zonage du ``ref_geo``, dont vous ne vous servez pas. Voir l'exemple de requête ci-dessous :
+Pour accelérer l'installation, vous pouvez "désactiver" certains zonages du ``ref_geo``, dont vous ne vous servez pas. Voir l'exemple de requête ci-dessous :
 
 ::
 
@@ -116,17 +115,13 @@ L'application se base entièrement sur des vues matérialisées. Par défaut, ce
 
 .. image :: images/geonature-atlas-schema-02.jpg
 
-Cela laisse donc la possibilité de la connecter à une autre BDD en adaptant. Vous pouvez fournir en entrée une vue ou une table (à renseigner dans le paramètre `observation_data_source` ) qui doit avec la structure pour construire la vue ``atlas.vm_observations`` dans ``data/atlas/atlas.vm_observations.sql`` (en respectant impérativement les noms de champs). Le script d'installation fourni toutes les tables necessaire lorsque l'on souhaite installer l'application sans GeoNature (voir `data/without_gn2/without_geonature.sql` ) 
+Cela laisse donc la possibilité de la connecter à une autre BDD en adaptant. Vous pouvez fournir en entrée une vue ou une table (à renseigner dans le paramètre ``observation_data_source``) qui doit avec la même structure pour construire la vue ``atlas.vm_observations`` dans ``data/atlas/05.vm_observations.sql`` (en respectant impérativement les noms de champs). Le script d'installation fourni toutes les tables nécessaires lorsque l'on souhaite installer l'application sans GeoNature (voir ``data/without_gn2/without_geonature.sql``).
 
 .. image :: images/geonature-atlas-schema-01.jpg
 
-Plus de détails sur les différentes vues matérialisées dans le fichier `<vues_materialisees_maj.rst>`_  qui indique aussi comment automatiser leur mise à jour.
+**3.1 Installation de GeoNature-atlas sans GeoNature**
 
-Vous y trouverez aussi un exemple d'adaptation de la vue ``atlas.vm_observations``, basé sur une BDD SICEN.
-
-**3.1 Installation de l'atlas sans GeoNature**
-
-Si vous n'utilisez pas GeoNature, il vous faut installer TaxHub (https://github.com/PnX-SI/TaxHub/) pour gérer les attributs (description, commentaire, milieu et chorologie) ainsi que les médias rattachés à chaque espèce (photos, videos, audios et articles). TaxHub est également  fourni avec un réferentiel géographique (schema `ref_geo`) qui est nécessaire au bon fonctionnement de l'atlas.
+Si vous n'utilisez pas GeoNature, il vous faut installer TaxHub (https://github.com/PnX-SI/TaxHub/) pour gérer les attributs (description, commentaire, milieu et chorologie) ainsi que les médias rattachés à chaque espèce (photos, videos, audios et articles). TaxHub est également fourni avec un réferentiel géographique (schema `ref_geo``) qui est nécessaire au bon fonctionnement de GeoNature-atlas.
 
 ⚠️ L'atlas devra alors impérativement être installé dans la même BDD que TaxHub.
 
@@ -151,8 +146,7 @@ Une fois TaxHub installé, il est nécessaire d'ajouter des migrations alembic p
     flask db upgrade ref_geo_fr_departments@head
 
 
-
-A noter aussi que si vous ne connectez pas l'atlas à une BDD GeoNature (``geonature_source=false``), une table exemple ``gn_synthese.synthese`` comprenant 2 observations est créée. A vous d'adapter les vues après l'installation pour les connecter à vos données sources.
+A noter aussi que si vous ne connectez pas GeoNature-atlas à une BDD GeoNature (``geonature_source=false``), série de tables et des données d'exemples sont créées (voir script ``without_geonature.sql`` pour simuler la structure d'un base GeoNature. A vous d'alimenter ces tables après l'installation ou les remplacer par des vues pour les connecter à votre source de données.
 
 **3.2 Installation de la base de données de GeoNature-atlas**
 
@@ -166,17 +160,13 @@ Lancez le fichier d'installation de la base de données :
 
 :notes:
 
-    Vous pouvez consulter le log de cette installation de la base dans ``log/install_db.log`` et vérifier qu'aucune erreur n'est intervenue.
+    Vous pouvez consulter le log de cette installation de la base de données dans ``log/install_db.log`` et vérifier qu'aucune erreur ne s'est produite.
 
-Vous pouvez alors modifier les vues, notamment ``atlas.vm_observations`` pour les adapter à votre contexte (ajouter les données partenaires, filtrer les espèces, limiter à un rang taxonomique...) ou le connecter à une autre BDD source (en important les données ou en s'y connectant en FDW).
-
-Si vous voulez adapter le contenu des vues matérialisées, vous pouvez modifier le fichier ``data/atlas/atlas.vm_observations.sql`` puis relancer ce script global de la BDD.
-
-Si vous souhaitez uniquement recréer la vue ``atlas.vm_observations`` et les 6 autres vues qui en dépendent vous pouvez utiliser le script ``data/update_vm_observations.sql``.
+Pour filtrer les données provenant de GeoNature (intégrer ou non les données partenaires, limiter le territoire, filtrer les espèces, limiter à un rang taxonomique...), vous pouvez créer une vue dans votre BDD GeoNature basée sur la table ``gn_synthese.synthese`` et la renseigner dans le paramètre ``observation_data_source``. Vous pouvez aussi connecter GeoNature-atlas à une autre BDD source (en important les données ou en s'y connectant en FDW).
 
 :notes:
 
-    Un mécanisme de dégradation des données est fourni par défaut dans GeoNature-atlas, voir la documentation à ce sujet : `<degradation_donnees.rst>`_
+    Un mécanisme de dégradation des données sensibles est fourni par défaut dans GeoNature-atlas, voir la documentation à ce sujet : `<sensibilite_donnees.md>`_
 
 **4. Installation de l'application**
 
@@ -187,17 +177,15 @@ Si vous souhaitez uniquement recréer la vue ``atlas.vm_observations`` et les 6 
     ./install_app.sh
 
 
-
 Installation Docker
 ===================
 
-L'installation Docker permet d'installer l'atlas dans un environnement completement isolé et dans un autre OS que ceux supporté dans l'installation classique. Il permet également d'installer plusieurs atlas sur la même machine.
+L'installation Docker permet d'installer GeoNatureatlas dans un environnement complétement isolé et dans un autre OS que ceux supportés dans l'installation classique. Il permet également d'installer plusieurs GeoNatrue-atlas sur le même serveur.
 Comme pour l'installation standard, téléchargez le code source et assurez vous d'avoir Docker installé sur la machine.
 
-Désampler le fichier `atlas/configuration/setting.ini.sample` et remplissez le.
-Le fichier docker-compose.yml fourni une installation qui crée container docker PostgreSQL pour la base de données (le paramètre `db_host` doit valoir `postgres`).
-Le container docker de la base de donnée peut lire en FDW des bases de données située sur l'host, dans un autre container docker ou même sur une autre machine.
-
+Désampler le fichier ``atlas/configuration/setting.ini.sample`` et remplissez le.
+Le fichier ``docker-compose.yml`` fourni une installation qui crée un container docker PostgreSQL pour la base de données (le paramètre ``db_host`` doit valoir ``postgres``).
+Le container docker de la base de données peut lire en FDW des bases de données situées sur le même host, dans un autre container docker ou même sur un autre serveur.
 
 Lancer l'installation de la BDD : 
 
@@ -210,17 +198,17 @@ Lancer l'application :
 ::
     ./docker-compose.sh up
 
-Par défaut le container `atlas-app` expose le port 8080 sur laquelle tourne l'application.
+Par défaut le container ``atlas-app`` expose le port 8080 sur laquelle tourne l'application.
 Il faudra ensuite mettre le proxy que vous souhaitez sur l'hôte : Apache, NGINX. Une configuration Apache est fournie dans la rubrique "Configuration d’Apache"
 
 
 .. note::
-    Le docker compose et le script `install_db.sh` fourni ne permettent pas d'installer la base de l'atlas dans la même que celle GeoNature. Nous recommandons d'installer l'atlas dans une base de données séparée
+    Le docker compose et le script ``install_db.sh`` fourni ne permettent pas d'installer la base de données de GeoNature-atlas dans la même BDD que celle de GeoNature. Nous recommandons d'installer GeoNature-atlas dans une base de données séparée.
 
 Images docker
 -------------
 
-3 images docker sont fournies, un pour la production, une pour la préproduction et une pour le développement.
+3 images docker sont fournies, un pour la production, une pour la pré-production et une pour le développement.
 Si vous souhaitez regénérer ces images : 
 
 ::
@@ -230,7 +218,6 @@ Si vous souhaitez regénérer ces images :
     docker build -t atlas:preprod --target preprod .
     # image de dev 
     docker build -t atlas:dev --target dev .
-
 
 
 Configuration de l'application
@@ -335,29 +322,31 @@ Mise à jour de l'application
     cp -aR ../atlas_old/atlas/static/custom/ ./atlas/static
 
 
-Attention à bien lire les notes de chaque version, qui peuvent indiquer des opérations spécifiques à faire, notamment des nouveaux paramètres à ajouter dans votre configuration et/ou des modifications à appliquer dans la BDD.
+Attention à bien lire les notes de chaque version, qui peuvent indiquer des opérations spécifiques à faire, notamment des nouveaux paramètres à ajouter dans votre configuration.
 
 - Relancez l'installation automatique de l'application :
 
 ::
+    
     cd install
     ./install_app.sh
 
 Mise à jour de la base de données
-""""""""""""""""""""""""""""""""""
+=================================
 
-Lancer le script `./install/update_db.sh` pour mettre à jour la base de données de l'atlas.
+Lancer le script ``./install/install_db.sh`` pour mettre à jour la base de données de l'atlas.
 
 
 .. danger::
-    Le script `update_db.sh` supprime et recrée le schéma atlas. Ne mettez aucune table ou vue dans ce schéma
+    Le paramètre ``ATLAS_DROP_SCHEMA`` doit être à ``true`` pour réinstaller la base de données.
+    Ce script va supprimer puis recréer le schéma ``atlas``. Ne mettez aucune table ou vue spécifique dans ce schéma.
 
 
 
 Développement
 =============
 
-Lire le fichier `CONTRIBUTING.md`.
+Lire le fichier ``CONTRIBUTING.md``.
 
 
 **Lancement de l'application**
@@ -369,7 +358,7 @@ Depuis la racine du dépôt:
     source venv/bin/activate
     flask run
 
-Pour changer le port de l'application, désampler le fichier `atlas/.flaskenv.sample`` et éditer la variable `FLASK_RUN_PORT`
+Pour changer le port de l'application, désampler le fichier ``atlas/.flaskenv.sample`` et éditer la variable ``FLASK_RUN_PORT``.
 
 **Technologies**
 
@@ -385,6 +374,4 @@ Pour changer le port de l'application, désampler le fichier `atlas/.flaskenv.sa
 
 Des données sont renvoyées aux templates par l'ORM, d'autres le sont sous forme d'API (fichiers JSON chargés en AJAX) pour charger certaines pages plus rapidement (observations sur les fiches espèces et auto-complétion de la recherche) :
 
-Pour en savoir plus, consultez le document `<./vues_materialisees_maj.rst>`_ ainsi que le rapport de stage de Théo Lechemia (https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/src/files/2016-09-30-rapport_stage_Theo-Lechemia.pdf) ou sa présentation (https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/src/files/2016-09-soutenance-Theo-Lechemia.pdf)
-
-
+Pour en savoir plus, consultez le rapport de stage de Théo Lechemia (https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/files/2016-09-30-rapport_stage_Theo-Lechemia.pdf) ou sa présentation (https://github.com/PnX-SI/GeoNature-atlas/blob/master/docs/files/2016-09-soutenance-Theo-Lechemia.pdf)

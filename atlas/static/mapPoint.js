@@ -22,185 +22,198 @@ var sliderTouch = false;
 // variable globale: observations récupérer en AJAX
 var observationsMaille;
 var observationsPoint;
-$.ajax({
-    url:
-        configuration.URL_APPLICATION +
-        "/api/observationsMailleAndPoint/" +
-        cd_ref,
-    dataType: "json",
-}).done(function (observations) {
-    $("#loaderSpinner").hide();
-    observationsMaille = observations.maille;
-    observationsPoint = observations.point;
+var onlyPointLoaded = false; // Indique si les points peuvent être chargés (nb_obs <= limite)
+var shouldDisplayMailles = false; // Indique si les mailles doivent être affichées
 
-    // mailleBoolean: dipslay maille mode because a lot of obs
-    var mailleBoolean = false;
-    if (observations.point.features.length > configuration.LIMIT_POINT_MAILLE) {
-        displayGeojsonMailles(observations.maille, onEachFeatureMaille);
-        mailleBoolean = true;
-    } else {
-        // affichage des points sans filtrer par annes pour gagner en perf
+// variable globale: year filters
+var yearMin = null;
+var yearMax = null;
+
+/**
+ * Affiche les données selon le contexte
+ */
+function displayDataByZoomLevel() {
+    const isZoomedToPoints = map.getZoom() >= configuration.ZOOM_LEVEL_POINT;
+    if (onlyPointLoaded || isZoomedToPoints) {
+        clearObservationsFeatureGroup();
+
+        // Afficher les points
         displayMarkerLayerFicheEspece(
             observationsPoint,
-            null,
-            null,
+            yearMin,
+            yearMax,
             sliderTouch,
         );
+        // Laisser displayMarkerLayerFicheEspece gérer la légende des points
+    } else if (shouldDisplayMailles) {
+        // Afficher les mailles
+        map.removeLayer(currentLayer);
+        displayGeojsonMailles(observationsMaille, onEachFeatureMaille);
+        const legendColorObs = document.querySelector("#legend-color-obs");
+        legendColorObs.querySelectorAll("div").forEach((elem) => elem.remove());
+        legendColorObs.appendChild(generateObservationsLegend(true));
+
+        const legendblock = $("div.info");
+        legendblock.removeAttr("hidden");
+
+        // Mettre à jour le compteur
+        $("#nbObs").html("Nombre d'observation(s): " + nb_obs);
     }
-    if (mailleBoolean) {
-        // zoom event
-        eventOnZoom(observationsMaille, observationsPoint);
+}
 
-        if (configuration.MAP.ENABLE_SLIDER) {
-            // Slider event
-            mySlider.on("change", function () {
-                sliderTouch = true;
-                years = mySlider.getValue();
-                yearMin = years[0];
-                yearMax = years[1];
+/**
+ * Lance le rechargement des mailles selon les filtres d'année
+ */
+function reloadMaillesWithYearFilter() {
+    map.removeLayer(currentLayer);
 
-                $("#yearMin").html(yearMin + "&nbsp;&nbsp;&nbsp;&nbsp;");
-                $("#yearMax").html("&nbsp;&nbsp;&nbsp;&nbsp;" + yearMax);
-            });
+    $("#loaderSpinner").show();
+    $.ajax({
+        url: configuration.URL_APPLICATION + "/api/observationsMaille",
+        dataType: "json",
+        type: "get",
+        data: {
+            cd_ref: cd_ref,
+            year_min: yearMin,
+            year_max: yearMax,
+        },
+    }).done(function (observations) {
+        $("#loaderSpinner").hide();
+        observationsMaille = observations;
+        displayDataByZoomLevel();
+    });
+}
 
-            mySlider.on("slideStop", function () {
-                sliderTouch = true;
-
-                map.removeLayer(currentLayer);
-                if (map.getZoom() >= configuration.ZOOM_LEVEL_POINT) {
-                    // on filtre en local
-                    displayMarkerLayerFicheEspece(
-                        observationsPoint,
-                        yearMin,
-                        yearMax,
-                        sliderTouch,
-                    );
-                } else {
-                    // on recharge que les mailles en AJAX - filtrée par années
-                    $.ajax({
-                        url:
-                            configuration.URL_APPLICATION +
-                            "/api/observationsMaille",
-                        dataType: "json",
-                        type: "get",
-                        data: {
-                            cd_ref: cd_ref,
-                            year_min: yearMin,
-                            year_max: yearMax,
-                        },
-                        beforeSend: function () {
-                            $("#loaderSpinner").show();
-                        },
-                    }).done(function (observations) {
-                        $("#loaderSpinner").hide();
-                        observationsMaille = observations;
-
-                        // desactivation de l'event precedent
-                        map.off("zoomend", function () {});
-                        // reactivation de l'event du zoom avec les nouvelle valeurs
-                        eventOnZoom(observationsMaille, observationsPoint);
-
-                        displayGeojsonMailles(
-                            observationsMaille,
-                            onEachFeatureMaille,
-                        );
-                        nbObs = 0;
-                        observationsMaille.features.forEach(function (l) {
-                            nbObs += l.properties.nb_observations;
-                        });
-
-                        $("#nbObs").html("Nombre d'observation(s): " + nbObs);
-                    });
-                }
-            });
-        }
-
-        // if not display Maille
-    } else {
-        if (configuration.MAP.ENABLE_SLIDER) {
-            // Slider event
-            mySlider.on("slideStop", function () {
-                sliderTouch = true;
-                years = mySlider.getValue();
-                yearMin = years[0];
-                yearMax = years[1];
-
-                map.removeLayer(currentLayer);
-                displayMarkerLayerFicheEspece(
-                    observationsPoint,
-                    yearMin,
-                    yearMax,
-                    sliderTouch,
-                );
-
-                nbObs = 0;
-                observationsPoint.features.forEach(function (point) {
-                    if (
-                        point.properties.year >= yearMin &&
-                        point.properties.year <= yearMax
-                    ) {
-                        nbObs += 1;
-                    }
-                });
-
-                $("#nbObs").html("Nombre d'observation(s): " + nbObs);
-            });
-
-            mySlider.on("change", function () {
-                years = mySlider.getValue();
-                yearMin = years[0];
-                yearMax = years[1];
-
-                $("#yearMin").html(yearMin + "&nbsp;&nbsp;&nbsp;&nbsp;");
-                $("#yearMax").html("&nbsp;&nbsp;&nbsp;&nbsp;" + yearMax);
-            });
-        }
+/**
+ * Configure les événements du slider si activé
+ */
+function setupSlider() {
+    if (!configuration.MAP.ENABLE_SLIDER) {
+        return;
     }
-});
 
-function eventOnZoom(observationsMaille, observationsPoint) {
-    // ZoomEvent: change maille to point
-    var legendblock = $("div.info");
-    var activeMode = "Maille";
+    mySlider.on("change", function () {
+        sliderTouch = true;
+        years = mySlider.getValue();
+        yearMin = years[0];
+        yearMax = years[1];
+
+        $("#yearMin").html(yearMin + "&nbsp;&nbsp;&nbsp;&nbsp;");
+        $("#yearMax").html("&nbsp;&nbsp;&nbsp;&nbsp;" + yearMax);
+    });
+
+    mySlider.on("slideStop", function () {
+        sliderTouch = true;
+
+        if (shouldDisplayMailles) {
+            // Si on a les mailles, les recharger avec le filtre
+            reloadMaillesWithYearFilter();
+        } else {
+            // Sinon juste réafficher les points filtrés
+            map.removeLayer(currentLayer);
+            displayDataByZoomLevel();
+        }
+    });
+}
+
+/**
+ * Lance le chargement des points après les mailles
+ */
+function loadPoints() {
+    $.ajax({
+        url: configuration.URL_APPLICATION + "/api/observationsPoint",
+        dataType: "json",
+        type: "get",
+        data: {
+            cd_ref: cd_ref,
+        },
+    }).done(function (observations) {
+        $("#loaderSpinner").hide();
+        observationsPoint = observations;
+
+        // Réactiver le zoom après chargement des points
+        map.scrollWheelZoom.enable();
+
+        // Afficher les points
+        displayDataByZoomLevel();
+        eventOnZoom();
+        setupSlider();
+    });
+}
+
+// Vérifier le nombre d'observations et décider de la stratégie de chargement
+if (nb_obs <= configuration.LIMIT_POINT_MAILLE) {
+    // nb_obs faible: charger UNIQUEMENT les points
+    onlyPointLoaded = true;
+    shouldDisplayMailles = false;
+
+    $.ajax({
+        url: configuration.URL_APPLICATION + "/api/observationsPoint",
+        dataType: "json",
+        type: "get",
+        data: {
+            cd_ref: cd_ref,
+        },
+        beforeSend: function () {
+            $("#loaderSpinner").show();
+        },
+    }).done(function (observations) {
+        $("#loaderSpinner").hide();
+        observationsPoint = observations;
+        displayDataByZoomLevel();
+        eventOnZoom();
+        setupSlider();
+    });
+} else {
+    // nb_obs élevé: charger d'abord les mailles, puis les points
+    shouldDisplayMailles = true;
+
+    $.ajax({
+        url: configuration.URL_APPLICATION + "/api/observationsMaille",
+        dataType: "json",
+        type: "get",
+        data: {
+            cd_ref: cd_ref,
+        },
+        beforeSend: function () {
+            $("#loaderSpinner").show();
+        },
+    }).done(function (observations) {
+        observationsMaille = observations;
+
+        // Afficher les mailles
+        displayGeojsonMailles(observationsMaille, onEachFeatureMaille);
+
+        $("#loaderSpinner").hide();
+
+        // Bloquer le zoom pendant le chargement des points
+        map.scrollWheelZoom.disable();
+
+        // Charger les points en arrière-plan
+        loadPoints();
+    });
+}
+
+function eventOnZoom() {
+    // ZoomEvent: change maille to point (seulement si on a les deux types de données)
+    var activeMode = shouldDisplayMailles ? "Maille" : "Point";
+
     map.on("zoomend", function () {
-        if (
-            activeMode === "Maille" &&
-            map.getZoom() >= configuration.ZOOM_LEVEL_POINT
-        ) {
-            clearObservationsFeatureGroup();
-            legendblock.attr("hidden", "true");
+        const isZoomedToPoints =
+            map.getZoom() >= configuration.ZOOM_LEVEL_POINT;
 
-            var yearMin = null;
-            var yearMax = null;
-            if (configuration.MAP.ENABLE_SLIDER) {
-                years = mySlider.getValue();
-                yearMin = years[0];
-                yearMax = years[1];
-            }
+        // Si on n'a que les points, ne rien faire
+        if (!shouldDisplayMailles) {
+            return;
+        }
 
-            displayMarkerLayerFicheEspece(
-                observationsPoint,
-                yearMin,
-                yearMax,
-                sliderTouch,
-            );
+        // Si on a les mailles et points, basculer selon le zoom
+        if (activeMode === "Maille" && isZoomedToPoints) {
+            displayDataByZoomLevel();
             activeMode = "Point";
         }
-        if (
-            activeMode === "Point" &&
-            map.getZoom() <= configuration.ZOOM_LEVEL_POINT - 1
-        ) {
-            // display legend
-            map.removeLayer(currentLayer);
-            const legendColorObs = document.querySelector("#legend-color-obs");
-            legendColorObs
-                .querySelectorAll("div")
-                .forEach((elem) => elem.remove());
-            legendColorObs.appendChild(generateObservationsLegend(true));
-
-            toggleLayerTab(true);
-            legendblock.removeAttr("hidden");
-            displayGeojsonMailles(observationsMaille, onEachFeatureMaille);
+        if (activeMode === "Point" && !isZoomedToPoints) {
+            displayDataByZoomLevel();
             activeMode = "Maille";
         }
     });

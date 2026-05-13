@@ -7,13 +7,10 @@
 # Base de données PostgreSQL/PostGIS
 #+-------------------------------------------------------------------------------------------------+
 
-# supprimer le schéma atlas lors d'une réinstallation (ou du lancement de docker compose up)
-ATLAS_DROP_SCHEMA=true
-
 # Host de la base de données de l'application
 db_host=localhost
 
-# Port pour base de données de l'application
+# Port pour la base de données de l'application
 db_port=5432
 
 # Nom de la base de données de l'application
@@ -31,28 +28,24 @@ owner_atlas=geonatadmin
 # Password du propriétaire de la BDD
 owner_atlas_pass=monpassachanger
 
-# GeoNature-atlas doit-il avoir sa propre base de donnée et être connecté
-# à une BDD GeoNature externe ? Si oui, renseignez true.
-# Cela créera des tables en Foreign Data Wrapper (FDW) dans la BDD atlas.
+# GeoNature-atlas doit-il être connecté à une BDD GeoNature externe ? Si oui, renseignez true.
+# Cela créera des tables en Foreign Data Wrapper (FDW) dans la BDD de GeoNature-atlas.
 geonature_source=true
 
-# Table ou vue ou sont stockées les données dans GeoNature
-# par défaut c'est la table gn_synthese.synthese qui est prise pour construire les VM.
-# Il est possible de fournir une vue filtrées des données qu'on souhaite afficher dans l'atlas
-# La vue doit être dans le schéma `gn_synthese`. Par ex : `gn_synthese.v_synthese_atlas_custom`
+# Table ou vue où sont stockées les données dans la BDD GeoNature
+# Par défaut ce sont toutes les observations la table `gn_synthese.synthese` qui sont récupérées
+# Il est possible de fournir une vue filtrée des données qu'on souhaite afficher dans l'atlas
+# La vue doit alors être dans le schéma `gn_synthese`. Par ex : `gn_synthese.v_synthese_atlas_custom`
 observation_data_source=gn_synthese.synthese
-
 
 #+-------------------------------------------------------------------------------------------------+
 # Connexion à la BDD GeoNature source
 #+-------------------------------------------------------------------------------------------------+
 
 # 🗒 Paramètres de connexion à la BDD source GeoNature en Foreign Data Wrapper.
-# Si vous n'utilisez pas GeoNature, pour les données d'observation, vous pouvez vous inspirer
-# du fichier data/atlas_geonature.sql pour vous connecter à une autre BDD mère.
 
 # Host de la BDD GeoNature source
-# Dans un contexte docker, si la bdd est sur le meme serveur que l'hôte et hors docker, rechercher son ip via `docker network inspect bridge | grep Gateway`
+# Dans un contexte docker, si la BDD est sur le même serveur que l'hôte et hors docker, rechercher son IP via `docker network inspect bridge | grep Gateway`
 db_source_host=localhost
 
 # Port de la BDD GeoNature source
@@ -79,22 +72,19 @@ atlas_source_pass=monpassachanger
 # 🗒 Voir la colonne "type_code" de la table "ref_geo.bib_areas_type" pour
 # tous les codes de type de zone geographique renseignés ci-dessous
 
-
-# Type de zonage à utiliser dans l'application pour générer les fiches territoires.
-# (Pour optimiser et ne pas utiliser toutes les géométries présentes dans ref_geo).
+# Types de zonage à utiliser dans l'application pour générer des fiches territoires.
 # 🗒 Voir la colonne "type_code" de la table "ref_geo.bib_areas_type".
 # ATTENTION : ne pas mettre d'espace entre les valeurs
 type_code="COM"
 #type_code="COM,EPCI"
 
 # Type de zonage à utiliser pour les observations non sensibles.
-# Utiliser pour agrégger les observations dans les mailles pour un affichage
-# synthètique dans la fiche espèce.
+# Utilisé pour agréger les observations non sensibles dans des mailles.
 # 🗒 Voir la colonne "type_code" de la table "ref_geo.bib_areas_type".
 type_maille="M5"
 
 # Altitudes : lister les valeurs des classes d'altitudes.
-# si non spécifié les valeurs par défaut seront (0 500 1000 1500 2000 2500 3000 3500 4000)
+# Si non spécifié, les valeurs par défaut seront (0 500 1000 1500 2000 2500 3000 3500 4000)
 altitudes=(0 500 1000 1500 2000 2500 3000 3500 4000)
 
 #+-------------------------------------------------------------------------------------------------+
@@ -114,11 +104,11 @@ time=15
 
 GEONATURE_ATLAS_DOCKER_IMAGE="ghcr.io/pnx-si/geonature-atlas:latest"
 
-# chemin vers le fichier de config (config.py)
+# Chemin vers le fichier de config (config.py)
 # ATLAS_SETTINGS
-# répertoire des fichiers static
+# Répertoire des fichiers static
 # ATLAS_STATIC_FOLDER
-# répertoire des templates
+# Répertoire des templates
 # ATLAS_TEMPLATE_FOLDER
 
 COMPOSE_FILE=docker-compose.yml
@@ -126,9 +116,8 @@ COMPOSE_FILE=docker-compose.yml
 #COMPOSE_FILE=docker-compose.yml:docker-compose.override-dev.yml
 
 #+-------------------------------------------------------------------------------------------------+
-# Paramètres administrateur avancés ( ⚠ ne modifier que si vous savez ce que vous faites !)
+# Paramètres administrateur avancés (⚠ ne modifier que si vous savez ce que vous faites !)
 #+-------------------------------------------------------------------------------------------------+
-
 
 # Parmètres Gunicorn
 gun_num_workers=4

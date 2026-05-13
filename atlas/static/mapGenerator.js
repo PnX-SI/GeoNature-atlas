@@ -20,8 +20,12 @@ const areaBorderColor = String(
 // Feature group de chaque élément de floutage (M1, M5 etc...)
 const observationsFeatureGroup = {};
 
+function isMobile() {
+    return window.innerWidth <= 768; // Détecte si l'utilisateur est en mode mobile
+}
+
 const control = L.control.layers(null, null, {
-    collapsed: false,
+    collapsed: isMobile(),
 });
 
 function clearObservationsFeatureGroup() {
@@ -43,7 +47,7 @@ function generateObservationPopup(feature) {
             <b>Date: </b> ${feature.properties.dateobs}
             </br><b>Altitude: </b> ${feature.properties.altitude_retenue}
             ${observersTxt(feature)} </br>
-            <a href='${configuration.URL_APPLICATION}/espece/${feature.properties.cd_ref}'> Fiche espèce </a>
+            <a href='${window.LANGUAGE_PREFIXED_URL_APPLICATION}/espece/${feature.properties.cd_ref}'> Fiche espèce </a>
             `;
 
     // verifie si le champs effectif est rempli
@@ -359,11 +363,6 @@ function generateMap(zoomHomeButton) {
     map.getPane("backgroundLayers").style.zIndex = 250;
 
     control.addTo(map);
-    if (!configuration.DEFAULT_LEGEND_DISPLAY && control?.getContainer()) {
-        control.collapse();
-    }
-
-    // control.addOverlay()
 
     // create the html control panel
     createTabControl();
@@ -636,11 +635,6 @@ function displayMarkerLayerFicheEspece(
     yearMax,
     sliderTouch,
 ) {
-    // on vérifie si le slider a été touché
-    // sinon on met null a yearmin et yearmax pour ne pas filtrer par année a la génération du GeoJson
-
-    // yearMin = years[0] === taxonYearMin ? null : years[0];
-    // yearMax = years[1] === YEARMAX ? null : years[1];
     myGeoJson = generateGeojsonPointFicheEspece(
         observationsPoint,
         yearMin,
@@ -661,29 +655,27 @@ function displayMarkerLayerFicheEspece(
         },
     });
     const legendColorObs = document.querySelector("#legend-color-obs");
+    if (configuration.COUCHES_SIG.length === 0) {
+        // In point only map, hide control tab if no COUCHES_SIG configured
+        toggleLayerTab(false);
+        const legendtab = document.querySelector("#legend-tab");
+        const legendtabContent = document.querySelector("#legend-tab-content");
+        const controltab = document.querySelector("#control-tab");
+        const controltabContent = document.querySelector(
+            "#control-tab-content",
+        );
+        // switch to legend tab
+        legendtab.classList.add("active");
+        legendtabContent.classList.add("active");
+        legendtabContent.classList.add("show");
+        controltab.classList.remove("active");
+        controltabContent.classList.remove("active");
+        controltabContent.classList.remove("show");
+    }
     if (myGeoJson.features.length > configuration.LIMIT_CLUSTER_POINT) {
         legendColorObs.querySelectorAll("div").forEach((elem) => elem.remove());
         legendColorObs.appendChild(generateObservationsLegend(false));
 
-        if (configuration.COUCHES_SIG.length === 0) {
-            // In point only map, hide control tab if no COUCHES_SIG configured
-            toggleLayerTab(false);
-            const legendtab = document.querySelector("#legend-tab");
-            const legendtabContent = document.querySelector(
-                "#legend-tab-content",
-            );
-            const controltab = document.querySelector("#control-tab");
-            const controltabContent = document.querySelector(
-                "#control-tab-content",
-            );
-            // switch to legend tab
-            legendtab.classList.add("active");
-            legendtabContent.classList.add("active");
-            legendtabContent.classList.add("show");
-            controltab.classList.remove("active");
-            controltabContent.classList.remove("active");
-            controltabContent.classList.remove("show");
-        }
         // Not display labels of maille observationsFeatureGroup
         document.querySelectorAll(".defaultOverlay").forEach((elem) => {
             elem.closest("label").style.display = "none";
@@ -748,7 +740,7 @@ function buildSpeciesEntries(taxons) {
     taxons.forEach((taxon) => {
         rows.push(`
     <a title="Cliquez pour aller à la fiche de '${taxon.nom_vern}'" class="tooltip-item btn" href="/espece/${taxon.cd_ref}" target="_blank">
-        <img class="me-2 has-media-${taxon.has_media}" src="${taxon.media}" alt="">
+        <img loading="lazy" class="me-2 has-media-${taxon.has_media}" src="${taxon.media}" alt="" >
         <div class="tooltip-item-text">
             <p class="name_vern">${taxon.nom_vern ? taxon.nom_vern : ""}</p>
             <p class="lb_nom">${taxon.lb_nom}</p>
@@ -845,38 +837,30 @@ var mySlider;
 
 // eslint-disable-next-line no-unused-vars
 function generateSliderOnMap() {
-    var SliderControl = L.Control.extend({
-        options: {
-            position: "bottomleft",
-            //control position - allowed: 'topleft', 'topright', 'bottomleft', 'bottomright'
-        },
+    // Vérifie si le slider existe déjà
+    if (document.getElementById("sliderContainer")) return;
 
-        onAdd: function () {
-            var sliderContainer = L.DomUtil.create(
-                "div",
-                "leaflet-bar leaflet-control leaflet-slider-control",
-            );
+    // Crée le conteneur du slider
+    var sliderContainer = document.createElement("div");
+    sliderContainer.id = "sliderContainer";
+    sliderContainer.className = "slider-bottom-center";
+    sliderContainer.style.backgroundColor = "white";
+    sliderContainer.style.width = "350px";
+    sliderContainer.style.height = "70px";
+    sliderContainer.style.border = "solid white 1px";
+    sliderContainer.style.cursor = "pointer";
+    sliderContainer.style.textAlign = "center";
+    sliderContainer.innerHTML =
+        "<p> <span id='yearMin'> </span> <input id='sliderControl' type='text'/> <span id='yearMax'>  </span>  </p>" +
+        "<p id='nbObs'> Nombre d'observation(s): " +
+        nb_obs +
+        " </p>";
 
-            sliderContainer.style.backgroundColor = "white";
-            sliderContainer.style.width = "300px";
-            sliderContainer.style.height = "70px";
-            sliderContainer.style.border = "solid white 1px";
-            sliderContainer.style.cursor = "pointer";
-            $(sliderContainer).css("margin-bottom", "-300px");
-            $(sliderContainer).css("margin-left", "200px");
-            $(sliderContainer).css("text-align", "center");
-            $(sliderContainer).append(
-                "<p> <span id='yearMin'> </span> <input id='sliderControl' type='text'/> <span id='yearMax'>  </span>  </p>" +
-                    "<p id='nbObs'> Nombre d'observation(s): " +
-                    nb_obs +
-                    " </p>",
-            );
-            L.DomEvent.disableClickPropagation(sliderContainer);
-            return sliderContainer;
-        },
-    });
-
-    map.addControl(new SliderControl());
+    // Ajoute le slider dans le conteneur principal de la carte
+    var mapContainer =
+        document.getElementById("mapContainer") ||
+        document.getElementById("map").parentNode;
+    mapContainer.appendChild(sliderContainer);
 
     mySlider = new Slider("#sliderControl", {
         value: [taxonYearMin, YEARMAX],
@@ -885,6 +869,8 @@ function generateSliderOnMap() {
         step: configuration.MAP.STEP,
     });
 
-    $("#yearMax").html("&nbsp;&nbsp;&nbsp;&nbsp;" + YEARMAX);
-    $("#yearMin").html(taxonYearMin + "&nbsp;&nbsp;&nbsp;&nbsp");
+    document.getElementById("yearMax").innerHTML =
+        "&nbsp;&nbsp;&nbsp;&nbsp;" + YEARMAX;
+    document.getElementById("yearMin").innerHTML =
+        taxonYearMin + "&nbsp;&nbsp;&nbsp;&nbsp";
 }

@@ -14,6 +14,7 @@ from flask import (
     request,
     url_for,
     session,
+    request,
 )
 from flask_babel import gettext
 
@@ -42,14 +43,25 @@ from atlas.configuration.config_parser import config
 
 main = Blueprint("main", __name__)
 
-# change language route
-if config["MULTILINGUAL"]:
 
-    @main.route("/language/<lang_code>")
-    def change_language(lang_code):
-        if lang_code in config["AVAILABLE_LANGUAGES"]:
-            session["language"] = lang_code
-        return redirect(request.referrer or url_for("main.index"))
+@main.before_request
+def redirect_default_language():
+    if not current_app.config["MULTILINGUAL"]:
+        return
+
+    # if lang_code already in args, do not redirect
+    if "lang_code" in (request.view_args or {}):
+        return
+
+    endpoint = request.endpoint
+    if endpoint and "." in endpoint:
+        endpoint_with_lang = f"main.{endpoint.split('.')[1]}"
+        args = request.view_args.copy() if request.view_args else {}
+        args["lang_code"] = g.lang_code
+        target_url = url_for(endpoint_with_lang, **args, _external=True)
+
+        if request.url != target_url:
+            return redirect(target_url)
 
 
 # Activating organisms sheets routes
@@ -197,15 +209,15 @@ def ficheEspece(cd_nom):
         current_app.config["TAXHUB_DISPLAYED_ATTR"],
     )
 
-    liens_importants = []
-    if current_app.config.get("TYPES_MEDIAS_LIENS_IMPORTANTS"):
-        liens_config = current_app.config["TYPES_MEDIAS_LIENS_IMPORTANTS"]
+    liens_focus = []
+    if current_app.config.get("TYPES_MEDIAS_LENS_FOCUS"):
+        liens_config = current_app.config["TYPES_MEDIAS_LENS_FOCUS"]
         media_type_ids = list({t["type_media_id"] for t in liens_config})
-        liens_importants = vmMedias.get_liens_importants(cd_ref, media_type_ids)
+        liens_focus = vmMedias.get_liens_focus(cd_ref, media_type_ids)
         icones_by_media_type = {
             i["type_media_id"]: i["icon"] for i in liens_config if i.get("icon")
         }
-        for lien in liens_importants:
+        for lien in liens_focus:
             lien["icon"] = icones_by_media_type.get(lien["id_type"], "")
 
     observers = vmObservationsRepository.getObservers(cd_ref)
@@ -233,7 +245,7 @@ def ficheEspece(cd_nom):
         videoAudio=videoAudio,
         articles=articles,
         taxonAttrs=taxonAttrs,
-        liensImportants=liens_importants,
+        liens_focus=liens_focus,
         observers=observers,
         organisms=organisms,
         groupesStatuts=groupes_statuts,
@@ -365,32 +377,40 @@ def sitemap():
     """Generate sitemap.xml iterating over static and dynamic routes to make a list of urls and date modified"""
     pages = []
     ten_days_ago = datetime.now() - timedelta(days=10)
-    url_root = request.url_root
-    if url_root[-1] == "/":
-        url_root = url_root[:-1]
     for static_page in current_app.config["STATIC_PAGES"]:
-        url = url_root + url_for("main.get_staticpages", page=static_page)
+        url = url_for("main.get_staticpages", page=static_page, _external=True)
         pages.append([url, ten_days_ago])
-    for rule in current_app.url_map.iter_rules():
-        # check for a 'GET' request and that the length of arguments is = 0 and if you have an admin area that the rule does not start with '/admin'
-        if "GET" in rule.methods and len(rule.arguments) == 0 and not rule.rule.startswith("/api"):
-            pages.append([url_root + rule.rule, ten_days_ago])
+    pages.extend(
+        [
+            [url_for("main.photos", _external=True), ten_days_ago],
+            [url_for("main.sitemap", _external=True), ten_days_ago],
+            [url_for("main.sitemap_ui", _external=True), ten_days_ago],
+            [url_for("main.robots", _external=True), ten_days_ago],
+        ]
+    )
 
     # get dynamic routes for blog
     species = db.session.query(vmTaxons.VmTaxons).order_by(vmTaxons.VmTaxons.cd_ref).all()
     for species in species:
-        url = url_root + url_for("main.ficheEspece", cd_nom=species.cd_ref)
+        url = url_for("main.ficheEspece", cd_nom=species.cd_ref, _external=True)
         modified_time = ten_days_ago
         pages.append([url, modified_time])
 
-    municipalities = db.session.query(vmAreas.VmAreas).order_by(vmAreas.VmAreas.id_area).all()
-    for municipalitie in municipalities:
-        url = url_root + url_for("main.area", id_area=municipalitie.id_area)
+    # Pour ne remonter que les areas ayant des observations :
+    areas = (
+        db.session.query(vmAreas.VmAreasWithObs)
+        .filter(vmAreas.VmAreasWithObs.type_code.in_(current_app.config["TYPE_TERRITOIRE_SHEET"]))
+        .order_by(vmAreas.VmAreasWithObs.area_name)
+        .all()
+    )
+
+    for area in areas:
+        url = url_for("main.area", id_area=area.id_area, _external=True)
         modified_time = ten_days_ago
         pages.append([url, modified_time])
 
     sitemap_template = render_template(
-        "templates/sitemap.xml", pages=pages, url_root=url_root, last_modified=ten_days_ago
+        "templates/sitemap.xml", pages=pages, last_modified=ten_days_ago
     )
     response = make_response(sitemap_template)
     response.headers["Content-Type"] = "application/xml"
@@ -405,23 +425,19 @@ def sitemap_ui():
         "static": {
             "title": gettext("static pages"),
             "values": [
-                {"url": "/", "label": gettext("home page")},
-                {"url": "/photos", "label": gettext("photos")},
+                {"url": url_for("main.index"), "label": gettext("home page")},
+                {"url": url_for("main.photos"), "label": gettext("photos")},
             ],
         },
         "areas": {
-            "title": gettext("territories pages"),
+            "title": gettext("zoning pages"),
             "values": [],
         },
         "groups": {"title": gettext("species sheet by groups"), "values": {}},
     }
 
-    url_root = request.url_root
-    if url_root[-1] == "/":
-        url_root = url_root[:-1]
-
     for static_page in current_app.config["STATIC_PAGES"]:
-        url_static_page = url_root + url_for("main.get_staticpages", page=static_page)
+        url_static_page = url_for("main.get_staticpages", page=static_page)
         data_page = current_app.config["STATIC_PAGES"][static_page]
         pages["static"]["values"].append({"url": url_static_page, "label": data_page["title"]})
 
@@ -429,28 +445,28 @@ def sitemap_ui():
     species = db.session.query(vmTaxons.VmTaxons).order_by(vmTaxons.VmTaxons.nom_complet).all()
     for species in species:
         if species.group2_inpn not in pages["groups"]["values"]:
-            group_url = url_root + url_for("main.ficheGroupe", groupe=species.group2_inpn)
+            group_url = url_for("main.ficheGroupe", groupe=species.group2_inpn)
             pages["groups"]["values"][species.group2_inpn] = {
                 "url": group_url,
                 "label": species.group2_inpn,
                 "species": [],
             }
 
-        url_species = url_root + url_for("main.ficheEspece", cd_nom=species.cd_ref)
+        url_species = url_for("main.ficheEspece", cd_nom=species.cd_ref)
         pages["groups"]["values"][species.group2_inpn]["species"].append(
             {"url": url_species, "label": species.lb_nom}
         )
 
-    municipalities = (
-        db.session.query(vmAreas.VmAreas)
-        .join(vmAreas.VmBibAreasTypes, vmAreas.VmAreas.id_type == vmAreas.VmBibAreasTypes.id_type)
-        .filter(vmAreas.VmBibAreasTypes.type_code.in_(current_app.config["TYPE_TERRITOIRE_SHEET"]))
-        .order_by(vmAreas.VmAreas.area_name)
+    # Pour ne remonter que les areas ayant des observations :
+    areas = (
+        db.session.query(vmAreas.VmAreasWithObs)
+        .filter(vmAreas.VmAreasWithObs.type_code.in_(current_app.config["TYPE_TERRITOIRE_SHEET"]))
+        .order_by(vmAreas.VmAreasWithObs.area_name)
         .all()
     )
-    for municipalitie in municipalities:
-        url = url_root + url_for("main.area", id_area=municipalitie.id_area)
-        pages["areas"]["values"].append({"url": url, "label": municipalitie.area_name})
+    for area in areas:
+        url = url_for("main.area", id_area=area.id_area)
+        pages["areas"]["values"].append({"url": url, "label": area.area_name})
 
     return render_template("templates/sitemap.html", pages=pages)
 

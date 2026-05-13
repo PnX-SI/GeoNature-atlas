@@ -102,14 +102,7 @@ function runDBInstall() {
     # If Atlas schema already exists
     if [[ "${schema_atlas_exists}" = "t" ]]; then
         printVerbose "Atlas schema already exists (${schema_atlas_exists})"
-
-        if [[ "${ATLAS_DROP_SCHEMA}" = false ]]; then
-            printVerbose "The schema atlas exists and the config file tell to not drop it...Nothing to do."
-            printVerbose "To reinstall Atlas at startup set ATLAS_DROP_SCHEMA to 'true'."
-            exit 0
-        else
             dropAtlasSchema
-        fi
     fi
 
     printVerbose "Installing atlas db..."

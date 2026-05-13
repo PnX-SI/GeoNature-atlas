@@ -101,10 +101,7 @@ function runDefaultInstall() {
     createPythonConfigFile
     updatePythonConfigFile
 
-    createCustomTemplates
-    createCustomImages
-    createOtherCustomFiles
-
+    copyCustomSample
     createAtlasService
     startAtlasService
 }
@@ -117,9 +114,7 @@ function runDockerInstall() {
 
     updatePythonConfigFile
 
-    createCustomTemplates
-    createCustomImages
-    createOtherCustomFiles
+    copyCustomSample
 }
 
 function createDefaultSettingsFile() {
@@ -273,6 +268,17 @@ function updatePythonConfigFile() {
     fi
 }
 
+function copyCustomSample() {
+    printMsg "Copying custom sample files..."
+
+    local src_dir="${__sample_dir__}"
+    local dst_dir="${__custom_dir__}"
+    
+    cp -Rn "${src_dir}" "${dst_dir}" || true
+    
+    printVerbose "Custom sample files ${Gre}copied${RCol} to ${dst_dir}"
+}
+
 function createCustomTemplates() {
     printMsg "Creating custom templates if they don't already exist..."
 
@@ -337,6 +343,7 @@ function createOtherCustomFiles() {
         "custom.css"
         "glossaire.json"
         "maps-custom.js"
+        "territoire_sample.geojson"
     )
     local file_path
     local full_path

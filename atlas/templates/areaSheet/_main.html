@@ -22,7 +22,6 @@
 {% block additionalFooterAssets %}
     {# Ajoutez ici les assets complémentaires qui seront en bas de page #}
     <script type="text/javascript">
-        var configuration = {{configuration|tojson}};
         var areaInfos = {{ areaInfos | tojson }};
     </script>
     <script src="{{ url_for('static', filename='custom/maps-custom.js') }}"></script>
@@ -49,7 +48,7 @@
         {% with context={
             "page": "area", 
             "page_param": areaInfos.areaID, 
-            "file_export_name": "La biodiversité de "+areaInfos.areaName+"("+areaInfos.typeName+")",
+            "area_name": areaInfos.areaName+" ("+areaInfos.typeName+")",
         } 
         %}
             {% include 'templates/core/listTaxons.html' %}

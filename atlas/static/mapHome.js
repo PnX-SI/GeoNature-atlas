@@ -9,7 +9,9 @@ $("#map").click(function () {
 
 function displayObsTaxonMaille(cd_ref) {
     $.ajax({
-        url: configuration.URL_APPLICATION + "/api/observationsMaille",
+        url:
+            window.LANGUAGE_PREFIXED_URL_APPLICATION +
+            "/api/observationsMaille",
         data: {
             cd_ref: cd_ref,
         },
@@ -54,7 +56,7 @@ if (configuration.AFFICHAGE_TERRITOIRE_OBS) {
 
     // display maille layer
     fetch(
-        `${configuration.URL_APPLICATION}/api/observationsMaille?` +
+        `${window.LANGUAGE_PREFIXED_URL_APPLICATION}/api/observationsMaille?` +
             new URLSearchParams({
                 fields: "taxons",
             }),

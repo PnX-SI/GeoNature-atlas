@@ -11,8 +11,8 @@ function loadNewTaxons() {
 }
 
 function initApiUrls() {
-    url = `${configuration.URL_APPLICATION}/api/taxonList`;
-    jsonUrl = `${configuration.URL_APPLICATION}/api/taxonListJson`;
+    url = `${window.LANGUAGE_PREFIXED_URL_APPLICATION}/api/taxonList`;
+    jsonUrl = `${window.LANGUAGE_PREFIXED_URL_APPLICATION}/api/taxonListJson`;
     if (context.page !== "home_territory") {
         url = `${url}/${context.page}/${context.page_param}`;
         jsonUrl = `${jsonUrl}/${context.page}/${context.page_param}`;
@@ -139,22 +139,22 @@ function clearFilters() {
 function getColumns() {
     const columns = [
         "cd_ref",
-        window.i18n["taxonomic.group"],
-        window.i18n["common.name"],
-        window.i18n["scientific.name"],
-        window.i18n["occurrences.number"],
-        window.i18n["observers.number"],
-        window.i18n["last.observation"],
-        window.i18n["inpn.group.3"],
+        getTranslation("taxonomic.group"),
+        getTranslation("common.name"),
+        getTranslation("scientific.name"),
+        getTranslation("occurrences.number"),
+        getTranslation("observers.number"),
+        getTranslation("last.observation"),
+        getTranslation("inpn.group.3"),
     ];
     if (configuration.DISPLAY_PATRIMONIALITE) {
-        columns.push(window.i18n["patrimonial"]);
+        columns.push(getTranslation("patrimonial"));
     }
     if (configuration.PROTECTION) {
-        columns.push(window.i18n["protected"]);
+        columns.push(getTranslation("protected"));
     }
     if (configuration.AFFICHAGE_MENACE) {
-        columns.push(window.i18n["threatened"]);
+        columns.push(getTranslation("threatened"));
     }
     return columns;
 }
@@ -214,7 +214,6 @@ async function exportCsv() {
     const rows = [];
     // Colonnes du CSV
     columns = getColumns();
-    console.log("???", columns);
 
     rows.push(columns);
 
@@ -223,9 +222,7 @@ async function exportCsv() {
         rows.push(buildRow(taxon));
     });
 
-    const fileName = context.file_export_name
-        ? context.file_export_name + ".csv"
-        : "export.csv";
+    const fileName = `${getTranslation("taxons_export_name")} ${context.area_name}".csv`;
     const csvContent = rows.map((row) => row.join(";")).join("\n");
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const link = document.createElement("a");
@@ -248,9 +245,7 @@ async function exportPdf() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ orientation: "landscape" });
 
-    const fileName = context.file_export_name
-        ? context.file_export_name + ".pdf"
-        : "export.pdf";
+    const fileName = `${getTranslation("taxons_export_name")} ${context.area_name}".pdf`;
     const title = fileName.replace(/\.pdf$/i, "");
     const pageWidth = doc.internal.pageSize.getWidth();
 
@@ -264,8 +259,8 @@ async function exportPdf() {
         return buildRow(taxon);
     });
 
-    const threatenedColumnIndex = columns.indexOf(window.i18n["threatened"]);
-    const protectedColumnIndex = columns.indexOf(window.i18n["protected"]);
+    const threatenedColumnIndex = columns.indexOf(getTranslation("threatened"));
+    const protectedColumnIndex = columns.indexOf(getTranslation("protected"));
 
     doc.autoTable({
         startY: 25,

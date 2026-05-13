@@ -274,7 +274,7 @@
                     console.log(layerCustomStyle);
                     $.ajax({
                         url:
-                            configuration.URL_APPLICATION +
+                            window.LANGUAGE_PREFIXED_URL_APPLICATION +
                             `/api/observationsMaille?cd_ref=${list[i].cd_nom}`,
                         dataType: "json",
                         beforeSend: function () {
@@ -314,7 +314,7 @@
                 $("#loaderSpinner").show();
                 $.ajax({
                     url:
-                        configuration.URL_APPLICATION +
+                        window.LANGUAGE_PREFIXED_URL_APPLICATION +
                         `/api/observationsMaille?cd_ref=${cd_nom}`,
                     dataType: "json",
                     beforeSend: function () {

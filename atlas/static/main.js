@@ -9,6 +9,14 @@ window.onresize = function () {
     }
 };
 
+/**
+ * Get translation for a key with fallback to the key itself
+ */
+// eslint-disable-next-line no-unused-vars
+function getTranslation(key) {
+    return window.i18n[key] ? window.i18n[key] : key;
+}
+
 var presentationText = document.getElementById("presentation-text");
 if (window.innerWidth <= 800 && presentationText) {
     presentationText.hidden = true;
@@ -25,6 +33,7 @@ autocompleteSearch = function (inputID, urlDestination, nbProposal) {
             } else {
                 searchUrl = "/api/searchArea/" + urlDestination;
             }
+
             $(inputID)
                 .attr("loading", "true")
                 .css(
@@ -34,7 +43,7 @@ autocompleteSearch = function (inputID, urlDestination, nbProposal) {
                         "/static/images/loading3.gif')",
                 );
             $.get(
-                configuration.URL_APPLICATION + searchUrl,
+                window.LANGUAGE_PREFIXED_URL_APPLICATION + searchUrl,
                 { search: request.term, limit: nbProposal },
                 function (results) {
                     const unique_type_name = [
@@ -73,7 +82,7 @@ autocompleteSearch = function (inputID, urlDestination, nbProposal) {
             var url = ui.item.value;
             if (urlDestination === "espece") {
                 location.href =
-                    configuration.URL_APPLICATION + "/espece/" + url;
+                    window.LANGUAGE_PREFIXED_URL_APPLICATION + "/espece/" + url;
                 const splited_label = ui.item.label.split(" = ");
                 const label_for_input =
                     splited_label[0] !== ""
@@ -82,7 +91,7 @@ autocompleteSearch = function (inputID, urlDestination, nbProposal) {
                 $(inputID).val(label_for_input.replace(/<[^>]*>?/gm, ""));
             } else {
                 location.href =
-                    configuration.URL_APPLICATION + "/area/" + "/" + url;
+                    window.LANGUAGE_PREFIXED_URL_APPLICATION + "/area/" + url;
             }
 
             return false;
@@ -149,20 +158,6 @@ $(document).ready(function () {
         return false;
     });
 });
-
-// Glossarizer JQUERY utilisé dans la bloc d'infos de la fiche espèce (si paramètre GLOSSAIRE activé)
-if (configuration.GLOSSAIRE) {
-    $(function () {
-        $("#blocInfos").glossarizer({
-            sourceURL:
-                configuration.URL_APPLICATION + "/static/custom/glossaire.json",
-            callback: function () {
-                // Callback fired after glossarizer finishes its job
-                new tooltip();
-            },
-        });
-    });
-}
 
 if (configuration.OREJIME_APPS.length > 0) {
     var orejimeConfig = {

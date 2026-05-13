@@ -55,7 +55,7 @@ function initScript() {
     readonly __log_dir__="${__root_dir__}/log"
     readonly __static_dir__="${__src_dir__}/static"
     readonly __custom_dir__="${__static_dir__}/custom"
-    readonly __sample_dir__="${__static_dir__}/sample"
+    readonly __sample_dir__="${__static_dir__}/custom_sample"
     readonly __venv_dir__="${__root_dir__}/venv"
 
     #+------------------------------------------------------------------------+
@@ -333,13 +333,6 @@ function checkNoUserRoot() {
 # OUTS: None
 function convertDockerVariables() {
     printMsg "Converting Docker environment variables..."
-
-    # Convert ATLAS_DROP_SCHEMA to boolean
-    if [[ "${ATLAS_DROP_SCHEMA}" = "true" || "${ATLAS_DROP_SCHEMA}" = 1 ]]; then
-        ATLAS_DROP_SCHEMA=true
-    else
-        ATLAS_DROP_SCHEMA=false
-    fi
 
     # Convert ATLAS_ALTITUDES to array
     altitudes=(${ATLAS_ALTITUDES})

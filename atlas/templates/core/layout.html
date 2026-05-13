@@ -5,6 +5,31 @@
 <html lang='{{ configuration.DEFAULT_LANGUAGE }}'>
 {% endif %}
 <head>
+    <script type="text/javascript">
+        const configuration = {{configuration|tojson}};
+    </script>
+
+    <!-- get endpoint from blueprint with lang_code (main) otherwise when we access the app from / (without lang_code), 
+    the url_for put the lang_code in query string
+    Use for canonical and alternate URL + in the navbar language selector
+    -->
+    {% set current_page = request.endpoint.split('.')[-1] %}
+    {% set endpoint = 'main.' ~ current_page %}
+    {% set args = request.view_args.copy() if request.view_args else {} %}
+    {% if 'lang_code' in args %}{% set _ = args.pop('lang_code') %}{% endif %}
+
+    {% if configuration.MULTILINGUAL %}
+        {% for language in configuration.AVAILABLE_LANGUAGES %}
+            <link rel="alternate" data-qa="alternate-test" hreflang="{{ language }}" href="{{url_for(request.endpoint, lang_code=language, _external=True, **args)}}">
+        {% endfor %}
+        <link
+                rel="alternate"
+                href="{{url_for(endpoint, _external=True, lang_code=configuration.DEFAULT_LANGUAGE, **args)}}"
+                hreflang="x-default"
+        >
+        <link rel="canonical" href="{{url_for(endpoint, _external=True, lang_code=current_language, **args)}}">
+    {% endif %}
+
     <base href="{{ configuration.URL_APPLICATION }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -23,8 +48,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='custom/custom.css') }}"/>
     
     <!-- Add all translations in windows.i18n -->
-    <script>
+    <script data-qa="test-lang">
         window.i18n = {{ translations|tojson|safe }};
+        window.LANGUAGE_PREFIXED_URL_APPLICATION = "{{ configuration.URL_APPLICATION }}" + "{{current_url_prefix}}";
     </script>
     {% block metaTags %}{% endblock %}
 </head>
@@ -41,7 +67,7 @@
 
 <main class="d-flex">
 
-    <div class="container-fluid" id="page">
+    <div class="container-fluid">
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}
@@ -94,6 +120,7 @@
         {{_('yes')}}
         {{_('no')}}
         {{_('other.species')}}
+        {{_('taxons_export_name')}}
 
     </div>
 </html>

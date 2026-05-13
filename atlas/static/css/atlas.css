@@ -9,6 +9,10 @@
     --thumbBG: var(--main-color);
 }
 
+/* * {
+  outline: 1px solid red;
+} */
+
 body {
     display: flex;
     flex-direction: column;
@@ -17,14 +21,30 @@ body {
 }
 
 main {
-    margin-top: 60px;
-    margin-left: 60px;
+    margin-top: 75px;
+    margin-left: 65px;
     flex: 1;
 }
 
 #dropdown09 {
     cursor: pointer;
 }
+
+.main-color-link a,  a.main-color-link {
+    color: var(--main-color) !important;
+}
+
+ul.nav .nav-link {
+    color: var(--main-color);
+}
+
+ul.nav .nav-link.active {
+    color: var(--main-color);
+    font-weight: bold;
+}
+
+
+
 
 .small-placeholder::placeholder {
     font-size: 13px;
@@ -78,13 +98,6 @@ main {
     font-weight: bold;
 }
 
-#page {
-    padding-left: 10px;
-    padding-right: 10px;
-    flex: 1;
-    /*padding-top: 60px;*/
-    /*margin-top: 25px;*/
-}
 
 .form-control:focus {
     border-color: var(--main-color);
@@ -167,10 +180,7 @@ main {
 }
 
 
-a {
-    -webkit-transition: all 0.5s ease;
-    transition: all 0.5s ease;
-}
+
 
 /* # btn.btn-default n'existe plus en bs5 */
 .btn.btn-primary {
@@ -209,6 +219,13 @@ a {
 
 .modal {
     top: 40px;
+}
+
+#modalCredits, #modalMentions {
+    margin-left: 60px;
+    max-width: 85%;
+    padding-bottom: 40px;
+    padding-top: 30px;
 }
 
 /* Navbar */

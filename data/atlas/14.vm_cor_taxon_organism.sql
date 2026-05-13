@@ -1,4 +1,4 @@
- -- Vue Nombre d'oservation par taxons et par organisme
+-- Vue contenant le nombre d'observations par taxon et par organisme
 
 CREATE MATERIALIZED VIEW atlas.vm_cor_taxon_organism AS
     WITH obs_by_cd_ref_and_organism AS (

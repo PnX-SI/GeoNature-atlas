@@ -77,6 +77,7 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
     last_obs = params.get("last_obs", None)
     only_related_sensitivity_level = params.get("only_related_sensitivity_level", None)
 
+    # CTE 1: Statistics on observations filtered by id_area
     q_stats_taxons = (
         select(
             func.count(distinct(VmObservations.id_observation)).label("nb_obs"),
@@ -107,28 +108,57 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
                 (CorSensitivityAreaType.area_type_code == VmCorAreaSynthese.type_code)
                 & (VmObservations.cd_sensitivity == CorSensitivityAreaType.sensitivity_code),
             )
-    q_stats_taxons = q_stats_taxons.subquery()
+    q_stats_taxons_cte = q_stats_taxons.subquery()
 
     _columns = [
         VmTaxons,
-        q_stats_taxons.c.nb_obs,
-        q_stats_taxons.c.last_obs,
-        q_stats_taxons.c.nb_observers,
+        q_stats_taxons_cte.c.nb_obs,
+        q_stats_taxons_cte.c.last_obs,
+        q_stats_taxons_cte.c.nb_observers,
     ]
-    # si id_area on prend les statuts dans CorTaxonStatutArea sinon directement dans VMTaxons
+
+    id_area_parent = None
+    q_statut_filtered_cte = None
     if id_area:
-        _columns.extend(
-            [
-                CorTaxonStatutArea.statut_menace.label("menace"),
-                CorTaxonStatutArea.niveau_application_menace.label("niveau_application_menace"),
-                CorTaxonStatutArea.protege.label("protege"),
-            ]
-        )
+        # get id_area of departement to find status
+        id_area_parent = db.session.execute(
+            select(VmCorAreas.id_area_parent)
+            .select_from(VmCorAreas)
+            .join(VmAreas, VmAreas.id_area == VmCorAreas.id_area_parent)
+            .join(VmBibAreasTypes, VmAreas.id_type == VmBibAreasTypes.id_type)
+            .where((VmBibAreasTypes.type_code == "DEP") & (VmCorAreas.id_area == id_area))
+        ).scalar()
+
+        # CTE 2: Status filtered by id_area only
+        if id_area_parent is not None:
+            q_statut_filtered = (
+                select(
+                    CorTaxonStatutArea.cd_ref,
+                    CorTaxonStatutArea.id_area,
+                    CorTaxonStatutArea.statut_menace,
+                    CorTaxonStatutArea.niveau_application_menace,
+                    CorTaxonStatutArea.protege,
+                )
+                .select_from(CorTaxonStatutArea)
+                .where(CorTaxonStatutArea.id_area == id_area_parent)
+            )
+            q_statut_filtered_cte = q_statut_filtered.subquery()
+
+            _columns.extend(
+                [
+                    q_statut_filtered_cte.c.statut_menace.label("menace"),
+                    q_statut_filtered_cte.c.niveau_application_menace.label(
+                        "niveau_application_menace"
+                    ),
+                    q_statut_filtered_cte.c.protege.label("protege"),
+                ]
+            )
+
     req = (
         select(*_columns)
         .select_from(VmTaxons)
-        .join(q_stats_taxons, q_stats_taxons.c.cd_ref == VmTaxons.cd_ref)
-        .order_by(q_stats_taxons.c.nb_obs.desc())
+        .join(q_stats_taxons_cte, q_stats_taxons_cte.c.cd_ref == VmTaxons.cd_ref)
+        .order_by(q_stats_taxons_cte.c.nb_obs.desc())
     )
     # if -1 we don't paginate
     if page != -1:
@@ -137,26 +167,18 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
         req = req.where(VmTaxons.group2_inpn.in_(group2_inpn))
     req = req.options(joinedload(VmTaxons.main_media))
     conditions = list()
-    if id_area:
-        id_area_dep = (
-            select(VmCorAreas.id_area_parent)
-            .select_from(VmCorAreas)
-            .join(VmAreas, VmAreas.id_area == VmCorAreas.id_area_parent)
-            .join(VmBibAreasTypes, VmAreas.id_type == VmBibAreasTypes.id_type)
-            .where((VmBibAreasTypes.type_code == "DEP") & (VmCorAreas.id_area == id_area))
-            .scalar_subquery()
-        )
+
+    if id_area and q_statut_filtered_cte is not None:
         req = req.outerjoin(
-            CorTaxonStatutArea,
-            (CorTaxonStatutArea.cd_ref == VmTaxons.cd_ref)
-            & (CorTaxonStatutArea.id_area.in_(id_area_dep)),
+            q_statut_filtered_cte,
+            q_statut_filtered_cte.c.cd_ref == VmTaxons.cd_ref,
         )
         # si protegé et menacé sur une fiche territoire on va cherché dans CorTaxonStatutArea
-        # sinon direcetement dans VmTaxons
+        # sinon directement dans VmTaxons
         if protected:
-            conditions.append(CorTaxonStatutArea.protege == True)
+            conditions.append(q_statut_filtered_cte.c.protege == True)
         if threatened:
-            conditions.append(CorTaxonStatutArea.statut_menace != None)
+            conditions.append(q_statut_filtered_cte.c.statut_menace.isnot(None))
     else:
         if protected:
             conditions.append(VmTaxons.protection_stricte == True)
@@ -168,7 +190,6 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
 
     if conditions:
         req = req.where(and_(*conditions))
-
     if group_name:
         req = req.filter(VmTaxons.group2_inpn == group_name)
     if cd_ref:

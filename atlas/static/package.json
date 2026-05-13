@@ -22,7 +22,6 @@
     "debounce": "^2.2.0",
     "esbuild": "^0.25.12",
     "eve-raphael": "^0.5.0",
-    "glossarizer": "^1.5.2",
     "jquery": "^3.6.0",
     "jquery-lazy": "^1.7.9",
     "jquery-ui-dist": "^1.12.1",

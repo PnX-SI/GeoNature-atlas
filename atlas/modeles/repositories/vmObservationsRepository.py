@@ -4,16 +4,16 @@ from datetime import datetime
 from flask import current_app
 from geojson import Feature, FeatureCollection
 from sqlalchemy.sql import func, or_, literal, cast
-from sqlalchemy import Interval, distinct, select, exists, true
+from sqlalchemy import Interval, distinct, select, exists, true, text
 from sqlalchemy.dialects.postgresql import array
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import joinedload, load_only, raiseload
 
 from atlas.modeles import utils
 from atlas.modeles.repositories.vmMedias import VmMedias
 from atlas.modeles.entities.vmObservations import VmObservations
 from atlas.modeles.entities.vmTaxons import VmTaxons
 from atlas.modeles.entities.vmTaxref import VmTaxref
-from atlas.modeles.entities.vmAreas import VmCorAreaSynthese, VmAreas, VmBibAreasTypes
+from atlas.modeles.entities.vmAreas import VmCorAreaSynthese, VmAreasWithObs
 from atlas.env import db
 
 currentYear = datetime.now().year
@@ -39,17 +39,33 @@ def getObservationsChilds(params: {}):
     -------
     Geosjon
     """
+    from sqlalchemy.orm import raiseload
+
     cd_ref = params.get("cd_ref", None)
     id_area = params.get("id_area", None)
     limit = params.get("limit", None)
     last_obs = params.get("last_obs", None)
     fields: list = params.get("fields", "").split(",")
+
+    # Charger l'entité ORM mais seulement les colonnes nécessaires (optimisation perf)
     query = select(VmObservations)
     if "taxons" in fields:
         _joinedload = joinedload(VmObservations.taxon)
         if "medias" in fields:
             _joinedload.joinedload(VmTaxons.main_media)
         query = query.options(_joinedload)
+    query = query.options(
+        load_only(
+            VmObservations.id_observation,
+            VmObservations.dateobs,
+            VmObservations.observateurs,
+            VmObservations.altitude_retenue,
+            VmObservations.cd_ref,
+            VmObservations.cd_sensitivity,
+            VmObservations.geojson_point,
+        )
+    )
+    query = query.options(raiseload("*"))
     if cd_ref:
         subquery = select(func.atlas.find_all_taxons_childs(cd_ref))
         query = query.filter(
@@ -79,26 +95,39 @@ def getObservationsChilds(params: {}):
     elif not cd_ref and not id_area:
         query = query.limit(100000)
 
+    # Exécuter la requête
     observations = (
         db.session.execute(query.order_by(VmObservations.dateobs.desc())).scalars().all()
     )
+
+    # Construire le GeoJSON
     features = []
     for o in observations:
         observation_as_dict = o.as_dict()
+
         if "taxons" in fields:
             observation_as_dict["taxon"] = o.taxon.shorten_name()
             if "medias" in fields:
                 observation_as_dict["media"], observation_as_dict["has_media"] = (
                     o.taxon.get_main_media()
                 )
-        feature = Feature(
-            id=observation_as_dict["id_observation"],
-            geometry=json.loads(o.geojson_point or "{}"),
-            properties=observation_as_dict,
-        )
+
+        try:
+            geom = json.loads(o.geojson_point) if o.geojson_point else {}
+        except:
+            geom = {}
+
+        feature = {
+            "type": "Feature",
+            "id": observation_as_dict["id_observation"],
+            "geometry": geom,
+            "properties": observation_as_dict,
+        }
         features.append(feature)
 
-    return FeatureCollection(features)
+    geojson_dict = {"type": "FeatureCollection", "features": features}
+
+    return geojson_dict
 
 
 def observersParser(req):
@@ -165,10 +194,8 @@ def statIndex():
         result["nbTotalObs"] = r.count
 
     type_code = current_app.config["TYPE_TERRITOIRE_SHEET"]
-    req = (
-        select(func.count(VmAreas.id_area).label("count"))
-        .join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type)
-        .filter(VmBibAreasTypes.type_code.in_(type_code))
+    req = select(func.count(VmAreasWithObs.id_area).label("count")).filter(
+        VmAreasWithObs.type_code.in_(type_code)
     )
     results = db.session.execute(req).all()
     for r in results:

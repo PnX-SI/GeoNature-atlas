@@ -1,12 +1,3 @@
-ul.nav .nav-link {
-    color: var(--main-color);
-}
-
-ul.nav .nav-link.active {
-    color: var(--main-color);
-    font-weight: bold;
-}
-
 #taxonIdentity {
     padding-top: 10px;
     padding-bottom: 10px;
@@ -150,7 +141,7 @@ p.imgDescription.main {
 
 #mapContainer .leaflet-bottom.leaflet-left {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: row-reverse;
   margin-bottom: 20px;
 }
 
@@ -210,7 +201,7 @@ p.imgDescription.main {
 
 /* Liens importants */
 
-.liens-importants-container {
+.liens-focus-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -219,7 +210,11 @@ p.imgDescription.main {
   gap: 0.7rem 0.7rem;
 }
 
-.lien-important {
+.liens-focus-container img {
+    width: 50px;
+}
+
+.lien-focus {
   display: flex;
   background-color: var(--main-color);
   color: white;
@@ -230,7 +225,7 @@ p.imgDescription.main {
   align-items: center;
 }
 
-.lien-important:hover {
+.lien-focus:hover {
   background-color: var(--second-color);
   color: white;
   text-decoration: none;
@@ -258,9 +253,14 @@ hr.small-hr {
 }
 
 .glossarizer_replaced {
-    border-bottom: 1px #333 dotted;
+    border-bottom: 1px #999 dotted;
     cursor: help;
     display: inline;
+    transition: background-color 0.2s ease;
+}
+
+.glossarizer_replaced:hover {
+    background-color: rgba(255, 193, 7, 0.2);
 }
 
 /*Other Informations block*/
@@ -532,4 +532,61 @@ div#statut-bdc ul.statuts-list li {
 
 div#statut-bdc .img-statut-bdc {
     max-height: 1.3rem;
+}
+
+/* Slider centré en bas de la carte, hors Leaflet */
+.slider-bottom-center {
+    position: absolute;
+    left: 50%;
+    bottom: 20px;
+    transform: translateX(-50%);
+    z-index: 1001;
+    width: 350px;
+    max-width: 95vw;
+    pointer-events: auto;
+    box-sizing: border-box;
+    padding: 8px 10px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .slider-bottom-center {
+        width: 280px!important;
+    }
+}
+
+
+
+.slider-bottom-center p {
+  margin: 0 0 4px 0;
+  word-break: break-word;
+  text-align: center;
+}
+
+#sliderControl {
+  min-width: 120px;
+  max-width: 160px;
+  display: inline-block;
+}
+
+#yearMin, #yearMax {
+  display: inline-block;
+  min-width: 40px;
+  max-width: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+
+#nbObs {
+  font-size: 1em;
+  font-weight: 500;
+  white-space: normal;
+  word-break: break-word;
+}
+
+#mapContainer {
+  position: relative;
 }

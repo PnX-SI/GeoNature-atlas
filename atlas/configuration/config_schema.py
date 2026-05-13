@@ -188,7 +188,6 @@ class AtlasConfig(Schema):
     )
     TYPE_TERRITOIRE_SHEET = fields.List(fields.String(), load_default=["COM"])
     AREA_PARENTS_TYPE = fields.List(fields.String(), load_default=[])
-    AFFICHAGE_GRAPH_PHENOLOGIE = fields.Boolean(load_default=False)
     ALTITUDE_RANGES = fields.List(
         fields.Integer(),
         load_default=[0, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000],
@@ -205,6 +204,10 @@ class AtlasConfig(Schema):
             {
                 "label": "France métropolitaine",
                 "filters": [{"cd_type_statut": "LRN", "cd_sig": "TERFXFR"}],
+            },
+            {
+                "label": "Région",
+                "filters": [{"cd_type_statut": "LRR"}],
             },
         ],
     )
@@ -301,7 +304,6 @@ class AtlasConfig(Schema):
         load_default="Les observations des agents ces 7 derniers jours |"
     )
     MAP = fields.Nested(MapConfig, load_default=dict())
-    DEFAULT_LEGEND_DISPLAY = fields.Boolean(load_default=True)
     COUCHES_SIG = fields.List(fields.Nested(CouchesSigConfig), load_default=list())
     # coupe le nom_vernaculaire à la 1ere virgule sur les fiches espèces
     SPLIT_NOM_VERN = fields.Boolean(load_default=True)
@@ -312,11 +314,9 @@ class AtlasConfig(Schema):
     # Defaults to False to have the best performance in production
     TEMPLATES_AUTO_RELOAD = fields.Boolean(allow_none=True)
 
-    TYPES_MEDIAS_LIENS_IMPORTANTS = fields.List(
-        fields.Nested(MediaTypeImportantLink), load_default=None
-    )
+    TYPES_MEDIAS_LENS_FOCUS = fields.List(fields.Nested(MediaTypeImportantLink), load_default=None)
 
-    DISPLAY_ZONING_PAGE_SENSIBILITY_MESSAGE = fields.Boolean(load_default=True)
+    DISPLAY_ZONING_PAGE_SENSIBILITY_MESSAGE = fields.Boolean(load_default=False)
 
     @validates_schema
     def validate_config(self, data, **kwargs):

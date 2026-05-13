@@ -41,6 +41,7 @@ dev = [
   "pytest-cov",
   "pytest-flask",
   "pytest-mock",
+  "lxml",
 ]
 docs = [
   "Sphinx",

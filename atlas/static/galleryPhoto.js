@@ -155,13 +155,13 @@ jQuery(function () {
 
     $("#lightbox .lb-link").on("click", function () {
         const cdRef = $("#lightbox .lb-image").attr("alt");
-        const url = `${configuration.URL_APPLICATION}/espece/${cdRef}`;
+        const url = `${window.LANGUAGE_PREFIXED_URL_APPLICATION}/espece/${cdRef}`;
         $(this).attr("href", url);
         location.href = url;
     });
 
     $.ajax({
-        url: configuration.URL_APPLICATION + "/api/photosGallery",
+        url: window.LANGUAGE_PREFIXED_URL_APPLICATION + "/api/photosGallery",
         dataType: "json",
         beforeSend: function () {
             $("#loaderSpinner").show();
@@ -263,7 +263,10 @@ $(".INPNgroup").on("click", function () {
 
     // Charger les photos du groupe
     $.ajax({
-        url: configuration.URL_APPLICATION + "/api/photoGroup/" + group,
+        url:
+            window.LANGUAGE_PREFIXED_URL_APPLICATION +
+            "/api/photoGroup/" +
+            group,
         dataType: "json",
     }).done(function (photos) {
         generateHtmlPhoto(

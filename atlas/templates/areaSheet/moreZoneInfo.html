@@ -38,13 +38,13 @@
             {% if configuration.AFFICHAGE_TAB_AREA_OBS_ESPECES %}
                 <div id="observations_and_species" class="tab-pane fade">
                     <div class="infos_biodiversity">
-                        <div><strong>Nombre d'espèces</strong> par groupe taxonomique</div>
+                        <div><strong> {{_('nb_species_observed')}} </strong> {{_("by_taxonomic_group")}} </div>
                         <div class="chart-container" style="position: relative;">
                             <canvas id="biodiversityChart" style="padding: 0.5rem;"></canvas>
                         </div>
                     </div>
                     <div class="infos_observations">
-                        <div><strong>Nombre d'observations</strong> par groupe taxonomique</div>
+                        <div><strong>{{_("nb_observervations")}}</strong> {{_("by_taxonomic_group")}}</div>
                         <div class="chart-container" style="position: relative;">
                             <canvas id="observationsChart" style="padding: 0.5rem;"></canvas>
                         </div>
@@ -54,8 +54,8 @@
             {% if configuration.AFFICHAGE_MENACE %}
             <div id="threatened_species" class="tab-pane fade">
                 <!-- Bloc d'informations -->
-                <div class="card border-primary mb-0 shadow">
-                    <div class="card-header info">
+                <div class="card border-primary mb-1 shadow">
+                    <div class="card-header info ">
                         <i class="fas fa-info text-primary"></i>
                         {{ _('threatened.chart.intro')}}
                         <abbr
@@ -66,7 +66,7 @@
                         title="{{ _('threatened.species.tooltip') }}"
                         >{{ _('threatened.species') | lower }}</abbr
                         >
-                        {{ _('of.the.territory') }} ({{ _('species.red.list') | lower }} :
+                        {{ _('of.the.zoning') }} ({{ _('species.red.list') | lower }} :
                         <u>CR</u> = {{ _('status.CR') }}, 
                         <u>EN</u> = {{ _('status.EN') }} {{ _('or') }} 
                         <u>VU</u> = {{ _('status.VU') }}).

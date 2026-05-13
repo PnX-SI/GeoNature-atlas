@@ -44,7 +44,9 @@ $.ajax({
         map.removeLayer(currentLayer);
         clearObservationsFeatureGroup();
         $.ajax({
-            url: configuration.URL_APPLICATION + "/api/observationsMaille",
+            url:
+                window.LANGUAGE_PREFIXED_URL_APPLICATION +
+                "/api/observationsMaille",
             dataType: "json",
             type: "get",
             data: {

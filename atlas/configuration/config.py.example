@@ -4,15 +4,14 @@
 ## Exemple de fichier de configuration ##
 #########################################
 
-
 # Connexion de l'application à la BDD (avec l'utilisateur `user_pg` renseigné dans le `settings.ini`)
 SQLALCHEMY_DATABASE_URI = "postgresql://geonatatlas:monpassachanger@localhost:5432/geonatureatlas"
 
 # Ce paramètre avancé permet de configurer la connexion de SQLAlchemy avec la base de données.
-# Ne l'utiliser que si vous savez ce que vous faite !
-# Les paramètres de configuration de la connexion doivent correspondre à ceux utilisé dans la fonction `create_engine`
+# Ne l'utiliser que si vous savez ce que vous faites !
+# Les paramètres de configuration de la connexion doivent correspondre à ceux utilisés dans la fonction `create_engine`
 # de SQLAlchemy : https://docs.sqlalchemy.org/en/14/core/engines.html#sqlalchemy.create_engine
-# Ci-dessous un exemple de paramètre à adapter selon votre serveur et besoins :
+# Ci-dessous un exemple de paramètre que vous pouvez adapter selon votre serveur et besoins :
 SQLALCHEMY_ENGINE_OPTIONS = {
     "pool_recycle": 30,
     "pool_size": 35,
@@ -48,7 +47,7 @@ STRUCTURE = "Nom de la structure"
 NOM_APPLICATION = "Nom de l application"
 
 # URL de l'application depuis la racine du domaine
-# ex "/atlas" pour une URL: http://mon-domaine/atlas OU "" si l'application est accessible à la racine du domaine
+# ex "/atlas" pour une URL de type http://mon-domaine/atlas OU "" si l'application est accessible à la racine du domaine
 URL_APPLICATION = "/atlas"
 
 # Afficher ou non les labels dans la barre latérale
@@ -60,10 +59,10 @@ AFFICHAGE_LABEL_SIDEBAR = False
 #################################
 #################################
 
-# Enable organism module : organism sheet +  organism participation on species sheet and area sheet
+# Enable Organism module : organism sheet +  organism participation on species sheet and area sheet
 ORGANISM_MODULE = False
 
-# Shows the names of the observers in the species sheet
+# Shows the names of the observers in the species sheets
 DISPLAY_OBSERVERS = True
 
 ###########################
@@ -105,22 +104,23 @@ LANGUAGES = {
 #####################
 
 # Utiliser et afficher le glossaire (static/custom/glossaire.json)
-# Le fichier par défaut est présente dans static/sample/glossaire.json.
+# Le fichier par défaut est présent dans static/sample/glossaire.json.
 GLOSSAIRE = False
 
 # Afficher le lien vers la galerie photo
 AFFICHAGE_GALERIE_PHOTO = True
 
-# URL d'accès aux photos et autres médias (URL racine). Dans la vm_medias, il est uniquement stocké le nom du fichier. Il est donc necessaire de préciser l'URL de stockage des médias, pour construire le chemin complet d'accès à l'image. Par exemple l'url d'accès à Taxhub.
-# Si vous utilisez GeoNature: REMOTE_MEDIAS_URL = "https://<URL_GEONATURE>/api/media/taxhub/"
+# URL d'accès aux photos et autres médias (URL racine). Dans vm_medias est uniquement stocké le nom du fichier. Il est donc necessaire de préciser l'URL d'accès aux médias, pour construire le chemin complet de chaque image. 
+# Par exemple l'URL d'accès à TaxHub.
+# Si vous utilisez GeoNature : REMOTE_MEDIAS_URL = "https://<URL_GEONATURE>/api/media/taxhub/"
 REMOTE_MEDIAS_URL = "https://<URL_GEONATURE>/api/media/taxhub/"
 
 # URL de TaxHub (pour génération à la volée des vignettes des images).
-# Si le service Taxhub n'est pas utilisé, commenter la variable
+# Si le service TaxHub n'est pas utilisé, commenter la variable
 REDIMENSIONNEMENT_IMAGE = True
 
-# URL de Taxhub : necessaire pour le redimensionnement des images
-# Si vous utilisez GeoNature: TAXHUB_URL "https://<URL_GEONATURE>/api/taxhub"
+# URL de TaxHub : necessaire pour le redimensionnement des images
+# Si vous utilisez GeoNature : TAXHUB_URL "https://<URL_GEONATURE>/api/taxhub"
 TAXHUB_URL = "https://<URL_GEONATURE>/api/taxhub"
 
 ###########################
@@ -143,26 +143,33 @@ MAP = {
     'ZOOM' : 10,
     'MIN_ZOOM' : 6,
     'MAX_BOUNDS' : [[41.463,-1.876],[51.62,8.6]],
-    # Pas du slider sur les annees d'observations: 1 = pas de 1 an sur le slider
+    # Pas du slider d'années d'observations
+    # 1 = pas de 1 an sur le slider
     'STEP': 1,
     'ENABLE_SLIDER': True,
     'ENABLE_SCALE': True
+}
+
+# Ajout du plugin Nominatim permettant une recherche d'adresse sur les cartes de la page d'accueil et des fiches territoire 
+SEARCH_NOMINATIM = True
+# Paramètres de recherche du plugin Nominatim
+GEOCODING_QUERY_PARAMS = {
+    "countrycodes": "FR",
+    # Ouest, Nord, Est, Sud
+    "viewbox": "-2.025228103,47.567932519,-1.011314484,46.903000500",
+    "bounded": 1 # 1 pour chercher uniquement dans la viewbox définie ci-dessus
 }
 
 # Affichage des observations par maille ou point
 # True = maille / False = point
 AFFICHAGE_MAILLE = False
 
-# Ouvrir le widget par défaut de legende.
-DEFAULT_LEGEND_DISPLAY = True
-
-# Ajout des flux wms et geojson
-
+# Ajout de flux WMS et geojson sur les cartes
 COUCHES_SIG = [
     {
-        "name": "Nom de la couche wms",
+        "name": "Nom de la couche WMS",
         "type": "wms",
-        "url": "url du serveur wms",
+        "url": "URL du serveur WMS",
         "options": {
             "layers": 0,
             "transparent": True,
@@ -170,13 +177,13 @@ COUCHES_SIG = [
             "attribution": "",
             "wms_version": "1.3.0"
         },
-        # sans le paramètre "pages", la couche est présente sur toutes les pages
-        "pages": ["index", "area"], // le nom des pages est celui du nom des fonction python des routes (voir atlasRoutes.py)
+        # Sans le paramètre "pages", la couche est présente sur les cartes de toutes les pages
+        "pages": ["index", "area"], // le nom des pages est celui du nom des fonctions python des routes (voir atlasRoutes.py)
     },
     {
         "name": "Limite de mon territoire depuis une couche locale (static/custom)",
         "type": "geojson",
-        "url": "<URL_ATLAS>/static/custom/territoire.json",
+        "url": "<URL_ATLAS>/static/custom/territoire_sample.geojson",
         "style": {
             "color": "blue",
             "weight": 2,
@@ -185,21 +192,20 @@ COUCHES_SIG = [
     }
 ]
 
-
-# Carte de la page d'accueil: observations des 'x' derniers jours. Bien mettre en anglais et non accordé
+# Carte de la page d'accueil : observations des 'x' derniers jours.
 NB_DAY_LAST_OBS = '7'
 
 # Texte à afficher pour décrire la cartographie des 'dernières observations'
 TEXT_LAST_OBS = 'Les observations des agents ces 7 derniers jours |'
 
-# Carte de la fiche "area" : nombre des 'x' dernières observations affichées
+# Carte des fiches territoire : nombre des 'x' dernières observations affichées
 NB_LAST_OBS=100
 
 ###########################
 ###### PAGE ACCUEIL #######
 ###########################
 
-# Bloc d'introduction presentant l'atlas. Affichage True/False
+# Bloc d'introduction présentant l'atlas. Affichage True/False
 AFFICHAGE_INTRODUCTION = True
 
 # Afficher le Footer sur toutes les pages (static/custom/templates/footer.html)
@@ -214,8 +220,9 @@ AFFICHAGE_STAT_GLOBALES = True
 # Bloc avec carte et liste des dernières observations. Affichage True/False
 AFFICHAGE_DERNIERES_OBS = True
 
-# Nombre d'éléments récupérés par page lors de la liste de taxon.
-ITEMS_PER_PAGE = 50
+# Bloc avec carte de toutes les observations du territoire 
+# On ne peut pas afficher la carte des dernières observations et cette carte en même temps : les deux paramètres ne peuvent donc pas être à True
+AFFICHAGE_TERRITOIRE_OBS= False
 
 # Bloc avec espèces à voir en ce moment. Affichage True/False
 AFFICHAGE_EN_CE_MOMENT = True
@@ -246,7 +253,7 @@ AFFICHAGE_GRAPH_ALTITUDES = True
 # Afficher le graphique de la phénologie. Affichage True/False
 AFFICHAGE_GRAPH_PHENOLOGIE = True
 
-# couleurs des diagrames circulaires (provenance des données par organismes et groupes taxonomiques - fiche espèce et zonage)
+# Couleurs des diagrammes circulaires (provenance des données par organismes et groupes taxonomiques - fiche espèce et zonage)
 COLOR_PIE_CHARTS = [
     "#981D97",
     "#FBFFB9",
@@ -271,11 +278,11 @@ COLOR_PIE_CHARTS = [
     "#0B5563",
     "#54DEFD",
 ]
-# Afficher les statuts de conservation. Affichage True/False
+# Afficher les statuts des taxons (basés sur la BDC statuts). Affichage True/False
 AFFICHAGE_STATUTS = True
 
-# Configure quels statuts de protection sont affichés et dans quel ordre.
-# - il est possible de définir plusieurs filters pour un groupe (pour grouper les listes rouges et les marqueurs znieff d'une même zone par exemple).
+# Configure quels statuts sont affichés et dans quel ordre.
+# - il est possible de définir plusieurs filtres pour un groupe (pour grouper les listes rouges et les marqueurs znieff d'une même zone par exemple).
 # - 'label' du groupe sera affiché devant l'ensemble des statuts de ce groupe. 'label' est optionnel.
 # - les valeurs des propriétés `cd_type_statut` et `cd_sig` correspondent aux valeurs présentes dans la BDD `atlas.vm_bdc_statut`.
 GROUPES_STATUTS = [
@@ -350,18 +357,18 @@ ATTR_VIMEO = 9
 # Coupe le nom_vernaculaire à la 1ere virgule sur les fiches espèces
 SPLIT_NOM_VERN = True
 
-# Permet de définir des types de médias TaxHub comme « Liens importants » de la fiche taxon.
-# Les liens importants sont mis en avant dans l'affichage de la fiche.
-# - `type_media_id` : l'ID d'un type de média définit dans l'instance TaxHub.
+# Permet de définir des types de médias TaxHub comme « Liens focus » de la fiche taxon.
+# Les liens focus sont mis en avant dans l'affichage de la fiche.
+# - `type_media_id` : l'ID d'un type de média défini dans l'instance TaxHub.
 # - `icon` (optionnel) : l'URL d'une image à ajouter sur le bouton du lien.
 #
-# Une classe CSS `lien-important-type-XX` est ajoutée sur l'élément HTML du lien avec XX l'ID du type
+# Une classe CSS `lien-focus-type-XX` est ajoutée sur l'élément HTML du lien avec XX l'ID du type
 # de média. Cela permet de personnaliser l'apparence des liens, par type, dans `custom.css`.
 #
 # Exemple de configuration :
 # (les types médias et les icones sont des exemples et n'existent pas de base
 # sur une instance Atlas/TaxHub)
-TYPES_MEDIAS_LIENS_IMPORTANTS = [
+TYPES_MEDIAS_LENS_FOCUS = [
   {
     'type_media_id': 10,  # Lien participation campagne d'observation
     'icon': '/static/custom/images/jumelles.svg'
@@ -378,52 +385,56 @@ TYPES_MEDIAS_LIENS_IMPORTANTS = [
 ###########################
 ###########################
 
-# couleur principale de l'atlas
+# Couleur principale de l'atlas
 TEMPLATE_MAIN_COLOR = "#53c412"
 TEMPLATE_SECOND_COLOR = "#1e7e12"
 
-# 3 couleurs des pricnipale des graphiques de type "barre" 
+# 3 couleurs principales des graphiques de type "barre" 
 # par défaut vaut [TEMPLATE_MAIN_COLOR,TEMPLATE_SECOND_COLOR, "grey" ]
 # sur la fiche espèce c'est la première couleur de ce tableau qui est prise
 # COLOR_STACKED_BAR_CHARTS = [#53c412, "#1e7e12", "grey"]
 
+#################################################
+#### FICHES TERRITOIRE ET RANG TAXONOMIQUE  #####
+#################################################
 
-############################################
-#### FICHE "AREA" ET RANG TAXONOMIQUE  #####
-############################################
+# Nombre d'éléments récupérés par page dans les listes de taxons
+ITEMS_PER_PAGE = 50
 
-# Permet d'afficher ou non les colonnes Protection et/ou Patrimonialité/Enjeux dans les listes de taxons
-# Se basent sur les champs "atlas.vm_taxons.protection_stricte"` (oui/non) et "atlas.vm_taxons.patrimonial"
+## Permet d'afficher ou non les colonnes Protection et/ou Patrimonialité/Enjeux dans les listes de taxons
 
-# Afficher ou non la colonne Protection dans les listes de taxons (basé sur le champs "protection_stricte")
+# Afficher le picto "protégé" sur les fiches espèces et les listes de taxons. Afficher les graphiques d'espèces protégées
 PROTECTION = True
 
-# Afficher ou non la colonne Patrimonialité dans les listes de taxons (basé sur le champs "patrimonial") et la customiser
+# Afficher les statistiques des espèces menacées
+AFFICHAGE_MENACE = False
+
+# Afficher la colonne "Patrimonialité" dans les listes de taxons (basé sur l'attribut TaxHub "patrimonial") et la customiser
 # Pour masquer cette colonne, passer uniquement le paramètre à "False"
 DISPLAY_PATRIMONIALITE = False
 
-
-# Liste des type de territoire pour les fiches territoires (code bib_area_type)
+# Liste des types de territoire pour les fiches territoires ("code_area" dans "ref_geo.bib_area_type")
 # ex : TYPE_TERRITOIRE_SHEET = ['COM', 'EPCI']
-# attention, si vous ajouter des nouveaux zonages, veillez à remplir le champs `size_hierarchy` de la table `ref_geo.bib_areas_type`. Ce champs aide au calcul de l'affichage ou non des observations sensibles sur des niveau de zonage plus petit que leur géométrie de floutage
+# Attention, si vous ajoutez des nouveaux zonages dans la BDD, veillez à remplir le champs "size_hierarchy" de la table "ref_geo.bib_areas_type". 
+# Ce champ sert au calcul de l'affichage ou non des observations sensibles sur des niveaux de zonage plus petits que leur géométrie de floutage
 TYPE_TERRITOIRE_SHEET = []
 
 # Types de zonage à afficher dans la liste des zonages parents dans la fiche territoire
 AREA_PARENTS_TYPE = ["EPCI"]
 
 # Affiche ou non la barre "tout le territoire" sur les graphiques
-# du nombre d'espèce des fiches zonages
+# du nombre d'espèces des fiches territoire
 AFFICHAGE_TOUT_TERRITOIRE_GRAPH = False
 
-# Liste des application dont "orejime" controle la dépose de cookie
+# Liste des applications dont "orejime" controle la dépose de cookie
 OREJIME_APPS = []
 
 # Traductions orejime (voir la doc cookie et RGPD pour comment le remplir)
 OREJIME_TRANSLATIONS = {}
 
-#############################
-#### Lien custom du logo ####
-#############################
+##########################################################
+#### Lien custom au clic sur le logo de l'application ####
+##########################################################
 
 CUSTOM_LOGO_LINK='https://monadressecustom.org'
 
