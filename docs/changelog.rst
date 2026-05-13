@@ -10,22 +10,6 @@ CHANGELOG
 - Statuts de protection
 - Floutage données sensibles (en mode maille, car en mode point on reste sur le centroïde de la maille de floutage comme jusqu'à présent)
 
-Notes : 
-
-- atlas.vm_observations tape directement dans la table Synthèse de GN (où une vue basée sur celle-ci mais avec un WHERE limitant les données), en ne prenant que les données de présence, en excluant les données sensibles avec aucune diffusion. Et autre ? the_geom_point rempli, s.id_nomenclature_observation_status IS NULL (c'est quoi ?), précis si s.id_nomenclature_sensitivity IS NULL (discutable)
-  WHERE s.the_geom_point IS NOT NULL
-            AND (st.cd_nomenclature = 'Pr' OR s.id_nomenclature_observation_status IS NULL)
-            AND (se.cd_nomenclature = '0' OR s.id_nomenclature_sensitivity IS NULL)
-- On n'exclut plus les données en s'appuyant sur le niveau de diffusion, mais uniquement le niveau de sensibilité. Si besoin, filtrez en amont dans une vue CUSTOM.
-- 2.8 ? https://github.com/PnX-SI/GeoNature-atlas/blob/fix/2.0.0/data/atlas/05.vm_observations.sql#L43C13-L43C60
-- Comment on utilise https://github.com/PnX-SI/GeoNature-atlas/blob/fix/2.0.0/data/atlas/05.vm_observations.sql#L24 en mode maille ? Jamais ? Pour les obs dans les fiches territoire, on passe tout par cor_area_synthese ?
-- Ou on l'utilise ici ? https://github.com/PnX-SI/GeoNature-atlas/blob/fix/2.0.0/data/atlas/15.vm_cor_maille_observation.sql ?
-- La BDD Atlas ne fait plus aucune intersection géographique ?
-- Le statut de protection des espèces ne se base plus sur un attribut renseigné manuellement dans TaxHub mais sur la BDC statuts (voir activation et régionalisation des statuts dans GN)
-- Suppression de MASK_STYLE, BORDERS_COLOR, BORDERS_WIDTH
-- Suppression de PATRIMONIALITE (voir avec Amandine)
-- Ajout des paramètres DISPLAY_ZONING_PAGE_SENSIBILITY_MESSAGE, TYPES_MEDIAS_LENS_FOCUS, COUCHES_SIG, LIMIT_POINT_MAILLE, AFFICHAGE_MENACE, AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION (champs à ajouter côté REF_GEO ? Nécessite une version min de GN ?), AFFICHAGE_TAB_AREA_OBS_ESPECES, ITEMS_PER_PAGE, AFFICHAGE_TERRITOIRE_OBS, AFFICHAGE_LABEL_SIDEBAR, AFFICHAGE_GALERIE_PHOTO, SEARCH_NOMINATIM, TYPE_TERRITOIRE_SHEET (doublon avec celui dans settings.ini ?), AREA_PARENTS_TYPE, AFFICHAGE_GRAPH_PHENOLOGIE, ALTITUDE_RANGES (doublon avec celui de settings.ini ?), AFFICHAGE_TOUT_TERRITOIRE_GRAPH, AFFICHAGE_GRAPH_PROVENANCE_DONNEE, AFFICHAGE_STATUTS, GROUPES_STATUTS, TEMPLATE_MAIN_COLOR, TEMPLATE_SECOND_COLOR, COLOR_STACKED_BAR_CHARTS, COLOR_PIE_CHARTS
-
 🚀 **Nouveautés**
 
 - Ajout du floutage des données sensibles en mode maille (#571 par @juggler31)
@@ -117,7 +101,21 @@ Des modifications sont à faire dans le fichier ``settings.ini`` pour que l'inst
 
 Le schéma de BDD de GeoNature-atlas (``atlas``) étant supprime à chaque mise à jour de GeoNature-atlas, nous ne recommandons plus d'installer la base de données de GeoNature-atlas dans la même que celle de GeoNature. Pour ceux qui l'avaient fait, nous conseillons désormais que l'atlas ait sa propre base de données. L'installation docker supporte aujourd'hui de se connecter à une base de données distante.
 
+🤔 **Notes (à clarifier, préciser, revoir)** : 
 
+- ``atlas.vm_observations`` tape directement dans la table Synthèse de GN (où une vue basée sur celle-ci mais avec un WHERE limitant les données), en ne prenant que les données de présence, en excluant les données sensibles avec aucune diffusion. Et autre ? the_geom_point rempli, ``s.id_nomenclature_observation_status IS NULL`` (c'est quoi ?), précis si ``s.id_nomenclature_sensitivity IS NULL`` (discutable)
+  WHERE s.the_geom_point IS NOT NULL
+            AND (st.cd_nomenclature = 'Pr' OR s.id_nomenclature_observation_status IS NULL)
+            AND (se.cd_nomenclature = '0' OR s.id_nomenclature_sensitivity IS NULL)
+- On n'exclut plus les données en s'appuyant sur le niveau de diffusion, mais uniquement le niveau de sensibilité. Si besoin, filtrez en amont dans une vue CUSTOM.
+- 2.8 ? https://github.com/PnX-SI/GeoNature-atlas/blob/fix/2.0.0/data/atlas/05.vm_observations.sql#L43C13-L43C60
+- Comment on utilise https://github.com/PnX-SI/GeoNature-atlas/blob/fix/2.0.0/data/atlas/05.vm_observations.sql#L24 en mode maille ? Jamais ? Pour les obs dans les fiches territoire, on passe tout par cor_area_synthese ?
+- Ou on l'utilise ici ? https://github.com/PnX-SI/GeoNature-atlas/blob/fix/2.0.0/data/atlas/15.vm_cor_maille_observation.sql ?
+- La BDD Atlas ne fait plus aucune intersection géographique ?
+- Le statut de protection des espèces ne se base plus sur un attribut renseigné manuellement dans TaxHub mais sur la BDC statuts (voir activation et régionalisation des statuts dans GN)
+- Régression : Suppression de ``MASK_STYLE``, ``BORDERS_COLOR``, ``BORDERS_WIDTH``
+- Régression : Suppression de ``PATRIMONIALITE`` (voir avec Amandine)
+- Ajout des paramètres DISPLAY_ZONING_PAGE_SENSIBILITY_MESSAGE, TYPES_MEDIAS_LENS_FOCUS, COUCHES_SIG, LIMIT_POINT_MAILLE, AFFICHAGE_MENACE, AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION (champs à ajouter côté REF_GEO ? Nécessite une version min de GN ?), AFFICHAGE_TAB_AREA_OBS_ESPECES, ITEMS_PER_PAGE, AFFICHAGE_TERRITOIRE_OBS, AFFICHAGE_LABEL_SIDEBAR, AFFICHAGE_GALERIE_PHOTO, SEARCH_NOMINATIM, TYPE_TERRITOIRE_SHEET (doublon avec celui dans settings.ini ?), AREA_PARENTS_TYPE, AFFICHAGE_GRAPH_PHENOLOGIE, ALTITUDE_RANGES (doublon avec celui de settings.ini ?), AFFICHAGE_TOUT_TERRITOIRE_GRAPH, AFFICHAGE_GRAPH_PROVENANCE_DONNEE, AFFICHAGE_STATUTS, GROUPES_STATUTS, TEMPLATE_MAIN_COLOR, TEMPLATE_SECOND_COLOR, COLOR_STACKED_BAR_CHARTS, COLOR_PIE_CHARTS
 
 
 1.7.3 (2025-09-20)
