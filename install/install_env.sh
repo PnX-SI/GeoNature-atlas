@@ -54,7 +54,7 @@ function main() {
     # Load utils
     current_dir=$(dirname "${BASH_SOURCE[0]}")
     cd "${current_dir}/"
-    source "${current_dir}/utils.bash"
+    source "${current_dir}/utils/utils_install.bash"
 
     #+-------------------------------------------------------------------------+
     # Init script
