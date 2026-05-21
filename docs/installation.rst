@@ -59,7 +59,7 @@ Le script ``install_env.sh`` va automatiquement installer les outils nécessaire
 Lancer le script :
 
 ::
-
+    cd /home/`whoami`/atlas/install/
     ./install_env.sh
 
 
@@ -154,7 +154,7 @@ Lancez le fichier d'installation de la base de données :
 
 ::
 
-    cd /home/`whoami`/atlas
+    cd /home/`whoami`/atlas/install/
     ./install_db.sh
 
 
@@ -174,6 +174,7 @@ Pour filtrer les données provenant de GeoNature (intégrer ou non les données 
 
 ::
 
+    cd /home/`whoami`/atlas/install/
     ./install_app.sh
 
 
@@ -196,6 +197,7 @@ Lancer l'installation de la BDD :
 Lancer l'application : 
 
 ::
+
     ./docker-compose.sh up
 
 Par défaut le container ``atlas-app`` expose le port 8080 sur laquelle tourne l'application.
@@ -203,6 +205,7 @@ Il faudra ensuite mettre le proxy que vous souhaitez sur l'hôte : Apache, NGINX
 
 
 .. note::
+
     Le docker compose et le script ``install_db.sh`` fourni ne permettent pas d'installer la base de données de GeoNature-atlas dans la même BDD que celle de GeoNature. Nous recommandons d'installer GeoNature-atlas dans une base de données séparée.
 
 Images docker
@@ -212,6 +215,7 @@ Images docker
 Si vous souhaitez regénérer ces images : 
 
 ::
+    
     # image de production
     docker build -t atlas:prod --target prod .
     # image de préproduction
