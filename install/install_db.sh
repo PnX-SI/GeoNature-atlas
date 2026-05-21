@@ -107,11 +107,11 @@ function runDBInstall() {
 
     printVerbose "Installing atlas db..."
     createDatabaseExtensions
+    createDatabaseSchemas
     if ${geonature_source}; then
         createForeignDataWrapper
         createFdwTables
     fi
-    createDatabaseSchemas
     prepareAltitudesValues
     createAtlasSchemaEntities
     printVerbose "${Gre}The database was successfully installed${RCol} !"
