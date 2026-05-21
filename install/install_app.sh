@@ -360,21 +360,21 @@ function createOtherCustomFiles() {
 function createAtlasService() {
     printMsg "Creating Atlas Systemd service..."
     export BASE_DIR=$(readlink -e "${0%/*}")
-    envsubst '${USER} ${BASE_DIR} ${gun_num_workers} ${gun_port}' \
-        < geonature-atlas.service | sudo tee /etc/systemd/system/geonature-atlas.service || true
+    envsubst '${USER} ${BASE_DIR} ${service_desc} ${gun_proc_name} ${gun_num_workers} ${gun_port}' \
+        < geonature-atlas.service | sudo tee /etc/systemd/system/${gun_proc_name}.service || true
 }
 
 function startAtlasService() {
     printMsg "Launching Atlas Systemd service..."
     sudo systemctl daemon-reload || true
-    sudo systemctl enable geonature-atlas || true
-    sudo systemctl start geonature-atlas || true
+    sudo systemctl enable ${gun_proc_name} || true
+    sudo systemctl start ${gun_proc_name} || true
 
-    systemctl is-active --quiet geonature-atlas
+    systemctl is-active --quiet ${gun_proc_name}
     if [[ $? -eq 0 ]]; then
         printInfo ">${Gre}Atlas service is running !"
     else
-        printError ">Atlas service is NOT running ! ${Gra}Check with: systemctl status geonature-atlas"
+        printError ">Atlas service is NOT running ! ${Gra}Check with: systemctl status ${gun_proc_name}"
     fi
 }
 
