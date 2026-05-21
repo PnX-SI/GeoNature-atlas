@@ -119,7 +119,14 @@ COMPOSE_FILE=docker-compose.yml
 # Paramètres administrateur avancés (⚠ ne modifier que si vous savez ce que vous faites !)
 #+-------------------------------------------------------------------------------------------------+
 
+# Si plusieurs instances de GeoNature-atlas sont installées sur le même serveur :
+# Personnaliser `service_desc`, `gun_proc_name` et `gun_host` ci-dessous. 
+# Ceci afin d'éviter les conflits de ports et de noms de processus.
+
+service_desc="GeoNature-Atlas"
+
 # Parmètres Gunicorn
+gun_proc_name=geonature-atlas 
 gun_num_workers=4
 gun_host=0.0.0.0
 gun_port=8080
