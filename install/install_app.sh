@@ -153,7 +153,7 @@ function makeNvmAvailable() {
 function stopAtlasService() {
     printMsg "Stopping Atlas Systemd service..."
     # Try to stop the service if it is running, ignore errors
-    sudo systemctl stop geonature-atlas || true
+    sudo systemctl stop ${gun_proc_name} || true
 }
 
 function createVenv() {
