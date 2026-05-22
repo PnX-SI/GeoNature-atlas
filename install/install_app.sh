@@ -274,7 +274,7 @@ function copyCustomSample() {
     local src_dir="${__sample_dir__}"
     local dst_dir="${__custom_dir__}"
     
-    cp -Rn "${src_dir}" "${dst_dir}" || true
+    cp -Rn ${src_dir}/* "${dst_dir}/" || true
     
     printVerbose "Custom sample files ${Gre}copied${RCol} to ${dst_dir}"
 }
