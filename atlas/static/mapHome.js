@@ -42,7 +42,7 @@ function refreshTerritoryArea(elem) {
 if (configuration.AFFICHAGE_DERNIERES_OBS) {
     if (configuration.AFFICHAGE_MAILLE) {
         // display maille layer
-        displayGeojsonMailles(observations_mailles);
+        displayGeojsonMailles(observations_mailles, onEachFeatureMailleLastObs);
     } else {
         // Display point layer
         displayGeoJsonPoint(observations);
