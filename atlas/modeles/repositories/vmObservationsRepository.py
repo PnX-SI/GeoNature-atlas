@@ -52,7 +52,7 @@ def getObservationsChilds(params: {}):
     if "taxons" in fields:
         _joinedload = joinedload(VmObservations.taxon)
         if "medias" in fields:
-            _joinedload.joinedload(VmTaxons.main_media)
+            _joinedload = _joinedload.joinedload(VmTaxons.main_media)
         query = query.options(_joinedload)
     query = query.options(
         load_only(
