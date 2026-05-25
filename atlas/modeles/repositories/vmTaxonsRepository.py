@@ -206,13 +206,16 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
     for row in db.session.execute(req).mappings().all():
         taxon_dict = row["VmTaxons"].as_dict(with_main_media=True)
         if id_area:
-            taxon_dict["yearmax"] = row.last_obs
-            taxon_dict["menace"] = row.menace
-            taxon_dict["nb_obs"] = row.nb_obs
-            taxon_dict["last_obs"] = row.last_obs
-            taxon_dict["nb_observers"] = row.nb_observers
-            taxon_dict["protection_stricte"] = row.protege
-            taxon_dict["niveau_application_menace"] = row.niveau_application_menace
+            taxon_dict["yearmax"] = row.get("last_obs")
+            taxon_dict["nb_obs"] = row.get("nb_obs")
+            taxon_dict["last_obs"] = row.get("last_obs")
+            taxon_dict["nb_observers"] = row.get("nb_observers")
+            if "menace" in row:
+                taxon_dict["menace"] = row["menace"]
+            if "protege" in row:
+                taxon_dict["protection_stricte"] = row["protege"]
+            if "niveau_application_menace" in row:
+                taxon_dict["niveau_application_menace"] = row["niveau_application_menace"]
         taxons.append(taxon_dict)
     return taxons
 
