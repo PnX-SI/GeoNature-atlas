@@ -477,6 +477,45 @@ function onEachFeaturePointSpecies(feature, layer) {
 }
 
 // popup Maille
+function getMailleBaseValue(feature) {
+    return feature.properties.nb_observations ?? feature.properties.taxons.length;
+}
+
+function applyDefaultMailleStyle(layer) {
+    layer.setStyle(styleMailleAtlas(getMailleBaseValue(layer.feature)));
+}
+
+function selectMaille(layer) {
+    if (selectedMailleLayer && selectedMailleLayer !== layer) {
+        applyDefaultMailleStyle(selectedMailleLayer);
+    }
+    selectedMailleLayer = layer;
+    layer.setStyle(styleMailleClickedOrHover(layer));
+}
+
+function attachMailleHandlers(layer, onClickHandler) {
+    applyDefaultMailleStyle(layer);
+
+    layer.on("click", (event) => {
+        if (onClickHandler) {
+            onClickHandler(event);
+        }
+        selectMaille(event.target);
+    });
+
+    layer.on("mouseover", (event) => {
+        if (event.target !== selectedMailleLayer) {
+            event.target.setStyle(styleMailleClickedOrHover(event.target));
+        }
+    });
+
+    layer.on("mouseout", (event) => {
+        if (event.target !== selectedMailleLayer) {
+            applyDefaultMailleStyle(event.target);
+        }
+    });
+}
+
 // eslint-disable-next-line no-unused-vars
 function onEachFeatureMaille(feature, layer) {
     popupContent =
@@ -494,23 +533,7 @@ function onEachFeatureMaille(feature, layer) {
         zoomMaille(layer);
     }
 
-    var selected = false;
-    layer.setStyle(styleMailleAtlas(feature.properties.nb_observations));
-    layer.on("click", function (layer) {
-        resetStyleMailles();
-        this.setStyle(styleMailleClickedOrHover(layer.target));
-        selected = true;
-    });
-    layer.on("mouseover", function (layer) {
-        this.setStyle(styleMailleClickedOrHover(layer.target));
-        selected = false;
-    });
-
-    layer.on("mouseout", function () {
-        if (!selected) {
-            this.setStyle(styleMailleAtlas(feature.properties.nb_observations));
-        }
-    });
+    attachMailleHandlers(layer);
 }
 
 function zoomMaille(layer) {
@@ -752,6 +775,8 @@ function buildSpeciesEntries(taxons) {
     return rows.join("\n");
 }
 
+let selectedMailleLayer = null;
+
 function createPopUp(event) {
     const sheetName = document.querySelector("body").getAttribute("page-name");
     const idMaille = event.target.feature.id;
@@ -784,28 +809,16 @@ function createPopUp(event) {
 function onEachFeatureMailleLastObs(feature, layer) {
     observationsFeatureGroup[feature.properties.cd_sensitivity].addLayer(layer);
 
-    var selected = false;
-    layer.setStyle(styleMailleAtlas(feature.properties.nb_observations));
-    layer.on("click", function (event) {
+    attachMailleHandlers(layer, function (event) {
         createPopUp(event);
-        resetStyleMailles();
-        selected = true;
-    });
-    layer.on("mouseover", function (layer) {
-        this.setStyle(styleMailleClickedOrHover(layer.target));
-        selected = false;
-    });
-
-    layer.on("mouseout", function () {
-        if (!selected) {
-            this.setStyle(styleMailleAtlas(feature.properties.nb_observations));
-        }
     });
 }
 
 function styleMailleAtlas(nb) {
     return {
-        opacity: 0, // opacité de la bordure
+        opacity: 0,
+        weight: 0,
+        color: "transparent",
         fillColor: getColor(nb),
         fillOpacity: 0.7,
     };
@@ -823,12 +836,14 @@ function styleMailleClickedOrHover(layer) {
 }
 
 function resetStyleMailles() {
-    // set style for all cells
+    if (selectedMailleLayer) {
+        applyDefaultMailleStyle(selectedMailleLayer);
+        selectedMailleLayer = null;
+    }
+
     map.eachLayer(function (layer) {
         if (layer.feature && layer.feature.properties.id_type) {
-            layer.setStyle(
-                styleMailleAtlas(layer.feature.properties.taxons.length),
-            );
+            applyDefaultMailleStyle(layer);
         }
     });
 }
