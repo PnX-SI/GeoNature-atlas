@@ -295,6 +295,7 @@ class AtlasConfig(Schema):
     )
 
     AFFICHAGE_MAILLE = fields.Boolean(load_default=False)
+    COULEUR_CONTOUR_MAILLE = fields.String(load_default="transparent")
     LIMIT_POINT_MAILLE = fields.Integer(load_default=500)
     ZOOM_LEVEL_POINT = fields.Integer(load_default=11)
     LIMIT_CLUSTER_POINT = fields.Integer(load_default=1000)
