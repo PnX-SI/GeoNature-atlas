@@ -53,6 +53,26 @@ URL_APPLICATION = "/atlas"
 # Afficher ou non les labels dans la barre latérale
 AFFICHAGE_LABEL_SIDEBAR = False
 
+# Utiliser et afficher le glossaire (static/custom/glossaire.json)
+# Le fichier par défaut est présent dans static/sample/glossaire.json.
+GLOSSAIRE = False
+
+# Afficher le lien vers la galerie photo
+AFFICHAGE_GALERIE_PHOTO = True
+
+# URL d'accès aux photos et autres médias (URL racine). Dans vm_medias est uniquement stocké le nom du fichier. Il est donc necessaire de préciser l'URL d'accès aux médias, pour construire le chemin complet de chaque image. 
+# Par exemple l'URL d'accès à TaxHub.
+# Si vous utilisez GeoNature : REMOTE_MEDIAS_URL = "https://<URL_GEONATURE>/api/media/taxhub/"
+REMOTE_MEDIAS_URL = "https://<URL_GEONATURE>/api/media/taxhub/"
+
+# URL de TaxHub (pour génération à la volée des vignettes des images).
+# Si le service TaxHub n'est pas utilisé, commenter la variable
+REDIMENSIONNEMENT_IMAGE = True
+
+# URL de TaxHub : necessaire pour le redimensionnement des images
+# Si vous utilisez GeoNature : TAXHUB_URL "https://<URL_GEONATURE>/api/taxhub"
+TAXHUB_URL = "https://<URL_GEONATURE>/api/taxhub"
+
 #################################
 #################################
 ###### Modules activation #######
@@ -66,7 +86,9 @@ ORGANISM_MODULE = False
 DISPLAY_OBSERVERS = True
 
 ###########################
-###### Multilingual #######
+###########################
+###### Multilingues #######
+###########################
 ###########################
 
 # Default language, also used when multilingual is disabled
@@ -97,34 +119,10 @@ LANGUAGES = {
         }
 }
 
-#####################
-#####################
-### Configuration ###
-#####################
-#####################
-
-# Utiliser et afficher le glossaire (static/custom/glossaire.json)
-# Le fichier par défaut est présent dans static/sample/glossaire.json.
-GLOSSAIRE = False
-
-# Afficher le lien vers la galerie photo
-AFFICHAGE_GALERIE_PHOTO = True
-
-# URL d'accès aux photos et autres médias (URL racine). Dans vm_medias est uniquement stocké le nom du fichier. Il est donc necessaire de préciser l'URL d'accès aux médias, pour construire le chemin complet de chaque image. 
-# Par exemple l'URL d'accès à TaxHub.
-# Si vous utilisez GeoNature : REMOTE_MEDIAS_URL = "https://<URL_GEONATURE>/api/media/taxhub/"
-REMOTE_MEDIAS_URL = "https://<URL_GEONATURE>/api/media/taxhub/"
-
-# URL de TaxHub (pour génération à la volée des vignettes des images).
-# Si le service TaxHub n'est pas utilisé, commenter la variable
-REDIMENSIONNEMENT_IMAGE = True
-
-# URL de TaxHub : necessaire pour le redimensionnement des images
-# Si vous utilisez GeoNature : TAXHUB_URL "https://<URL_GEONATURE>/api/taxhub"
-TAXHUB_URL = "https://<URL_GEONATURE>/api/taxhub"
-
+###########################
 ###########################
 ###### Cartographie #######
+###########################
 ###########################
 
 # Configuration des cartes (centre du territoire, couches CARTE et ORTHO, échelle par défaut...)
@@ -208,9 +206,11 @@ TEXT_LAST_OBS = 'Les observations des agents ces 7 derniers jours |'
 # Carte des fiches territoire : nombre des 'x' dernières observations affichées
 NB_LAST_OBS=100
 
-###########################
-###### PAGE ACCUEIL #######
-###########################
+############################
+############################
+###### Page d'accueil ######
+############################
+############################
 
 # Bloc d'introduction présentant l'atlas. Affichage True/False
 AFFICHAGE_INTRODUCTION = True
@@ -251,7 +251,9 @@ RANG_STAT = [{'phylum': ["Arthropoda", "Mollusca", "Annelida", "Cnidaria", "Plat
 RANG_STAT_FR = ['Faune invertébrée', 'Faune vertébrée', 'Flore']
 
 ############################
+############################
 ####### FICHE ESPÈCE #######
+############################
 ############################
 
 # Afficher le graphique des altitudes. Affichage True/False
@@ -386,11 +388,11 @@ TYPES_MEDIAS_LENS_FOCUS = [
   }
 ]
 
-###########################
-###########################
-####### Style   ##########
-###########################
-###########################
+########################
+########################
+######## Style #########
+########################
+########################
 
 # Couleur principale de l'atlas
 TEMPLATE_MAIN_COLOR = "#53c412"
@@ -401,9 +403,11 @@ TEMPLATE_SECOND_COLOR = "#1e7e12"
 # sur la fiche espèce c'est la première couleur de ce tableau qui est prise
 # COLOR_STACKED_BAR_CHARTS = [#53c412, "#1e7e12", "grey"]
 
-#################################################
-#### FICHES TERRITOIRE ET RANG TAXONOMIQUE  #####
-#################################################
+################################################
+################################################
+#### Fiches territoire et rang taxonomique  ####
+################################################
+################################################
 
 # Nombre d'éléments récupérés par page dans les listes de taxons
 ITEMS_PER_PAGE = 50
@@ -440,13 +444,17 @@ OREJIME_APPS = []
 OREJIME_TRANSLATIONS = {}
 
 ##########################################################
+##########################################################
 #### Lien custom au clic sur le logo de l'application ####
+##########################################################
 ##########################################################
 
 CUSTOM_LOGO_LINK='https://monadressecustom.org'
 
 #############################
+#############################
 #### Pages statistiques #####
+#############################
 #############################
 
 # Permet de lister les pages statiques souhaitées et de les afficher dynamiquement dans le menu sidebar
