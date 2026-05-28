@@ -500,12 +500,12 @@ function attachMailleHandlers(layer, onClickHandler) {
         if (onClickHandler) {
             onClickHandler(event);
         }
-        selectMaille(event.target);
+        selectMaille(event.target).bringToFront();
     });
 
     layer.on("mouseover", (event) => {
         if (event.target !== selectedMailleLayer) {
-            event.target.setStyle(styleMailleClickedOrHover(event.target));
+            event.target.setStyle(styleMailleClickedOrHover(event.target)).bringToFront();
         }
     });
 
