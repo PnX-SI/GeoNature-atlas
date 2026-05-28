@@ -835,19 +835,6 @@ function styleMailleClickedOrHover(layer) {
     };
 }
 
-function resetStyleMailles() {
-    if (selectedMailleLayer) {
-        applyDefaultMailleStyle(selectedMailleLayer);
-        selectedMailleLayer = null;
-    }
-
-    map.eachLayer(function (layer) {
-        if (layer.feature && layer.feature.properties.id_type) {
-            applyDefaultMailleStyle(layer);
-        }
-    });
-}
-
 // eslint-disable-next-line no-unused-vars
 var mySlider;
 
