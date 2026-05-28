@@ -170,6 +170,8 @@ COUCHES_SIG = [
         "name": "Nom de la couche WMS",
         "type": "wms",
         "url": "URL du serveur WMS",
+        # couche selectionnée et visible par défaut au chargement de la carte 
+        "selected": "true",
         "options": {
             "layers": 0,
             "transparent": True,
@@ -177,8 +179,9 @@ COUCHES_SIG = [
             "attribution": "",
             "wms_version": "1.3.0"
         },
-        # Sans le paramètre "pages", la couche est présente sur les cartes de toutes les pages
-        "pages": ["index", "area"], // le nom des pages est celui du nom des fonctions python des routes (voir atlasRoutes.py)
+        # Sans le paramètre "pages", la couche est présente sur les cartes de toutes les pages.
+        # Le nom des pages est celui du nom des fonctions python des routes (voir atlasRoutes.py)
+        "pages": ["index","area","ficheEspece"]
     },
     {
         "name": "Limite de mon territoire depuis une couche locale (static/custom)",
