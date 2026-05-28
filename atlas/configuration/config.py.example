@@ -428,7 +428,7 @@ DISPLAY_PATRIMONIALITE = False
 # ex : TYPE_TERRITOIRE_SHEET = ['COM', 'EPCI']
 # Attention, si vous ajoutez des nouveaux zonages dans la BDD, veillez à remplir le champs "size_hierarchy" de la table "ref_geo.bib_areas_type". 
 # Ce champ sert au calcul de l'affichage ou non des observations sensibles sur des niveaux de zonage plus petits que leur géométrie de floutage
-TYPE_TERRITOIRE_SHEET = []
+TYPE_TERRITOIRE_SHEET = ['COM']
 
 # Types de zonage à afficher dans la liste des zonages parents dans la fiche territoire
 AREA_PARENTS_TYPE = ["EPCI"]
