@@ -816,9 +816,9 @@ function onEachFeatureMailleLastObs(feature, layer) {
 
 function styleMailleAtlas(nb) {
     return {
-        opacity: 0,
-        weight: 0,
-        color: "transparent",
+        opacity: 1,
+        weight: 1,
+        color: configuration.COULEUR_CONTOUR_MAILLE,
         fillColor: getColor(nb),
         fillOpacity: 0.7,
     };

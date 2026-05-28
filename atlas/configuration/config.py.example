@@ -164,6 +164,10 @@ GEOCODING_QUERY_PARAMS = {
 # True = maille / False = point
 AFFICHAGE_MAILLE = False
 
+# Personnaliser la couleur du contour des mailles sur la carte.
+# Peut prendre une valeur de couleur standardisée ou héxadécimale (ex : "black", "grey", "#333333") : "transparent" par défaut. 
+COULEUR_CONTOUR_MAILLE = "transparent"
+
 # Ajout de flux WMS et geojson sur les cartes
 COUCHES_SIG = [
     {
