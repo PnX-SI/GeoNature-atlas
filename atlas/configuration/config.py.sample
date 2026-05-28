@@ -7,11 +7,11 @@
 # Connexion de l'application à la BDD (avec l'utilisateur `user_pg` renseigné dans le `settings.ini`)
 SQLALCHEMY_DATABASE_URI = "postgresql://geonatatlas:monpassachanger@localhost:5432/geonatureatlas"
 
-#################################
-#################################
-### Customisation application ###
-#################################
-#################################
+#########################################
+#########################################
+### Personnalisation de l'application ###
+#########################################
+#########################################
 
 # Nom de la structure
 STRUCTURE = "Nom de la structure"
@@ -57,10 +57,10 @@ MAP = {
     'ENABLE_SLIDER': True
 }
 
-###########################
-###########################
-#### Security  Config #####
-###########################
-###########################
+####################################
+####################################
+#### Configuration de sécurité #####
+####################################
+####################################
 
 SECRET_KEY = 'INSERT_A_RANDOM_SECRET_KEY'
