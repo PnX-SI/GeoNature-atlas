@@ -478,7 +478,9 @@ function onEachFeaturePointSpecies(feature, layer) {
 
 // popup Maille
 function getMailleBaseValue(feature) {
-    return feature.properties.nb_observations ?? feature.properties.taxons.length;
+    return (
+        feature.properties.nb_observations ?? feature.properties.taxons.length
+    );
 }
 
 function applyDefaultMailleStyle(layer) {
@@ -505,7 +507,9 @@ function attachMailleHandlers(layer, onClickHandler) {
 
     layer.on("mouseover", (event) => {
         if (event.target !== selectedMailleLayer) {
-            event.target.setStyle(styleMailleClickedOrHover(event.target)).bringToFront();
+            event.target
+                .setStyle(styleMailleClickedOrHover(event.target))
+                .bringToFront();
         }
     });
 
