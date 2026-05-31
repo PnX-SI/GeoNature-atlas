@@ -71,7 +71,7 @@
                     {% else %}
                         <span class="fas {{ page_values.picto }}"></span>
                     {% endif %}
-                    {% if configuration.AFFICHAGE_LABEL_SIDEBAR and 'label' in page_values %}
+                    {% if configuration.AFFICHAGE_LABEL_SIDEBAR and 'short_title' in page_values %}
                         <div class="short_title">{{ page_values.short_title }}</div>
                     {% endif %}
                 </a>
