@@ -766,7 +766,7 @@ function buildSpeciesEntries(taxons) {
     rows = [];
     taxons.forEach((taxon) => {
         rows.push(`
-    <a title="Cliquez pour aller à la fiche de '${taxon.nom_vern}'" class="tooltip-item btn" href="/espece/${taxon.cd_ref}" target="_blank">
+    <a title="Cliquez pour aller à la fiche de '${taxon.nom_vern}'" class="tooltip-item btn" href="${window.LANGUAGE_PREFIXED_URL_APPLICATION}/espece/${taxon.cd_ref}" target="_blank">
         <img loading="lazy" class="me-2 has-media-${taxon.has_media}" src="${taxon.media}" alt="" >
         <div class="tooltip-item-text">
             <p class="name_vern">${taxon.nom_vern ? taxon.nom_vern : ""}</p>
