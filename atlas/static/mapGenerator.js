@@ -495,6 +495,8 @@ function selectMaille(layer) {
     layer.setStyle(styleMailleClickedOrHover(layer));
 }
 
+let hoveredMailleLayer = null;
+
 function attachMailleHandlers(layer, onClickHandler) {
     applyDefaultMailleStyle(layer);
 
@@ -506,17 +508,22 @@ function attachMailleHandlers(layer, onClickHandler) {
     });
 
     layer.on("mouseover", (event) => {
-        if (event.target !== selectedMailleLayer) {
-            event.target
-                .setStyle(styleMailleClickedOrHover(event.target))
-                .bringToFront();
+        const target = event.target;
+        if (target === selectedMailleLayer) return;
+
+        if (hoveredMailleLayer && hoveredMailleLayer !== target && hoveredMailleLayer !== selectedMailleLayer) {
+            applyDefaultMailleStyle(hoveredMailleLayer);
         }
+        hoveredMailleLayer = target;
+        target.setStyle(styleMailleClickedOrHover(target)).bringToFront();
     });
 
     layer.on("mouseout", (event) => {
-        if (event.target !== selectedMailleLayer) {
-            applyDefaultMailleStyle(event.target);
-        }
+        const target = event.target;
+        if (target === selectedMailleLayer) return;
+
+        if (hoveredMailleLayer === target) hoveredMailleLayer = null;
+        applyDefaultMailleStyle(target);
     });
 }
 
