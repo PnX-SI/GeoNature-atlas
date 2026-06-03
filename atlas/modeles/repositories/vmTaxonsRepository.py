@@ -61,6 +61,7 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
         group2_inpn: str
         last_obs: boolean : return only last obs (range define in params)
         only_related_sensitivity_level: boolean : optional  - display only species corresponding to the sensitivity level of the id_area (only species with sensitivity=2 for M10 for ex)
+        with_local_status: boolean : override global taxon status with local status (eg : protected only in a department)
 
     Returns
     -------
@@ -76,7 +77,7 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
     patrimonial = params.get("patrimonial", None)
     last_obs = params.get("last_obs", None)
     only_related_sensitivity_level = params.get("only_related_sensitivity_level", None)
-
+    with_local_status = params.get("with_local_status", "true").lower() == "true"
     # CTE 1: Statistics on observations filtered by id_area
     q_stats_taxons = (
         select(
@@ -119,8 +120,11 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
 
     id_area_parent = None
     q_statut_filtered_cte = None
-    if id_area:
+    if id_area and with_local_status:
         # get id_area of departement to find status
+        # WARNING : la route est appelé por afficher la popup des taxons dans une maille
+        # or les id_area des mailles ne sont pas dans atlas.vm_cor_areas
+        # les colonnes menace / niveau_application_menace / protege ne sont pas ajouter au retour de la route
         id_area_parent = db.session.execute(
             select(VmCorAreas.id_area_parent)
             .select_from(VmCorAreas)
@@ -210,11 +214,10 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
             taxon_dict["nb_obs"] = row.get("nb_obs")
             taxon_dict["last_obs"] = row.get("last_obs")
             taxon_dict["nb_observers"] = row.get("nb_observers")
-            if "menace" in row:
+            # si filtre par id_area et qu'on a trouvé l'id_area_parent (département) pour surcharger les statuts
+            if id_area_parent:
                 taxon_dict["menace"] = row["menace"]
-            if "protege" in row:
                 taxon_dict["protection_stricte"] = row["protege"]
-            if "niveau_application_menace" in row:
                 taxon_dict["niveau_application_menace"] = row["niveau_application_menace"]
         taxons.append(taxon_dict)
     return taxons
