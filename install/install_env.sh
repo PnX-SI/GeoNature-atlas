@@ -152,9 +152,9 @@ function installPostgresql() {
         if [[ "$OS_VERSION" == "12" ]]; then
             sudo apt-get install -y postgresql-server-15
             sudo apt-get install -y postgis postgresql-15-postgis-3
-        elif [[ "$OS_VERSION" == "11" ]]; then
-            sudo apt-get install -y postgresql-server-13
-            sudo apt-get install -y postgis postgresql-13-postgis-3
+        elif [[ "$OS_VERSION" == "13" ]]; then
+            sudo apt-get install -y postgresql-server-17
+            sudo apt-get install -y postgis postgresql-17-postgis-3
         fi
     else
         printError ">ERROR: we don't install Postgresql for your OS version '$OS_VERSION'."
@@ -168,7 +168,7 @@ function installPython() {
 
     sudo apt-get install -y python3-dev libpq-dev
     sudo apt-get install -y python3-setuptools
-    sudo apt-get install -y python3-pip
+    sudo apt-get install -y python3-pip python3-venv
     sudo apt-get install -y python3-gdal gdal-bin
 }
 
