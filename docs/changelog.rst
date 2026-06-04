@@ -55,7 +55,8 @@ CHANGELOG
 
 ⚠️ **Notes de version**
 
-Suivez la procédure de mise à jour habituelle en lisant au préalable les notes ci-dessous. 
+.. Suivez la procédure de mise à jour habituelle en lisant au préalable les notes ci-dessous. 
+⚠️ A mon avis il est plus simple de repartir d'une installe vierge (retélécharger le dépot, remplir les fichiers settings.ini etc...)
 Concernant la base de données, pour cette montée de version, il est nécessaire de supprimer la base de données pour la recréer (ou créer une autre base de données avec un autre nom).
 En effet, le processus de mise à jour de GeoNature-atlas consiste désormais à supprimer son schema de BDD ``atlas`` et de le recréer entièrement. Celui-ci ne comprend aucune donnée spécifiques, mais seulement des données qu'il récupère en FDW dans la BDD de GeoNature + quelques tables spécifiques à l'atlas qui sont recréées avec le schema de BDD ``atlas``.
 Si on n'a pas de GeoNature, alors il faut voir la doc ici.
@@ -78,6 +79,7 @@ Des modifications sont à faire dans le fichier ``settings.ini`` pour que l'inst
 - Ajouter les paramètres suivants (voir le fichier ``settings.ini.sample`` pour trouver des exemples) : 
    - ``type_code`` : Types de zonages à utiliser pour les fiches territoire (il est maintenant possible de faire des fiches territoire sur n'importe quel type du "ref_geo" et non plus seulement sur les communes)
    - ``observation_data_source`` : vue ou table de la source des données des observations dans la BDD mère (si on utilise GeoNature : la valeur proposée dans ``settings.ini.sample`` est ``gn_synthese.synthese``). Si vous n'utilisez pas GeoNature, renseignez le paramètre avec une chaine vide
+ - 
 - Supprimer les paramètres suivants du fichier ``settings.ini`` :
    - ``drop_apps_db``. Le script ``install_db.sh`` ne supprime plus la base de données. Si vous voulez relancer la création des vues materialisées, utilisez le paramètre ``ATLAS_DROP_SCHEMA`` qui supprime uniquement le schéma ``atlas``
    -  ``venv_dir`` L'environnement virtuel est créer dans un répértoire ``venv``

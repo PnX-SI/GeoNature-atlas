@@ -11,6 +11,8 @@ GeoNature-atlas documentation
    :caption: Contents:
 
    installation.rst
+   install_docker.rst
+   install_db_without_gn.rst
    configuration.rst
    cookies_rgpd.rst
    sensibilite_donnees.rst
@@ -19,3 +21,4 @@ GeoNature-atlas documentation
    CONTRIBUTING.md
    multilingual.rst
    changelog.rst
+

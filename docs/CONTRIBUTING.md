@@ -9,6 +9,7 @@ Ce document vous guidera à travers les bonnes pratiques et les conventions de d
 - [Processus de contribution](#contribution-process)
 - [Tests automatisés](#test)
 - [Documentation](#documentation)
+- [Release](#release)
 - [Questions et support](#support)
 
 ## Prérequis
@@ -192,6 +193,24 @@ Lancer les tests :
 cd docs
 make livehtml
 ```
+
+
+## Release
+
+Regénérer les fichiers requirements.txt et requirements-dev.txt avec les commandes suivantes dans la plus petite version de python supportée par GeoNature-Atlas
+
+
+
+    pip install pip-tools
+    pip-compile requirements.in > requirements.txt
+
+
+- Incrémenter le fichier VERSION
+- Merger la branche develop dans la branche master
+- Faire la release depuis la branche master en copiant le contenu du fichier CHANGELOG dans les notes de version
+- Revenir dans develop, incrémenter le fichier VERSION en rajoutant `dev0` puis faire un commit `BACK TO DEV`
+
+
 
 (support)=
 ## Questions et support
