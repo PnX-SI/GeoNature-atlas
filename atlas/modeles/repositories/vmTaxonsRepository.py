@@ -95,7 +95,7 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
             >= func.current_timestamp()
             - cast(literal(str(current_app.config["NB_DAY_LAST_OBS"]) + " day"), Interval)
         )
-
+    # filter by id_area
     if id_area:
         q_stats_taxons = q_stats_taxons.join(
             VmCorAreaSynthese,
@@ -120,6 +120,7 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
 
     id_area_parent = None
     q_statut_filtered_cte = None
+    # override status with department status indo
     if id_area and with_local_status:
         # get id_area of departement to find status
         # WARNING : la route est appelé por afficher la popup des taxons dans une maille
