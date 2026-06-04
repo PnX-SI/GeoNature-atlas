@@ -29,7 +29,7 @@ Ces opérations doivent être faites avec l'utilisateur courant (autre que ``roo
     wget https://github.com/PnX-SI/GeoNature-atlas/archive/X.Y.Z.zip
 
 
-:note:
+.. note::
 
     Si la commande ``wget`` renvoie une erreur liée au certificat, installez le paquet ``ca-certificates`` (``sudo apt-get install ca-certificates``) puis relancer la commande ``wget`` ci-dessus.
 
@@ -59,6 +59,7 @@ Le script ``install_env.sh`` va automatiquement installer les outils nécessaire
 Lancer le script :
 
 ::
+
     cd /home/`whoami`/atlas/install/
     ./install_env.sh
 
@@ -67,13 +68,15 @@ Lancer le script :
 
 Faites une copie du fichier de configuration``atlas/configuration/settings.ini.sample`` puis modifiez-le.
 
+Si vous souhaitez installer la base de données de l'atlas à partir d'une autre BDD que celle de GeoNature, suivez la  `documentation suivante <install_db_without_gn.rst>`_
+
 ::
 
     cd /home/`whoami`/atlas/atlas/configuration
     cp settings.ini.sample settings.ini
     nano settings.ini
 
-NOTES :
+
 
 * Suivez bien les indications en commentaire dans ce fichier.
 
@@ -109,6 +112,7 @@ Pour accelérer l'installation, vous pouvez "désactiver" certains zonages du ``
     )
 
 .. note::
+
     Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci sur le même serveur que l'application (``localhost``) car la création d'une BDD requiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adaptez les commandes du fichier ``install_db.sh`` en les exécutant une par une.
 
 L'application se base entièrement sur des vues matérialisées. Par défaut, celles-ci sont proposées pour requêter les données dans une BDD GeoNature.
@@ -119,36 +123,8 @@ Cela laisse donc la possibilité de la connecter à une autre BDD en adaptant. V
 
 .. image :: images/geonature-atlas-schema-01.jpg
 
-**3.1 Installation de GeoNature-atlas sans GeoNature**
 
-Si vous n'utilisez pas GeoNature, il vous faut installer TaxHub (https://github.com/PnX-SI/TaxHub/) pour gérer les attributs (description, commentaire, milieu et chorologie) ainsi que les médias rattachés à chaque espèce (photos, videos, audios et articles). TaxHub est également fourni avec un réferentiel géographique (schema `ref_geo``) qui est nécessaire au bon fonctionnement de GeoNature-atlas.
-
-⚠️ L'atlas devra alors impérativement être installé dans la même BDD que TaxHub.
-
-Une fois TaxHub installé, il est nécessaire d'ajouter des migrations alembic pour ajouter les mailles nécessaires à GeoNature-atlas.
-
-::
-
-    # se mettre dans le venv de TaxHub
-
-    # mettre à jour le schéma ref_geo
-    flask db upgrade ref_geo@head
-    source <chemin_vers_repertoire_taxhub>/venv/bin/activate
-    # ajout des mailles 1
-    flask db upgrade ref_geo_inpn_grids_1@head
-    # ajout des mailles 5
-    flask db upgrade ref_geo_inpn_grids_5@head
-    # ajout des mailles 10
-    flask db upgrade ref_geo_inpn_grids_10@head
-    # ajout des communes
-    flask db upgrade ref_geo_fr_municipalities@head
-    # ajout des départements
-    flask db upgrade ref_geo_fr_departments@head
-
-
-A noter aussi que si vous ne connectez pas GeoNature-atlas à une BDD GeoNature (``geonature_source=false``), série de tables et des données d'exemples sont créées (voir script ``without_geonature.sql`` pour simuler la structure d'un base GeoNature. A vous d'alimenter ces tables après l'installation ou les remplacer par des vues pour les connecter à votre source de données.
-
-**3.2 Installation de la base de données de GeoNature-atlas**
+**3.1 Installation de la base de données de GeoNature-atlas**
 
 Lancez le fichier d'installation de la base de données :
 
@@ -158,70 +134,25 @@ Lancez le fichier d'installation de la base de données :
     ./install_db.sh
 
 
-:notes:
+.. note::
 
     Vous pouvez consulter le log de cette installation de la base de données dans ``log/install_db.log`` et vérifier qu'aucune erreur ne s'est produite.
 
 Pour filtrer les données provenant de GeoNature (intégrer ou non les données partenaires, limiter le territoire, filtrer les espèces, limiter à un rang taxonomique...), vous pouvez créer une vue dans votre BDD GeoNature basée sur la table ``gn_synthese.synthese`` et la renseigner dans le paramètre ``observation_data_source``. Vous pouvez aussi connecter GeoNature-atlas à une autre BDD source (en important les données ou en s'y connectant en FDW).
 
-:notes:
+.. tip::
 
     Un mécanisme de dégradation des données sensibles est fourni par défaut dans GeoNature-atlas, voir la documentation à ce sujet : `<sensibilite_donnees.md>`_
 
 **4. Installation de l'application**
 
-**Lancez l'installation automatique de l'application :**
+Lancez l'installation automatique de l'application :
 
 ::
 
     cd /home/`whoami`/atlas/install/
     ./install_app.sh
 
-
-Installation Docker
-===================
-
-L'installation Docker permet d'installer GeoNatureatlas dans un environnement complétement isolé et dans un autre OS que ceux supportés dans l'installation classique. Il permet également d'installer plusieurs GeoNatrue-atlas sur le même serveur.
-Comme pour l'installation standard, téléchargez le code source et assurez vous d'avoir Docker installé sur la machine.
-
-Désampler le fichier ``atlas/configuration/setting.ini.sample`` et remplissez le.
-Le fichier ``docker-compose.yml`` fourni une installation qui crée un container docker PostgreSQL pour la base de données (le paramètre ``db_host`` doit valoir ``postgres``).
-Le container docker de la base de données peut lire en FDW des bases de données situées sur le même host, dans un autre container docker ou même sur un autre serveur.
-
-Lancer l'installation de la BDD : 
-
-::
-
-    ./docker-compose.sh run --rm atlas-app install/install_db.sh --docker
-
-Lancer l'application : 
-
-::
-
-    ./docker-compose.sh up
-
-Par défaut le container ``atlas-app`` expose le port 8080 sur laquelle tourne l'application.
-Il faudra ensuite mettre le proxy que vous souhaitez sur l'hôte : Apache, NGINX. Une configuration Apache est fournie dans la rubrique "Configuration d’Apache"
-
-
-.. note::
-
-    Le docker compose et le script ``install_db.sh`` fourni ne permettent pas d'installer la base de données de GeoNature-atlas dans la même BDD que celle de GeoNature. Nous recommandons d'installer GeoNature-atlas dans une base de données séparée.
-
-Images docker
--------------
-
-3 images docker sont fournies, un pour la production, une pour la pré-production et une pour le développement.
-Si vous souhaitez regénérer ces images : 
-
-::
-    
-    # image de production
-    docker build -t atlas:prod --target prod .
-    # image de préproduction
-    docker build -t atlas:preprod --target preprod .
-    # image de dev 
-    docker build -t atlas:dev --target dev .
 
 
 Configuration de l'application
@@ -286,7 +217,8 @@ Si l'atlas est associé à un domaine, ajoutez cette ligne au début du fichier 
     sudo a2ensite atlas
     sudo apachectl restart
 
-:notes:
+
+.. note::
 
     En cas d'erreur, les logs serveurs ne sont pas au niveau d'Apache (serveur proxy) mais de Gunicorn (serveur HTTP) dans ``/var/log/geonature-atlas.log``
 
