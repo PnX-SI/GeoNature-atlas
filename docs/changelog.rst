@@ -52,9 +52,11 @@ CHANGELOG
 - Mise à jour de SQLAlchemy 1.4 à 2.0 (#663 par @Orangetine)
 - Mise à jour de Leaflet 1.6.0 à 1.9.4 (#637 par @Orangetine)
 - Mise à jour des dépendances Python et Javascript
+- Support de Debian 13
 
 ⚠️ **Notes de version**
 
+- Debian 11 n'est plus supporté. Les version actuellement supportées sont Debian 12 et 13.
 .. Suivez la procédure de mise à jour habituelle en lisant au préalable les notes ci-dessous. 
 ⚠️ A mon avis il est plus simple de repartir d'une installe vierge (retélécharger le dépot, remplir les fichiers settings.ini etc...)
 Concernant la base de données, pour cette montée de version, il est nécessaire de supprimer la base de données pour la recréer (ou créer une autre base de données avec un autre nom).
