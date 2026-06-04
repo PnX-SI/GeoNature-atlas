@@ -329,10 +329,6 @@ msgstr ""
 "osservazioni sono disponibili con il corretto livello di sfocatura nelle "
 "schede informative sulle specie."
 
-#: atlas/templates/core/advanced_search.html:4
-#: atlas/templates/core/sideBar.html:105 atlas/templates/core/sideBar.html:109
-msgid "advanced_search"
-msgstr "Ricerca Avanzata"
 
 #: atlas/templates/core/layout.html:109
 msgid "number.species"

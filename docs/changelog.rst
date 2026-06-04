@@ -107,6 +107,7 @@ Le schéma de BDD de GeoNature-atlas (``atlas``) étant supprime à chaque mise 
 
 🤔 **Notes (à clarifier, préciser, revoir)** : 
 
+- necessite GN 2.16 à cause du champs description dans ref_geo.l_areas
 - ``atlas.vm_observations`` tape directement dans la table Synthèse de GN (où une vue basée sur celle-ci mais avec un WHERE limitant les données), en ne prenant que les données de présence, en excluant les données sensibles avec aucune diffusion. Et autre ? the_geom_point rempli, ``s.id_nomenclature_observation_status IS NULL`` (c'est quoi ?), précis si ``s.id_nomenclature_sensitivity IS NULL`` (discutable)
   WHERE s.the_geom_point IS NOT NULL
             AND (st.cd_nomenclature = 'Pr' OR s.id_nomenclature_observation_status IS NULL)

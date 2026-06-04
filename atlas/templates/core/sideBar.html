@@ -97,20 +97,6 @@
             </li>
         {% endif %}
     {% endfor %}
-    {% if configuration.AFFICHAGE_RECHERCHE_AVANCEE %}
-        <li class="sidebar-brand">
-            <a href="{{ url_for('main.advanced_search') }}"
-               class="d-flex flex-column  align-items-center p-3 w-100 h-100"
-               data-bs-toggle="tooltip"
-               title="{{ _('advanced_search') }}"
-               data-bs-placement="right">
-                <span class="fa fa-search"></span>
-                {% if configuration.AFFICHAGE_LABEL_SIDEBAR %}
-                    <div class="short_title">{{ _("advanced_search") | upper }}</div>
-                {% endif %}
-            </a>
-        </li>
-    {% endif %}
 
     {% if configuration.AFFICHAGE_GALERIE_PHOTO %}    
     <li class="sidebar-brand">
