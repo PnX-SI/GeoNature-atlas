@@ -103,7 +103,7 @@ function checkOs() {
         printVerbose ">Operating system is ${OS_BITS}-bits: ${Gre}OK"
     fi
 
-    supported_version=("12" "11")
+    supported_version=("12" "13")
     os_version_supported=false
     # Check if OS_VERSION is in supported_version
     for version in "${supported_version[@]}"; do
