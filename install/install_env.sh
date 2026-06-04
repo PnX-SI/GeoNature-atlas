@@ -74,7 +74,7 @@ function main() {
 
     installGenericDependencies
     installApache
-    #installPostgresql
+    installPostgresql
     installPython
     installNvm
 
