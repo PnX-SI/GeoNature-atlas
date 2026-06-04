@@ -150,10 +150,10 @@ function installPostgresql() {
         printVerbose ">Install Postgresl and Postgis for ${OS_NAME} ${OS_VERSION}"
         sudo apt-get install -y postgresql
         if [[ "$OS_VERSION" == "12" ]]; then
-            sudo apt-get install -y postgresql-server-15
+            sudo apt-get install -y postgresql-15
             sudo apt-get install -y postgis postgresql-15-postgis-3
         elif [[ "$OS_VERSION" == "13" ]]; then
-            sudo apt-get install -y postgresql-server-17
+            sudo apt-get install -y postgresql-17
             sudo apt-get install -y postgis postgresql-17-postgis-3
         fi
     else
