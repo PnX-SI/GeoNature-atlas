@@ -511,7 +511,11 @@ function attachMailleHandlers(layer, onClickHandler) {
         const target = event.target;
         if (target === selectedMailleLayer) return;
 
-        if (hoveredMailleLayer && hoveredMailleLayer !== target && hoveredMailleLayer !== selectedMailleLayer) {
+        if (
+            hoveredMailleLayer &&
+            hoveredMailleLayer !== target &&
+            hoveredMailleLayer !== selectedMailleLayer
+        ) {
             applyDefaultMailleStyle(hoveredMailleLayer);
         }
         hoveredMailleLayer = target;
