@@ -40,7 +40,7 @@ def get_nb_taxons(cd_ref=None, group_name=None):
 
 
 # With distinct the result in a array not an object, 0: lb_nom, 1: nom_vern
-def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict = {}):
+def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict = MultiDict()):
     """_summary_
 
     Parameters
@@ -96,7 +96,9 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
             - cast(literal(str(current_app.config["NB_DAY_LAST_OBS"]) + " day"), Interval)
         )
     # filter by id_area
+    print("???", id_area)
     if id_area:
+        print("PASSE LAA ???")
         q_stats_taxons = q_stats_taxons.join(
             VmCorAreaSynthese,
             (VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
