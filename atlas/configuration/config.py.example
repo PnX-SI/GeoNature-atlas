@@ -430,8 +430,8 @@ DISPLAY_PATRIMONIALITE = False
 # Ce champ sert au calcul de l'affichage ou non des observations sensibles sur des niveaux de zonage plus petits que leur géométrie de floutage
 TYPE_TERRITOIRE_SHEET = ['COM']
 
-# Types de zonage à afficher dans la liste des zonages parents dans la fiche territoire
-AREA_PARENTS_TYPE = ["EPCI"]
+# Types de zonage à afficher dans la liste des zonages parents dans la fiche territoire (à la fin de la barre de statistiques)
+AREA_PARENTS_TYPE = ['DEP','EPCI']
 
 # Affiche ou non la barre "tout le territoire" sur les graphiques
 # du nombre d'espèces des fiches territoire

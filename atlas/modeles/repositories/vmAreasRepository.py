@@ -80,7 +80,11 @@ def getAreaFromIdArea(id_area):
 
     areas_parent = (
         db.session.query(
-            VmAreas.area_name, VmAreas.id_area, VmAreas.area_code, VmBibAreasTypes.type_name
+            VmAreas.area_name,
+            VmAreas.id_area,
+            VmAreas.area_code,
+            VmBibAreasTypes.type_code,
+            VmBibAreasTypes.type_name,
         )
         .join(subquery, subquery.c.id_area_parent == VmAreas.id_area)
         .join(VmBibAreasTypes, VmBibAreasTypes.id_type == VmAreas.id_type)
@@ -92,6 +96,7 @@ def getAreaFromIdArea(id_area):
             "areaName": area.area_name,
             "areaID": str(area.id_area),
             "areaCode": str(area.area_code),
+            "typeCode": str(area.type_code),
             "typeName": area.type_name,
         }
         for area in areas_parent
