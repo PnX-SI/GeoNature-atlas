@@ -1,12 +1,6 @@
 {% block moreZoneInfos %}
 
     <div class="card container info_card">
-        <ul class="nav nav-tabs">
-            {% if configuration.AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION and areaInfos.description %}
-                <li class="nav-item">
-                    <a class="nav-link active" data-bs-toggle="tab" href="#general_presentation">{{ _('general_presentation') }}</a>
-                </li>
-            {% endif %}
             {% if configuration.AFFICHAGE_TAB_AREA_OBS_ESPECES %}
                 <li class="nav-item">
                     <a class="nav-link" data-bs-toggle="tab" href="#observations_and_species">{{ _('observations_and_species') }}</a>
@@ -30,11 +24,6 @@
                 <span class="visually-hidden">Loading...</span>
             </div>
 
-            {% if configuration.AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION and areaInfos.description %}
-                <div id="general_presentation" class="tab-pane fade show active">
-                    {{ areaInfos.description | safe }}
-                </div>
-            {% endif %}
             {% if configuration.AFFICHAGE_TAB_AREA_OBS_ESPECES %}
                 <div id="observations_and_species" class="tab-pane fade">
                     <div class="infos_biodiversity">

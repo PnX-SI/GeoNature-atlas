@@ -37,7 +37,12 @@
     <div class="info_zone_card">
         {% include 'templates/areaSheet/statArea.html' %}
     </div>
-    {% if configuration.AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION or configuration.AFFICHAGE_TAB_AREA_OBS_ESPECES or configuration.ORGANISM_MODULE %}
+    {% if configuration.AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION %}
+        <div class="info_zone_card">
+            {% include 'templates/areaSheet/descArea.html' %}
+        </div>
+    {% endif %}
+    {% if configuration.AFFICHAGE_TAB_AREA_OBS_ESPECES or configuration.ORGANISM_MODULE %}
         <div class="info_zone_card">
             {% include 'templates/areaSheet/moreZoneInfo.html' %}
         </div>
