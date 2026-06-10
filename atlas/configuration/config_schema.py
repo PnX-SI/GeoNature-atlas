@@ -209,6 +209,14 @@ class AtlasConfig(Schema):
                 "label": "Région",
                 "filters": [{"cd_type_statut": "LRR"}],
             },
+            {
+                "label": "Protection",
+                "filters": [
+                    {"cd_type_statut": "PN"}, 
+                    {"cd_type_statut": "PR"},  
+                    {"cd_type_statut": "PD"}, 
+                ]
+            },
         ],
     )
 
