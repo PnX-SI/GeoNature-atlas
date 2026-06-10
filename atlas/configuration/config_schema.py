@@ -212,10 +212,10 @@ class AtlasConfig(Schema):
             {
                 "label": "Protection",
                 "filters": [
-                    {"cd_type_statut": "PN"}, 
-                    {"cd_type_statut": "PR"},  
-                    {"cd_type_statut": "PD"}, 
-                ]
+                    {"cd_type_statut": "PN"},
+                    {"cd_type_statut": "PR"},
+                    {"cd_type_statut": "PD"},
+                ],
             },
         ],
     )

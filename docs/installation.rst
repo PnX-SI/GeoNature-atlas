@@ -6,7 +6,7 @@ Installation
 Prérequis
 =========
 
-Application installable sur un serveur Debian 11 et 12.
+Application installable sur un serveur Debian 12 et 13.
 
 Ce serveur doit aussi disposer de :
 

@@ -34,7 +34,7 @@ Toutes ces couches sont ensuites affichables / masquables via le contrôleur de 
 
 Pour le mode point une symbologie adaptée est fournie par défaut dans GeoNature-atlas (en vert les données dégradées, en bleu les données précises). Cette symbologie est customisable dans le fichier `static/custom/maps-custom.js` et permet plus largement de personnaliser l'affichage en fonction des informations renvoyées par la vue `atlas.vm_observations`.
 
-## Cas particulier du floutage et des fiches "zonage"
+## Cas particulier du floutage et des fiches "zonages"
 
 L'atlas permet de créer des fiches par type de zonage (fiche par commune, par département etc...).
 
@@ -42,4 +42,4 @@ Dans certains cas l'affichage d'observations et d'espèces sur ces fiches zonage
 Les statistiques en haut des fiches zonages sont elles en revanche bien exactes (pas de données "masquées")
 Il est possible d'afficher un message pour avertir que la liste des taxons sur une fiche territoire peut être incomplète via le paramètre `DISPLAY_ZONING_PAGE_SENSIBILITY_MESSAGE`. Le contenu du message peut être modifier via la surcouche de langue (clé `sensibility_warning_message`).
 
-L'atlas permet également de créer des fiches zonages personnalisés (fiche d'un Parc Naturel régional par ex). Dans ce cas, il est nécessaire de remplir le champs `size_hierarchy` de la table `ref_geo.bib_areas_type`. Ce champs aide au calcul de l'affichage ou non des observations sensibles sur des niveau de zonage plus petit que leur géométrie de floutage.
+L'atlas permet également de créer des fiches zonages personnalisés (fiche d'un Parc Naturel régional par ex). Dans ce cas, il est nécessaire de remplir le champs `size_hierarchy` de la table `ref_geo.bib_areas_type`. Ce champs aide au calcul de l'affichage ou non des observations sensibles sur des niveaux de zonage plus petit que leur géométrie de floutage.
