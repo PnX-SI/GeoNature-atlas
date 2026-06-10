@@ -10,13 +10,13 @@ Après chaque modification de la configuration, relancer la commande ``sudo syst
 Configuration des données d'observations présentes dans l'atlas
 ===============================================================
 
-Dans un contexte où GeoNature-atlas est branché sur une base de données GeoNature, l'application prend par défaut toutes les données présentes dans la table ``gn_synthese.synthese``. . Il est possible de filtrer les données que l'on souhaite voir dans GeoNature-atlas en fournissant une vue que l'on aura préalablement créé dans GeoNature. Cette vue doit être dans le schéma ``gn_synthese`` de la base de données de GeoNature, faire un SELECT sur la table ``gn_synthese.synthese`` et y ajouter un WHERE pour en filtrer les données souhaitées (voir https://github.com/PnX-SI/GeoNature-atlas/issues/749). 
+Dans un contexte où GeoNature-atlas est branché sur une base de données GeoNature, l'application prend par défaut toutes les données dans la table ``gn_synthese.synthese`` (en excluant par défaut les données d'absence et les données sensibles non diffusables). Il est possible de filtrer les données que l'on souhaite voir dans GeoNature-atlas en fournissant une vue que l'on aura préalablement créé dans GeoNature. Cette vue doit être dans le schéma ``gn_synthese`` de la base de données de GeoNature(voir https://github.com/PnX-SI/GeoNature-atlas/issues/749). Remplissez alors le paramètre ``observation_data_source`` du fichier ``settings.ini`` avec le nom de la vue que vous avez créé et relancer le script d'installation de la base de données de GeoNature-atlas (``install_db.sh``).
 
 .. note::
     
-La script de création de la base de données exclue automatiquement  les données d'absence (statut_observation != 'Pr') et les donnée et les données ou le niveau de sensibilité = "Aucune diffusion".
+La script de création de la base de données exclut automatiquement les données d'absence (statut_observation != 'Pr') et les données ou le niveau de sensibilité = "Aucune diffusion".
 
-Remplissez alors le paramètre ``observation_data_source`` du fichier ``settings.ini`` avec le nom de la vue que vous avez créé et relancer le script d'installation de la base de données de GeoNature-atlas (``install_db.sh``).
+
 
 Customisation de l'application
 ==============================
