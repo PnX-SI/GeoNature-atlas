@@ -64,15 +64,15 @@ En effet, le processus de mise à jour de GeoNature-atlas consiste désormais à
 Si on n'a pas de GeoNature, alors il faut voir la doc ici.
 Lancez ensuite le script ``install_db.sh``.
 
+- Le floutage (et l'exclusion des données) ne s'appuie plus sur les niveaux de diffusion, mais uniquement le niveau de sensibilité. Si besoin, il est possible de filtrer les données en amont (voir paramètre `observation_data_source`)
+
 ❗ BREAKING CHANGE : 
 
 Désormais, on n'applique plus des mises à jour de la BDD de GeoNature-atlas. On supprime et recréé le schema ``atlas`` de la BDD à chaque mise à jour.
 Quand il est connecté à une BDD GeoNature, on prend par défaut tout le contenu de la table ``gn_synthese.synthese`` (#749)
 Suppression de synthese.syntheseff ?
 
-Si vous ne branchez pas GNA à une BDD GN : XXXXXXXXXXXXXX
-
-On n'affiche plus par défaut la couche du territoire sur la carte. Si vous souhaitez afficher votre territoire ou tout autre couche ou zonage sur les cartes, utilisez le nouveau mécanisme plus générique et global de couches additionnelles (# XXXX)
+On n'affiche plus par défaut la couche du territoire sur la carte. Si vous souhaitez afficher votre territoire ou tout autre couche ou zonage sur les cartes, utilisez le nouveau mécanisme plus générique et global de couches additionnelles (#572)
 #749
 
 Des modifications sont à faire dans le fichier ``settings.ini`` pour que l'installation de la base de données fonctionne :
@@ -112,11 +112,11 @@ Le schéma de BDD de GeoNature-atlas (``atlas``) étant supprime à chaque mise 
   WHERE s.the_geom_point IS NOT NULL
             AND (st.cd_nomenclature = 'Pr' OR s.id_nomenclature_observation_status IS NULL)
             AND (se.cd_nomenclature = '0' OR s.id_nomenclature_sensitivity IS NULL)
-- On n'exclut plus les données en s'appuyant sur le niveau de diffusion, mais uniquement le niveau de sensibilité. Si besoin, filtrez en amont dans une vue CUSTOM.
-- 2.8 ? https://github.com/PnX-SI/GeoNature-atlas/blob/fix/2.0.0/data/atlas/05.vm_observations.sql#L43C13-L43C60
-- Comment on utilise https://github.com/PnX-SI/GeoNature-atlas/blob/fix/2.0.0/data/atlas/05.vm_observations.sql#L24 en mode maille ? Jamais ? Pour les obs dans les fiches territoire, on passe tout par cor_area_synthese ?
+-> OK spécifié dans la doc (configuration.rst)
+- On n'exclut plus les données en s'appuyant sur le niveau de diffusion, mais uniquement le niveau de sensibilité. Si besoin, filtrez en amont dans une vue CUSTOM. OK spécifiié dans changelog
+- Comment on utilise https://github.com/PnX-SI/GeoNature-atlas/blob/fix/2.0.0/data/atlas/05.vm_observations.sql#L24 en mode maille ? Jamais ? Pour les obs dans les fiches territoire, on passe tout par cor_area_synthese ?. (On prend vm_observation pour les attributs et vm_cor_maille_observation pour connaitre la géométrie à afficher. C'est un sous ensemble de vm_cor_areas qui est plus rapide)
 - Ou on l'utilise ici ? https://github.com/PnX-SI/GeoNature-atlas/blob/fix/2.0.0/data/atlas/15.vm_cor_maille_observation.sql ?
-- La BDD Atlas ne fait plus aucune intersection géographique ?
+- La BDD Atlas ne fait plus aucune intersection géographique ? (NON)
 - Le statut de protection des espèces ne se base plus sur un attribut renseigné manuellement dans TaxHub mais sur la BDC statuts (voir activation et régionalisation des statuts dans GN)
 - Régression : Suppression de ``MASK_STYLE``, ``BORDERS_COLOR``, ``BORDERS_WIDTH``
 - Régression : Suppression de ``PATRIMONIALITE`` (voir avec Amandine)
