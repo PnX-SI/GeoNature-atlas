@@ -20,9 +20,9 @@ CHANGELOG
 - Ajout de la possibilité d'afficher un texte de présentation sur chaque fiche territoire, basé sur le nouveau champs texte de la table ``ref_geo.l_areas`` (#507 par @juggler31)
 - Ajout de "liens focus" sur les fiches taxons. Cette fonctionnalité permet par exemple de mettre en avant des démarches ou des ressources additionelles sur un taxon : un lien vers une plateforme de contribution collaborative, un lien vers une fiche détaillée sur l'espèce etc... Voir le paramètre ``TYPES_MEDIAS_LENS_FOCUS`` (par @marcantoinedupre)
 - Ajout des statuts de conservation sur les fiches espèce. Le paramètre de configuration ``GROUPES_STATUTS`` permet de grouper et de filtrer les statuts que l'on souhaite afficher. Le template ``custom/templates/statuts.html`` permet de customiser l'affichage des statuts (customisation avancé, à modifier avec précaution) (par @marcantoinedupre, @pbarille et @amandine-sahl)
-- Ajout de la notion d'espèce menacée et de graphiques associés sur les fiches territoire. La notion de menace est basé sur les listes rouges. Un taxon est considéré comme menacé s'il est sur une des liste suivantes : VU, EN, CR, CR* (@Orangetine) #669
-- Ajout de filtre par group2_inpn et par statuts (protégé, menacé, patrimonial) sur toutes les listes de taxons (par @Orangetine et @TheoLechemia)
-- Possibilité d'exporter les listes de taxons en csv et PDF (@Orangetine @TheoLechemia)
+- Ajout de la notion d'espèce menacée et de graphiques associés sur les fiches territoire. La notion de menace est basé sur les listes rouges. Un taxon est considéré comme menacé s'il est sur une des liste suivantes : VU, EN, CR, CR* (#669 @Orangetine) 
+- Ajout de filtre par group2_inpn et par statuts (protégé, menacé, patrimonial) sur toutes les listes de taxons (#607 #651 par @Orangetine et @TheoLechemia)
+- Possibilité d'exporter les listes de taxons en csv et PDF (#650 @Orangetine @TheoLechemia)
 - Le statut d'espèce protégée n'est plus calculé à partir d'un attribut TaxHub mais à partir de la BDC statuts (#135)
 - Déplacement des fichiers de personnalisation ``sample`` dans le dossier ``static/sample/``. Le dossier ``static/custom/`` est à utiliser pour surcoucher les fichiers de ``static/sample/``.
 - Ajout d'un gestionnaire de couches cartographiques supplémentaires (WMS et geojson) dans le paramètre ``COUCHES_SIG`` (#572 @juggler31)
@@ -31,7 +31,7 @@ CHANGELOG
 - Possibilité de masquer la page de la gallerie photo  via le paramètre ``AFFICHAGE_GALERIE_PHOTO`` (#703 @lpofredc)
 - Ajout de la possibilité de configurer la table / vue source des données en entrée de l'atlas (#749) (voir la rubrique "Configuration des données d'observations présente dans l'atlas" dans la documentation sur la configuration )
 - Les fichiers de langues sont dorénavant surcouchables (voir section "Customisation des textes et labels via la surcouche du multiligue" dans la documentation sur la configuration)
-- Refonte du style des pictos de patrimonialité, protection et menace. Les 3 icones sont maintenant surcouchables
+- Refonte du style des pictos de patrimonialité, protection et menace. Les 3 icones sont maintenant surcouchables (##753 @TheoLechemia)
 - Possibilité d'ajouter des textes sur les éléments du menu latéral sidebar (#729 @juggler31)
 - Ajout du paramètre ``LIMIT_POINT_MAILLE`` qui permet de définir le seuil à partir duquel on affiche les données en mode maille sur un atlas en mode point (défaut 500 observations)
 - Le paramètre ``drop_apps_db`` du fichier settings.ini est déprécié. Le script ``install_db.sh`` supprime uniquement le schéma ``atlas`` si le script ``install_db.sh`` est lancé sur une base déja existante.
@@ -41,6 +41,8 @@ CHANGELOG
 - Pagination des listes
 - Ajout de statistiques sur la fiche de "zonage" (#540 @juggler31)
 - Corrections diverses (@lpofredc et @xavyeah39)
+- Ajout des paramètres suivants : DISPLAY_ZONING_PAGE_SENSIBILITY_MESSAGE, TYPES_MEDIAS_LENS_FOCUS, COUCHES_SIG, LIMIT_POINT_MAILLE, AFFICHAGE_MENACE, AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION, AFFICHAGE_TAB_AREA_OBS_ESPECES, ITEMS_PER_PAGE, AFFICHAGE_TERRITOIRE_OBS, AFFICHAGE_LABEL_SIDEBAR, AFFICHAGE_GALERIE_PHOTO, SEARCH_NOMINATIM, TYPE_TERRITOIRE_SHEET, AREA_PARENTS_TYPE, AFFICHAGE_GRAPH_PHENOLOGIE, ALTITUDE_RANGES, AFFICHAGE_TOUT_TERRITOIRE_GRAPH, AFFICHAGE_GRAPH_PROVENANCE_DONNEE, AFFICHAGE_STATUTS, GROUPES_STATUTS, TEMPLATE_MAIN_COLOR, TEMPLATE_SECOND_COLOR, COLOR_STACKED_BAR_CHARTS, COLOR_PIE_CHARTS, COULEUR_CONTOUR_MAILLE
+
 
 **Documentation**
 
@@ -59,62 +61,36 @@ CHANGELOG
 
 ⚠️ **Notes de version**
 
-.. Suivez la procédure de mise à jour habituelle en lisant au préalable les notes ci-dessous. 
-⚠️ A mon avis il est plus simple de repartir d'une installe vierge (retélécharger le dépot, remplir les fichiers settings.ini etc...)
-Concernant la base de données, pour cette montée de version, il est nécessaire de supprimer la base de données pour la recréer (ou créer une autre base de données avec un autre nom).
-En effet, le processus de mise à jour de GeoNature-atlas consiste désormais à supprimer son schema de BDD ``atlas`` et de le recréer entièrement. Celui-ci ne comprend aucune donnée spécifiques, mais seulement des données qu'il récupère en FDW dans la BDD de GeoNature + quelques tables spécifiques à l'atlas qui sont recréées avec le schema de BDD ``atlas``.
-Si on n'a pas de GeoNature, alors il faut voir la doc ici.
-Lancez ensuite le script ``install_db.sh``.
+Pour cette version 2.0.0, il ne s'agit pas d'une mise à jour, mais d'une réinstallation complète. Suivez la documentation d'installation (téléchargement du code, installation des dépendances systèmes, installation de la base de données et installation de l'application). La base de données de l'atlas doit être complétement réinstallée (renseigner un nouveau nom de base de données dans le paramètre ``db_name`` du fichier ``settings.ini`` ou supprimer la base de données actuelle).
+Veillez à avoir des sauvegardes si vous souhaitez revenir en arrière.
 
-- Le floutage (et l'exclusion des données) ne s'appuie plus sur les niveaux de diffusion, mais uniquement le niveau de sensibilité. Si besoin, il est possible de filtrer les données en amont (voir paramètre `observation_data_source`)
+Rappatriez les fichiers suivants au même emplacement : 
 
-❗ BREAKING CHANGE : 
+- atlas/static/custom.css
+- atlas/static/glossaire.json
+- atlas/static/territoire.json
 
-Désormais, on n'applique plus des mises à jour de la BDD de GeoNature-atlas. On supprime et recréé le schema ``atlas`` de la BDD à chaque mise à jour.
-Quand il est connecté à une BDD GeoNature, on prend par défaut tout le contenu de la table ``gn_synthese.synthese`` (#749)
+⚠️  La version 2.16 de GeoNature est necessaire pour installer cette version.
 
-On n'affiche plus par défaut la couche du territoire sur la carte. Si vous souhaitez afficher votre territoire ou tout autre couche ou zonage sur les cartes, utilisez le nouveau mécanisme plus générique et global de couches additionnelles (#572)
-#749
 
-Des modifications sont à faire dans le fichier ``settings.ini`` pour que l'installation de la base de données fonctionne :
+❗ BREAKING CHANGE :
 
-- Modifier le paramètre ``type_maille`` en enlevant les doubles "quotes" : ``type_maille="'M1'"`` -> ``type_maille="M1"``
-- Ajouter les paramètres suivants (voir le fichier ``settings.ini.sample`` pour trouver des exemples) : 
-   - ``type_code`` : Types de zonages à utiliser pour les fiches territoire (il est maintenant possible de faire des fiches territoire sur n'importe quel type du "ref_geo" et non plus seulement sur les communes)
-   - ``observation_data_source`` : vue ou table de la source des données des observations dans la BDD mère (si on utilise GeoNature : la valeur proposée dans ``settings.ini.sample`` est ``gn_synthese.synthese``). Si vous n'utilisez pas GeoNature, renseignez le paramètre avec une chaine vide
- - 
-- Supprimer les paramètres suivants du fichier ``settings.ini`` :
-   - ``drop_apps_db``. Le script ``install_db.sh`` ne supprime plus la base de données. Si vous voulez relancer la création des vues materialisées, utilisez le paramètre ``ATLAS_DROP_SCHEMA`` qui supprime uniquement le schéma ``atlas``
-   -  ``venv_dir`` L'environnement virtuel est créer dans un répértoire ``venv``
-   - ``taxhub_displayed_attr`` : tous les paramètres de de Taxhub sont copiés dans la BDD dans l'atlas. Le paramètre ``TAXHUB_DISPLAYED_ATTR`` du fichier ``config.py`` permet de configurer les attributs que l'on veut voir affficher sur la fiche espèce.
-- Pour configurer les données qui remontent dans l'atlas il est conseillé de ne plus surcoucher ``atlas.vm_observations`` mais de s'appuyer sur le paramètre ``observation_data_source`` du fichier ``settings.ini`` (voir doc à ce sujet dans ``configuration.rst``)
+- Le floutage (et l'exclusion des données) ne s'appuie plus sur les niveaux de diffusion, mais uniquement le niveau de sensibilité. 
+- Quand l'atlas est connecté à une BDD GeoNature, on prend par défaut tout le contenu de la table ``gn_synthese.synthese`` (#749). Si besoin, il est possible de filtrer les données en amont (voir paramètre `observation_data_source`)
+- On n'affiche plus par défaut la couche du territoire sur la carte. Si vous souhaitez afficher votre territoire ou tout autre couche ou zonage sur les cartes, utilisez le nouveau mécanisme plus générique et global de couches additionnelles (#572), paramètre ``COUCHES_SIG``.
 - Le passage à Bootstrap 5 nécessite de revoir le contenu des templates personnalisés (``custom/templates``). Il est necessaire de repartir des templates fournis dans ``atlas/static/sample/templates`` et d'adapter leur contenu.
 - La fonction ``pointDisplayOptionsFicheCommuneHome`` qui permet de configurer le style cartographique en mode point devient ``customizeMarkerStyle``
-- La couche des limites du territoire n'est plus fournie par défaut. Pour ajouter cette couche (ainsi que d'autres couches personnalisées), utilisez le paramètre ``COUCHES_SIG``
-- les paramètres ``BORDERS_COLOR``, ``BORDERS_WEIGHT`` pour styliser le coutour du territoire sont dépréciés. Utilisez le paramètre ``COUCHES_SIG`` et l'attribut ``style`` de ce paramètre pour configurer le style de la couche (voir l'exemple dans ``config.py.example``)
-- les variables css ``--main-color`` et ``--second-color`` utilisées dans la surcouche css sont dépreciées et à retirer du fichier ``static/custom/custom.css``. Utilisez les variables de configuration (config.py) ``TEMPLATE_MAIN_COLOR`` et ``TEMPLATE_SECOND_COLOR`` à la place.
+- Les paramètres ``BORDERS_COLOR``, ``BORDERS_WEIGHT`` pour styliser le coutour du territoire sont dépréciés. Utilisez le paramètre ``COUCHES_SIG`` et l'attribut ``style`` de ce paramètre pour configurer le style de la couche (voir l'exemple dans ``config.py.example``)
+- Les variables css ``--main-color`` et ``--second-color`` utilisées dans la surcouche css sont dépreciées et à retirer du fichier ``static/custom/custom.css``. Utilisez les variables de configuration (config.py) ``TEMPLATE_MAIN_COLOR`` et ``TEMPLATE_SECOND_COLOR`` à la place.
 - Le paramètre ``PATRIMONIALITE`` est déprécié. Utilisez la surcouche de langue si vous souhaitez modifier ce terme (id : ``patrimonial``, ``patrimonial.plural`` et ``this.taxa.is.patrimonial``)
-- Déplacement des fichiers de personnalisation ``sample`` dans le dossier ``static/sample/``. Le dossier ``static/custom/`` est à utiliser pour surcoucher les fichiers de ``static/sample/``.
-- Config des types de statuts à afficher. 
-- Config des types de zonage (avec possibilité de renommer "Territoires" en "Communes" avec surcouche de langue, si on ne garde qu'un type de zonage)
-
-::
-
-    cd install
-    ./install_db.sh
-
-
-Le schéma de BDD de GeoNature-atlas (``atlas``) étant supprime à chaque mise à jour de GeoNature-atlas, nous ne recommandons plus d'installer la base de données de GeoNature-atlas dans la même que celle de GeoNature. Pour ceux qui l'avaient fait, nous conseillons désormais que l'atlas ait sa propre base de données. L'installation docker supporte aujourd'hui de se connecter à une base de données distante.
-
-🤔 **Notes (à clarifier, préciser, revoir)** : 
-
-- necessite GN 2.16 à cause du champs description dans ref_geo.l_areas
-- Script d'installation de la BDD : optimisé, simplifié, plus rapide, entre autre car on ne fait plus d'intersection géographique pour les mailles
-- On n'exclut plus les données en s'appuyant sur le niveau de diffusion, mais uniquement le niveau de sensibilité. Si besoin, filtrez en amont dans une vue CUSTOM. OK spécifiié dans changelog
-- A virer - Le statut de protection des espèces ne se base plus sur un attribut renseigné manuellement dans TaxHub mais sur la BDC statuts (voir activation et régionalisation des statuts dans GN)
 - Régression : Suppression de ``MASK_STYLE`` qui permettait d'appliquer un masque sur la carte autour du territoire
 - Régression : Suppression du paramètre ``PATRIMONIALITE`` qui permettait de s'appuyer sur un autre attribut TaxHub, de définir ses valeurs et icones.
-- Ajout des paramètres DISPLAY_ZONING_PAGE_SENSIBILITY_MESSAGE, TYPES_MEDIAS_LENS_FOCUS, COUCHES_SIG, LIMIT_POINT_MAILLE, AFFICHAGE_MENACE, AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION, AFFICHAGE_TAB_AREA_OBS_ESPECES, ITEMS_PER_PAGE, AFFICHAGE_TERRITOIRE_OBS, AFFICHAGE_LABEL_SIDEBAR, AFFICHAGE_GALERIE_PHOTO, SEARCH_NOMINATIM, TYPE_TERRITOIRE_SHEET, AREA_PARENTS_TYPE, AFFICHAGE_GRAPH_PHENOLOGIE, ALTITUDE_RANGES, AFFICHAGE_TOUT_TERRITOIRE_GRAPH, AFFICHAGE_GRAPH_PROVENANCE_DONNEE, AFFICHAGE_STATUTS, GROUPES_STATUTS, TEMPLATE_MAIN_COLOR, TEMPLATE_SECOND_COLOR, COLOR_STACKED_BAR_CHARTS, COLOR_PIE_CHARTS, COULEUR_CONTOUR_MAILLE
+- Déplacement des fichiers de personnalisation ``sample`` dans le dossier ``static/sample/``. Le dossier ``static/custom/`` est à utiliser pour surcoucher les fichiers de ``static/sample/``.
+- Config des types de statuts à afficher.
+- Config des types de zonage (avec possibilité de renommer "Territoires" en "Communes" avec surcouche de langue, si on ne garde qu'un type de zonage)
+
+
+
 
 1.7.3 (2025-09-20)
 ------------------
