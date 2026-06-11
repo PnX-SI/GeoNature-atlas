@@ -37,7 +37,7 @@
     <div class="info_zone_card">
         {% include 'templates/areaSheet/statArea.html' %}
     </div>
-    {% if configuration.AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION %}
+    {% if configuration.AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION and areaInfos.description %}
         <div class="info_zone_card">
             {% include 'templates/areaSheet/descArea.html' %}
         </div>
