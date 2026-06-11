@@ -41,7 +41,8 @@ CHANGELOG
 - Pagination des listes
 - Ajout de statistiques sur la fiche de "zonage" (#540 @juggler31)
 - Corrections diverses (@lpofredc et @xavyeah39)
-- Ajout des paramètres suivants : DISPLAY_ZONING_PAGE_SENSIBILITY_MESSAGE, TYPES_MEDIAS_LENS_FOCUS, COUCHES_SIG, LIMIT_POINT_MAILLE, AFFICHAGE_MENACE, AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION, AFFICHAGE_TAB_AREA_OBS_ESPECES, ITEMS_PER_PAGE, AFFICHAGE_TERRITOIRE_OBS, AFFICHAGE_LABEL_SIDEBAR, AFFICHAGE_GALERIE_PHOTO, SEARCH_NOMINATIM, TYPE_TERRITOIRE_SHEET, AREA_PARENTS_TYPE, AFFICHAGE_GRAPH_PHENOLOGIE, ALTITUDE_RANGES, AFFICHAGE_TOUT_TERRITOIRE_GRAPH, AFFICHAGE_GRAPH_PROVENANCE_DONNEE, AFFICHAGE_STATUTS, GROUPES_STATUTS, TEMPLATE_MAIN_COLOR, TEMPLATE_SECOND_COLOR, COLOR_STACKED_BAR_CHARTS, COLOR_PIE_CHARTS, COULEUR_CONTOUR_MAILLE
+- Ajout des paramètres suivants :
+ ``DISPLAY_ZONING_PAGE_SENSIBILITY_MESSAGE, TYPES_MEDIAS_LENS_FOCUS, COUCHES_SIG, LIMIT_POINT_MAILLE, AFFICHAGE_MENACE, AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION, AFFICHAGE_TAB_AREA_OBS_ESPECES, ITEMS_PER_PAGE, AFFICHAGE_TERRITOIRE_OBS, AFFICHAGE_LABEL_SIDEBAR, AFFICHAGE_GALERIE_PHOTO, SEARCH_NOMINATIM, TYPE_TERRITOIRE_SHEET, AREA_PARENTS_TYPE, AFFICHAGE_GRAPH_PHENOLOGIE, ALTITUDE_RANGES, AFFICHAGE_TOUT_TERRITOIRE_GRAPH, AFFICHAGE_GRAPH_PROVENANCE_DONNEE, AFFICHAGE_STATUTS, GROUPES_STATUTS, TEMPLATE_MAIN_COLOR, TEMPLATE_SECOND_COLOR, COLOR_STACKED_BAR_CHARTS, COLOR_PIE_CHARTS, COULEUR_CONTOUR_MAILLE``
 
 
 **Documentation**
@@ -89,32 +90,6 @@ Rappatriez les fichiers suivants au même emplacement :
 - Config des types de statuts à afficher.
 - Config des types de zonage (avec possibilité de renommer "Territoires" en "Communes" avec surcouche de langue, si on ne garde qu'un type de zonage)
 
-
-<<<<<<< HEAD
-    cd install
-    ./install_db.sh
-
-
-Le schéma de BDD de GeoNature-atlas (``atlas``) étant supprime à chaque mise à jour de GeoNature-atlas, nous ne recommandons plus d'installer la base de données de GeoNature-atlas dans la même que celle de GeoNature. Pour ceux qui l'avaient fait, nous conseillons désormais que l'atlas ait sa propre base de données. L'installation docker supporte aujourd'hui de se connecter à une base de données distante.
-
-🤔 **Notes (à clarifier, préciser, revoir)** : 
-
-- necessite GN 2.16 à cause du champs description dans ref_geo.l_areas
-- ``atlas.vm_observations`` tape directement dans la table Synthèse de GN (où une vue basée sur celle-ci mais avec un WHERE limitant les données), en ne prenant que les données de présence, en excluant les données sensibles avec aucune diffusion. Et autre ? the_geom_point rempli, ``s.id_nomenclature_observation_status IS NULL`` (c'est quoi ?), précis si ``s.id_nomenclature_sensitivity IS NULL`` (discutable)
-  WHERE s.the_geom_point IS NOT NULL
-            AND (st.cd_nomenclature = 'Pr' OR s.id_nomenclature_observation_status IS NULL)
-            AND (se.cd_nomenclature = '0' OR s.id_nomenclature_sensitivity IS NULL)
--> OK spécifié dans la doc (configuration.rst)
-- On n'exclut plus les données en s'appuyant sur le niveau de diffusion, mais uniquement le niveau de sensibilité. Si besoin, filtrez en amont dans une vue CUSTOM. OK spécifiié dans changelog
-- Comment on utilise https://github.com/PnX-SI/GeoNature-atlas/blob/fix/2.0.0/data/atlas/05.vm_observations.sql#L24 en mode maille ? Jamais ? Pour les obs dans les fiches territoire, on passe tout par cor_area_synthese ?. (On prend vm_observation pour les attributs et vm_cor_maille_observation pour connaitre la géométrie à afficher. C'est un sous ensemble de vm_cor_areas qui est plus rapide)
-- Ou on l'utilise ici ? https://github.com/PnX-SI/GeoNature-atlas/blob/fix/2.0.0/data/atlas/15.vm_cor_maille_observation.sql ?
-- La BDD Atlas ne fait plus aucune intersection géographique ? (NON)
-- Le statut de protection des espèces ne se base plus sur un attribut renseigné manuellement dans TaxHub mais sur la BDC statuts (voir activation et régionalisation des statuts dans GN)
-- Régression : Suppression de ``MASK_STYLE``, ``BORDERS_COLOR``, ``BORDERS_WIDTH``
-- Régression : Suppression de ``PATRIMONIALITE`` (voir avec Amandine)
-- Ajout des paramètres DISPLAY_ZONING_PAGE_SENSIBILITY_MESSAGE, TYPES_MEDIAS_LENS_FOCUS, COUCHES_SIG, LIMIT_POINT_MAILLE, AFFICHAGE_MENACE, AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION (champs à ajouter côté REF_GEO ? Nécessite une version min de GN ?), AFFICHAGE_TAB_AREA_OBS_ESPECES, ITEMS_PER_PAGE, AFFICHAGE_TERRITOIRE_OBS, AFFICHAGE_LABEL_SIDEBAR, AFFICHAGE_GALERIE_PHOTO, SEARCH_NOMINATIM, TYPE_TERRITOIRE_SHEET (doublon avec celui dans settings.ini ?), AREA_PARENTS_TYPE, AFFICHAGE_GRAPH_PHENOLOGIE, ALTITUDE_RANGES (doublon avec celui de settings.ini ?), AFFICHAGE_TOUT_TERRITOIRE_GRAPH, AFFICHAGE_GRAPH_PROVENANCE_DONNEE, AFFICHAGE_STATUTS, GROUPES_STATUTS, TEMPLATE_MAIN_COLOR, TEMPLATE_SECOND_COLOR, COLOR_STACKED_BAR_CHARTS, COLOR_PIE_CHARTS
-=======
->>>>>>> feat/changelog
 
 
 1.7.3 (2025-09-20)
