@@ -72,8 +72,8 @@ CHANGELOG
   - ``atlas/static/custom/glossaire.json``
   - ``atlas/static/custom/territoire.json``
 
-- Il est conseillé de configurer les types de statuts des taxons, que l'on peut désormais afficher dans les listes et fiches espèces.
-- Il est conseillé de configurer les types de zonage, qui ne se limitent désormais plus forcément aux communes.
+- Il est conseillé de configurer les types de statuts des taxons, que l'on peut désormais afficher dans les listes et fiches espèces : paramètre ``GROUPES_STATUTS``.
+- Il est conseillé de configurer les types de zonage, qui ne se limitent désormais plus forcément aux communes, paramètre ``TYPE_TERRITOIRE_SHEET``.
 
 ❗ BREAKING CHANGE :
 
