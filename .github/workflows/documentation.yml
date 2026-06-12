@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master # Changez selon votre branche principale
-      - fix/2.0.0 # Changez selon votre branche principale
     paths:
       - ".github/workflows/documentation.yml"
       - "docs/**"
