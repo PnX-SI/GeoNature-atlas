@@ -1,14 +1,19 @@
 # -*- coding:utf-8 -*-
+import json
+import time
 
-from flask import jsonify, Blueprint, request, current_app
+from flask import jsonify, Blueprint, request, current_app, render_template
+from sqlalchemy import text
 
 from atlas import utils
 from atlas.modeles.repositories import (
+    vmTaxonsRepository,
     vmSearchTaxonRepository,
     vmObservationsRepository,
     vmObservationsMaillesRepository,
     vmMedias,
-    vmCommunesRepository,
+    vmAreasRepository,
+    vmOrganismsRepository,
 )
 from atlas.env import cache, db
 
@@ -17,153 +22,180 @@ api = Blueprint("api", __name__)
 
 @api.route("/searchTaxon", methods=["GET"])
 def searchTaxonAPI():
-    session = db.session
     search = request.args.get("search", "")
     limit = request.args.get("limit", 50)
-    results = vmSearchTaxonRepository.searchTaxons(session, search, limit)
-    session.close()
+    results = vmSearchTaxonRepository.searchTaxons(search, limit)
     return jsonify(results)
 
 
-@api.route("/searchCommune", methods=["GET"])
-def searchCommuneAPI():
-    session = db.session
+@api.route("/searchArea", methods=["GET"])
+def searchAreaAPI():
     search = request.args.get("search", "")
     limit = request.args.get("limit", 50)
-    results = vmCommunesRepository.searchMunicipalities(session, search, limit)
-    session.close()
+    results = vmAreasRepository.searchAreas(search, limit)
     return jsonify(results)
 
 
-if not current_app.config["AFFICHAGE_MAILLE"]:
-
-    @api.route("/observationsMailleAndPoint/<int(signed=True):cd_ref>", methods=["GET"])
-    def getObservationsMailleAndPointAPI(cd_ref):
-        """
-        Retourne les observations d'un taxon en point et en maille
-
-        :returns: dict ({'point:<GeoJson>', 'maille': 'GeoJson})
-        """
-        session = db.session
-        observations = {
-            "point": vmObservationsRepository.searchObservationsChilds(session, cd_ref),
-            "maille": vmObservationsMaillesRepository.getObservationsMaillesChilds(
-                session, cd_ref
-            ),
-        }
-        session.close()
-        return jsonify(observations)
-
-
-@api.route("/observationsMaille/<int(signed=True):cd_ref>", methods=["GET"])
-def getObservationsMailleAPI(cd_ref):
+@api.route("/observationsMaille", methods=["GET"])
+def getObservationsMailleAPI():
     """
-    Retourne les observations d'un taxon par maille (et le nombre d'observation par maille)
+    Retourne un geojson avec comme geométrie la maille de floutage (ou la maille par défaut de l'atlas si non sensible) des observations
+    Le geojson contient les paramètre suivant :
+        - id_maille
+        - type_code : le type de maille à la laquelle la géométrie a floutée
+        - last_obs_year : l'année à laquel la dernière observation a été faite dans la maille
+        - obs_nbr : le nombre d'observation dans la maille
+    Parameters
+    ----------
+    query string:
+        - year_min / year_max : filtre les observation dans des bornes d'année
+        - cd_ref : renvoie que les observation de ce taxon et de ces enfants
+        - id_area : renvoie uniquement les observations présente dans l'aire demandée
+        - fields: permet d'ajouter des champs au geojson:
+            -> "taxons" pour ajouter la liste de taxons de chaque maile
+            -> "ids_obs" pour ajouter la liste des id_observation de chaque maille
+    with_taxons : bool, optional
+        - Permet d'ajouter la liste des taxon d'une maille au Geojson
 
     :returns: GeoJson
     """
-    session = db.session
     observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(
-        session,
-        cd_ref,
-        year_min=request.args.get("year_min"),
-        year_max=request.args.get("year_max"),
+        params=request.args
     )
-    session.close()
     return jsonify(observations)
 
 
 if not current_app.config["AFFICHAGE_MAILLE"]:
 
-    @api.route("/observationsPoint/<int(signed=True):cd_ref>", methods=["GET"])
-    def getObservationsPointAPI(cd_ref):
-        session = db.session
-        observations = vmObservationsRepository.searchObservationsChilds(session, cd_ref)
-        session.close()
+    @api.route("/observationsPoint", methods=["GET"])
+    def getObservationsPointAPI():
+        """
+        Retourne un geojson des observations en point
+        Le geojson contient les propriétés présentes dans VMObservation
+        + taxon (optionnel: si with taxon est True) : le taxon de l'observation sous forme 'nom_vern | lb_nom'
+
+        Parameters
+        ----------
+        filters : dict, optional
+            dictionnaire des filtres de la query
+            Filtres disponible :
+                - year_min / year_max : filtre les observation dans des bornes d'année
+                - cd_ref : renvoie que les observation de ce taxon et de ces enfants
+                - id_area : renvoie uniquement les observations présente dans l'aire demandée
+                - limit : limite le nombre de résultat
+
+        Returns
+        -------
+        Geosjon
+        """
+        observations = vmObservationsRepository.getObservationsChilds(
+            params=request.args,
+        )
         return jsonify(observations)
 
 
-@api.route("/observations/<int(signed=True):cd_ref>", methods=["GET"])
-def getObservationsGenericApi(cd_ref: int):
-    """[summary]
-
-    Args:
-        cd_ref (int): [description]
-
-    Returns:
-        [type]: [description]
+@api.route("/taxonList", methods=["GET"])
+@api.route("/taxonList/area/<id_area>", methods=["GET"])
+@api.route("/taxonList/liste/<cd_ref>", methods=["GET"])
+@api.route("/taxonList/group/<group_name>", methods=["GET"])
+def get_taxon_list(id_area=None, cd_ref=None, group_name=None):
     """
-    session = db.session
-    if current_app.config["AFFICHAGE_MAILLE"]:
-        observations = vmObservationsMaillesRepository.getObservationsMaillesChilds(
-            session,
-            cd_ref,
-            year_min=request.args.get("year_min"),
-            year_max=request.args.get("year_max"),
-        )
-    else:
-        observations = vmObservationsRepository.searchObservationsChilds(session, cd_ref)
-    session.close()
+    return a list of taxon in html with various filters
 
-    return jsonify(observations)
+    Returns
+    -------
+    html
+    """
 
-
-if not current_app.config["AFFICHAGE_MAILLE"]:
-
-    @api.route("/observations/<insee>/<int(signed=True):cd_ref>", methods=["GET"])
-    def getObservationsCommuneTaxonAPI(insee, cd_ref):
-        connection = db.engine.connect()
-        observations = vmObservationsRepository.getObservationTaxonCommune(
-            connection, insee, cd_ref
-        )
-        connection.close()
-        return jsonify(observations)
-
-
-@api.route("/observationsMaille/<insee>/<int(signed=True):cd_ref>", methods=["GET"])
-def getObservationsCommuneTaxonMailleAPI(insee, cd_ref):
-    connection = db.engine.connect()
-    observations = vmObservationsMaillesRepository.getObservationsTaxonCommuneMaille(
-        connection, insee, cd_ref
+    list_taxon = vmTaxonsRepository.getListTaxon(
+        id_area=id_area,
+        group_name=group_name,
+        cd_ref=cd_ref,
+        params=request.args,
     )
-    connection.close()
-    return jsonify(observations)
+
+    return render_template(
+        "templates/core/taxon.html",
+        listTaxons=list_taxon,
+        id_area=id_area,
+    )
+
+
+@api.route("/taxonListJson", methods=["GET"])
+@api.route("/taxonListJson/area/<id_area>", methods=["GET"])
+@api.route("/taxonListJson/liste/<cd_ref>", methods=["GET"])
+@api.route("/taxonListJson/group/<group_name>", methods=["GET"])
+def get_taxon_list_json(id_area=None, cd_ref=None, group_name=None):
+    """
+    return a list of taxon in JSON with various filters
+
+    Returns
+    -------
+    json
+    """
+
+    list_taxon = vmTaxonsRepository.getListTaxon(
+        id_area=id_area,
+        group_name=group_name,
+        cd_ref=cd_ref,
+        params=request.args,
+    )
+
+    return jsonify(list_taxon)
 
 
 @api.route("/photoGroup/<group>", methods=["GET"])
 def getPhotosGroup(group):
-    connection = db.engine.connect()
     photos = vmMedias.getPhotosGalleryByGroup(
-        connection,
         current_app.config["ATTR_MAIN_PHOTO"],
         current_app.config["ATTR_OTHER_PHOTO"],
         group,
     )
-    connection.close()
     return jsonify(photos)
 
 
 @api.route("/photosGallery", methods=["GET"])
 def getPhotosGallery():
-    connection = db.engine.connect()
     photos = vmMedias.getPhotosGallery(
-        connection, current_app.config["ATTR_MAIN_PHOTO"], current_app.config["ATTR_OTHER_PHOTO"]
+        current_app.config["ATTR_MAIN_PHOTO"], current_app.config["ATTR_OTHER_PHOTO"]
     )
-    connection.close()
     return jsonify(photos)
 
 
 @api.route("/main_stat", methods=["GET"])
 @cache.cached()
 def main_stat():
-    connection = db.engine.connect()
-    return vmObservationsRepository.statIndex(connection)
+    return vmObservationsRepository.statIndex()
 
 
 @api.route("/rank_stat", methods=["GET"])
 @cache.cached()
 def rank_stat():
-    connection = db.engine.connect()
+    return jsonify(vmObservationsRepository.genericStat(current_app.config["RANG_STAT"]))
+
+
+@api.route("/area_chart_values/<id_area>", methods=["GET"])
+def get_area_chart_valuesAPI(id_area):
+    stats = vmAreasRepository.getStatsByArea(id_area)
+    nb_species = stats["nb_species"]
+    nb_threatened_species = stats["nb_taxon_menace"]
+
+    species_by_taxonomic_group = vmAreasRepository.get_species_by_taxonomic_group(id_area)
+    observations_by_taxonomic_group = vmAreasRepository.get_nb_observations_taxonomic_group(
+        id_area
+    )
+    nb_species_by_organism = vmOrganismsRepository.get_species_by_organism_on_area(id_area)
+    observations_by_organism = vmOrganismsRepository.get_nb_observations_by_organism_on_area(
+        id_area
+    )
+
     return jsonify(
-        vmObservationsRepository.genericStat(connection, current_app.config["RANG_STAT"])
+        {
+            "species_by_taxonomic_group": species_by_taxonomic_group,
+            "observations_by_taxonomic_group": observations_by_taxonomic_group,
+            "nb_species_by_organism": nb_species_by_organism,
+            "observations_by_organism": observations_by_organism,
+            "nb_species": nb_species,
+            "nb_threatened_species": nb_threatened_species,
+        }
     )

@@ -1,732 +1,894 @@
-const mailleBorderColor = String(
-  getComputedStyle(document.documentElement).getPropertyValue(
-    "--map-maille-border-color"
-  )
-);
-const mailleLastObsBorderColor = String(
-  getComputedStyle(document.documentElement).getPropertyValue(
-    "--map-maille-lastobs-border-color"
-  )
-);
-const territoryBorderColor = String(
-  getComputedStyle(document.documentElement).getPropertyValue(
-    "--map-territory-border-color"
-  )
-);
+// Affiche ou masque l'onglet "choix des couches" (tab control)
+function toggleLayerTab(show) {
+    const controltab = document.querySelector("#control-tab");
+    const controltabContent = document.querySelector("#control-tab-content");
+    if (controltab && controltabContent) {
+        controltab.style.display = show ? "" : "none";
+        controltabContent.style.display = show ? "" : "none";
+    }
+}
+// global :
+let current_sensitivity_codes = []; // list of distinct cd_sensibility in geojson
+
+// eslint-disable-next-line no-unused-vars
 const areaBorderColor = String(
-  getComputedStyle(document.documentElement).getPropertyValue(
-    "--map-area-border-color"
-  )
+    getComputedStyle(document.documentElement).getPropertyValue(
+        "--map-area-border-color",
+    ),
 );
 
-function formatDate(date) {
-  const date_options = {
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
-  };
-  return date.toLocaleDateString(undefined, date_options);
+// Feature group de chaque élément de floutage (M1, M5 etc...)
+const observationsFeatureGroup = {};
+
+function isMobile() {
+    return window.innerWidth <= 768; // Détecte si l'utilisateur est en mode mobile
 }
 
-function generateObservationPopup(feature, linkSpecies = false) {
-  /*
-    Génération popup des observations
-    linkSpecies :  indique s'il faut ou non rajouter un lien vers la fiche espèce
-      (cas des fiches communes ; home page)
-  */
-  date = new Date(feature.properties.dateobs);
-  popupContent = `
-    <b>Date: </b> ${formatDate(date)}
-    </br><b>Altitude: </b> ${feature.properties.altitude_retenue}
-    ${observersTxt(feature)}`
+const control = L.control.layers(null, null, {
+    collapsed: isMobile(),
+});
 
-  // verifie si le champs effectif est rempli
-  if (feature.properties.effectif_total != undefined) {
-    popupContent = `${popupContent} </br><b>Effectif: </b>${feature.properties.effectif_total}`
-  }
-
-  // S'il faut lier à une fiche espèce
-  if (linkSpecies == true) {
-    popupContent = `<b>Espèce: </b> ${feature.properties.taxon} </br>
-      ${popupContent}
-      </br>
-      <a href='${configuration.URL_APPLICATION}${language}/espece/${feature.properties.cd_ref}'> Fiche espèce </a>
-      `
-  }
-  return popupContent
-}
-
-
-function generateMap(zoomHomeButton) {
-  // Map initialization
-  firstMapTile = L.tileLayer(configuration.MAP.FIRST_MAP.url, {
-    attribution: configuration.MAP.FIRST_MAP.attribution,
-  });
-  orthoMap = L.tileLayer(configuration.MAP.SECOND_MAP.url, {
-    attribution: configuration.MAP.SECOND_MAP.attribution,
-  });
-
-  baseMap = {};
-  baseMap[configuration.MAP.FIRST_MAP.tileName] = firstMapTile;
-
-  var map = L.map("map", {
-    crs: L.CRS.EPSG3857,
-    center: configuration.MAP.LAT_LONG,
-    maxBounds: configuration.MAP.MAX_BOUNDS,
-    minZoom: configuration.MAP.MIN_ZOOM,
-    geosearch: true,
-    zoom: configuration.MAP.ZOOM,
-    layers: [firstMapTile],
-    fullscreenControl: true,
-    zoomControl: !(zoomHomeButton),
-  });
-
-  if (zoomHomeButton) {
-    var zoomHome = L.Control.zoomHome();
-    zoomHome.addTo(map);
-  }
-
-
-
-  // Style of territory on map
-  // Uses snogylop to generate a mask
-  territoryStyle = {
-    fill: false,
-    color: territoryBorderColor,
-    weight: configuration.MAP.BORDERS_WEIGHT,
-  };
-
-  // Add limits of the territory to the map
-  $(document).ready(function () {
-    $.getJSON(url_limit_territory, function (json) {
-      const territoryGeoJson = L.geoJson(json, {
-        style: territoryStyle,
-      });
-      territoryGeoJson.addTo(map);
-      // map.fitBounds(territoryGeoJson.getBounds())
-    });
-  });
-
-  // 'Google-like' baseLayer controler
-
-  var LayerControl = L.Control.extend({
-    options: {
-      position: "bottomleft",
-    },
-
-    onAdd: function (map) {
-      currentTileMap = "topo";
-      var container = L.DomUtil.create(
-        "div",
-        "leaflet-bar leaflet-control leaflet-control-custom"
-      );
-
-      container.style.backgroundColor = "white";
-      container.style.backgroundImage =
-        "url(" +
-        configuration.URL_APPLICATION +
-        "/static/images/logo_earth_map.PNG)";
-      container.style.width = "50px";
-      container.style.height = "50px";
-      container.style.border = "solid white 1px";
-      container.style.cursor = "pointer";
-      $(container).attr("data-placement", "right");
-      $(container).attr("data-toggle", "tooltip");
-      $(container).attr("data-original-title", "Photos aérienne");
-
-      container.onclick = function () {
-        if (currentTileMap == "topo") {
-          container.style.backgroundImage =
-            "url(" +
-            configuration.URL_APPLICATION +
-            "/static/images/logo_topo_map.PNG)";
-          $(container).attr("data-original-title", "Plan");
-          map.removeLayer(firstMapTile);
-          orthoMap.addTo(map);
-          currentTileMap = "earth";
-        } else {
-          container.style.backgroundImage =
-            "url(" +
-            configuration.URL_APPLICATION +
-            "/static/images/logo_earth_map.PNG)";
-          $(container).attr("data-original-title", "Photos aérienne");
-          map.removeLayer(orthoMap);
-          firstMapTile.addTo(map);
-          currentTileMap = "topo";
+function clearObservationsFeatureGroup() {
+    // Supprime toutes les couches d'observations (FeatureGroup créés dans createLayersSelector)
+    Object.values(observationsFeatureGroup).forEach((featureGroup) => {
+        if (map.hasLayer(featureGroup)) {
+            map.removeLayer(featureGroup);
         }
-      };
-      return container;
-    },
-  });
+        control.removeLayer(featureGroup);
+    });
+}
 
-  map.addControl(new LayerControl());
+function generateObservationPopup(feature) {
+    /*
+      Génération popup des observations
+    */
 
-  // add tooltip on fullScreen button
+    popupContent = `
+            <b>Date: </b> ${feature.properties.dateobs}
+            </br><b>Altitude: </b> ${feature.properties.altitude_retenue}
+            ${observersTxt(feature)} </br>
+            <a href='${window.LANGUAGE_PREFIXED_URL_APPLICATION}/espece/${feature.properties.cd_ref}'> Fiche espèce </a>
+            `;
 
-  fullScreenButton = $(".leaflet-control-fullscreen");
-  fullScreenButton.attr("data-placement", "right");
-  fullScreenButton.attr("data-toggle", "tooltip");
-  fullScreenButton.attr("data-original-title", "Fullscreen");
-  $(".leaflet-control-fullscreen-button").removeAttr("title");
+    // verifie si le champs effectif est rempli
+    if (feature.properties.effectif_total !== undefined) {
+        popupContent = `${popupContent} </br><b>Effectif: </b>${feature.properties.effectif_total}`;
+    }
 
-  // Add scale depending on the configuration
-  if (configuration.MAP.ENABLE_SCALE) {
-    L.control.scale(
-      {
-        imperial: false,
-        position: 'bottomright'
-      }
-      ).addTo(map);
-  }
+    // S'il faut lier à une fiche espèce
+    if (feature.properties.taxon) {
+        popupContent = `<b>Espèce: </b> ${feature.properties.taxon} </br>
+              ${popupContent}
+              </br>
+              `;
+    }
+    return popupContent;
+}
 
-  return map;
+function addExternalOverlays(map) {
+    const sheetName = document.querySelector("body").getAttribute("page-name");
+
+    for (const elem of configuration.COUCHES_SIG) {
+        if (
+            elem?.type === "wms" &&
+            (elem?.pages?.includes(sheetName) || !elem?.pages)
+        ) {
+            elem["options"][""];
+            const layer = L.tileLayer.wms(elem.url, elem.options);
+
+            layer.addEventListener("add", function (event) {
+                // Add legend item into good place
+                legendUrl = `${event.sourceTarget._url}?request=GetLegendGraphic&version=${elem.wms_version}&format=image/png&layer=${event.sourceTarget.wmsParams.layers}`;
+                const div = L.DomUtil.create("div", "legend-item");
+                div.setAttribute("data-name", elem.name);
+                div.innerHTML = `
+                        <span style="
+                                padding-top: 0.5rem;
+                                padding-bottom: 0.5rem;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: space-between;
+                            ">
+                            <div>${elem.name}</div>
+                            <div>
+                                <img src="${legendUrl}" alt="legend image for ${event.sourceTarget.wmsParams.layers}">
+                            </div>
+                        </span>
+                        `;
+                document.getElementById("legend-other-info").appendChild(div);
+            });
+
+            if (elem.selected) {
+                map.addLayer(layer);
+            }
+
+            layer.addEventListener("remove", () => {
+                // Remove legend item
+                const item = document.querySelector(
+                    `.legend-item[data-name='${elem.name}']`,
+                );
+                if (item) {
+                    document
+                        .getElementById("legend-other-info")
+                        .removeChild(item);
+                }
+            });
+            addOverlayInControl(layer, elem.name);
+        } else if (
+            elem?.type === "geojson" &&
+            (elem?.pages?.includes(sheetName) || !elem?.pages)
+        ) {
+            fetch(elem.url)
+                .then((response) => response.json())
+                .then((data) => {
+                    const layer = L.geoJSON(data, {
+                        pane: "backgroundLayers",
+                        style: function () {
+                            return elem.style || {};
+                        },
+                    });
+
+                    layer.addEventListener("add", function () {
+                        let color = "#3388ff";
+                        const style = elem.style;
+                        if (style && style.color) {
+                            color = style.color;
+                        }
+                        const div = L.DomUtil.create("div", "legend-item");
+                        div.setAttribute("data-name", elem.name);
+                        div.innerHTML = `
+                            <i style='border: solid 1px ${color};'> &nbsp; &nbsp; &nbsp;</i>
+                             ${elem.name}
+                        `;
+                        document
+                            .getElementById("legend-other-info")
+                            .appendChild(div);
+                    });
+
+                    layer.addEventListener("remove", () => {
+                        // Remove legend item
+                        const item = document.querySelector(
+                            `.legend-item[data-name='${elem.name}']`,
+                        );
+                        if (item) {
+                            document
+                                .getElementById("legend-other-info")
+                                .removeChild(item);
+                        }
+                    });
+
+                    addOverlayInControl(layer, elem.name);
+                    if (elem.selected) {
+                        map.addLayer(layer);
+                    }
+                });
+        }
+    }
+    return observationsFeatureGroup;
+}
+
+function createTabControl() {
+    const content = control
+        .getContainer()
+        .querySelector(".leaflet-control-layers-overlays");
+    var div = L.DomUtil.create("div", "leaflet-control-tabs");
+    div.innerHTML = `
+<button
+        style="position: relative; display: flex; float: right;"
+        type="button" class="btn-close"
+        data-dismiss="modal"
+        onclick="control.collapse();"
+        aria-label="Close">
+    <span aria-hidden="true" class="text-white">×</span>
+</button>
+        
+<div class="leaflet-control-layers leaflet-control" aria-haspopup="true">
+    <a class="leaflet-control-layers-toggle" href="#" title="Layers" role="button"></a>
+    <ul class="nav nav-tabs" id="overlay-tab" role="tablist">
+      <li class="nav-item mr-1">
+        <a class="nav-link active" id="legend-tab" data-bs-toggle="tab" href="#legend-tab-content" role="tab" aria-controls="legend" aria-selected="true">Légende</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="control-tab" data-bs-toggle="tab" href="#control-tab-content" role="tab" aria-controls="control" aria-selected="false">Choix des couches</a>
+      </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane fade show active" id="legend-tab-content" role="tabpanel" aria-labelledby="legend-tab">
+            <div id="legend-wrapper" class="d-grid gap-3">
+                <div id="legend-color-obs" class="p-2 bg-light border"></div>
+                <div id="legend-other-info" class="p-2 bg-light border"></div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="control-tab-content" role="tabpanel" aria-labelledby="control-tab">      
+        </div>
+    </div>
+</div>
+`;
+    content.parentNode.insertBefore(div, content);
+    div.querySelector("#control-tab-content").appendChild(content);
+
+    const sheetName = document.querySelector("body").getAttribute("page-name");
+
+    let isMaille = false;
+    if (
+        (sheetName === "index" && configuration.AFFICHAGE_TERRITOIRE_OBS) ||
+        (sheetName === "ficheEspece" &&
+            nb_obs > configuration.LIMIT_POINT_MAILLE) ||
+        configuration.AFFICHAGE_MAILLE
+    ) {
+        isMaille = true;
+    }
+    // Initialization of legend
+    document
+        .querySelector("#legend-color-obs")
+        .appendChild(generateObservationsLegend(isMaille));
+}
+
+/**
+ *Réordonne les control en mettant en premier les layer d'obseration et en second les couches additionnelles (COUCHES_SIG)
+ **/
+function reorderLayerControl() {
+    const container = control.getContainer();
+    const overlayDiv = container.querySelector(
+        ".leaflet-control-layers-overlays",
+    );
+
+    if (!overlayDiv) return;
+
+    // Récupère tous les labels
+    const allLabels = Array.from(overlayDiv.querySelectorAll("label"));
+
+    // Sépare en deux groupes
+    const defaultLabels = allLabels.filter(
+        (label) => label.querySelector(".defaultOverlay") !== null,
+    );
+    const otherLabels = allLabels.filter(
+        (label) => label.querySelector(".defaultOverlay") === null,
+    );
+
+    // Vide le conteneur
+    overlayDiv.innerHTML = "";
+
+    if (defaultLabels.length > 0) {
+        const defaultLabelTitle = document.createElement("p");
+        defaultLabelTitle.style.fontWeight = "bold";
+        defaultLabelTitle.style.margin = "5px 0";
+        defaultLabelTitle.textContent =
+            "Niveau de diffusion des données en fonction leur sensibilité";
+        overlayDiv.appendChild(defaultLabelTitle);
+    }
+    defaultLabels.forEach((label) => overlayDiv.appendChild(label));
+
+    // Ajoute le séparateur si les deux groupes existent
+    if (defaultLabels.length > 0 && otherLabels.length > 0) {
+        const separator = document.createElement("div");
+        separator.className = "leaflet-control-layers-separator";
+        overlayDiv.appendChild(separator);
+    }
+    if (otherLabels.length > 0) {
+        const aditionnalLbelTitle = document.createElement("p");
+        aditionnalLbelTitle.style.fontWeight = "bold";
+        aditionnalLbelTitle.style.margin = "5px 0";
+        aditionnalLbelTitle.textContent = "Couche(s) additionnelle(s)";
+        overlayDiv.appendChild(aditionnalLbelTitle);
+    }
+
+    // Ajoute les autres couches
+    otherLabels.forEach((label) => overlayDiv.appendChild(label));
+}
+
+function addOverlayInControl(layer, label, isDefaultOverlay = false) {
+    let className = "";
+    const separator = "";
+    if (isDefaultOverlay) {
+        className = "defaultOverlay";
+    }
+    control.addOverlay(
+        layer,
+        `
+    <div>
+        <div class="${className}">${label}</div>
+        ${separator}
+    </div>
+    `,
+    );
+}
+
+// get the different cd_sensitivity and store them in current_type_code arrray
+// use to create different feature group and layer control
+function getSensitivityLevelInGeojson(geojson) {
+    current_sensitivity_codes = [];
+    Object.values(geojson.features).forEach((elem) => {
+        if (
+            !current_sensitivity_codes.includes(elem.properties.cd_sensitivity)
+        ) {
+            current_sensitivity_codes.push(elem.properties.cd_sensitivity);
+        }
+    });
+    current_sensitivity_codes.sort();
+}
+
+/**
+ * Create a layer control for each type of zoning (M1, M5 etc..) and associate it a feature group
+ * Add the features group to map
+ */
+function createLayersSelector(geojson) {
+    getSensitivityLevelInGeojson(geojson);
+
+    current_sensitivity_codes.forEach((cd_sensitivity, index) => {
+        const featureGroup = L.featureGroup();
+        observationsFeatureGroup[cd_sensitivity] = featureGroup;
+        // les cd_sensitivity présent dans le geojson sont triés par ordre de sensibilité croissant
+        // par défaut on affiche que la couche du niveau le moins sensible !
+        if (index === 0) {
+            map.addLayer(featureGroup);
+        }
+        let layerName = "";
+        if (cd_sensitivity === "0") {
+            layerName = "Observations non sensibles";
+        } else {
+            layerName = `Observations sensibles - niveau ${cd_sensitivity}`;
+        }
+        addOverlayInControl(featureGroup, layerName, true);
+    });
+}
+
+// eslint-disable-next-line no-unused-vars
+function generateMap(zoomHomeButton) {
+    // Map initialization
+    firstMapTile = L.tileLayer(configuration.MAP.FIRST_MAP.url, {
+        attribution: configuration.MAP.FIRST_MAP.attribution,
+    });
+    orthoMap = L.tileLayer(configuration.MAP.SECOND_MAP.url, {
+        attribution: configuration.MAP.SECOND_MAP.attribution,
+    });
+
+    baseMap = {};
+    baseMap[configuration.MAP.FIRST_MAP.tileName] = firstMapTile;
+
+    var map = L.map("map", {
+        crs: L.CRS.EPSG3857,
+        center: configuration.MAP.LAT_LONG,
+        maxBounds: configuration.MAP.MAX_BOUNDS,
+        minZoom: configuration.MAP.MIN_ZOOM,
+        geosearch: true,
+        zoom: configuration.MAP.ZOOM,
+        layers: [firstMapTile],
+        fullscreenControl: true,
+        zoomControl: !zoomHomeButton,
+    });
+
+    // use for geojson external layers. Avoid them to overlap observations layer when they are added/removed
+    map.createPane("backgroundLayers");
+    map.getPane("backgroundLayers").style.zIndex = 250;
+
+    control.addTo(map);
+
+    // create the html control panel
+    createTabControl();
+    // add `COUCHE_SIG`
+    addExternalOverlays(map);
+
+    // Keep Layers in the same order as specified by the
+    // observationsFeatureGroup variable so Departement under Commune
+    // under 10km2 under 1km2
+    map.on("overlayadd", function () {
+        Object.values(observationsFeatureGroup).forEach((e) =>
+            e.bringToFront(),
+        );
+    });
+
+    if (zoomHomeButton) {
+        var zoomHome = L.Control.zoomHome();
+        zoomHome.addTo(map);
+    }
+
+    // 'Google-like' baseLayer controler
+
+    var LayerControl = L.Control.extend({
+        options: {
+            position: "bottomleft",
+        },
+
+        onAdd: function (map) {
+            currentTileMap = "topo";
+            var container = L.DomUtil.create(
+                "div",
+                "leaflet-bar leaflet-control leaflet-control-custom",
+            );
+
+            container.style.backgroundColor = "white";
+            container.style.backgroundImage =
+                "url(" +
+                configuration.URL_APPLICATION +
+                "/static/images/logo_earth_map.PNG)";
+            container.style.width = "50px";
+            container.style.height = "50px";
+            container.style.border = "solid white 1px";
+            container.style.cursor = "pointer";
+            $(container).attr("data-bs-placement", "right");
+            $(container).attr("data-bs-toggle", "tooltip");
+            $(container).attr("title", "Photos aérienne");
+
+            container.onclick = function () {
+                if (currentTileMap === "topo") {
+                    container.style.backgroundImage =
+                        "url(" +
+                        configuration.URL_APPLICATION +
+                        "/static/images/logo_topo_map.PNG)";
+                    $(container).attr("title", "Plan");
+                    map.removeLayer(firstMapTile);
+                    orthoMap.addTo(map);
+                    currentTileMap = "earth";
+                } else {
+                    container.style.backgroundImage =
+                        "url(" +
+                        configuration.URL_APPLICATION +
+                        "/static/images/logo_earth_map.PNG)";
+                    $(container).attr("title", "Photos aérienne");
+                    map.removeLayer(orthoMap);
+                    firstMapTile.addTo(map);
+                    currentTileMap = "topo";
+                }
+            };
+            return container;
+        },
+    });
+
+    map.addControl(new LayerControl());
+
+    // add tooltip on fullScreen button
+
+    fullScreenButton = $(".leaflet-control-fullscreen");
+    fullScreenButton.attr("data-bs-placement", "right");
+    fullScreenButton.attr("data-bs-toggle", "tooltip");
+    fullScreenButton.attr("title", "Fullscreen");
+    $(".leaflet-control-fullscreen-button").removeAttr("title");
+
+    // Add scale depending on the configuration
+    if (configuration.MAP.ENABLE_SCALE) {
+        L.control
+            .scale({
+                imperial: false,
+                position: "bottomright",
+            })
+            .addTo(map);
+    }
+
+    if (configuration.SEARCH_NOMINATIM) {
+        addGeocoderPluggin(map);
+    }
+
+    return map;
 }
 
 function observersTxt(feature) {
-  return configuration.DISPLAY_OBSERVERS
-    ? `</br><b> Observateurs(s): </b> ${feature.properties.observateurs}`
-    : ""
+    return configuration.DISPLAY_OBSERVERS
+        ? `</br><b> Observateurs(s): </b> ${feature.properties.observateurs}`
+        : "";
 }
 
 //****** Fonction fiche espècce ***********
 
 // Popup Point
-function onEachFeaturePoint(feature, layer) { 
-  popupContent = generateObservationPopup(feature, false);
-  layer.bindPopup(popupContent);
+function onEachFeaturePointSpecies(feature, layer) {
+    popupContent = generateObservationPopup(feature, false);
+    layer.bindPopup(popupContent);
 }
 
 // popup Maille
+function getMailleBaseValue(feature) {
+    return (
+        feature.properties.nb_observations ?? feature.properties.taxons.length
+    );
+}
+
+function applyDefaultMailleStyle(layer) {
+    layer.setStyle(styleMailleAtlas(getMailleBaseValue(layer.feature)));
+}
+
+function selectMaille(layer) {
+    if (selectedMailleLayer && selectedMailleLayer !== layer) {
+        applyDefaultMailleStyle(selectedMailleLayer);
+    }
+    selectedMailleLayer = layer;
+    layer.setStyle(styleMailleClickedOrHover(layer));
+}
+
+let hoveredMailleLayer = null;
+
+function attachMailleHandlers(layer, onClickHandler) {
+    applyDefaultMailleStyle(layer);
+
+    layer.on("click", (event) => {
+        if (onClickHandler) {
+            onClickHandler(event);
+        }
+        selectMaille(event.target).bringToFront();
+    });
+
+    layer.on("mouseover", (event) => {
+        const target = event.target;
+        if (target === selectedMailleLayer) return;
+
+        if (
+            hoveredMailleLayer &&
+            hoveredMailleLayer !== target &&
+            hoveredMailleLayer !== selectedMailleLayer
+        ) {
+            applyDefaultMailleStyle(hoveredMailleLayer);
+        }
+        hoveredMailleLayer = target;
+        target.setStyle(styleMailleClickedOrHover(target)).bringToFront();
+    });
+
+    layer.on("mouseout", (event) => {
+        const target = event.target;
+        if (target === selectedMailleLayer) return;
+
+        if (hoveredMailleLayer === target) hoveredMailleLayer = null;
+        applyDefaultMailleStyle(target);
+    });
+}
+
+// eslint-disable-next-line no-unused-vars
 function onEachFeatureMaille(feature, layer) {
-  popupContent =
-    "<b>Nombre d'observation(s): </b>" +
-    feature.properties.nb_observations +
-    "</br> <b> Dernière observation: </b>" +
-    feature.properties.last_observation +
-    " ";
-  layer.bindPopup(popupContent);
+    popupContent =
+        "<b>Nombre d'observation(s): </b>" +
+        feature.properties.nb_observations +
+        "</br> <b> Dernière observation: </b>" +
+        feature.properties.last_observation +
+        " ";
+    layer.bindPopup(popupContent);
+
+    // associate a feature to the correct feature group
+    observationsFeatureGroup[feature.properties.cd_sensitivity].addLayer(layer);
+
+    if (configuration.AFFICHAGE_MAILLE) {
+        zoomMaille(layer);
+    }
+
+    attachMailleHandlers(layer);
+}
+
+function zoomMaille(layer) {
+    layer.on("click", function () {
+        map.fitBounds(layer.getBounds());
+    });
 }
 
 // Style maille
 function getColor(d) {
-  return d > 100
-    ? "#800026"
-    : d > 50
-    ? "#BD0026"
-    : d > 20
-    ? "#E31A1C"
-    : d > 10
-    ? "#FC4E2A"
-    : d > 5
-    ? "#FD8D3C"
-    : d > 2
-    ? "#FEB24C"
-    : d > 1
-    ? "#FED976"
-    : "#FFEDA0";
+    return d > 100
+        ? "#800026"
+        : d > 50
+          ? "#BD0026"
+          : d > 20
+            ? "#E31A1C"
+            : d > 10
+              ? "#FC4E2A"
+              : d > 5
+                ? "#FD8D3C"
+                : d > 2
+                  ? "#FEB24C"
+                  : d > 1
+                    ? "#FED976"
+                    : "#FFEDA0";
 }
 
-function styleMaille(feature) {
-  return {
-    fillColor: getColor(feature.properties.nb_observations),
-    weight: 1,
-    color: mailleBorderColor,
-    fillOpacity: 0.8,
-  };
-}
-
-function generateLegendMaille() {
-  // check if contour already exists
-  if (L.DomUtil.get("contour-legend")) {
-    return
-  }
-  legend.onAdd = function (map) {
+function generateObservationsLegend(isMaille = false) {
+    if (!configuration.AFFICHAGE_MAILLE && !isMaille) {
+        return generalLegendPoint();
+    }
+    // check if contour already exists
+    if (L.DomUtil.get("contour-legend")) {
+        return;
+    }
     var div = L.DomUtil.create("div", "info legend"),
-      grades = [0, 1, 2, 5, 10, 20, 50, 100],
-      labels = ["<strong> Nombre <br> d'observations </strong> <br>"];
+        grades = [0, 1, 2, 5, 10, 20, 50, 100],
+        labels = [
+            "<div  style='padding-bottom: 1rem'><strong> Nombre d'observations </strong></div>",
+        ];
 
     // loop through our density intervals and generate a label with a colored square for each interval
-    for (var i = 0; i < grades.length; i++) {
-      grade_n1 = grades[i + 1] ? `&ndash; ${grades[i + 1] } <br>` : "+"
-      labels.push(
-        `<i style="background: ${getColor(grades[i] + 1)}"></i>
-          ${grades[i]}${grade_n1}
-        `
-      );
-    }
+    grades.forEach((grade, i) => {
+        const next = grades[i + 1];
+        // Ajout d'un plus si c'est la dernière valeur
+        const grade_n1 = next ? ` &ndash; ${next} <br>` : "+";
+        // Si les 2 valeurs sont identiques, alors on en affiche qu'une
+        const label =
+            next === grade + 1 ? `${next}  <br>` : `${grade + 1}${grade_n1}`;
+        labels.push(
+            `<div class="d-flex pb-1 align-items-center">
+                <div class="me-2" style="background: ${getColor(grade + 1)}; width: 15px; height: 15px;"></div>
+                <div class="" >${label}</div>
+            </div>
+                `,
+        );
+    });
+
     // Add id to get it above
-    div.id = "contour-legend"
-    div.innerHTML = labels.join("<br>");
+    div.id = "contour-legend";
+    div.innerHTML = labels.join("");
 
     return div;
-  };
-
-  legend.addTo(map);
 }
 
-// Geojson Maille
-function generateGeojsonMaille(observations, yearMin, yearMax) {
-  var i = 0;
-  myGeoJson = { type: "FeatureCollection", features: [] };
-  tabProperties = [];
-  while (i < observations.length) {
-    if (observations[i].annee >= yearMin && observations[i].annee <= yearMax) {
-      geometry = observations[i].geojson_maille;
-      idMaille = observations[i].id_maille;
-      properties = {
-        id_maille: idMaille,
-        nb_observations: 1,
-        last_observation: observations[i].annee,
-        tabDateobs: [new Date(observations[i].dateobs)],
-      };
-      var j = i + 1;
-      while (j < observations.length && observations[j].id_maille <= idMaille) {
-        if (
-          observations[j].annee >= yearMin &&
-          observations[j].annee <= yearMax
-        ) {
-          properties.nb_observations += observations[j].nb_observations;
-          properties.tabDateobs.push(new Date(observations[i].dateobs));
-        }
-        if (observations[j].annee >= properties.last_observation) {
-          properties.last_observation = observations[j].annee;
-        }
-        j = j + 1;
-      }
-      myGeoJson.features.push({
-        type: "Feature",
-        properties: properties,
-        geometry: geometry,
-      });
-      // on avance jusqu' à j
-      i = j;
-    } else {
-      i = i + 1;
+function generalLegendPoint() {
+    if (typeof divLegendeFicheEspece !== "undefined") {
+        var div = L.DomUtil.create("div", "info legend");
+        div.innerHTML = divLegendeFicheEspece;
+        return div;
     }
-  }
-
-  return myGeoJson;
 }
 
 // Display Maille layer
 
-function displayMailleLayerFicheEspece(observationsMaille) {
-  myGeoJson = observationsMaille;
-  currentLayer = L.geoJson(myGeoJson, {
-    onEachFeature: onEachFeatureMaille,
-    style: styleMaille,
-  });
-  currentLayer.addTo(map);
-  // map.fitBounds(currentLayer.getBounds()); ZOOM FUNCTION ON SPECIES SHEET MAILLE OBSERVATIONS DISPLAY
+// eslint-disable-next-line no-unused-vars
+function displayGeojsonMailles(observationsMaille, onEachFeature) {
+    myGeoJson = observationsMaille;
 
-  // ajout de la légende
-  generateLegendMaille();
-}
+    clearObservationsFeatureGroup();
 
-function generateGeojsonGridArea(observations) {
-  var i = 0;
-  myGeoJson = { type: "FeatureCollection", features: [] };
-  tabProperties = [];
-  while (i < observations.length) {
-    geometry = observations[i].geojson_maille;
-    idMaille = observations[i].id_maille;
-    properties = {
-      id_maille: idMaille,
-      nb_observations: 1,
-      last_observation: observations[i].annee,
-    };
-    var j = i + 1;
-    while (j < observations.length && observations[j].id_maille <= idMaille) {
-      properties.nb_observations += observations[j].nb_observations;
-
-      if (observations[j].annee >= properties.last_observation) {
-        properties.last_observation = observations[j].annee;
-      }
-      j = j + 1;
-    }
-    myGeoJson.features.push({
-      type: "Feature",
-      properties: properties,
-      geometry: geometry,
+    // create features group and layer control for each area type in geojson
+    createLayersSelector(observationsMaille, true);
+    // NB : the geosjon is not directly added to the map, it's done with the FeatureGroup
+    // which are added by default is the config tell so or can be added with le control layer later
+    currentLayer = L.geoJson(myGeoJson, {
+        onEachFeature: onEachFeature,
     });
-    // on avance jusqu' à j
-    i = j;
-  }
 
-  return myGeoJson;
-}
-
-function displayGridLayerArea(observations) {
-    myGeoJson = generateGeojsonGridArea(observations);
-  currentLayer = L.geoJson(myGeoJson, {
-    onEachFeature: onEachFeatureMaille,
-    style: styleMaille,
-  });
-  currentLayer.addTo(map);
-  if (currentLayer.getBounds().isValid()) {
-    map.fitBounds(currentLayer.getBounds());
-  }
-
-  // ajout de la légende
-  generateLegendMaille();
+    reorderLayerControl();
 }
 
 // GeoJson Point
 function generateGeojsonPointFicheEspece(
-  geojsonPoint,
-  yearMin,
-  yearMax,
-  sliderTouch
+    geojsonPoint,
+    yearMin,
+    yearMax,
+    sliderTouch,
 ) {
-  var filteredGeoJsonPoint = Object.assign({}, geojsonPoint);
-  // si on a touché le slider on filtre sinon on retourne directement le geojson
-  if (yearMin && yearMax && sliderTouch) {
-    filteredGeoJsonPoint.features = geojsonPoint.features.filter(function (
-      obs
-    ) {
-      return obs.properties.year >= yearMin && obs.properties.year <= yearMax;
-    });
-    return filteredGeoJsonPoint;
-  } else {
-    return filteredGeoJsonPoint;
-  }
+    var filteredGeoJsonPoint = Object.assign({}, geojsonPoint);
+    // si on a touché le slider on filtre sinon on retourne directement le geojson
+    if (yearMin && yearMax && sliderTouch) {
+        filteredGeoJsonPoint.features = geojsonPoint.features.filter(
+            function (obs) {
+                return (
+                    obs.properties.year >= yearMin &&
+                    obs.properties.year <= yearMax
+                );
+            },
+        );
+        return filteredGeoJsonPoint;
+    } else {
+        return filteredGeoJsonPoint;
+    }
 }
 
 // Display marker Layer (cluster or not)
+// eslint-disable-next-line no-unused-vars
 function displayMarkerLayerFicheEspece(
-  observationsPoint,
-  yearMin,
-  yearMax,
-  sliderTouch
-) {
-  // on vérifie si le slider a été touché
-  // sinon on met null a yearmin et yearmax pour ne pas filtrer par année a la génération du GeoJson
-
-  // yearMin = years[0] == taxonYearMin ? null : years[0];
-  // yearMax = years[1] == YEARMAX ? null : years[1];
-  myGeoJson = generateGeojsonPointFicheEspece(
     observationsPoint,
     yearMin,
     yearMax,
-    sliderTouch
-  );
+    sliderTouch,
+) {
+    myGeoJson = generateGeojsonPointFicheEspece(
+        observationsPoint,
+        yearMin,
+        yearMax,
+        sliderTouch,
+    );
 
-  if (typeof pointDisplayOptionsFicheEspece == "undefined") {
-    pointDisplayOptionsFicheEspece = function (feature) {
-      return {};
-    };
-  }
-  currentLayer = L.geoJson(myGeoJson, {
-    onEachFeature: onEachFeaturePoint,
+    if (typeof customizeMarkerStyle === "undefined") {
+        customizeMarkerStyle = function () {
+            return {};
+        };
+    }
+    currentLayer = L.geoJson(myGeoJson, {
+        onEachFeature: onEachFeaturePointSpecies,
 
-    pointToLayer: function (feature, latlng) {
-      return L.circleMarker(latlng, pointDisplayOptionsFicheEspece(feature));
-    },
-  });
-  if (myGeoJson.features.length > configuration.LIMIT_CLUSTER_POINT) {
-    newLayer = currentLayer;
-    currentLayer = L.markerClusterGroup();
-    currentLayer.addLayer(newLayer);
-    map.addLayer(currentLayer);
-  } else {
-    currentLayer.addTo(map);
-  }
-  // map.fitBounds(currentLayer.getBounds()); ZOOM FUNCTION ON SPECIES SHEET MARKER LAYER OBSERVATIONS DISPLAY
+        pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng, customizeMarkerStyle(feature));
+        },
+    });
+    const legendColorObs = document.querySelector("#legend-color-obs");
+    if (configuration.COUCHES_SIG.length === 0) {
+        // In point only map, hide control tab if no COUCHES_SIG configured
+        toggleLayerTab(false);
+        const legendtab = document.querySelector("#legend-tab");
+        const legendtabContent = document.querySelector("#legend-tab-content");
+        const controltab = document.querySelector("#control-tab");
+        const controltabContent = document.querySelector(
+            "#control-tab-content",
+        );
+        // switch to legend tab
+        legendtab.classList.add("active");
+        legendtabContent.classList.add("active");
+        legendtabContent.classList.add("show");
+        controltab.classList.remove("active");
+        controltabContent.classList.remove("active");
+        controltabContent.classList.remove("show");
+    }
+    if (myGeoJson.features.length > configuration.LIMIT_CLUSTER_POINT) {
+        legendColorObs.querySelectorAll("div").forEach((elem) => elem.remove());
+        legendColorObs.appendChild(generateObservationsLegend(false));
 
-  if (typeof divLegendeFicheEspece !== "undefined") {
-    legend.onAdd = function (map) {
-      var div = L.DomUtil.create("div", "info legend");
-      div.innerHTML = divLegendeFicheEspece;
-      return div;
-    };
-    legend.addTo(map);
-  }
+        // Not display labels of maille observationsFeatureGroup
+        document.querySelectorAll(".defaultOverlay").forEach((elem) => {
+            elem.closest("label").style.display = "none";
+        });
+
+        newLayer = currentLayer;
+        currentLayer = L.markerClusterGroup();
+        currentLayer.addLayer(newLayer);
+        map.addLayer(currentLayer);
+    } else {
+        currentLayer.addTo(map);
+    }
+    // map.fitBounds(currentLayer.getBounds()); ZOOM FUNCTION ON SPECIES SHEET MARKER LAYER OBSERVATIONS DISPLAY
 }
 
-// ***************Fonction lastObservations: mapHome et mapCommune*****************
+// ***************Fonction lastObservations: mapHome et mapArea*****************
 
 /* *** Point ****/
 
-function onEachFeaturePointLastObs(feature, layer) {
-  popupContent = generateObservationPopup(feature, true);
-  layer.bindPopup(popupContent);
+function onEachFeaturePoint(feature, layer) {
+    popupContent = generateObservationPopup(feature, true);
+    layer.bindPopup(popupContent);
 }
 
-function onEachFeaturePointCommune(feature, layer) {
-  popupContent = generateObservationPopup(feature, true);
-  layer.bindPopup(popupContent);
+function getCustomizeMarkerStyle() {
+    if (typeof customizeMarkerStyle === "undefined") {
+        customizeMarkerStyle = function () {
+            return {};
+        };
+    } else {
+        return customizeMarkerStyle;
+    }
 }
 
-function generateGeojsonPointLastObs(observationsPoint) {
-  myGeoJson = { type: "FeatureCollection", features: [] };
-
-  observationsPoint.forEach(function (obs) {
-    properties = obs;
-    properties["dateobsCompare"] = new Date(obs.dateobs);
-    properties["dateobs"] = obs.dateobs;
-    properties["nb_observations"] = 1;
-    myGeoJson.features.push({
-      type: "Feature",
-      properties: properties,
-      geometry: obs.geojson_point,
+// eslint-disable-next-line no-unused-vars
+function displayGeoJsonPoint(geojson) {
+    currentLayer = L.geoJson(geojson, {
+        onEachFeature: onEachFeaturePoint,
+        pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng, getCustomizeMarkerStyle(feature));
+        },
     });
-  });
-  return myGeoJson;
+    map.addLayer(currentLayer);
+
+    clearObservationsFeatureGroup(true);
+
+    control.addTo(map);
 }
 
-function displayMarkerLayerPointLastObs(observationsPoint) {
-  myGeoJson = generateGeojsonPointLastObs(observationsPoint);
-  if (typeof pointDisplayOptionsFicheCommuneHome == "undefined") {
-    pointDisplayOptionsFicheCommuneHome = function (feature) {
-      return {};
-    };
-  }
-
-  currentLayer = L.geoJson(myGeoJson, {
-    onEachFeature: onEachFeaturePointLastObs,
-    pointToLayer: function (feature, latlng) {
-      return L.circleMarker(
-        latlng,
-        pointDisplayOptionsFicheCommuneHome(feature)
-      );
-    },
-  });
-
-  map.addLayer(currentLayer);
-  if (typeof divLegendeFicheCommuneHome !== "undefined") {
-    legend.onAdd = function (map) {
-      var div = L.DomUtil.create("div", "info legend");
-      div.innerHTML = divLegendeFicheCommuneHome;
-      return div;
-    };
-    legend.addTo(map);
-  }
-}
-
-function displayMarkerLayerPointCommune(observationsPoint) {
-  myGeoJson = generateGeojsonPointLastObs(observationsPoint);
-  if (typeof pointDisplayOptionsFicheCommuneHome == "undefined") {
-    pointDisplayOptionsFicheCommuneHome = function (feature) {
-      return {};
-    };
-  }
-
-  currentLayer = L.geoJson(myGeoJson, {
-    onEachFeature: onEachFeaturePointCommune,
-    pointToLayer: function (feature, latlng) {
-      return L.circleMarker(
-        latlng,
-        pointDisplayOptionsFicheCommuneHome(feature)
-      );
-    },
-  });
-
-  map.addLayer(currentLayer);
-  if (typeof divLegendeFicheCommuneHome !== "undefined") {
-    legend.onAdd = function (map) {
-      var div = L.DomUtil.create("div", "info legend");
-      div.innerHTML = divLegendeFicheCommuneHome;
-      return div;
-    };
-    legend.addTo(map);
-  }
+// eslint-disable-next-line no-unused-vars
+function refreshStyle(layers) {
+    // fonction to refresh style of a list of layers from the customizeMarkerStyle (set green for sensibility and blue for non sensible obs)
+    layers.forEach((layer) => {
+        layer.setStyle(getCustomizeMarkerStyle(layer.feature));
+    });
 }
 
 //  ** MAILLE ***
 
-function compare(a, b) {
-  if (a.id_maille < b.id_maille) return -1;
-  if (a.id_maille > b.id_maille) return 1;
-  return 0;
-}
-
 function buildSpeciesEntries(taxons) {
-  rows = [];
-  taxons.forEach(taxon => {
-    href = `${configuration.URL_APPLICATION}/espece/${taxon.cdRef}`
-    rows.push(`<li><a href="${href}">${taxon.name}</li>`);
-  });
-  return rows.join('\n');
+    rows = [];
+    taxons.forEach((taxon) => {
+        rows.push(`
+    <a title="Cliquez pour aller à la fiche de '${taxon.nom_vern}'" class="tooltip-item btn" href="${window.LANGUAGE_PREFIXED_URL_APPLICATION}/espece/${taxon.cd_ref}" target="_blank">
+        <img loading="lazy" class="me-2 has-media-${taxon.has_media}" src="${taxon.media}" alt="" >
+        <div class="tooltip-item-text">
+            <p class="name_vern">${taxon.nom_vern ? taxon.nom_vern : ""}</p>
+            <p class="lb_nom">${taxon.lb_nom}</p>
+            <p>${taxon.nb_obs} observations (dernière  ${taxon.last_obs})
+        </div>
+    </a>
+    `);
+    });
+    return rows.join("\n");
 }
 
-function onEachFeatureMailleLastObs(feature, layer) {
-  title = `${feature.properties.taxons.length} espèces observées dans la maille &nbsp;: `;
-  rows = buildSpeciesEntries(feature.properties.taxons);
-  popupContent = `<b>${title}</b><ul>${rows}</ul>`;
+let selectedMailleLayer = null;
 
-  layer.bindPopup(popupContent, { maxHeight: 300 });
-}
-
-function styleMailleLastObs() {
-  return {
-    opacity: 1,
-    weight: 2,
-    color: mailleLastObsBorderColor,
-    fillOpacity: 0,
-  };
-}
-
-function generateGeoJsonMailleLastObs(observations) {
-  var features = [];
-  observations.forEach((obs) => {
-    findedFeature = features.find(
-      (feat) => feat.properties.meshId === obs.id_maille
-    );
-    if (!findedFeature) {
-      features.push({
-        type: "Feature",
-        geometry: obs.geojson_maille,
-        properties: {
-          meshId: obs.id_maille,
-          list_id_observation: [obs.id_observation],
-          taxons: [
-            {
-              cdRef: obs.cd_ref,
-              name: obs.taxon,
-            },
-          ],
-        },
-      });
-    } else if (
-      !findedFeature.properties.taxons.find(
-        (taxon) => taxon.cdRef === obs.cd_ref
-      )
-    ) {
-      findedFeature.properties.taxons.push({
-        cdRef: obs.cd_ref,
-        name: obs.taxon,
-      });
+function createPopUp(event) {
+    const sheetName = document.querySelector("body").getAttribute("page-name");
+    const idMaille = event.target.feature.id;
+    page_tooltip = 1;
+    havePossibleNextPage_tooltip = true;
+    const baseUrl = window.LANGUAGE_PREFIXED_URL_APPLICATION || "";
+    let url = `${baseUrl}/api/taxonListJson/area/${idMaille}?page=-1&only_related_sensitivity_level=true&with_local_status=false`;
+    if (sheetName === "index" && configuration.AFFICHAGE_DERNIERES_OBS) {
+        url = url + "&last_obs=true";
     }
-  });
+    fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+            const title = `${data.length} espèces observées dans la maille &nbsp;: `;
+            const rows = buildSpeciesEntries(data);
+            const popupContent = `
+                <div class="tooltip-item-wrapper">
+                    <b>${title}</b>
+                    <div class="d-flex flex-column tooltip-content">${rows}</div>
+                </div>`;
 
-  return {
-    type: "FeatureCollection",
-    features: features,
-  };
+            L.popup({ maxHeight: 300 })
+                .setLatLng(event.latlng)
+                .setContent(popupContent)
+                .openOn(map);
+        });
 }
 
-function find_id_observation_in_array(tab_id, id_observation) {
-  i = 0;
-  while (i < tab_id.length && tab_id[i] != id_observation) {
-    i = i + 1;
-  }
-  return i != tab_id.length;
+// eslint-disable-next-line no-unused-vars
+function onEachFeatureMailleLastObs(feature, layer) {
+    observationsFeatureGroup[feature.properties.cd_sensitivity].addLayer(layer);
+
+    attachMailleHandlers(layer, function (event) {
+        createPopUp(event);
+    });
 }
 
-function displayMailleLayerLastObs(observations) {
-  var geojsonMaille = generateGeoJsonMailleLastObs(observations);
-  currentLayer = L.geoJson(geojsonMaille, {
-    onEachFeature: onEachFeatureMailleLastObs,
-    style: styleMailleLastObs,
-  });
-  currentLayer.addTo(map);
-  //map.fitBounds(currentLayer.getBounds()); ZOOM ON LAST OBS MAILLE
+function styleMailleAtlas(nb) {
+    return {
+        opacity: 1,
+        weight: 1,
+        color: configuration.COULEUR_CONTOUR_MAILLE,
+        fillColor: getColor(nb),
+        fillOpacity: 0.7,
+    };
 }
 
-// Legend
-
-var legend;
-var legendActiv = false;
-var div;
-
-function generateLegende(htmlLegend) {
-  // Legende
-
-  var legendControl = L.Control.extend({
-    options: {
-      position: "topleft",
-      //control position - allowed: 'topleft', 'topright', 'bottomleft', 'bottomright'
-    },
-
-    onAdd: function (map) {
-      var container = L.DomUtil.create(
-        "div",
-        "leaflet-bar leaflet-control leaflet-control-custom"
-      );
-
-      container.style.backgroundColor = "white";
-      container.style.width = "25px";
-      container.style.height = "25px";
-      container.style.border = "solid white 1px";
-      container.style.cursor = "pointer";
-      $(container).html(
-        "<img src='" +
-          configuration.URL_APPLICATION +
-          "/static/images/info.png' alt='Légende'>"
-      );
-      $(container).attr("data-placement", "right");
-      $(container).attr("data-toggle", "tooltip");
-      $(container).attr("data-original-title", "Legend");
-
-      container.onclick = function () {
-        if (legendActiv == false) {
-          legend = L.control({ position: "topleft" });
-
-          legend.onAdd = function (map) {
-            (div = L.DomUtil.create("div", "info legend")),
-              $(div).addClass("generalLegend");
-
-            div.innerHTML = htmlLegend;
-
-            return div;
-          };
-          legend.addTo(map);
-          legendActiv = true;
-        } else {
-          legend.remove(map);
-          legendActiv = false;
-        }
-      };
-      return container;
-    },
-  });
-
-  map.addControl(new legendControl());
+function styleMailleClickedOrHover(layer) {
+    var options = layer.options;
+    return {
+        ...options,
+        opacity: 1,
+        weight: 2,
+        fillOpacity: 0.85,
+        color: configuration.TEMPLATE_MAIN_COLOR,
+    };
 }
 
+// eslint-disable-next-line no-unused-vars
 var mySlider;
 
+// eslint-disable-next-line no-unused-vars
 function generateSliderOnMap() {
-  var SliderControl = L.Control.extend({
-    options: {
-      position: "bottomleft",
-      //control position - allowed: 'topleft', 'topright', 'bottomleft', 'bottomright'
-    },
+    // Vérifie si le slider existe déjà
+    if (document.getElementById("sliderContainer")) return;
 
-    onAdd: function (map) {
-      var sliderContainer = L.DomUtil.create(
-        "div",
-        "leaflet-bar leaflet-control leaflet-slider-control"
-      );
-
-      sliderContainer.style.backgroundColor = "white";
-      sliderContainer.style.width = "300px";
-      sliderContainer.style.height = "70px";
-      sliderContainer.style.border = "solid white 1px";
-      sliderContainer.style.cursor = "pointer";
-      $(sliderContainer).css("margin-bottom", "-300px");
-      $(sliderContainer).css("margin-left", "200px");
-      $(sliderContainer).css("text-align", "center");
-      $(sliderContainer).append(
+    // Crée le conteneur du slider
+    var sliderContainer = document.createElement("div");
+    sliderContainer.id = "sliderContainer";
+    sliderContainer.className = "slider-bottom-center";
+    sliderContainer.style.backgroundColor = "white";
+    sliderContainer.style.width = "350px";
+    sliderContainer.style.height = "70px";
+    sliderContainer.style.border = "solid white 1px";
+    sliderContainer.style.cursor = "pointer";
+    sliderContainer.style.textAlign = "center";
+    sliderContainer.innerHTML =
         "<p> <span id='yearMin'> </span> <input id='sliderControl' type='text'/> <span id='yearMax'>  </span>  </p>" +
-          "<p id='nbObs'> Nombre d'observation(s): " +
-          nb_obs +
-          " </p>"
-      );
-      L.DomEvent.disableClickPropagation(sliderContainer);
-      return sliderContainer;
-    },
-  });
+        "<p id='nbObs'> Nombre d'observation(s): " +
+        nb_obs +
+        " </p>";
 
-  map.addControl(new SliderControl());
+    // Ajoute le slider dans le conteneur principal de la carte
+    var mapContainer =
+        document.getElementById("mapContainer") ||
+        document.getElementById("map").parentNode;
+    mapContainer.appendChild(sliderContainer);
 
-  mySlider = new Slider("#sliderControl", {
-    value: [taxonYearMin, YEARMAX],
-    min: taxonYearMin,
-    max: YEARMAX,
-    step: configuration.MAP.STEP,
-  });
+    mySlider = new Slider("#sliderControl", {
+        value: [taxonYearMin, YEARMAX],
+        min: taxonYearMin,
+        max: YEARMAX,
+        step: configuration.MAP.STEP,
+    });
 
-  $("#yearMax").html("&nbsp;&nbsp;&nbsp;&nbsp;" + YEARMAX);
-  $("#yearMin").html(taxonYearMin + "&nbsp;&nbsp;&nbsp;&nbsp");
+    document.getElementById("yearMax").innerHTML =
+        "&nbsp;&nbsp;&nbsp;&nbsp;" + YEARMAX;
+    document.getElementById("yearMin").innerHTML =
+        taxonYearMin + "&nbsp;&nbsp;&nbsp;&nbsp";
 }

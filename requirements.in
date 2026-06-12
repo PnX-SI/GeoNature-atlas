@@ -13,4 +13,4 @@ markdown
 MarkupSafe
 marshmallow
 psycopg2
-SQLAlchemy < 2
+SQLAlchemy

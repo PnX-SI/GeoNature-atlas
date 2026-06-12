@@ -14,11 +14,14 @@ from flask import (
     request,
     url_for,
     session,
+    request,
 )
+from flask_babel import gettext
+
+from werkzeug.datastructures import MultiDict
 
 from atlas.env import db
-from atlas import utils
-from atlas.modeles.entities import vmTaxons, vmCommunes
+from atlas.modeles.entities import vmTaxons, vmAreas
 from atlas.modeles.repositories import (
     vmOrganismsRepository,
     vmTaxonsRepository,
@@ -26,74 +29,60 @@ from atlas.modeles.repositories import (
     vmAltitudesRepository,
     vmMoisRepository,
     vmTaxrefRepository,
-    vmCommunesRepository,
+    vmAreasRepository,
     vmObservationsMaillesRepository,
     vmMedias,
     vmCorTaxonAttribut,
     vmTaxonsMostView,
+    vmCorTaxonOrganismRepository,
+    vmStatutBdcRepository,
+    corSensitivityAreaRepository,
 )
+from atlas.configuration.config_parser import config
 
 
 main = Blueprint("main", __name__)
 
 
-if current_app.config["MULTILINGUAL"]:
+@main.before_request
+def redirect_default_language():
+    if not current_app.config["MULTILINGUAL"]:
+        return
 
-    @main.url_defaults
-    def add_language_code(endpoint, values):
-        """
-        Auto add lang_code to all url_for
-        """
-        if "lang_code" in values:
-            return
-        # If endpoint expects lang_code, send it forward
-        if current_app.url_map.is_endpoint_expecting(endpoint, "lang_code"):
-            values["lang_code"] = g.lang_code
+    # if lang_code already in args, do not redirect
+    if "lang_code" in (request.view_args or {}):
+        return
 
+    endpoint = request.endpoint
+    if endpoint and "." in endpoint:
+        endpoint_with_lang = f"main.{endpoint.split('.')[1]}"
+        args = request.view_args.copy() if request.view_args else {}
+        args["lang_code"] = g.lang_code
+        target_url = url_for(endpoint_with_lang, **args, _external=True)
 
-@main.url_value_preprocessor
-def pull_lang_code(endpoint, values):
-    """
-    Catch the lang_code in URL to set it globally
-    """
-    # language can be set in url param (values) or in query string
-    language_from_url = values.pop("lang_code", request.args.get("lang_code"))
-    if language_from_url and language_from_url in current_app.config["AVAILABLE_LANGUAGES"]:
-        g.lang_code = language_from_url
-    else:
-        # If no language code has been set, get the best language from the browser settings
-        g.lang_code = request.accept_languages.best_match(
-            current_app.config["AVAILABLE_LANGUAGES"]
-        )
+        if request.url != target_url:
+            return redirect(target_url)
 
 
 # Activating organisms sheets routes
-if current_app.config["ORGANISM_MODULE"]:
+if config["ORGANISM_MODULE"]:
 
-    @main.route("/<lang_code>/organism/<int:id_organism>", methods=["GET", "POST"])
     @main.route("/organism/<int:id_organism>", methods=["GET", "POST"])
     def ficheOrganism(id_organism):
-        db_session = db.session
-        connection = db.engine.connect()
 
-        infos_organism = vmOrganismsRepository.statOrganism(connection, id_organism)
+        infos_organism = vmOrganismsRepository.statOrganism(id_organism)
 
-        stat = vmObservationsRepository.statIndex(connection)
+        stat = vmObservationsRepository.statIndex()
 
-        mostObsTaxs = vmOrganismsRepository.topObsOrganism(connection, id_organism)
+        mostObsTaxs = vmOrganismsRepository.topObsOrganism(id_organism)
         update_most_obs_taxons = []
         for taxon in mostObsTaxs:
-            taxon_info = vmTaxrefRepository.searchEspece(connection, taxon["cd_ref"])
-            photo = vmMedias.getFirstPhoto(
-                connection, taxon["cd_ref"], current_app.config["ATTR_MAIN_PHOTO"]
-            )
+            taxon_info = vmTaxrefRepository.searchEspece(taxon["cd_ref"])
+            photo = vmMedias.getFirstPhoto(taxon["cd_ref"], current_app.config["ATTR_MAIN_PHOTO"])
             taxon = {**taxon, **taxon_info["taxonSearch"]}
             taxon["photo"] = photo
             update_most_obs_taxons.append(taxon)
-        stats_group = vmOrganismsRepository.getTaxonRepartitionOrganism(connection, id_organism)
-
-        connection.close()
-        db_session.close()
+        stats_group = vmOrganismsRepository.getTaxonRepartitionOrganism(id_organism)
 
         return render_template(
             "templates/organismSheet/_main.html",
@@ -113,56 +102,57 @@ if current_app.config["ORGANISM_MODULE"]:
         )
 
 
-@main.route("/<lang_code>", methods=["GET", "POST"])
 @main.route("/", methods=["GET", "POST"])
 def index():
-    session = db.session
-    connection = db.engine.connect()
 
-    if current_app.config["AFFICHAGE_DERNIERES_OBS"]:
-        if current_app.config["AFFICHAGE_MAILLE"]:
-            current_app.logger.debug("start AFFICHAGE_MAILLE")
-            observations = vmObservationsMaillesRepository.lastObservationsMailles(
-                connection,
-                str(current_app.config["NB_DAY_LAST_OBS"]) + " day",
-                current_app.config["ATTR_MAIN_PHOTO"],
-            )
-            current_app.logger.debug("end AFFICHAGE_MAILLE")
-        else:
-            current_app.logger.debug("start AFFICHAGE_PRECIS")
-            observations = vmObservationsRepository.lastObservations(
-                connection,
-                str(current_app.config["NB_DAY_LAST_OBS"]) + " day",
-                current_app.config["ATTR_MAIN_PHOTO"],
-            )
-            current_app.logger.debug("end AFFICHAGE_PRECIS")
-    else:
+    nb_taxons = None
+    listTaxons = []
+    if current_app.config["AFFICHAGE_TERRITOIRE_OBS"]:
+        nb_taxons = vmTaxonsRepository.get_nb_taxons()
+        listTaxons = vmTaxonsRepository.getListTaxon(params=MultiDict({"page": 0}))
+
+    # si AFFICHAGE_TERRITOIRE_OBS on charge les données en AJAX
+    # si AFFICHAGE_DERNIERES_OBS = False, on ne charge pas les obs
+    if (
+        current_app.config["AFFICHAGE_TERRITOIRE_OBS"]
+        or not current_app.config["AFFICHAGE_DERNIERES_OBS"]
+    ):
         observations = []
+    observations_mailles = None
+    if current_app.config["AFFICHAGE_DERNIERES_OBS"]:
+        # on charge les observations point meme si on est en mode maille pour afficher
+        # la liste des dernières obs
+        observations = vmObservationsRepository.getObservationsChilds(
+            params={
+                "last_obs": str(current_app.config["NB_DAY_LAST_OBS"]) + " day",
+                "fields": "taxons,medias",
+            },
+        )
+        if current_app.config["AFFICHAGE_MAILLE"]:
+            observations_mailles = vmObservationsMaillesRepository.getObservationsMaillesChilds(
+                params={
+                    "last_obs": str(current_app.config["NB_DAY_LAST_OBS"]) + " day",
+                    "fields": "taxons,ids_obs",
+                }
+            )
 
     if current_app.config["AFFICHAGE_EN_CE_MOMENT"]:
-        current_app.logger.debug("start mostViewTaxon")
-        mostViewTaxon = vmTaxonsMostView.mostViewTaxon(connection)
-        current_app.logger.debug("end mostViewTaxon")
+        mostViewTaxon = vmTaxonsMostView.mostViewTaxon()
     else:
         mostViewTaxon = []
 
     if current_app.config["AFFICHAGE_RANG_STAT"]:
-        current_app.logger.debug("start customStatMedia")
         customStatMedias = vmObservationsRepository.genericStatMedias(
-            connection, current_app.config["RANG_STAT"]
+            current_app.config["RANG_STAT"]
         )
-        current_app.logger.debug("end customStatMedia")
     else:
         customStatMedias = []
 
     if current_app.config["AFFICHAGE_NOUVELLES_ESPECES"]:
-        lastDiscoveries = vmObservationsRepository.getLastDiscoveries(connection)
+        lastDiscoveries = vmObservationsRepository.getLastDiscoveries()
     else:
         lastDiscoveries = []
-
-    connection.close()
-    session.close()
-
+    group2_inpn = vmTaxonsRepository.get_group_inpn("group2_inpn")
     personal_data = False
     args_personal_data = request.args.get("personal_data")
     if args_personal_data and args_personal_data.lower() == "true":
@@ -171,39 +161,39 @@ def index():
     return render_template(
         "templates/home/_main.html",
         observations=observations,
+        observations_mailles=observations_mailles,
         mostViewTaxon=mostViewTaxon,
         customStatMedias=customStatMedias,
         lastDiscoveries=lastDiscoveries,
         personal_data=personal_data,
+        group2_inpn=group2_inpn,
+        listTaxons=listTaxons,
+        nb_taxons=nb_taxons,
     )
 
 
-@main.route("/<lang_code>/espece/<int(signed=True):cd_nom>", methods=["GET", "POST"])
 @main.route("/espece/<int(signed=True):cd_nom>", methods=["GET", "POST"])
 def ficheEspece(cd_nom):
-    db_session = db.session
-    connection = db.engine.connect()
-
     # Get cd_ref from cd_nom
-    cd_ref = vmTaxrefRepository.get_cd_ref(connection, cd_nom)
+    cd_ref = vmTaxrefRepository.get_cd_ref(cd_nom)
 
     # Redirect to cd_ref if cd_nom is a synonym. Redirection is better for SEO.
     if cd_ref != cd_nom:
         return redirect(url_for(request.endpoint, cd_nom=cd_ref))
 
     # Get data to render template
-    taxon = vmTaxrefRepository.searchEspece(connection, cd_ref)
-    altitudes = vmAltitudesRepository.getAltitudesChilds(connection, cd_ref)
-    months = vmMoisRepository.getMonthlyObservationsChilds(connection, cd_ref)
-    synonyme = vmTaxrefRepository.getSynonymy(connection, cd_ref)
-    communes = vmCommunesRepository.getCommunesObservationsChilds(connection, cd_ref)
-    taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(db_session, cd_ref)
-    firstPhoto = vmMedias.getFirstPhoto(connection, cd_ref, current_app.config["ATTR_MAIN_PHOTO"])
-    photoCarousel = vmMedias.getPhotoCarousel(
-        connection, cd_ref, current_app.config["ATTR_OTHER_PHOTO"]
-    )
+    taxon = vmTaxrefRepository.searchEspece(cd_ref)
+    altitudes = vmAltitudesRepository.getAltitudesChilds(cd_ref)
+    months = vmMoisRepository.getMonthlyObservationsChilds(cd_ref)
+    organism_stats = None
+    if current_app.config["ORGANISM_MODULE"]:
+        organism_stats = vmCorTaxonOrganismRepository.getTaxonOrganism(cd_ref)
+    synonyme = vmTaxrefRepository.getSynonymy(cd_ref)
+    areas = vmAreasRepository.getAreasByTaxon(cd_ref)
+    taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(cd_ref)
+    firstPhoto = vmMedias.getFirstPhoto(cd_ref, current_app.config["ATTR_MAIN_PHOTO"])
+    photoCarousel = vmMedias.getPhotoCarousel(cd_ref, current_app.config["ATTR_OTHER_PHOTO"])
     videoAudio = vmMedias.getVideo_and_audio(
-        connection,
         cd_ref,
         current_app.config["ATTR_AUDIO"],
         current_app.config["ATTR_VIDEO_HEBERGEE"],
@@ -212,19 +202,31 @@ def ficheEspece(cd_nom):
         current_app.config["ATTR_VIMEO"],
     )
     articles = vmMedias.getLinks_and_articles(
-        connection, cd_ref, current_app.config["ATTR_LIEN"], current_app.config["ATTR_PDF"]
+        cd_ref, current_app.config["ATTR_LIEN"], current_app.config["ATTR_PDF"]
     )
     taxonAttrs = vmCorTaxonAttribut.getAttributesTaxon(
-        connection,
         cd_ref,
         current_app.config["TAXHUB_DISPLAYED_ATTR"],
     )
-    observers = vmObservationsRepository.getObservers(connection, cd_ref)
 
-    organisms = vmOrganismsRepository.getListOrganism(connection, cd_ref)
+    liens_focus = []
+    if current_app.config.get("TYPES_MEDIAS_LENS_FOCUS"):
+        liens_config = current_app.config["TYPES_MEDIAS_LENS_FOCUS"]
+        media_type_ids = list({t["type_media_id"] for t in liens_config})
+        liens_focus = vmMedias.get_liens_focus(cd_ref, media_type_ids)
+        icones_by_media_type = {
+            i["type_media_id"]: i["icon"] for i in liens_config if i.get("icon")
+        }
+        for lien in liens_focus:
+            lien["icon"] = icones_by_media_type.get(lien["id_type"], "")
 
-    connection.close()
-    db_session.close()
+    observers = vmObservationsRepository.getObservers(cd_ref)
+
+    organisms = vmOrganismsRepository.getListOrganism(cd_ref)
+
+    statuts = vmStatutBdcRepository.get_taxons_statut_bdc(cd_ref)
+    groupes_statuts = _make_groupes_statuts(statuts)
+    groupes_statuts_have_labels = any([groupe.get("label") for groupe in groupes_statuts])
 
     return render_template(
         "templates/speciesSheet/_main.html",
@@ -234,130 +236,140 @@ def ficheEspece(cd_nom):
         cd_ref=cd_ref,
         altitudes=altitudes,
         months=months,
+        organism_stats=organism_stats,
         synonyme=synonyme,
-        communes=communes,
+        areas=areas,
         taxonomyHierarchy=taxonomyHierarchy,
         firstPhoto=firstPhoto,
         photoCarousel=photoCarousel,
         videoAudio=videoAudio,
         articles=articles,
         taxonAttrs=taxonAttrs,
+        liens_focus=liens_focus,
         observers=observers,
         organisms=organisms,
+        groupesStatuts=groupes_statuts,
+        groupesStatutsHaveLabels=groupes_statuts_have_labels,
+        areas_sensitivity_level=corSensitivityAreaRepository.get_sensitivity_areas_level(),
     )
 
 
-@main.route("/<lang_code>/commune/<insee>", methods=["GET", "POST"])
-@main.route("/commune/<insee>", methods=["GET", "POST"])
-def ficheCommune(insee):
-    session = db.session
-    connection = db.engine.connect()
+def _make_groupes_statuts(statuts):
+    """Groupe les statuts de la BDC suivant la configuration GROUPES_STATUTS.
 
-    listTaxons = vmTaxonsRepository.getTaxonsCommunes(connection, insee)
-    commune = vmCommunesRepository.getCommuneFromInsee(connection, insee)
-    if current_app.config["AFFICHAGE_MAILLE"]:
-        observations = vmObservationsMaillesRepository.lastObservationsCommuneMaille(
-            connection, current_app.config["NB_LAST_OBS"], str(insee)
-        )
-    else:
-        observations = vmObservationsRepository.lastObservationsCommune(
-            connection, current_app.config["NB_LAST_OBS"], insee
-        )
+    Retourne une liste de groupes. Un groupe est de la forme :
 
-    observers = vmObservationsRepository.getObserversCommunes(connection, insee)
+        {
+            "label": "Monde",
+            "statuts": [
+                {
+                    "cd_type_statut": "LRM",
+                    "lb_type_statut": "Liste Rouge Mondiale",
+                    "cd_sig": "WORLD",
+                    "code_statut": "LC",
+                    "label_statut": "Préoccupation mineure",
+                    "rq_statut": ""
+                }
+            ]
+        }
+    """
 
-    session.close()
-    connection.close()
+    def is_statut_in_groupe(statut, groupe):
+        for filter_item in groupe["filters"]:
+            if filter_item.get("cd_type_statut"):
+                has_valid_type = statut["cd_type_statut"] == filter_item.get("cd_type_statut")
+            else:
+                has_valid_type = True
 
+            if filter_item.get("cd_sig"):
+                has_valid_sig = statut["cd_sig"] == filter_item.get("cd_sig")
+            else:
+                has_valid_sig = True
+
+            if has_valid_type and has_valid_sig:
+                return True
+        else:
+            return False
+
+    groupes_statuts = []
+    for config_groupe in current_app.config["GROUPES_STATUTS"]:
+        groupe = {"label": config_groupe.get("label", ""), "statuts": []}
+        for statut in statuts:
+            if is_statut_in_groupe(statut, config_groupe):
+                groupe["statuts"].append(statut)
+        if groupe["statuts"]:
+            groupes_statuts.append(groupe)
+    return groupes_statuts
+
+
+@main.route("/area/<int:id_area>", methods=["GET", "POST"])
+def area(id_area):
+    area = vmAreasRepository.getAreaFromIdArea(id_area)
+    stats_area = vmAreasRepository.getStatsByArea(id_area)
+    listTaxons = vmTaxonsRepository.getListTaxon(id_area=id_area, params=MultiDict({"page": 0}))
+    group2_inpn = vmTaxonsRepository.get_group_inpn("group2_inpn", id_area)
     return render_template(
         "templates/areaSheet/_main.html",
-        sheetType="commune",
+        stats_area=stats_area,
+        areaInfos=area,
+        id_area=id_area,
         listTaxons=listTaxons,
-        areaInfos=commune,
-        observations=observations,
-        observers=observers,
-        DISPLAY_EYE_ON_LIST=True,
-        insee=insee,
+        group2_inpn=group2_inpn,
     )
 
 
-@main.route("/<lang_code>/liste/<int(signed=True):cd_ref>", methods=["GET", "POST"])
 @main.route("/liste/<int(signed=True):cd_ref>", methods=["GET", "POST"])
-def ficheRangTaxonomie(cd_ref):
-    session = db.session
-    connection = db.engine.connect()
-
-    listTaxons = vmTaxonsRepository.getTaxonsChildsList(connection, cd_ref)
-    referenciel = vmTaxrefRepository.getInfoFromCd_ref(session, cd_ref)
-    taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(session, cd_ref)
-    observers = vmObservationsRepository.getObservers(connection, cd_ref)
-
-    connection.close()
-    session.close()
+def ficheRangTaxonomie(cd_ref=None):
+    nb_taxons = vmTaxonsRepository.get_nb_taxons(cd_ref=cd_ref)
+    referenciel = vmTaxrefRepository.getInfoFromCd_ref(cd_ref)
+    taxonomyHierarchy = vmTaxrefRepository.getAllTaxonomy(cd_ref)
+    observers = vmObservationsRepository.getObservers(cd_ref)
+    listTaxons = vmTaxonsRepository.getListTaxon(cd_ref=cd_ref, params=MultiDict({"page": 0}))
 
     return render_template(
         "templates/taxoRankSheet/_main.html",
         listTaxons=listTaxons,
+        nb_taxons=nb_taxons,
         referenciel=referenciel,
         taxonomyHierarchy=taxonomyHierarchy,
         observers=observers,
-        DISPLAY_EYE_ON_LIST=False,
+        cd_ref=cd_ref,
     )
 
 
-@main.route("/<lang_code>/groupe/<groupe>", methods=["GET", "POST"])
 @main.route("/groupe/<groupe>", methods=["GET", "POST"])
 def ficheGroupe(groupe):
-    session = db.session
-    connection = db.engine.connect()
-
-    groups = vmTaxonsRepository.getAllINPNgroup(connection)
-    listTaxons = vmTaxonsRepository.getTaxonsGroup(connection, groupe)
-    observers = vmObservationsRepository.getGroupeObservers(connection, groupe)
-
-    session.close()
-    connection.close()
+    groups = vmTaxonsRepository.getAllINPNgroup()
+    nb_taxons = vmTaxonsRepository.get_nb_taxons(group_name=groupe)
+    observers = vmObservationsRepository.getGroupeObservers(groupe)
+    listTaxons = vmTaxonsRepository.getListTaxon(group_name=groupe, params=MultiDict({"page": 0}))
 
     return render_template(
         "templates/groupSheet/_main.html",
         listTaxons=listTaxons,
+        nb_taxons=nb_taxons,
         referenciel=groupe,
         groups=groups,
         observers=observers,
-        DISPLAY_EYE_ON_LIST=False,
     )
 
 
-@main.route("/<lang_code>/photos", methods=["GET", "POST"])
-@main.route("/photos", methods=["GET", "POST"])
-def photos():
-    session = db.session
-    connection = db.engine.connect()
+if current_app.config["AFFICHAGE_GALERIE_PHOTO"]:
 
-    groups = vmTaxonsRepository.getINPNgroupPhotos(connection)
-
-    session.close()
-    connection.close()
-    return render_template("templates/photoGalery/_main.html", groups=groups)
+    @main.route("/photos", methods=["GET", "POST"])
+    def photos():
+        groups = vmTaxonsRepository.getINPNgroupPhotos()
+        return render_template("templates/photoGalery/_main.html", groups=groups)
 
 
-if current_app.config["AFFICHAGE_RECHERCHE_AVANCEE"]:
-
-    @main.route("/<lang_code>/recherche", methods=["GET"])
-    @main.route("/recherche", methods=["GET"])
-    def advanced_search():
-        return render_template("templates/core/advanced_search.html")
-
-
-@main.route("/<lang_code>/static/<page>", methods=["GET", "POST"])
 @main.route("/static_pages/<page>", methods=["GET", "POST"])
 def get_staticpages(page):
-    session = db.session
     if page not in current_app.config["STATIC_PAGES"]:
         abort(404)
     static_page = current_app.config["STATIC_PAGES"][page]
-    session.close()
-    return render_template(static_page["template"])
+    return render_template(
+        static_page["template"],
+    )
 
 
 @main.route("/sitemap.xml", methods=["GET"])
@@ -365,42 +377,103 @@ def sitemap():
     """Generate sitemap.xml iterating over static and dynamic routes to make a list of urls and date modified"""
     pages = []
     ten_days_ago = datetime.now() - timedelta(days=10)
-    session = db.session
-    connection = db.engine.connect()
-    url_root = request.url_root
-    if url_root[-1] == "/":
-        url_root = url_root[:-1]
-    for rule in current_app.url_map.iter_rules():
-        # check for a 'GET' request and that the length of arguments is = 0 and if you have an admin area that the rule does not start with '/admin'
-        if "GET" in rule.methods and len(rule.arguments) == 0 and not rule.rule.startswith("/api"):
-            pages.append([url_root + rule.rule, ten_days_ago])
+    for static_page in current_app.config["STATIC_PAGES"]:
+        url = url_for("main.get_staticpages", page=static_page, _external=True)
+        pages.append([url, ten_days_ago])
+    pages.extend(
+        [
+            [url_for("main.photos", _external=True), ten_days_ago],
+            [url_for("main.sitemap", _external=True), ten_days_ago],
+            [url_for("main.sitemap_ui", _external=True), ten_days_ago],
+            [url_for("main.robots", _external=True), ten_days_ago],
+        ]
+    )
 
     # get dynamic routes for blog
-    species = session.query(vmTaxons.VmTaxons).order_by(vmTaxons.VmTaxons.cd_ref).all()
+    species = db.session.query(vmTaxons.VmTaxons).order_by(vmTaxons.VmTaxons.cd_ref).all()
     for species in species:
-        url = url_root + url_for("main.ficheEspece", cd_nom=species.cd_ref)
+        url = url_for("main.ficheEspece", cd_nom=species.cd_ref, _external=True)
         modified_time = ten_days_ago
         pages.append([url, modified_time])
 
-    municipalities = (
-        session.query(vmCommunes.VmCommunes).order_by(vmCommunes.VmCommunes.insee).all()
+    # Pour ne remonter que les areas ayant des observations :
+    areas = (
+        db.session.query(vmAreas.VmAreasWithObs)
+        .filter(vmAreas.VmAreasWithObs.type_code.in_(current_app.config["TYPE_TERRITOIRE_SHEET"]))
+        .order_by(vmAreas.VmAreasWithObs.area_name)
+        .all()
     )
-    for municipalitie in municipalities:
-        url = url_root + url_for("main.ficheCommune", insee=municipalitie.insee)
+
+    for area in areas:
+        url = url_for("main.area", id_area=area.id_area, _external=True)
         modified_time = ten_days_ago
         pages.append([url, modified_time])
 
     sitemap_template = render_template(
-        "templates/sitemap.xml", pages=pages, url_root=url_root, last_modified=ten_days_ago
+        "templates/sitemap.xml", pages=pages, last_modified=ten_days_ago
     )
     response = make_response(sitemap_template)
     response.headers["Content-Type"] = "application/xml"
     return response
 
 
+@main.route("/sitemap", methods=["GET"])
+@main.route("/sitemap.html", methods=["GET"])
+def sitemap_ui():
+    """Generate sitemap iterating over static and dynamic routes to make a list of urls"""
+    pages = {
+        "static": {
+            "title": gettext("static pages"),
+            "values": [
+                {"url": url_for("main.index"), "label": gettext("home page")},
+                {"url": url_for("main.photos"), "label": gettext("photos")},
+            ],
+        },
+        "areas": {
+            "title": gettext("zoning pages"),
+            "values": [],
+        },
+        "groups": {"title": gettext("species sheet by groups"), "values": {}},
+    }
+
+    for static_page in current_app.config["STATIC_PAGES"]:
+        url_static_page = url_for("main.get_staticpages", page=static_page)
+        data_page = current_app.config["STATIC_PAGES"][static_page]
+        pages["static"]["values"].append({"url": url_static_page, "label": data_page["title"]})
+
+    # get dynamic routes for blog
+    species = db.session.query(vmTaxons.VmTaxons).order_by(vmTaxons.VmTaxons.nom_complet).all()
+    for species in species:
+        if species.group2_inpn not in pages["groups"]["values"]:
+            group_url = url_for("main.ficheGroupe", groupe=species.group2_inpn)
+            pages["groups"]["values"][species.group2_inpn] = {
+                "url": group_url,
+                "label": species.group2_inpn,
+                "species": [],
+            }
+
+        url_species = url_for("main.ficheEspece", cd_nom=species.cd_ref)
+        pages["groups"]["values"][species.group2_inpn]["species"].append(
+            {"url": url_species, "label": species.lb_nom}
+        )
+
+    # Pour ne remonter que les areas ayant des observations :
+    areas = (
+        db.session.query(vmAreas.VmAreasWithObs)
+        .filter(vmAreas.VmAreasWithObs.type_code.in_(current_app.config["TYPE_TERRITOIRE_SHEET"]))
+        .order_by(vmAreas.VmAreasWithObs.area_name)
+        .all()
+    )
+    for area in areas:
+        url = url_for("main.area", id_area=area.id_area)
+        pages["areas"]["values"].append({"url": url, "label": area.area_name})
+
+    return render_template("templates/sitemap.html", pages=pages)
+
+
 @main.route("/robots.txt", methods=["GET"])
 def robots():
-    robots_template = render_template("static/custom/templates/robots.txt")
+    robots_template = render_template("static/custom/robots.txt")
     response = make_response(robots_template)
     response.headers["Content-type"] = "text/plain"
 

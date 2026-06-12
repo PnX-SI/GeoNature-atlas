@@ -1,0 +1,16 @@
+services:
+  atlas-app:
+    volumes:
+      # tout le code source et l'install le code source
+      - ./data/:/dist/data
+      - ./atlas/:/dist/atlas
+      - ./install/:/dist/install
+    environment:
+      FLASK_ENV: development
+    command:
+      - flask
+      - run
+      - --host=0.0.0.0
+      - --debug
+      - --port
+      - "8080"

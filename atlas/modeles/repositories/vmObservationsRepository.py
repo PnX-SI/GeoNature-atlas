@@ -3,142 +3,131 @@ from datetime import datetime
 
 from flask import current_app
 from geojson import Feature, FeatureCollection
-from sqlalchemy.sql import text, func, or_
+from sqlalchemy.sql import func, or_, literal, cast
+from sqlalchemy import Interval, distinct, select, exists, true, text
+from sqlalchemy.dialects.postgresql import array
+from sqlalchemy.orm import joinedload, load_only, raiseload
 
 from atlas.modeles import utils
+from atlas.modeles.repositories.vmMedias import VmMedias
 from atlas.modeles.entities.vmObservations import VmObservations
+from atlas.modeles.entities.vmTaxons import VmTaxons
+from atlas.modeles.entities.vmTaxref import VmTaxref
+from atlas.modeles.entities.vmAreas import VmCorAreaSynthese, VmAreasWithObs
+from atlas.env import db
 
 currentYear = datetime.now().year
 
 
-def searchObservationsChilds(session, cd_ref):
+def getObservationsChilds(params: {}):
+    """
+    Retourne un geojson des observations en points
+    Le geojson contient les propriétés présentes dans VMObservation
+    + taxon (optionnel: si with taxon est True) : le taxon de l'observation sous forme 'nom_vern | lb_nom' (utilisé sur les fiches territoire et home)
 
-    subquery = session.query(func.atlas.find_all_taxons_childs(cd_ref))
-    query = session.query(VmObservations).filter(
-        or_(
-            VmObservations.cd_ref.in_(subquery),
-            VmObservations.cd_ref == cd_ref,
+    Parameters
+    ----------
+    filters : dict, optional
+        dictionnaire des filtres de la query
+        Filtres disponible :
+            - year_min / year_max : filtre les observation dans des bornes d'année
+            - cd_ref : renvoie que les observation de ce taxon et de ces enfants
+            - id_area : renvoie uniquement les observations présente dans l'aire demandée
+            - limit : limite le nombre de résultat
+
+    Returns
+    -------
+    Geosjon
+    """
+    from sqlalchemy.orm import raiseload
+
+    cd_ref = params.get("cd_ref", None)
+    id_area = params.get("id_area", None)
+    limit = params.get("limit", None)
+    last_obs = params.get("last_obs", None)
+    fields: list = params.get("fields", "").split(",")
+
+    # Charger l'entité ORM mais seulement les colonnes nécessaires (optimisation perf)
+    query = select(VmObservations)
+    if "taxons" in fields:
+        _joinedload = joinedload(VmObservations.taxon)
+        if "medias" in fields:
+            _joinedload = _joinedload.joinedload(VmTaxons.main_media)
+        query = query.options(_joinedload)
+    query = query.options(
+        load_only(
+            VmObservations.id_observation,
+            VmObservations.dateobs,
+            VmObservations.observateurs,
+            VmObservations.altitude_retenue,
+            VmObservations.cd_ref,
+            VmObservations.cd_sensitivity,
+            VmObservations.geojson_point,
         )
     )
-    observations = query.all()
-
-    features = []
-    # columns = [c.name for c in db_cols if c.name != "geojson_point"]
-    for o in observations:
-        year = o.dateobs.year if o.dateobs else None
-        properties = o.as_dict()
-        properties["year"] = year
-        feature = Feature(
-            id=o.id_observation,
-            geometry=json.loads(o.geojson_point or "{}"),
-            properties=properties,
+    query = query.options(raiseload("*"))
+    if cd_ref:
+        subquery = select(func.atlas.find_all_taxons_childs(cd_ref))
+        query = query.filter(
+            or_(
+                VmObservations.cd_ref.in_(subquery),
+                VmObservations.cd_ref == cd_ref,
+            )
         )
+    if id_area:
+        query = query.where(
+            exists(
+                select(true())
+                .select_from(VmCorAreaSynthese)
+                .where(
+                    (VmCorAreaSynthese.id_area == params["id_area"])
+                    & (VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
+                    & (VmCorAreaSynthese.is_valid_for_display.is_(True))
+                )
+            )
+        )
+    if last_obs:
+        query = query.where(
+            VmObservations.dateobs >= func.current_timestamp() - cast(literal(last_obs), Interval)
+        )
+    if limit:
+        query = query.limit(limit)
+    elif not cd_ref and not id_area:
+        query = query.limit(100000)
+
+    # Exécuter la requête
+    observations = (
+        db.session.execute(query.order_by(VmObservations.dateobs.desc())).scalars().all()
+    )
+
+    # Construire le GeoJSON
+    features = []
+    for o in observations:
+        observation_as_dict = o.as_dict()
+
+        if "taxons" in fields:
+            observation_as_dict["taxon"] = o.taxon.shorten_name()
+            if "medias" in fields:
+                observation_as_dict["media"], observation_as_dict["has_media"] = (
+                    o.taxon.get_main_media()
+                )
+
+        try:
+            geom = json.loads(o.geojson_point) if o.geojson_point else {}
+        except:
+            geom = {}
+
+        feature = {
+            "type": "Feature",
+            "id": observation_as_dict["id_observation"],
+            "geometry": geom,
+            "properties": observation_as_dict,
+        }
         features.append(feature)
 
-    return FeatureCollection(features)
+    geojson_dict = {"type": "FeatureCollection", "features": features}
 
-
-def firstObservationChild(connection, cd_ref):
-    sql = """SELECT min(taxons.yearmin) AS yearmin
-    FROM atlas.vm_taxons taxons
-    JOIN atlas.vm_taxref taxref ON taxref.cd_ref=taxons.cd_ref
-    WHERE taxons.cd_ref IN (
-    SELECT * FROM atlas.find_all_taxons_childs(:thiscdref)
-    )OR taxons.cd_ref = :thiscdref"""
-    req = connection.execute(text(sql), thiscdref=cd_ref)
-    for r in req:
-        return r.yearmin
-
-
-def lastObservations(connection, mylimit, idPhoto):
-    sql = """
-    SELECT obs.*,
-            CONCAT(
-                split_part(tax.nom_vern, ',', 1) || ' | ',
-                '<i>',
-                tax.lb_nom,
-                '</i>'
-            ) AS taxon,
-        tax.group2_inpn,
-        medias.url, medias.chemin, medias.id_media
-    FROM atlas.vm_observations obs
-    JOIN atlas.vm_taxons tax
-        ON tax.cd_ref = obs.cd_ref
-    LEFT JOIN atlas.vm_medias medias
-        ON medias.cd_ref = obs.cd_ref AND medias.id_type = :thisidphoto
-    WHERE  obs.dateobs >= (CURRENT_TIMESTAMP - INTERVAL :thislimit)
-    ORDER BY obs.dateobs DESC """
-
-    observations = connection.execute(text(sql), {"thislimit": mylimit, "thisidphoto": idPhoto})
-
-    obsList = list()
-    for o in observations:
-        temp = dict(o)
-        temp.pop("the_geom_point", None)
-        temp["geojson_point"] = json.loads(o.geojson_point or "{}")
-        temp["dateobs"] = o.dateobs
-        temp["group2_inpn"] = utils.deleteAccent(o.group2_inpn)
-        temp["pathImg"] = utils.findPath(o)
-        obsList.append(temp)
-    return obsList
-
-
-def lastObservationsCommune(connection, mylimit, insee):
-    sql = """SELECT o.*,
-            CONCAT(
-                split_part(tax.nom_vern, ',', 1) || ' | ',
-                '<i>',
-                tax.lb_nom,
-                '</i>'
-            ) AS taxon
-    FROM atlas.vm_observations o
-    JOIN atlas.vm_communes c ON ST_Intersects(o.the_geom_point, c.the_geom)
-    JOIN atlas.vm_taxons tax ON  o.cd_ref = tax.cd_ref
-    WHERE c.insee = :thisInsee
-    ORDER BY o.dateobs DESC
-    LIMIT 100"""
-    observations = connection.execute(text(sql), {"thisInsee": insee})
-    obsList = list()
-    for o in observations:
-        temp = {
-            "id": o.id_observation,
-            "dateobs": o.dateobs,
-            "cd_ref": o.cd_ref,
-            "altitude_retenue": o.altitude_retenue,
-            "observateurs": o.observateurs,
-            "taxon": o.taxon,
-        }
-        temp["geojson_point"] = json.loads(o.geojson_point or "{}")
-        obsList.append(temp)
-    return obsList
-
-
-def getObservationTaxonCommune(connection, insee, cd_ref):
-    sql = """
-        SELECT o.*,
-            COALESCE(split_part(tax.nom_vern, ',', 1) || ' | ', '')
-                || tax.lb_nom AS taxon,
-        o.observateurs
-        FROM (
-            SELECT * FROM atlas.vm_observations o
-            WHERE o.insee = :thisInsee AND o.cd_ref = :thiscdref
-        )  o
-        JOIN (
-            SELECT nom_vern, lb_nom, cd_ref
-            FROM atlas.vm_taxons
-            WHERE cd_ref = :thiscdref
-        ) tax ON tax.cd_ref = tax.cd_ref
-    """
-
-    observations = connection.execute(text(sql), thiscdref=cd_ref, thisInsee=insee)
-    obsList = list()
-    for o in observations:
-        temp = dict(o)
-        temp.pop("the_geom_point", None)
-        temp["geojson_point"] = json.loads(o.geojson_point or "{}")
-        temp["dateobs"] = o.dateobs
-        obsList.append(temp)
-    return obsList
+    return geojson_dict
 
 
 def observersParser(req):
@@ -165,127 +154,117 @@ def observersParser(req):
     return sorted(finalList)
 
 
-def getObservers(connection, cd_ref):
-    sql = "SELECT * FROM atlas.find_all_taxons_childs(:thiscdref) AS taxon_childs(cd_nom)"
-    results = connection.execute(text(sql), {"thiscdref": cd_ref})
-    taxons = [cd_ref]
-    for r in results:
-        taxons.append(r.cd_nom)
+def getObservers(cd_ref):
+    childs_ids = (
+        db.session.execute(select(func.atlas.find_all_taxons_childs(cd_ref))).scalars().all()
+    )
+    taxons = [cd_ref] + childs_ids
 
-    sql = """
-        SELECT DISTINCT observateurs
-        FROM atlas.vm_observations
-        WHERE cd_ref = ANY(:taxonsList)
-    """
-    results = connection.execute(text(sql), {"taxonsList": taxons})
+    req = select(distinct(VmObservations.observateurs).label("observateurs")).filter(
+        VmObservations.cd_ref == func.any(array(taxons))
+    )
+    results = db.session.execute(req).all()
     return observersParser(results)
 
 
-def getGroupeObservers(connection, groupe):
-    sql = """
-        SELECT DISTINCT observateurs
-        FROM atlas.vm_observations
-        WHERE cd_ref IN (
-            SELECT cd_ref FROM atlas.vm_taxons WHERE group2_inpn = :thisgroupe
-        )
-    """
-    req = connection.execute(text(sql), {"thisgroupe": groupe})
-    return observersParser(req)
+def getGroupeObservers(groupe):
+    subquery = select(VmTaxons.cd_ref).filter(VmTaxons.group2_inpn == groupe)
+    req = select(distinct(VmObservations.observateurs).label("observateurs")).filter(
+        VmObservations.cd_ref.in_(subquery)
+    )
+    results = db.session.execute(req).all()
+    return observersParser(results)
 
 
-def getObserversCommunes(connection, insee):
-    sql = """
-        SELECT DISTINCT observateurs
-        FROM atlas.vm_observations
-        WHERE insee = :thisInsee
-    """
-    req = connection.execute(text(sql), {"thisInsee": insee})
-    return observersParser(req)
+def getObserversArea_bis(id_area):
+    req = (
+        select(distinct(VmObservations.observateurs).label("observateurs"))
+        .join(VmCorAreaSynthese, VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
+        .filter(VmCorAreaSynthese.id_area == id_area)
+    )
+    results = db.session.execute(req).all()
+    return observersParser(results)
 
 
-def statIndex(connection):
+def statIndex():
     result = {"nbTotalObs": None, "nbTotalTaxons": None, "town": None, "photo": None}
-    sql = """
-        SELECT COUNT(*) AS count
-        FROM atlas.vm_observations;
-    """
-    req = connection.execute(text(sql))
-    for r in req:
+    req = select(func.count(VmObservations.id_observation).label("count"))
+    results = db.session.execute(req).all()
+    for r in results:
         result["nbTotalObs"] = r.count
 
-    sql = """
-        SELECT COUNT(*) AS count
-        FROM atlas.vm_communes
-    """
-    req = connection.execute(text(sql))
-    for r in req:
+    type_code = current_app.config["TYPE_TERRITOIRE_SHEET"]
+    req = select(func.count(VmAreasWithObs.id_area).label("count")).filter(
+        VmAreasWithObs.type_code.in_(type_code)
+    )
+    results = db.session.execute(req).all()
+    for r in results:
         result["town"] = r.count
 
-    sql = """
-        SELECT COUNT(DISTINCT cd_ref) AS count
-        FROM atlas.vm_taxons
-    """
-    connection.execute(text(sql))
-    req = connection.execute(text(sql))
-    for r in req:
+    req = select(func.count(distinct(VmTaxons.cd_ref)).label("count"))
+    results = db.session.execute(req).all()
+    for r in results:
         result["nbTotalTaxons"] = r.count
 
-    sql = """
-        SELECT COUNT (DISTINCT id_media) AS count
-        FROM atlas.vm_medias m
-        JOIN atlas.vm_taxons t ON t.cd_ref = m.cd_ref
-        WHERE id_type IN (:id_type1, :id_type2)
-    """
-    req = connection.execute(
-        text(sql),
-        {
-            "id_type1": current_app.config["ATTR_MAIN_PHOTO"],
-            "id_type2": current_app.config["ATTR_OTHER_PHOTO"],
-        },
+    id_type1 = current_app.config["ATTR_MAIN_PHOTO"]
+    id_type2 = current_app.config["ATTR_OTHER_PHOTO"]
+    req = (
+        select(func.count(distinct(VmMedias.id_media)).label("count"))
+        .join(VmTaxons, VmTaxons.cd_ref == VmMedias.cd_ref)
+        .filter(VmMedias.id_type.in_([id_type1, id_type2]))
     )
-    for r in req:
+    results = db.session.execute(req).all()
+    for r in results:
         result["photo"] = r.count
     return result
 
 
-def genericStat(connection, tab):
+def genericStat(tab):
     tabStat = list()
     for pair in tab:
         rang, nomTaxon = list(pair.items())[0]
-        sql = """
-            SELECT COUNT (o.id_observation) AS nb_obs,
-            COUNT (DISTINCT t.cd_ref) AS nb_taxons
-            FROM atlas.vm_taxons t
-            JOIN atlas.vm_observations o ON o.cd_ref = t.cd_ref
-            WHERE t.{rang} IN :nomTaxon
-        """.format(
-            rang=rang
+        # Accès dynamique à la colonne VmTaxons.rang
+        colonne_rang = getattr(VmTaxons, rang)
+        req = (
+            select(
+                func.count(distinct(VmObservations.id_observation)).label("nb_obs"),
+                func.count(distinct(VmTaxons.cd_ref)).label("nb_taxons"),
+            )
+            .join(VmObservations, VmObservations.cd_ref == VmTaxons.cd_ref)
+            .filter(colonne_rang.in_(nomTaxon))
         )
-        req = connection.execute(text(sql), {"nomTaxon": tuple(nomTaxon)})
-        for r in req:
+        results = db.session.execute(req).all()
+        for r in results:
             temp = {"nb_obs": r.nb_obs, "nb_taxons": r.nb_taxons}
             tabStat.append(temp)
     return tabStat
 
 
-def genericStatMedias(connection, tab):
+def genericStatMedias(tab):
     tabStat = list()
     for i in range(len(tab)):
         rang, nomTaxon = list(tab[i].items())[0]
-        sql = """
-            SELECT t.nb_obs, t.cd_ref, t.lb_nom, t.nom_vern, t.group2_inpn,
-                m.url, m.chemin, m.auteur, m.id_media
-            FROM atlas.vm_taxons t
-            JOIN atlas.vm_medias m ON m.cd_ref = t.cd_ref AND m.id_type = 1
-            WHERE t.{} IN :nomTaxon
-            ORDER BY RANDOM()
-            LIMIT 10
-        """.format(
-            rang
+        colonne_rang = getattr(VmTaxons, rang)
+        req = (
+            select(
+                VmTaxons.nb_obs,
+                VmTaxons.cd_ref,
+                VmTaxons.lb_nom,
+                VmTaxons.nom_vern,
+                VmTaxons.group2_inpn,
+                VmMedias.url,
+                VmMedias.chemin,
+                VmMedias.auteur,
+                VmMedias.id_media,
+            )
+            .join(VmMedias, (VmMedias.cd_ref == VmTaxons.cd_ref) & (VmMedias.id_type == 1))
+            .filter(colonne_rang.in_(nomTaxon))
+            .order_by(func.random())
+            .limit(10)
         )
-        req = connection.execute(text(sql), {"nomTaxon": tuple(nomTaxon)})
+        results = db.session.execute(req).all()
         tabStat.insert(i, list())
-        for r in req:
+        for r in results:
             shorterName = None
             if r.nom_vern != None:
                 shorterName = r.nom_vern.split(",")
@@ -307,29 +286,34 @@ def genericStatMedias(connection, tab):
         return tabStat
 
 
-def getLastDiscoveries(connection):
-    sql = """
-        WITH t AS (
-            SELECT date(min(vo.dateobs)) date, vo.cd_ref
-            FROM atlas.vm_observations vo
-            GROUP BY vo.cd_ref
-            ORDER BY date desc
+def getLastDiscoveries():
+    id_type = current_app.config["ATTR_MAIN_PHOTO"]
+    subreq = (
+        select(func.date(func.min(VmObservations.dateobs)).label("date"), VmObservations.cd_ref)
+        .group_by(VmObservations.cd_ref)
+        .order_by(func.date(func.min(VmObservations.dateobs)).desc())
+        .subquery("t")
+    )
+    req = (
+        select(
+            subreq.c.date,
+            subreq.c.cd_ref,
+            VmTaxref.lb_nom,
+            VmTaxref.nom_vern,
+            VmMedias.id_media,
+            VmMedias.chemin,
+            VmMedias.url,
+            VmTaxref.group2_inpn,
         )
-        SELECT t.date, t.cd_ref, vt.lb_nom, vt.nom_vern, m.id_media, m.chemin, m.url, vt.group2_inpn
-        FROM t
-        JOIN atlas.vm_taxref vt ON t.cd_ref = vt.cd_nom
-        LEFT JOIN atlas.vm_medias m ON m.cd_ref=t.cd_ref and m.id_type = :thisidtype
-        WHERE id_rang = 'ES'
-        ORDER BY t.date desc
-        LIMIT 6
-    """
-    req = connection.execute(text(sql), {"thisidtype": current_app.config["ATTR_MAIN_PHOTO"]})
+        .join(VmTaxref, VmTaxref.cd_nom == subreq.c.cd_ref)
+        .outerjoin(VmMedias, (VmMedias.cd_ref == subreq.c.cd_ref) & (VmMedias.id_type == id_type))
+        .filter(VmTaxref.id_rang == "ES")
+        .order_by(subreq.c.date.desc())
+        .limit(6)
+    )
+    results = db.session.execute(req).all()
     lastDiscoveriesList = list()
-    for r in req:
-        shorterName = None
-        if r.nom_vern != None:
-            shorterName = r.nom_vern.split(",")
-            shorterName = shorterName[0]
+    for r in results:
         temp = {
             "date": r.date,
             "cd_ref": r.cd_ref,
@@ -337,7 +321,7 @@ def getLastDiscoveries(connection):
             "lb_nom": r.lb_nom,
             "id_media": r.id_media,
             "group2_inpn": utils.deleteAccent(r.group2_inpn),
-            "media_path": utils.findPath(r),
+            "media_path": r.chemin if r.chemin is not None else r.url,
         }
         lastDiscoveriesList.append(temp)
     return lastDiscoveriesList

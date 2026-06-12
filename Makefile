@@ -36,10 +36,20 @@ messages:
 .PHONY: compile_messages
 compile_messages:
 	$(call display_cmd, Apply translations)
-	$(DIR_BIN)pybabel compile -d atlas/translations
+	$(DIR_BIN)pybabel compile -f -d atlas/translations
+	$(DIR_BIN)pybabel compile -f -d atlas/static/custom/translations_override
+
+
+test:
+	$(call display_cmd, Run pytest)
+	$(DIR_BIN)pytest -q
+
+
 
 define display_cmd
 	@$(PRINT_COLOR) "\n$(COLOR_SUCCESS) ########################## $(COLOR_RESET)\n"
 	@$(PRINT_COLOR) "$(COLOR_SUCCESS) ### $(1) $(COLOR_RESET)\n"
 	@$(PRINT_COLOR) "$(COLOR_SUCCESS) ########################## $(COLOR_RESET)\n\n"
 endef
+
+

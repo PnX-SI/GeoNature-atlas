@@ -1,6 +1,7 @@
 Gestion des cookies et RGPD
 ===========================
 
+
 Cette section explique comment ajouter des outils de collecte de cookies (Google Analytics par exemple) tout en respectant le RGPD. GeoNature-atlas utilise pour cela une librairie permettant de recueillir le consentement des utilisateurs : Orejime.
 
 À quoi sert le RGPD
@@ -13,7 +14,7 @@ Par exemple, Google Analytics permet de suivre le trafic de consultation d'un si
 Où configurer l'application
 ---------------------------
 
-Veuillez d'abord à bien récupérer le contenu du fichier ``footer.html.sample`` dans votre fichier ``footer.html`` si vous aviez GeoNature-atlas avant la version 1.7.0.
+Veuillez d'abord à bien récupérer le contenu du fichier ``static/sample/templates/footer.html`` dans votre fichier ``static/custom/templates/footer.html`` si vous aviez GeoNature-atlas avant la version 1.7.0.
 
 Dans le fichier ``atlas/configuration/config.py`` :
 

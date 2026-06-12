@@ -11,29 +11,20 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     permissions:
-      packages: write  # required to publish docker image
+      packages: write
 
     env:
       REGISTRY: ghcr.io
-      IMAGE_NAME: ${{ github.repository }}
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          submodules: ${{ ! (github.event_name == 'release' && github.event.action == 'published') }}
+        uses: actions/checkout@v4
+
+      - name: Set IMAGE_NAME
+        run: echo "IMAGE_NAME=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=ref,event=branch
-            type=ref,event=tag
 
       - name: Login to GHCR
         uses: docker/login-action@v3
@@ -42,12 +33,40 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: Build and export
+
+      #######################################################################
+      # RELEASE → build PROD image
+      #######################################################################
+      - name: Build & Push PROD image (release)
+        if: github.event_name == 'release' && github.event.action == 'published'
         uses: docker/build-push-action@v5
         with:
           context: .
           target: prod
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.event.release.tag_name }}
+
+      #######################################################################
+      # DEVELOP → build DEV + PREPROD images
+      #######################################################################
+      - name: Build & Push DEV image (develop)
+        if: github.ref == 'refs/heads/develop'
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          target: dev
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:dev
+
+      - name: Build & Push PREPROD image (develop)
+        if: github.ref == 'refs/heads/develop'
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          target: preprod
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:preprod

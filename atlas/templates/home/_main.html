@@ -4,16 +4,15 @@
 
 {% block additionalHeaderAssets %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}"/>
+    <script type="text/javascript">
+        var observations = {{observations|tojson}},
+            observations_mailles = {{observations_mailles|tojson}};
+    </script>
 {% endblock %}
 
 {% block additionalFooterAssets %}
-    <script type="text/javascript">
-        var observations = {{observations|tojson}},
-            configuration = {{configuration|tojson}},
-            url_limit_territory = "{{url_for('static', filename='custom/territoire.json') }}";
-    </script>
     <script src="{{ url_for('static', filename='main.js') }}"></script>
-    {% if configuration.AFFICHAGE_DERNIERES_OBS %}
+    {% if configuration.AFFICHAGE_DERNIERES_OBS or configuration.AFFICHAGE_TERRITOIRE_OBS %}
         <script src="{{ url_for('static', filename='custom/maps-custom.js') }}"></script>
         <script src="{{ url_for('static', filename='mapGenerator.js') }}"></script>
         <script src="{{ url_for('static', filename='mapHome.js') }}"></script>
@@ -28,11 +27,13 @@
             $(".lazy").lazy();
         });
     </script>
-<script src="{{ url_for('static', filename='index.js') }}"></script>
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
 
     {% if personal_data %}
         <script>
-            $("#modalPersonalData").modal('show');
+            document.addEventListener('DOMContentLoaded', function () {
+                $("#modalPersonalData").modal('show');
+            });
         </script>
     {% endif %}
 
@@ -40,10 +41,10 @@
 
 
 {% block content %}
-    <div class="container-fluid">
+    <div>
         <!-- Introduction -->
         {% if configuration.AFFICHAGE_INTRODUCTION %}
-            <div class="mt-4">
+            <div>
                 {% include 'static/custom/templates/introduction.html' %}
             </div>
         {% endif %}
@@ -66,6 +67,11 @@
         {% if configuration.AFFICHAGE_DERNIERES_OBS %}
             <!-- Dernières espèces observées (Carte et liste) -->
             {% include 'templates/home/lastObs.html' %}
+        {% endif %}
+
+        {% if configuration.AFFICHAGE_TERRITOIRE_OBS %}
+            <!-- Toutes les espèces observées sur le territoire (Carte et liste) -->
+            {% include 'templates/home/territory.html' %}
         {% endif %}
 
         {% if configuration.AFFICHAGE_NOUVELLES_ESPECES %}

@@ -13,9 +13,18 @@ footer {
 }
 
 #taxonList {
-  flex: 1 1 0;
-  overflow-y: auto;
-  min-height: 10rem;
+    flex-direction: column;
+    flex: 1 1 0;
+    overflow-y: auto;
+    min-height: 25rem;
+
+}
+
+#list-taxon-loader-spinner {
+    align-self: center;
+    width: 3rem;
+    height: 3rem;
+    display: none;
 }
 
 
@@ -33,6 +42,12 @@ footer {
 
 #map {
     height: 600px;
+
+    section .leaflet-control-layers.leaflet-control {
+        margin-top: 0;
+        max-height: 60vh;
+        overflow-y: auto;
+    }
 }
 
 #clear {
@@ -125,34 +140,18 @@ ul#statHierarchy {
     font-size: 2em;
 }
 
-/* 
-.eye {
-	padding-left: 20%
-}
-
-.displayObs {
-	cursor: pointer;
-}
-*/
-
-#loadingGif {
-    z-index: 1000000;
-    position: absolute;
-    left: 40%;
-    top: 40%;
-}
-
 .hiddenSpan {
     visibility: hidden;
 }
 
 tbody tr:hover {
+    background-color: rgba(var(--main-color-rgb), 0.2) !important;
     /*background-color: #cccccc !important;*/
     cursor: pointer;
 }
 
 tbody tr.current {
-    background-color: #e6e6e6 !important;
+    background-color: rgba(var(--main-color-rgb), 0.4) !important;
     font-weight: bold;
 }
 
@@ -161,11 +160,18 @@ tbody tr.current {
 }
 
 .pictoImgList {
-    width: 80px;
-    background-position: center center;
-    background-size: cover;
-    height: 80px;
     border-radius: 6px;
+}
+
+.pictoImgList.has-media-True {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+
+.pictoImgList.has-media-False {
+    width: 80px;
+    
 }
 
 
@@ -176,32 +182,43 @@ tbody tr.current {
 
 
 @media (max-width: 1200px) {
-  #statHierarchy i {
-      font-size: 2rem;
-      color: red;
-  }
+    #statHierarchy i {
+        font-size: 2rem;
+        color: red;
+    }
 }
 
 
- @media (min-width: 992px and max-width: 1200px) {
-  #statHierarchy i {
+@media (min-width: 992px and max-width: 1200px) {
+#statHierarchy i {
     font-size: 1.5rem;
-      color: green;
-  }
+    color: green;
+}
 }
 
 
- @media screen and (max-width: 768px) {
-  #statHierarchy i {
-    font-size: 1rem;
-      color: blue;
-  }
+@media screen and (max-width: 768px) {
+    #statHierarchy i {
+        font-size: 1rem;
+        color: blue;
+    }
 }
 
 
- @media screen and (max-width: 576px) {
-  #statHierarchy i {
-    font-size: 0.8rem;
-      color: deeppink;
-  }
+@media screen and (max-width: 576px) {
+    #statHierarchy i {
+        font-size: 0.8rem;
+        color: deeppink;
+    }
+}
+
+#groupFilterList {
+    max-height: 500px;
+    overflow-y: scroll;
+}
+
+#nbFilter {
+    position: absolute;
+    top: -30%;
+    right: 0;
 }

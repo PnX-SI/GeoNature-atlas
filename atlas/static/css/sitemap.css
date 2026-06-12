@@ -1,0 +1,26 @@
+#page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .sitemap-section {
+        list-style: none;
+        list-style-position: inside;
+    }
+
+    .sitemap-section-title {
+        font-size: 1.5rem;
+    }
+
+    .sitemap-title {
+        padding: 1rem;
+    }
+
+    .sitemap-link {
+        padding: 1rem;
+    }
+
+    ul {
+        padding:1rem;
+    }
+}

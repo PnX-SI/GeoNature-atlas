@@ -1,78 +1,130 @@
-FROM python:3.9-bullseye AS build
+###############################################
+# 1) BUILD : app wheel
+###############################################
+FROM python:3.11.9-bookworm AS build
 
 ENV PIP_ROOT_USER_ACTION=ignore
 
-RUN --mount=type=cache,target=/root/.cache \
-    pip install --upgrade pip setuptools wheel
-
-FROM build AS build-atlas
-
 WORKDIR /build/
-COPY /setup.py .
-COPY /requirements.in .
-COPY /VERSION .
-COPY /MANIFEST.in .
-COPY /README.rst .
-COPY /LICENSE.txt .
-COPY /atlas ./atlas
-COPY /atlas/configuration/config.py.sample config.py
-RUN python setup.py bdist_wheel
 
+RUN --mount=type=cache,target=/root/.cache \
+    pip install --upgrade pip build
+
+COPY LICENSE.txt MANIFEST.in pyproject.toml README.rst requirements.in VERSION ./
+RUN python -m build
+
+
+
+###############################################
+# 2) NODE : frontend dependancies
+###############################################
 FROM node:alpine AS node
 
-WORKDIR /dist/
-COPY  atlas/static/package*.json .
+WORKDIR /build/
+
+COPY atlas/static/package*.json .
 RUN --mount=type=cache,target=/root/.npm \
     npm ci --omit=dev
 
 
-FROM python:3.9-bullseye AS app
 
-RUN apt-get update -qq && apt-get install -y \
-  postgresql-client
+###############################################
+# 3) BASE : common env (Python + postgresql + assets)
+###############################################
+FROM python:3.11.9-bookworm AS base
+
+ENV PIP_ROOT_USER_ACTION=ignore
+
+RUN apt-get update -qq && apt-get install -y --no-install-recommends \
+    postgresql-client \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
 
 RUN --mount=type=cache,target=/root/.cache \
-    pip install --upgrade pip setuptools wheel
+    pip install --upgrade pip setuptools wheel && \
+    pip install -r requirements.txt
 
 WORKDIR /dist/
 
-ENV PIP_ROOT_USER_ACTION=ignore
+# Copie des assets, data et configuration
+COPY data data
+COPY atlas/configuration atlas/configuration
+COPY atlas/static atlas/static
+COPY atlas/templates atlas/templates
+COPY atlas/translations atlas/translations
+COPY --from=node /build/node_modules atlas/static/node_modules
+
+# Copie des scripts d’installation
+COPY install install
+RUN cp atlas/configuration/settings.ini.sample atlas/configuration/settings.ini
+RUN chmod +x install/install_app.sh
+RUN ./install/install_app.sh --docker
+
+
+ENV ATLAS_SETTINGS=/dist/atlas/configuration/config.py
+ENV ATLAS_STATIC_FOLDER=/dist/atlas/static
+# WARNING: ATLAS_TEMPLATE_FOLDER must indicate the parent folder of the templates/ folder !
+ENV ATLAS_TEMPLATE_FOLDER=/dist/atlas/
+ENV ATLAS_BABEL_TRANSLATION_DIRECTORIES=/dist/atlas/translations;/dist/atlas/static/custom;
+
+
+
+###############################################
+# 4) PREPROD : code source + gunicorn
+###############################################
+FROM base AS preprod
+
+WORKDIR /dist/
+
+COPY . .
+
+RUN --mount=type=cache,target=/root/.cache \ 
+    pip install -e ".[dev]"
+
+
+ENV FLASK_ENV=production
+
+EXPOSE 8080
+CMD ["gunicorn", "-b", "0.0.0.0:8080", "atlas.app:create_app()"]
+
+
+
+###############################################
+# 5) PROD : wheels uniquement + gunicorn
+###############################################
+FROM base AS prod
+
+WORKDIR /dist/
+
+COPY --from=build /build/dist/*.whl .
 RUN --mount=type=cache,target=/root/.cache \
-    pip install --upgrade pip setuptools wheel
+    pip install --no-deps *.whl
 
-COPY /atlas/static ./static
-COPY /atlas/static/custom ./custom_save
-COPY /atlas/templates ./templates
-COPY /atlas/translations ./translations
-COPY --from=node /dist/node_modules ./static/node_modules
+COPY atlas atlas
 
+ENV FLASK_ENV=production
 
-FROM app AS app-pypi
+EXPOSE 8080
+CMD ["gunicorn", "-b", "0.0.0.0:8080", "atlas.app:create_app()"]
 
 
-COPY /requirements.txt .
+
+###############################################
+# 6) DEV : code source + flask debug
+###############################################
+FROM base AS dev
+
+WORKDIR /dist/
+
+COPY . .
+
 RUN --mount=type=cache,target=/root/.cache \
-    pip install -r requirements.txt
-
-COPY --from=build-atlas /build/dist/*.whl .
-
-RUN --mount=type=cache,target=/root/.cache \
-    pip install *.whl
-
-COPY --chmod=755 ./docker_startup.sh .
-COPY --chmod=755 ./docker_install_atlas_schema.sh .
-COPY data ./data
-
-
-FROM app-pypi AS prod
+    pip install -e ".[dev]"
 
 
 ENV FLASK_APP=app.app:create_app
-ENV ATLAS_SETTINGS=/dist/config/config.py
-ENV ATLAS_STATIC_FOLDER=/dist/static
-ENV ATLAS_TEMPLATE_FOLDER=/dist/
-ENV ATLAS_BABEL_TRANSLATION_DIRECTORIES=/dist/translations
+ENV FLASK_DEBUG=1
 
-EXPOSE 8080
-
-CMD ["./docker_startup.sh"]
+EXPOSE 5000
+CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]

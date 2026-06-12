@@ -1,27 +1,27 @@
 {% block identityCard %}
-	<div class="card mt-4" id="identityCard">
-		<div class=" card-body row" id="rowIdentity">
-			<!-- Logo -->
-			{% if url_logo != none %}
-			<div class="imgWrapper left">
-				{% if url_organism|length > 9 %}
-				<a href="{{ url_organism }}" target="_blank">
-					<img id="mainImg" src='{{ url_logo }}' style="width: 200px;">
-				</a>
-				{% else %}
-					<img id="mainImg" src='{{ url_logo }}' style="width: 200px;">
-				{% endif %}
-			</div>
-			{% endif %}
-			<div class="left col-9  ">
-			<h1>
-				<strong>{{ nom_organism }}</strong>
-			</h1>
-				<br><b>{{ _('Adresse') }}</b> : {{ adresse_organism}}, {{ cp_organism }} {{ ville_organism }}
-				<br><b>{{ _('Téléphone') }}</b> : {{ tel_organism }}
-				<br><b>{{ _('Email') }}</b> : {{ email_organism }}
-				<br><b>{{ _('Site') }}</b> : <a href="{{ url_organism }}" target="_blank">{{ url_organism }}</a>
-			</div>
-		</div>
-	</div>
+    <div class="card mt-4" id="identityCard">
+        <div class="card-body row g-3 align-items-center" id="rowIdentity">
+            <!-- Logo -->
+            {% if url_logo != none %}
+                <div class="col-auto">
+                    {% if url_organism|length > 9 %}
+                        <a href="{{ url_organism }}" target="_blank">
+                            <img id="mainImg" src="{{ url_logo }}" style="width: 200px;" alt="{{ nom_organism }}">
+                        </a>
+                    {% else %}
+                        <img id="mainImg" src="{{ url_logo }}" style="width: 200px;" alt="{{ nom_organism }}">
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <!-- Text Infos -->
+            <div class="col">
+                <h1 class="h4 fw-bold">{{ nom_organism }}</h1>
+                <p class="mb-1"><b>{{ _('Adresse') }}</b> : {{ adresse_organism }}, {{ cp_organism }} {{ ville_organism }}</p>
+                <p class="mb-1"><b>{{ _('Téléphone') }}</b> : {{ tel_organism }}</p>
+                <p class="mb-1"><b>{{ _('Email') }}</b> : {{ email_organism }}</p>
+                <p class="mb-0"><b>{{ _('Site') }}</b> : <a href="{{ url_organism }}" target="_blank">{{ url_organism }}</a></p>
+            </div>
+        </div>
+    </div>
 {% endblock %}

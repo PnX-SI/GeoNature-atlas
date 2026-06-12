@@ -1,0 +1,24 @@
+// Fonction style d'affichage des points dans la fiche espèce
+// Voir documentation leaflet pour customiser davantage l'affichage des points: http://leafletjs.com/reference-1.3.0.html#circlemarker-option
+// eslint-disable-next-line no-unused-vars
+var customizeMarkerStyle = (customizeMarkerStyle = function (feature) {
+    return {
+        color:
+            feature.properties.cd_sensitivity < 5 ||
+            feature.properties.cd_sensitivity !== null
+                ? "#3388ff"
+                : "#3A9D23",
+    };
+});
+
+// Légende des points dans la fiche espèce
+// eslint-disable-next-line no-unused-vars
+var divLegendeFicheEspece = (divLegendeFicheAreaHome =
+    '\
+    <p><div>\
+        <i class="circle" style="border: 3px solid #3A9D23; border-radius: 50%; width: 20px; height: 20px;"></i>Dégradées\
+    </div></p>\
+    <p><div>\
+        <i class="circle" style="border: 3px solid #3388ff; border-radius: 50%; width: 20px; height: 20px;"></i>Non dégradées\
+    </div></p>\
+');

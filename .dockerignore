@@ -1,0 +1,9 @@
+
+# Atlas custom files
+atlas/static/custom/*.*
+atlas/static/custom/images/*.*
+atlas/static/custom/templates/*.*
+
+# python packages
+venv/
+atlas/static/node_modules/

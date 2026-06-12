@@ -1,15 +1,16 @@
-# ................................
-#  GeoNature-atlas
-#  PostgreSQL database settings
-# ................................
+#+-------------------------------------------------------------------------------------------------+
+#  GeoNature-atlas : application de visualisation cartographique des données naturalistes
+#  Paramètres de configuration des scripts d'installation de l'application.
+#+-------------------------------------------------------------------------------------------------+
 
-# Effacer la base de données existante lors de l'installation
-drop_apps_db=false
+#+-------------------------------------------------------------------------------------------------+
+# Base de données PostgreSQL/PostGIS
+#+-------------------------------------------------------------------------------------------------+
 
 # Host de la base de données de l'application
 db_host=localhost
 
-# Port pour base de données de l'application
+# Port pour la base de données de l'application
 db_port=5432
 
 # Nom de la base de données de l'application
@@ -27,23 +28,24 @@ owner_atlas=geonatadmin
 # Password du propriétaire de la BDD
 owner_atlas_pass=monpassachanger
 
-#################################################
-##### Configuration de GN-atlas avec un GN ######
-#################################################
-
-# GeoNature-atlas est-il connecté à une BDD GeoNature ? Si oui, renseignez true
+# GeoNature-atlas doit-il être connecté à une BDD GeoNature externe ? Si oui, renseignez true.
+# Cela créera des tables en Foreign Data Wrapper (FDW) dans la BDD de GeoNature-atlas.
 geonature_source=true
 
+# Table ou vue où sont stockées les données dans la BDD GeoNature
+# Par défaut ce sont toutes les observations la table `gn_synthese.synthese` qui sont récupérées
+# Il est possible de fournir une vue filtrée des données qu'on souhaite afficher dans l'atlas
+# La vue doit alors être dans le schéma `gn_synthese`. Par ex : `gn_synthese.v_synthese_atlas_custom`
+observation_data_source=gn_synthese.synthese
 
-################################################
-##### CONNEXION A LA BDD GEONATURE SOURCE ######
-################################################
+#+-------------------------------------------------------------------------------------------------+
+# Connexion à la BDD GeoNature source
+#+-------------------------------------------------------------------------------------------------+
 
-# Paramètres de connexion à la BDD source GeoNature et/ou Taxhub en foreign data wrapper
-# Si vous n'utilisez pas GeoNature, pour les données d'observation, vous pouvez vous inspirer du fichier data/atlas_geonature.sql
-# pour vous connecter à une autre BDD mère
+# 🗒 Paramètres de connexion à la BDD source GeoNature en Foreign Data Wrapper.
 
 # Host de la BDD GeoNature source
+# Dans un contexte docker, si la BDD est sur le même serveur que l'hôte et hors docker, rechercher son IP via `docker network inspect bridge | grep Gateway`
 db_source_host=localhost
 
 # Port de la BDD GeoNature source
@@ -53,7 +55,7 @@ db_source_port=5432
 db_source_name=geonature2db
 
 # Nombre d'éléments à récupérer par lot en Foreign Data Wrapper (défaut 100)
-# Note : utiliser 1000000 pour une table synthese avec plusieurs millions d'observations.
+# 🗒 Note : utiliser 1000000 pour une table synthese avec plusieurs millions d'observations.
 db_source_fetch_size=100
 
 # Nom de l'utilisateur atlas dans la BDD GeoNature source (lecture seule)
@@ -62,60 +64,70 @@ atlas_source_user=geonatatlas
 # Pass de l'utilisateur atlas dans la BDD GeoNature source (lecture seule)
 atlas_source_pass=monpassachanger
 
-#############################
-### Données GEOGRAPHIQUES ###
-#############################
 
-########### Si ref_geo = true ############
+#+-------------------------------------------------------------------------------------------------+
+# Paramètres des données géographiques
+#+-------------------------------------------------------------------------------------------------+
 
-# Voir la colonne type_code de la table ref_geo.bib_areas_type
-# Indiquer le code des entités géographiques du ref_geo qui correspondent respectivement aux mailles et aux limites de votre territoire
-# Les données doivent préalablement être présentes dans le ref_geo
-type_maille="'M1'"
-type_territoire="'PEC'"
+# 🗒 Voir la colonne "type_code" de la table "ref_geo.bib_areas_type" pour
+# tous les codes de type de zone geographique renseignés ci-dessous
 
+# Types de zonage à utiliser dans l'application pour générer des fiches territoires.
+# 🗒 Voir la colonne "type_code" de la table "ref_geo.bib_areas_type".
+# ATTENTION : ne pas mettre d'espace entre les valeurs
+type_code="COM"
+#type_code="COM,EPCI"
 
-# Altitudes
-# lister les valeurs des classes d'altitudes
-# si non spécifié les valeurs par défaut seront (0 500 1000 1500 2000 2500 3000 3500 4000)
+# Type de zonage à utiliser pour les observations non sensibles.
+# Utilisé pour agréger les observations non sensibles dans des mailles.
+# 🗒 Voir la colonne "type_code" de la table "ref_geo.bib_areas_type".
+type_maille="M5"
+
+# Altitudes : lister les valeurs des classes d'altitudes.
+# Si non spécifié, les valeurs par défaut seront (0 500 1000 1500 2000 2500 3000 3500 4000)
 altitudes=(0 500 1000 1500 2000 2500 3000 3500 4000)
 
-############################
-### Données TAXONOMIQUES ###
-############################
+#+-------------------------------------------------------------------------------------------------+
+# Paramètres des données taxonomiques
+#+-------------------------------------------------------------------------------------------------+
 
-#### Liste des codes des types des attributs décrivant les taxons 
-# Les codes correspondent aux valeurs du champs `taxonomie.bib_attributs.nom_attribut`.
-#Ces attributs sont affichés dans le bloc de droite de la fiche espèce (descriptions, commentaire etc...)
-## !! si changement: modifier également dans main/configuration/config.py
-# Les codes doivent être séparé par des virgules, sans espaces et placés entre guillemets simples.
-taxhub_displayed_attr="'atlas_description','atlas_commentaire','atlas_milieu','atlas_chorologie'"
-
-# Paramètre pour la vue atlas.vm_taxons_plus_observes
-# Especes les plus observées sur la periode 'moins X jour, plus X jours par rapport à la date du jour, toutes années confondues'
-# 15 jours par défaut
+# Especes les plus observées sur la periode 'moins X jour, plus X jours par rapport
+# à la date du jour, toutes années confondues'.
+# Paramètre utilisé pour la vue "atlas.vm_taxons_plus_observes".
+# Unité : en jours.
+# Par défaut : 15 jours.
 time=15
 
-##################################################
-########## Paramatre administrateur avancé #######
-##################################################
+#+-------------------------------------------------------------------------------------------------+
+# CONFIGURATION DOCKER
+#+-------------------------------------------------------------------------------------------------+
 
-# Ne modifier que si vous savez ce que vous faites
+GEONATURE_ATLAS_DOCKER_IMAGE="ghcr.io/pnx-si/geonature-atlas:latest"
 
+# Chemin vers le fichier de config (config.py)
+# ATLAS_SETTINGS
+# Répertoire des fichiers static
+# ATLAS_STATIC_FOLDER
+# Répertoire des templates
+# ATLAS_TEMPLATE_FOLDER
 
-#####################
-### Gunicorn settings
-#####################
+COMPOSE_FILE=docker-compose.yml
+# for dev : 
+#COMPOSE_FILE=docker-compose.yml:docker-compose.override-dev.yml
 
+#+-------------------------------------------------------------------------------------------------+
+# Paramètres administrateur avancés (⚠ ne modifier que si vous savez ce que vous faites !)
+#+-------------------------------------------------------------------------------------------------+
+
+# Si plusieurs instances de GeoNature-atlas sont installées sur le même serveur :
+# Personnaliser `service_desc`, `gun_proc_name` et `gun_host` ci-dessous. 
+# Ceci afin d'éviter les conflits de ports et de noms de processus.
+
+service_desc="GeoNature-Atlas"
+
+# Parmètres Gunicorn
+gun_proc_name=geonature-atlas 
 gun_num_workers=4
 gun_host=0.0.0.0
 gun_port=8080
 gun_timeout=60
-
-####################
-### Python settings
-####################
-
-venv_dir=venv
-# L'atlas est compatible avec Python 3, préferez donc l'utilisation de Python 3.X
-python_executable=/usr/bin/python3

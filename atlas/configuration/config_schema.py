@@ -1,6 +1,7 @@
 from marshmallow import (
     Schema,
     fields,
+    validate,
     validates_schema,
     ValidationError,
     validates_schema,
@@ -111,6 +112,9 @@ class SecretSchemaConf(Schema):
 
 
 class MapConfig(Schema):
+    class Meta:
+        unknown = EXCLUDE
+
     LAT_LONG = fields.List(fields.Float(), load_default=[44.7952, 6.2287])
     MIN_ZOOM = fields.Integer(load_default=1)
     MAX_BOUNDS = fields.List(fields.List(fields.Float()), load_default=[[-180, -90], [180, 90]])
@@ -118,13 +122,33 @@ class MapConfig(Schema):
     SECOND_MAP = fields.Dict(load_default=MAP_2)
     ZOOM = fields.Integer(load_default=10)
     STEP = fields.Integer(load_default=1)
-    BORDERS_COLOR = fields.String(load_default="#000000")
-    BORDERS_WEIGHT = fields.Integer(load_default=3)
     ENABLE_SLIDER = fields.Boolean(load_default=True)
     ENABLE_SCALE = fields.Boolean(load_default=True)
-    MASK_STYLE = fields.Dict(
-        load_default={"fill": False, "fillColor": "#020202", "fillOpacity": 0.3}
-    )
+
+
+class CouchesSigConfig(Schema):
+    name = fields.Str(required=True)
+    type = fields.Str(required=True, validate=validate.OneOf(["wms", "geojson"]))
+    url = fields.Str(required=True)
+    pages = fields.List(fields.Str(validate=validate.OneOf(["index", "ficheEspece", "area"])))
+    groups2_inpn = fields.List(fields.Str())
+    options = fields.Dict()
+    style = fields.Dict()
+    wms_version = fields.String()
+    selected = fields.Bool(load_default=False)
+
+    @validates_schema
+    def layer_required_for_wms_type(self, data, **kwargs):
+        if data["type"] == "wms" and (
+            (not data.get("options").get("layers") and not data.get("options").get("layers") == 0)
+            or not data.get("options").get("wms_version")
+        ):
+            raise ValidationError("'layers' and 'wms_version' are required for type 'wms'")
+
+
+class MediaTypeImportantLink(Schema):
+    type_media_id = fields.Integer(required=True)
+    icon = fields.String(required=False)
 
 
 class AtlasConfig(Schema):
@@ -149,13 +173,83 @@ class AtlasConfig(Schema):
     OREJIME_TRANSLATIONS = fields.Dict(load_default=orijime_default_translations)
     AFFICHAGE_STAT_GLOBALES = fields.Boolean(load_default=True)
     AFFICHAGE_DERNIERES_OBS = fields.Boolean(load_default=True)
+    AFFICHAGE_TERRITOIRE_OBS = fields.Boolean(load_default=False)
     AFFICHAGE_EN_CE_MOMENT = fields.Boolean(load_default=True)
     AFFICHAGE_RANG_STAT = fields.Boolean(load_default=True)
     AFFICHAGE_NOUVELLES_ESPECES = fields.Boolean(load_default=True)
+    AFFICHAGE_LABEL_SIDEBAR = fields.Boolean(load_default=False)
     AFFICHAGE_RECHERCHE_AVANCEE = fields.Boolean(load_default=False)
+    AFFICHAGE_GALERIE_PHOTO = fields.Boolean(load_default=True)
     AFFICHAGE_GRAPH_ALTITUDES = fields.Boolean(load_default=True)
     AFFICHAGE_GRAPH_PHENOLOGIE = fields.Boolean(load_default=True)
+    SEARCH_NOMINATIM = fields.Boolean(load_default=False)
+    GEOCODING_QUERY_PARAMS = fields.Dict(
+        load_default={"countrycodes": "FR", "viewbox": "-180,90,180,-90", "bounded": 1}
+    )
+    TYPE_TERRITOIRE_SHEET = fields.List(fields.String(), load_default=["COM"])
+    AREA_PARENTS_TYPE = fields.List(fields.String(), load_default=[])
+    ALTITUDE_RANGES = fields.List(
+        fields.Integer(),
+        load_default=[0, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000],
+    )
+    AFFICHAGE_TOUT_TERRITOIRE_GRAPH = fields.Boolean(load_default=False)
+    AFFICHAGE_GRAPH_PROVENANCE_DONNEE = fields.Boolean(load_default=False)
 
+    AFFICHAGE_STATUTS = fields.Boolean(load_default=True)
+    GROUPES_STATUTS = fields.List(
+        fields.Dict,
+        load_default=[
+            {"label": "Monde", "filters": [{"cd_type_statut": "LRM", "cd_sig": "WORLD"}]},
+            {"label": "Europe", "filters": [{"cd_type_statut": "LRE", "cd_sig": "EUROPE"}]},
+            {
+                "label": "France métropolitaine",
+                "filters": [{"cd_type_statut": "LRN", "cd_sig": "TERFXFR"}],
+            },
+            {
+                "label": "Région",
+                "filters": [{"cd_type_statut": "LRR"}],
+            },
+            {
+                "label": "Protection",
+                "filters": [
+                    {"cd_type_statut": "PN"},
+                    {"cd_type_statut": "PR"},
+                    {"cd_type_statut": "PD"},
+                ],
+            },
+        ],
+    )
+
+    TEMPLATE_MAIN_COLOR = fields.String(load_default="#82c91e")
+    TEMPLATE_SECOND_COLOR = fields.String(load_default="#649b18")
+    COLOR_STACKED_BAR_CHARTS = fields.List(fields.String())
+    COLOR_PIE_CHARTS = fields.List(
+        fields.String(),
+        load_default=[
+            "#E1CE7A",
+            "#FBFFB9",
+            "#FDD692",
+            "#EC7357",
+            "#754F44",
+            "#FB6376",
+            "#B7ADCF",
+            "#DEE7E7",
+            "#F4FAFF",
+            "#383D3B",
+            "#7C7C7C",
+            "#B5F44A",
+            "#D6FF79",
+            "#507255",
+            "#381D2A",
+            "#BA5624",
+            "#FFA552",
+            "#F7FFE0",
+            "#49C6E5",
+            "#54DEFD",
+            "#0B5563",
+            "#54DEFD",
+        ],
+    )
     RANG_STAT = fields.List(
         fields.Dict,
         load_default=[
@@ -169,6 +263,7 @@ class AtlasConfig(Schema):
     )
     LIMIT_RANG_TAXONOMIQUE_HIERARCHIE = fields.Integer(load_default=13)
     LIMIT_FICHE_LISTE_HIERARCHY = fields.Integer(load_default=28)
+    ITEMS_PER_PAGE = fields.Integer(load_default=50)
     REMOTE_MEDIAS_URL = fields.String(load_default="http://mondomaine.fr/taxhub/")
     REDIMENSIONNEMENT_IMAGE = fields.Boolean(load_default=True)
     TAXHUB_URL = fields.String(required=False, load_default=None)
@@ -190,19 +285,12 @@ class AtlasConfig(Schema):
     ATTR_YOUTUBE = fields.Integer(load_default=7)
     ATTR_DAILYMOTION = fields.Integer(load_default=8)
     ATTR_VIMEO = fields.Integer(load_default=9)
-    PROTECTION = fields.Boolean(load_default=False)
+    PROTECTION = fields.Boolean(load_default=True)
+    AFFICHAGE_MENACE = fields.Boolean(load_default=True)
     DISPLAY_PATRIMONIALITE = fields.Boolean(load_default=False)
-    PATRIMONIALITE = fields.Dict(
-        load_default={
-            "label": "Patrimonial",
-            "config": {
-                "oui": {
-                    "icon": "custom/images/logo_patrimonial.png",
-                    "text": "Ce taxon est patrimonial",
-                }
-            },
-        }
-    )
+    AFFICHAGE_TAB_AREA_GENERAL_PRESENTATION = fields.Boolean(load_default=True)
+    AFFICHAGE_TAB_AREA_OBS_ESPECES = fields.Boolean(load_default=True)
+
     STATIC_PAGES = fields.Dict(
         load_default={
             "presentation": {
@@ -215,6 +303,8 @@ class AtlasConfig(Schema):
     )
 
     AFFICHAGE_MAILLE = fields.Boolean(load_default=False)
+    COULEUR_CONTOUR_MAILLE = fields.String(load_default="transparent")
+    LIMIT_POINT_MAILLE = fields.Integer(load_default=500)
     ZOOM_LEVEL_POINT = fields.Integer(load_default=11)
     LIMIT_CLUSTER_POINT = fields.Integer(load_default=1000)
     NB_DAY_LAST_OBS = fields.String(load_default="7")
@@ -223,6 +313,7 @@ class AtlasConfig(Schema):
         load_default="Les observations des agents ces 7 derniers jours |"
     )
     MAP = fields.Nested(MapConfig, load_default=dict())
+    COUCHES_SIG = fields.List(fields.Nested(CouchesSigConfig), load_default=list())
     # coupe le nom_vernaculaire à la 1ere virgule sur les fiches espèces
     SPLIT_NOM_VERN = fields.Boolean(load_default=True)
     INTERACTIVE_MAP_LIST = fields.Boolean(load_default=True)
@@ -232,8 +323,12 @@ class AtlasConfig(Schema):
     # Defaults to False to have the best performance in production
     TEMPLATES_AUTO_RELOAD = fields.Boolean(allow_none=True)
 
+    TYPES_MEDIAS_LENS_FOCUS = fields.List(fields.Nested(MediaTypeImportantLink), load_default=None)
+
+    DISPLAY_ZONING_PAGE_SENSIBILITY_MESSAGE = fields.Boolean(load_default=False)
+
     @validates_schema
-    def validate_url_taxhub(self, data, **kwargs):
+    def validate_config(self, data, **kwargs):
         """
         TAXHHUB_URL doit être rempli si REDIMENSIONNEMENT_IMAGE = True
         """
@@ -247,5 +342,20 @@ class AtlasConfig(Schema):
         # Set APPLICATION_ROOT Flask parameter (use for url_for etc...) https://flask.palletsprojects.com/en/stable/config/#APPLICATION_ROOT
         # the parameter is infered from URL_APPLICATION which is widely use in all the application
         url_application = data["URL_APPLICATION"]
-        data["APPLICATION_ROOT"] = url_application if url_application != "/" else "/"
+        if url_application == "":
+            data["APPLICATION_ROOT"] = "/"
+        else:
+            data["APPLICATION_ROOT"] = url_application
+        # AFFICHAGE_DERNIERES_OBS et AFFICHAGE_TERRITOIRE_OBS ne peuvent pas être True en meme temps
+        if data["AFFICHAGE_DERNIERES_OBS"] and data["AFFICHAGE_TERRITOIRE_OBS"]:
+            raise ValidationError(
+                "Les paramètre AFFICHAGE_DERNIERES_OBS et AFFICHAGE_TERRITOIRE_OBS ne peuvent pas être tous les deux à True"
+            )
+        # If COLOR_STACKED_BAR_CHARTS is not set, use a main and second color
+        if "COLOR_STACKED_BAR_CHARTS" not in data:
+            data["COLOR_STACKED_BAR_CHARTS"] = [
+                data["TEMPLATE_MAIN_COLOR"],
+                data["TEMPLATE_SECOND_COLOR"],
+                "#313131",
+            ]
         return data

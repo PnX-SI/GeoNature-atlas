@@ -1,45 +1,50 @@
 # coding: utf-8
 from geoalchemy2.types import Geometry
-from sqlalchemy import Column, Date, Integer, String, Table, Text, ARRAY
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Integer, String, Text, ARRAY, ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from babel.dates import format_datetime
+from atlas.env import db
+from atlas.modeles.entities.vmTaxons import VmTaxons
 
-Base = declarative_base()
+from typing import List
+import datetime
 
 
-class VmObservations(Base):
+class VmObservations(db.Model):
     __tablename__ = "vm_observations"
     __table_args__ = {"schema": "atlas"}
-    id_observation = Column("id_observation", Integer, primary_key=True, unique=True)
-    insee = Column("insee", String(5), index=True)
-    dateobs = Column("dateobs", Date, index=True)
-    observateurs = Column("observateurs", String(255))
-    altitude_retenue = Column("altitude_retenue", Integer, index=True)
-    cd_ref = Column("cd_ref", Integer, index=True)
-    the_geom_point = Column("the_geom_point", Geometry(geometry_type="POINT", srid=4326))
-    geojson_point = Column("geojson_point", Text)
-    diffusion_level = Column("diffusion_level")
+
+    id_observation: Mapped[int] = mapped_column(primary_key=True)
+    dateobs: Mapped[datetime.date] = mapped_column(index=True)
+    observateurs: Mapped[str] = mapped_column(String(255))
+    altitude_retenue: Mapped[int] = mapped_column(index=True)
+    cd_ref: Mapped[int] = mapped_column(ForeignKey("atlas.vm_taxons.cd_ref"), index=True)
+    the_geom_point: Mapped[object] = mapped_column(Geometry(geometry_type="POINT", srid=4326))
+    geojson_point: Mapped[str] = mapped_column(Text)
+    cd_sensitivity: Mapped[str] = mapped_column(String(255))
+    id_dataset: Mapped[int] = mapped_column()
+    taxon: Mapped[VmTaxons] = relationship(VmTaxons)
 
     def as_dict(self):
         return {
+            "dateobs": self.dateobs.strftime("%d-%m-%Y"),
+            "year": self.dateobs.year if self.dateobs else None,
             "id_observation": self.id_observation,
-            "insee": self.insee,
-            "dateobs": str(self.dateobs),
             "observateurs": self.observateurs,
             "altitude_retenue": self.altitude_retenue,
             "cd_ref": self.cd_ref,
-            "diffusion_level": self.diffusion_level,
+            "cd_sensitivity": self.cd_sensitivity,
         }
 
 
-class VmObservationsMailles(Base):
+class VMCorMailleObservation(db.Model):
     """
     Table des observations par maille
     """
 
-    __tablename__ = "vm_observations_mailles"
+    __tablename__ = "vm_cor_maille_observation"
     __table_args__ = {"schema": "atlas"}
-    cd_ref = Column("cd_ref", Integer, primary_key=True, index=True)
-    annee = Column("annee", String(1000), primary_key=True, index=True)
-    id_maille = Column("id_maille", Integer, primary_key=True, index=True)
-    nbr = Column("nbr", Integer)
-    id_observations = Column("id_observations", ARRAY(Integer))
+
+    id_maille: Mapped[int] = mapped_column(primary_key=True)
+    id_observation: Mapped[int] = mapped_column(primary_key=True)
+    type_code: Mapped[str] = mapped_column(String(25))

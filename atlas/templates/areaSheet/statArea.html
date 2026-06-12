@@ -1,0 +1,78 @@
+{% block statsInfos %}
+    <div class="card container stat_card">
+        <h4><b>{{ areaInfos.typeName }} - {{ areaInfos.areaName }}</b></h4>
+        <div class="row row-cols-3 row-cols-lg-auto mt-3">
+            <div class="col text-center mb-3">
+                <i class="fas fa-search"></i>
+                <br><strong>{{ stats_area.nb_obs | pretty }}</strong>
+                <br>{{ _('observations')|lower if stats_area.nb_obs > 1 else _('observation')|lower }}
+            </div>
+            <div class="col text-center mb-3 border-start">
+                <i class="fas fa-leaf"></i>
+                <br><strong>{{ stats_area.nb_species | pretty }}</strong>
+                <br>{{ _('species')|lower if stats_area.nb_species > 1 else _('species')|lower }}
+            </div>
+            <div class="col text-center mb-3 border-start">
+                <i class="fa fa-users"></i>
+                <br><strong>{{ stats_area.nb_observers | pretty }}</strong>
+                <br>{{ _('observers')|lower if stats_area.nb_observers > 1 else _('observer')|lower }}
+            </div>
+
+            <div class="col text-center mb-3 border-start">
+                <i class="fa fa-project-diagram"></i>
+                <br><strong>{{ stats_area.nb_organism }}</strong>
+                <br>{{ _('sources')|lower if stats_area.nb_organism > 1 else _('source')|lower }}
+            </div>
+            <div class="col text-center mb-3 border-start">
+                <i class="fa fa-search"></i>
+                <br><strong>{{ stats_area.yearmin }}</strong>
+                <br>{{ _('first_observation')|lower }}
+            </div>
+            <div class="col text-center mb-3 border-start">
+                <i class="fa fa-search"></i>
+                <br><strong>{{ stats_area.yearmax }}</strong>
+                <br>{{ _('last_observation')|lower }}
+            </div>
+            {% if configuration.PROTECTION %}
+            <div class="col text-center mb-3 border-start">
+                <img class="statut_icon" src="{{ url_for('static', filename='custom/images/protected.png') }}"/>
+                <br><strong>{{ stats_area.nb_taxon_protege }}</strong>
+                <br>{{ _('protected_species')|lower }}
+            </div>
+            {% endif %}
+            {% if configuration.DISPLAY_PATRIMONIALITE %}
+            <div class="col text-center mb-3 border-start">
+                <img class="statut_icon" src="{{ url_for('static', filename='custom/images/logo_patrimonial.png') }}"/>
+                <br><strong>{{ stats_area.nb_taxon_patrimonial }}</strong>
+                <br>{{ _('species')|lower }} {{ _('patrimonial.plural')|lower }}
+            </div>
+            {% endif %}
+            {% if configuration.AFFICHAGE_MENACE %}
+            <div class="col text-center mb-3 border-start">
+                <img class="statut_icon"
+                    src="{{ url_for('static', filename='custom/images/threatened.png') }}"/>
+                <br><strong>{{ stats_area.nb_taxon_menace }}</strong>
+                <br>{{ _('threatened.species')|lower }}
+            </div>
+            {% endif %}
+            {% for area in areaInfos.areasParent %}
+                {% if area.typeCode in configuration.AREA_PARENTS_TYPE %}
+                <div class="col text-center mb-3 border-start">
+                    <i class="fa fa-city"></i>
+                    <br><strong>
+                        <a href="{{ url_for('main.area', id_area=area.areaID) }}">{{ area.areaName }}</a>
+                    </strong>
+                    <br>{{ area.typeName }}
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% if configuration.DISPLAY_ZONING_PAGE_SENSIBILITY_MESSAGE %}
+            <div class="alert alert-warning">
+                <p>
+                    {{_('sensibility_warning_message')}}
+                </p>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

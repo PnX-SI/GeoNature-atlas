@@ -1,0 +1,54 @@
+{% extends "templates/core/layout.html" %}
+
+{% block title %}
+    {{ _('sitemap')|capitalize }}
+{% endblock %}
+
+{% block additionalHeaderAssets %}
+    <!-- Lightbox -->
+    <link href="{{ url_for('static', filename='node_modules/lightbox2/dist/css/lightbox.min.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sitemap.css') }}" />
+{% endblock %}
+
+{% block additionalFooterAssets %}
+
+{% endblock %}
+
+{% block content %}
+    <h1 class="sitemap-title">
+        {{ _('sitemap')|capitalize }}
+    </h1>
+    <ul class="main-color-link">
+        {% for page in pages %}
+            <li class="sitemap-section">
+            {% for item in pages[page] %}
+                {% if pages[page].title and loop.index == 1 %}
+                    <h2 class="sitemap-section-title">
+                        {{ pages[page].title|capitalize }}
+                    </h2>
+                {% else %}
+                    <ul>
+                        {% for val in pages[page][item] %}
+                            <li>
+                                {% if val.label %}
+                                    <a href="{{ val.url }}" class="sitemap-link">{{ val.label|capitalize }}</a>
+                                {% else %}
+                                    <a href="{{ pages[page][item][val].url }}" class="sitemap-link">{{ pages[page][item][val].label }}</a>
+                                {% endif %}
+                                {% if 'species' in pages[page][item][val] %}
+                                    <ul>
+                                        {% for elem in pages[page][item][val]['species'] %}
+                                            <li>
+                                                <a href="{{ elem.url }}" class="sitemap-link">{{ elem.label }}</a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </ul>
+{% endblock %}

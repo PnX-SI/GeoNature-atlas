@@ -1,0 +1,69 @@
+<small class="main-color-link">
+    <a href="{{ url_for('main.index') }}">{{ _('home') }}</a> |
+    <a href="http://www.ecrins-parcnational.fr" target="_blank">{{ configuration.STRUCTURE }}</a> |
+    <a href="javascript:void(0)" role="button"  data-bs-toggle="modal" data-bs-target="#modalCredits">{{ _('credits') }}</a> |
+    <a href="javascript:void(0)" role="button"  data-bs-toggle="modal" data-bs-target="#modalMentions">{{ _('legal') }}</a> |
+    <a title="{{ _('sitemap') }}" href=" {{url_for('main.sitemap_ui')}} ">{{ _('sitemap') }}</a>
+    {% if configuration.AFFICHAGE_RGPD and configuration.OREJIME_APPS | length > 0 %}
+        | <a href="#" data-bs-toggle="modal" data-bs-target="#modalPersonalData">{{ _('personal_data') }}</a>
+        | <a id="preferences-cookies" href="#" onclick="orejime.show()">{{ _('preferences_cookies') }}</a>
+    {% endif %}
+</small>
+
+<div>
+    <small class="text-muted main-color-link">
+        {{ configuration.NOM_APPLICATION }} - {{ _('atlas.fauna.flora') }} {{ _('from1') }} {{ configuration.STRUCTURE }}, {{ now.year }}
+        <br/>
+        {{ _('powered.by') }} <a href="https://github.com/PnX-SI/GeoNature-atlas" target="_blank" rel="noopener noreferrer">GeoNature-atlas</a>,
+        {{ _('developed.by') }} <a href="https://geonature.fr" target="_blank" rel="noopener noreferrer">{{ _('geonature.community') }}</a>
+    </small>
+</div>
+
+<!-- Modal: Crédits -->
+<div class="modal fade text-justify" id="modalCredits" tabindex="-1" aria-labelledby="modalCreditsLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalCreditsLabel">{{ _('credits') }}</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body credits">
+                {% include 'static/custom/templates/credits.html' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Mentions légales -->
+<div class="modal fade text-justify" id="modalMentions" tabindex="-1" aria-labelledby="modalMentionsLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalMentionsLabel">{{ _('legal') }}</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body legal-notices">
+                {% include 'static/custom/templates/mentions-legales.html' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Données personnelles -->
+{% if configuration.AFFICHAGE_RGPD %}
+    <div class="modal fade text-justify" id="modalPersonalData" tabindex="-1" aria-labelledby="modalPersonalDataLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalPersonalDataLabel">{{ _('personal_data') }}</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body personal-data">
+                    {% include 'static/custom/templates/personal-data.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+    <!-- BLOC TRACEURS / ANALYSES VIZA COOKIES -->

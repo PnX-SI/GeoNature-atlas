@@ -1,23 +1,62 @@
 <!doctype html>
 {% if configuration.MULTILINGUAL %}
-<html lang='{{g.lang_code}}'>
+<html lang='{{ current_language }}'>
 {% else %}
-<html lang='{{configuration.DEFAULT_LANGUAGE}}'>
+<html lang='{{ configuration.DEFAULT_LANGUAGE }}'>
 {% endif %}
 <head>
-<base href="{{ configuration.URL_APPLICATION }}">
+    <script type="text/javascript">
+        const configuration = {{configuration|tojson}};
+    </script>
+
+    <!-- get endpoint from blueprint with lang_code (main) otherwise when we access the app from / (without lang_code), 
+    the url_for put the lang_code in query string
+    Use for canonical and alternate URL + in the navbar language selector
+    -->
+    {% set current_page = request.endpoint.split('.')[-1] %}
+    {% set endpoint = 'main.' ~ current_page %}
+    {% set args = request.view_args.copy() if request.view_args else {} %}
+    {% if 'lang_code' in args %}{% set _ = args.pop('lang_code') %}{% endif %}
+
+    {% if configuration.MULTILINGUAL %}
+        {% for language in configuration.AVAILABLE_LANGUAGES %}
+            <link rel="alternate" data-qa="alternate-test" hreflang="{{ language }}" href="{{url_for(request.endpoint, lang_code=language, _external=True, **args)}}">
+        {% endfor %}
+        <link
+                rel="alternate"
+                href="{{url_for(endpoint, _external=True, lang_code=configuration.DEFAULT_LANGUAGE, **args)}}"
+                hreflang="x-default"
+        >
+        <link rel="canonical" href="{{url_for(endpoint, _external=True, lang_code=current_language, **args)}}">
+    {% endif %}
+
+    <base href="{{ configuration.URL_APPLICATION }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>{% block title %}{% endblock %} | {{ configuration.NOM_APPLICATION }} - {{ configuration.STRUCTURE }}</title>
     {% include "templates/core/assets_header.html" %}
+
     <!-- Additional assets -->
-    {% block additionalHeaderAssets %}
-    {% endblock %}
+    {% block additionalHeaderAssets %}{% endblock %}
+    <style>
+        :root {
+            --main-color: {{ configuration.TEMPLATE_MAIN_COLOR }};
+            --second-color: {{ configuration.TEMPLATE_SECOND_COLOR }};
+            --map-maille-border-color: "black";
+        }
+    </style>
     <link rel="stylesheet" href="{{ url_for('static', filename='custom/custom.css') }}"/>
+    
+    <!-- Add all translations in windows.i18n -->
+    <script data-qa="test-lang">
+        window.i18n = {{ translations|tojson|safe }};
+        window.LANGUAGE_PREFIXED_URL_APPLICATION = "{{ configuration.URL_APPLICATION }}" + "{{current_url_prefix}}";
+    </script>
     {% block metaTags %}{% endblock %}
 </head>
 
-<body>
+<body page-name="{{ page_name }}">
+
 <header id="navbar">
     {% include "static/custom/templates/navbar.html" %}
 </header>
@@ -25,27 +64,26 @@
 <sidebar id="sideBar">
     {% include 'templates/core/sideBar.html' %}
 </sidebar>
+
 <main class="d-flex">
 
-    <div class="container-fluid" id="page">
+    <div class="container-fluid">
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}
                     <div id="message">
                         <div id="inner-message"
-                             class="alert alert-warning alert-dismissible fade show position-fixed right"
+                             class="alert alert-warning alert-dismissible fade show position-fixed end-0 top-0 m-3"
                              role="alert">
                             {{ message }}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     </div>
                 {% endfor %}
             {% endif %}
         {% endwith %}
-        {% block content %}
-        {% endblock %}
+
+        {% block content %}{% endblock %}
 
     </div>
 </main>
@@ -59,13 +97,30 @@
 </body>
 
 {% include "templates/core/assets_footer.html" %}
+
 <script>
     {% for type in areas_type_search %}
         $("#searchAreas{{ type.type_code.lower().capitalize() }}").focus(function () {
-            autocompleteSearch("#searchAreas{{ type.type_code.lower().capitalize() }}", "{{ type.type_code}}", 10);
+            autocompleteSearch("#searchAreas{{ type.type_code.lower().capitalize() }}", "{{ type.type_code }}", 10);
         });
     {% endfor %}
 </script>
-{% block additionalFooterAssets %}{% endblock %}
 
+{% block additionalFooterAssets %}{% endblock %}
+<!-- # hack : traduction seulement présente dans le JS donc pas scanné par babel ! -->
+    <div style="display: none;">
+        {{_('number.species')}}
+        {{_('number.species.territory')}}
+        {{_('protected')}}
+        {{_('taxonomic.group')}}
+        {{_('occurrences.number')}}
+        {{_('observers.number')}}
+        {{_('last.observation')}}
+        {{_('inpn.group.3')}}
+        {{_('yes')}}
+        {{_('no')}}
+        {{_('other.species')}}
+        {{_('taxons_export_name')}}
+
+    </div>
 </html>

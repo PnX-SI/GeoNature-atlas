@@ -16,3 +16,101 @@ a.lb-link{
 a.lb-link:hover {
 	box-shadow:0 0 5px #fff;
 }
+
+#page {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+footer {
+    margin-top: 0;
+}
+
+#insertPhotos {
+    flex: 1 1 0;
+    overflow: auto;
+}
+
+.bg-light.text-center.border-bottom.border-end.p-2 {
+    padding: 0.5rem !important; /* réduit le padding */
+}
+
+h1.title {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+#filtresPhotos ul {
+    margin-bottom: 0.5rem;
+}
+
+#nbPhotos {
+    font-size: 1.25rem;
+    margin: 0.5rem 0;
+}
+
+.INPNgroup {
+    max-height: 32px;
+}
+
+#allGroups,
+#orderPhotos,
+#searchPhotos {
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+}
+
+#searchPhotos {
+    width: 20rem;
+}
+
+#orderPhotos {
+    width: 40px;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#orderPhotos i {
+    width: 16px;
+    text-align: center;
+    display: inline-block;
+}
+
+/* .img-wrapper {
+  position: relative;
+  border-radius: 5px;
+  margin: 0px!important;
+  border-radius: 0px!important;
+} */
+
+.gallery-photo-cover {
+    height: 250px;
+
+}
+
+/* override of zoom-effect-wrapper in atlas.css */
+.zoom-effect-wrapper {
+    display: block;
+    height: 250px;
+    position: relative;
+}
+
+footer, #pictoAndSort{
+    display: none!important;
+}
+
+@media (min-width: 768px) {
+    footer, #pictoAndSort {
+        display: block!important
+    }
+}
+
+@media (min-width: 768px) {
+     #pictoAndSort {
+        display: flex!important
+    }
+}
+
+
