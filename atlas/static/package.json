@@ -20,7 +20,7 @@
     "bootstrap-slider": "^7.1.0",
     "chart.js": "^4.4.7",
     "debounce": "^2.2.0",
-    "esbuild": "^0.25.12",
+    "esbuild": "^0.28.1",
     "eve-raphael": "^0.5.0",
     "jquery": "^3.6.0",
     "jquery-lazy": "^1.7.9",
