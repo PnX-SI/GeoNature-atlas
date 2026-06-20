@@ -157,6 +157,15 @@ git push <mon_remote> feature/ma-nouvelle-fonctionnalite
 - Répondez aux commentaires et effectuez les modifications demandées
 - Une fois approuvée, votre PR sera mergée dans `develop`
 
+### 7. Utilisation de l'IA
+
+Si vous utilisez l'aide de l'IA pour votre contribution : 
+
+- Vous devez mentionner que vous avez utilisé l'assistance de l' IA pour produire une partie ou la totalité de cette contribution
+- Vous devez avoir lu, revu et compris le code que vous soumettez
+- Vous pouvez expliquer et discuter de votre travail avec un mainteneur
+- Vous devez coller le prompt utilisé et mentionné le modèle utilisé dans la description de la pull request
+
 (test)=
 ## Tests automatisés
 
