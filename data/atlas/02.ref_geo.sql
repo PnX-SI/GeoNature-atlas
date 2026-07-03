@@ -89,3 +89,7 @@ CREATE INDEX ON atlas.vm_cor_areas
 
 CREATE INDEX ON atlas.vm_cor_areas
     USING btree (id_area);
+
+-- TODO: decide whether to keep the two indexes defined just above
+CREATE UNIQUE INDEX ON atlas.vm_cor_areas
+    USING btree (id_area_parent, id_area);
