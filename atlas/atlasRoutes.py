@@ -382,12 +382,13 @@ def sitemap():
         pages.append([url, ten_days_ago])
     pages.extend(
         [
-            [url_for("main.photos", _external=True), ten_days_ago],
             [url_for("main.sitemap", _external=True), ten_days_ago],
             [url_for("main.sitemap_ui", _external=True), ten_days_ago],
             [url_for("main.robots", _external=True), ten_days_ago],
         ]
     )
+    if current_app.config["AFFICHAGE_GALERIE_PHOTO"]:
+        pages.append([url_for("main.photos", _external=True), ten_days_ago])
 
     # get dynamic routes for blog
     species = db.session.query(vmTaxons.VmTaxons).order_by(vmTaxons.VmTaxons.cd_ref).all()
@@ -426,7 +427,6 @@ def sitemap_ui():
             "title": gettext("static pages"),
             "values": [
                 {"url": url_for("main.index"), "label": gettext("home page")},
-                {"url": url_for("main.photos"), "label": gettext("photos")},
             ],
         },
         "areas": {
@@ -435,6 +435,11 @@ def sitemap_ui():
         },
         "groups": {"title": gettext("species sheet by groups"), "values": {}},
     }
+
+    if current_app.config["AFFICHAGE_GALERIE_PHOTO"]:
+        pages["static"]["values"].append(
+            {"url": url_for("main.photos"), "label": gettext("photos")}
+        )
 
     for static_page in current_app.config["STATIC_PAGES"]:
         url_static_page = url_for("main.get_staticpages", page=static_page)
