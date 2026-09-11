@@ -16,6 +16,7 @@
                     </span>
                 </li>
 
+                {% if configuration.TYPE_TERRITOIRE_SHEET %}
                 <li>
                     <i class="fas fa-map-signs fa-2x"></i> <br/>
                     <b>{{ areas['length']|pretty }}</b><br/>
@@ -23,6 +24,7 @@
                         {{ _("areas") |lower if areas['length'] > 1 else _("area")|lower }}
                     </span>
                 </li>
+                {% endif %}
 
                 <li>
                     <i class="fas fa-users fa-2x"></i> <br/>

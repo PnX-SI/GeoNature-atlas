@@ -40,6 +40,7 @@
                 </div>
             </div>
 
+            {% if configuration.TYPE_TERRITOIRE_SHEET %}
             <div class="col-sm-12 col-lg stat-object">
                 <div class="stat-thumbnail  {% if configuration.AFFICHAGE_GALERIE_PHOTO %}border-end{% endif %}">
                     <i class="fas fa-map-signs fa-3x blue"></i>
@@ -59,6 +60,7 @@
                     </form>
                 </div>
             </div>
+            {% endif %}
             {% if configuration.AFFICHAGE_GALERIE_PHOTO %}
             <div class="col-sm-12 col-lg stat-object">
                 <div class="stat-thumbnail">

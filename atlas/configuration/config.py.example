@@ -426,7 +426,9 @@ DISPLAY_PATRIMONIALITE = False
 
 # Liste des types de territoire pour les fiches territoires ("code_area" dans "ref_geo.bib_area_type")
 # ex : TYPE_TERRITOIRE_SHEET = ['COM', 'EPCI']
-# Attention, si vous ajoutez des nouveaux zonages dans la BDD, veillez à remplir le champs "size_hierarchy" de la table "ref_geo.bib_areas_type". 
+# Une liste vide désactive les fiches territoires : l'onglet "Zonages" des fiches espèces,
+# les champs de recherche par territoire et les routes /area/ ne sont plus publiés.
+# Attention, si vous ajoutez des nouveaux zonages dans la BDD, veillez à remplir le champ "size_hierarchy" de la table "ref_geo.bib_areas_type".
 # Ce champ sert au calcul de l'affichage ou non des observations sensibles sur des niveaux de zonage plus petits que leur géométrie de floutage
 TYPE_TERRITOIRE_SHEET = ['COM']
 

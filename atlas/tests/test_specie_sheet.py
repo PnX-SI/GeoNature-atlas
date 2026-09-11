@@ -38,3 +38,10 @@ class TestTemplates:
     def test_module_observers_disabled(self, app, template_data):
         element = template_data.soup.find(attrs={"data-qa": "organism-module-tab"})
         assert element is not None
+
+    def test_area_tab_displayed(self, app, template_data):
+        assert template_data.soup.find("a", href="#area") is not None
+
+    @with_config(TYPE_TERRITOIRE_SHEET=[])
+    def test_area_tab_hidden(self, app, template_data):
+        assert template_data.soup.find("a", href="#area") is None

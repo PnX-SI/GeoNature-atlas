@@ -106,6 +106,8 @@ def get_taxon_list(id_area=None, cd_ref=None, group_name=None):
     -------
     html
     """
+    if id_area:
+        vmAreasRepository.assertAreaPublished(id_area)
 
     list_taxon = vmTaxonsRepository.getListTaxon(
         id_area=id_area,
@@ -133,6 +135,8 @@ def get_taxon_list_json(id_area=None, cd_ref=None, group_name=None):
     -------
     json
     """
+    if id_area:
+        vmAreasRepository.assertAreaPublished(id_area)
 
     list_taxon = vmTaxonsRepository.getListTaxon(
         id_area=id_area,
@@ -176,6 +180,7 @@ def rank_stat():
 
 @api.route("/area_chart_values/<id_area>", methods=["GET"])
 def get_area_chart_valuesAPI(id_area):
+    vmAreasRepository.assertAreaPublished(id_area)
     stats = vmAreasRepository.getStatsByArea(id_area)
     nb_species = stats["nb_species"]
     nb_threatened_species = stats["nb_taxon_menace"]

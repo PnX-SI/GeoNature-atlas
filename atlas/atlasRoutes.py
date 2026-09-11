@@ -304,6 +304,7 @@ def _make_groupes_statuts(statuts):
 
 @main.route("/area/<int:id_area>", methods=["GET", "POST"])
 def area(id_area):
+    vmAreasRepository.assertAreaPublished(id_area)
     area = vmAreasRepository.getAreaFromIdArea(id_area)
     stats_area = vmAreasRepository.getStatsByArea(id_area)
     listTaxons = vmTaxonsRepository.getListTaxon(id_area=id_area, params=MultiDict({"page": 0}))

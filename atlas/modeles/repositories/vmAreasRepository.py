@@ -45,6 +45,21 @@ def searchAreas(search, limit=50):
     return [{"label": r.area_name, "value": r.id_area, "type_name": r.type_name} for r in results]
 
 
+def assertAreaPublished(id_area):
+    """Lève NotFound si le zonage n'est pas d'un type publié (TYPE_TERRITOIRE_SHEET)."""
+    published = (
+        db.session.query(VmAreas.id_area)
+        .join(VmBibAreasTypes, VmAreas.id_type == VmBibAreasTypes.id_type)
+        .filter(
+            VmAreas.id_area == id_area,
+            VmBibAreasTypes.type_code.in_(current_app.config["TYPE_TERRITOIRE_SHEET"]),
+        )
+        .first()
+    )
+    if not published:
+        raise NotFound()
+
+
 def getAreaFromIdArea(id_area):
     area = (
         db.session.query(
@@ -141,7 +156,7 @@ def getAreasByTaxon(cd_ref):
             ),
         )
         .join(VmBibAreasTypes, VmAreas.id_type == VmBibAreasTypes.id_type)
-        .filter(VmBibAreasTypes.type_code == func.any(array(param["list_id_type"])))
+        .filter(VmBibAreasTypes.type_code.in_(param["list_id_type"]))
         .order_by(VmBibAreasTypes.type_name.asc(), VmAreas.area_name.asc())
         .all()
     )

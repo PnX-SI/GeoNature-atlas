@@ -11,7 +11,12 @@ from geoalchemy2.elements import WKTElement
 
 from atlas.modeles.entities.vmTaxons import VmTaxons
 from atlas.modeles.entities.vmTaxref import VmTaxref
-from atlas.modeles.entities.vmAreas import VmAreasWithObs, VmCorAreaSynthese
+from atlas.modeles.entities.vmAreas import (
+    VmAreas,
+    VmAreasWithObs,
+    VmBibAreasTypes,
+    VmCorAreaSynthese,
+)
 from atlas.env import db
 
 
@@ -111,6 +116,31 @@ def vm_areas_with_obs_data():
     db.session.commit()
     return [area1, area2]
     # Pas de suppression ici (conformément aux instructions)
+
+
+@pytest.fixture
+def areas_by_type(db_session):
+    """Une commune et un département, pour jouer sur TYPE_TERRITOIRE_SHEET."""
+    geom = WKTElement("MULTIPOLYGON(((0 0,0 1,1 1,1 0,0 0)))", srid=4326)
+    areas = {}
+    for id_type, type_code, type_name in ((201, "COM", "Communes"), (202, "DEP", "Départements")):
+        db_session.add(
+            VmBibAreasTypes(
+                id_type=id_type, type_code=type_code, type_name=type_name, type_desc=""
+            )
+        )
+        areas[type_code] = VmAreas(
+            id_area=id_type,
+            area_code=str(id_type),
+            area_name=f"Zonage {type_code}",
+            id_type=id_type,
+            the_geom=geom,
+            area_geojson="{}",
+            description="",
+        )
+    db_session.add_all(areas.values())
+    db_session.flush()
+    return areas
 
 
 @pytest.fixture

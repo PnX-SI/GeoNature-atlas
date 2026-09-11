@@ -31,6 +31,7 @@
                 <input id="hiddenInputTaxons" type="hidden" name="cd_ref"/>
             </form>
 
+            {% if configuration.TYPE_TERRITOIRE_SHEET %}
             <form method="POST" class="d-flex align-items-center">
                 <div class="form-group has-feedback me-2">
                     <input id="searchAreas" type="text"
@@ -39,6 +40,7 @@
                 </div>
                 <input id="hiddenInputAreas" type="hidden" name="id_area">
             </form>
+            {% endif %}
 
             <!-- Languages button and dropdown displayed if MULTILINGUAL is True -->
             {% if configuration.MULTILINGUAL %}
