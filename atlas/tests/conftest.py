@@ -28,6 +28,7 @@ def _db_setup():
     app = create_app()
     with app.app_context():
         with db.engine.connect() as conn:
+            conn.execute(text("CREATE EXTENSION IF NOT EXISTS unaccent"))
             conn.execute(text("CREATE SCHEMA IF NOT EXISTS atlas"))
             conn.execute(text("CREATE SCHEMA IF NOT EXISTS gn_meta"))
             conn.execute(text("CREATE SCHEMA IF NOT EXISTS utilisateurs"))
