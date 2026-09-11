@@ -12,7 +12,6 @@ from geoalchemy2.elements import WKTElement
 from atlas.modeles.entities.vmTaxons import VmTaxons
 from atlas.modeles.entities.vmTaxref import VmTaxref
 from atlas.modeles.entities.vmAreas import VmAreasWithObs, VmCorAreaSynthese
-from atlas.env import db
 
 
 @dataclass
@@ -101,16 +100,27 @@ def taxon(db_session):
 
 
 @pytest.fixture(scope="function")
-def vm_areas_with_obs_data():
-    # Ajoute des données de test, ne supprime ni ne nettoie la table
-    area1 = VmAreasWithObs(id_area=101, area_name="Test Area", id_type=10, type_code="COMMUNE")
-    area2 = VmAreasWithObs(
-        id_area=102, area_name="Autre Territoire", id_type=11, type_code="DEPARTEMENT"
-    )
-    db.session.add_all([area1, area2])
-    db.session.commit()
-    return [area1, area2]
-    # Pas de suppression ici (conformément aux instructions)
+def vm_areas_with_obs_data(db_session):
+    """Un zonage d'un type publié par TYPE_TERRITOIRE_SHEET, un d'un type qui ne l'est pas."""
+    areas = [
+        VmAreasWithObs(
+            id_area=101,
+            area_name="Commune de test",
+            id_type=10,
+            type_code="COM",
+            type_name="Communes",
+        ),
+        VmAreasWithObs(
+            id_area=102,
+            area_name="Autre territoire",
+            id_type=11,
+            type_code="DEP",
+            type_name="Départements",
+        ),
+    ]
+    db_session.add_all(areas)
+    db_session.flush()
+    return areas
 
 
 @pytest.fixture
