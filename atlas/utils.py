@@ -60,6 +60,21 @@ def get_locale():
     return current_app.config["DEFAULT_LANGUAGE"]
 
 
+def get_taxhub_displayed_attr(lang=None):
+    """
+    Return the codes of the TaxHub attributes displayed on the species sheet for a language
+    (current language by default), in display order. Resolution order :
+        1. TAXHUB_DISPLAYED_ATTR_BY_LANG[lang]
+        2. TAXHUB_DISPLAYED_ATTR_BY_LANG[DEFAULT_LANGUAGE]
+        3. TAXHUB_DISPLAYED_ATTR
+    """
+    attr_by_lang = current_app.config["TAXHUB_DISPLAYED_ATTR_BY_LANG"]
+    for lang_code in (lang or get_locale(), current_app.config["DEFAULT_LANGUAGE"]):
+        if lang_code in attr_by_lang:
+            return attr_by_lang[lang_code]
+    return current_app.config["TAXHUB_DISPLAYED_ATTR"]
+
+
 def get_current_url_prefix():
     if current_app.config["MULTILINGUAL"]:
         return f"/{get_locale()}"

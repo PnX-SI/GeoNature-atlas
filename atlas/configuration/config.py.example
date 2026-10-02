@@ -352,6 +352,17 @@ LIMIT_FICHE_LISTE_HIERARCHY = 28
 # L'ordre des onglets correspond à l'ordre des codes dans la liste.
 TAXHUB_DISPLAYED_ATTR=["atlas_description", "atlas_commentaire", "atlas_milieu", "atlas_chorologie"]
 
+# Atlas multilingue (MULTILINGUAL = True) : attributs TaxHub affichés pour chaque langue,
+# à la place de TAXHUB_DISPLAYED_ATTR.
+# Créer dans TaxHub un attribut par langue (ex : atlas_description_it) avec un label traduit :
+# le label de l'attribut sert de titre à l'onglet.
+# Les clés doivent faire partie de AVAILABLE_LANGUAGES. Une langue absente du dictionnaire
+# utilise la liste de DEFAULT_LANGUAGE, ou à défaut TAXHUB_DISPLAYED_ATTR.
+# TAXHUB_DISPLAYED_ATTR_BY_LANG = {
+#     "fr": ["atlas_description", "atlas_commentaire", "atlas_milieu", "atlas_chorologie"],
+#     "it": ["atlas_description_it", "atlas_commentaire_it", "atlas_milieu_it", "atlas_chorologie_it"],
+# }
+
 #### ID DES TYPES DE MEDIAS DE LA TABLE vm_medias
 ATTR_MAIN_PHOTO = 1
 ATTR_OTHER_PHOTO = 2

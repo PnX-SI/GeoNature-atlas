@@ -58,3 +58,25 @@ Edit the ``.po`` file to change, then compile the translation files to generate 
 
     # To compile translations | create .mo file
     make compile_messages
+
+Translating species attributes
+==============================
+
+The tabs of the "species information" block of the species sheet (description, comments, habitat...) display
+TaxHub attributes, listed in ``TAXHUB_DISPLAYED_ATTR``. On a multilingual atlas, these texts can be translated
+by creating one TaxHub attribute per language (for example ``atlas_description_it``, labelled "Descrizione":
+the attribute label is used as the tab title), then listing the attributes displayed for each language
+with ``TAXHUB_DISPLAYED_ATTR_BY_LANG`` in your ``config.py`` file:
+
+::
+
+    TAXHUB_DISPLAYED_ATTR_BY_LANG = {
+        "fr": ["atlas_description", "atlas_commentaire", "atlas_milieu", "atlas_chorologie"],
+        "it": ["atlas_description_it", "atlas_commentaire_it", "atlas_milieu_it", "atlas_chorologie_it"],
+    }
+
+For the current language, the atlas uses the list of this language, otherwise the list of
+``DEFAULT_LANGUAGE``, otherwise ``TAXHUB_DISPLAYED_ATTR``. Keys must be languages of ``AVAILABLE_LANGUAGES``.
+
+After adding or editing attributes in TaxHub, refresh the atlas materialized views
+(``atlas.refresh_materialized_view_taxon_attr_and_media()``).

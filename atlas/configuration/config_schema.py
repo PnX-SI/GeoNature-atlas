@@ -276,6 +276,12 @@ class AtlasConfig(Schema):
             "atlas_chorologie",
         ],
     )
+    # Taxhub attribute displayed by language :
+    # {"fr": ["atlas_description", ...], "it": ["atlas_description_it", ...]}
+    # If language non-existent, uses  DEFAULT_LANGUAGE, then TAXHUB_DISPLAYED_ATTR.
+    TAXHUB_DISPLAYED_ATTR_BY_LANG = fields.Dict(
+        keys=fields.String(), values=fields.List(fields.String()), load_default={}
+    )
     ATTR_MAIN_PHOTO = fields.Integer(load_default=1)
     ATTR_OTHER_PHOTO = fields.Integer(load_default=2)
     ATTR_LIEN = fields.Integer(load_default=3)
@@ -335,6 +341,16 @@ class AtlasConfig(Schema):
         if data["REDIMENSIONNEMENT_IMAGE"] and data["TAXHUB_URL"] is None:
             raise ValidationError(
                 {"Le champ TAXHUB_URL doit être rempli si REDIMENSIONNEMENT_IMAGE = True"}
+            )
+        unknown_languages = set(data["TAXHUB_DISPLAYED_ATTR_BY_LANG"]) - set(
+            data["AVAILABLE_LANGUAGES"]
+        )
+        if unknown_languages:
+            raise ValidationError(
+                {
+                    "TAXHUB_DISPLAYED_ATTR_BY_LANG": "Langue(s) absente(s) de AVAILABLE_LANGUAGES : "
+                    + ", ".join(sorted(unknown_languages))
+                }
             )
 
     @post_load
