@@ -39,6 +39,7 @@ from atlas.modeles.repositories import (
     corSensitivityAreaRepository,
 )
 from atlas.configuration.config_parser import config
+from atlas.utils import get_taxhub_displayed_attr
 
 
 main = Blueprint("main", __name__)
@@ -204,10 +205,7 @@ def ficheEspece(cd_nom):
     articles = vmMedias.getLinks_and_articles(
         cd_ref, current_app.config["ATTR_LIEN"], current_app.config["ATTR_PDF"]
     )
-    taxonAttrs = vmCorTaxonAttribut.getAttributesTaxon(
-        cd_ref,
-        current_app.config["TAXHUB_DISPLAYED_ATTR"],
-    )
+    taxonAttrs = vmCorTaxonAttribut.getAttributesTaxon(cd_ref, get_taxhub_displayed_attr())
 
     liens_focus = []
     if current_app.config.get("TYPES_MEDIAS_LENS_FOCUS"):
