@@ -28,5 +28,5 @@ JOIN ref_geo.bib_areas_types bat_flou ON csat.area_type_code = bat_flou.type_cod
 CREATE UNIQUE INDEX ON atlas.vm_cor_area_synthese
     USING btree (id_synthese, id_area);
 
-CREATE INDEX ON atlas.vm_cor_area_synthese
-    USING btree (id_area);
+CREATE INDEX ON atlas.vm_cor_area_synthese 
+    USING btree (id_area, id_synthese);

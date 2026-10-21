@@ -34,3 +34,5 @@ CREATE UNIQUE INDEX ON atlas.vm_cor_taxon_organism
 CREATE INDEX ON atlas.vm_cor_taxon_organism
     USING btree (id_organism);
 
+CREATE INDEX ON atlas.vm_cor_taxon_organism
+    USING btree (id_organism, nb_observations DESC);

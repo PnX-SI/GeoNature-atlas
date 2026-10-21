@@ -15,6 +15,9 @@ WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_areas_with_obs
     USING btree (id_area);
+
+CREATE UNIQUE INDEX ON atlas.vm_areas_with_obs
+    ON atlas.vm_areas_with_obs (type_code, area_name);
 -- +-----------------------------------------------------------------------------------------------+
 -- Classic stats
 CREATE  MATERIALIZED VIEW atlas.vm_area_stats AS
@@ -42,8 +45,8 @@ CREATE  MATERIALIZED VIEW atlas.vm_area_stats AS
             ON obs.id_dataset = rcda.id_dataset
         LEFT JOIN utilisateurs.bib_organismes AS u
             ON rcda.id_organism = u.id_organisme
-        left JOIN atlas.vm_cor_areas AS cor_areas ON cor_areas.id_area = vcas.id_area
-        left JOIN atlas.vm_cor_taxon_statut_area AS cor_statut on cor_statut.id_area = cor_areas.id_area_parent AND cor_statut.cd_ref = tax.cd_ref
+        LEFT JOIN atlas.vm_cor_areas AS cor_areas ON cor_areas.id_area = vcas.id_area
+        LEFT JOIN atlas.vm_cor_taxon_statut_area AS cor_statut on cor_statut.id_area = cor_areas.id_area_parent AND cor_statut.cd_ref = tax.cd_ref
     WHERE bat.type_code = ANY(SELECT * FROM string_to_table(:'type_code', ','))
     GROUP BY vla.id_area
 WITH DATA ;
