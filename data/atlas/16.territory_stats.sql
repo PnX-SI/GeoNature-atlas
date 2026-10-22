@@ -115,7 +115,7 @@ CREATE  MATERIALIZED VIEW atlas.vm_area_stats AS
     LEFT JOIN stats_org g
         ON g.id_area = o.id_area
     LEFT JOIN stats_statuts s
-        ON s.id_area = o.id_area;
+        ON s.id_area = o.id_area
 WITH DATA ;
 
 CREATE UNIQUE INDEX ON atlas.vm_area_stats
