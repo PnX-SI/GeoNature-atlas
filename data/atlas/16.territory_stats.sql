@@ -16,8 +16,9 @@ WITH DATA;
 CREATE UNIQUE INDEX ON atlas.vm_areas_with_obs
     USING btree (id_area);
 
-CREATE UNIQUE INDEX ON atlas.vm_areas_with_obs
-    ON atlas.vm_areas_with_obs (type_code, area_name);
+CREATE INDEX ON atlas.vm_areas_with_obs
+    USING btree (type_code, area_name);
+    
 -- +-----------------------------------------------------------------------------------------------+
 -- Classic stats
 CREATE  MATERIALIZED VIEW atlas.vm_area_stats AS
