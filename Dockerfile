@@ -123,7 +123,7 @@ RUN --mount=type=cache,target=/root/.cache \
     pip install -e ".[dev]"
 
 
-ENV FLASK_APP=app.app:create_app
+ENV FLASK_APP=atlas.app:create_app
 ENV FLASK_DEBUG=1
 
 EXPOSE 5000
