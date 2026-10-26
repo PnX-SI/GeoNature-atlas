@@ -88,10 +88,10 @@ function runDBInstall() {
 
     if [[ "${docker:-false}" == false ]]; then
         checkNoUserRoot
-        checkSuperuser
-        if ! checkDatabaseExists "${db_name}"; then
-            createDatabase
-        fi
+    fi
+    checkSuperuser
+    if ! checkDatabaseExists "${db_name}"; then
+        createDatabase
     fi
 
     exportPostgresPassword
@@ -156,12 +156,21 @@ function checkDatabaseExists() {
 function createDatabase() {
     printMsg "Creating users..."
     set +e
-    sudo -u postgres psql -c "CREATE USER ${owner_atlas} WITH PASSWORD '${owner_atlas_pass}' ;"
-    sudo -u postgres psql -c "CREATE USER ${user_pg} WITH PASSWORD '${user_pg_pass}' ;"
+    if [[ "${docker:-false}" == false ]]; then
+        sudo -u postgres psql -c "CREATE USER ${owner_atlas} WITH PASSWORD '${owner_atlas_pass}' ;"
+        sudo -u postgres psql -c "CREATE USER ${user_pg} WITH PASSWORD '${user_pg_pass}' ;"
+    else
+        PGPASSWORD=${POSTGRES_PASSWORD} psql -h "${db_host}" -p "${db_port}" -U geonatadmin -d postgres -c "CREATE USER ${owner_atlas} WITH PASSWORD '${owner_atlas_pass}' ;"
+        PGPASSWORD=${POSTGRES_PASSWORD} psql -h "${db_host}" -p "${db_port}" -U geonatadmin -d postgres -c "CREATE USER ${user_pg} WITH PASSWORD '${user_pg_pass}' ;"
+    fi
     set -e
 
     printMsg "Creating DB..."
-    sudo -u postgres -s createdb -O "${owner_atlas}" "${db_name}"
+    if [[ "${docker:-false}" == false ]]; then
+        sudo -u postgres -s createdb -O "${owner_atlas}" "${db_name}"
+    else
+        PGPASSWORD=${POSTGRES_PASSWORD} createdb -h "${db_host}" -p "${db_port}" -U geonatadmin -O "${owner_atlas}" "${db_name}"
+    fi
 }
 
 function createDatabaseExtensions() {
