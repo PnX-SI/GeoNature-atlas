@@ -61,7 +61,6 @@ RUN cp atlas/configuration/settings.ini.sample atlas/configuration/settings.ini
 RUN chmod +x install/install_app.sh
 RUN ./install/install_app.sh --docker
 
-
 ENV ATLAS_SETTINGS=/dist/atlas/configuration/config.py
 ENV ATLAS_STATIC_FOLDER=/dist/atlas/static
 # WARNING: ATLAS_TEMPLATE_FOLDER must indicate the parent folder of the templates/ folder !
@@ -78,6 +77,10 @@ FROM base AS preprod
 WORKDIR /dist/
 
 COPY . .
+
+#TODO: décider si l'on réduit les autorisations, mais au moins conserver du o+w là où nécessaire
+#TODO: voir si on fait plutôt en sorte d'associer les dossiers et fichiers nécessaires à l'utilisateur utilisé pour la modification depuis l'hôte
+RUN chmod -R 777 atlas/static
 
 RUN --mount=type=cache,target=/root/.cache \ 
     pip install -e ".[dev]"
@@ -96,6 +99,10 @@ CMD ["gunicorn", "-b", "0.0.0.0:8080", "atlas.app:create_app()"]
 FROM base AS prod
 
 WORKDIR /dist/
+
+#TODO: décider si l'on réduit les autorisations, mais au moins conserver du o+w là où nécessaire
+#TODO: voir si on fait plutôt en sorte d'associer les dossiers et fichiers nécessaires à l'utilisateur utilisé pour la modification depuis l'hôte
+RUN chmod -R 777 atlas/static
 
 COPY --from=build /build/dist/*.whl .
 RUN --mount=type=cache,target=/root/.cache \
@@ -118,6 +125,10 @@ FROM base AS dev
 WORKDIR /dist/
 
 COPY . .
+
+#TODO: décider si l'on réduit les autorisations, mais au moins conserver du o+w là où nécessaire
+#TODO: voir si on fait plutôt en sorte d'associer les dossiers et fichiers nécessaires à l'utilisateur utilisé pour la modification depuis l'hôte
+RUN chmod -R 777 atlas/static
 
 RUN --mount=type=cache,target=/root/.cache \
     pip install -e ".[dev]"
