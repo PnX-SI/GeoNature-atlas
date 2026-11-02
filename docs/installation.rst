@@ -55,6 +55,7 @@ Le script ``install_env.sh`` va automatiquement installer les outils nécessaire
 - PostGIS
 - Apache 2
 - Python 3 et GDAL
+- uv (gestionnaire d'environnement virtuel et de paquets Python)
 
 Lancer le script :
 

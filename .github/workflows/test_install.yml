@@ -1,4 +1,4 @@
-name: Check pip install package with multiple version of python
+name: Check uv install package with multiple version of python
 on: [push, pull_request]
 
 jobs:
@@ -13,5 +13,7 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
-          cache: "pip"
-      - run: pip install -r requirements.txt
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+      - run: uv pip install --system -r requirements.txt

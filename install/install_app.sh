@@ -90,10 +90,9 @@ function runDefaultInstall() {
     loadSettings
 
     stopAtlasService
+    makeUvAvailable
     createVenv
-    enableVenv
     installPythonPackages
-    disableVenv
 
     makeNvmAvailable
     installNodePackages
@@ -156,58 +155,30 @@ function stopAtlasService() {
     sudo systemctl stop ${gun_proc_name} || true
 }
 
+function makeUvAvailable() {
+    printMsg "Making uv available..."
+    export PATH="${HOME}/.local/bin:${PATH}"
+
+    if command -v uv &>/dev/null; then
+        printVerbose ">$(uv --version) => ${Gre}OK"
+    else
+        exitScript "ERROR: uv not found ! Install it with install_env.sh script." 1
+    fi
+}
+
 function createVenv() {
     printMsg "Creating Virtual env..."
     if [[ -d "${__venv_dir__}/" ]];  then
         printVerbose "Removing existing virtual env..."
         sudo rm -rf "${__venv_dir__}"
     fi
-    python3 -m venv "${__venv_dir__}"
-}
-
-function enableVenv() {
-    printMsg "Activating Virtual env..."
-    if [[ ! -d "${__venv_dir__}/" ]];  then
-        exitScript "ERROR: virtual env '${__venv_dir__}' not found !" 1
-    fi
-    source "${__venv_dir__}/bin/activate"
-
-    local in_venv=$(isInVenv)
-    if [[ "${in_venv}" == "1" ]]; then
-        printVerbose ">venv activated => ${Gre}${VIRTUAL_ENV}"
-    else
-        printError ">venv not activated: ${in_venv}!"
-    fi
-}
-
-function isInVenv() {
-    local in_venv=$(python3 -c 'import sys; print ("1" if (hasattr(sys, "real_prefix") or
-        (hasattr(sys, "base_prefix") and sys.base_prefix != sys.prefix)) else "0")')
-
-    if [[ "${in_venv}" == "0" ]] && [[ "${VIRTUAL_ENV:-}" == "${__venv_dir__}" ]]; then
-        printVerbose ">Python return false but env variable true ! Force true."
-        in_venv="1"
-    fi
-
-    echo -e "${in_venv}"
+    uv venv "${__venv_dir__}"
 }
 
 function installPythonPackages() {
     printMsg "Installing required Python packages..."
-    pip install -r "${__root_dir__}/requirements.txt"
-    pip install -e "${__root_dir__}"
-}
-
-function disableVenv() {
-    printMsg "Deactivating Virtual env..."
-    deactivate
-
-    local in_venv=$(isInVenv)
-    if [[ "${in_venv}" == "0" ]]; then
-        printVerbose ">venv deactivated => ${Gre}OK"
-    else
-        printError ">venv already activated!"
-    fi
+    uv pip install --python "${__venv_dir__}" -r "${__root_dir__}/requirements.txt"
+    uv pip install --python "${__venv_dir__}" -e "${__root_dir__}"
 }
 
 function installNodePackages() {

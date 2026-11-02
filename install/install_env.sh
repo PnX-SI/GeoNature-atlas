@@ -76,6 +76,7 @@ function main() {
     installApache
     installPostgresql
     installPython
+    installUv
     installNvm
 
     restartApache
@@ -167,9 +168,13 @@ function installPython() {
     printMsg "Installing Atlas Python system packages dependencies..."
 
     sudo apt-get install -y python3-dev libpq-dev
-    sudo apt-get install -y python3-setuptools
-    sudo apt-get install -y python3-pip python3-venv
     sudo apt-get install -y python3-gdal gdal-bin
+}
+
+function installUv() {
+    printMsg "Installing uv used by Atlas to manage Python virtual env and packages..."
+
+    wget -qO- https://astral.sh/uv/install.sh | sh
 }
 
 function installNvm() {

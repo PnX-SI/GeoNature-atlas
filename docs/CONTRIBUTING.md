@@ -197,12 +197,11 @@ make livehtml
 
 ## Release
 
-Regénérer les fichiers requirements.txt et requirements-dev.txt avec les commandes suivantes dans la plus petite version de python supportée par GeoNature-Atlas
+Regénérer le fichier requirements.txt avec [uv](https://docs.astral.sh/uv/), en ciblant la plus petite version de Python supportée par GeoNature-Atlas (cf. `requires-python` dans `pyproject.toml`) :
 
-
-
-    pip install pip-tools
-    pip-compile requirements.in > requirements.txt
+```bash
+uv pip compile requirements.in -o requirements.txt --python-version 3.11 --upgrade
+```
 
 
 - Incrémenter le fichier VERSION

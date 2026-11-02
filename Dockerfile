@@ -3,15 +3,13 @@
 ###############################################
 FROM python:3.11.9-bookworm AS build
 
-ENV PIP_ROOT_USER_ACTION=ignore
+COPY --from=ghcr.io/astral-sh/uv:0.10.9 /uv /uvx /bin/
 
 WORKDIR /build/
 
-RUN --mount=type=cache,target=/root/.cache \
-    pip install --upgrade pip build
-
 COPY LICENSE.txt MANIFEST.in pyproject.toml README.rst requirements.in VERSION ./
-RUN python -m build
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv build
 
 
 
@@ -33,7 +31,10 @@ RUN --mount=type=cache,target=/root/.npm \
 ###############################################
 FROM python:3.11.9-bookworm AS base
 
-ENV PIP_ROOT_USER_ACTION=ignore
+COPY --from=ghcr.io/astral-sh/uv:0.10.9 /uv /uvx /bin/
+
+ENV UV_SYSTEM_PYTHON=1
+ENV UV_LINK_MODE=copy
 
 RUN apt-get update -qq && apt-get install -y --no-install-recommends \
     postgresql-client \
@@ -41,9 +42,8 @@ RUN apt-get update -qq && apt-get install -y --no-install-recommends \
 
 COPY requirements.txt .
 
-RUN --mount=type=cache,target=/root/.cache \
-    pip install --upgrade pip setuptools wheel && \
-    pip install -r requirements.txt
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv pip install -r requirements.txt
 
 WORKDIR /dist/
 
@@ -79,8 +79,8 @@ WORKDIR /dist/
 
 COPY . .
 
-RUN --mount=type=cache,target=/root/.cache \ 
-    pip install -e ".[dev]"
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv pip install -e ".[dev]"
 
 
 ENV FLASK_ENV=production
@@ -98,8 +98,8 @@ FROM base AS prod
 WORKDIR /dist/
 
 COPY --from=build /build/dist/*.whl .
-RUN --mount=type=cache,target=/root/.cache \
-    pip install --no-deps *.whl
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv pip install --no-deps *.whl
 
 COPY atlas atlas
 
@@ -119,8 +119,8 @@ WORKDIR /dist/
 
 COPY . .
 
-RUN --mount=type=cache,target=/root/.cache \
-    pip install -e ".[dev]"
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv pip install -e ".[dev]"
 
 
 ENV FLASK_APP=app.app:create_app

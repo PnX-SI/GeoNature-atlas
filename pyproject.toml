@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "geonature-atlas"
 description = "Atlas WEB dynamique Faune-Flore basé sur les données présentes dans la synthèse de GeoNature"
 readme = "README.rst"
-requires-python = ">=3"
+requires-python = ">=3.11"
 license = { text = "GNU General Public License v3" }
 maintainers = [
   { name = "Parcs nationaux des Écrins et des Cévennes", email = "geonature@ecrins-parcnational.fr" },

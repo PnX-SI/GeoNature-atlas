@@ -10,16 +10,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Python
-        uses: actions/setup-python@v6
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
-        run: pip install 'black==25.12.0'
-
       - name: Backend code formatting check (Black)
-        run: black --check .
+        run: uvx black==25.12.0 --check .
 
   frontend:
     runs-on: ubuntu-latest
