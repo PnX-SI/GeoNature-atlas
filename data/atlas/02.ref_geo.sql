@@ -1,6 +1,3 @@
-
-
-
 -- +-----------------------------------------------------------------------------------------------+
 -- vm_bib_areas_types
 CREATE MATERIALIZED VIEW atlas.vm_bib_areas_types AS
@@ -28,8 +25,6 @@ CREATE INDEX ON atlas.vm_bib_areas_types
     USING btree (type_name);
 
 
-
-
 -- +-----------------------------------------------------------------------------------------------+
 -- l_areas
 CREATE MATERIALIZED VIEW atlas.vm_l_areas AS
@@ -51,6 +46,9 @@ CREATE UNIQUE INDEX ON atlas.vm_l_areas
     USING btree (id_area);
 
 CREATE INDEX ON atlas.vm_l_areas
+    USING btree (id_type);
+
+CREATE INDEX ON atlas.vm_l_areas
     USING gist (the_geom);
 
 CREATE INDEX ON atlas.vm_l_areas
@@ -60,29 +58,32 @@ CREATE INDEX ON atlas.vm_l_areas
     USING btree (area_code);
 
 
-
-
 -- +-----------------------------------------------------------------------------------------------+
 -- vm_cor_areas
 CREATE MATERIALIZED VIEW atlas.vm_cor_areas AS
-    with dep as (
-    SELECT * 
-    FROM atlas.vm_l_areas vla
-    JOIN atlas.vm_bib_areas_types b USING(id_type)
-    where b.type_code = 'DEP'
+    WITH dep AS (
+        SELECT * 
+        FROM atlas.vm_l_areas AS vla
+            JOIN atlas.vm_bib_areas_types b USING(id_type)
+        WHERE b.type_code = 'DEP'
     )
-        SELECT vla.id_area, dep.id_area as id_area_parent
-        FROM atlas.vm_l_areas vla
-        JOIN atlas.vm_bib_areas_types b USING(id_type)
-        JOIN dep on 
-        -- on fait un buffer négatif de 10 m sur les département pour éviter la double
-        -- intersections des zonages administratifs (eg: commune). 
-        st_intersects(st_buffer(dep.geom_local, -10), vla.geom_local)
-        WHERE b.type_code in (SELECT * FROM string_to_table(:'type_code', ','))
-        -- On laisse volontairement l'autointersection département  - département pour les fiche territoire des départements !
+    SELECT vla.id_area, dep.id_area AS id_area_parent
+    FROM atlas.vm_l_areas AS vla
+        JOIN atlas.vm_bib_areas_types AS b USING(id_type)
+        JOIN dep ON 
+            -- on fait un buffer négatif de 10 m sur les département pour éviter la double
+            -- intersections des zonages administratifs (eg: commune). 
+            st_intersects(st_buffer(dep.geom_local, -10), vla.geom_local)
+    WHERE b.type_code IN (
+        SELECT * FROM string_to_table(:'type_code', ',')
+    )
+    -- On laisse volontairement l'autointersection département  - département pour les fiche territoire des départements !
     UNION
-        -- on prend ce qu'il y avait déjà dans ref_geo.l_areas
-        SELECT id_area as id_area, id_area_group as id_area_parent from ref_geo.cor_areas;
+    -- on prend ce qu'il y avait déjà dans ref_geo.l_areas
+    SELECT 
+        id_area AS id_area, 
+        id_area_group AS id_area_parent 
+    FROM ref_geo.cor_areas;
                     
 CREATE INDEX ON atlas.vm_cor_areas
     USING btree (id_area_parent);
