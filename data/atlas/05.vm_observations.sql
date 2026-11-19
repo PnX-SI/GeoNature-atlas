@@ -67,6 +67,10 @@ CREATE UNIQUE INDEX ON atlas.vm_observations
 CREATE INDEX ON atlas.vm_observations
     USING btree (cd_ref);
 
+CREATE INDEX ON atlas.vm_observations 
+    USING btree (cd_ref, dateobs DESC);
+
+
 CREATE INDEX ON atlas.vm_observations
     USING btree (altitude_retenue);
 

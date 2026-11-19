@@ -341,6 +341,7 @@ function convertDockerVariables() {
     type_code="${ATLAS_TYPE_CODE}"
     type_maille="${ATLAS_TYPE_MAILLE}"
     time="${ATLAS_MOST_OBSERVED_TIME}"
+    observation_data_source="${ATLAS_OBSERVATION_DATA_SOURCE}"
 
     # Assign DB connection variables
     db_name="${POSTGRES_DB}"
@@ -356,13 +357,17 @@ function convertDockerVariables() {
     printInfo ">All Docker environment variables converted => ${Gre}OK"
 }
 
-
 function checkSettings() {
-    fields=('owner_atlas' 'user_pg' 'altitudes' 'time')
+    fields=('owner_atlas' 'user_pg' 'altitudes' 'time' 'observation_data_source')
     printMsg "Checking the validity of settings.ini..."
-    for i in "${!fields[@]}"; do
-        if [[ -z "${!fields[$i]}" ]]; then
-            exitScript "Attribut ${fields[$i]} manquant dans settings.ini" 2
+    for field in "${fields[@]}"; do
+        # la variable existe ?
+        if [[ ! -v "$field" ]]; then
+            exitScript "Attribut ${field} non défini dans settings.ini" 2
+        fi
+        # la variable n'est pas vide ?
+        if [[ -z "${!field}" ]]; then
+            exitScript "Attribut ${field} vide dans settings.ini" 2
         fi
     done
     printInfo ">All required settings are present => ${Gre}OK"
@@ -464,9 +469,10 @@ function executeQueryAsSU() {
         exitScript "Missing required argument to ${FUNCNAME[0]}()!" 2
     fi
     if [[ "${docker:-false}" == true ]]; then
-        psql -h "${db_host}" -U "${owner_atlas}" -d "${db_name}" -c "${1}"
+        psql -h "${db_host}" -U "${owner_atlas}" -d "${db_name}" -p "${db_port}"\
+	    -c "${1}"
     else
-        sudo -u postgres -s psql -d "${db_name}" -c "${1}"
+        sudo -u postgres -s psql -d "${db_name}" -p "${db_port}" -c "${1}"
     fi
 
 }

@@ -51,6 +51,9 @@ CREATE UNIQUE INDEX ON atlas.vm_l_areas
     USING btree (id_area);
 
 CREATE INDEX ON atlas.vm_l_areas
+    USING btree (id_type);
+
+CREATE INDEX ON atlas.vm_l_areas
     USING gist (the_geom);
 
 CREATE INDEX ON atlas.vm_l_areas
@@ -69,7 +72,7 @@ CREATE MATERIALIZED VIEW atlas.vm_cor_areas AS
     SELECT * 
     FROM atlas.vm_l_areas vla
     JOIN atlas.vm_bib_areas_types b USING(id_type)
-    where b.type_code = 'DEP'
+    WHERE b.type_code = 'DEP'
     )
         SELECT vla.id_area, dep.id_area as id_area_parent
         FROM atlas.vm_l_areas vla

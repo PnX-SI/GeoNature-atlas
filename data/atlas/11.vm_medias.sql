@@ -18,3 +18,7 @@ WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_medias
     USING btree (id_media);
+
+CREATE INDEX ON atlas.vm_medias 
+    USING btree (cd_ref, id_type, date_media DESC);
+

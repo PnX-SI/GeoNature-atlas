@@ -1,6 +1,6 @@
 -- Tous les taxons ayant au moins une observation
 CREATE MATERIALIZED VIEW atlas.vm_taxons AS
-    WITH observations_stats AS (
+    WITH observations_stats AS MATERIALIZED (
         SELECT
             cd_ref,
             min(date_part('year'::text, dateobs)) AS yearmin,
@@ -9,7 +9,7 @@ CREATE MATERIALIZED VIEW atlas.vm_taxons AS
         FROM atlas.vm_observations
         GROUP BY cd_ref
     ),
-    taxons_infos AS (
+    taxons_infos AS MATERIALIZED (
         SELECT
             cd_ref,
             regne,
@@ -94,3 +94,6 @@ WITH DATA;
 
 CREATE UNIQUE INDEX ON atlas.vm_taxons
     USING btree (cd_ref);
+
+CREATE INDEX ON atlas.vm_taxons 
+    USING btree (group2_inpn, cd_ref);
