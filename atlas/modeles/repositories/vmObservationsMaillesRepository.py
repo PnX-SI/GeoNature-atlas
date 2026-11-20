@@ -2,20 +2,13 @@ import json
 from datetime import datetime
 
 from geojson import Feature, FeatureCollection
-from sqlalchemy.sql import text, func, any_, extract, literal, cast, select, exists, true
 from sqlalchemy import Interval
+from sqlalchemy.orm import aliased
+from sqlalchemy.sql import any_, cast, exists, func, literal, select, true
 
-from atlas.modeles.entities.vmObservations import (
-    VmObservations,
-    VMCorMailleObservation,
-)
-from atlas.modeles.entities.vmAreas import VmAreas, VmCorAreaSynthese
-from atlas.modeles.entities.vmTaxons import VmTaxons
-from atlas.modeles.entities.vmMedias import VmMedias
-from atlas.modeles.utils import deleteAccent, findPath
-from atlas.app import create_app
 from atlas.env import db
-from flask import current_app
+from atlas.modeles.entities.vmAreas import VmAreas, VmCorAreaSynthese
+from atlas.modeles.entities.vmObservations import VMCorMailleObservation, VmObservations
 
 
 def format_taxon_name(observation):
@@ -58,6 +51,7 @@ def getObservationsMaillesChilds(params={}):
     id_area = params.get("id_area", None)
     last_obs = params.get("last_obs", None)
     fields: list = params.get("fields", "").split(",")
+
     taxons_ids = []
     if cd_ref:
         query_child = func.atlas.find_all_taxons_childs(params["cd_ref"])
@@ -72,8 +66,10 @@ def getObservationsMaillesChilds(params={}):
         func.max(func.date_part("year", VmObservations.dateobs)).label("last_obs_year"),
         func.count(VmObservations.id_observation).label("obs_nbr"),
     ]
+
     if "ids_obs" in fields:
         query_select.append(func.array_agg(VmObservations.id_observation).label("ids_obs"))
+
     query = (
         select(*query_select)
         .select_from(VmObservations)
@@ -89,8 +85,10 @@ def getObservationsMaillesChilds(params={}):
             VmObservations.cd_sensitivity,
         )
     )
+
     if taxons_ids:
         query = query.where(VmObservations.cd_ref == any_(taxons_ids))
+
     if year_min and year_max:
         query = query.where(
             VmObservations.dateobs.between(
@@ -98,6 +96,7 @@ def getObservationsMaillesChilds(params={}):
                 datetime(int(year_max), 12, 31),
             )
         )
+
     if id_area:
         query = query.where(
             exists(
@@ -106,9 +105,22 @@ def getObservationsMaillesChilds(params={}):
                 .where(
                     (VmCorAreaSynthese.id_area == id_area)
                     & (VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
+                    & (VmCorAreaSynthese.is_valid_for_display.is_(True))
                 )
             )
         )
+        VmAreasFilter = aliased(VmAreas)
+        query = query.where(
+            exists(
+                select(true())
+                .select_from(VmAreasFilter)
+                .where(
+                    (VmAreasFilter.id_area == id_area)
+                    & (func.ST_Intersects(VmAreasFilter.the_geom, VmAreas.the_geom))
+                )
+            )
+        )
+
     if last_obs:
         query = query.where(
             VmObservations.dateobs >= func.current_timestamp() - cast(literal(last_obs), Interval)
@@ -124,7 +136,7 @@ def getObservationsMaillesChilds(params={}):
                     "type_code": o.type_code,
                     "cd_sensitivity": o.cd_sensitivity,
                     "nb_observations": int(o.obs_nbr),
-                    "last_observation": o.last_obs_year,
+                    "last_observation": int(o.last_obs_year),
                     "ids_obs": o.ids_obs if "ids_obs" in fields else None,
                 },
             )
