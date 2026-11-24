@@ -32,6 +32,6 @@ class CorTaxonStatutArea(db.Model):
     __table_args__ = {"schema": "atlas"}
     cd_ref: Mapped[int] = mapped_column(primary_key=True)
     id_area: Mapped[int] = mapped_column(primary_key=True)
-    statut_menace: Mapped[str] = mapped_column()
-    niveau_application_menace: Mapped[str] = mapped_column()
+    statut_menace: Mapped[str] = mapped_column(nullable=True)
+    niveau_application_menace: Mapped[str] = mapped_column(nullable=True)
     protege: Mapped[bool] = mapped_column()
