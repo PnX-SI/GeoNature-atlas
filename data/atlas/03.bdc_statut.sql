@@ -46,6 +46,9 @@ CREATE UNIQUE INDEX ON atlas.vm_bdc_statut
     USING btree (id);
 
 CREATE INDEX ON atlas.vm_bdc_statut
+    USING btree (cd_ref);
+
+CREATE INDEX ON atlas.vm_bdc_statut
      USING btree (id_text);
 
 CREATE INDEX ON atlas.vm_bdc_statut
@@ -124,4 +127,5 @@ WITH DATA;
 CREATE UNIQUE INDEX ON atlas.vm_cor_taxon_statut_area
     USING btree (cd_ref, id_area);
 
-
+CREATE INDEX ON atlas.vm_cor_taxon_statut_area
+    USING btree(id_area, cd_ref);
