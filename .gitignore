@@ -37,3 +37,4 @@ robots.txt
 !atlas/static/sample/robots.txt
 
 .github/*instructions.md
+coverage.xml

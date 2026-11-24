@@ -1,22 +1,23 @@
-# -*- coding:utf-8 -*-
-
 from flask import current_app
 from sqlalchemy import Interval
-from sqlalchemy.sql import select, distinct, func, cast, literal, and_
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import aliased, joinedload
+from sqlalchemy.sql import and_, cast, distinct, func, literal, select
 from werkzeug.datastructures import MultiDict
 
-from atlas.modeles.entities.vmStatutBdc import CorTaxonStatutArea, TOrdreListeRouge
-from atlas.modeles.entities.tBibTaxrefRang import TBibTaxrefRang
-from atlas.modeles.entities.CorSensitivity import CorSensitivityAreaType
-from atlas.modeles.entities.vmObservations import VmObservations
-from atlas.modeles.entities.vmAreas import VmCorAreaSynthese
-from atlas.modeles.entities.vmMedias import VmMedias
-from atlas.modeles.entities.vmTaxons import VmTaxons
-from atlas.modeles.entities.vmAreas import VmCorAreas, VmBibAreasTypes, VmAreas
-
-from atlas.modeles import utils
 from atlas.env import db
+from atlas.modeles import utils
+from atlas.modeles.entities.CorSensitivity import CorSensitivityAreaType
+from atlas.modeles.entities.tBibTaxrefRang import TBibTaxrefRang
+from atlas.modeles.entities.vmAreas import (
+    VmAreas,
+    VmBibAreasTypes,
+    VmCorAreas,
+    VmCorAreaSynthese,
+)
+from atlas.modeles.entities.vmMedias import VmMedias
+from atlas.modeles.entities.vmObservations import VmObservations
+from atlas.modeles.entities.vmStatutBdc import CorTaxonStatutArea
+from atlas.modeles.entities.vmTaxons import VmTaxons
 
 
 def get_nb_taxons(cd_ref=None, group_name=None):
@@ -46,7 +47,7 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
     Parameters
     ----------
     id_area : int, optional
-        use for territory sheet
+        Area ID who can be a territory ID or mesh ID (use for territory sheet)
     group_name : str, optional
         use for group INPN sheet
     cd_ref : int, optional
@@ -62,6 +63,7 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
         last_obs: boolean : return only last obs (range define in params)
         only_related_sensitivity_level: boolean : optional  - display only species corresponding to the sensitivity level of the id_area (only species with sensitivity=2 for M10 for ex)
         with_local_status: boolean : override global taxon status with local status (eg : protected only in a department)
+        territory_id: int, optional : id of territory if id_area is not the ID of the territory.
 
     Returns
     -------
@@ -72,12 +74,13 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
     page_size = int(params.get("page_size", current_app.config["ITEMS_PER_PAGE"]))
     filter_taxon = params.get("filter_taxons", "")
     group2_inpn = params.getlist("group2_inpn")
-    threatened = params.get("threatened", None)
-    protected = params.get("protected", None)
-    patrimonial = params.get("patrimonial", None)
-    last_obs = params.get("last_obs", None)
-    only_related_sensitivity_level = params.get("only_related_sensitivity_level", None)
+    threatened = utils.is_true_param(params, "threatened")
+    protected = utils.is_true_param(params, "protected")
+    patrimonial = utils.is_true_param(params, "patrimonial")
+    last_obs = utils.is_true_param(params, "last_obs")
+    only_related_sensitivity_level = utils.is_true_param(params, "only_related_sensitivity_level")
     with_local_status = params.get("with_local_status", "true").lower() == "true"
+    territory_id = params.get("territory_id", None)
     # CTE 1: Statistics on observations filtered by id_area
     q_stats_taxons = (
         select(
@@ -95,16 +98,23 @@ def getListTaxon(id_area=None, group_name=None, cd_ref=None, params: MultiDict =
             >= func.current_timestamp()
             - cast(literal(str(current_app.config["NB_DAY_LAST_OBS"]) + " day"), Interval)
         )
-    # filter by id_area
-    print("???", id_area)
+    # Filter by id_area
     if id_area:
-        print("PASSE LAA ???")
         q_stats_taxons = q_stats_taxons.join(
             VmCorAreaSynthese,
             (VmCorAreaSynthese.id_synthese == VmObservations.id_observation)
             & (VmCorAreaSynthese.id_area == id_area)
             & (VmCorAreaSynthese.is_valid_for_display.is_(True)),
         )
+        if territory_id and territory_id != id_area:
+            # Limit the list of taxa to those found in the selected territory and area (mesh) requested
+            InTerritoryFilter = aliased(VmCorAreaSynthese)
+            q_stats_taxons = q_stats_taxons.join(
+                InTerritoryFilter,
+                (InTerritoryFilter.id_synthese == VmObservations.id_observation)
+                & (InTerritoryFilter.id_area == territory_id)
+                & (InTerritoryFilter.is_valid_for_display.is_(True)),
+            )
         if only_related_sensitivity_level:
             q_stats_taxons = q_stats_taxons.join(
                 CorSensitivityAreaType,
