@@ -10,7 +10,7 @@ import pytest
 from sqlalchemy import text
 
 from atlas.app import create_app
-from atlas.env import db, BASE_DIR
+from atlas.env import BASE_DIR, db
 
 
 def with_config(**config_overrides):
@@ -24,10 +24,11 @@ def with_config(**config_overrides):
 
 @pytest.fixture(scope="session")
 def _db_setup():
-    # Crée une app temporaire juste pour initialiser la DB
+    # Create a temporary app just to initialize the database.
     app = create_app()
     with app.app_context():
         with db.engine.connect() as conn:
+            conn.execute(text("CREATE EXTENSION IF NOT EXISTS unaccent"))
             conn.execute(text("CREATE SCHEMA IF NOT EXISTS atlas"))
             conn.execute(text("CREATE SCHEMA IF NOT EXISTS gn_meta"))
             conn.execute(text("CREATE SCHEMA IF NOT EXISTS utilisateurs"))
