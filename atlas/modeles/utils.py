@@ -1,7 +1,14 @@
-# -*- coding:utf-8 -*-
-
 import unicodedata
+
 from flask import current_app
+
+
+def is_true_param(params, name):
+    """Return whether a request parameter represents a true value."""
+    value = params.get(name)
+    if isinstance(value, str):
+        return value.strip().lower() in {"1", "true", "yes", "on"}
+    return value is True
 
 
 def deleteAccent(string):

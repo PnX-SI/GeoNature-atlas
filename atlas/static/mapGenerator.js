@@ -795,12 +795,18 @@ let selectedMailleLayer = null;
 function createPopUp(event) {
     const sheetName = document.querySelector("body").getAttribute("page-name");
     const idMaille = event.target.feature.id;
+    const idTerritory = areaInfos?.areaID;
     page_tooltip = 1;
     havePossibleNextPage_tooltip = true;
     const baseUrl = window.LANGUAGE_PREFIXED_URL_APPLICATION || "";
-    let url = `${baseUrl}/api/taxonListJson/area/${idMaille}?page=-1&only_related_sensitivity_level=true&with_local_status=false`;
+    let url =
+        `${baseUrl}/api/taxonListJson/area/${idMaille}` +
+        `?page=-1&only_related_sensitivity_level=true&with_local_status=false`;
+    if (idTerritory) {
+        url += `&territory_id=${idTerritory}`;
+    }
     if (sheetName === "index" && configuration.AFFICHAGE_DERNIERES_OBS) {
-        url = url + "&last_obs=true";
+        url += "&last_obs=true";
     }
     fetch(url)
         .then((response) => response.json())
