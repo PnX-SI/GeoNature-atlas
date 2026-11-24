@@ -34,6 +34,21 @@ GUNICORN_PORT = 8080
 # Recharger automatiquement les templates
 TEMPLATES_AUTO_RELOAD = False
 
+# Duree de conservation des donnees en cache, en secondes.
+# Valeur utilisee par defaut par l'Atlas si CACHE_DEFAULT_TIMEOUT n'est pas configure.
+CACHE_TIMEOUT = 3600
+
+# Parametres principaux de Flask-Caching (optionnels).
+# CACHE_DEFAULT_TIMEOUT, s'il est defini, remplace CACHE_TIMEOUT.
+# CACHE_TYPE = "SimpleCache"
+# CACHE_DEFAULT_TIMEOUT = 3600
+# CACHE_THRESHOLD = 500
+# Pour desactiver completement le cache :
+# CACHE_TYPE = "NullCache"
+
+# D'autres backends et options sont disponibles ; consulter la documentation Flask-Caching :
+# https://flask-caching.readthedocs.io/en/latest/
+
 #########################################
 #########################################
 ### Personnalisation de l'application ###
