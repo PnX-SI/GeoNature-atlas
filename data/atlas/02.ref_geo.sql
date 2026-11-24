@@ -62,29 +62,42 @@ CREATE INDEX ON atlas.vm_l_areas
 -- vm_cor_areas
 CREATE MATERIALIZED VIEW atlas.vm_cor_areas AS
     WITH dep AS (
-        SELECT * 
+        SELECT
+            vla.id_area,
+            ST_SimplifyPreserveTopology(vla.geom_local, 100) AS geom_local_simplified,
+            st_buffer(
+                ST_SimplifyPreserveTopology(vla.geom_local, 100),
+                200
+            ) AS geom_local_simplified_buffered
         FROM atlas.vm_l_areas AS vla
-            JOIN atlas.vm_bib_areas_types b USING(id_type)
+            JOIN atlas.vm_bib_areas_types AS b USING(id_type)
         WHERE b.type_code = 'DEP'
+    ),
+    areas AS (
+        SELECT
+            vla.id_area,
+            ST_SimplifyPreserveTopology(vla.geom_local, 100) AS geom_local_simplified
+        FROM atlas.vm_l_areas AS vla
+            JOIN atlas.vm_bib_areas_types AS b USING(id_type)
+        WHERE b.type_code IN (SELECT * FROM string_to_table(:'type_code', ','))
     )
-    SELECT vla.id_area, dep.id_area AS id_area_parent
-    FROM atlas.vm_l_areas AS vla
-        JOIN atlas.vm_bib_areas_types AS b USING(id_type)
-        JOIN dep ON 
-            -- on fait un buffer négatif de 10 m sur les département pour éviter la double
-            -- intersections des zonages administratifs (eg: commune). 
-            st_intersects(st_buffer(dep.geom_local, -10), vla.geom_local)
-    WHERE b.type_code IN (
-        SELECT * FROM string_to_table(:'type_code', ',')
-    )
-    -- On laisse volontairement l'autointersection département  - département pour les fiche territoire des départements !
+    SELECT
+        a.id_area,
+        d.id_area AS id_area_parent
+    FROM areas AS a
+        JOIN dep AS d
+            ON (
+                st_intersects(d.geom_local_simplified, a.geom_local_simplified)
+                AND st_within(a.geom_local_simplified, d.geom_local_simplified_buffered)
+            )
     UNION
-    -- on prend ce qu'il y avait déjà dans ref_geo.l_areas
-    SELECT 
-        id_area AS id_area, 
-        id_area_group AS id_area_parent 
-    FROM ref_geo.cor_areas;
-                    
+        SELECT
+            id_area,
+            id_area_group AS id_area_parent
+        FROM ref_geo.cor_areas
+    ;
+    -- We are intentionally leaving the department-department intersection for the departmental territory sheets!
+
 CREATE INDEX ON atlas.vm_cor_areas
     USING btree (id_area_parent);
 
