@@ -7,6 +7,45 @@ Celui-ci est par défaut assez minimaliste. Il peut être completé par toute un
 
 Après chaque modification de la configuration, relancer la commande ``sudo systemctl restart geonature-atlas`` pour qu'elles soient appliquées.
 
+Cache des pages et webservices
+==============================
+
+GeoNature-atlas met en cache certaines pages et les données qu'elles affichent :
+
+* les fiches **Espèce**, **Territoire**, **Rang taxonomique** et **Groupe** ;
+* les fiches **Organisme**, si le module correspondant est activé ;
+* les listes d'espèces, la galerie photo, les statistiques générales et les graphiques des fiches Territoire.
+
+Les résultats de recherche et les observations affichées sur les cartes ne sont pas mis en cache.
+
+Le paramètre ``CACHE_TIMEOUT`` indique, en secondes, combien de temps une donnée reste en cache.
+Il est utilisé par défaut ; le paramètre ``CACHE_DEFAULT_TIMEOUT`` de Flask-Caching, s'il est
+défini, le remplace. Avec le réglage par défaut ``SimpleCache``, le cache est conservé en mémoire
+et vidé au redémarrage du service.
+
+.. note::
+
+   Après le rafraîchissement des vues matérialisées, les pages déjà présentes dans le cache peuvent
+   encore afficher les anciennes données jusqu'à l'expiration de ``CACHE_TIMEOUT``. Pour voir les
+   nouvelles données immédiatement, redémarrez l'Atlas : avec ``SimpleCache``, cela vide le cache.
+   Sans redémarrage, les données se mettront à jour à l'expiration du cache. Les pages et données
+   non mises en cache utilisent les nouvelles vues dès la requête suivante. Avec un autre type de
+   cache, la purge du cache dépend du type de cache utilisé.
+
+Les principaux paramètres sont :
+
+* ``CACHE_TYPE`` : type de cache ; l'Atlas utilise ``SimpleCache`` par défaut ;
+* ``CACHE_TIMEOUT`` ou ``CACHE_DEFAULT_TIMEOUT`` : durée de conservation en secondes ;
+* ``CACHE_THRESHOLD`` : nombre maximal d'entrées conservées par ``SimpleCache`` (500 par défaut).
+
+Pour désactiver complètement le cache, ajoutez ``CACHE_TYPE = "NullCache"`` dans
+``config.py``, puis redémarrez l'Atlas. Les routes configurées pour utiliser le cache continueront
+de fonctionner, mais leurs réponses ne seront plus conservées.
+
+D'autres types de cache et paramètres sont disponibles. Consultez la
+`documentation de Flask-Caching <https://flask-caching.readthedocs.io/en/latest/>`_ pour les
+détails. Un exemple de configuration est fourni dans ``atlas/configuration/config.py.example``.
+
 Configuration des données d'observations présentes dans l'atlas
 ===============================================================
 

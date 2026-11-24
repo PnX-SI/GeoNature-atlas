@@ -41,13 +41,10 @@ def create_app(config_overrides=None):
         app.config.update(config_overrides)
 
     db.init_app(app)
-    cache.init_app(
-        app,
-        config={
-            "CACHE_TYPE": "SimpleCache",
-            "CACHE_DEFAULT_TIMEOUT": app.config["CACHE_TIMEOUT"],
-        },
-    )
+    # Keep the Atlas timeout as a fallback for existing configuration files.
+    app.config.setdefault("CACHE_TYPE", "SimpleCache")
+    app.config.setdefault("CACHE_DEFAULT_TIMEOUT", app.config["CACHE_TIMEOUT"])
+    cache.init_app(app)
 
     app.config["BABEL_TRANSLATION_DIRECTORIES"] = (
         f"{atlas_translations_folder};translations;static/custom/translations_override"
