@@ -21,7 +21,7 @@ def fake_altitude(mocker):
 @pytest.fixture
 def template_data(client, captured_templates, taxon, fake_altitude):
 
-    VmTaxons.query.get(taxon.cd_ref)
+    db.session.get(VmTaxons, taxon.cd_ref)
     response = client.get(url_for("main.ficheEspece", cd_nom=taxon.cd_ref))
     template, context = captured_templates[0]
     soup = BeautifulSoup(response.data, "html.parser")
