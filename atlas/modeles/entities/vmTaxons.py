@@ -1,16 +1,13 @@
-# -*- coding:utf-8 -*-
 from urllib.parse import urljoin
-from flask import current_app, url_for
-from sqlalchemy import String, Float, Text, ForeignKey, and_
-from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy.orm import relationship
-from atlas.env import db
-from atlas.modeles.entities.vmMedias import VmMedias
-from atlas.modeles import utils
-from atlas.configuration.config_parser import config
 
-from typing import List
-import datetime
+from flask import current_app, url_for
+from sqlalchemy import Float, ForeignKey, String, Text, and_
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from atlas.configuration.config_parser import config
+from atlas.env import db
+from atlas.modeles import utils
+from atlas.modeles.entities.vmMedias import VmMedias
 
 
 class VmTaxons(db.Model):
@@ -41,7 +38,7 @@ class VmTaxons(db.Model):
     yearmin: Mapped[float] = mapped_column(Float(53))
     yearmax: Mapped[float] = mapped_column(Float(53))
     nb_obs: Mapped[int] = mapped_column()
-    attributs: Mapped[List["VmCorTaxonAttribut"]] = relationship(
+    attributs: Mapped[list["VmCorTaxonAttribut"]] = relationship(
         "VmCorTaxonAttribut", back_populates="taxon"
     )
     main_media: Mapped[VmMedias] = relationship(
@@ -99,9 +96,9 @@ class VmTaxons(db.Model):
                 )
             else:
                 if self.main_media.chemin:
-                    return current_app.config["REMOTE_MEDIAS_URL"] + self.main_media.chemin
+                    return current_app.config["REMOTE_MEDIAS_URL"] + self.main_media.chemin, True
                 elif self.main_media.url:
-                    return self.main_media.url
+                    return self.main_media.url, True
                 else:
                     return default_media, False
         else:
